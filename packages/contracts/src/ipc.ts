@@ -95,6 +95,7 @@ export * from "./ipc-workflow-github";
 export * from "./ipc-workflow-slack";
 export * from "./ipc-workflow-telegram";
 export * from "./ipc-workflows";
+export * from "./ipc-zolly";
 export * from "./marketplace-suggestion-events";
 export * from "./mcp-sign-in-events";
 export * from "./mobile-connect";
