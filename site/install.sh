@@ -47,7 +47,7 @@ if [ -z "$VERSION" ]; then
 	VERSION="$(curl -fsSL "$BASE_URL/latest")" || { echo "could not read $BASE_URL/latest" >&2; exit 1; }
 fi
 
-asset="ZollyBot-${VERSION}-${asset_arch}.AppImage"
+asset="zollybot-gui-${VERSION}-${asset_arch}.AppImage"
 release="$DOWNLOAD_BASE/releases/$VERSION"
 
 tmp="$(mktemp -d)"

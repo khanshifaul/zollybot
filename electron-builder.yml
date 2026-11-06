@@ -6,7 +6,7 @@ protocols:
     schemes:
       - zollybot
 asar: true
-artifactName: ${productName}-${version}-${arch}.${ext}
+artifactName: zollybot-gui-${version}-${arch}.${ext}
 electronUpdaterCompatibility: ">=2.16"
 electronFuses:
   resetAdHocDarwinSignature: true
