@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { createReadStream } from "node:fs";
+import { createReadStream, existsSync } from "node:fs";
 import {
   copyFile,
   cp,
@@ -187,6 +187,7 @@ const AGENT_FILES_REMOVAL = { recursive: true, force: true, maxRetries: 10, retr
 
 export class AgentStore {
   readonly #statePath: string;
+  readonly #officeSeedPath: string;
   readonly #agentsRoot: string;
   readonly #legacyAgentsRoot: string;
   readonly #sharedRoot: string;
@@ -213,6 +214,7 @@ export class AgentStore {
     zollybotRoot = join(homePath, "ZollyBot"),
   ) {
     this.#statePath = join(userDataPath, LEGACY_AGENTS_STATE_FILE);
+    this.#officeSeedPath = join(zollybotRoot, "office-agents.seeded");
     this.#agentsRoot = join(zollybotRoot, "Agents");
     this.#legacyAgentsRoot = join(zollybotRoot, "Bots");
     this.#sharedRoot = join(zollybotRoot, "Shared");
@@ -232,6 +234,18 @@ export class AgentStore {
   /** The account defaults that an agent with no value of its own follows; see `AGENT_DEFAULT_KEYS`. */
   agentDefaults(): AgentDefaults {
     return this.#agentDefaults();
+  }
+
+  /** True once this install created the office agents; deleting them all does not recreate them. */
+  officeAgentsSeeded(): boolean {
+    return existsSync(this.#officeSeedPath);
+  }
+
+  /** Records the seeding so a user who removes every agent keeps an empty list. */
+  markOfficeAgentsSeeded(): Effect.Effect<void, StoredStateFailure> {
+    return storedIO(() => writeFile(this.#officeSeedPath, `${new Date().toISOString()}\n`, { mode: 0o600 })).pipe(
+      Effect.ignore,
+    );
   }
 
   get database(): ZollyBotDatabase {

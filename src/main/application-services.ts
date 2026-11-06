@@ -3679,6 +3679,13 @@ export async function createApplicationServices({
         centralAuth,
         host,
         memory: hostMemory,
+        agents: () =>
+          service.listAgents().map((agent) => ({
+            name: agent.name,
+            provider: String(agent.provider),
+            model: String(agent.model),
+            title: agent.title,
+          })),
         onError: (message, error) => logger.warn(message, toLogValue(error)),
       })
     : null;

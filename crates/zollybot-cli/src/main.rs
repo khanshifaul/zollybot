@@ -1,8 +1,8 @@
-//! zollybot-cli — the terminal version of the ZollyBot desktop app.
+//! zollybot-cli — the terminal frontend of ZollyBot.
 //!
-//! Run with no arguments for the interactive TUI, or use a subcommand for
-//! scripts. The office files stay canonical: everything here reads `.agents/`
-//! and never writes to it.
+//! One product, two frontends: the desktop app runs the server, and this program
+//! attaches to it over the control socket. It shows the agents the app shows and
+//! signs in with the same email code. It keeps no office state of its own.
 
 use clap::{Parser, Subcommand};
 use crossterm::{
@@ -18,11 +18,9 @@ use ratatui::{
     widgets::{Block, Borders, Cell, Clear, Paragraph, Row, Table, TableState},
     Frame, Terminal,
 };
-use serde::Serialize;
-use std::collections::BTreeMap;
 use std::fs;
-use std::io::{IsTerminal, stdout};
-use std::path::{Path, PathBuf};
+use std::io::{IsTerminal, Write, stdout};
+use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
 const REFRESH_EVERY: Duration = Duration::from_secs(3);
@@ -31,9 +29,9 @@ const REFRESH_EVERY: Duration = Duration::from_secs(3);
 #[command(
     name = "zollybot-cli",
     version,
-    about = "ZollyBot offices in the terminal",
-    long_about = "Run with no arguments for the interactive TUI. Subcommands print one view \
-                  and exit, for scripts and SSH one-liners."
+    about = "ZollyBot in the terminal",
+    long_about = "The terminal frontend of ZollyBot. Run with the desktop app (zollybot --server) \
+                  and this attaches to it: same account, same agents, same pairing code."
 )]
 struct Cli {
     #[command(subcommand)]
@@ -42,372 +40,17 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// List offices found under the given roots.
-    Offices {
-        #[arg(long)]
-        root: Vec<PathBuf>,
-        #[arg(long, default_value_t = 3)]
-        depth: usize,
-        #[arg(long)]
-        json: bool,
-    },
-    /// List the queue briefs of one office.
-    Queue {
-        office: String,
-        #[arg(long)]
-        json: bool,
-    },
-    /// List results that carry a gate and have not been approved.
-    Gates {
-        office: String,
-        #[arg(long)]
-        json: bool,
-    },
+    /// Print the agents the app lists, one per line.
+    Agents,
 }
 
-#[derive(Serialize, Clone)]
-struct Office {
-    root: String,
-    frequency: Option<String>,
-    base_branch: Option<String>,
-    remote: Option<String>,
-    queue: Counts,
-}
-
-#[derive(Serialize, Clone, Default)]
-struct Counts {
-    queued: usize,
-    dispatched: usize,
-    blocked: usize,
-    done: usize,
-    failed: usize,
-    escalated: usize,
-}
-
-#[derive(Serialize, Clone)]
-struct QueueEntry {
-    id: String,
-    title: String,
-    status: String,
-    gate: String,
-}
-
-#[derive(Serialize, Clone)]
-struct GateEntry {
-    task: String,
-    title: String,
-    gate: String,
-    approved: bool,
-}
-
-fn front_matter(text: &str) -> BTreeMap<String, String> {
-    let mut map = BTreeMap::new();
-    let mut lines = text.lines();
-    if lines.next().map(str::trim) != Some("---") {
-        return map;
-    }
-    for line in lines {
-        if line.trim() == "---" {
-            break;
-        }
-        if let Some((key, value)) = line.split_once(':') {
-            map.insert(
-                key.trim().to_string(),
-                value.trim().trim_matches('"').to_string(),
-            );
-        }
-    }
-    map
-}
-
-fn read_office(root: &Path) -> Option<(Option<String>, Option<String>, Option<String>)> {
-    let config = root.join(".agents/zolly/config.toml");
-    let text = fs::read_to_string(&config).ok()?;
-    let value = |key: &str| -> Option<String> {
-        for line in text.lines() {
-            let Some((k, v)) = line.split_once('=') else {
-                continue;
-            };
-            if k.trim() == key {
-                return Some(v.trim().trim_matches('"').to_string());
-            }
-        }
-        None
-    };
-    Some((value("frequency"), value("base_branch"), value("remote")))
-}
-
-fn walk(dir: &Path, depth: usize, max_depth: usize, found: &mut Vec<Office>, seen: &mut Vec<PathBuf>) {
-    if depth > max_depth {
-        return;
-    }
-    let canonical = fs::canonicalize(dir).unwrap_or_else(|_| dir.to_path_buf());
-    if seen.contains(&canonical) {
-        return;
-    }
-    seen.push(canonical);
-
-    if let Some((frequency, base_branch, remote)) = read_office(dir) {
-        found.push(Office {
-            root: dir.display().to_string(),
-            frequency,
-            base_branch,
-            remote,
-            queue: queue_counts(dir),
-        });
-        return;
-    }
-
-    let Ok(entries) = fs::read_dir(dir) else {
-        return;
-    };
-    let mut children: Vec<PathBuf> = entries
-        .filter_map(|entry| entry.ok())
-        .filter(|entry| entry.file_type().map(|t| t.is_dir()).unwrap_or(false))
-        .map(|entry| entry.path())
-        .filter(|path| {
-            let name = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
-            !name.starts_with('.') && name != "node_modules"
-        })
-        .collect();
-    children.sort();
-    for child in children {
-        walk(&child, depth + 1, max_depth, found, seen);
-    }
-}
-
-fn discover(roots: &[PathBuf], depth: usize) -> Vec<Office> {
-    let mut found = Vec::new();
-    let mut seen = Vec::new();
-    for root in roots {
-        walk(root, 0, depth, &mut found, &mut seen);
-    }
-    found.sort_by(|a, b| a.root.cmp(&b.root));
-    found
-}
-
-fn queue_entries(root: &Path) -> Vec<QueueEntry> {
-    let dir = root.join(".agents/queue");
-    let Ok(entries) = fs::read_dir(&dir) else {
-        return Vec::new();
-    };
-    let mut out: Vec<QueueEntry> = entries
-        .filter_map(|entry| entry.ok())
-        .map(|entry| entry.path())
-        .filter(|path| path.extension().and_then(|e| e.to_str()) == Some("md"))
-        .filter_map(|path| {
-            let text = fs::read_to_string(&path).ok()?;
-            let fm = front_matter(&text);
-            Some(QueueEntry {
-                id: fm.get("id").cloned().unwrap_or_else(|| {
-                    path.file_stem().and_then(|s| s.to_str()).unwrap_or("").to_string()
-                }),
-                title: fm.get("title").cloned().unwrap_or_default(),
-                status: fm.get("status").cloned().unwrap_or_else(|| "unknown".into()),
-                gate: fm.get("gate").cloned().unwrap_or_else(|| "auto".into()),
-            })
-        })
-        .collect();
-    out.sort_by(|a, b| a.id.cmp(&b.id));
-    out
-}
-
-fn queue_counts(root: &Path) -> Counts {
-    let mut counts = Counts::default();
-    for entry in queue_entries(root) {
-        match entry.status.as_str() {
-            "queued" => counts.queued += 1,
-            "dispatched" => counts.dispatched += 1,
-            "blocked" => counts.blocked += 1,
-            "done" => counts.done += 1,
-            "failed" => counts.failed += 1,
-            "escalated" => counts.escalated += 1,
-            _ => {}
-        }
-    }
-    counts
-}
-
-fn gate_entries(root: &Path) -> Vec<GateEntry> {
-    let dir = root.join(".agents/results");
-    let Ok(entries) = fs::read_dir(&dir) else {
-        return Vec::new();
-    };
-    let mut out: Vec<GateEntry> = entries
-        .filter_map(|entry| entry.ok())
-        .map(|entry| entry.path())
-        .filter(|path| path.extension().and_then(|e| e.to_str()) == Some("md"))
-        .filter_map(|path| {
-            let text = fs::read_to_string(&path).ok()?;
-            let fm = front_matter(&text);
-            let gate = fm.get("gate").cloned().unwrap_or_else(|| "auto".into());
-            if gate != "human" {
-                return None;
-            }
-            Some(GateEntry {
-                task: fm.get("id").cloned().unwrap_or_else(|| {
-                    path.file_stem().and_then(|s| s.to_str()).unwrap_or("").to_string()
-                }),
-                title: fm.get("title").cloned().unwrap_or_default(),
-                gate,
-                approved: fm.get("approved").map(|v| v == "yes").unwrap_or(false),
-            })
-        })
-        .collect();
-    out.sort_by(|a, b| a.task.cmp(&b.task));
-    out
-}
-
-fn home() -> PathBuf {
-    std::env::var_os("HOME").map(PathBuf::from).unwrap_or_else(|| PathBuf::from("."))
-}
-
-fn default_roots() -> Vec<PathBuf> {
-    let projects = home().join("Projects");
-    if projects.is_dir() {
-        vec![projects]
-    } else {
-        vec![std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."))]
-    }
-}
-
-fn resolve_office(arg: &str) -> Option<PathBuf> {
-    let direct = PathBuf::from(arg);
-    if direct.join(".agents/zolly/config.toml").is_file() {
-        return Some(direct);
-    }
-    let mut matches: Vec<PathBuf> = Vec::new();
-    for office in discover(&default_roots(), 3) {
-        if office.frequency.as_deref() == Some(arg) {
-            matches.push(PathBuf::from(office.root));
-        }
-    }
-    match matches.len() {
-        0 | 2.. => None,
-        1 => Some(matches.remove(0)),
-    }
-}
-
-fn print_offices(offices: &[Office]) {
-    if offices.is_empty() {
-        println!("no offices found");
-        return;
-    }
-    let width = offices.iter().map(|o| o.root.len()).max().unwrap_or(4).max(4);
-    println!(
-        "{:<width$}  {:<16}  {:>7}  {:>10}  {:>8}",
-        "ROOT",
-        "FREQUENCY",
-        "QUEUED",
-        "DISPATCHED",
-        "BLOCKED",
-        width = width
-    );
-    for office in offices {
-        println!(
-            "{:<width$}  {:<16}  {:>7}  {:>10}  {:>8}",
-            office.root,
-            office.frequency.as_deref().unwrap_or("-"),
-            office.queue.queued,
-            office.queue.dispatched,
-            office.queue.blocked,
-            width = width
-        );
-    }
-}
-
-fn cmd_offices(roots: Vec<PathBuf>, depth: usize, json: bool) -> i32 {
-    let roots = if roots.is_empty() { default_roots() } else { roots };
-    let offices = discover(&roots, depth);
-    if json {
-        println!("{}", serde_json::to_string_pretty(&offices).unwrap());
-    } else {
-        print_offices(&offices);
-    }
-    0
-}
-
-fn cmd_queue(office: &str, json: bool) -> i32 {
-    let Some(root) = resolve_office(office) else {
-        eprintln!("no office matches '{office}'");
-        return 1;
-    };
-    let entries = queue_entries(&root);
-    if json {
-        println!("{}", serde_json::to_string_pretty(&entries).unwrap());
-    } else if entries.is_empty() {
-        println!("queue is empty");
-    } else {
-        for entry in &entries {
-            println!("{:<34}  {:<10}  {:<5}  {}", entry.id, entry.status, entry.gate, entry.title);
-        }
-    }
-    0
-}
-
-fn cmd_gates(office: &str, json: bool) -> i32 {
-    let Some(root) = resolve_office(office) else {
-        eprintln!("no office matches '{office}'");
-        return 1;
-    };
-    let gates = gate_entries(&root);
-    if json {
-        println!("{}", serde_json::to_string_pretty(&gates).unwrap());
-    } else if gates.is_empty() {
-        println!("no gates waiting");
-    } else {
-        for gate in &gates {
-            println!(
-                "{:<34}  {:<8}  {}",
-                gate.task,
-                if gate.approved { "approved" } else { "WAITING" },
-                gate.title
-            );
-        }
-    }
-    0
-}
-
-#[derive(PartialEq, Clone, Copy)]
-enum View {
-    Queue,
-    Gates,
-}
-
-fn office_name(office: &Office) -> String {
-    match office.frequency.as_deref() {
-        Some(name) if !name.is_empty() && !name.contains("{{") => name.to_string(),
-        _ => "(unnamed)".to_string(),
-    }
-}
-
-struct ConnectPanel {
-    url: String,
-    lines: Vec<String>,
-}
-
-fn connect_url() -> String {
-    std::env::var("ZOLLYBOT_CONNECT_URL").unwrap_or_else(|_| "https://zollybot.shifaul.dev".to_string())
-}
-
-/// The account service the GUI talks to. The CLI follows the same steps, so the
-/// same host answers it.
+/// The account service, for the case where no app runs on this machine.
 fn api_base() -> String {
     std::env::var("ZOLLYBOT_API_URL").unwrap_or_else(|_| "https://api-zollybot.shifaul.dev".to_string())
 }
 
-#[derive(Clone)]
-struct Session {
-    email: String,
-    #[allow(dead_code)]
-    token: String,
-    /// The session lives in the running server, not in this process, so there is no
-    /// token to write to disk.
-    local: bool,
-}
-
-/// The control socket of a running `zollybot --server`. The GUI and the TUI are two
-/// frontends of that one server, exactly like herdr.
+/// The control socket of a running app (`zollybot --server`). This is the only
+/// way the terminal reaches the app's own data.
 fn control_socket() -> Option<PathBuf> {
     let runtime = std::env::var("XDG_RUNTIME_DIR").ok()?;
     if runtime.trim().is_empty() {
@@ -433,15 +76,10 @@ fn url_encode(value: &str) -> String {
     encoded
 }
 
-/// One request to the control socket, answered with a status and `key=value` lines.
-fn control_call(
-    method: &str,
-    path: &str,
-    form: &[(&str, &str)],
-) -> Result<(u16, Vec<(String, String)>), String> {
-    use std::io::{Read, Write};
+fn control_call(method: &str, path: &str, form: &[(&str, &str)]) -> Result<(u16, Vec<(String, String)>), String> {
+    use std::io::Read;
     use std::os::unix::net::UnixStream;
-    let socket = control_socket().ok_or_else(|| "no running zollybot server".to_string())?;
+    let socket = control_socket().ok_or_else(|| "The app is not running.".to_string())?;
     let mut stream = UnixStream::connect(&socket).map_err(|error| error.to_string())?;
     stream
         .set_read_timeout(Some(Duration::from_secs(30)))
@@ -455,22 +93,18 @@ fn control_call(
         "{method} {path} HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
         body.len()
     );
-    stream
-        .write_all(request.as_bytes())
-        .map_err(|error| error.to_string())?;
+    stream.write_all(request.as_bytes()).map_err(|error| error.to_string())?;
     let mut response = String::new();
-    stream
-        .read_to_string(&mut response)
-        .map_err(|error| error.to_string())?;
+    stream.read_to_string(&mut response).map_err(|error| error.to_string())?;
     let (head, payload) = response
         .split_once("\r\n\r\n")
-        .ok_or_else(|| "the server answered without a body".to_string())?;
+        .ok_or_else(|| "The app answered without a body.".to_string())?;
     let status = head
         .lines()
         .next()
         .and_then(|line| line.split_whitespace().nth(1))
         .and_then(|code| code.parse::<u16>().ok())
-        .ok_or_else(|| "the server answered without a status".to_string())?;
+        .ok_or_else(|| "The app answered without a status.".to_string())?;
     let mut lines = Vec::new();
     for line in payload.lines() {
         if let Some((key, value)) = line.split_once('=') {
@@ -491,7 +125,7 @@ fn answer_error(status: u16, lines: &[(String, String)]) -> String {
     line_value(lines, "message")
         .filter(|message| !message.is_empty())
         .or_else(|| line_value(lines, "error"))
-        .unwrap_or_else(|| format!("the server answered {status}"))
+        .unwrap_or_else(|| format!("The app answered {status}."))
 }
 
 fn decode_base64(input: &str) -> Option<String> {
@@ -509,6 +143,15 @@ fn decode_base64(input: &str) -> Option<String> {
         }
     }
     String::from_utf8(output).ok()
+}
+
+#[derive(Clone)]
+struct Session {
+    email: String,
+    #[allow(dead_code)]
+    token: String,
+    /// The app keeps the session; this process holds only the email it shows.
+    local: bool,
 }
 
 fn config_dir() -> PathBuf {
@@ -578,41 +221,38 @@ fn api_error(error: ureq::Error) -> String {
                     .and_then(|message| message.as_str())
                     .map(|message| message.to_string())
             })
-            .unwrap_or_else(|| format!("the account service answered {code}")),
+            .unwrap_or_else(|| format!("The account service answered {code}.")),
         other => format!("{other}"),
     }
 }
 
-/// Step one of the GUI flow: the service emails a code and returns the challenge.
-/// A running server owns the sign-in, so ask it first; without one, call the API directly.
 fn request_code(email: &str) -> Result<(String, bool), String> {
     if control_socket().is_some() {
         let (status, lines) = control_call("POST", "/v1/login/start", &[("email", email)])?;
         if status == 200 {
             return line_value(&lines, "challenge")
                 .map(|challenge| (challenge, true))
-                .ok_or_else(|| "the server sent no challenge".to_string());
+                .ok_or_else(|| "The app sent no challenge.".to_string());
         }
         return Err(answer_error(status, &lines));
     }
     let url = format!("{}/v1/auth/email/start", api_base());
-    let response = ureq::post(&url)
+    match ureq::post(&url)
         .set("Content-Type", "application/json")
         .set("Idempotency-Key", &random_uuid())
-        .send_json(ureq::json!({ "email": email }));
-    match response {
+        .send_json(ureq::json!({ "email": email }))
+    {
         Ok(response) => response
             .into_json::<serde_json::Value>()
             .map_err(|error| error.to_string())?
             .get("challengeId")
             .and_then(|challenge| challenge.as_str())
             .map(|challenge| (challenge.to_string(), false))
-            .ok_or_else(|| "the account service sent no challenge".to_string()),
+            .ok_or_else(|| "The account service sent no challenge.".to_string()),
         Err(error) => Err(api_error(error)),
     }
 }
 
-/// Step two: the code becomes a session, which the server keeps or the CLI stores.
 fn verify_code(challenge: &str, code: &str) -> Result<Session, String> {
     if control_socket().is_some() {
         let (status, lines) = control_call(
@@ -630,10 +270,10 @@ fn verify_code(challenge: &str, code: &str) -> Result<Session, String> {
         return Err(answer_error(status, &lines));
     }
     let url = format!("{}/v1/auth/email/verify", api_base());
-    let response = ureq::post(&url)
+    match ureq::post(&url)
         .set("Content-Type", "application/json")
-        .send_json(ureq::json!({ "challengeId": challenge, "code": code }));
-    match response {
+        .send_json(ureq::json!({ "challengeId": challenge, "code": code }))
+    {
         Ok(response) => {
             let value = response
                 .into_json::<serde_json::Value>()
@@ -650,7 +290,7 @@ fn verify_code(challenge: &str, code: &str) -> Result<Session, String> {
                 .unwrap_or_default()
                 .to_string();
             if token.is_empty() {
-                return Err("the account service sent no session".to_string());
+                return Err("The account service sent no session.".to_string());
             }
             Ok(Session { email, token, local: false })
         }
@@ -673,6 +313,15 @@ struct SignIn {
     server: bool,
 }
 
+struct ConnectPanel {
+    url: String,
+    lines: Vec<String>,
+}
+
+fn connect_url() -> String {
+    std::env::var("ZOLLYBOT_CONNECT_URL").unwrap_or_else(|_| "https://zollybot.shifaul.dev".to_string())
+}
+
 fn connect_qr(url: &str) -> Vec<String> {
     match qrcode::QrCode::new(url.as_bytes()) {
         Ok(code) => code
@@ -686,12 +335,25 @@ fn connect_qr(url: &str) -> Vec<String> {
     }
 }
 
+#[derive(Clone, Default)]
+struct ServerInfo {
+    version: String,
+    name: String,
+    phase: String,
+}
+
+#[derive(Clone, Default)]
+struct AgentRow {
+    name: String,
+    provider: String,
+    model: String,
+    title: String,
+}
+
 struct App {
-    offices: Vec<Office>,
+    server: ServerInfo,
+    agents: Vec<AgentRow>,
     selected: usize,
-    queue: Vec<QueueEntry>,
-    gates: Vec<GateEntry>,
-    view: View,
     table_state: TableState,
     quit: bool,
     message: String,
@@ -704,11 +366,9 @@ struct App {
 impl App {
     fn new() -> Self {
         let mut app = App {
-            offices: Vec::new(),
+            server: ServerInfo::default(),
+            agents: Vec::new(),
             selected: 0,
-            queue: Vec::new(),
-            gates: Vec::new(),
-            view: View::Queue,
             table_state: TableState::default(),
             quit: false,
             message: String::new(),
@@ -718,60 +378,92 @@ impl App {
             sign_in: None,
         };
         app.refresh_account();
-        app.reload();
+        app.load();
         app
     }
 
-    fn reload(&mut self) {
-        self.offices = discover(&default_roots(), 3);
-        if self.selected >= self.offices.len() {
-            self.selected = self.offices.len().saturating_sub(1);
-        }
-        self.load_detail();
+    /// Reads the app's own data. There is no offline copy: without the app, there
+    /// is nothing to mirror.
+    fn load(&mut self) {
         self.last_refresh = Instant::now();
+        if control_socket().is_none() {
+            self.agents.clear();
+            self.table_state.select(None);
+            self.message = "Start ZollyBot, then this attaches to it.".to_string();
+            return;
+        }
+        if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
+            self.server = ServerInfo {
+                version: line_value(&lines, "version").unwrap_or_default(),
+                name: line_value(&lines, "server_name").unwrap_or_default(),
+                phase: line_value(&lines, "server").unwrap_or_default(),
+            };
+        }
+        match control_call("GET", "/v1/agents", &[]) {
+            Ok((200, lines)) => {
+                self.agents.clear();
+                let count = line_value(&lines, "count")
+                    .and_then(|count| count.parse::<usize>().ok())
+                    .unwrap_or(0);
+                for index in 0..count {
+                    let Some(raw) = line_value(&lines, &format!("agent.{index}")) else {
+                        continue;
+                    };
+                    let mut parts = raw.split('|');
+                    self.agents.push(AgentRow {
+                        name: parts.next().unwrap_or_default().to_string(),
+                        provider: parts.next().unwrap_or_default().to_string(),
+                        model: parts.next().unwrap_or_default().to_string(),
+                        title: parts.next().unwrap_or_default().to_string(),
+                    });
+                }
+                if self.selected >= self.agents.len() {
+                    self.selected = self.agents.len().saturating_sub(1);
+                }
+                self.table_state.select(if self.agents.is_empty() { None } else { Some(self.selected) });
+            }
+            Ok((status, lines)) => self.message = answer_error(status, &lines),
+            Err(error) => self.message = error,
+        }
     }
 
-    fn load_detail(&mut self) {
-        if let Some(office) = self.offices.get(self.selected) {
-            let root = PathBuf::from(&office.root);
-            self.queue = queue_entries(&root);
-            self.gates = gate_entries(&root);
-            let len = match self.view {
-                View::Queue => self.queue.len(),
-                View::Gates => self.gates.len(),
-            };
-            self.table_state.select(if len > 0 { Some(0) } else { None });
-        } else {
-            self.queue.clear();
-            self.gates.clear();
-            self.table_state.select(None);
+    fn refresh_account(&mut self) {
+        if control_socket().is_none() {
+            return;
+        }
+        if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
+            if line_value(&lines, "account").as_deref() == Some("signed_in") {
+                self.session = Some(Session {
+                    email: line_value(&lines, "email").unwrap_or_default(),
+                    token: String::new(),
+                    local: true,
+                });
+            } else {
+                // The app is the account of record while it runs.
+                self.session = None;
+            }
         }
     }
 
     fn select(&mut self, index: usize) {
-        if self.offices.is_empty() {
+        if self.agents.is_empty() {
             return;
         }
-        self.selected = index.min(self.offices.len() - 1);
-        self.load_detail();
+        self.selected = index.min(self.agents.len() - 1);
+        self.table_state.select(Some(self.selected));
     }
 
-    fn next_office(&mut self) {
-        if !self.offices.is_empty() {
-            self.select((self.selected + 1).min(self.offices.len() - 1));
+    fn table_next(&mut self) {
+        if self.agents.is_empty() {
+            return;
         }
+        let current = self.table_state.selected().unwrap_or(0);
+        self.select((current + 1).min(self.agents.len() - 1));
     }
 
-    fn previous_office(&mut self) {
-        self.select(self.selected.saturating_sub(1));
-    }
-
-    fn toggle_view(&mut self) {
-        self.view = match self.view {
-            View::Queue => View::Gates,
-            View::Gates => View::Queue,
-        };
-        self.load_detail();
+    fn table_previous(&mut self) {
+        let current = self.table_state.selected().unwrap_or(0);
+        self.select(current.saturating_sub(1));
     }
 
     fn toggle_connect(&mut self) {
@@ -779,7 +471,6 @@ impl App {
             self.connect = None;
             return;
         }
-        // The server mints the pairing code the GUI shows, so ask it for the same QR.
         if control_socket().is_some() {
             match control_call("POST", "/v1/mobile-connect", &[]) {
                 Ok((200, lines)) => {
@@ -810,26 +501,6 @@ impl App {
         self.connect = Some(ConnectPanel { url, lines });
     }
 
-    /// The server owns the account, so the first read comes from it, not from a token file.
-    fn refresh_account(&mut self) {
-        if control_socket().is_none() {
-            return;
-        }
-        if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
-            if line_value(&lines, "account").as_deref() == Some("signed_in") {
-                self.session = Some(Session {
-                    email: line_value(&lines, "email").unwrap_or_default(),
-                    token: String::new(),
-                    local: true,
-                });
-            } else {
-                // The server is the account of record while it runs; a token file
-                // from an earlier direct sign-in must not outvote it.
-                self.session = None;
-            }
-        }
-    }
-
     fn open_sign_in(&mut self) {
         let mut email = self
             .session
@@ -842,7 +513,7 @@ impl App {
                 if line_value(&lines, "account").as_deref() == Some("signed_in") {
                     email = line_value(&lines, "email").unwrap_or(email);
                 } else {
-                    status = "The server has no account yet.".to_string();
+                    status = "The app has no account yet.".to_string();
                 }
             }
         }
@@ -856,7 +527,6 @@ impl App {
         });
     }
 
-    /// Enter inside the dialog: request a code, then turn the code into a session.
     fn submit_sign_in(&mut self) {
         let mut sign_in = match self.sign_in.take() {
             Some(sign_in) => sign_in,
@@ -874,7 +544,7 @@ impl App {
                             sign_in.server = server;
                             sign_in.stage = SignInStage::Code;
                             sign_in.status = if server {
-                                format!("The running server emailed a code to {email}.")
+                                format!("The app emailed a code to {email}.")
                             } else {
                                 format!("Code sent to {email}.")
                             };
@@ -933,23 +603,6 @@ impl App {
         self.session = None;
         self.sign_in = None;
     }
-
-    fn table_next(&mut self) {
-        let len = match self.view {
-            View::Queue => self.queue.len(),
-            View::Gates => self.gates.len(),
-        };
-        if len == 0 {
-            return;
-        }
-        let current = self.table_state.selected().unwrap_or(0);
-        self.table_state.select(Some((current + 1).min(len - 1)));
-    }
-
-    fn table_previous(&mut self) {
-        let current = self.table_state.selected().unwrap_or(0);
-        self.table_state.select(Some(current.saturating_sub(1)));
-    }
 }
 
 fn draw(frame: &mut Frame, app: &mut App) {
@@ -958,125 +611,62 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .constraints([Constraint::Length(1), Constraint::Min(3), Constraint::Length(1)])
         .split(frame.area());
 
-    // Tab strip, the herdr-style workspace row.
-    let mut tabs: Vec<Span> = Vec::new();
-    for (index, office) in app.offices.iter().enumerate() {
-        let active = index == app.selected;
-        let blocked = office.queue.blocked;
-        let label = format!(" {} {} {} ", index + 1, office_name(office), if blocked > 0 { "!" } else { "" });
-        let style = if active {
-            Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD)
-        } else if blocked > 0 {
-            Style::default().fg(Color::Yellow)
-        } else {
-            Style::default().fg(Color::DarkGray)
-        };
-        tabs.push(Span::styled(label, style));
-    }
-    if tabs.is_empty() {
-        tabs.push(Span::styled(" no offices ", Style::default().fg(Color::DarkGray)));
-    }
-    frame.render_widget(Paragraph::new(Line::from(tabs)), outer[0]);
-
-    // Body: one pane for the active office.
-    let name = app
-        .offices
-        .get(app.selected)
-        .map(office_name)
-        .unwrap_or_else(|| "no office".to_string());
-    let view_title = match app.view {
-        View::Queue => "queue",
-        View::Gates => "gates",
+    let header = if app.server.version.is_empty() {
+        " ZollyBot · no app running".to_string()
+    } else {
+        let name = if app.server.name.is_empty() { "server" } else { &app.server.name };
+        format!(" ZollyBot {} · {} · {}", app.server.version, name, app.server.phase)
     };
-    let title = format!(" {view_title} · {name} ");
+    frame.render_widget(
+        Paragraph::new(Line::from(Span::styled(
+            header,
+            Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD),
+        ))),
+        outer[0],
+    );
+
     let widths = [
-        Constraint::Length(32),
-        Constraint::Length(11),
-        Constraint::Length(7),
+        Constraint::Length(26),
+        Constraint::Length(12),
+        Constraint::Length(24),
         Constraint::Min(10),
     ];
-    let (header_cells, rows, len) = match app.view {
-        View::Queue => {
-            let rows: Vec<Row> = app
-                .queue
-                .iter()
-                .map(|entry| {
-                    let style = match entry.status.as_str() {
-                        "blocked" => Style::default().fg(Color::Yellow),
-                        "failed" | "escalated" => Style::default().fg(Color::Red),
-                        "done" => Style::default().fg(Color::Green),
-                        _ => Style::default(),
-                    };
-                    Row::new(vec![
-                        Cell::from(entry.id.clone()),
-                        Cell::from(entry.status.clone()),
-                        Cell::from(entry.gate.clone()),
-                        Cell::from(entry.title.clone()),
-                    ])
-                    .style(style)
-                })
-                .collect();
-            (
-                Row::new(vec!["ID", "STATUS", "GATE", "TITLE"])
-                    .style(Style::default().fg(Color::DarkGray)),
-                rows,
-                app.queue.len(),
-            )
-        }
-        View::Gates => {
-            let rows: Vec<Row> = app
-                .gates
-                .iter()
-                .map(|gate| {
-                    let (label, style) = if gate.approved {
-                        ("approved", Style::default().fg(Color::Green))
-                    } else {
-                        ("WAITING", Style::default().fg(Color::Yellow))
-                    };
-                    Row::new(vec![
-                        Cell::from(gate.task.clone()),
-                        Cell::from(label),
-                        Cell::from(gate.gate.clone()),
-                        Cell::from(gate.title.clone()),
-                    ])
-                    .style(style)
-                })
-                .collect();
-            (
-                Row::new(vec!["TASK", "STATE", "GATE", "TITLE"])
-                    .style(Style::default().fg(Color::DarkGray)),
-                rows,
-                app.gates.len(),
-            )
-        }
-    };
-
+    let rows: Vec<Row> = app
+        .agents
+        .iter()
+        .map(|agent| {
+            Row::new(vec![
+                Cell::from(agent.name.clone()),
+                Cell::from(agent.provider.clone()),
+                Cell::from(agent.model.clone()),
+                Cell::from(agent.title.clone()),
+            ])
+        })
+        .collect();
     let table = Table::new(rows, widths)
-        .header(header_cells)
+        .header(Row::new(vec!["AGENT", "PROVIDER", "MODEL", "TITLE"]).style(Style::default().fg(Color::DarkGray)))
         .block(
             Block::default()
                 .borders(Borders::ALL)
                 .border_type(ratatui::widgets::BorderType::Rounded)
-                .title(title),
+                .title(" agents "),
         )
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
     frame.render_stateful_widget(table, outer[1], &mut app.table_state);
 
-    if len == 0 {
-        let empty = Paragraph::new(match app.view {
-            View::Queue => " no queue briefs",
-            View::Gates => " no gates waiting",
-        })
-        .style(Style::default().fg(Color::DarkGray));
+    if app.agents.is_empty() {
         let area = outer[1];
         let inner = ratatui::layout::Rect {
             x: area.x + 2,
             y: area.y + 2,
             width: area.width.saturating_sub(4),
-            height: 1,
+            height: 2,
         };
-        frame.render_widget(empty, inner);
+        frame.render_widget(
+            Paragraph::new(app.message.clone()).style(Style::default().fg(Color::DarkGray)),
+            inner,
+        );
     }
 
     if let Some(sign_in) = &app.sign_in {
@@ -1103,10 +693,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
             Line::from(""),
         ];
         if !sign_in.status.is_empty() {
-            lines.push(Line::from(Span::styled(
-                sign_in.status.clone(),
-                Style::default().fg(Color::Yellow),
-            )));
+            lines.push(Line::from(Span::styled(sign_in.status.clone(), Style::default().fg(Color::Yellow))));
             lines.push(Line::from(""));
         }
         lines.push(Line::from(Span::styled(
@@ -1123,16 +710,9 @@ fn draw(frame: &mut Frame, app: &mut App) {
     if let Some(panel) = &app.connect {
         let area = centered_rect(70, 80, frame.area());
         frame.render_widget(Clear, area);
-        let mut lines: Vec<Line> = panel
-            .lines
-            .iter()
-            .map(|line| Line::from(Span::raw(line.clone())))
-            .collect();
+        let mut lines: Vec<Line> = panel.lines.iter().map(|line| Line::from(Span::raw(line.clone()))).collect();
         lines.push(Line::from(""));
-        lines.push(Line::from(Span::styled(
-            panel.url.clone(),
-            Style::default().fg(Color::DarkGray),
-        )));
+        lines.push(Line::from(Span::styled(panel.url.clone(), Style::default().fg(Color::DarkGray))));
         let block = Block::default()
             .borders(Borders::ALL)
             .border_type(ratatui::widgets::BorderType::Rounded)
@@ -1140,26 +720,18 @@ fn draw(frame: &mut Frame, app: &mut App) {
         frame.render_widget(Paragraph::new(lines).block(block), area);
     }
 
-    // Status bar.
-    let summary = app
-        .offices
-        .get(app.selected)
-        .map(|office| {
-            format!(
-                " {} offices · {} queued · {} dispatched · {} blocked ",
-                app.offices.len(),
-                office.queue.queued,
-                office.queue.dispatched,
-                office.queue.blocked
-            )
-        })
-        .unwrap_or_else(|| " no offices ".to_string());
+    let summary = if app.agents.is_empty() {
+        " no agents ".to_string()
+    } else {
+        let current = app.selected.min(app.agents.len() - 1);
+        format!(" {} agents · {} ", app.agents.len(), app.agents[current].name)
+    };
     let hints = match &app.session {
         Some(session) => format!(
-            "{} · h/l office · j/k row · v queue/gates · c connect · i account · o sign out · r refresh · q quit ",
+            "{} · j/k agent · c connect · i account · o sign out · r refresh · q quit ",
             session.email
         ),
-        None => "h/l office · j/k row · v queue/gates · c connect · i sign in · r refresh · q quit ".to_string(),
+        None => "j/k agent · c connect · i sign in · r refresh · q quit ".to_string(),
     };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
@@ -1190,10 +762,9 @@ fn centered_rect(percent_x: u16, percent_y: u16, area: ratatui::layout::Rect) ->
 
 fn run_tui() -> std::io::Result<i32> {
     if !stdout().is_terminal() {
-        print_offices(&discover(&default_roots(), 3));
+        print!("{}", agents_text());
         return Ok(0);
     }
-
     enable_raw_mode()?;
     let mut out = stdout();
     execute!(out, EnterAlternateScreen)?;
@@ -1207,10 +778,30 @@ fn run_tui() -> std::io::Result<i32> {
     result.map(|_| 0)
 }
 
+fn agents_text() -> String {
+    if control_socket().is_none() {
+        return "The app is not running. Start ZollyBot and try again.\n".to_string();
+    }
+    match control_call("GET", "/v1/agents", &[]) {
+        Ok((200, lines)) => {
+            let count = line_value(&lines, "count").and_then(|count| count.parse::<usize>().ok()).unwrap_or(0);
+            let mut text = String::new();
+            for index in 0..count {
+                if let Some(raw) = line_value(&lines, &format!("agent.{index}")) {
+                    text.push_str(&raw.replace('|', "\t"));
+                    text.push('\n');
+                }
+            }
+            text
+        }
+        Ok((_, lines)) => format!("{}\n", answer_error(200, &lines)),
+        Err(error) => format!("{error}\n"),
+    }
+}
+
 fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mut App) -> std::io::Result<()> {
     loop {
         terminal.draw(|frame| draw(frame, app))?;
-
         if event::poll(Duration::from_millis(200))? {
             if let Event::Key(key) = event::read()? {
                 if key.kind != KeyEventKind::Press {
@@ -1250,30 +841,20 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     KeyCode::Char('i') => app.open_sign_in(),
                     KeyCode::Char('o') => app.sign_out(),
                     KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
-                    KeyCode::Char('h') | KeyCode::Left => app.previous_office(),
-                    KeyCode::Char('l') | KeyCode::Right => app.next_office(),
                     KeyCode::Char('j') | KeyCode::Down => app.table_next(),
                     KeyCode::Char('k') | KeyCode::Up => app.table_previous(),
-                    KeyCode::Char('v') => app.toggle_view(),
                     KeyCode::Char('r') => {
-                        app.reload();
+                        app.load();
+                        app.refresh_account();
                         app.message = "refreshed".into();
-                    }
-                    KeyCode::Char(c) if c.is_ascii_digit() => {
-                        let index = c.to_digit(10).unwrap_or(1) as usize;
-                        if index >= 1 && index <= app.offices.len() {
-                            app.select(index - 1);
-                        }
                     }
                     _ => {}
                 }
             }
         }
-
         if app.last_refresh.elapsed() >= REFRESH_EVERY {
-            app.reload();
+            app.load();
         }
-
         if app.quit {
             return Ok(());
         }
@@ -1283,9 +864,10 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
 fn main() {
     let cli = Cli::parse();
     let code = match cli.command {
-        Some(Command::Offices { root, depth, json }) => cmd_offices(root, depth, json),
-        Some(Command::Queue { office, json }) => cmd_queue(&office, json),
-        Some(Command::Gates { office, json }) => cmd_gates(&office, json),
+        Some(Command::Agents) => {
+            print!("{}", agents_text());
+            0
+        }
         None => match run_tui() {
             Ok(code) => code,
             Err(error) => {

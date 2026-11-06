@@ -58,6 +58,14 @@ export function takeServerModeEnvironment(
   return { controlSocketPath: join(runtimeDirectory, CONTROL_SOCKET_FILE) };
 }
 
+/** One agent as the app lists it. The terminal frontend shows this same list. */
+export interface ServerAgent {
+  name: string;
+  provider: string;
+  model: string;
+  title: string;
+}
+
 export interface ServerModeOptions {
   environment: ServerModeEnvironment;
   version: string;
@@ -75,6 +83,8 @@ export interface ServerModeOptions {
   host: Pick<HostService, "getStatus" | "configure" | "start" | "updateIdentity" | "getMobileConnectHost">;
   /** The memory guard, so that `status` shows the memory ceiling and the turn limit. */
   memory: Pick<ServerMemory, "level" | "sample" | "turnLimit"> | null;
+  /** The agents of this machine, as the app lists them, for the terminal frontend. */
+  agents?: () => readonly ServerAgent[];
   onError: (message: string, error: unknown) => void;
   /** Tests only. */
   uid?: number;
@@ -206,6 +216,8 @@ export class ServerMode {
     switch (route) {
       case "GET /v1/status":
         return this.#status();
+      case "GET /v1/agents":
+        return this.#agents();
       case "POST /v1/login/start":
         return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
       case "POST /v1/login/verify":
@@ -254,6 +266,16 @@ export class ServerMode {
       memory_available: sample.available,
       turn_limit: memory.turnLimit(),
     };
+  }
+
+  /** The app's agent list, one `agent.N=name|provider|model|title` line each. */
+  #agents(): Answer {
+    const agents = this.#options.agents?.() ?? [];
+    const lines: Answer["lines"] = { count: agents.length };
+    agents.forEach((agent, index) => {
+      lines[`agent.${index}`] = [agent.name, agent.provider, agent.model, agent.title].join("|");
+    });
+    return { status: 200, lines };
   }
 
   readonly #startLogin = Effect.fn("ServerMode.startLogin")(function* (

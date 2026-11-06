@@ -6,6 +6,15 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.2] - 2026-11-06
+
+### Changed
+
+- The terminal frontend mirrors the app instead of showing an office of its own. It lists the agents
+  the app lists, reads them over the server control socket (`GET /v1/agents`), and shows the server,
+  its phase and the version. The office tabs, queue and gate views are gone; the `.agents/` queue is
+  Zolly's office, not ZollyBot's.
+
 ## [0.62.1] - 2026-11-06
 
 ### Added

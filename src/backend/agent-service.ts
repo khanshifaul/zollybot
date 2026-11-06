@@ -446,6 +446,59 @@ export type AgentUpdate = UpdateAgentInput & {
   excludedFolders?: string[];
 };
 
+/** The agents a fresh ZollyBot install starts with. Upstream ships none. */
+const OFFICE_AGENTS = [
+  {
+    name: "Zolly",
+    title: "Manager",
+    seed: "zolly",
+    description:
+      "The founder's manager. Greets, triages each instruction, writes the brief, keeps the ledger and the gate list, and hands work to the foreman. Does not write code.",
+  },
+  {
+    name: "Foreman",
+    title: "Team leader",
+    seed: "foreman",
+    description:
+      "Runs one task at a time: opens the worktree, briefs one worker, waits for the result, sends it to review and escalates what is not small. Writes no code itself.",
+  },
+  {
+    name: "HR",
+    title: "Hiring",
+    seed: "hr",
+    description:
+      "Turns a hire request into a worker persona and a receipt, and keeps the role files in the project. Does no product work.",
+  },
+  {
+    name: "PR Reviewer",
+    title: "Merge gate",
+    seed: "pr-reviewer",
+    description:
+      "Reads a task's result and diff, runs the verification, and merges on PASS or writes an OBJECTION that names what is wrong and where.",
+  },
+  {
+    name: "Worker: Research",
+    title: "Read-only investigator",
+    seed: "worker-research",
+    description:
+      "Investigates a question in the repository or on the machine and returns findings with file paths and measured numbers. Reads only; changes nothing.",
+  },
+  {
+    name: "Worker: Build",
+    title: "Implementer",
+    seed: "worker-build",
+    description:
+      "Implements one bounded change end to end, runs the check that proves it, and writes the result file the reviewer reads.",
+  },
+  {
+    name: "Worker: Test",
+    title: "Verifier",
+    seed: "worker-test",
+    description:
+      "Reproduces a reported fault, proves the fix, and reports the exact command and its output. Adds a regression test only when the fault could return.",
+  },
+] as const;
+
 export class AgentService extends EventEmitter<AgentServiceEvents> {
   readonly channels: ChannelService;
   readonly messaging: MessagingThreads;
@@ -3781,6 +3834,42 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
 
   /** `heldRoutines`: routines due while a restart waited run once. */
 
+  /**
+   * A fresh install starts with the office: a manager, a foreman, HR, the merge
+   * gate and three workers. It runs once; an install that already has agents, or
+   * one whose owner deleted them all, is left alone.
+   */
+  #seedOfficeAgents = Effect.fn("AgentService.seedOfficeAgents")(function* (
+    this: AgentService,
+  ): Effect.fn.Return<void, AgentLifecycleFailed> {
+    if (this.#store.officeAgentsSeeded() || this.#store.list().length > 0) return;
+    for (const spec of OFFICE_AGENTS) {
+      const created = yield* this.#store
+        .createAgent({
+          name: spec.name,
+          description: spec.description,
+          avatarSeed: `zollybot:${spec.seed}`,
+          avatarHue: null,
+        })
+        .pipe(
+          Effect.mapError(
+            (failure) => new AgentLifecycleFailed({ operation: "create office agents", cause: failure.cause }),
+          ),
+        );
+      yield* this.#store
+        .updateAgent({ agentId: created.id, title: spec.title })
+        .pipe(
+          Effect.mapError(
+            (failure) => new AgentLifecycleFailed({ operation: "name office agents", cause: failure.cause }),
+          ),
+        );
+    }
+    yield* this.#store
+      .markOfficeAgentsSeeded()
+      .pipe(Effect.mapError((cause) => new AgentLifecycleFailed({ operation: "mark office agents", cause })));
+    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+  });
+
   readonly initialize = Effect.fn("AgentService.initialize")(function* (
     this: AgentService,
     options: { heldRoutines?: RoutineHoldWindow | undefined } = {},
@@ -3793,6 +3882,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
           (failure) => new AgentLifecycleFailed({ operation: "initialize agent store", cause: failure.cause }),
         ),
       );
+    yield* Effect.ignore(this.#seedOfficeAgents());
     yield* this.#mailbox
       .initialize()
       .pipe(
