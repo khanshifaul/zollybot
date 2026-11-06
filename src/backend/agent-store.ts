@@ -214,7 +214,7 @@ export class AgentStore {
     zollybotRoot = join(homePath, "ZollyBot"),
   ) {
     this.#statePath = join(userDataPath, LEGACY_AGENTS_STATE_FILE);
-    this.#officeSeedPath = join(zollybotRoot, "office-agents.seeded");
+    this.#officeSeedPath = join(userDataPath, "office-agents.seeded");
     this.#agentsRoot = join(zollybotRoot, "Agents");
     this.#legacyAgentsRoot = join(zollybotRoot, "Bots");
     this.#sharedRoot = join(zollybotRoot, "Shared");

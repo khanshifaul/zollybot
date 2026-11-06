@@ -6,6 +6,13 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.3] - 2026-11-06
+
+### Fixed
+
+- The office-agent seed marker now lives in the profile's data directory. It was written to the
+  shared `~/ZollyBot`, so a second profile saw "already seeded" while its own database was empty.
+
 ## [0.62.2] - 2026-11-06
 
 ### Changed
