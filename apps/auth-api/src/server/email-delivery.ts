@@ -34,6 +34,7 @@ export type EmailDeliveryBindings = Pick<
   | "EMAIL_SMTP_PORT"
   | "EMAIL_SMTP_USERNAME"
   | "EMAIL_SMTP_PASSWORD"
+  | "RESEND_API_KEY"
   | "EMAIL_FROM"
   | "EMAIL_LICENSE_FROM"
   | "EMAIL_RELAY"
@@ -43,8 +44,15 @@ export type EmailDeliveryBindings = Pick<
 >;
 
 /** The SMTP mailbox, and the Cloudflare Email Service binding that sends when the mailbox cannot. */
+interface ResendSender {
+  apiKey: string;
+  from: string;
+}
+
 interface EmailSenders {
-  smtp: SmtpEmailConfig;
+  from: string;
+  smtp: SmtpEmailConfig | null;
+  resend: ResendSender | null;
   fallback: SendEmail | null;
 }
 
@@ -96,7 +104,7 @@ export function createContactMessageDelivery(
   const senders = readEmailSenders(bindings);
   return senders
     ? {
-        send: (message) => deliver(analytics, "contact", senders, prepareContactMessage(senders.smtp.from, message)),
+        send: (message) => deliver(analytics, "contact", senders, prepareContactMessage(senders.from, message)),
       }
     : null;
 }
@@ -119,9 +127,12 @@ export function createLicenseEmailDelivery(
 ): LicenseEmailDelivery | null {
   const senders = readEmailSenders(bindings);
   if (!senders) return null;
-  const licenseSenders = {
+  const licenseFrom = bindings.EMAIL_LICENSE_FROM?.trim() || senders.from;
+  const licenseSenders: EmailSenders = {
     ...senders,
-    smtp: { ...senders.smtp, from: bindings.EMAIL_LICENSE_FROM?.trim() || senders.smtp.from },
+    from: licenseFrom,
+    smtp: senders.smtp ? { ...senders.smtp, from: licenseFrom } : null,
+    resend: senders.resend ? { ...senders.resend, from: licenseFrom } : null,
   };
   return { send: (message) => deliver(analytics, "license", licenseSenders, prepareLicenseEmail(message)) };
 }
@@ -147,6 +158,13 @@ const deliver = Effect.fn("EmailDelivery.deliver")(function* (
   }
   const message = prepared.success;
   const startedAt = Date.now();
+  if (senders.resend) {
+    const sent = yield* Effect.result(
+      tracked(analytics, "email_sent", kind, sendThroughResend(senders.resend, message)),
+    );
+    return Result.isFailure(sent) ? yield* sent.failure : undefined;
+  }
+  if (!senders.smtp) return yield* new EmailDeliveryError({ message: "email_delivery_not_configured" });
   const smtp = yield* Effect.result(tracked(analytics, "email_sent", kind, sendPrivateEmail(senders.smtp, message)));
   if (Result.isSuccess(smtp)) return;
   if (!senders.fallback || !canFallBack(smtp.failure.message)) return yield* smtp.failure;
@@ -188,6 +206,37 @@ function canFallBack(message: string): boolean {
 const CLOUDFLARE_SEND_TIMEOUT_MS = 10_000;
 // Below this, a send would end as unknown more often than it would succeed.
 const CLOUDFLARE_MIN_SEND_MS = 2_000;
+
+const sendThroughResend = Effect.fn("EmailDelivery.resend")(function* (
+  sender: ResendSender,
+  message: PreparedEmailMessage,
+): Effect.fn.Return<void, EmailDeliveryError> {
+  const { subject, text, html } = message.content;
+  const response = yield* Effect.tryPromise({
+    try: (signal) =>
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${sender.apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: sender.from,
+          to: [message.email],
+          subject,
+          text,
+          html,
+          ...(message.replyTo ? { reply_to: message.replyTo } : {}),
+          headers: { ...AUTOMATED_EMAIL_HEADERS },
+        }),
+        signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
+      }),
+    catch: () => {
+      console.warn("Resend email delivery failed: request did not complete");
+      return new EmailDeliveryError({ message: "email_delivery_unknown" });
+    },
+  });
+  if (response.status === 429) return yield* new EmailDeliveryError({ message: RATE_LIMITED_DELIVERY_ERROR });
+  // The body can name the recipient, so only the status reaches the log.
+  if (!response.ok) return yield* new EmailDeliveryError({ message: "email_delivery_resend_failed" });
+});
 
 const sendThroughCloudflare = Effect.fn("EmailDelivery.cloudflare")(function* (
   binding: SendEmail,
@@ -253,8 +302,14 @@ function sendResult(exit: Exit.Exit<void, { message: string }>): EmailResult {
 }
 
 function readEmailSenders(bindings: EmailDeliveryBindings): EmailSenders | null {
+  const resendKey = bindings.RESEND_API_KEY?.trim();
+  const from = bindings.EMAIL_FROM?.trim();
+  if (resendKey) {
+    if (!from) throw new Error("RESEND_API_KEY is set but EMAIL_FROM is empty.");
+    return { from, smtp: null, resend: { apiKey: resendKey, from }, fallback: null };
+  }
   const smtp = readSmtpConfig(bindings);
-  return smtp ? { smtp, fallback: bindings.EMAIL_FALLBACK ?? null } : null;
+  return smtp ? { from: smtp.from, smtp, resend: null, fallback: bindings.EMAIL_FALLBACK ?? null } : null;
 }
 
 function readSmtpConfig(bindings: EmailDeliveryBindings): SmtpEmailConfig | null {

@@ -50,8 +50,8 @@ import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index
 import { Route as MarketplaceAppsRouteImport } from './routes/marketplace/apps'
 import { Route as NewsIndexRouteImport } from './routes/news/index'
 import { Route as NewsSlugRouteImport } from './routes/news/$slug'
-import { Route as NewsZollybotVsGrokbotRouteImport } from './routes/news/zollybot-vs-grokbot'
 import { Route as NewsRssDotxmlRouteImport } from './routes/news/rss[.]xml'
+import { Route as NewsZollybotVsGrokbotRouteImport } from './routes/news/zollybot-vs-grokbot'
 import { Route as PluginsIndexRouteImport } from './routes/plugins/index'
 import { Route as PluginsSlugRouteImport } from './routes/plugins/$slug'
 import { Route as ProvidersIndexRouteImport } from './routes/providers/index'
@@ -405,14 +405,14 @@ const NewsSlugRoute = NewsSlugRouteImport.update({
   path: '/news/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NewsZollybotVsGrokbotRoute = NewsZollybotVsGrokbotRouteImport.update({
-  id: '/news/zollybot-vs-grokbot',
-  path: '/news/zollybot-vs-grokbot',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NewsRssDotxmlRoute = NewsRssDotxmlRouteImport.update({
   id: '/news/rss.xml',
   path: '/news/rss.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsZollybotVsGrokbotRoute = NewsZollybotVsGrokbotRouteImport.update({
+  id: '/news/zollybot-vs-grokbot',
+  path: '/news/zollybot-vs-grokbot',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PluginsIndexRoute = PluginsIndexRouteImport.update({
@@ -1247,8 +1247,8 @@ export interface FileRoutesByFullPath {
   '/health/ready': typeof HealthReadyRoute
   '/marketplace/apps': typeof MarketplaceAppsRoute
   '/news/$slug': typeof NewsSlugRoute
-  '/news/zollybot-vs-grokbot': typeof NewsZollybotVsGrokbotRoute
   '/news/rss.xml': typeof NewsRssDotxmlRoute
+  '/news/zollybot-vs-grokbot': typeof NewsZollybotVsGrokbotRoute
   '/plugins/$slug': typeof PluginsSlugRoute
   '/providers/$slug': typeof ProvidersSlugRoute
   '/providers/rss.xml': typeof ProvidersRssDotxmlRoute
@@ -1438,8 +1438,8 @@ export interface FileRoutesByTo {
   '/health/ready': typeof HealthReadyRoute
   '/marketplace/apps': typeof MarketplaceAppsRoute
   '/news/$slug': typeof NewsSlugRoute
-  '/news/zollybot-vs-grokbot': typeof NewsZollybotVsGrokbotRoute
   '/news/rss.xml': typeof NewsRssDotxmlRoute
+  '/news/zollybot-vs-grokbot': typeof NewsZollybotVsGrokbotRoute
   '/plugins/$slug': typeof PluginsSlugRoute
   '/providers/$slug': typeof ProvidersSlugRoute
   '/providers/rss.xml': typeof ProvidersRssDotxmlRoute
@@ -1630,8 +1630,8 @@ export interface FileRoutesById {
   '/health/ready': typeof HealthReadyRoute
   '/marketplace/apps': typeof MarketplaceAppsRoute
   '/news/$slug': typeof NewsSlugRoute
-  '/news/zollybot-vs-grokbot': typeof NewsZollybotVsGrokbotRoute
   '/news/rss.xml': typeof NewsRssDotxmlRoute
+  '/news/zollybot-vs-grokbot': typeof NewsZollybotVsGrokbotRoute
   '/plugins/$slug': typeof PluginsSlugRoute
   '/providers/$slug': typeof ProvidersSlugRoute
   '/providers/rss.xml': typeof ProvidersRssDotxmlRoute
@@ -1823,8 +1823,8 @@ export interface FileRouteTypes {
     | '/health/ready'
     | '/marketplace/apps'
     | '/news/$slug'
-    | '/news/zollybot-vs-grokbot'
     | '/news/rss.xml'
+    | '/news/zollybot-vs-grokbot'
     | '/plugins/$slug'
     | '/providers/$slug'
     | '/providers/rss.xml'
@@ -2014,8 +2014,8 @@ export interface FileRouteTypes {
     | '/health/ready'
     | '/marketplace/apps'
     | '/news/$slug'
-    | '/news/zollybot-vs-grokbot'
     | '/news/rss.xml'
+    | '/news/zollybot-vs-grokbot'
     | '/plugins/$slug'
     | '/providers/$slug'
     | '/providers/rss.xml'
@@ -2205,8 +2205,8 @@ export interface FileRouteTypes {
     | '/health/ready'
     | '/marketplace/apps'
     | '/news/$slug'
-    | '/news/zollybot-vs-grokbot'
     | '/news/rss.xml'
+    | '/news/zollybot-vs-grokbot'
     | '/plugins/$slug'
     | '/providers/$slug'
     | '/providers/rss.xml'
@@ -2397,8 +2397,8 @@ export interface RootRouteChildren {
   HealthReadyRoute: typeof HealthReadyRoute
   MarketplaceAppsRoute: typeof MarketplaceAppsRoute
   NewsSlugRoute: typeof NewsSlugRoute
-  NewsZollybotVsGrokbotRoute: typeof NewsZollybotVsGrokbotRoute
   NewsRssDotxmlRoute: typeof NewsRssDotxmlRoute
+  NewsZollybotVsGrokbotRoute: typeof NewsZollybotVsGrokbotRoute
   PluginsSlugRoute: typeof PluginsSlugRoute
   ProvidersSlugRoute: typeof ProvidersSlugRoute
   ProvidersRssDotxmlRoute: typeof ProvidersRssDotxmlRoute
@@ -2816,18 +2816,18 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof NewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/news/zollybot-vs-grokbot': {
-      id: '/news/zollybot-vs-grokbot'
-      path: '/news/zollybot-vs-grokbot'
-      fullPath: '/news/zollybot-vs-grokbot'
-      preLoaderRoute: typeof NewsZollybotVsGrokbotRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/news/rss.xml': {
       id: '/news/rss.xml'
       path: '/news/rss.xml'
       fullPath: '/news/rss.xml'
       preLoaderRoute: typeof NewsRssDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/zollybot-vs-grokbot': {
+      id: '/news/zollybot-vs-grokbot'
+      path: '/news/zollybot-vs-grokbot'
+      fullPath: '/news/zollybot-vs-grokbot'
+      preLoaderRoute: typeof NewsZollybotVsGrokbotRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plugins/': {
@@ -4039,8 +4039,8 @@ const rootRouteChildren: RootRouteChildren = {
   HealthReadyRoute: HealthReadyRoute,
   MarketplaceAppsRoute: MarketplaceAppsRoute,
   NewsSlugRoute: NewsSlugRoute,
-  NewsZollybotVsGrokbotRoute: NewsZollybotVsGrokbotRoute,
   NewsRssDotxmlRoute: NewsRssDotxmlRoute,
+  NewsZollybotVsGrokbotRoute: NewsZollybotVsGrokbotRoute,
   PluginsSlugRoute: PluginsSlugRoute,
   ProvidersSlugRoute: ProvidersSlugRoute,
   ProvidersRssDotxmlRoute: ProvidersRssDotxmlRoute,

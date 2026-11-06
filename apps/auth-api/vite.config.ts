@@ -50,7 +50,7 @@ export default defineConfig(({ command }) => {
       port,
       strictPort: true,
       // `bun run dev:slack` tunnels Slack's install return to this server.
-      allowedHosts: [".zollybot.localhost", ".trycloudflare.com"],
+      allowedHosts: [".zollybot.localhost", ".zollybot.shifaul.dev", "api-zollybot.shifaul.dev", ".trycloudflare.com"],
     },
     plugins: [
       developmentLanGuard(),

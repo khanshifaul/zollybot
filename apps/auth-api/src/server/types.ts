@@ -24,6 +24,8 @@ export interface WorkerBindings {
   EMAIL_SMTP_PORT?: string;
   EMAIL_SMTP_USERNAME?: string;
   EMAIL_SMTP_PASSWORD?: string;
+  /** When set, sign-in and other account email is sent through Resend instead of SMTP. */
+  RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   /** The sender of license emails. Empty uses `EMAIL_FROM`. The SMTP account must be allowed to send as it. */
   EMAIL_LICENSE_FROM?: string;
