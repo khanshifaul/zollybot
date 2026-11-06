@@ -1,0 +1,424 @@
+// How an invalidation turns back into state the renderer can show.
+//
+// A host does not send a new conversation page when a message lands. It sends
+// "conversation 42 changed to revision 7", and this file fetches revision 7. That indirection is
+// what keeps a busy agent from pushing a full page down the socket on every token, and it is why
+// the interesting code here is about *not* fetching:
+//
+//   - **Coalescing.** While one refetch is in flight, further invalidations for the same agent
+//     raise the wanted revision instead of starting a second request. One fetch per burst, and the
+//     loop reruns only if the revision moved while it was away.
+//   - **Generations.** A refetch started before a reconnect must not emit after it: its answer
+//     describes a session that is over. Every event bumps the generation, and a slow response
+//     checks it before emitting.
+//
+// The fallback path is for hosts too old to replay events on connect. It reads the whole agent list
+// and one page each, which is expensive, so it runs once per connection rather than per event.
+
+import type {
+  AgentColors,
+  AgentEvent,
+  AvatarColor,
+  BrowserTab,
+  ChatColors,
+  ClientAgentSummary,
+  TeamMemberSummary,
+} from "@openbot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
+import { Deferred, Effect, Result } from "effect";
+import { decodeAgentSummaries, decodeQueueSnapshot } from "./remote-agent-decoding";
+import { decodeConversationPageFromHost } from "./remote-conversation-decoding";
+import type { RemoteRequestFn } from "./remote-server-client";
+import { addRemotePreviewUrls, pageQuery } from "./remote-server-urls";
+import type { RemoteWorkflowError } from "./remote-service-effects";
+
+// One in-flight conversation refetch, and the newest revision asked for while it was running.
+// `sequence` counts announcements that did not move the revision: a read on another device changes
+// the page's unread counts without changing its content revision, so the revision alone cannot tell
+// "nothing has happened" from "something happened that this page still has to be refetched for".
+interface ConversationRefresh {
+  revision: number;
+  sequence: number;
+}
+
+// One in-flight queue refetch. The queue has no revision, so "changed again" is all there is to say.
+interface QueueRefresh {
+  dirty: boolean;
+}
+
+const FALLBACK_CONVERSATION_LIMIT = 1;
+const INVALIDATED_CONVERSATION_LIMIT = 50;
+
+export interface RemoteEventRefreshOptions {
+  request: RemoteRequestFn;
+  /** False once the user removes a server. A refetch in flight for it stops emitting. */
+  hasServer: (serverId: string) => boolean;
+  emit: (serverId: string, event: AgentEvent, bufferedLive?: boolean) => void;
+  /** The member chat colours of a server changed, so its presence goes to the renderer again. */
+  onMemberChatColors?: (serverId: string) => void;
+}
+
+export class RemoteEventRefresh {
+  readonly #request: RemoteRequestFn;
+  readonly #hasServer: (serverId: string) => boolean;
+  readonly #emit: (serverId: string, event: AgentEvent, bufferedLive?: boolean) => void;
+  readonly #onMemberChatColors: (serverId: string) => void;
+  readonly #conversations = new Map<string, ConversationRefresh>();
+  readonly #queues = new Map<string, QueueRefresh>();
+  readonly #generations = new Map<string, number>();
+  readonly #rosterLoads = new Map<string, Deferred.Deferred<void, RemoteWorkflowError>>();
+  // The frozen `browser-changed` event has no field for a person's control or the history state, so
+  // `browser-user-control-v1` and `browser-page-state-v1` send them on their own. Each server keeps its
+  // last lists and tabs to merge them here.
+  readonly #browserHolds = new Map<string, ReadonlySet<string>>();
+  readonly #browserPageStates = new Map<string, ReadonlyMap<string, { canGoBack: boolean; canGoForward: boolean }>>();
+  readonly #browserStates = new Map<string, { tabs: BrowserTab[]; activeTabId: string | null }>();
+  // The released agent list has no field for an exact colour, so `agent-colors-v1` sends the colours on
+  // their own. Each server keeps its last colours and its last agent list to merge them here.
+  readonly #agentColors = new Map<string, ReadonlyMap<string, AvatarColor>>();
+  readonly #agentRosters = new Map<string, ClientAgentSummary[]>();
+  // The released agent and member lists have no field for a chat colour, so `chat-colors-v1` sends the
+  // chat colours on their own. Each server keeps its last chat colours to merge them here.
+  readonly #agentChatColors = new Map<string, ReadonlyMap<string, AvatarColor>>();
+  readonly #memberChatColors = new Map<string, ReadonlyMap<string, AvatarColor>>();
+
+  constructor(options: RemoteEventRefreshOptions) {
+    this.#request = options.request;
+    this.#hasServer = options.hasServer;
+    this.#emit = options.emit;
+    this.#onMemberChatColors = options.onMemberChatColors ?? (() => undefined);
+  }
+
+  /**
+   * One event from a host. An invalidation starts a refetch; anything else is already the state and
+   * goes straight out. `bufferedLive` marks an event that arrived while the fallback was loading,
+   * so the renderer can tell it apart from the snapshot it is patching.
+   */
+  readonly forward = Effect.fn("RemoteEvents.forward")(function* (
+    this: RemoteEventRefresh,
+    serverId: string,
+    event: AgentEvent,
+    bufferedLive = false,
+  ) {
+    this.#advance(serverId);
+    if (event.type === "agents-changed") this.#rosterLoads.delete(serverId);
+    if (event.type === "conversation-invalidated") {
+      yield* this.#refreshConversationPage(serverId, event.agentId, event.revision);
+    } else if (event.type === "queue-invalidated") {
+      yield* this.#refreshQueue(serverId, event.agentId);
+    } else if (event.type === "agent-colors-changed") {
+      // The renderer reads the colours in the agent list, so this event does not go to it.
+      this.rememberAgentColors(serverId, event);
+    } else if (event.type === "chat-colors-changed") {
+      // The renderer reads the chat colours in the agent list and in the presence, so this event does not go to it.
+      this.rememberChatColors(serverId, event);
+    } else if (event.type === "agents-changed") {
+      this.#emitRoster(serverId, addRemotePreviewUrls(event.agents, serverId), bufferedLive);
+    } else if (event.type === "browser-user-control-changed" || event.type === "browser-page-state-changed") {
+      if (event.type === "browser-user-control-changed") this.#browserHolds.set(serverId, new Set(event.tabIds));
+      else this.#browserPageStates.set(serverId, new Map(event.tabs.map(({ tabId, ...state }) => [tabId, state])));
+      this.#emit(serverId, event);
+      const state = this.#browserStates.get(serverId);
+      if (state) this.#emit(serverId, addRemotePreviewUrls(this.#withBrowserHolds(serverId, state), serverId));
+    } else {
+      if (event.type === "browser-changed")
+        this.#browserStates.set(serverId, { tabs: event.tabs, activeTabId: event.activeTabId });
+      const remoteEvent = addRemotePreviewUrls(
+        event.type === "browser-changed" ? this.#withBrowserHolds(serverId, event) : event,
+        serverId,
+      );
+      if (bufferedLive) this.#emit(serverId, remoteEvent, true);
+      else this.#emit(serverId, remoteEvent);
+    }
+  }).bind(this);
+
+  #withBrowserHolds(
+    serverId: string,
+    state: { tabs: BrowserTab[]; activeTabId: string | null },
+  ): Extract<AgentEvent, { type: "browser-changed" }> {
+    const held = this.#browserHolds.get(serverId);
+    const pageStates = this.#browserPageStates.get(serverId);
+    const tabs = state.tabs.map((tab) => {
+      const { userControl: _, canGoBack: _back, canGoForward: _forward, ...rest } = tab;
+      const pageState = pageStates?.get(tab.id);
+      return {
+        ...rest,
+        ...(held?.has(tab.id) ? { userControl: true as const } : {}),
+        ...(pageState ? { canGoBack: pageState.canGoBack, canGoForward: pageState.canGoForward } : {}),
+      };
+    });
+    return { type: "browser-changed", tabs, activeTabId: state.activeTabId };
+  }
+
+  /**
+   * Builds the current state from scratch, for a host that cannot replay what was missed. One agent
+   * failing is not the server failing, so each is caught on its own.
+   */
+
+  readonly refreshAgentState = Effect.fn("RemoteEvents.refreshAgentState")(function* (
+    this: RemoteEventRefresh,
+    serverId: string,
+  ) {
+    const generation = this.#advance(serverId);
+    const request = { request: this.#request };
+    const agents = yield* request.request(serverId, TEAM_API_ROUTES.agents.all, decodeAgentSummaries);
+    if (this.#generations.get(serverId) !== generation) return;
+    this.#emitRoster(serverId, agents);
+    yield* Effect.forEach(
+      agents,
+      (agent) =>
+        Effect.gen({ self: this }, function* () {
+          const [page, queue] = yield* Effect.all(
+            [
+              this.#conversationPageEffect(serverId, agent.id, FALLBACK_CONVERSATION_LIMIT),
+              request.request(serverId, TEAM_API_ROUTES.agent.queue(agent.id), decodeQueueSnapshot),
+            ],
+            { concurrency: "unbounded" },
+          );
+          if (this.#generations.get(serverId) !== generation) return;
+          const { pageInfo: _, references: __, readState: ___, ...snapshot } = page;
+          this.#emit(serverId, { type: "conversation", snapshot });
+          this.#emit(serverId, { type: "queue-changed", snapshot: queue });
+        }).pipe(Effect.catch(() => Effect.void)),
+      { concurrency: "unbounded", discard: true },
+    );
+  }).bind(this);
+
+  /** Shared admission keeps a roster response bound to its generation. */
+  readonly refreshAgentRoster = Effect.fn("RemoteEvents.refreshAgentRoster")(function* (
+    this: RemoteEventRefresh,
+    serverId: string,
+  ) {
+    const pending = this.#rosterLoads.get(serverId);
+    if (pending) return yield* Deferred.await(pending);
+    const operation = Deferred.makeUnsafe<void, RemoteWorkflowError>();
+    this.#rosterLoads.set(serverId, operation);
+    yield* Effect.gen({ self: this }, function* () {
+      const agents = yield* this.#request(serverId, TEAM_API_ROUTES.agents.all, decodeAgentSummaries);
+      if (this.#rosterLoads.get(serverId) !== operation || !this.#hasServer(serverId)) return;
+      this.#emitRoster(serverId, agents);
+    }).pipe(
+      Effect.onExit((exit) => Deferred.done(operation, exit)),
+      Effect.ensuring(
+        Effect.sync(() => {
+          if (this.#rosterLoads.get(serverId) === operation) this.#rosterLoads.delete(serverId);
+        }),
+      ),
+    );
+  }).bind(this);
+
+  /**
+   * The agents with the last colours and chat colours that the server sent. A server without
+   * `agent-colors-v1` or `chat-colors-v1` sends none.
+   */
+  withAgentColors(serverId: string, agents: ClientAgentSummary[]): ClientAgentSummary[] {
+    if (!this.#agentColors.has(serverId) && !this.#agentChatColors.has(serverId)) return agents;
+    return agents.map((agent) => this.agentWithColor(serverId, agent));
+  }
+
+  /** One agent with the last colour and chat colour that the server sent. */
+  agentWithColor(serverId: string, agent: ClientAgentSummary): ClientAgentSummary {
+    const colors = this.#agentColors.get(serverId);
+    const chatColors = this.#agentChatColors.get(serverId);
+    const colored = colors ? withAgentColor(agent, colors.get(agent.id)) : agent;
+    return chatColors ? withChatColor(colored, chatColors.get(agent.id)) : colored;
+  }
+
+  /** The members with the last chat colours that the server sent. A server without `chat-colors-v1` sends none. */
+  withMemberChatColors<Member extends TeamMemberSummary>(serverId: string, members: Member[]): Member[] {
+    const chatColors = this.#memberChatColors.get(serverId);
+    return chatColors ? members.map((member) => withChatColor(member, chatColors.get(member.id))) : members;
+  }
+
+  /**
+   * Keeps the chat colours that a read, a change or an event gave. When the agent chat colours changed,
+   * the last agent list goes to the renderer again with them. When the member chat colours changed, the
+   * presence goes again.
+   */
+  rememberChatColors(serverId: string, colors: ChatColors): void {
+    const agents = new Map(colors.agents.map((entry) => [entry.agentId, entry.color]));
+    const members = new Map(colors.members.map((entry) => [entry.memberId, entry.color]));
+    const agentsChanged = !sameColors(this.#agentChatColors.get(serverId), agents);
+    const membersChanged = !sameColors(this.#memberChatColors.get(serverId), members);
+    this.#agentChatColors.set(serverId, agents);
+    this.#memberChatColors.set(serverId, members);
+    const roster = this.#agentRosters.get(serverId);
+    if (agentsChanged && roster)
+      this.#emit(serverId, { type: "agents-changed", agents: this.withAgentColors(serverId, roster) });
+    if (membersChanged) this.#onMemberChatColors(serverId);
+  }
+
+  /**
+   * Keeps the colours that a read, a change or an event gave. When they changed, the last agent list
+   * goes to the renderer again with them.
+   */
+  rememberAgentColors(serverId: string, colors: AgentColors): void {
+    const next = new Map(colors.agents.map((entry) => [entry.agentId, entry.color]));
+    const previous = this.#agentColors.get(serverId);
+    this.#agentColors.set(serverId, next);
+    if (sameColors(previous, next)) return;
+    const roster = this.#agentRosters.get(serverId);
+    if (roster) this.#emit(serverId, { type: "agents-changed", agents: this.withAgentColors(serverId, roster) });
+  }
+
+  #emitRoster(serverId: string, agents: ClientAgentSummary[], bufferedLive = false): void {
+    this.#agentRosters.set(serverId, agents);
+    const event = { type: "agents-changed" as const, agents: this.withAgentColors(serverId, agents) };
+    if (bufferedLive) this.#emit(serverId, event, true);
+    else this.#emit(serverId, event);
+  }
+
+  forget(serverId: string): void {
+    this.#rosterLoads.delete(serverId);
+    this.#agentColors.delete(serverId);
+    this.#agentRosters.delete(serverId);
+    this.#agentChatColors.delete(serverId);
+    this.#memberChatColors.delete(serverId);
+    this.#browserHolds.delete(serverId);
+    this.#browserPageStates.delete(serverId);
+    this.#browserStates.delete(serverId);
+    this.#generations.delete(serverId);
+    for (const key of this.#conversations.keys()) {
+      if (key.startsWith(`${serverId}\0`)) this.#conversations.delete(key);
+    }
+    for (const key of this.#queues.keys()) {
+      if (key.startsWith(`${serverId}\0`)) this.#queues.delete(key);
+    }
+  }
+
+  clear(): void {
+    this.#rosterLoads.clear();
+    this.#agentColors.clear();
+    this.#agentRosters.clear();
+    this.#agentChatColors.clear();
+    this.#memberChatColors.clear();
+    this.#browserHolds.clear();
+    this.#browserPageStates.clear();
+    this.#browserStates.clear();
+    this.#generations.clear();
+    this.#conversations.clear();
+    this.#queues.clear();
+  }
+
+  readonly #refreshConversationPage = Effect.fn("RemoteEvents.refreshConversationPage")(function* (
+    this: RemoteEventRefresh,
+    serverId: string,
+    agentId: string,
+    revision: number,
+  ) {
+    const key = `${serverId}\0${agentId}`;
+    const pending = this.#conversations.get(key);
+    if (pending) {
+      if (pending.revision === revision) pending.sequence += 1;
+      pending.revision = Math.max(pending.revision, revision);
+      return;
+    }
+    const request = { revision, sequence: 0 };
+    this.#conversations.set(key, request);
+    yield* Effect.gen({ self: this }, function* () {
+      while (this.#hasServer(serverId)) {
+        const requestedRevision = request.revision;
+        const requestedSequence = request.sequence;
+        const result = yield* this.#conversationPageEffect(serverId, agentId, INVALIDATED_CONVERSATION_LIMIT).pipe(
+          Effect.result,
+        );
+        if (Result.isFailure(result)) {
+          if (request.sequence !== requestedSequence || request.revision !== requestedRevision) continue;
+          return;
+        }
+        const page = result.success;
+        if (request.sequence !== requestedSequence) continue;
+        if (page.revision >= request.revision) {
+          this.#emit(serverId, { type: "conversation-page", page });
+          return;
+        }
+        if (request.revision === requestedRevision) return;
+      }
+    }).pipe(
+      Effect.ensuring(
+        Effect.sync(() => {
+          if (this.#conversations.get(key) === request) this.#conversations.delete(key);
+        }),
+      ),
+    );
+  });
+
+  readonly #refreshQueue = Effect.fn("RemoteEvents.refreshQueue")(function* (
+    this: RemoteEventRefresh,
+    serverId: string,
+    agentId: string,
+  ) {
+    const key = `${serverId}\0${agentId}`;
+    const pending = this.#queues.get(key);
+    if (pending) {
+      pending.dirty = true;
+      return;
+    }
+    const request = { dirty: false };
+    this.#queues.set(key, request);
+    yield* Effect.gen({ self: this }, function* () {
+      do {
+        request.dirty = false;
+        const result = yield* this.#request(serverId, TEAM_API_ROUTES.agent.queue(agentId), decodeQueueSnapshot).pipe(
+          Effect.result,
+        );
+        if (Result.isFailure(result)) {
+          if (request.dirty) continue;
+          return;
+        }
+        if (!this.#hasServer(serverId)) return;
+        this.#emit(serverId, { type: "queue-changed", snapshot: result.success });
+      } while (request.dirty);
+    }).pipe(
+      Effect.ensuring(
+        Effect.sync(() => {
+          if (this.#queues.get(key) === request) this.#queues.delete(key);
+        }),
+      ),
+    );
+  });
+
+  readonly #conversationPageEffect = Effect.fn("RemoteEvents.conversationPage")(
+    (serverId: string, agentId: string, limit: number) =>
+      this.#request(
+        serverId,
+        `${TEAM_API_ROUTES.agent.conversationPage(agentId)}${pageQuery({ type: "latest" }, limit)}`,
+        decodeConversationPageFromHost,
+      ),
+  );
+
+  /**
+   * Marks everything in flight as belonging to a previous session. A response that started before
+   * this call will notice and stay quiet.
+   */
+  #advance(serverId: string): number {
+    const generation = (this.#generations.get(serverId) ?? 0) + 1;
+    this.#generations.set(serverId, generation);
+    return generation;
+  }
+}
+
+/** The agent with `color`, or without a colour. The released list has none, so `avatarHue` is then the colour. */
+function withAgentColor(agent: ClientAgentSummary, color: AvatarColor | undefined): ClientAgentSummary {
+  const { avatarColor: _, ...rest } = agent;
+  return color ? { ...rest, avatarColor: color } : rest;
+}
+
+/** The agent or member with `color`, or without a chat colour. The released lists have none. */
+function withChatColor<Item extends { chatColor?: AvatarColor }>(item: Item, color: AvatarColor | undefined): Item {
+  const next = { ...item };
+  if (color) next.chatColor = color;
+  else delete next.chatColor;
+  return next;
+}
+
+function sameColors(
+  previous: ReadonlyMap<string, AvatarColor> | undefined,
+  next: ReadonlyMap<string, AvatarColor>,
+): boolean {
+  return (
+    previous !== undefined &&
+    previous.size === next.size &&
+    [...next].every(([id, color]) => previous.get(id) === color)
+  );
+}

@@ -1,0 +1,47 @@
+name: CLA
+
+# Checks that each author of a pull request signed CLA.md. The rules are in `scripts/cla.ts`. The
+# signatures are recorded in `signatures.json` on the `cla-signatures` branch. An author signs by
+# email; a maintainer then records the signature with `bun scripts/cla.ts record`, which also sets
+# the status. This workflow only reads the record.
+#
+# `pull_request_target` gives a fork's pull request a token that can comment and set a status. It is
+# safe here because no step checks out or runs the pull request's code: the job checks out the
+# default branch and reads the pull request only through the API.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+  statuses: write
+
+jobs:
+  cla:
+    # Not "CLA": that is the name of the commit status that the script sets.
+    name: Check CLA signatures
+    concurrency:
+      group: cla-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+        with:
+          install: none
+
+      - name: Check the signatures
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: bun scripts/cla.ts pr "$PR_NUMBER"

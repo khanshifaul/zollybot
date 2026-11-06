@@ -9,26 +9,31 @@ as they are.
 
 - **Five platforms** — macOS, Windows, Linux (Electron desktop) and Android, iOS
   (Expo mobile).
-- **Gates, not danger-full-access** — a task bound to an office cannot merge
-  without the reviewer step, and money/production/publishing/customers stay
-  `gate: human`. The gate engine sits in the backend path, not in a prompt.
-- **Memory-driven, like zolly** — the bounded, git-committed memory store in
-  `.agents/memory/` is the source of truth. zollybot reads it, surfaces it and
-  writes through the same atomic, secret-refusing path; it never forks it into a
-  second database.
-- **Per-repo offices** — an office is a repository, not a machine. Switch
-  offices in the app; nothing is shared implicitly.
+- **Gates, not danger-full-access** — an office task cannot merge without the
+  reviewer step, and money/production/publishing/customers stay `gate: human`.
+  The gate engine sits in the backend path, not in a prompt.
+- **Memory-driven, like zolly** — the bounded, git-committed store in
+  `.agents/memory/` is the source of truth; zollybot reads it, surfaces it and
+  writes only through the same atomic, secret-refusing CLI.
+- **Per-repo offices** — an office is a repository, not a machine.
 
-Status: design. No application code yet.
+Status: base imported, integration not started.
+
+## Base
+
+The desktop shell, runtime adapters, queue substrate and mobile client come from
+**OpenBot 0.62.0** (upstream commit `9539f15`, 2026-11-06). Its original README,
+build and contributor docs are kept in `README.upstream.md` and `docs/`.
 
 ## Design
 
-See [docs/architecture.md](docs/architecture.md).
+- [docs/architecture.md](docs/architecture.md) — how zollybot works, the
+  platform split, the OpenBot reuse map, and the gate and memory invariants.
 
-## Relationship to OpenBot
+## Next
 
-zollybot is planned as a fork of [OpenBot](https://github.com/nightly-labs/openbot)
-for the desktop shell, the runtime adapters, the queue substrate and the mobile
-client, with a zolly integration layer on top. OpenBot's default of running
-agents with `danger-full-access` and approvals off is explicitly replaced by
-zolly's gate model.
+1. `src/backend/zolly/` adapter: discover offices (repos with `.agents/`),
+   invoke the unchanged `zolly` CLI, map its queue and gates onto the backend.
+2. `packages/contracts`: a `zolly-office-v1` capability (offices, queue, gate,
+   approve, recall) alongside the existing `storage-v1` pattern.
+3. Renderer: Offices screen, queue board, gate card.
