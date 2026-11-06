@@ -39,7 +39,11 @@
       "!!.agents",
       "!src/renderer/src/vendor",
       "!packages/whatsapp/vendor",
-      "!marketplace/production-catalog/bundles"
+      "!marketplace/production-catalog/bundles",
+      "!!apps/web/components/ui",
+      "!!apps/web/.next",
+      "!!apps/web/out",
+      "!apps/web/app/globals.css"
     ]
   },
   "formatter": {

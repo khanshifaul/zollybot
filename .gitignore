@@ -67,3 +67,7 @@ keys
 
 # Persistent local development identity and migration recovery.
 .zollybot/
+
+# The Next.js site (apps/web) builds into .next and out.
+apps/web/.next/
+apps/web/out/
