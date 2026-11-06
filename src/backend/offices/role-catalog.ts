@@ -12,6 +12,8 @@ export interface Role {
   title: string;
   description: string;
   scope: RoleScope;
+  /** Several workers of this role may hold desks in one office. */
+  multiInstance?: boolean;
 }
 
 export const ROLE_CATALOG: readonly Role[] = [
@@ -56,6 +58,7 @@ export const ROLE_CATALOG: readonly Role[] = [
   {
     key: "worker-research",
     name: "Worker: Research",
+    multiInstance: true,
     title: "Read-only investigator",
     description: "Investigates and returns findings with paths and numbers. Reads only.",
     scope: "office",
@@ -63,6 +66,7 @@ export const ROLE_CATALOG: readonly Role[] = [
   {
     key: "worker-build",
     name: "Worker: Build",
+    multiInstance: true,
     title: "Implementer",
     description: "Implements one bounded change, proves it, and writes the result file.",
     scope: "office",
@@ -70,6 +74,7 @@ export const ROLE_CATALOG: readonly Role[] = [
   {
     key: "worker-test",
     name: "Worker: Test",
+    multiInstance: true,
     title: "Verifier",
     description: "Reproduces a fault, proves the fix, and reports the command and its output.",
     scope: "office",

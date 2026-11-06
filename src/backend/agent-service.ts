@@ -251,8 +251,8 @@ import type { McpSignInOpener } from "./mcp-oauth-provider";
 import { McpServerStore } from "./mcp-server-store";
 import type { MessageDeleteAccess, MessageDeleteRefused } from "./message-delete";
 import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging/messaging-threads";
-import { syncEmployments } from "./offices/office-store";
-import { roleForAgentName } from "./offices/role-catalog";
+import { isRoleEmployed, syncEmployments, UNASSIGNED_OFFICE_ID, upsertEmployment } from "./offices/office-store";
+import { roleByKey, roleForAgentName } from "./offices/role-catalog";
 import type { PasswordVault } from "./password-vault";
 import { canConfineProcesses } from "./process-confinement";
 import { decodeRecordResponse, getString } from "./protocol";
@@ -3877,6 +3877,61 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       .markOfficeAgentsSeeded()
       .pipe(Effect.mapError((cause) => new AgentLifecycleFailed({ operation: "mark office agents", cause })));
     this.#emit({ type: "agents-changed", agents: this.listAgents() });
+  });
+
+  /**
+   * Hires a catalog role into an office (or into the building for the butler).
+   * The role template supplies the name, title and description; the employment
+   * is what the roster sees.
+   */
+  readonly employ = Effect.fn("AgentService.employ")(function* (
+    this: AgentService,
+    input: { roleKey: string; officeId?: string | null },
+  ): Effect.fn.Return<AgentSummary, AgentLifecycleFailed> {
+    const role = roleByKey(input.roleKey);
+    if (!role) {
+      return yield* new AgentLifecycleFailed({
+        operation: "employ",
+        cause: new Error(`Unknown role: ${input.roleKey}`),
+      });
+    }
+    const officeId = role.scope === "building" ? null : (input.officeId ?? UNASSIGNED_OFFICE_ID);
+    const database = this.#store.database.connection;
+    if (!role.multiInstance && isRoleEmployed(database, role.key, officeId)) {
+      return yield* new AgentLifecycleFailed({
+        operation: "employ",
+        cause: new Error(`${role.name} already holds a desk there.`),
+      });
+    }
+    const created = yield* this.#store
+      .createAgent({
+        name: role.name,
+        description: role.description,
+        avatarSeed: `zollybot:${role.key}`,
+        avatarHue: null,
+      })
+      .pipe(
+        Effect.mapError(
+          (failure) => new AgentLifecycleFailed({ operation: "create employment", cause: failure.cause }),
+        ),
+      );
+    yield* this.#store
+      .updateAgent({ agentId: created.id, title: role.title })
+      .pipe(
+        Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title employment", cause: failure.cause })),
+      );
+    upsertEmployment(database, { agentId: created.id, officeId, roleKey: role.key, scope: role.scope });
+    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    return this.#store.list().find((agent) => agent.id === created.id) ?? created;
+  });
+
+  /** Ends one employment. The chats follow the existing removal path; the role stays. */
+  readonly endEmployment = Effect.fn("AgentService.endEmployment")(function* (
+    this: AgentService,
+    agentId: string,
+  ): Effect.fn.Return<void, AgentLifecycleFailed> {
+    yield* this.deleteAgent(agentId);
+    syncEmployments(this.#store.database.connection, this.#store.list(), roleForAgentName);
   });
 
   readonly initialize = Effect.fn("AgentService.initialize")(function* (

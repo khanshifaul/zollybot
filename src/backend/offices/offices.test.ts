@@ -7,7 +7,7 @@ import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
 import { discoverOffices } from "./office-catalog";
 import { OFFICE_SCHEMA_SQL } from "./office-schema";
-import { listEmployments, syncEmployments } from "./office-store";
+import { isRoleEmployed, listEmployments, syncEmployments, upsertEmployment, upsertOffice } from "./office-store";
 import { roleForAgentName } from "./role-catalog";
 
 const roots: string[] = [];
@@ -96,6 +96,18 @@ describe("employment backfill", () => {
       scope: "building",
       officeId: null,
     });
+    db.close();
+  });
+
+  it("knows when a single-instance role already holds a desk", () => {
+    const db = database();
+    db.exec("INSERT INTO projection_agents VALUES ('a1', '{}')");
+    upsertOffice(db, { id: "unassigned", repoPath: "", name: "Unassigned", baseBranch: "main" });
+    upsertEmployment(db, { agentId: "a1", officeId: "unassigned", roleKey: "zolly", scope: "office" });
+
+    expect(isRoleEmployed(db, "zolly", "unassigned")).toBe(true);
+    expect(isRoleEmployed(db, "zolly", null)).toBe(false);
+    expect(isRoleEmployed(db, "worker-build", "unassigned")).toBe(false);
     db.close();
   });
 

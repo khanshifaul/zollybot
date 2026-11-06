@@ -122,3 +122,8 @@ export function syncEmployments(
   // An employment of an agent that is gone is a desk nobody holds.
   db.exec("DELETE FROM agent_employments WHERE agent_id NOT IN (SELECT agent_id FROM projection_agents)");
 }
+
+/** True when the role already holds a desk in that office. */
+export function isRoleEmployed(db: DatabaseSync, roleKey: string, officeId: string | null): boolean {
+  return listEmployments(db).some((employment) => employment.roleKey === roleKey && employment.officeId === officeId);
+}

@@ -70,6 +70,8 @@ export interface ServerAgent {
   scope?: string;
   /** The office name, when the employment names one. */
   office?: string;
+  /** The office id, for filtering. */
+  officeId?: string;
 }
 
 /** One repo that carries an office. */
@@ -227,13 +229,13 @@ export class ServerMode {
   }
 
   async #route(method: string | undefined, url: string | undefined, body: URLSearchParams): Promise<Answer> {
-    const path = url?.split("?")[0] ?? "";
+    const [path = "", query = ""] = (url ?? "").split("?");
     const route = `${method ?? ""} ${path}`;
     switch (route) {
       case "GET /v1/status":
         return this.#status();
       case "GET /v1/agents":
-        return this.#agents();
+        return this.#agents(new URLSearchParams(query).get("office") ?? undefined);
       case "GET /v1/offices":
         return this.#offices();
       case "POST /v1/login/start":
@@ -287,8 +289,12 @@ export class ServerMode {
   }
 
   /** The app's agent list, one `agent.N=name|provider|model|title` line each. */
-  #agents(): Answer {
-    const agents = this.#options.agents?.() ?? [];
+  #agents(officeFilter?: string): Answer {
+    const agents = (this.#options.agents?.() ?? []).filter((agent) => {
+      if (!officeFilter) return true;
+      if (officeFilter === "building") return agent.scope === "building";
+      return agent.officeId === officeFilter;
+    });
     const lines: Answer["lines"] = { count: agents.length };
     agents.forEach((agent, index) => {
       lines[`agent.${index}`] = [
