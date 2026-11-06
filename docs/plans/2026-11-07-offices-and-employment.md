@@ -97,3 +97,52 @@ terminal frontend; "employ role in this office" and "end employment" actions.
 
 Phase 3: the tab strip (one tab per open office, remembered across starts,
 `+` opening the floor chooser) and the client-mode window.
+
+## 7. The butler: a building-level agent
+
+Some work is not any office's work: "which offices exist?", "open the zylosync
+office", "create an office for this repo", "who is employed where?". That is a
+concierge, and a concierge does not sit in a tenant's office.
+
+- **Scope in the model.** An employment gains a scope: `office` or `building`.
+  The butler is a building-scoped employment of a role (call it Butler or PA),
+  with `officeId = null`. Its chats belong to that building employment, like any
+  other employment's chats belong to it.
+- **What it knows.** The office registry: name, repo path, remote, base branch,
+  open/closed, whether `.agents/` exists, which roles are employed there, and
+  the health signals the app already has. It does not read an office's chats,
+  briefs or results; those are the office's own.
+- **What it may do.** Open an office (open its tab), create one (clone or
+  `git init`, then initialise `.agents/`), register an existing repo, start the
+  background server, and propose a roster ("this repo has no foreman; employ
+  one?"). Every action is the same call the UI makes, so the butler is a
+  shortcut, never a second implementation.
+- **What it may not do.** It cannot merge, approve a gate, spend, delete an
+  office, or read another office's conversations. Those stay with the office's
+  own seats and with the founder.
+- **Where it lives in the UI.** The building tab is the first tab and cannot be
+  closed: it is the lobby, with the butler and the office list. Closing every
+  office tab still leaves the lobby.
+- **Terminal.** The same identity appears in `GET /v1/agents` with
+  `office=null, scope=building`; `GET /v1/offices` lists the registry. The TUI
+  shows the lobby as its first entry.
+- **Deletion.** Ending the butler employment archives its chat and leaves the
+  role in the directory; the founder can employ it again. Deleting the role
+  follows the same rule as any role: no employment may use it.
+
+### Cloudflare Workers
+
+The auth API and the site router run on Cloudflare Workers. A Worker has no
+filesystem and no long-lived process:
+
+- `GET /api/offices` and `POST /api/offices` may serve the registry and create
+  an office record (`{id, repoPath, name, remote, baseBranch}`), but they cannot
+  open, clone or inspect a repo.
+- The butler's repo actions (open, create, initialise `.agents/`) are desktop
+  actions and run in the Electron main process, not in a Worker.
+- Never let a Worker run `git` or touch a repo; it only stores and reads the
+  registry. The desktop owns execution.
+
+Order: the butler lands after the registry and employments exist (phase 2),
+before the tab strip is polished (phase 3), because the lobby is where the
+office list is shown.
