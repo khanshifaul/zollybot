@@ -1,6 +1,6 @@
-import type { TeamPresenceMember } from "@openbot/contracts/ipc";
-import { unloadedHistory } from "@openbot/ui/features/conversation/ChatScrollRail";
-import { useText } from "@openbot/ui/text";
+import type { TeamPresenceMember } from "@zollybot/contracts/ipc";
+import { unloadedHistory } from "@zollybot/ui/features/conversation/ChatScrollRail";
+import { useText } from "@zollybot/ui/text";
 import { Loading } from "solid-js";
 import { DirectConversation } from "../../lazy-views";
 import { usePlatform } from "../../platform";

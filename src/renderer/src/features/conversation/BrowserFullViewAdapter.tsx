@@ -1,9 +1,9 @@
-import type { BrowserTab } from "@openbot/contracts/ipc";
-import { BROWSER_PROFILES_CAPABILITY } from "@openbot/contracts/team-protocol/browser-profiles-v1";
-import { BROWSER_PROXIES_CAPABILITY } from "@openbot/contracts/team-protocol/browser-proxies-v1";
-import BrowserFullView from "@openbot/ui/features/browser/BrowserFullView";
-import BrowserLocalSignInDialog from "@openbot/ui/features/browser/BrowserLocalSignInDialog";
-import { BROWSER_NEW_TAB_URL } from "@openbot/ui/features/browser/browser-suggestions";
+import type { BrowserTab } from "@zollybot/contracts/ipc";
+import { BROWSER_PROFILES_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-profiles-v1";
+import { BROWSER_PROXIES_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-proxies-v1";
+import BrowserFullView from "@zollybot/ui/features/browser/BrowserFullView";
+import BrowserLocalSignInDialog from "@zollybot/ui/features/browser/BrowserLocalSignInDialog";
+import { BROWSER_NEW_TAB_URL } from "@zollybot/ui/features/browser/browser-suggestions";
 import { createEffect, createMemo, onCleanup, Show, untrack } from "solid-js";
 import { desktopBrowserProfileCalls } from "../browser/browser-profiles-port";
 import {

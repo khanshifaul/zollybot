@@ -1,7 +1,7 @@
 import { Host, Switch } from "@expo/ui";
-import { type InstalledSkill, SKILL_CREATION_REQUEST } from "@openbot/contracts/ipc";
-import type { MobileTranslate } from "@openbot/i18n/mobile";
 import { type QueryKey, useQueryClient } from "@tanstack/react-query";
+import { type InstalledSkill, SKILL_CREATION_REQUEST } from "@zollybot/contracts/ipc";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import { Stack, useNavigation } from "expo-router";
 import { StackActions } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";
@@ -78,7 +78,7 @@ export function CreateSkillAction({ agent }: { agent: MobileAgent }) {
 
 /**
  * Agent info > Skills. An owner or admin turns a skill on or off and uninstalls it, as in the
- * desktop agent settings; a skill in a folder that OpenBot does not manage stays read-only.
+ * desktop agent settings; a skill in a folder that ZollyBot does not manage stays read-only.
  */
 export function AgentSkills({
   agent,

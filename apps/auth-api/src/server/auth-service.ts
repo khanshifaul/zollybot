@@ -1,7 +1,7 @@
-import type { FirstTouch } from "@openbot/contracts/first-touch";
-import { type AvatarColor, isAvatarColor } from "@openbot/contracts/ipc";
-import type { MobileConnectHostBinding } from "@openbot/contracts/mobile-connect";
-import { type DynamicRecord, isBoolean, isNumber, isString } from "@openbot/contracts/runtime-values";
+import type { FirstTouch } from "@zollybot/contracts/first-touch";
+import { type AvatarColor, isAvatarColor } from "@zollybot/contracts/ipc";
+import type { MobileConnectHostBinding } from "@zollybot/contracts/mobile-connect";
+import { type DynamicRecord, isBoolean, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import {
   isUuidV4,
   normalizeEmailAddress,
@@ -9,7 +9,7 @@ import {
   ONE_TIME_CODE_ALPHABET,
   ONE_TIME_CODE_LENGTH,
   validateProfileName,
-} from "@openbot/contracts/validation";
+} from "@zollybot/contracts/validation";
 import { Context, Effect, Layer, Result, Schema } from "effect";
 import { type AccountAnalytics, type AccountSurface, NO_ACCOUNT_ANALYTICS } from "./account-analytics";
 import type { AccountAttribution } from "./account-attribution";
@@ -87,7 +87,7 @@ class AuthDependencies extends Context.Service<
     attribution: AccountAttribution | null;
     usesCompanySignIn: (email: string) => Effect.Effect<boolean, AuthOperationError>;
   }
->()("@openbot/auth-api/AuthDependencies") {}
+>()("@zollybot/auth-api/AuthDependencies") {}
 
 export interface AnalyticsAnswer {
   enabled: boolean;
@@ -227,12 +227,12 @@ export class AuthService {
           return yield* new AuthServiceError(
             409,
             "email_delivery_pending",
-            "OpenBot could not confirm delivery. Check again when the countdown ends.",
+            "ZollyBot could not confirm delivery. Check again when the countdown ends.",
             retryAfterSeconds,
           );
         }
         yield* dependencies.repository.completeEmailChallengeDelivery(challengeHash, "failed", dependencies.now());
-        return yield* emailDeliveryFailure(deliveryError, "OpenBot could not send the sign-in code.");
+        return yield* emailDeliveryFailure(deliveryError, "ZollyBot could not send the sign-in code.");
       }
       yield* dependencies.repository.completeEmailChallengeDelivery(challengeHash, "sent", dependencies.now());
 
@@ -262,7 +262,7 @@ export class AuthService {
       );
     }
     if (challenge.deliveryState === "failed") {
-      return yield* new AuthServiceError(502, "email_delivery_failed", "OpenBot could not send the sign-in code.");
+      return yield* new AuthServiceError(502, "email_delivery_failed", "ZollyBot could not send the sign-in code.");
     }
     if (challenge.deliveryState === "pending") {
       const remainingMs = challenge.createdAt + EMAIL_CODE_DELIVERY_BUDGET_MS - now;
@@ -271,7 +271,7 @@ export class AuthService {
         return yield* new AuthServiceError(
           409,
           "email_delivery_pending",
-          "OpenBot is still confirming delivery. Check again when the countdown ends.",
+          "ZollyBot is still confirming delivery. Check again when the countdown ends.",
           retryAfterSeconds,
         );
       }
@@ -924,7 +924,7 @@ export function emailDeliveryFailure(deliveryError: string, permanentMessage: st
     return new AuthServiceError(
       429,
       "email_delivery_rate_limited",
-      "OpenBot cannot send more email right now. Try again when the countdown ends.",
+      "ZollyBot cannot send more email right now. Try again when the countdown ends.",
       DELIVERY_RATE_LIMIT_RETRY_SECONDS,
     );
   }

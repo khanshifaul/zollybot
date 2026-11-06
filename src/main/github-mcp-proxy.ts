@@ -20,12 +20,12 @@ import {
   ListToolsRequestSchema,
   ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { runCauseEffect } from "../backend/effect-boundary";
 import { readJsonBody } from "../backend/local-mcp-bridge";
 
-const logger = createOpenBotLogger("github-mcp-proxy");
+const logger = createZollyBotLogger("github-mcp-proxy");
 
 /** A GitHub call rarely takes long. The limit only stops a call that GitHub never answers. */
 const UPSTREAM_TIMEOUT_MS = 5 * 60_000;
@@ -34,8 +34,8 @@ const MAX_BODY_BYTES = 4 * 1024 * 1024;
 const MISSING_PERMISSION = "Resource not accessible by integration";
 /** For the agent, which tells the user. GitHub needs `administration: write` to create a repository. */
 const REPOSITORY_CREATION_HINT =
-  'OpenBot cannot create repositories for this owner. GitHub needs the "Administration: write" permission of the ' +
-  "OpenBotGit app on that account. An owner of the account installs OpenBotGit there, or approves its pending " +
+  'ZollyBot cannot create repositories for this owner. GitHub needs the "Administration: write" permission of the ' +
+  "ZollyBotGit app on that account. An owner of the account installs ZollyBotGit there, or approves its pending " +
   "permission request, in GitHub settings: Applications > Installed GitHub Apps (for an organization, in the " +
   "organization settings). Organization policy can also block repository creation. Tell the user this, and do " +
   "not try another credential. The user can also create the repository on github.com.";
@@ -289,7 +289,7 @@ export class GitHubMcpProxy {
   ): Effect.fn.Return<Client, GitHubOperationError> {
     let upstream = this.#upstreams.get(token);
     if (!upstream) {
-      const client = new Client({ name: "openbot-github-proxy", version: "1.0.0" }, { capabilities: {} });
+      const client = new Client({ name: "zollybot-github-proxy", version: "1.0.0" }, { capabilities: {} });
       const transport = new StreamableHTTPClientTransport(new URL(this.#options.upstreamUrl), {
         requestInit: { headers: { Authorization: `Bearer ${token}` } },
       });

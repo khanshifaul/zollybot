@@ -2,7 +2,7 @@
 // one side thread, after a pause with 3 or more new turns, when the chat is cleared and when a side
 // thread closes, one generation without tools proposes memory changes that the memory tools' checks
 // apply. Runs the real agent service on a temporary profile with a fake Codex app-server. An agent
-// turn calls the OpenBot tools that its input names in `<<CALLS[...]CALLS>>` and answers "Done.". A
+// turn calls the ZollyBot tools that its input names in `<<CALLS[...]CALLS>>` and answers "Done.". A
 // review generation is logged and answers the text in `control.json`, after its delay.
 // Checks:
 //   1. Nineteen turns start no review. The twentieth starts one, which adds a memory and shows one
@@ -28,18 +28,18 @@
 //      saved memory again, which would change the user's inclusion choice.
 //  15. Stopping the service during a slow review applies nothing and shows no error.
 // No provider, account or network is used. `bun run test:memory-review`.
-// Writes .openbot-build/memory-review-e2e/report.json.
+// Writes .zollybot-build/memory-review-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS, type AgentEvent, CONVERSATION_MEMORY_CHANGES_ITEM_TYPE } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS, type AgentEvent, CONVERSATION_MEMORY_CHANGES_ITEM_TYPE } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/memory-review-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-memory-review-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/memory-review-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-memory-review-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -52,14 +52,14 @@ const IDLE_MS = 1_500;
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 /** A tool call that the fake makes in an agent turn. */
 interface FakeCall {
@@ -98,7 +98,7 @@ const callNext = (turn) => {
   if (!call) return setTimeout(() => finish(turn, "Done."), 5);
   const id = "tool-" + turn.turnId + "-" + turn.calls.length;
   waiting.set(id, turn);
-  write({ id, method: "item/tool/call", params: { threadId: turn.threadId, turnId: turn.turnId, callId: "call-" + id, namespace: "openbot", tool: call.tool, arguments: call.arguments } });
+  write({ id, method: "item/tool/call", params: { threadId: turn.threadId, turnId: turn.turnId, callId: "call-" + id, namespace: "zollybot", tool: call.tool, arguments: call.arguments } });
 };
 const answer = (message) => {
   const params = message.params || {};
@@ -237,7 +237,7 @@ async function check(name: string, run: () => Promise<unknown>) {
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
 control({ operations: [] });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 /** The app setting, as main reads it at each use. */

@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/solid-router";
 import { JoinPage } from "../components/landing/JoinPage";
 import { joinPageText } from "../components/transactional/page-text";
 import { loadPageText } from "../lib/page-text";
-import { OPENBOT_X_HANDLE, type PageSocialImage, pageSocialImageMeta } from "../lib/site-metadata";
+import { type PageSocialImage, pageSocialImageMeta, ZOLLYBOT_X_HANDLE } from "../lib/site-metadata";
 
 const JOIN_SOCIAL_IMAGE: PageSocialImage = {
   path: "/social/join.jpg",
-  alt: "Good ideas. Made together. OpenBot agents around a glass table",
+  alt: "Good ideas. Made together. ZollyBot agents around a glass table",
 };
 
 export const Route = createFileRoute("/join")({
@@ -31,14 +31,14 @@ export const Route = createFileRoute("/join")({
         { name: "referrer", content: "no-referrer" },
         { name: "description", content: text.description },
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "OpenBot" },
+        { property: "og:site_name", content: "ZollyBot" },
         { property: "og:locale", content: "en_US" },
         { property: "og:url", content: url },
         { property: "og:title", content: text.title },
         { property: "og:description", content: text.description },
         ...image.openGraph,
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: OPENBOT_X_HANDLE },
+        { name: "twitter:site", content: ZOLLYBOT_X_HANDLE },
         { name: "twitter:title", content: text.title },
         { name: "twitter:description", content: text.description },
         ...image.twitter,

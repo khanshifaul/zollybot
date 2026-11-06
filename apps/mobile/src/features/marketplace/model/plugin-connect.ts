@@ -1,5 +1,5 @@
-import type { McpServerConfig } from "@openbot/contracts/ipc";
-import { isListingUrl, type McpAuthValues, mcpFlowFields } from "@openbot/contracts/mcp-connect-flows";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
+import { isListingUrl, type McpAuthValues, mcpFlowFields } from "@zollybot/contracts/mcp-connect-flows";
 import type {
   MobilePlugin,
   MobilePluginApp,
@@ -9,7 +9,7 @@ import type {
 
 /*
  * How the phone connects a plugin app. The configuration a flow connects with comes from the shared
- * contract (`@openbot/contracts/mcp-connect-flows`), so the phone saves what the desktop and web save.
+ * contract (`@zollybot/contracts/mcp-connect-flows`), so the phone saves what the desktop and web save.
  */
 
 /**

@@ -4,9 +4,9 @@
 // few that are not secret, such as a workspace name: none of them belongs in a log.
 
 import { readFile, rm } from "node:fs/promises";
-import type { MessagingCredentialState } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { registerSecretValue } from "@openbot/logging";
+import type { MessagingCredentialState } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { registerSecretValue } from "@zollybot/logging";
 import { Effect, Result, Semaphore } from "effect";
 import { z } from "zod";
 import { writeFileAtomically } from "../backend/atomic-json-file";

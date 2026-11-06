@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router";
 import { TeamsPage } from "../components/teams/TeamsPage";
-import { OPENBOT_X_HANDLE, pageSocialImageMeta } from "../lib/site-metadata";
+import { pageSocialImageMeta, ZOLLYBOT_X_HANDLE } from "../lib/site-metadata";
 import { TEAMS_PAGE_META, TEAMS_ROUTE, TEAMS_SOCIAL_IMAGE } from "../lib/teams-page";
 
 export const Route = createFileRoute("/teams")({
@@ -13,14 +13,14 @@ export const Route = createFileRoute("/teams")({
         { title },
         { name: "description", content: description },
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "OpenBot" },
+        { property: "og:site_name", content: "ZollyBot" },
         { property: "og:locale", content: "en_US" },
         { property: "og:url", content: url },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         ...image.openGraph,
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: OPENBOT_X_HANDLE },
+        { name: "twitter:site", content: ZOLLYBOT_X_HANDLE },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
         ...image.twitter,

@@ -2,12 +2,12 @@
 // so "send again" marks the delivery as sent at once.
 
 import type {
-  OpenBotDesktopApi,
   Routine,
   RoutineResultConnectionOption,
   RoutineResultDelivery,
   RoutineResultDestination,
-} from "@openbot/contracts/ipc";
+  ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
 
 export interface MockRoutineResultsOptions {
   routineResultOptions?: RoutineResultConnectionOption[];
@@ -22,7 +22,7 @@ export function mockRoutineResults(
   routines: Map<string, Routine[]>,
   options: MockRoutineResultsOptions,
   emit: (agentId: string) => void,
-): OpenBotDesktopApi["routineResults"] {
+): ZollyBotDesktopApi["routineResults"] {
   const connections = structuredClone(options.routineResultOptions ?? []);
   const destinations = new Map(Object.entries(structuredClone(options.routineResultDestinations ?? {})));
   const deliveries = new Map(Object.entries(structuredClone(options.routineResultDeliveries ?? {})));

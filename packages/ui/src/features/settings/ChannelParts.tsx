@@ -1,9 +1,10 @@
 /**
  * The parts that the chat channel pages share: Slack, Discord, Telegram and WhatsApp. Each page
- * connects places where people talk to OpenBot (a workspace, a Discord server, a chat, a number), and
+ * connects places where people talk to ZollyBot (a workspace, a Discord server, a chat, a number), and
  * one orchestrator agent answers there. The pages differ only in how a place connects and in their own extra sections.
  */
 
+import type { JSX } from "@solidjs/web";
 import type {
   AgentModelId,
   AgentProviderId,
@@ -14,8 +15,8 @@ import type {
   CustomProviderSummary,
   MessagingConnection,
   MessagingPlatform,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertContent,
@@ -37,8 +38,7 @@ import {
   Text,
   Trash2,
   TriangleAlert,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { For, Match, Show, Switch } from "solid-js";
 import { ProviderModelPicker } from "../../components/ProviderModelPicker";
 import { useText } from "../../text";
@@ -99,7 +99,7 @@ export interface ChannelText {
   orchestratorDescription: AppTextKey;
   orchestratorNone: AppTextKey;
   orchestratorNoneDescription: AppTextKey;
-  /** The last line of the orchestrator card: how people reach OpenBot. */
+  /** The last line of the orchestrator card: how people reach ZollyBot. */
   note: AppTextKey;
   connectStepBrowser: AppTextKey;
   connectStepAllow: AppTextKey;
@@ -292,7 +292,7 @@ function ChannelOrchestratorFace(props: { avatar: ChannelAvatar; size?: "md" | "
 
 /**
  * The orchestrators of a channel. With none, the card holds the step that adds one. The last line says
- * how people reach OpenBot.
+ * how people reach ZollyBot.
  */
 export function ChannelOrchestratorSection(props: {
   text: ChannelText;

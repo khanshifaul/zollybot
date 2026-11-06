@@ -1,4 +1,4 @@
-// Measures the web client at `/app` in three phases and writes .openbot-build/<out>/report.json.
+// Measures the web client at `/app` in three phases and writes .zollybot-build/<out>/report.json.
 //
 // - bundle: JS and CSS bytes (raw and gzip) of the chunks that `/app` loads, from the Vite manifest of
 //   the last `bun run api:build`.
@@ -19,13 +19,13 @@ import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "no
 import { createServer, type Server } from "node:http";
 import { resolve } from "node:path";
 import { gzipSync } from "node:zlib";
-import { isDynamicRecord, isNumber } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger } from "@openbot/logging";
+import { isDynamicRecord, isNumber } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { type Browser, type BrowserContext, chromium, type Page } from "playwright-core";
 import { type Spread, spread } from "./dev-automation/bench-stats";
 import { startRenderRecording } from "./dev-automation/render-metrics";
 
-const logger = createOpenBotLogger("web-client-perf-e2e");
+const logger = createZollyBotLogger("web-client-perf-e2e");
 const ROOT = resolve(import.meta.dirname, "..");
 const API_DIR = resolve(ROOT, "apps/auth-api");
 const CLIENT_DIR = resolve(API_DIR, "dist/client");
@@ -39,7 +39,7 @@ const runs = Number(option("runs") ?? "5");
 assert.ok(Number.isInteger(runs) && runs >= 1, "--runs takes a whole number, 1 or more.");
 const outName = option("out") ?? "web-client-perf";
 assert.match(outName, /^\w[\w.-]*$/, "--out takes a folder name, not a path.");
-const OUT = resolve(ROOT, ".openbot-build", outName);
+const OUT = resolve(ROOT, ".zollybot-build", outName);
 const phases = new Set((option("phases") ?? "bundle,load,runtime").split(","));
 const throttle = option("throttle") ?? "mobile";
 assert.ok(throttle === "mobile" || throttle === "none", "--throttle takes mobile or none.");
@@ -241,7 +241,7 @@ async function startGzipProxy(upstream: string): Promise<{ url: string; server: 
 // Records when the sign-in form shows and the long tasks before it, from the first byte of the page.
 const LOAD_OBSERVERS = `(() => {
   const state = { loginMs: null, longTasks: 0, longTaskMs: 0 };
-  window.__openbotWebPerf = state;
+  window.__zollybotWebPerf = state;
   new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       if (state.loginMs !== null) continue;
@@ -264,7 +264,7 @@ const READ_LOAD = `(() => {
   let transfer = navigation ? navigation.transferSize : 0;
   let scriptBytes = 0;
   let scripts = 0;
-  const loginMs = window.__openbotWebPerf.loginMs ?? 0;
+  const loginMs = window.__zollybotWebPerf.loginMs ?? 0;
   let loginTransfer = navigation ? navigation.transferSize : 0;
   let loginRequests = 1;
   for (const entry of resources) {
@@ -284,8 +284,8 @@ const READ_LOAD = `(() => {
     loginMs,
     loginRequests,
     loginTransferKB: loginTransfer / 1024,
-    longTasks: window.__openbotWebPerf.longTasks,
-    longTaskMs: window.__openbotWebPerf.longTaskMs,
+    longTasks: window.__zollybotWebPerf.longTasks,
+    longTaskMs: window.__zollybotWebPerf.longTaskMs,
     requests: resources.length + 1,
     transferKB: transfer / 1024,
     scripts,
@@ -313,7 +313,7 @@ async function loadOnce(context: BrowserContext, url: string, samples: Samples, 
     await throttlePage(page);
     await page.addInitScript(LOAD_OBSERVERS);
     await page.goto(`${url}/app`, { waitUntil: "commit" });
-    await page.waitForFunction("window.__openbotWebPerf?.loginMs !== null", undefined, { timeout: 120_000 });
+    await page.waitForFunction("window.__zollybotWebPerf?.loginMs !== null", undefined, { timeout: 120_000 });
     await page.waitForLoadState("networkidle");
     const values = await page.evaluate(READ_LOAD);
     assert.ok(isDynamicRecord(values), "The load reading is not an object.");
@@ -353,7 +353,7 @@ const OTHER_STREAM_TOKENS = 200;
 const STORY = "web-workspace--long-conversation";
 
 async function readCalls(page: Page): Promise<Record<string, number>> {
-  const calls = await page.evaluate("({ ...globalThis.openbotWebBench.calls })");
+  const calls = await page.evaluate("({ ...globalThis.zollybotWebBench.calls })");
   assert.ok(isDynamicRecord(calls), "The bench call counts are not an object.");
   const counts: Record<string, number> = {};
   for (const [name, value] of Object.entries(calls)) if (isNumber(value)) counts[name] = value;
@@ -395,17 +395,17 @@ async function measureRuntime(browser: Browser, samples: Samples): Promise<void>
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
     try {
       await page.goto(`${storybook}/iframe.html?id=${STORY}&viewMode=story`);
-      await page.waitForFunction("globalThis.openbotWebBench !== undefined", undefined, { timeout: 120_000 });
-      await page.evaluate("globalThis.openbotWebBench.ready");
+      await page.waitForFunction("globalThis.zollybotWebBench !== undefined", undefined, { timeout: 120_000 });
+      await page.evaluate("globalThis.zollybotWebBench.ready");
       await page.getByText("Question 158:").first().waitFor({ timeout: 60_000 });
-      await page.evaluate("globalThis.openbotWebBench.idle()");
+      await page.evaluate("globalThis.zollybotWebBench.idle()");
       record(samples, "runtime.openMs", await page.evaluate<number>("performance.now()"));
 
-      await page.evaluate("globalThis.openbotWebBench.resetCalls()");
+      await page.evaluate("globalThis.zollybotWebBench.resetCalls()");
       const marker = `perf-marker-${run}-${Date.now()}`;
       const stop = await startRenderRecording(page, { frames: true, callCounts: false });
       const started = Date.now();
-      await page.evaluate(([tokens, text]) => globalThis.openbotWebBench.stream(tokens, text), [
+      await page.evaluate(([tokens, text]) => globalThis.zollybotWebBench.stream(tokens, text), [
         STREAM_TOKENS,
         marker,
       ] as const);
@@ -417,16 +417,16 @@ async function measureRuntime(browser: Browser, samples: Samples): Promise<void>
       recordCalls(samples, "runtime.turn.calls", await readCalls(page), CALL_NAMES);
 
       // A turn of an agent that is not open.
-      await page.evaluate("globalThis.openbotWebBench.resetCalls()");
-      await page.evaluate(([tokens, text]) => globalThis.openbotWebBench.stream(tokens, text, true), [
+      await page.evaluate("globalThis.zollybotWebBench.resetCalls()");
+      await page.evaluate(([tokens, text]) => globalThis.zollybotWebBench.stream(tokens, text, true), [
         OTHER_STREAM_TOKENS,
         `${marker}-other`,
       ] as const);
       recordCalls(samples, "runtime.otherTurn.calls", await readCalls(page), CALL_NAMES);
 
-      await page.evaluate("globalThis.openbotWebBench.resetCalls()");
-      await page.evaluate("window.dispatchEvent(new Event('focus')); globalThis.openbotWebBench.idle()");
-      await page.evaluate("globalThis.openbotWebBench.idle()");
+      await page.evaluate("globalThis.zollybotWebBench.resetCalls()");
+      await page.evaluate("window.dispatchEvent(new Event('focus')); globalThis.zollybotWebBench.idle()");
+      await page.evaluate("globalThis.zollybotWebBench.idle()");
       recordCalls(samples, "runtime.focus.calls", await readCalls(page), CALL_NAMES);
       logger.info(`runtime run ${run + 1}/${runs}: ${samples["runtime.stream.scriptMs"]?.at(-1)} ms script`);
     } finally {
@@ -437,7 +437,7 @@ async function measureRuntime(browser: Browser, samples: Samples): Promise<void>
 
 declare global {
   // The driver that `src/renderer/src/preview/bench-web-runtime.ts` installs in the story.
-  var openbotWebBench: { stream(tokens: number, marker: string, other?: boolean): Promise<void> };
+  var zollybotWebBench: { stream(tokens: number, marker: string, other?: boolean): Promise<void> };
 }
 
 // ---------------------------------------------------------------- report

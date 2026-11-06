@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   CUSTOM_PROVIDER_ID_PATTERN,
   composedCustomModelId,
@@ -7,8 +7,8 @@ import {
   isCustomProviderHeaderName,
   isNewCustomProviderId,
   type SaveCustomProviderInput,
-} from "@openbot/contracts/ipc";
-import { isOneOf } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
 import type { PairItem } from "@/features/servers/components/repeatable-fields";
 import type { MobileText } from "@/shared/lib/text";
 

@@ -4,14 +4,14 @@
  * A plugin is one developer's bundle: the MCP server it publishes, shown as an **app**, the skills
  * that drive that server, and the listing text. Nothing here has a wire protocol yet - there is no
  * `skills:*` or `marketplace-agents:*` equivalent to answer these, so the types stay in the renderer
- * rather than in `@openbot/contracts/ipc`, where a shape can only be added once it is the shape the
+ * rather than in `@zollybot/contracts/ipc`, where a shape can only be added once it is the shape the
  * main process really sends. `SkillCategory` is the one borrowed type: a plugin is filed under the
  * same categories the rest of the marketplace already offers.
  */
 
-import type { MacAutomationTarget, McpServerConfig, McpTransport, SkillCategory } from "@openbot/contracts/ipc";
-import { mcpAccountFragment, withoutMcpAccountFragment } from "@openbot/contracts/mcp-accounts";
-import { isListingUrl, type McpAuth, mcpFlowFields } from "@openbot/contracts/mcp-connect-flows";
+import type { MacAutomationTarget, McpServerConfig, McpTransport, SkillCategory } from "@zollybot/contracts/ipc";
+import { mcpAccountFragment, withoutMcpAccountFragment } from "@zollybot/contracts/mcp-accounts";
+import { isListingUrl, type McpAuth, mcpFlowFields } from "@zollybot/contracts/mcp-connect-flows";
 
 /** One of the example questions a plugin listing opens with. */
 export interface MarketplacePluginPrompt {
@@ -90,7 +90,7 @@ export interface MarketplacePluginApp {
   description: string;
   iconUrl: string | null;
   server: MarketplacePluginServer;
-  /** The Apple apps the server drives through AppleScript. OpenBot can ask macOS for them at install. */
+  /** The Apple apps the server drives through AppleScript. ZollyBot can ask macOS for them at install. */
   macAutomation?: readonly MacAutomationTarget[];
 }
 

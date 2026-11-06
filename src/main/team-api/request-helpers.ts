@@ -8,7 +8,7 @@
 // property of the reader, not something ~50 routes each have to remember.
 
 import type { IncomingMessage } from "node:http";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AgentAccessLevel,
   agentAccessRank,
@@ -34,23 +34,23 @@ import {
   ROUTINE_RUN_EVENT_ITEM_TYPE_PREFIX,
   type TeamMemberSummary,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import {
   isTeamCurrentCapability,
   supportsTeamSemanticTags,
   TEAM_AGENT_CREATE_MODEL_CAPABILITY,
-} from "@openbot/contracts/team-protocol/current";
-import { teamHttpCodec } from "@openbot/contracts/team-protocol/http-codecs";
-import { teamSideRouteCodec } from "@openbot/contracts/team-protocol/side-routes";
+} from "@zollybot/contracts/team-protocol/current";
+import { teamHttpCodec } from "@zollybot/contracts/team-protocol/http-codecs";
+import { teamSideRouteCodec } from "@zollybot/contracts/team-protocol/side-routes";
 import {
   TEAM_CAPABILITIES_HEADER,
   TEAM_PROTOCOL_V1,
   TEAM_PROTOCOL_VERSION_HEADER,
-} from "@openbot/contracts/team-protocol/v1";
-import { TEAM_PROTOCOL_V2_MAX_JSON_FRAME_BYTES } from "@openbot/contracts/team-protocol/v2";
-import { TEAM_PROTOCOL_V9, TEAM_PROTOCOL_V9_CAPABILITY_LIMIT } from "@openbot/contracts/team-protocol/v9";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/v1";
+import { TEAM_PROTOCOL_V2_MAX_JSON_FRAME_BYTES } from "@zollybot/contracts/team-protocol/v2";
+import { TEAM_PROTOCOL_V9, TEAM_PROTOCOL_V9_CAPABILITY_LIMIT } from "@zollybot/contracts/team-protocol/v9";
+import { sourceText } from "@zollybot/i18n/source";
 import { readBodyWithin } from "../http-body";
 import { HttpError } from "./http-error";
 import type { TeamApiRequestContext } from "./request-context";

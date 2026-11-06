@@ -13,7 +13,7 @@ description: "Write short, copyable alt text for images: the purpose of the imag
 
 ## Inputs
 
-1. **The images.** Uploaded files, or a page in `openbot_browser`. For a page, call `openbot_browser.list_tabs`
+1. **The images.** Uploaded files, or a page in `zollybot_browser`. For a page, call `zollybot_browser.list_tabs`
    first, then read the images and their current alt text from a snapshot.
 2. **The context.** Where the image appears and what the text around it says. On a page, read it. For an
    upload, if the purpose is not clear, ask one question with `ask_user`: "What should a reader learn from this

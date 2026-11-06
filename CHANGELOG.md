@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to OpenBot will be documented here. The project follows
+All notable changes to ZollyBot will be documented here. The project follows
 [Semantic Versioning](https://semver.org/). Notes for the next release are in
 [`changelog.d/`](changelog.d/README.md).
 
@@ -11,7 +11,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - Add Download to the Hermes Agent row in Providers, on a server and on a Mac or Linux computer.
-  OpenBot runs the official Hermes installer, shows its progress, and then shows Connect for the
+  ZollyBot runs the official Hermes installer, shows its progress, and then shows Connect for the
   Nous Portal code. Windows keeps the install guide.
 - Connect TickTick from the Apps marketplace with browser sign-in to see and add tasks, organize lists and tags, and track habits and focus records.
 - A thread tab and its row in the thread menu show a blue dot when the agent wrote in the thread and
@@ -20,7 +20,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Type `@` in an agent's chat to tag one of its browser tabs or side threads. The agent gets the tab id
   and can use the tab, also from a side thread. For a thread, it gets the state and the start of the
   last answer, and it can read more of that thread.
-- A provider page in Settings → Providers now has a Delete button at the end. It turns the provider off and deletes the CLI that OpenBot downloaded for it. Accounts, sign-ins and agents stay. Before, you had to turn the provider off first and then remove the download.
+- A provider page in Settings → Providers now has a Delete button at the end. It turns the provider off and deletes the CLI that ZollyBot downloaded for it. Accounts, sign-ins and agents stay. Before, you had to turn the provider off first and then remove the download.
 - Settings > Voice offers two more local dictation models. Parakeet Unified EN 0.6B is English
   only, as fast as Parakeet TDT, and writes punctuation. Cohere Transcribe knows 14 languages, and you
   must set the language. It is about three times slower, it is a 2.9 GB download, and it uses about
@@ -29,36 +29,36 @@ All notable changes to OpenBot will be documented here. The project follows
   agent on this computer had it. The server must have the latest version.
 - Owners and admins of this computer's server can add and change Telegram and Slack workflow triggers
   and outputs from the mobile app.
-- An agent can send files, such as an image that you attached, to a WhatsApp, Slack, Discord or Telegram chat when it posts there on its own. The files must be in the agent's workspace or the OpenBot shared directory. On WhatsApp, JPEG, PNG and WebP images arrive as photos that the recipient can save.
+- An agent can send files, such as an image that you attached, to a WhatsApp, Slack, Discord or Telegram chat when it posts there on its own. The files must be in the agent's workspace or the ZollyBot shared directory. On WhatsApp, JPEG, PNG and WebP images arrive as photos that the recipient can save.
 - Choose the reasoning efforts of each custom provider model, such as Low, High and Max. OpenCode and Pi show only those efforts and send the one you select. Pi custom models can now reason. With no effort selected, OpenCode keeps Low, Medium and High, and Pi does not reason.
-- Let agents create a repository with the GitHub connection. The OpenBotGit app now asks for the
+- Let agents create a repository with the GitHub connection. The ZollyBotGit app now asks for the
   Administration permission, because GitHub needs it to create a repository. An owner of each
   account approves the request in GitHub. Until then, the agent explains why creation failed and
-  what to do. The `openbotgit[bot]` tokens never get this permission, so a user with push access
+  what to do. The `zollybotgit[bot]` tokens never get this permission, so a user with push access
   cannot change repository settings through them.
 - Connect Proton Pass in the Marketplace, on this computer or on a server. Click Connect and sign in
-  to Proton in your browser. OpenBot then makes a "Shared with OpenBot" vault and a read-only access
+  to Proton in your browser. ZollyBot then makes a "Shared with ZollyBot" vault and a read-only access
   key for one year, and keeps only that key. The browser can fill the logins of that vault. You can
   also paste an access key that you made. The Proton Pass CLI needs a paid Proton plan.
 - Give a named browser profile its own proxy. In Server settings > Browser profiles, add a proxy
   with one address, such as `socks5://user:password@host:1080` or `http://host:3128`, and choose it
   in the Proxy menu of a profile. A user name and a password are optional, for SOCKS5 too. A
-  profile without a proxy uses the proxy settings of the computer that runs OpenBot. A badge shows
-  the proxy of each profile, and it shows when the proxy does not answer. OpenBot keeps the
+  profile without a proxy uses the proxy settings of the computer that runs ZollyBot. A badge shows
+  the proxy of each profile, and it shows when the proxy does not answer. ZollyBot keeps the
   password encrypted and shows it only as a mask. When the proxy cannot be set, the tab does not open,
   so pages never go out without the proxy. Owners and admins of a joined server can do the same
   from the desktop app and the web. The address can also be `user:password@host:port` or
   `host:port:user:password`. The agent's profile select and the toolbar label of a tab show the
   proxy. A page that does not open names the proxy, and tells when the proxy refused the sign-in.
-  Before a proxy change closes open tabs, OpenBot asks. A save that does not change the address
+  Before a proxy change closes open tabs, ZollyBot asks. A save that does not change the address
   keeps the tabs open. When two proxies have the same host, their names also show the port.
 - Use your own computer as the proxy of a browser profile on a joined server. In the Proxy menu of
   a profile, select "Use your computer…", or select Share in the Proxies section. The pages of that
-  profile then go out through the internet connection of your computer, while OpenBot is open on
+  profile then go out through the internet connection of your computer, while ZollyBot is open on
   it. Your computer opens only public internet addresses, so the server cannot reach your local
   network. Select Stop sharing to stop. Owners and admins can share.
-- After two days and ten messages, a small toast asks you to post about OpenBot on X, Threads,
-  LinkedIn, Reddit, Instagram, TikTok or Facebook, and to follow OpenBot there. If you close it, it
+- After two days and ten messages, a small toast asks you to post about ZollyBot on X, Threads,
+  LinkedIn, Reddit, Instagram, TikTok or Facebook, and to follow ZollyBot there. If you close it, it
   comes back after 7 days and then after 30 days, and then never. A post or a follow stops it.
 - In a channel, an agent can reply to a message of another member to ask it a short question or to
   agree on something. The reply shows in the chat as a reply to that message. The other member gets
@@ -74,13 +74,13 @@ All notable changes to OpenBot will be documented here. The project follows
 - The daily resource summary now tells when the longest main-process delay came (start, wake from
   sleep, first hour or later) and counts helper process exits by process type. The local trace also
   records each main-process delay of 1 second or more. The summary holds no names or paths.
-- Usage analytics now include how long OpenBot takes to start and which startup step is slowest,
+- Usage analytics now include how long ZollyBot takes to start and which startup step is slowest,
   how long a turn waits in the queue and until the first output, and, in the daily summary, the
   number of slow tasks and the input delay of the app windows. These are rounded times and counts
   only. The app keeps the time of its last start in a local file to tell a first start after boot.
 - Usage reports of a failed turn now include a fixed code for the reason, such as an expired
   sign-in, a usage limit or a context that is too long. The reports never include the error text.
-- Product analytics now counts how often OpenBot ends without a clean quit: a crash, a force quit, a kill or a power loss. At the next start, OpenBot sends one event with the phase, the previous app version, a coarse uptime class, the number of new local crash dumps, and whether the computer slept or started again. Crash dumps stay on the computer. The analytics setting applies.
+- Product analytics now counts how often ZollyBot ends without a clean quit: a crash, a force quit, a kill or a power loss. At the next start, ZollyBot sends one event with the phase, the previous app version, a coarse uptime class, the number of new local crash dumps, and whether the computer slept or started again. Crash dumps stay on the computer. The analytics setting applies.
 - Local dictation with Parakeet or Bark and replies read aloud use less memory. After a long turn,
   the dictation process holds about 230 to 500 MB less, and the read-aloud process about 110 MB
   less. Whisper keeps its settings, because they make it faster.
@@ -115,7 +115,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- OpenBot shows fewer "Not connecting" errors when the account service database is busy for a short time.
+- ZollyBot shows fewer "Not connecting" errors when the account service database is busy for a short time.
   The account service now tries a failed read one more time.
 - Codex agents with many MCP servers use less context. Before, each request sent the full tool list
   of each MCP server. Now Codex finds these tools when the agent needs them. Computer Use tools stay
@@ -124,13 +124,13 @@ All notable changes to OpenBot will be documented here. The project follows
   became square for a moment, and the chat jumped.
 - Hermes Agent installs on a self-hosted server and in the Docker image. Before, its installer
   stopped because the server had no `libatomic1`, and the service user cannot install packages.
-  The server guide now tells how to install Hermes for the OpenBot service user.
+  The server guide now tells how to install Hermes for the ZollyBot service user.
 - Connect shows for Hermes Agent, Kimi and GitHub Copilot on a server, in the app and on the
   web. The server signed them in with a code, but only the iPhone app offered it.
-- OpenBot now tells every provider that tools are unavailable when it writes a channel summary, a title or an agent profile. Before, only Codex got this instruction. With OpenCode and other providers, a model could try a tool, for example to count the characters of a summary, and the generation failed. The channel summary then stayed at an old version.
+- ZollyBot now tells every provider that tools are unavailable when it writes a channel summary, a title or an agent profile. Before, only Codex got this instruction. With OpenCode and other providers, a model could try a tool, for example to count the characters of a summary, and the generation failed. The channel summary then stayed at an old version.
 - A hosted server downloads its own Claude or ChatGPT CLI when the CLI of the server image is too old. Before, the provider showed as too old, and it looked uninstalled.
-- ChatGPT no longer fails for 15 minutes after a slow first start. OpenBot gives the first start more time, and an update no longer reports "could not update the ChatGPT CLI" when ChatGPT only prepares its local history.
-- OpenBot no longer stays on "Connecting to OpenBot" at start. Before, when the account check finished
+- ChatGPT no longer fails for 15 minutes after a slow first start. ZollyBot gives the first start more time, and an update no longer reports "could not update the ChatGPT CLI" when ChatGPT only prepares its local history.
+- ZollyBot no longer stays on "Connecting to ZollyBot" at start. Before, when the account check finished
   while the window was still loading, the window did not get the result and showed the connecting
   screen until a restart.
 - The gap between the agent's chat tab and its thread tabs in the chat header is now the same as the
@@ -140,17 +140,17 @@ All notable changes to OpenBot will be documented here. The project follows
   showed the loading screen until Retry.
 - When a scheduled, script or webhook routine run has nothing to report, the agents linked after it on the Routines canvas are now skipped. Before, each of them started with "(no answer text)" as its input.
 - Show the models of a custom ACP agent that reports model values with quotes, such as DeepSeek
-  Harness. Before, OpenBot dropped all such models, so the agent had no models and you could not
+  Harness. Before, ZollyBot dropped all such models, so the agent had no models and you could not
   select it.
 - The app pauses less when it opens a chat with routine cards or many messages. Before, it laid out the page again for each routine card, and again while the message rows loaded.
-- Codex agents no longer say that the browser or another OpenBot tool is unavailable when an `exec` cell does not list it in `ALL_TOOLS`. OpenBot's tools are direct tools that `exec` does not list, and the agent instructions now say so.
+- Codex agents no longer say that the browser or another ZollyBot tool is unavailable when an `exec` cell does not list it in `ALL_TOOLS`. ZollyBot's tools are direct tools that `exec` does not list, and the agent instructions now say so.
 - Scrolling a long chat no longer stops for a moment. Before, three menu style rules made the app restyle the full chat when the scroll shadow at the top or bottom changed, or when the "scroll to latest" button showed. In a chat with many code blocks, each stop took more than half a second. Chats with many code blocks or formulas also open faster.
-- The first shared-table call of an agent after OpenBot starts no longer fails as a slow
+- The first shared-table call of an agent after ZollyBot starts no longer fails as a slow
   statement. Before, the start of the database process counted against the 5 second limit of that
   statement, and a slow Windows computer often went past it. The start now has its own limit, and
-  OpenBot starts the process early on a computer that already has shared tables.
-- OpenBot runs a turn again on the backup model when OpenCode, Pi or Antigravity stops it at a rate limit, a
-  usage limit or an expired sign-in. Before, OpenBot did not identify some of these errors and
+  ZollyBot starts the process early on a computer that already has shared tables.
+- ZollyBot runs a turn again on the backup model when OpenCode, Pi or Antigravity stops it at a rate limit, a
+  usage limit or an expired sign-in. Before, ZollyBot did not identify some of these errors and
   showed the error without a try on the backup model.
 - Devin and other agents that write Rust log records no longer show an info or warning record as
   a provider error. Before, a record such as `INFO … request failed, will retry` from Devin CLI
@@ -158,10 +158,10 @@ All notable changes to OpenBot will be documented here. The project follows
 - The WhatsApp Orchestrator answers the owner's own requests in the "Message yourself" chat of a
   linked number. Before, it read those messages as from another person and refused requests for the
   owner's own data, such as their latest emails. Other people keep the same limits.
-- Pi now lists Cloudflare Workers AI models, such as `@cf/moonshotai/kimi-k2.6`. Before, OpenBot dropped each Pi model whose id has a character such as `@`, so a Pi that is signed in only to Cloudflare Workers AI showed no models.
-- You can now change the name and logo of a server that you created on this computer. Before, the app showed "Sign in to OpenBot first." also when you were signed in.
-- OpenBot sends sign-in codes, invitations and other emails through a second provider when the main
-  mail server reaches its hourly limit. Before, sign-in stopped with "OpenBot cannot send more email
+- Pi now lists Cloudflare Workers AI models, such as `@cf/moonshotai/kimi-k2.6`. Before, ZollyBot dropped each Pi model whose id has a character such as `@`, so a Pi that is signed in only to Cloudflare Workers AI showed no models.
+- You can now change the name and logo of a server that you created on this computer. Before, the app showed "Sign in to ZollyBot first." also when you were signed in.
+- ZollyBot sends sign-in codes, invitations and other emails through a second provider when the main
+  mail server reaches its hourly limit. Before, sign-in stopped with "ZollyBot cannot send more email
   right now" until the limit reset.
 - The agent that answers Slack, Discord, Telegram and WhatsApp now saves a lasting fact that a
   person gives, such as the repository or account to use. Before, it kept the fact only in that
@@ -179,9 +179,9 @@ All notable changes to OpenBot will be documented here. The project follows
 - A side thread stays at the latest message while the agent writes a fast reply. Before, the thread
   could stop following the new text with no scroll by the user.
 - The app pauses less when it opens a chat with code previews, and when older messages load while you read. Before, each code preview laid out the page when it showed, and each loaded page of messages laid out the page again.
-- OpenBot fills a Bitwarden login on every page of its site when the login uses the default or "Base domain"
+- ZollyBot fills a Bitwarden login on every page of its site when the login uses the default or "Base domain"
   match rule, as Bitwarden does. A login saved for `myaccount.google.com` now also fills on
-  `accounts.google.com`, and a saved address with no `https://` now fills. Before, OpenBot found the
+  `accounts.google.com`, and a saved address with no `https://` now fills. Before, ZollyBot found the
   login only on the same address, so the agent asked for the password and the code again at each step.
 - The OpenRouter and DeepSeek model pickers show models that the provider added after the bundled Pi
   release, such as OpenRouter's stealth model Crouton Alpha. Before, the picker showed only the
@@ -190,10 +190,10 @@ All notable changes to OpenBot will be documented here. The project follows
   the CSV import left the user name empty. The import text now names Proton Pass.
 - The window no longer stops to respond when the browser panel changes to the active tab of the
   agent.
-- OpenBot no longer asks for automatic compactions of a ChatGPT (Codex), Muse, Pi or Antigravity chat that
-  stays at 80% or more of its context window after each compaction. Before, OpenBot stopped only
+- ZollyBot no longer asks for automatic compactions of a ChatGPT (Codex), Muse, Pi or Antigravity chat that
+  stays at 80% or more of its context window after each compaction. Before, ZollyBot stopped only
   at 90% or more, so a chat that stayed at about 84% compacted again and again and used up the
-  plan limit. Now OpenBot stops after 2 such compactions and shows the notice that the compaction
+  plan limit. Now ZollyBot stops after 2 such compactions and shows the notice that the compaction
   does not make the chat smaller. "Compact now" and "New chat" stay available.
 - The loading screen animation stops after the app opens. Before, the plushes of the closed loading
   screen kept their animations, so the window used CPU for each display frame also when nothing
@@ -201,7 +201,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A routine run and a chat in a routine thread have Computer Use again when it is on for the agent.
   Since 0.61.0, each routine runs in its own thread, and these threads did not get the Computer Use
   tools, so a scheduled task that uses a desktop app, such as Messages, could not run.
-- When the orchestrator of a Slack, Discord, Telegram or WhatsApp conversation gave work to a teammate, and the teammate asked a question, the question waited in OpenBot and the conversation looked stuck. Now the teammate decides on its own. When only the OpenBot user can help, for example with a sign-in or a key, its answer in the conversation says what to do in OpenBot.
+- When the orchestrator of a Slack, Discord, Telegram or WhatsApp conversation gave work to a teammate, and the teammate asked a question, the question waited in ZollyBot and the conversation looked stuck. Now the teammate decides on its own. When only the ZollyBot user can help, for example with a sign-in or a key, its answer in the conversation says what to do in ZollyBot.
 - On macOS, the transparent window is clear in all of the window. Before, only the frame and the
   card were clear. The message bubbles (also bubbles with a chat colour), tables, code blocks, the
   message box, the Settings cards, the Tasks message box and the Workflows canvas stayed solid.
@@ -210,7 +210,7 @@ All notable changes to OpenBot will be documented here. The project follows
   `uv` installs. These programs are in the data volume, so they stay after an update. Before, only
   `/data` stayed, and on an instance with an empty data folder agents did not find the programs in
   it.
-- OpenBot uses less energy when it is open with no task. Before, the app woke the processor many
+- ZollyBot uses less energy when it is open with no task. Before, the app woke the processor many
   times each second while it did nothing. The main process measured its own response time all the
   time, the Computer Use highlight checked the screen 30 times each second for the whole session,
   and the agent avatar and the sample turn of an empty chat kept moving when another app had the
@@ -228,7 +228,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A GitHub trigger of a workflow can watch more than one repository. An event from any of them starts a
   run, and a GitHub output set to "Same as trigger" acts on the repository of that event. Workflows that
   watch one repository do not change.
-- Devin is a new provider. OpenBot downloads the Devin CLI from More providers, and you sign in
+- Devin is a new provider. ZollyBot downloads the Devin CLI from More providers, and you sign in
   with your Devin account in the browser. Devin agents use the models of your Devin plan.
 - The agent colors have lime and indigo again. Agents that had lime show lime, not green, and
   agents that had indigo show indigo, not violet.
@@ -253,28 +253,28 @@ All notable changes to OpenBot will be documented here. The project follows
   members delete their own messages; admins, and members who can manage the agent, delete any
   message.
 - One server can have a custom limit of active hosted sites, such as for an enterprise customer. The
-  limit replaces the site limit of the server's plan, from 1 to 1000 sites. OpenBot staff set it.
+  limit replaces the site limit of the server's plan, from 1 to 1000 sites. ZollyBot staff set it.
 - A commercial license gives 3 hosted sites for each user. The servers of the account with no plan
   share these sites.
 - A workflow Condition step has a model and effort picker, as an LLM step has. A new Condition step
   starts with the model of a new LLM step. A Condition step saved before shows "Auto": the server
   chooses its model until you choose one.
 - Chat colors. Pick a chat color for an agent in its settings, and one for yourself in Settings → General. The color tints the chat bubbles, and everyone on the server sees it. The avatar keeps its own color.
-- The website has the OpenBot Contributor License Agreement at openbot.run/cla. You can read it on
+- The website has the ZollyBot Contributor License Agreement at openbot.run/cla. You can read it on
   the page or download the PDF to fill in, sign and email to licenses@openbot.run. The site footer
   links to it.
-- A guide that compares chat history with saved workspace files in OpenBot, using a recurring research task and plain explanations of model changes and agent handoffs.
+- A guide that compares chat history with saved workspace files in ZollyBot, using a recurring research task and plain explanations of model changes and agent handoffs.
 - The Usage page shows the CPU and memory use of the server to owners and admins. A click shows the
   details and the disk use. The disk row opens Storage.
 - When you scroll away from a subagent card while its subagents work, its header now stays under the chat header with the progress, the current step and the time. Click it to go back to the card.
-- GitHub Copilot is a new provider. OpenBot downloads the GitHub Copilot CLI from More providers,
+- GitHub Copilot is a new provider. ZollyBot downloads the GitHub Copilot CLI from More providers,
   and you sign in with GitHub in the browser or with a device code. Copilot agents use the models
   of your Copilot plan, and Disconnect signs the CLI out.
 - Agents can make, change, delete and run workflows. An agent can add, change, move, connect and
   remove steps on the canvas, start a run and read its result. The tools load only when an agent
   searches for them, so other turns do not get longer. Only your own
   message to an agent, in its chat or in a thread you opened, can make it change, delete or run a
-  workflow; a routine run or a team member's message cannot. Before an agent deletes a workflow, OpenBot asks you
+  workflow; a routine run or a team member's message cannot. Before an agent deletes a workflow, ZollyBot asks you
   to approve, also when the agent has Full access.
 - When an agent builds or changes a workflow that is open on the Workflows page, you see its cursor
   go to each step, and the steps and connections show one after the other. A workflow that an agent
@@ -322,14 +322,14 @@ All notable changes to OpenBot will be documented here. The project follows
 - The servers of an account with no plan and no license share 1 hosted site. Before, each server had
   1. No site is deleted: a server above the limit keeps its sites until they expire.
 - An account can have at most 300 active hosted sites on its servers.
-- The privacy policy has a new Google User Data section. It tells which Google data OpenBot reads,
-  how it uses, stores, shares and deletes this data, and how OpenBot obeys the Google API Services
+- The privacy policy has a new Google User Data section. It tells which Google data ZollyBot reads,
+  how it uses, stores, shares and deletes this data, and how ZollyBot obeys the Google API Services
   User Data Policy.
 - Agents show a confirm card with real actions, such as Send, Edit and Keep draft, after a draft
   or a plan for a send, a post, a delete or a payment. Before, they often asked in a sentence, and
-  you typed the answer. `openbot.ask_ui` is now always available to agents, without a tool search
+  you typed the answer. `zollybot.ask_ui` is now always available to agents, without a tool search
   (#3922).
-- New contributors sign the OpenBot Contributor License Agreement instead of the Contributor
+- New contributors sign the ZollyBot Contributor License Agreement instead of the Contributor
   Assignment Agreement. You keep the copyright in your contributions. You sign the PDF and send it
   by email; a ticked box or a comment on the pull request no longer signs. A signature of the
   assignment agreement still counts.
@@ -361,7 +361,7 @@ All notable changes to OpenBot will be documented here. The project follows
   Before, these pages were in English.
 - In the agent avatar colors and the channel picture colors, a hovered color no longer covers the
   ring of the selected color. Each color tile is now as wide as its column.
-- On a Mac with a server on this computer, an empty second OpenBot window no longer opens next to
+- On a Mac with a server on this computer, an empty second ZollyBot window no longer opens next to
   the app.
 - Grok no longer shows a "Grok error" when Git is not installed, as on a Windows computer without Git. Grok continues without Git, so the message now goes only to the log.
 - An agent set to "Ask before switching" now continues its work on the first available backup model when a usage limit, such as the Claude 5-hour limit, stops it after it started to work. Before, the turn failed, and the agent did not ask or switch.
@@ -371,9 +371,9 @@ All notable changes to OpenBot will be documented here. The project follows
   Before, it showed only "Internal error".
 - The felt plushes on the loading screen and in agent avatars no longer have a dark outline in the
   light theme. The edge of the fur now has the colour of the plush.
-- On a Linux computer with a Wayland session, OpenBot now starts when no monitor is on, for example
+- On a Linux computer with a Wayland session, ZollyBot now starts when no monitor is on, for example
   after an automatic update. Before, it stopped with no window until a monitor came on. With no
-  monitor, OpenBot now starts on XWayland, and the next start uses Wayland again.
+  monitor, ZollyBot now starts on XWayland, and the next start uses Wayland again.
 - In a shared chat, a member who joined a server after it started now shows with their profile name. Before, their messages showed an account id until the server restarted.
 - The Dynamic Island uses much less processor time when nothing changes. Before, the greeting motion
   and the logo blink made it draw on every screen refresh, all day. Now the greeting moves only while
@@ -387,7 +387,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A channel lead on Claude routes messages again when Claude signs in with a saved Anthropic API key and no claude.ai account. Before, the channel said that the lead could not route the message. Channel summaries, workflow steps, memory review and generated profiles on such a Claude setup work again too.
 - "Keep memories in this channel" in Channel settings now stays on. Before, the app did not save the setting, so agents saved what they learned in the channel as their own memories.
 - When an agent in a channel hands work to an agent that is not a member of the channel, the agent now learns which agent is missing, which members it can use, and that a person must add the missing agent. Before, it got a general message, tried the same handoff again, and the task stopped with no clear reason.
-- An MCP server whose command is a path to a file that does not exist now shows the "MCP server not started" error. Before, OpenBot gave the server to the provider, the provider could not start it, and the agent lost its tools with no message in the app.
+- An MCP server whose command is a path to a file that does not exist now shows the "MCP server not started" error. Before, ZollyBot gave the server to the provider, the provider could not start it, and the agent lost its tools with no message in the app.
 - In a channel, an OpenCode member no longer shows each note that it writes before a tool call as a
   message for a short time. The notes go into the steps above the member's answer, as before. The
   member's own chat still shows its text as it arrives.
@@ -403,14 +403,14 @@ All notable changes to OpenBot will be documented here. The project follows
   error, and each later usage limit moved the agent to the spent Grok model again.
 - Pi and Muse chats show your home folder in paths again when Computer Use is on. Before, the
   folder changed to `•••`, and a Shared file link in the chat could not open the file.
-- On Linux, `main.log` now records why OpenBot renders on the CPU, and why the GPU process stopped.
+- On Linux, `main.log` now records why ZollyBot renders on the CPU, and why the GPU process stopped.
   Before, these lines went only to the terminal, so a GPU crash that turned off the GPU left no reason
   in the log.
 - A workflow Condition step now runs on a connected provider when ChatGPT is not connected and your
   default is ChatGPT with no model chosen. Before, the step failed with "Connect ChatGPT to
   continue". Another default provider, or a default model that you chose, stays the provider of the
   step.
-- A chat that is almost full no longer compacts again and again when the provider retries failed requests. Before, each turn compacted the chat, the agent did no work, and only a restart stopped it. When 2 compactions in a row do not make a chat smaller, OpenBot now shows "Compaction does not make this chat smaller" and stops compacting it automatically.
+- A chat that is almost full no longer compacts again and again when the provider retries failed requests. Before, each turn compacted the chat, the agent did no work, and only a restart stopped it. When 2 compactions in a row do not make a chat smaller, ZollyBot now shows "Compaction does not make this chat smaller" and stops compacting it automatically.
 - In a channel, when you quote a message and send only a mention, the agent now gets the quoted
   message with its author as part of the request. Before, the agent got only the mention and could
   answer about a different message.
@@ -441,22 +441,22 @@ All notable changes to OpenBot will be documented here. The project follows
 - When an agent wrote a text, such as a draft reply, and then asked you a question about it in the same turn, the chat showed only the question. The text was in the closed steps of the turn. Now the text shows above the question until you answer it.
 - A side thread now shows the Sign in card when its agent needs you to sign in to an MCP server. Before, the thread showed only a line of text, and you could not sign in from it.
 - A Gemini message no longer shows "thinking" without end when Gemini sends nothing back. Before,
-  you had to stop the message and send it again, sometimes more than once. Now OpenBot sends it
-  again by itself after 3 minutes with no reply. If Gemini is silent again, OpenBot ends the message
+  you had to stop the message and send it again, sometimes more than once. Now ZollyBot sends it
+  again by itself after 3 minutes with no reply. If Gemini is silent again, ZollyBot ends the message
   with an error, and you can send it again.
 - You can now sign in to an MCP server that follows the OpenID client registration rules. Before,
-  some servers refused OpenBot with "web redirect_uris must only use the https scheme".
+  some servers refused ZollyBot with "web redirect_uris must only use the https scheme".
 - On a Windows computer with more than one monitor, the remote desktop now shows the monitor that
   you select. Before, it always showed the primary monitor, and the monitor names could be wrong.
 - You can invite people to a server that you made with New server on this computer. Before, the
   invitation stopped with "Sign in is required." Invited people join the server from their own
-  devices, and their names show in the member list. They can connect while OpenBot runs on your
+  devices, and their names show in the member list. They can connect while ZollyBot runs on your
   computer and you are signed in.
 - When an OpenCode, Kimi, Cline or Hermes agent starts a subagent, the chat now shows the subagent card with its task, its state and its time. Before, these agents showed no card, so the agent looked idle while its subagents worked.
 - A Codex subagent card now shows the subagent's steps while it works: its commands, thoughts and messages. Before, the card showed only the task until the subagent ended.
 - An OpenCode subagent card now shows the subagent's reads, searches, commands, thoughts and messages, and the error when the subagent fails.
 - An agent whose subagents still run now shows as working in the sidebar, also when a background subagent runs on after the agent's turn. Before, the agent showed as idle.
-- When a subagent fails, OpenBot now tells you: a desktop notification when you are not in the app, and an alert when another chat is open. It uses the agent's notification settings.
+- When a subagent fails, ZollyBot now tells you: a desktop notification when you are not in the app, and an alert when another chat is open. It uses the agent's notification settings.
 - Claude agents use fewer steps and tokens with the tools they find with a search. They no longer
   call a found tool directly and get a refusal, and a request for a workflow no longer loads Claude
   Code's own workflow skill.
@@ -471,24 +471,24 @@ All notable changes to OpenBot will be documented here. The project follows
   the update asks about each changed skill that gets a new version: keep your changes, or replace them
   with the new version.
   A host that updates an agent for a joined server keeps the changed skills.
-- On Linux, OpenBot no longer asks you to sign in again after each restart or update when the system
+- On Linux, ZollyBot no longer asks you to sign in again after each restart or update when the system
   keyring does not keep its key, for example a locked keyring or one that keeps its items only in
-  memory. Before, the saved sign-in and other secrets did not open after a restart. Now OpenBot
+  memory. Before, the saved sign-in and other secrets did not open after a restart. Now ZollyBot
   finds this, keeps new secrets in its own key file that only your user can read, and the sign-in
   screen tells you why you must sign in one more time.
-- OpenBot is faster when it renders on the CPU, for example on a server, in a remote desktop, or on
+- ZollyBot is faster when it renders on the CPU, for example on a server, in a remote desktop, or on
   Linux after a GPU failure. Dialogs and panels then do not blur what is behind them, and agent
   avatars do not move.
 - After you stop or cancel a sub-task in a channel, the lead knows it. It no longer says that it
   still waits for that work.
-- When an older OpenBot starts over data that a newer version saved, it now installs the latest
+- When an older ZollyBot starts over data that a newer version saved, it now installs the latest
   version and opens again. If it cannot update, it shows a download link and a troubleshooting
   guide. Before, it showed an error with only an OK button (#4969).
-- When `OPENBOT_ANTIGRAVITY_PATH` names a Gemini server file that is missing or not executable,
-  OpenBot now says so and tells you to correct the path or remove the variable. Before, it said
+- When `ZOLLYBOT_ANTIGRAVITY_PATH` names a Gemini server file that is missing or not executable,
+  ZollyBot now says so and tells you to correct the path or remove the variable. Before, it said
   that Gemini was not downloaded and told you to download it, but Download refused while the
   variable was set.
-- When a sign-in server refuses to register OpenBot, such as RevenueCat's, the MCP server page now says so instead of showing "The client is not registered".
+- When a sign-in server refuses to register ZollyBot, such as RevenueCat's, the MCP server page now says so instead of showing "The client is not registered".
 
 ## [0.60.0] - 2026-11-03
 
@@ -505,17 +505,17 @@ All notable changes to OpenBot will be documented here. The project follows
 - You can compact the context of a chat or side task with an agent on a joined server. The server
   must run this version or a newer one.
 - When an agent asks you to add a card, an address or a login to the Vault, the phone app shows the same card as the desktop app. The server must run this version or a newer one. Add opens the Vault form with the values that the agent filled in, and you type the secret values there.
-- A workflow that a Discord mention starts now keeps the files of the message and of the message that it replies to. Agent steps get the name, type, size and address of each file. A GitHub output that makes a new issue or a comment copies the files to the `openbot-attachments` branch of the repository and shows them in the text: images show in the issue, other files are links. A file larger than 25 MB, a file after the first 50 MB, or a file that cannot be copied, is linked on Discord, where its address expires after about a day.
+- A workflow that a Discord mention starts now keeps the files of the message and of the message that it replies to. Agent steps get the name, type, size and address of each file. A GitHub output that makes a new issue or a comment copies the files to the `zollybot-attachments` branch of the repository and shows them in the text: images show in the issue, other files are links. A file larger than 25 MB, a file after the first 50 MB, or a file that cannot be copied, is linked on Discord, where its address expires after about a day.
 - A file that downloads from a joined server now shows its progress. The download button becomes a ring with the bytes received below the file name, and a click on the ring stops the download. A failed download shows "Download failed" and a retry button. Before, nothing changed on screen until the whole file arrived.
-- OpenBot can take its colors from a theme palette file in `~/.config/OpenBot/themes/`, such as the
+- ZollyBot can take its colors from a theme palette file in `~/.config/ZollyBot/themes/`, such as the
   one that an Omarchy theme writes. Choose the palette under Settings > General > Theme. The window
   follows each change to the file, with no restart.
 - An agent can give work to a channel from your direct chat. Ask it to send a task to a channel, and
   the channel members do the work there.
 - "Send to channel" on the message menu of an agent chat opens a channel with the message text in its
   composer.
-- Your phones and other computers can now open the servers that OpenBot runs on this computer beside its own server, and get their notifications. While OpenBot is signed in, it adds each of these servers to your account. When you delete one, OpenBot removes it from your account.
-- Files that you attach to a chat show in the message box at once, before they reach the server. For a remote OpenBot, a ring shows how much of each file the server has. Before, a large file uploaded with no sign until it was ready.
+- Your phones and other computers can now open the servers that ZollyBot runs on this computer beside its own server, and get their notifications. While ZollyBot is signed in, it adds each of these servers to your account. When you delete one, ZollyBot removes it from your account.
+- Files that you attach to a chat show in the message box at once, before they reach the server. For a remote ZollyBot, a ring shows how much of each file the server has. Before, a large file uploaded with no sign until it was ready.
 - A file that fails to upload stays in the message box with the reason and a Retry button. The other files of the same pick still arrive. Send waits until you send the file again or remove it.
 - You can give a channel a picture. In channel settings, click the picture at the top to upload an
   image, or to choose one of 20 icons and a color. The picture shows in the sidebar, in pinned chats
@@ -528,16 +528,16 @@ All notable changes to OpenBot will be documented here. The project follows
 - Side threads have Reply on each message, as the agent's own chat has. The message box shows the
   quoted message, and the sent message shows the quote above it. A click on the quote goes to the
   quoted message. A joined server needs this version for Reply.
-- WhatsApp: link a WhatsApp number to this computer under Marketplace → Apps → WhatsApp, with a QR code or a pairing code, and talk to your agents from WhatsApp. A WhatsApp Orchestrator answers each new conversation and asks the right teammate. With your personal number, only your "Message yourself" chat and the people and groups you allow can give work; with a number used only by OpenBot, other people get a code that you approve in OpenBot. In a group, the agents answer a mention of the number or a reply. Files go both ways. Approve or deny a request by replying 1 or 2. Messages go directly between this computer and WhatsApp; no OpenBot service sees them. WhatsApp does not support this kind of client officially and can block numbers that it sees as automated, so a separate number is safer.
-- When the disk of a hosted Starter or Standard server is almost full, OpenBot offers the next plan. The dialog compares the disk, memory and price of the two plans, and opens the plan change in billing. It shows once when space is low and once more when the disk is full.
-- In Discord, the agent now reads embeds, such as the form of a ticket bot. Reply to the message with the embed and mention OpenBot. Link previews in earlier messages are context too. The agent gets the title, description, fields, footer and the links of the embed images. It does not get colors, icons or buttons.
-- Start a workflow when someone mentions OpenBot in a linked Telegram group, with filters for the chat and the text.
+- WhatsApp: link a WhatsApp number to this computer under Marketplace → Apps → WhatsApp, with a QR code or a pairing code, and talk to your agents from WhatsApp. A WhatsApp Orchestrator answers each new conversation and asks the right teammate. With your personal number, only your "Message yourself" chat and the people and groups you allow can give work; with a number used only by ZollyBot, other people get a code that you approve in ZollyBot. In a group, the agents answer a mention of the number or a reply. Files go both ways. Approve or deny a request by replying 1 or 2. Messages go directly between this computer and WhatsApp; no ZollyBot service sees them. WhatsApp does not support this kind of client officially and can block numbers that it sees as automated, so a separate number is safer.
+- When the disk of a hosted Starter or Standard server is almost full, ZollyBot offers the next plan. The dialog compares the disk, memory and price of the two plans, and opens the plan change in billing. It shows once when space is low and once more when the disk is full.
+- In Discord, the agent now reads embeds, such as the form of a ticket bot. Reply to the message with the embed and mention ZollyBot. Link previews in earlier messages are context too. The agent gets the title, description, fields, footer and the links of the embed images. It does not get colors, icons or buttons.
+- Start a workflow when someone mentions ZollyBot in a linked Telegram group, with filters for the chat and the text.
 - Send a workflow result to Telegram: reply to the message, post in a linked chat, or add a reaction.
-- Use OpenBot in Arabic. The layout mirrors from right to left when Arabic is the language.
+- Use ZollyBot in Arabic. The layout mirrors from right to left when Arabic is the language.
 - Each chat paragraph shows in the direction of its text, in all languages. Arabic and Hebrew
   paragraphs read from right to left, and English words, links, numbers and code in them keep a
   readable order. Code blocks always read from left to right.
-- Start a workflow when someone mentions OpenBot in a Slack channel. Limit the trigger to one
+- Start a workflow when someone mentions ZollyBot in a Slack channel. Limit the trigger to one
   workspace, one channel, or messages that contain a text. A Slack output replies in the thread of
   the mention, posts in a channel, or adds a reaction to the mention. Only owners and admins can add
   or change Slack steps.
@@ -548,12 +548,12 @@ All notable changes to OpenBot will be documented here. The project follows
 - Usage and the usage rail show the Kimi Code plan usage: the 5-hour window and the weekly window.
 - Company sign-in. A server owner can connect an OpenID Connect provider, such as Microsoft Entra ID, Okta or Google Workspace, in Members → Company sign-in. After a test sign-in passes, people with an email at the company domains sign in through the company page: in the browser from the desktop app, and in the same tab in the web app. A person who signs in this way joins the server as a member with no invitation, while the server has a free seat. A person whom the owner removed stays out.
 - For Microsoft Entra ID, the issuer field accepts the tenant ID URL, the tenant domain, or the metadata URL from the portal.
-- User sync (SCIM). When the company provider turns off a person, OpenBot signs them out and removes them from the server. When the provider turns the person on again, they come back.
+- User sync (SCIM). When the company provider turns off a person, ZollyBot signs them out and removes them from the server. When the provider turns the person on again, they come back.
 - You can set the speed of replies that are read aloud: 0.75×, 1×, 1.25×, 1.5× or 2×. Set it in Settings → Voice → Spoken replies, with the speed button in the voice conversation panel, or with the speed button on a spoken reply. The voice keeps its pitch, and a change applies to the reply that plays now.
 
 ### Changed
 
-- OpenBot downloads OpenCode 2.2.5. Before, it downloaded OpenCode 2.1.1.
+- ZollyBot downloads OpenCode 2.2.5. Before, it downloaded OpenCode 2.1.1.
 - Chat messages use more of a wide window. A reply, code and a table can be up to 1200 px wide, your
   message up to 800 px, and the chat column grows to 1920 px. Before, the limits were 720 px, 420 px
   and 1440 px. On a laptop the chat stays almost the same. (#4608)
@@ -568,7 +568,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A long request is in a channel turn once. A long handoff of an agent and a long message in `channel_history` are cut, and the agent can read the rest. A `channel_history` page also cuts a long task instruction or expected result.
 - An agent compacts its context before a turn whose input would fill it.
 - A channel summary uses the provider's smaller model when the lead uses a larger one.
-- Phone notifications now stay quiet while you use the computer that runs the OpenBot desktop app, also in another app. Before, the phone stayed quiet only for 30 seconds after you sent, answered or typed in the desktop app of a joined server. The phone notifies again after 30 seconds with no keyboard or mouse input.
+- Phone notifications now stay quiet while you use the computer that runs the ZollyBot desktop app, also in another app. Before, the phone stayed quiet only for 30 seconds after you sent, answered or typed in the desktop app of a joined server. The phone notifies again after 30 seconds with no keyboard or mouse input.
 - An answered form that asked for a secret, such as an API key or a password, shows its answer as a list of rows. Each value has its label, and each secret shows as hidden. Before, the form showed empty, disabled boxes and repeated the values in a line under them.
 - In the model picker, Effort is a dropdown on one line, at the bottom of each provider tab. Choose an effort and then a model on that tab: the model starts with that effort.
 - Each file that you open from a chat gets its own tab in the side panel, after the Browser and the
@@ -576,18 +576,18 @@ All notable changes to OpenBot will be documented here. The project follows
   to a new place among the file tabs. Before, a file
   replaced the side panel, and a new file replaced the open file.
 - The faces that you can choose for a new agent now have open eyes, and their eyes are larger, so you can compare the faces more easily. Before, some faces looked sleepy or angry.
-- The price section of the home page now says that OpenBot is free for personal use. It lists what
+- The price section of the home page now says that ZollyBot is free for personal use. It lists what
   you get, and has a Download button and a "License for work" button that opens the pricing page.
 - The pricing page now starts with a "Personal use is free" strip and a Download button, above the
   order form for servers and licenses.
-- The first question of first run now says that OpenBot is free for personal use. The two answers
+- The first question of first run now says that ZollyBot is free for personal use. The two answers
   are "Use free models" and "Use my AI subscription", so that "Start free" does not look like a
   trial of a paid app.
-- The answers to "Is OpenBot free?" on the home page and the download pages now say that it is
+- The answers to "Is ZollyBot free?" on the home page and the download pages now say that it is
   free for personal and other noncommercial use, and that commercial use needs a license.
-- The "Help make OpenBot better" box of first run has a shorter text. Settings still has the full
+- The "Help make ZollyBot better" box of first run has a shorter text. Settings still has the full
   text.
-- A full-window pile of plushes shows while OpenBot starts and while a remote server loads for the
+- A full-window pile of plushes shows while ZollyBot starts and while a remote server loads for the
   first time, on desktop and on the web. When the app is ready, the plushes hop out and the screen
   fades. The bar at the top of a remote server is gone: after 10 seconds, a message with Retry and
   Details shows.
@@ -595,54 +595,54 @@ All notable changes to OpenBot will be documented here. The project follows
 - A text paste of more than 4,000 characters in the chat box becomes a `pasted-text.txt` attachment
   at the cursor, as on the phone. The message keeps all the text, also above the message length
   limit. When the file cannot attach, the error shows and the text goes into the message.
-- The "Author is not a bot" filter of a GitHub workflow trigger now also refuses OpenBot's own bot. It
+- The "Author is not a bot" filter of a GitHub workflow trigger now also refuses ZollyBot's own bot. It
   checks the author of the issue, pull request, comment or review, and the account that did the action.
   When one of them is a bot, the workflow does not start. For example, a person who merges a Dependabot
   pull request no longer starts a workflow with this filter. Turn off the filter to start on these events.
 
 ### Fixed
 
-- Kimi sign-in works with the newer system CLI. Before, it could fail before the sign-in code appeared. If the login process stops, OpenBot shows its error instead of an interruption error.
-- On a Mac, the Dock icon stays after you close the window, so its dot shows that OpenBot still runs. The menu bar icon stays too.
+- Kimi sign-in works with the newer system CLI. Before, it could fail before the sign-in code appeared. If the login process stops, ZollyBot shows its error instead of an interruption error.
+- On a Mac, the Dock icon stays after you close the window, so its dot shows that ZollyBot still runs. The menu bar icon stays too.
 - Kimi sign-in now opens kimi.ai, for global accounts. To sign in with a mainland China account, select "Sign in with kimi.com (China)" in the ⋯ menu of the Kimi row.
-- An agent that starts a task each routine run no longer stops at 8 open tasks. Only tasks that run or have a queued message count toward the limit. When the agent starts a task, OpenBot archives its finished tasks other than the newest 8. Tasks that you started stay open.
+- An agent that starts a task each routine run no longer stops at 8 open tasks. Only tasks that run or have a queued message count toward the limit. When the agent starts a task, ZollyBot archives its finished tasks other than the newest 8. Tasks that you started stay open.
 - Sign-in codes reach users in all regions. Before, every sign-in code failed with an email delivery
   error for users whom Cloudflare served from some locations, such as FSD.
 - An agent with backup models and "Ask before switching" off now moves to its next backup model when
   its ChatGPT, Claude, Grok or Muse credit balance or quota is spent before the agent starts to write.
   Before, the message failed under the usage notice, and the agent stayed on the spent model.
 - The "New server on this computer" dialog now says that a server name needs at least 6 characters. Before, it turned off Create server for a shorter name and did not say why.
-- When Cursor's server stopped accepting the sign-in of its running process, every Cursor agent answered only "Please sign in to continue" until you restarted OpenBot, also when Cursor was still signed in. Now the turn fails with a clear message, OpenBot starts Cursor again, and your next message works. If Cursor is really signed out, Cursor asks you to sign in.
-- When Google stops accepting the Gemini sign-in while OpenBot runs, a new Gemini chat now shows at
+- When Cursor's server stopped accepting the sign-in of its running process, every Cursor agent answered only "Please sign in to continue" until you restarted ZollyBot, also when Cursor was still signed in. Now the turn fails with a clear message, ZollyBot starts Cursor again, and your next message works. If Cursor is really signed out, Cursor asks you to sign in.
+- When Google stops accepting the Gemini sign-in while ZollyBot runs, a new Gemini chat now shows at
   once that you must sign in with Google again. Before, the chat waited five minutes and then
   failed, and the saved Gemini sign-in was deleted.
 - The main log (`logs/main/main.log`) now records why a message did not start, with the redacted provider error. Before, a channel showed only "The provider could not start this assignment", and no log file kept the reason.
-- On Windows and macOS, OpenBot now shows a warning when another program, such as an agent, changes its program file `app.asar` while it runs. Before, OpenBot did not open again after a restart and showed no message. Install OpenBot again to repair it; your local data stays.
+- On Windows and macOS, ZollyBot now shows a warning when another program, such as an agent, changes its program file `app.asar` while it runs. Before, ZollyBot did not open again after a restart and showed no message. Install ZollyBot again to repair it; your local data stays.
 - The message box shows a New chat button for an agent that has no context ring yet. Before, New
   chat was only in the context ring, and the ring showed only after the agent finished a turn since
   the app started.
 - A question card of an agent shows a Markdown link in the question as a link that you can open. Before, it
   showed the link text and the address as plain text.
 - When a spent Gemini quota moves an agent to its backup model, the agent now stays on the backup until the reset that Google names. Before, the agent went back to Gemini after 10 minutes, and its next turn could fail while it was working, with no switch to the backup.
-- In a direct chat, you can open a file that another agent names in its message. OpenBot opens the file from the workspace of the agent that wrote the message. Before, the path was only text.
+- In a direct chat, you can open a file that another agent names in its message. ZollyBot opens the file from the workspace of the agent that wrote the message. Before, the path was only text.
 - An agent can now delete a webhook routine when you ask it in the chat. Before, the agent said that
   the routine no longer existed. To test a webhook routine, the agent tells you to use Routines
   settings.
 - The "The generated profile is too large" error no longer shows in channels and chats. Before, the long
-  reasoning of an OpenCode or Claude model counted as answer text when OpenBot summarized a channel
+  reasoning of an OpenCode or Claude model counted as answer text when ZollyBot summarized a channel
   or chose who answers, and the message then failed (#4558).
-- You can add and update a Marketplace agent on a computer whose time zone OpenBot cannot identify.
+- You can add and update a Marketplace agent on a computer whose time zone ZollyBot cannot identify.
   The error "timezone is required." no longer shows. The routines of the agent then use UTC (#4566).
 - In agent settings, a long value no longer covers the row name. Before, the Polish "Powiadamiaj
   mnie" row showed its value on top of its name. Now a value that does not fit ends in an ellipsis.
-- Pi agents find the tools of your MCP servers more reliably. Before, an agent sometimes looked for them with the OpenBot tool search, found nothing, and said that it had no such tool. That search now tells the agent to load MCP tools with Pi's own `tool_search`.
-- On Windows, an agent delete works on the first try also after another provider stopped, after a Pi restart, or after OpenBot started. Before, the agent's Pi or other provider session could stay open in the agent folder, and the delete failed with "The agent data could not be removed completely" until you restarted OpenBot.
-- On a server that is low on memory, OpenBot now closes the idle provider sessions at once when a message waits in the queue, so the message can start sooner. Before, the message could wait up to 10 minutes for these sessions to close, also when no agent was working.
+- Pi agents find the tools of your MCP servers more reliably. Before, an agent sometimes looked for them with the ZollyBot tool search, found nothing, and said that it had no such tool. That search now tells the agent to load MCP tools with Pi's own `tool_search`.
+- On Windows, an agent delete works on the first try also after another provider stopped, after a Pi restart, or after ZollyBot started. Before, the agent's Pi or other provider session could stay open in the agent folder, and the delete failed with "The agent data could not be removed completely" until you restarted ZollyBot.
+- On a server that is low on memory, ZollyBot now closes the idle provider sessions at once when a message waits in the queue, so the message can start sooner. Before, the message could wait up to 10 minutes for these sessions to close, also when no agent was working.
 - Agent avatars no longer show only their eyes while the app or the website opens. An avatar now
   shows when its body is ready.
 - When Claude cannot reach its server, the chat now shows that Claude tries again, with the retry number, for example "Claude cannot connect to its server. Retry 3 of 10." Before, the chat stayed empty for minutes, as if Claude did not answer. When the connection comes back, the chat says so and the reply continues.
-- OpenBot loads the main window again when its page stops, for example after a crash or when the computer
-  runs out of memory. Before, the window stayed white until you restarted OpenBot, and Ctrl+R did
+- ZollyBot loads the main window again when its page stops, for example after a crash or when the computer
+  runs out of memory. Before, the window stayed white until you restarted ZollyBot, and Ctrl+R did
   nothing on Windows. Agents keep running while the window loads again.
 - While an agent works, the dots above its face no longer cover the bottom of the message above. Before, the dots drew over the edge of that message.
 - A channel member always gets the current assignment and the request messages of its task. The assignment is first in each turn, and a short assignment comes again at the end (#3557, #3630).
@@ -655,7 +655,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - The thinking of a Claude agent keeps its words whole. Before, a line break split the words at each streamed part of the thinking.
 - An agent that gives channel work with a missing or incorrect value, for example no source messages or a recipient that is not a channel member, now gets the reason and can correct the call. Before, a Codex agent saw only "dynamic tool request failed" and tried the same call again, and the channel showed a "Provider error".
 - When many providers or accounts are connected, the provider list in the model picker scrolls. The add button below it stays visible, so you can open the provider settings from the picker.
-- Adding a skill with the name of one of OpenBot's own skills, such as `openbot-data` or `openbot-skill-creator`, failed on every agent with "did not change" and "An unmanaged skill already exists". OpenBot already gives every agent these skills. The local skill library now refuses a skill with such a name and no longer lists one that it took before. If an install still meets one, it gives a clear reason.
+- Adding a skill with the name of one of ZollyBot's own skills, such as `zollybot-data` or `zollybot-skill-creator`, failed on every agent with "did not change" and "An unmanaged skill already exists". ZollyBot already gives every agent these skills. The local skill library now refuses a skill with such a name and no longer lists one that it took before. If an install still meets one, it gives a clear reason.
 - A branch thread shows "Branched from …" also when the last copied message is not shown as a row,
   such as a thought of the turn. Before, the line was missing in that case.
 - Interactive cards show in Polish when the interface language is Polish. Before, labels such as
@@ -672,17 +672,17 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- After your third message to an agent, OpenBot asks one time for a star on GitHub. The request
-  stays until you close it, and Star on GitHub opens the OpenBot repository in your browser.
+- After your third message to an agent, ZollyBot asks one time for a star on GitHub. The request
+  stays until you close it, and Star on GitHub opens the ZollyBot repository in your browser.
 - You can now attach SVG images to a chat, on desktop and in the web client. The chat shows the
   image, and the agent gets the SVG file and reads its text. An agent can also send an SVG back with
   its answer. A remote server must have this version or later to accept SVG files.
-- Kimi is a new provider. OpenBot downloads the Kimi Code CLI from More providers, and you sign in
+- Kimi is a new provider. ZollyBot downloads the Kimi Code CLI from More providers, and you sign in
   with your Kimi Code account in the browser or with a device code. Kimi agents use the Kimi models
   of your account. When a Full access Kimi agent changes its model, the Kimi CLI also saves it as its
   default model.
-- Hermes Agent from Nous Research is a provider. OpenBot uses the `hermes` that you installed, with your own `~/.hermes` memories, skills and sign-ins. Sign in with a Nous Portal plan, or set up other providers with `hermes setup`. The model menu groups the models by the Hermes provider.
-- Add a guide to installing OpenBot on a VPS with Ubuntu or Docker, including account setup, updates and backups.
+- Hermes Agent from Nous Research is a provider. ZollyBot uses the `hermes` that you installed, with your own `~/.hermes` memories, skills and sign-ins. Sign in with a Nous Portal plan, or set up other providers with `hermes setup`. The model menu groups the models by the Hermes provider.
+- Add a guide to installing ZollyBot on a VPS with Ubuntu or Docker, including account setup, updates and backups.
 - Send license emails from `licenses@openbot.run`. A license or a bundle gets a thank-you email at its
   first payment, with the license, the seats, the list price with its currency and interval, and the
   date of the next payment. A discounted license shows no price. A license with a free trial gets it
@@ -707,9 +707,9 @@ All notable changes to OpenBot will be documented here. The project follows
   folder menu. A nested folder shows its path, such as "Clients / Acme", and folder headers stay at
   the top when you scroll. A joined server and the web client need a host with this release. An app
   from an older release shows each folder at the top level, and its changes keep the folders.
-- Start a workflow when someone mentions OpenBot in a Discord server, with filters for the channel, the role and the text.
+- Start a workflow when someone mentions ZollyBot in a Discord server, with filters for the channel, the role and the text.
 - Send a workflow result to Discord: reply to the message, post in a channel, or add a reaction.
-- On a Mac, OpenBot now has an icon in the menu bar. After you close the window, the Dock icon hides and active tasks keep running. To keep the Dock icon, turn off Settings > General > Show OpenBot in the menu bar.
+- On a Mac, ZollyBot now has an icon in the menu bar. After you close the window, the Dock icon hides and active tasks keep running. To keep the Dock icon, turn off Settings > General > Show ZollyBot in the menu bar.
 - Choose the None, Minimal and Ultra reasoning levels when a model offers them, such as Ultra on the
   newest Codex models and None or Minimal on OpenCode and Pi models. A remote client on an older
   version shows the nearest level that it knows: Low for None and Minimal, Max for Ultra.
@@ -730,21 +730,21 @@ All notable changes to OpenBot will be documented here. The project follows
   position in ⌘K and its ⌘1-9 number change too. An agent in "Needs you" keeps the place of its
   section, so the numbers do not move when an agent starts or stops waiting (#4430).
 - The Version line of a provider in Settings says if the CLI is the one that you installed or the
-  one that OpenBot downloaded, also when that CLI fails.
+  one that ZollyBot downloaded, also when that CLI fails.
 - A pasted image shows as a thumbnail above the text of the message box, and its name stays in the text where you pasted it. This is so in agent chats, channels, side threads, side threads beside the chat, and on the Tasks page.
 - An image that you send shows full size above your message, outside the bubble. A message of images only has no bubble. Before, the image showed as a small file card or only as its name.
 - A pasted image that takes time to add shows a preview with a spinner in the thumbnail row until it is ready.
 - You can paste images and files when you start a task on the Tasks page, and in the message box of a task.
 - In the web client, an attached image shows its preview in the message box, and images in messages show full size. Before, they showed as files.
-- Side threads take files on a joined server and in the web client when the host's OpenBot can take them. Before, only this computer took files in a side thread.
+- Side threads take files on a joined server and in the web client when the host's ZollyBot can take them. Before, only this computer took files in a side thread.
 - The switch that pauses a routine in the routine list is larger.
 - Basic product analytics and error reports, such as turns and token counts, now go also when analytics is off. They are anonymous: they carry a random install ID and no name, email or account. The ID changes after 13 months. Chats, files and prompts are never sent. The setting is now called "Link analytics to my account". The websites that you and your agents visit, tool use and a daily summary of your setup go only when it is on.
-- On a Mac, one press of ⌘Q no longer quits OpenBot. Hold ⌘Q or press it twice to quit, and a hint
-  in the window tells how. Before, one press stopped OpenBot with its agents and routines, and it was
-  easy to press by mistake. Quit in the OpenBot menu, the Dock and an update still quit at once.
-- When a process stops OpenBot with a signal, such as `kill`, OpenBot now stops its agents and
+- On a Mac, one press of ⌘Q no longer quits ZollyBot. Hold ⌘Q or press it twice to quit, and a hint
+  in the window tells how. Before, one press stopped ZollyBot with its agents and routines, and it was
+  easy to press by mistake. Quit in the ZollyBot menu, the Dock and an update still quit at once.
+- When a process stops ZollyBot with a signal, such as `kill`, ZollyBot now stops its agents and
   saves its state before it quits. Before, the desktop app stopped at once.
-- The main log now says how OpenBot quit: from the menu, with ⌘Q, from the tray, for an update or by
+- The main log now says how ZollyBot quit: from the menu, with ⌘Q, from the tray, for an update or by
   a signal.
 - Agents that have no photo now show a soft plush bot instead of the flat drawing, in the app, the web client and on openbot.run. When you choose a new face or colour, the old plush shrinks away and the new one pops out.
 - The plush shows what an agent does on its face, with no coloured rings or glow round it. A working agent looks up while three felt dots pulse, an agent that waits for you shows a felt dot, a failed turn lowers its eyes and shakes "no" once, and an asleep agent closes its eyes as z's rise. When you point at a resting agent or move the keyboard focus to it, it shows a different friendly face each time (a wink, wide eyes or a curious look) until you move away.
@@ -752,25 +752,25 @@ All notable changes to OpenBot will be documented here. The project follows
 - The avatar colour list shows each colour one time, in one row.
 - An agent photo in the desktop app shows as it does on mobile: a plain circle, with no ring or added background.
 - The loading screen now shows felt plushes. Each time, a different crew falls into a pile and the
-  OpenBot plush lands on top. You can grab a plush and throw it. When the app is ready, the crew hop
+  ZollyBot plush lands on top. You can grab a plush and throw it. When the app is ready, the crew hop
   out of the screen.
-- While the history of an agent loads, the OpenBot plush watches three felt balls bounce. Billing,
+- While the history of an agent loads, the ZollyBot plush watches three felt balls bounce. Billing,
   hosted servers and the GitHub and 1Password connector steps show the same plush while they wait.
 
 ### Fixed
 
 - A cloud server that installed an update now starts after a later wake. Before, the server could
   show "Starting Cloud server" for many minutes and not connect, because the update could leave
-  OpenBot files that the server could not run.
+  ZollyBot files that the server could not run.
 - The Usage page shows the daily cost and token chart again. Before, the area next to the total was
   empty.
 - Pi agents now show the context meter and compact their chat at 80% of the model's context window,
-  as Claude and Codex agents do. Before, a Pi chat grew until Pi's own limit, because OpenBot did not
+  as Claude and Codex agents do. Before, a Pi chat grew until Pi's own limit, because ZollyBot did not
   read the context fill that Pi reports (#4413).
-- Slack mentions and direct messages reach OpenBot again. Before, when a computer with a Slack
+- Slack mentions and direct messages reach ZollyBot again. Before, when a computer with a Slack
   workspace was off, each channel message of that workspace failed in Slack. Slack then stopped
-  sending events to the OpenBot app for all workspaces, with no error in OpenBot.
-- Codex agents get the tools of an MCP server that starts slowly, for example an `npx` server after OpenBot starts. Before, Codex waited 1 second for the server, and the first turn of the session did not have its tools.
+  sending events to the ZollyBot app for all workspaces, with no error in ZollyBot.
+- Codex agents get the tools of an MCP server that starts slowly, for example an `npx` server after ZollyBot starts. Before, Codex waited 1 second for the server, and the first turn of the session did not have its tools.
 - When an agent asks for a saved password or a code on a sign-in form inside a frame of the same
   site, it now gets the reason: secure input does not support frames, so it uses takeover. Before, it
   was told that the field was not an editable input, and it tried other fields.
@@ -782,11 +782,11 @@ All notable changes to OpenBot will be documented here. The project follows
   its Gemini quota is spent before the agent starts to write. Before, the message failed with the
   Gemini usage-limit error, and the agent stayed on the spent Gemini model.
 - After the computer wakes from sleep, phones and other devices can connect to its servers again at
-  once. Before, the server could stay unreachable for up to 45 minutes, until OpenBot restarted.
+  once. Before, the server could stay unreachable for up to 45 minutes, until ZollyBot restarted.
 - A new custom endpoint now shows its models in the model picker when no agent uses OpenCode or Pi.
-  Before, OpenBot stopped the idle provider and did not start it again after the save, so the
-  picker showed the endpoint with no models until OpenBot restarted.
-- A provider CLI update could fail with "OpenBot could not activate the managed CLI." when you
+  Before, ZollyBot stopped the idle provider and did not start it again after the save, so the
+  picker showed the endpoint with no models until ZollyBot restarted.
+- A provider CLI update could fail with "ZollyBot could not activate the managed CLI." when you
   also installed the CLI yourself, as for OpenCode. The update checked your CLI in place of the new
   version, and showed its version or its failure as a failure of the update. The update now checks
   the new version. When the new version does not start, the error says so.
@@ -794,7 +794,7 @@ All notable changes to OpenBot will be documented here. The project follows
   its reason. Before, the browser showed only "The server could not complete this request".
 - Keep the focus in the chat box while an agent opens pages in the built-in browser. Before, each
   new page took the focus, so the text you typed stopped or went into the page.
-- Text that you copy from OpenBot now pastes into mail, documents and chat apps without the styles
+- Text that you copy from ZollyBot now pastes into mail, documents and chat apps without the styles
   of the app. This applies to Cmd+C or Ctrl+C in a chat, in the message box and on a formula, to a
   cut in the message box, and to the Copy button of a message with attachments. Headings, lists,
   tables, links, code and spaces stay, and line numbers and button labels do not come with the text.
@@ -824,21 +824,21 @@ All notable changes to OpenBot will be documented here. The project follows
   container, can open network connections again after an update. Before, the AppArmor profile that
   the update loads blocked each socket (#4335).
 - The status line under the agent now translates in every language. Before, the generic tool steps ("Working through the next tool-assisted step…", "Reviewing the latest tool result…") stayed in English in a Chinese, Japanese, German or any other non-English UI.
-- A server (self-hosted, Docker or hosted) now uses less CPU when it is idle. Before, OpenBot drew
+- A server (self-hosted, Docker or hosted) now uses less CPU when it is idle. Before, ZollyBot drew
   its window on the virtual display of the server, where no one sees it, and on a server with few
   cores this used a large part of one core.
 - Saved logins from the Vault, 1Password, and Bitwarden now fill the password on sign-in pages whose
   form has no `method`, such as Clerk sign-in pages. Before, the password card opened each time.
-  OpenBot still stops the browser from putting a filled password in a page address.
-- When OpenBot does not fill a saved login, the agent now gets the reason, and the log shows it.
+  ZollyBot still stops the browser from putting a filled password in a page address.
+- When ZollyBot does not fill a saved login, the agent now gets the reason, and the log shows it.
   Before, the password card opened with no reason.
 - Messages that wait in an agent's queue now stay in the queue when its provider must be signed in again, and they start after the sign-in. Before, a provider check that found the provider signed out during a turn marked those messages as failed, and they were never sent (#4326).
 - A failed channel routing turn now writes its redacted cause, with the lead's provider and model, to `main.log` as `channel_coordination_failed`. Before, this line was missing when the channel showed "The channel lead could not route this message" or "The channel lead did not answer in time".
-- On macOS, the Dynamic Island no longer makes OpenBot the active app when you switch to an app
-  that has no window on the current Space. Before, OpenBot came to the front about half a second
+- On macOS, the Dynamic Island no longer makes ZollyBot the active app when you switch to an app
+  that has no window on the current Space. Before, ZollyBot came to the front about half a second
   later.
-- When a turn ends or stops, or a provider stops, while an approval card is open, OpenBot now answers the provider that asked. Before, the card disappeared, the provider waited for an answer that never came, and the agent could hang. An agent that uses ACP, such as OpenCode, now gets a cancelled answer, not a refusal.
-- A mention of the OpenBot role in a Discord server now reaches OpenBot, as a mention of OpenBot does. Discord's suggestions often choose this role instead of OpenBot.
+- When a turn ends or stops, or a provider stops, while an approval card is open, ZollyBot now answers the provider that asked. Before, the card disappeared, the provider waited for an answer that never came, and the agent could hang. An agent that uses ACP, such as OpenCode, now gets a cancelled answer, not a refusal.
+- A mention of the ZollyBot role in a Discord server now reaches ZollyBot, as a mention of ZollyBot does. Discord's suggestions often choose this role instead of ZollyBot.
 - The file hint in the avatar editor stays inside the upload card.
 - When you change an agent's avatar, the open conversation no longer draws its agent tags again, so the change is smoother.
 - Agent faces sit level with the text next to them in the "working" line, the waiting line, the sidebar, search, agent tags in messages and the direct conversation header.
@@ -849,30 +849,30 @@ All notable changes to OpenBot will be documented here. The project follows
 
 - Show the OpenCode Go monthly limit as a third bar in Usage, under the 5-hour and weekly bars.
   Before, Usage showed only the one of the weekly and monthly limits that was closer to its end.
-- Add 17 OpenBot agents to Marketplace: QA Tester, PR Shepherd, Skill Smith, Prototype Builder,
+- Add 17 ZollyBot agents to Marketplace: QA Tester, PR Shepherd, Skill Smith, Prototype Builder,
   Design Critic, Accessibility Desk, Handoff Spec Writer, Copy Editor, Search Content Planner,
   Prospect Researcher, Call Coach, Chief of Staff, Spend Auditor, Request Triage Desk, Ops Digest,
   Home Care Log and Bill Tracker. Each agent does one job and asks before it sends, spends, merges
   or publishes.
-- Add 15 OpenBot skills for these agents, such as Acceptance Check, PR Follow-up, Voice Edit, Daily
+- Add 15 ZollyBot skills for these agents, such as Acceptance Check, PR Follow-up, Voice Edit, Daily
   Brief, Spend Audit and Care Log.
 - Some agents install with an active routine, such as the weekday morning brief of Chief of Staff.
   A routine asks once for its setup and sends nothing when there is nothing new.
 - Start a workflow from GitHub. A GitHub trigger runs on new issues, comments, labels, pull requests,
-  reviews, merges, closes, assignments, failed checks, or a mention of `@openbotgit`, in a repository
-  that the OpenBot GitHub App can see. A second event for the same issue waits for the first run, and
+  reviews, merges, closes, assignments, failed checks, or a mention of `@zollybotgit`, in a repository
+  that the ZollyBot GitHub App can see. A second event for the same issue waits for the first run, and
   events for other issues run at the same time. The trigger shows the newest 50 events and why each
   one started a run, waited, or was skipped.
 - Change GitHub from a workflow. A GitHub output comments, adds or removes labels, assigns a person,
   asks for a review, approves or requests changes, closes, reopens, or creates an issue, as the
-  OpenBot GitHub App. An agent can choose the labels or the person from the repository's own lists.
+  ZollyBot GitHub App. An agent can choose the labels or the person from the repository's own lists.
 - Show each open run on the workflow canvas, and the events that wait for one.
 
 ### Changed
 
-- The server invitation page has one Open OpenBot button. Below it, links let you join in the browser or download OpenBot. When OpenBot does not open on a computer, a dialog tells you to install it and gives a download button.
+- The server invitation page has one Open ZollyBot button. Below it, links let you join in the browser or download ZollyBot. When ZollyBot does not open on a computer, a dialog tells you to install it and gives a download button.
 - The invitation, Slack and Discord connect, billing and report pages no longer show a blue glow and a shadow behind the card.
-- Rewrite the OpenBot agents and skills in Marketplace. Each one now has a named result, the
+- Rewrite the ZollyBot agents and skills in Marketplace. Each one now has a named result, the
   evidence it gives for each claim, and a fixed rubric. Agents that you installed get the update
   offer in Marketplace.
 - Remote connections now use two Signal machines at the same time. Each server has a home machine.
@@ -900,13 +900,13 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Removed
 
-- Remove six OpenBot agents from Marketplace: Product Design Lead, Communications Partner, Meeting
+- Remove six ZollyBot agents from Marketplace: Product Design Lead, Communications Partner, Meeting
   Assistant, Account Research Partner, Outreach Writer and Operations Planner. Other agents now do
   their jobs. Copies that you installed keep working.
 
 ### Fixed
 
-- A custom provider that you add now appears in the model picker when OpenCode or Pi is not installed. OpenBot downloads the provider that runs the endpoint when you save it. Before, the endpoint was saved, but the Custom tab stayed hidden until you downloaded OpenCode yourself.
+- A custom provider that you add now appears in the model picker when OpenCode or Pi is not installed. ZollyBot downloads the provider that runs the endpoint when you save it. Before, the endpoint was saved, but the Custom tab stayed hidden until you downloaded OpenCode yourself.
 - The account service does less database work when a phone or browser connects to a server. Before,
   each connection read the connections of all users of that server, and each server or account
   deletion read every connection of every server.
@@ -948,7 +948,7 @@ All notable changes to OpenBot will be documented here. The project follows
   this version.
 - The owner of a server can change its server key from the mobile app. The server on your computer
   makes the new key and signs the change with the current key and the new key, so paired devices
-  stay paired. Update OpenBot on the server computer to use it.
+  stay paired. Update ZollyBot on the server computer to use it.
 - **Server settings → General → Server key** shows when the server last changed its key. Every member
   sees it. Only a change that the previous key and the new key both signed shows.
 - The phone connection can now receive a transfer file of up to 100 MB from a server, so the mobile app can export a server. Other files that the app downloads keep the 10 MB limit.
@@ -997,7 +997,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Remote access now uses two connection servers at the same time. Each server and its devices meet on
   one of them. When that connection server stops, the server and its devices move to the other one
   automatically.
-- Show the OpenBot server offer at the bottom of the Routines panel, below the routine list, with
+- Show the ZollyBot server offer at the bottom of the Routines panel, below the routine list, with
   its buttons on the right. Before, it was above the routines.
 - A chat shows one schedule card for each routine: the newest change by the agent. Earlier changes show as one line that opens the routine.
 - Show each routine in the agent's Routines list as its own card, with a switch at the end that
@@ -1009,14 +1009,14 @@ All notable changes to OpenBot will be documented here. The project follows
   goes as a path only, as before.
 - Put more space between the top bar and the title of each Marketplace list and page.
 - Send about 3k fewer tokens in each Claude agent request. Claude agents no longer get the
-  `Workflow` and `ListAgents` tools, which OpenBot does not show, and Claude auto memory is off:
-  OpenBot memory is the agent's only memory. Earlier Claude memory files stay on disk.
+  `Workflow` and `ListAgents` tools, which ZollyBot does not show, and Claude auto memory is off:
+  ZollyBot memory is the agent's only memory. Earlier Claude memory files stay on disk.
 - Send fewer tokens in each request of the other providers:
   - Pi loads the tools of your own MCP servers only when the agent searches for them. With computer
     use on, this removes about 24k tokens from each request.
   - Grok no longer gets its `send_feedback` and `workflow` tools.
-  - Antigravity no longer gets its `schedule` and `run_workflow` tools. Use OpenBot routines.
-  - Codex goals are off. OpenBot has no control to pause or stop a goal.
+  - Antigravity no longer gets its `schedule` and `run_workflow` tools. Use ZollyBot routines.
+  - Codex goals are off. ZollyBot has no control to pause or stop a goal.
   - OpenCode no longer gets its tools that rename or move a session, or that make or list worktrees.
 - The agent page in the app shows the skills, routines and information of the agent in sections.
 - `openbot.run/plugins` now opens the Apps tab of the Marketplace.
@@ -1032,7 +1032,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - An agent with no title no longer saves "General assistant" as its title.
 - A computer that joined a server over a direct connection now gets the newer server features, such as thread branches and notification levels for agents. Before, it got only the older features of the server.
 - An agent's change to a routine schedule stays saved. Before, when the agent changed a routine to a schedule that only the cron field can show, each older routine card in the chat saved the earlier schedule again, and the chat filled with "Updated routine" lines.
-- Install an in-app update on a slow Mac, such as an Intel Mac. Before, OpenBot closed 30 seconds
+- Install an in-app update on a slow Mac, such as an Intel Mac. Before, ZollyBot closed 30 seconds
   after "Restart to update", before macOS finished preparing the update, so the old version opened
   again and offered the same update.
 - An agent on an OpenCode Go model now moves to its backup model when the Go usage limit is
@@ -1047,7 +1047,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - OpenCode now starts again by itself when a start fails with "Internal service failure", as it can
   on a slow computer. Before, OpenCode stayed off and messages waited until you refreshed the
   providers.
-- Deleting a side thread while Codex compacts its context no longer holds the agent's own chat. Before, every later message to the agent stayed queued until OpenBot restarted.
+- Deleting a side thread while Codex compacts its context no longer holds the agent's own chat. Before, every later message to the agent stayed queued until ZollyBot restarted.
 - ChatGPT no longer shows a "Codex configuration warning" at each start when the shared Codex
   configuration has a setting that Codex does not know, such as the Windows app approvals that the
   Codex desktop app saves. Codex works without these settings. Before, the warning told you to remove
@@ -1089,16 +1089,16 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Changed
 
-- The website now says that the source code of OpenBot is open on GitHub, not that OpenBot is
+- The website now says that the source code of ZollyBot is open on GitHub, not that ZollyBot is
   open source.
-- A provider uses the CLI that you installed when it is the same version as OpenBot's copy or newer. Before, OpenBot's copy always ran once it was downloaded. Update still downloads a newer version for you. Server settings > Storage can then remove the copy that no agent uses.
-- Agents find and use OpenBot tools in fewer steps, so browser tasks finish sooner and use fewer tokens.
+- A provider uses the CLI that you installed when it is the same version as ZollyBot's copy or newer. Before, ZollyBot's copy always ran once it was downloaded. Update still downloads a newer version for you. Server settings > Storage can then remove the copy that no agent uses.
+- Agents find and use ZollyBot tools in fewer steps, so browser tasks finish sooner and use fewer tokens.
 - When the connection service restarts, each app waits a random 0.5 to 4 seconds before it connects again. Before, all apps connected again in the same half second, and many of them had to try again. Open chats and connections to your servers stay up while the app waits.
 - The Instructions field in agent settings and channel settings has a grip in its bottom-right corner. Drag it, or use the arrow keys, to make the field taller. Double-click the grip to go back to the start height.
 - Settings search finds Providers and Import, and opens them in Server settings. The command palette
   has a Providers entry.
 - First run says that you accept the Terms of Service when you continue, with links to the Terms of Service and the Privacy Policy.
-- First run has a "Help make OpenBot better" box. In the United States, Mexico, Japan, Australia and New Zealand it starts ticked; everywhere else it starts clear, and OpenBot sends no analytics until you tick it or turn it on in Settings. OpenBot reads the region and time zone of your computer to choose. If you use OpenBot now, your analytics setting does not change.
+- First run has a "Help make ZollyBot better" box. In the United States, Mexico, Japan, Australia and New Zealand it starts ticked; everywhere else it starts clear, and ZollyBot sends no analytics until you tick it or turn it on in Settings. ZollyBot reads the region and time zone of your computer to choose. If you use ZollyBot now, your analytics setting does not change.
 - When you tick the box, three agents pop up to say thank you, and a toast thanks you once.
 - The web sign-in has the same box, directly under the send button, and the Terms of Service notice at the bottom. The web app reads the region of the browser language and the time zone to choose. Your answer is saved when you ask for a sign-in code. After you agree once, the sign-in screen does not ask again. If you are signed in to the web app now, your analytics setting does not change.
 - Toasts have no drop shadow.
@@ -1116,9 +1116,9 @@ All notable changes to OpenBot will be documented here. The project follows
 - A channel lead now routes a request in a channel with many members that have long descriptions.
   Before, routing stopped with "This request exceeds the routing context limit", also for a short
   request.
-- A Workspace only Claude agent on a computer where Claude cannot start its sandbox, such as Windows, now says that the sandbox is not available and tells you to choose Full access or another provider. Before, it showed Claude's message about a `sandbox.failIfUnavailable` setting that OpenBot does not have.
+- A Workspace only Claude agent on a computer where Claude cannot start its sandbox, such as Windows, now says that the sandbox is not available and tells you to choose Full access or another provider. Before, it showed Claude's message about a `sandbox.failIfUnavailable` setting that ZollyBot does not have.
 - In the sidebar, a chat that you drag now lands in the section that is below the pointer. Before, a drop near the edge of a long section could go to the next section, and a chat dragged into another section could go back to its own section.
-- OpenBot keeps one version of each provider CLI that it downloads. Before, it kept the version before the last update too, so each CLI used about two times its size on disk. The old version is removed a few hours after an update.
+- ZollyBot keeps one version of each provider CLI that it downloads. Before, it kept the version before the last update too, so each CLI used about two times its size on disk. The old version is removed a few hours after an update.
 - Cloudflare checks now pass in the built-in browser. Before, the check stayed on "Performing
   security verification" or asked again after you completed it.
 - Agents that work in a busy web page compact their conversation less often. Before, each click sent the full page details and the same page log again, and an agent could compact its context every minute.
@@ -1135,7 +1135,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Show only the providers that you connected in the model list of a workflow LLM or agent step, as
   the agent model list does. Before, the list showed ChatGPT and its models when ChatGPT was not
   connected, and a new LLM step took a ChatGPT model. A step keeps the provider that it has.
-- Show a neutral mark for a provider that this OpenBot does not know in a workflow step. Before, it
+- Show a neutral mark for a provider that this ZollyBot does not know in a workflow step. Before, it
   showed the ChatGPT mark.
 - The Gemini sign-in hint names the correct place: Server settings > Providers.
 - A site that a computer published before it became a server now shows in the server's Sites list and counts against the server. Before, the list was empty and showed 0 sites. The site moves to the server the next time the server connects to your account.
@@ -1173,7 +1173,7 @@ All notable changes to OpenBot will be documented here. The project follows
   computer and in Server settings of a server. It signs the provider out and removes the stored
   sign-in. On this computer, the `claude` or `codex` CLI in the terminal signs out too (#3487).
 - Log in to ChatGPT with an OpenAI API key. On this computer, open Settings > Providers > ChatGPT and select Add key under API key. Codex saves the key, and OpenAI bills each request to it instead of your ChatGPT plan. Change key replaces it, and Disconnect removes it.
-- Settings › Agents now lists the background processes that agents left running on your Mac or Linux computer, such as a dev server that an agent started with `nohup`. Each row shows the command, the agent, the start time and the ports, and Stop ends the process and its child processes. Before, such a process kept running after the chat ended and after you quit OpenBot, and only a terminal could find and stop it.
+- Settings › Agents now lists the background processes that agents left running on your Mac or Linux computer, such as a dev server that an agent started with `nohup`. Each row shows the command, the agent, the start time and the ports, and Stop ends the process and its child processes. Before, such a process kept running after the chat ended and after you quit ZollyBot, and only a terminal could find and stop it.
 - A custom endpoint can now run on Pi. Open Settings › Providers › Custom endpoints, edit the endpoint, and set "Runs on" to Pi. Its models then show in Pi's model list. Endpoints that you saved before keep running on OpenCode. When Pi is not downloaded, choose it in "Runs on" to download it. On a joined server, the model picker also knows which endpoints run on Pi, when the host has this version.
 - Settings › Notifications is now the one place for notifications: one table shows each server and its agents, with All activity, Only when it needs me, or Nothing, and a mute for each server. The level of a server and of each agent is yours only and applies on your computer, in the web client and on your phones, and a change on one device shows at once on the others. The server menu and the agent settings show the level and open this table; Server settings no longer have a Notifications section. A mute still applies to the device where you set it. The agent settings no longer have their own Notifications switch; an agent that was switched off for everyone shows "Turn on" in the table.
 
@@ -1199,17 +1199,17 @@ All notable changes to OpenBot will be documented here. The project follows
 - "Join a server" is now in the "Other options" menu at the top of the server plans.
 - The sidebar shows larger avatars: 46px in the agent, channel and people rows, and 56px in the pinned row.
 - Group chats show larger author faces beside messages: 32px instead of 24px.
-- MCP servers that OpenBot signed in to, such as Notion, now see OpenBot as the client, with the name of the agent that connects, for example "Research Bot (OpenBot)". Notion shows "with MCP" until it adds OpenBot to the clients it names.
+- MCP servers that ZollyBot signed in to, such as Notion, now see ZollyBot as the client, with the name of the agent that connects, for example "Research Bot (ZollyBot)". Notion shows "with MCP" until it adds ZollyBot to the clients it names.
 - Code blocks in chat now wrap long lines, so you can read an email draft or a long command without scrolling sideways. Line breaks and Copy do not change.
-- A notification with a preview, on the computer, in the web client and on the phone, now shows the first sentences of the agent's message, not all of it. It leaves out code blocks, tables, headings and mail headers such as "In-Reply-To", shows tool names such as "openbot.revise_skill" as words, and shows a hidden email address or secret as "•••" in place of "[redacted-email]". The iPhone Live Activity that the computer updates shows the same short text.
+- A notification with a preview, on the computer, in the web client and on the phone, now shows the first sentences of the agent's message, not all of it. It leaves out code blocks, tables, headings and mail headers such as "In-Reply-To", shows tool names such as "zollybot.revise_skill" as words, and shows a hidden email address or secret as "•••" in place of "[redacted-email]". The iPhone Live Activity that the computer updates shows the same short text.
 
 ### Fixed
 
 - On a joined server, a second ChatGPT account now connects after its sign-in in the browser of your computer. Before, the sign-in screen stayed open after the browser page closed, and after 10 minutes the server removed the account.
-- When you ask, agents run your own browser scripts, such as Selenium. Without your request, they still use the OpenBot browser.
+- When you ask, agents run your own browser scripts, such as Selenium. Without your request, they still use the ZollyBot browser.
 - An owner or admin of a joined server can now choose Queue or Steer for each agent of that server, in the agent's settings › Advanced › While working. Before, the row was hidden for these agents, so a message sent while they worked always waited in the queue. The default choice shows the server's own default.
 - Gemini with a saved API key no longer stays on "Connecting" when Gemini does not answer its key sign-in. After the start time limit, the provider shows an error. Before, it waited with no end, and Cancel waited too.
-- The provider settings and the model picker show "Finish the sign-in if a browser page opens" and Cancel only while a sign-in waits for you. Before, they also showed when OpenBot checked a provider again after a key change, a restart or an update, when no browser page opens.
+- The provider settings and the model picker show "Finish the sign-in if a browser page opens" and Cancel only while a sign-in waits for you. Before, they also showed when ZollyBot checked a provider again after a key change, a restart or an update, when no browser page opens.
 - A right-click on the message box and on other text fields now shows Undo, Redo, Cut, Copy, Paste, Delete
   and Select All on Windows, Linux and macOS, and Paste and Match Style on macOS. Each item is available
   only when it can act, the labels use the app language, and a misspelled word shows its spelling
@@ -1219,17 +1219,17 @@ All notable changes to OpenBot will be documented here. The project follows
 - A message sent to an idle agent now stays in the chat. Before, it left the chat for a moment and the queue panel opened.
 - You can now sign in to the Make MCP server. Before, sign-in stopped with "The server answered 400."
 - The plan usage that windows, browser tabs and phones show is now read at most once every four minutes for each provider sign-in, however many of them are open. Before, each of them read it again, so a provider such as Claude could refuse more reads for a long time.
-- When a usage read fails, for example because the provider limits requests, OpenBot keeps the last reading and waits longer before it tries again: 5 minutes, then 10, 20 and 40, up to one hour. Before, the reading disappeared and OpenBot tried again every 5 minutes.
+- When a usage read fails, for example because the provider limits requests, ZollyBot keeps the last reading and waits longer before it tries again: 5 minutes, then 10, 20 and 40, up to one hour. Before, the reading disappeared and ZollyBot tried again every 5 minutes.
 - A server that you host yourself, such as on a VPS, now takes as many members as your license has users. Before, it stopped at 3.
-- Gemini no longer fills the memory of a computer or server over hours of use. Before, each Gemini chat and each model list refresh kept a helper process of about 100 MB until Gemini stopped, so a 4 GB server often held new messages for low memory. Now a model list refresh uses no more memory. On macOS and Linux, each Gemini chat also runs in a process of its own, and OpenBot ends that process when the chat has been idle for 10 minutes, when more than two chats are idle, or when memory is low. The next message continues the same chat.
+- Gemini no longer fills the memory of a computer or server over hours of use. Before, each Gemini chat and each model list refresh kept a helper process of about 100 MB until Gemini stopped, so a 4 GB server often held new messages for low memory. Now a model list refresh uses no more memory. On macOS and Linux, each Gemini chat also runs in a process of its own, and ZollyBot ends that process when the chat has been idle for 10 minutes, when more than two chats are idle, or when memory is low. The next message continues the same chat.
 - An agent from the ACP registry, such as Mistral Vibe, now installs on Linux when its runtime archive puts `./` before each file name. Before, the install stopped with "The runtime archive contains an unsafe path."
 - A channel lead can now route a very long request. Before, a Grok lead got only part of a request of about 100,000 bytes or more, and the channel showed "The channel lead could not route this message". The lead now reads the first 20,000 bytes of the request.
 - Show all your agents when you go back to the mobile app. Before, agents that use DeepSeek,
   OpenRouter or Inception could go out of the list and lose their pin.
 - Server Settings > General > Timezone saves the zone that you choose. Before, only "Automatic" and "UTC" stayed selected, and a zone such as "Europe/Warsaw" did nothing.
-- The OpenBot Telegram bot now answers a mention such as "@meetOpenBot hello" in a group where it is not an admin. Before, only replies to the bot worked there, and a mention got no answer.
-- **In a Telegram group that you connected before this fix, remove OpenBot from the group and connect the group again from OpenBot, or make OpenBot a group admin.**
-- Settings now show Pi, Muse, Inception, DeepSeek and OpenRouter as off when you turned them off. Before, after a restart their switch showed on, and saving a key failed with "OpenRouter is off in OpenBot".
+- The ZollyBot Telegram bot now answers a mention such as "@meetZollyBot hello" in a group where it is not an admin. Before, only replies to the bot worked there, and a mention got no answer.
+- **In a Telegram group that you connected before this fix, remove ZollyBot from the group and connect the group again from ZollyBot, or make ZollyBot a group admin.**
+- Settings now show Pi, Muse, Inception, DeepSeek and OpenRouter as off when you turned them off. Before, after a restart their switch showed on, and saving a key failed with "OpenRouter is off in ZollyBot".
 - Put the cursor in the chat box when you click Reply. Before, after you went between an agent chat
   and a channel, Reply could leave the focus on the button, and you had to click the chat box before
   you typed.
@@ -1240,7 +1240,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A routine or provider handoff no longer cuts an emoji in half when it shortens long chat history. Before, the cut could make Codex reject the request.
 - Usage now shows the OpenCode Go quota when the OpenCode CLI has its own key: an OpenCode Console
   connection, a key from `opencode auth login`, or `OPENCODE_API_KEY` in the environment. Before,
-  the quota showed only for a key saved in OpenBot.
+  the quota showed only for a key saved in ZollyBot.
 - **Log in with code** for Codex works when the stored ChatGPT sign-in can no longer refresh. Before,
   it failed with "Your access token could not be refreshed", or the code dialog closed after a second
   with "Connect ChatGPT to continue".
@@ -1253,18 +1253,18 @@ All notable changes to OpenBot will be documented here. The project follows
 - The mouse wheel and trackpad scroll in the remote desktop of a Mac. Before, the Mac did not scroll for most wheel steps and trackpad gestures. The Mac that you connect to must have this version.
 - A thread that you open in place of another thread now shows its latest message, not its first message.
 - Add account for Gemini on a joined server now opens the Google sign-in in the browser of your computer, as the first Gemini account does. Before, the page opened in the browser of the server, and Google refused it with "Your browser is not supported any more" (#4004). The server and the app must both have this version.
-- ChatGPT agents now run when Codex signs in with an OpenAI API key, also with `codex login --with-api-key` in a terminal. Before, OpenBot showed "Codex requires a ChatGPT subscription login" and did not start Codex. Connect now uses that login too, and does not open a ChatGPT sign-in.
+- ChatGPT agents now run when Codex signs in with an OpenAI API key, also with `codex login --with-api-key` in a terminal. Before, ZollyBot showed "Codex requires a ChatGPT subscription login" and did not start Codex. Connect now uses that login too, and does not open a ChatGPT sign-in.
 - DeepSeek models now work when an MCP server, such as Webflow, has a tool with a `[` in a regex character class. Before, DeepSeek refused each request with a 400 error.
-- Agents find your 1Password and Bitwarden logins when you ask them to sign in with your password manager. Before, an agent did not find a tool for 1Password and looked only in the OpenBot Vault.
+- Agents find your 1Password and Bitwarden logins when you ask them to sign in with your password manager. Before, an agent did not find a tool for 1Password and looked only in the ZollyBot Vault.
 - The `$` list of a side question shows the agent's skills. It said "This agent has no skills."
 - The Local scripts guide now tells how to answer a question that lets the person pick several
   choices. The pending list shows these choices in the question text, and a script sends each picked
   label as one answer.
-- Codex agents now get the tools of a STDIO MCP server that has a working directory. Before, OpenBot left such a server out of Codex sessions, although its connection test passed.
+- Codex agents now get the tools of a STDIO MCP server that has a working directory. Before, ZollyBot left such a server out of Codex sessions, although its connection test passed.
 - Gemini agents in Full access can now read and change files in the folders that you add to them. Before, Gemini refused all files outside the agent's workspace and the shared folder, and Full access showed no way to add a folder.
 - A folder that you add to or remove from an agent now applies at the next message in an open chat. Before, Gemini and other ACP agents used the old folders until a new thread started.
 - Agents' browser typing no longer goes into a different field when the page moves focus. Before, the text or the Enter key could reach another field, and the agent was told that typing worked. Now the agent gets an error that says whether the text is already in the field.
-- A sign-in code email is sent again when the mail server does not answer. Before, OpenBot showed a "confirming delivery" countdown and then waited for a code that was never sent.
+- A sign-in code email is sent again when the mail server does not answer. Before, ZollyBot showed a "confirming delivery" countdown and then waited for a code that was never sent.
 - A channel task that you stop now shows Continue and Reassign. Before, it stayed stopped with no
   button. Tasks of an archived channel get the same buttons when you restore it.
 - "continue" in a channel now continues the work that you stopped last, also when older work is
@@ -1272,12 +1272,12 @@ All notable changes to OpenBot will be documented here. The project follows
 - A channel message that starts with a typed "@Name" now goes to that member directly.
 - When the lead cannot read its own routing answer, the channel now says so and offers Reassign.
 - The lead no longer posts "Assigned to" itself when it answers a message alone.
-- In the remote desktop, Cmd+A or Ctrl+A and the zoom keys (Cmd or Ctrl with =, - and 0) now go to the remote computer when the viewer has focus. Before, OpenBot kept these keys: select all did nothing and the zoom keys changed the OpenBot interface size.
-- A Cursor agent can use OpenBot's tools and message its teammates when `openbot` is in Cursor's list of disabled MCP servers for the project. Before, Cursor started the agent without OpenBot's tools and showed no error, so messages to teammates were not sent.
-- When Cursor does not load OpenBot's tools for another reason, such as a Cursor team policy, the chat shows an error. Before, the turn ended and the model reported tool errors that did not occur.
+- In the remote desktop, Cmd+A or Ctrl+A and the zoom keys (Cmd or Ctrl with =, - and 0) now go to the remote computer when the viewer has focus. Before, ZollyBot kept these keys: select all did nothing and the zoom keys changed the ZollyBot interface size.
+- A Cursor agent can use ZollyBot's tools and message its teammates when `zollybot` is in Cursor's list of disabled MCP servers for the project. Before, Cursor started the agent without ZollyBot's tools and showed no error, so messages to teammates were not sent.
+- When Cursor does not load ZollyBot's tools for another reason, such as a Cursor team policy, the chat shows an error. Before, the turn ended and the model reported tool errors that did not occur.
 - Keep text from later browser frames in snapshots after the control limit is reached.
 - Agents no longer load a tool schema again when the tool search already returned it.
-- A channel no longer shows old replies again as new messages after OpenBot starts again.
+- A channel no longer shows old replies again as new messages after ZollyBot starts again.
 - A channel turn that you stop no longer leaves an empty reply.
 - When a request goes to several members, each member now gives its own view. Before, a member could
   copy the reply of a member that answered first.
@@ -1290,10 +1290,10 @@ All notable changes to OpenBot will be documented here. The project follows
 - The agent's avatar in the sidebar now shows that the agent works when it works in a side thread. Before, the avatar stayed still until the agent worked in its own chat.
 - When a browser action timed out after its click or key press reached the page, the agent got only "timed out" and could repeat the action. The error now says that the input reached the page and tells the agent to check the page first.
 - You can now drag the window by the empty top row of the settings page.
-- A custom endpoint on a llama-swap server no longer unloads the agent's model at the start of a new chat. OpenCode asked its `small_model` for a chat title, and llama-swap loaded that model, then loaded the agent's model again. OpenBot does not use these titles, so it now turns them off.
+- A custom endpoint on a llama-swap server no longer unloads the agent's model at the start of a new chat. OpenCode asked its `small_model` for a chat title, and llama-swap loaded that model, then loaded the agent's model again. ZollyBot does not use these titles, so it now turns them off.
 - Computers, the web client and phones now use Team API protocol 9, which has room for more features. A server on an older version and an app on an older version keep working with this version: they do not get the features that need protocol 9, such as notification levels that apply on all devices.
 - The iPhone Live Activity that the computer updates now hides secrets and email addresses, as notifications do. It also no longer offers Approve for a command whose secret it hides, so you approve such a command in the app.
-- Your phone now gets the notification of an agent event that came just after you left the OpenBot app. Before, the computer did not send it when the app went to the background before it told the computer, and the notification was lost.
+- Your phone now gets the notification of an agent event that came just after you left the ZollyBot app. Before, the computer did not send it when the app went to the background before it told the computer, and the notification was lost.
 - An iPhone Live Activity now takes the place of a notification only when it shows that event. Before, a reply or a failure did not notify while the activity showed another agent at work or a request of another agent.
 - An iPhone Live Activity that does not get its updates no longer stops notifications. The computer also sends a notification again when Apple or Google do not take it the first time.
 - An iPhone Live Activity now takes the first update from the computer after you leave the app, and ends also when the phone was without network at that time. Before, it could stay out of date.
@@ -1357,8 +1357,8 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- OpenBot starts on a Mac where `/Library/Application Support` or `/Library/Application Support/OpenBot`
-  has a non-root owner or group write permission, and no host manager is installed. Before, OpenBot
+- ZollyBot starts on a Mac where `/Library/Application Support` or `/Library/Application Support/ZollyBot`
+  has a non-root owner or group write permission, and no host manager is installed. Before, ZollyBot
   stopped at each start with an empty error. A start error from the host manager check now shows its
   cause.
 - Remote desktop pairing on macOS 27 works again. Before, the host stopped at each pairing attempt and every setup check showed as not checked.
@@ -1366,39 +1366,39 @@ All notable changes to OpenBot will be documented here. The project follows
   such as which field or button target is wrong, and can correct the request. Before, it got only
   "Secure authentication is unavailable".
 - Routine agents now check saved Vault logins before they report a sign-in requirement. They can use saved passwords and authenticator codes through secure browser input.
-- Quit OpenBot without the error "OpenBot database is not initialized." when an agent reports its
+- Quit ZollyBot without the error "ZollyBot database is not initialized." when an agent reports its
   context use during the quit.
 - Keep a self-hosted or hosted server responsive after an error in the main process, and let it
   finish a quit. Before, an error box that nobody could close on the server display stopped the
   process, and the service manager did not start it again. On desktop, an error during a quit also
   shows no error box.
-- OpenBot keeps working when a page in the browser requests an address that it cannot read, such as a host that starts with an escaped space. Before, OpenBot stopped and did not answer until a restart.
+- ZollyBot keeps working when a page in the browser requests an address that it cannot read, such as a host that starts with an escaped space. Before, ZollyBot stopped and did not answer until a restart.
 - Show the reason of a group chat task that stopped because its member was removed or is not
   available in your language. Before, the reason was always in English.
 - Show only Reassign on a stopped group chat task whose member left the group chat. Before,
   Continue stopped the task again.
 - Provider settings in agent settings show in one card, as the other groups do. Before, each switch showed under its name and each choice was a full-width field outside a card.
 - Keep a new provider account, such as another Gemini account, when its sign-in works but its first
-  usage reading fails. Before, OpenBot removed the account after the Google sign-in, so it looked as
-  if OpenBot did not add the account. A Reconnect with the same failure now shows the account as
+  usage reading fails. Before, ZollyBot removed the account after the Google sign-in, so it looked as
+  if ZollyBot did not add the account. A Reconnect with the same failure now shows the account as
   connected, not as an error.
 - Keep the chat steady when you switch between agents that have queued messages. Before, the queue
   animated the other agent's messages out and this agent's messages in, and the chat jumped while
   the queue changed height. When the agent that you open has no queued messages, the queue of the
   other agent now closes at once.
-- Let Gemini continue when one MCP server that OpenBot gives it does not start, such as a server that asks for a sign-in. Before, each Gemini turn failed with "The MCP server '<name>' failed to initialize". Now OpenBot leaves the server out, tells you which server it left out, and sends the message again.
+- Let Gemini continue when one MCP server that ZollyBot gives it does not start, such as a server that asks for a sign-in. Before, each Gemini turn failed with "The MCP server '<name>' failed to initialize". Now ZollyBot leaves the server out, tells you which server it left out, and sends the message again.
 - Cancel and × now stop a browser sign-in in the Apps connect dialog. Before, both stayed off while the dialog waited for the browser, for up to 5 minutes.
 - Show the agent's steps in a side thread, as in the agent's own chat: the thinking while the agent
   works, and the steps row above each answer. Before, a side thread showed only the answer.
-- On macOS, **OpenBot → Check for Updates…** opens Settings on the Updates tab, where the check and its
-  result show. Before, nothing changed on screen when OpenBot was up to date or the check failed.
+- On macOS, **ZollyBot → Check for Updates…** opens Settings on the Updates tab, where the check and its
+  result show. Before, nothing changed on screen when ZollyBot was up to date or the check failed.
 - Check the remote desktop permissions when you open Server settings → Remote desktop on a Mac.
   Hide the Grant button of a permission that is already allowed. Before, all rows showed
   "Not checked" and Grant until you selected Check again.
 - Cursor turns fail less often with "Invalid model value". Cursor asks its server for the model
-  list each time the model is set, and reports a failed request as an invalid model. OpenBot now
+  list each time the model is set, and reports a failed request as an invalid model. ZollyBot now
   sets the Cursor model only when it changes, not before every turn (#3800).
-- An agent that a ChatGPT (Codex) usage limit moved to a backup model now goes back to its model within 15 minutes when Codex ends the limit early, for example after you spend a reset credit in the Codex app. Before, OpenBot kept the agent on the backup model until the old reset time, also when you selected the model again.
+- An agent that a ChatGPT (Codex) usage limit moved to a backup model now goes back to its model within 15 minutes when Codex ends the limit early, for example after you spend a reset credit in the Codex app. Before, ZollyBot kept the agent on the backup model until the old reset time, also when you selected the model again.
 
 ## [0.53.2] - 2026-10-28
 
@@ -1426,16 +1426,16 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- On Windows, OpenBot updates again when it was installed in `%USERPROFILE%\OpenBot`, the folder that
+- On Windows, ZollyBot updates again when it was installed in `%USERPROFILE%\ZollyBot`, the folder that
   also holds your agent folders. Before, each update stopped with "Failed to uninstall old application
   files. Please try running the installer again.: 2", also after a restart. The update now installs
-  OpenBot in `%LOCALAPPDATA%\Programs\OpenBot` and removes only the app files from the earlier folder.
+  ZollyBot in `%LOCALAPPDATA%\Programs\ZollyBot` and removes only the app files from the earlier folder.
   Your agents, `Shared` and `Downloads` stay where they are. **A taskbar pin of the earlier copy stops
-  working: pin OpenBot again from the Start menu.** The Start menu and desktop shortcuts, the
-  openbot:// links and the open-at-login setting move to the new copy. **Do not uninstall OpenBot from Windows
+  working: pin ZollyBot again from the Start menu.** The Start menu and desktop shortcuts, the
+  zollybot:// links and the open-at-login setting move to the new copy. **Do not uninstall ZollyBot from Windows
   Settings to repair this: in that folder, the uninstaller of 0.53.1 or earlier also deletes your
   agent folders.**
-- The Windows installer no longer accepts `%USERPROFILE%\OpenBot`, `%APPDATA%\OpenBot`, or a folder
+- The Windows installer no longer accepts `%USERPROFILE%\ZollyBot`, `%APPDATA%\ZollyBot`, or a folder
   that holds one of them, as the install folder. It uses the default folder instead.
 
 ## [0.53.1] - 2026-10-28
@@ -1443,7 +1443,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Changed
 
 - Server settings › Storage no longer shows the disk, memory and CPU use of the machine or its alert
-  levels. OpenBot no longer sends machine alerts and does not show the machine card in the sidebar.
+  levels. ZollyBot no longer sends machine alerts and does not show the machine card in the sidebar.
 
 ### Fixed
 
@@ -1457,11 +1457,11 @@ All notable changes to OpenBot will be documented here. The project follows
 - Queued messages no longer show Steer for Gemini, OpenCode, Cursor, Cline and custom agents. These
   providers cannot take a message into a running turn, so Steer always failed. The message still
   starts when the turn ends.
-- On macOS, the blue Computer Use rim no longer shows on top of the OpenBot window when that window is in front of the agent's window. Before, OpenBot read the windows in the wrong front-to-back order on some macOS versions, and did not cut the rim where the OpenBot window covers it.
+- On macOS, the blue Computer Use rim no longer shows on top of the ZollyBot window when that window is in front of the agent's window. Before, ZollyBot read the windows in the wrong front-to-back order on some macOS versions, and did not cut the rim where the ZollyBot window covers it.
 - A failed update check, download or install now writes its reason, error code and HTTP status in
   `logs/main/main.log`. Before, the logs showed only `check_failed`, with no reason.
-- The activity log in `openbot.db` now records the turn of each `turn.completed` event and keeps the
-  turn of each activity when OpenBot rebuilds a thread. Before, these rows had no turn.
+- The activity log in `zollybot.db` now records the turn of each `turn.completed` event and keeps the
+  turn of each activity when ZollyBot rebuilds a thread. Before, these rows had no turn.
 - In a workflow Agent or LLM step, a long model name now stays inside the field and ends with "…".
   Before, the model button went past the right edge of the field. A long agent name next to it
   stays full until the model button has only room for a few letters.
@@ -1483,27 +1483,27 @@ All notable changes to OpenBot will be documented here. The project follows
   and who gets the alert. It opens Server settings › Storage.
 - A side thread shows how full its context is next to the send button, as the agent's own chat does.
   Open it to see the details, and select Compact to compact the thread's context now. Compact shows
-  for providers that OpenBot can ask to compact, on this computer only.
+  for providers that ZollyBot can ask to compact, on this computer only.
 - A thread that you read on this computer is read on your phone too. The server keeps your read place in each thread for all your devices.
-- You can send files in a thread of a joined server and in the web app. The server must have this version of OpenBot.
-- Add guides for importing Grok Bot agents and Hermes Agent profiles into OpenBot, with screenshots and instructions for each import method.
+- You can send files in a thread of a joined server and in the web app. The server must have this version of ZollyBot.
+- Add guides for importing Grok Bot agents and Hermes Agent profiles into ZollyBot, with screenshots and instructions for each import method.
 
 ### Changed
 
 - The Timezone list in Server Settings has a search field. Type part of a zone, such as "new_york", or its name, such as "Eastern", then use the arrow keys and Enter to choose it.
-- When an agent answer names an output file by its full path and does not attach it, OpenBot now attaches the file to the answer. This applies to images, audio, video, ZIP, PDF, office documents, CSV, text and Markdown files of 25 MB or smaller in the agent's workspace or the Shared folder. Before, the iPhone app and other devices showed only the path, and you could not open the file. Code, configuration, log and SVG files, and folders, stay as paths.
+- When an agent answer names an output file by its full path and does not attach it, ZollyBot now attaches the file to the answer. This applies to images, audio, video, ZIP, PDF, office documents, CSV, text and Markdown files of 25 MB or smaller in the agent's workspace or the Shared folder. Before, the iPhone app and other devices showed only the path, and you could not open the file. Code, configuration, log and SVG files, and folders, stay as paths.
 - The "Add backup model" list in agent settings has a search field. Type part of a model name, a provider name or a model id, such as "glm" or "openrouter/qwen", then use the arrow keys and Enter to add the model.
 - On a sidebar of 300 px or less, the wait chip of a "Needs you" row shows only its icon, so that a long agent name has more space.
 - Agent avatars and photo avatars have a thin outline in the colour of the row behind them. In a
   group avatar, the faces are larger and overlap, a photo has the size of the other faces, and each
   outline cuts the face below it. The count of more members is a round disc that overlaps the last
   face. A count of two digits goes under two faces.
-- The OpenBot server offer opens as a window only one time: after your first routine on this
+- The ZollyBot server offer opens as a window only one time: after your first routine on this
   computer. Before, it opened after a new routine on this computer, a remote computer or the web
   app, up to three times. The note above the routine list and the line in the offline notice do
   not change.
 - Settings › Mobile Connect shows your phones as cards. "Add phone" opens a short dialog that asks if
-  OpenBot is on the phone, then shows only one QR code: the App Store or Google Play code, or the
+  ZollyBot is on the phone, then shows only one QR code: the App Store or Google Play code, or the
   sign-in code. A tag under each code says what it does. Before, the tab showed the download code
   and the sign-in code together, and a phone camera could scan the wrong one.
 - The permanent link is a card among your phones. Its code opens in a dialog with a warning, and
@@ -1514,9 +1514,9 @@ All notable changes to OpenBot will be documented here. The project follows
 
 - Sliders, such as the Dynamic Island width and height in Settings, move again with the pointer and
   the arrow keys. Before, they did not move.
-- OpenBot starts after an upgrade when its database has broken links between rows from an earlier
-  version. Before, the upgrade stopped at each start with "OpenBot database migration to version 47
-  failed", and the app did not open. OpenBot keeps these rows as they are, and an upgrade step stops
+- ZollyBot starts after an upgrade when its database has broken links between rows from an earlier
+  version. Before, the upgrade stopped at each start with "ZollyBot database migration to version 47
+  failed", and the app did not open. ZollyBot keeps these rows as they are, and an upgrade step stops
   only when it breaks a link itself.
 - A custom provider on an Azure OpenAI or Azure AI Foundry v1 endpoint
   (`https://<resource>.openai.azure.com/openai/v1`) runs agent turns in OpenCode. Before, each turn
@@ -1532,17 +1532,17 @@ All notable changes to OpenBot will be documented here. The project follows
 - When a side thread's agent asks you to take over the browser, the thread and its tab now show that the thread waits for you. Before, they showed that the agent worked.
 - When your answer or approval in a side thread fails, the error now shows where you answered. Before, it showed in the agent's own chat.
 - In the web app, and on a computer joined to a server, a side thread now shows the API key card and the other question forms. Before, it showed only a plain question. The server must also run this version.
-- On Windows and macOS, OpenBot now opens the Google sign-in page for Gemini, as it does on Linux.
+- On Windows and macOS, ZollyBot now opens the Google sign-in page for Gemini, as it does on Linux.
   Before, the Gemini server opened it itself, and when no page opened, Connect showed no error and
   waited ten minutes.
-- When the Gemini process stops answering, OpenBot now ends it and starts a new one. Before, a turn
+- When the Gemini process stops answering, ZollyBot now ends it and starts a new one. Before, a turn
   could wait with no end, and Gemini worked again only after you restarted it.
 - The channel header shows the face of each member. Before, the faces were almost on top of each
   other, so the header showed only one face.
 - When an MCP server that you added in Server settings needs a sign-in, the agent now shows the Sign in card in the conversation. Before, the card showed only for a server that the agent added.
-- In Discord, the agent now gets the text and files of a forwarded message, when you reply to the forward or mention OpenBot after it. Before, the agent got only your mention and said that it saw no report. When Discord does not give the forwarded content, the agent is told so.
+- In Discord, the agent now gets the text and files of a forwarded message, when you reply to the forward or mention ZollyBot after it. Before, the agent got only your mention and said that it saw no report. When Discord does not give the forwarded content, the agent is told so.
 - The activity line of an agent that uses the built-in browser now says what the step does, such as opening, reading, clicking or typing on a web page. Before, each browser step showed "Searching for current information…" and "Reviewing the sources and information I found…".
-- About 30 seconds after iOS puts the OpenBot app to sleep, a server now updates the iPhone Live Activity
+- About 30 seconds after iOS puts the ZollyBot app to sleep, a server now updates the iPhone Live Activity
   and Dynamic Island, and sends notifications. Before, when the app went to sleep before it told the
   server, the activity could show "Working" for more than two minutes after the agent finished, and
   notifications for that time did not come.
@@ -1552,37 +1552,37 @@ All notable changes to OpenBot will be documented here. The project follows
   second account stopped with a usage limit notice, and the usage limit card did not offer its model.
 - A chat with unread messages now keeps the "NEW" divider in view while its images and previews load. Before, content that loaded after the chat opened moved the divider down, and the chat showed older messages.
 - On Windows, Remote Desktop starts again. The remote desktop runtime did not include the Sunshine
-  DirectX shaders, so Sunshine did not start and OpenBot showed "Sunshine did not start on the host".
+  DirectX shaders, so Sunshine did not start and ZollyBot showed "Sunshine did not start on the host".
 - On macOS, the name of the image in the image viewer no longer shows under the window controls. Before, the first letters of the name were behind the close, minimize and zoom buttons.
-- On macOS, OpenBot can now ask for Automation access, so the Apple apps and Messages tools work in
+- On macOS, ZollyBot can now ask for Automation access, so the Apple apps and Messages tools work in
   the released app. Before, macOS refused the request without a prompt, and a Messages lookup
   stopped with `bootstrapTimedOut`.
-- When Gemini starts slowly after its first download, as on an Intel Mac, OpenBot now keeps the
-  download and tries again, and waits twice as long at each try. Before, OpenBot deleted Gemini
+- When Gemini starts slowly after its first download, as on an Intel Mac, ZollyBot now keeps the
+  download and tries again, and waits twice as long at each try. Before, ZollyBot deleted Gemini
   after 3 minutes, and each Retry downloaded it again and failed the same way.
-- After you clicked a channel in the sidebar and then went back to the OpenBot window, the avatars on that row moved without stop, also when the agents were idle. Now they move only while the pointer or the keyboard focus is on the row.
+- After you clicked a channel in the sidebar and then went back to the ZollyBot window, the avatars on that row moved without stop, also when the agents were idle. Now they move only while the pointer or the keyboard focus is on the row.
 - On a computer joined to a server, the chat of the server's agent now shows the context window meter beside the microphone. Before, the meter was missing. The server must also run this version.
-- Start OpenBot when a saved MCP server has headers or other values that it cannot read. Before, the
+- Start ZollyBot when a saved MCP server has headers or other values that it cannot read. Before, the
   app did not open until the server was deleted from the database. Now Server settings shows that
   server turned off, and you can correct it or remove it there.
 - When an agent started a new ChatGPT session, for example after it moved to a backup model, the chat
   could show a red `paginated_threads is not supported yet` error. ChatGPT cannot read a session
-  before it saves the first turn, and OpenBot now does not show this as an error.
+  before it saves the first turn, and ZollyBot now does not show this as an error.
 - Show the Download button for an image attached in a side thread, under the image and in the image
   viewer. Before, only the agent's main chat had it.
 - Show the Download button for an image file that an agent message names by its path, under the
   message and in the image viewer. Before, only an attached image had it.
 - Usage now shows an estimated cost for Codex turns that use GPT-6.1 Terra. Before, these turns had token counts but no cost. Turns from before the upgrade stay without a cost.
-- An MCP server that refuses to register OpenBot, such as Dropbox, now shows **Refused** and says
-  that the server does not accept OpenBot as an app. Before, it showed **Failed** with the
+- An MCP server that refuses to register ZollyBot, such as Dropbox, now shows **Refused** and says
+  that the server does not accept ZollyBot as an app. Before, it showed **Failed** with the
   server's own text.
 - An agent can attach files in the built-in browser when the page opens its file chooser from a
   button, such as the "Paste, drop, or click to add files" button in a GitHub comment. Before,
   `upload_files` worked only on a file input, and on these pages it stopped with "Node is not a file
   input element".
-- A channel no longer stops all work when a member repeats its result as its last reply. Before, that reply could stay "still arriving" after the turn ended, and every later assignment in the channel failed with "The provider could not start this assignment". A channel that this blocked works again when OpenBot starts after the upgrade.
-- A second Gemini account stays after its Google sign-in when Gemini starts slowly, as it can on Windows. Before, OpenBot stopped the check after the sign-in at 30 seconds, and the new account disappeared.
-- When a new provider account cannot sign in, OpenBot now shows an error with the reason. Before, the account disappeared with no message.
+- A channel no longer stops all work when a member repeats its result as its last reply. Before, that reply could stay "still arriving" after the turn ended, and every later assignment in the channel failed with "The provider could not start this assignment". A channel that this blocked works again when ZollyBot starts after the upgrade.
+- A second Gemini account stays after its Google sign-in when Gemini starts slowly, as it can on Windows. Before, ZollyBot stopped the check after the sign-in at 30 seconds, and the new account disappeared.
+- When a new provider account cannot sign in, ZollyBot now shows an error with the reason. Before, the account disappeared with no message.
 - Cancel on a provider account that is still connecting no longer waits until the provider finishes starting.
 
 ## [0.52.1] - 2026-10-27
@@ -1591,7 +1591,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 - Remove the downloaded CLI of a provider that is off. Open the provider in Settings > Providers and
   select Remove download. It shows the space it frees. Accounts, sign-ins and agents stay. When you
-  turn the provider on again, OpenBot downloads the CLI again (#3321).
+  turn the provider on again, ZollyBot downloads the CLI again (#3321).
 - An owner or admin can import a CSV password export into a server's Vault from the iPhone app.
   The server answers only how many logins it added and skipped.
 - An owner or admin can set the default provider of a server from the phone. The server starts new
@@ -1613,13 +1613,13 @@ All notable changes to OpenBot will be documented here. The project follows
 - Show Mermaid diagrams that have a line break in a label. Before, the chat showed a broken image.
 - The secure password card now always shows "Save to Vault" and names the Vault: this computer or the joined server. An owner or admin of a joined server can save the password to that server's Vault; the box starts unchecked. A member, or a server that needs an update, sees why the box is off. Before, the option did not show on a joined server or in the web app, and the password was not saved.
 - While an agent writes, the activity line shows its text without Markdown marks such as `**` and `- `.
-- Start Claude agents as new sessions when a Claude Code session opens OpenBot, for example with
-  `open -a OpenBot`. Before, the agents got the session ID, entry point and messaging token of that
+- Start Claude agents as new sessions when a Claude Code session opens ZollyBot, for example with
+  `open -a ZollyBot`. Before, the agents got the session ID, entry point and messaging token of that
   session, and each new chat wrote its prompt cache again.
-- Let Gemini start MCP servers whose command, such as `node`, is on the login shell PATH. Before, OpenBot opened from the Dock or a login item could not find the command.
-- OpenBot now quits when a file operation never finishes, for example when macOS waits for a privacy
+- Let Gemini start MCP servers whose command, such as `node`, is on the login shell PATH. Before, ZollyBot opened from the Dock or a login item could not find the command.
+- ZollyBot now quits when a file operation never finishes, for example when macOS waits for a privacy
   approval that nobody answers. It stops itself at most 10 seconds after its shutdown, which can take
-  up to 30 seconds. Before, OpenBot stopped responding after you quit it, and it did not open again
+  up to 30 seconds. Before, ZollyBot stopped responding after you quit it, and it did not open again
   until you forced it to quit on macOS or ended it on Linux.
 - Agents now follow a confirmation rule in any `CLAUDE.md` or `AGENTS.md` file, also when a request
   names the action. Before, an agent could make a change that cannot be undone, such as a Stripe
@@ -1628,23 +1628,23 @@ All notable changes to OpenBot will be documented here. The project follows
 - An OpenCode agent's answer after a background subagent ends now shows in the chat. Before, OpenCode saved the answer, but the chat never showed it, because no message had started that turn.
 - An OpenCode answer that the agent writes in two steps now shows as two paragraphs. Before, the text of the two steps showed as one line.
 - Text that you type in a side thread and do not send now stays in the message box of that thread. It stays when a turn in another thread of the agent ends, when you open another thread or chat and come back, and after a restart. Before, the text was removed when a turn of the agent ended.
-- Connect Railway works again. OpenBot now registers as a public client when the sign-in server
+- Connect Railway works again. ZollyBot now registers as a public client when the sign-in server
   supports it. Before, Railway refused the client secret that it gave, and the sign-in stopped with
   "Existing OAuth client information is required when exchanging an authorization code".
-- Show a clear message when a sign-in server refuses OpenBot at the end of an MCP sign-in. Before,
+- Show a clear message when a sign-in server refuses ZollyBot at the end of an MCP sign-in. Before,
   the message did not say what went wrong.
-- When this computer's server was published, OpenBot publishes it again after a start, also when the
+- When this computer's server was published, ZollyBot publishes it again after a start, also when the
   account service or Signal does not answer at first, for example at login before the network is
   ready. It also publishes the server again when Signal disconnects it later. It tries again after
   1 minute, and then less frequently. Before, the server stayed private after one failed try, and
   you had to publish it again, for example after an update.
-- A long context compaction with Codex or Pi now runs to its end. Before, OpenBot stopped each
-  compaction after 2 minutes, so the compaction of a long thread did not complete. OpenBot now stops
+- A long context compaction with Codex or Pi now runs to its end. Before, ZollyBot stopped each
+  compaction after 2 minutes, so the compaction of a long thread did not complete. ZollyBot now stops
   a compaction only when the provider does not start it in 2 minutes, or when it runs for 20 minutes.
 - When Gemini or another ACP agent crashes, the error now shows the first line of the crash report,
   such as `F… Check failed: …` or `*** SIGABRT received …`. Before, it showed only the last line,
   `RAW: Raising signal 6`, which does not say why the agent stopped.
-- End a Remote Control session when its stream fails and you go back to OpenBot. Before, the session stayed open, and the Remote Control button showed a green dot on every agent of that server.
+- End a Remote Control session when its stream fails and you go back to ZollyBot. Before, the session stayed open, and the Remote Control button showed a green dot on every agent of that server.
 
 ## [0.52.0] - 2026-10-27
 
@@ -1654,7 +1654,7 @@ All notable changes to OpenBot will be documented here. The project follows
   so the vault can be their memory. Install the Local REST API plugin in Obsidian, turn on its HTTP
   server, and type its API key in the connect dialog.
 - Add Neon, Prisma, Netlify, Railway, Atlassian (Jira and Confluence), Todoist and Hugging Face to the Apps catalog. Sign in in the browser to connect each of them, except Hugging Face: it reads public Hub data and needs no account. Neon, Prisma, Netlify, Railway, Atlassian and Todoist give agents write access, so agents can change or delete data there. Each listing says what agents can change.
-- The website has the OpenBot Commercial License Agreement at openbot.run/commercial-license. The
+- The website has the ZollyBot Commercial License Agreement at openbot.run/commercial-license. The
   Terms & Conditions link to it.
 - Give an agent more than one conversation. Click + in the chat header to start a new thread. Each thread has its own tab
   and runs at the same time as the other threads of the agent. The agent keeps its main chat.
@@ -1667,7 +1667,7 @@ All notable changes to OpenBot will be documented here. The project follows
   shows as a preview under the answer. Click it to open it at full size.
 - Right-click an agent in the sidebar and choose "New thread" to open its chat with a new thread.
 - Attach MP4 videos in chat. The chat plays them, and the agent gets the original file. A remote host
-  must run this version of OpenBot to accept MP4 files.
+  must run this version of ZollyBot to accept MP4 files.
 - Add Render to the Apps catalog. Connect it with a Render API key. Agents can list workspaces and services, read
   logs, events and metrics, find why a deploy failed, trigger deploys, and run read-only SQL on Render Postgres. The
   key reaches every workspace of the account, so agents can also create services and databases and replace the
@@ -1696,7 +1696,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - All app pages now use one layout: the header, then alerts, then sections with a heading and one card each, and last the danger zone. Text, forms and notes now show inside the cards, and all buttons in a card have the same small size. A plugin that is not completely installed shows a warning above its sections. An app that is not connected now shows "Not connected" at the top of its page. Before, some pages showed "Not set up".
 - Slack, Discord and Telegram pages now have a danger zone that disconnects every workspace, server or chat at once, after you confirm. Each row still has its own Disconnect.
 - The page that opens after a Slack or Discord sign-in in the browser now tells you to open Marketplace › Apps to try again.
-- The connect dialogs of Marketplace apps that you sign in to, give a key to, or turn on in their desktop app now look and work as the GitHub and Slack connect dialogs do. They show OpenBot and the app with a line that moves while they connect, and Cancel and the main button at the bottom right. When a connection fails, the line breaks. Connect in the Marketplace now starts the connection at once: a sign-in opens the browser, and an app on this computer connects if its server is on. An app that needs a key opens with the cursor in the key field.
+- The connect dialogs of Marketplace apps that you sign in to, give a key to, or turn on in their desktop app now look and work as the GitHub and Slack connect dialogs do. They show ZollyBot and the app with a line that moves while they connect, and Cancel and the main button at the bottom right. When a connection fails, the line breaks. Connect in the Marketplace now starts the connection at once: a sign-in opens the browser, and an app on this computer connects if its server is on. An app that needs a key opens with the cursor in the key field.
 - To disconnect Bitwarden, use the button in the new danger zone at the bottom of its page.
 - The Cloudflare, Airtable and Paper icons in the Marketplace are now centered and clear on a dark background.
 - A plugin page now has a Connection section. It shows how each app connects: you are signed in, an API key is saved, it uses a desktop app on this computer, or it needs nothing. Use "Sign in again", "Change key" or "Connect again" there.
@@ -1713,7 +1713,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - "Tasks at once" in the agent settings is now "Parallel threads". "Run as task" on a queued message is now "Run in
   new thread".
 - Deleting a thread also deletes its messages and their files from the agent's inbox.
-- After this upgrade, an earlier version of OpenBot cannot open your data.
+- After this upgrade, an earlier version of ZollyBot cannot open your data.
 - A message from another agent now steers the running turn when the agent that gets it is set to
   steer busy messages. Before, it always waited in the queue until the turn ended.
 - You can steer a teammate's answer into the running turn with Steer in the "Waiting for replies"
@@ -1748,19 +1748,19 @@ All notable changes to OpenBot will be documented here. The project follows
 - A Cursor reply no longer ends with "Error: RetriableError: WritableIterable is closed" after a turn that succeeded.
 - When an agent asks another agent from a side thread, the answer now comes back to that side thread. Before, it arrived in the agent's own chat. The request still arrives in the other agent's own chat.
 - A side thread now names the other agent as the author of its answer. Before, screen readers read the answer as a message from the thread's own agent.
-- A chat with queued messages no longer slows down OpenBot. Before, each queue change wrote the
+- A chat with queued messages no longer slows down ZollyBot. Before, each queue change wrote the
   queued messages to the database again and sent the whole chat to each connected device, and the
   queued messages went out of the chat and came back.
 - Text that you select in a code block of a message shows the selection actions (Quote, Explain,
   Improve). Before, a double-click or a selection in a code block showed no actions.
-- OpenBot starts again when an update for a provider CLI is available. Before, the app stopped at start and showed no update notification.
+- ZollyBot starts again when an update for a provider CLI is available. Before, the app stopped at start and showed no update notification.
 - Muse agents on Windows can start a turn again. Before, each turn failed at once with no reply,
-  because OpenBot sent the workspace folders in a form that Muse does not accept.
-- A Pi agent keeps its OpenBot tools after OpenBot restarts. Before, a chat that was opened after a restart lost every OpenBot tool, and each restart gave the tools new names, so the agent could call old names and get "Tool ... not found". A Pi chat that already shows this error gets its tools again at its next turn.
+  because ZollyBot sent the workspace folders in a form that Muse does not accept.
+- A Pi agent keeps its ZollyBot tools after ZollyBot restarts. Before, a chat that was opened after a restart lost every ZollyBot tool, and each restart gave the tools new names, so the agent could call old names and get "Tool ... not found". A Pi chat that already shows this error gets its tools again at its next turn.
 - A Pi agent whose session file was moved or deleted starts a new session. Before, each turn stopped with "The Pi session file is not available on this computer."
 - A Pi, DeepSeek, Inception or OpenRouter agent with Workspace only access on macOS replies again. Before, each message stopped with "Credential store read failed" and "EPERM", or Pi stopped at the start.
 - Edit of a custom provider now shows the names of its saved headers. An empty value keeps the saved value, and you can change or remove one header. Before, the header rows opened empty, so the saved headers looked lost.
-- OpenBot no longer offers a CLI update for a provider that is turned off. When you turn the provider on again, the update is offered.
+- ZollyBot no longer offers a CLI update for a provider that is turned off. When you turn the provider on again, the update is offered.
 - An answer through OpenCode stays whole when the model streams its reasoning between the words of the answer. Before, the answer was cut at each thought, so the start of a word moved to the steps and words showed in pieces, such as "B aca" for "Baca".
 - An SVG path in an agent answer was plain text. It is now a file link that opens the file.
 - An agent that tried to attach an SVG file got a general "not supported" error. It now gets told
@@ -1773,21 +1773,21 @@ All notable changes to OpenBot will be documented here. The project follows
 - Close the side panel after you close its last tab. Before, the app stopped responding and the panel stayed open.
 - Keep the provider session of a thread when its delete fails and you restore it. Before, the restored thread started a
   new session and lost its thread instructions.
-- A message steered into a Claude turn just as the turn ends now shows its answer one time. Before, the answer showed again in the chat after OpenBot started again.
+- A message steered into a Claude turn just as the turn ends now shows its answer one time. Before, the answer showed again in the chat after ZollyBot started again.
 - The browser client at openbot.run/app now shows the custom images of agents. Before, it showed the
   generated avatar for each agent with a custom image.
 - An agent with Full access no longer asks before each Computer Use action. Workspace only and Ask
   first agents still ask.
 - The usage limit notice in the composer now reads the ChatGPT account that the agent uses. An agent
   on a second account with quota left no longer shows the limit of the first account.
-- When you connect or resume Slack, Discord or Telegram on this computer, OpenBot now publishes this computer's server first. Before, the connection failed until you published the server or gave it a name in the server settings.
+- When you connect or resume Slack, Discord or Telegram on this computer, ZollyBot now publishes this computer's server first. Before, the connection failed until you published the server or gave it a name in the server settings.
 - A Codex agent no longer says that it could not get an image after it generated the image. Before, the image showed in the chat, but the agent reported a failure and asked the user to try again. Each existing Codex chat starts a new Codex session one time after this update. To edit an image from before the update, attach it again.
 
 ## [0.51.1] - 2026-10-26
 
 ### Fixed
 
-- On Linux, closing the OpenBot AppImage no longer shows a crash report for `chrome_crashpad_handler`. Before, its crash helper stopped with `SIGBUS` after each quit.
+- On Linux, closing the ZollyBot AppImage no longer shows a crash report for `chrome_crashpad_handler`. Before, its crash helper stopped with `SIGBUS` after each quit.
 - An agent on a shared server no longer tells you to open the chat on another device to use that device. The agent now says that it works only on the computer that runs the server. Settings › Computer Use also says that agents on another server use that server's computer.
 - On a Docker server of `docker/instances` with LXCFS, Gemini works again. Before, it stopped with
   SIGILL when it started, because the container listed only the CPUs of its limit as online.
@@ -1807,7 +1807,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Settings › General › "Open external links in" now lists each browser on your Mac, and "Other app…"
   lets you choose an app that is not in the list. On Linux and Windows, "Command…" takes a program
   path or command. Links in chats, sign-in pages, billing pages and connector pages open there. When
-  that browser does not start, the page opens in the default browser and OpenBot shows a short
+  that browser does not start, the page opens in the default browser and ZollyBot shows a short
   notice.
 - Pin pages to the page rail. The new More button under the rail pages lists Routines, Workflows,
   Tasks, Schedule and Usage. Click a page to open it, or click the pin at the end of its row to show
@@ -1815,16 +1815,16 @@ All notable changes to OpenBot will be documented here. The project follows
   saved on this computer, and on the web app in this browser.
 - You can change the provider, account or custom agent while a turn or a task runs on this computer. The running work keeps its sessions. The new provider starts before the next turn after the running turn and its tasks end. The header shows the same "After this turn" badge that a model change already uses. On a remote server, a provider change still waits until the work ends.
 - Add DeepSeek as a provider. Connect it with a DeepSeek API key, then choose DeepSeek V4 Pro or
-  DeepSeek V4.1 Flash for an agent. The agents run in the Pi CLI that OpenBot downloads, and the key
+  DeepSeek V4.1 Flash for an agent. The agents run in the Pi CLI that ZollyBot downloads, and the key
   stays encrypted on this computer.
 - A pasted image goes into the message box at the cursor, as a reference with a small preview, its
   name and its size. Thanks to @sebapaszynski.
 - When you copy or cut a draft that has attachments and paste it into another agent's message box, the
   files come with the text as new copies. The Copy action on a message also keeps its attachments.
   Other apps get the text with the file names. The clipboard holds no file paths and no file bytes.
-- The website has a Brand page at `/brand`. It has the OpenBot logo in each shape and color, with
+- The website has a Brand page at `/brand`. It has the ZollyBot logo in each shape and color, with
   and without the name, as SVG and PNG files. "Download all" saves all of them in one zip file.
-- Right-click the OpenBot logo in the website header to copy the logo as SVG, download the brand
+- Right-click the ZollyBot logo in the website header to copy the logo as SVG, download the brand
   files, or open the Brand page.
 - Agents use the skills in your `~/.agents/skills` folder with every provider. Claude gets them as `agents:<name>`, and a skill that Claude already reads from `~/.claude/skills` is not added again. Antigravity, Muse and custom ACP agents get a list of these skills in their instructions and read a skill's `SKILL.md` when a task needs it. The other providers already read the folder.
 - Type `$` in the message field to tag a skill from `~/.agents/skills`. The agent gets the path of the skill's `SKILL.md`, so every provider can open it.
@@ -1834,7 +1834,7 @@ All notable changes to OpenBot will be documented here. The project follows
   first time an agent uses each app.
 - Add OpenRouter as a provider. Connect it with an OpenRouter API key, then choose one of the
   models that OpenRouter serves for an agent. The model picker groups the models by lab and marks
-  the free models. The agents run in the Pi CLI that OpenBot downloads, and the key stays encrypted
+  the free models. The agents run in the Pi CLI that ZollyBot downloads, and the key stays encrypted
   on this computer.
 - Add Supabase to the Apps catalog. After you sign in to Supabase in the browser, agents can list projects, run SQL,
   read table schemas and logs, check advisors, manage edge functions and branches, and search the Supabase docs.
@@ -1843,21 +1843,21 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Changed
 
 - Claude agents use Claude Code's own prompt cache time again by default: 5 minutes with an Anthropic
-  API key, and 1 hour for the main chat of a Claude plan within its usage limits. In 0.50.0, OpenBot
+  API key, and 1 hour for the main chat of a Claude plan within its usage limits. In 0.50.0, ZollyBot
   asked for 1 hour for all agents, and a 1-hour cache write costs more. The "Prompt cache" setting on
   the Claude page in Server settings › Providers now has "Claude Code default" and "1 hour". If you
   chose "1 hour", it stays.
-- The website FAQ answer to "Is OpenBot open source?" now uses simpler words. It says that all of the source code is public, links to it on GitHub, and says that it is free for noncommercial use. The launch news post now calls OpenBot source-available, not open-source.
+- The website FAQ answer to "Is ZollyBot open source?" now uses simpler words. It says that all of the source code is public, links to it on GitHub, and says that it is free for noncommercial use. The launch news post now calls ZollyBot source-available, not open-source.
 - The website header has a Resources menu with Download, Changelog, Community, Documentation, Brand
   and Status. Changelog and the Community button moved into it.
-- When OpenBot updates to a new version, it also updates the provider CLIs that it installed, such
+- When ZollyBot updates to a new version, it also updates the provider CLIs that it installed, such
   as Claude, OpenCode and Grok, with no update notification. A notification shows only when an
   update fails, with a Retry. A CLI that you installed yourself is not changed.
 
 ### Fixed
 
 - A server with a saved Anthropic API key no longer starts a Claude sign-in on the API key account, or
-  removes that account, when an older OpenBot version asks for it. That version shows the key as a
+  removes that account, when an older ZollyBot version asks for it. That version shows the key as a
   signed-out account. Now it gets a message that tells you to change the key in Server settings ›
   Providers.
 - Open and create agent routines in the web app. Before, Create routine and a routine in Schedule
@@ -1866,31 +1866,31 @@ All notable changes to OpenBot will be documented here. The project follows
   each message failed with no error, and only the agent's face changed.
 - Pi agents no longer stop with "Pi returned an invalid RPC record." when a tool call has a value
   such as `true` that is also the value of an MCP server setting or of the GitHub connection. Before,
-  OpenBot stopped Pi and started it again, and the turn failed.
+  ZollyBot stopped Pi and started it again, and the turn failed.
 - The Cursor usage ring no longer shows an "Other models" window for a Cursor plan that includes no other models, such as an X subscription. It shows the plan's total usage only. Before, it showed an "Other models" window that the plan does not have.
 - Escape in the model picker of the create-an-agent form now closes only the picker. Before, it also
   closed the form and the draft was lost.
 - In the web app, browser Back and Forward, including the side buttons of a mouse, now open the chats
   that you opened before, also on another server. Before, Back left the app and opened the page that
   you came from.
-- On macOS 26 with the Dark icon style, the OpenBot app icon is a black tile with white eyes. Before,
+- On macOS 26 with the Dark icon style, the ZollyBot app icon is a black tile with white eyes. Before,
   macOS made a black tile with black eyes, and the eyes were almost invisible. The Light style still
   shows the lavender icon.
 - The "Open external links in" setting had no effect, and it went back to "Default browser" after a
-  restart. Now OpenBot keeps it, and "OpenBot" opens links in chats in the built-in browser.
+  restart. Now ZollyBot keeps it, and "ZollyBot" opens links in chats in the built-in browser.
 - The Linux AppImage starts on Arch Linux, Omarchy and other systems with no libfuse2. It mounts
   itself with `fusermount3` from the `fuse3` package. Before, it stopped with an error about
   `libfuse.so.2`.
 - In a wide window, the agent's working row and its pending questions, approvals and other cards now show in the centered chat column. Before, they showed at the left edge of the pane until the turn finished. (#3146)
 - Give MCP server tools to Codex agents on GPT-6 and other code-mode models after an update to Codex
-  0.164. Before, a chat that started before OpenBot 0.50.0 had no MCP tools. Each Codex agent starts
+  0.164. Before, a chat that started before ZollyBot 0.50.0 had no MCP tools. Each Codex agent starts
   one new Codex session to get the tools.
-- On Windows, OpenBot now tries again when another program, such as antivirus, has a settings file
-  open while OpenBot saves it. Before, a save at sign-in could fail, and then Slack, Discord and
+- On Windows, ZollyBot now tries again when another program, such as antivirus, has a settings file
+  open while ZollyBot saves it. Before, a save at sign-in could fail, and then Slack, Discord and
   Telegram connections failed with "Sign in, give this computer a name, and try again."
 - On Windows, Claude starts when the Claude Code CLI comes from npm (`claude.cmd`). Before, every Claude session, model list and usage read failed with "spawn EINVAL", and sign-in and sign-out through such a CLI failed too. Stopping a session now also stops the Claude process that the `.cmd` file started.
 - Keep the web client connected while a server sends many events. Before, it disconnected and connected again every few seconds during a turn.
-- OpenBot no longer shows "OpenBot database is not initialized." when you quit it. The windows now
+- ZollyBot no longer shows "ZollyBot database is not initialized." when you quit it. The windows now
   hide when the quit starts, and the database waits a short time for a slow agent stop before it
   closes.
 - A sleeping cloud server keeps its data when the hosting provider refuses its keep-alive start or
@@ -1899,7 +1899,7 @@ All notable changes to OpenBot will be documented here. The project follows
   last stop.
 - Continue unfinished agent work after a provider reaches its usage limit and switches to a backup.
   Keep completed work, tool results and attachments with the request, including across backup models.
-- Deleting an agent that runs on its own provider process, such as an agent with "Workspace only" access or a second provider account, now stops that process first. Before, on Windows the delete could fail and the agent came back until you restarted OpenBot.
+- Deleting an agent that runs on its own provider process, such as an agent with "Workspace only" access or a second provider account, now stops that process first. Before, on Windows the delete could fail and the agent came back until you restarted ZollyBot.
 - When a delete fails after the agent is already gone, the agent no longer comes back in the list until a restart.
 - In a channel, an agent that posts its task result no longer shows a second short reply, such as "Yes.", under it. Before, the text that the agent wrote after the result showed as a separate message. Now it shows in the steps of the turn.
 - The agent's browser `evaluate` tool no longer times out on pages with an ad frame that does not run its timers, such as Amazon product pages.
@@ -1907,15 +1907,15 @@ All notable changes to OpenBot will be documented here. The project follows
   a build such as `next build` started one worker for each CPU of the host, not of the server's
   limit, the server stopped answering, and the apps reconnected every few minutes. Agent processes
   now run at a lower CPU priority, and Node programs of agents see the server's CPU limit.
-- When a server is almost out of memory, OpenBot now stops leftover agent processes first, such as
+- When a server is almost out of memory, ZollyBot now stops leftover agent processes first, such as
   preview servers and build workers that stayed after their job ended. Before, they kept their memory
   until the kernel stopped a process or the server restarted.
 - Routine wake-up commands now run also when the long command fails, so an agent learns that its job
   stopped.
-- OpenBot now starts the Codex app server again when it stops answering. Before, a hung Codex process stayed in use, and every agent turn and routine run failed until you stopped codex.exe yourself.
-- When Codex does not answer, a message now fails with that reason. Before, it failed with "OpenBot could not register MCP servers in the Codex configuration", although `config.toml` was correct.
+- ZollyBot now starts the Codex app server again when it stops answering. Before, a hung Codex process stayed in use, and every agent turn and routine run failed until you stopped codex.exe yourself.
+- When Codex does not answer, a message now fails with that reason. Before, it failed with "ZollyBot could not register MCP servers in the Codex configuration", although `config.toml` was correct.
 - Usage now shows the token cost of OpenCode turns, including OpenCode Go. Before, the OpenCode cost was always "Unavailable". The cost is the session cost that OpenCode reports, at API-equivalent rates, not the subscription charge. When earlier turns of a session have no cost, as in a session that started before this release, the first turn with a cost has no cost.
-- Two reads of the history of one Claude session at the same time no longer fail with "database is locked". Before, this error could show when an agent continued on its backup model while OpenBot read the session history after a start.
+- Two reads of the history of one Claude session at the same time no longer fail with "database is locked". Before, this error could show when an agent continued on its backup model while ZollyBot read the session history after a start.
 - Connecting Firecrawl, or another plugin that starts with `npx`, no longer fails with "The server did
   not answer in 10 seconds" on its first start. A local server now has 60 seconds to download its
   package and answer. A server at a web address still has 10 seconds.
@@ -1955,7 +1955,7 @@ All notable changes to OpenBot will be documented here. The project follows
   An owner or admin can set it for this computer and for a joined server.
 - Korean interface. Choose 한국어 in Settings > General > Language, or keep System default on a
   computer that uses Korean. The web client uses it too.
-- A custom ACP agent can have a usage command, such as `/usage`. OpenBot sends it at most every 5 minutes, and the agent's logo in the rail shows the last answer when you hover it. Use a command that the agent answers itself: other text starts a model turn each time.
+- A custom ACP agent can have a usage command, such as `/usage`. ZollyBot sends it at most every 5 minutes, and the agent's logo in the rail shows the last answer when you hover it. Use a command that the agent answers itself: other text starts a model turn each time.
 - Server settings has a Vault page, after General. Save logins, payment cards and contact info on
   this computer, encrypted by the operating system. Agents sign in with the saved logins, fill a
   saved card on a checkout page, also in the card frames of payment providers, and type the saved
@@ -1997,11 +1997,11 @@ All notable changes to OpenBot will be documented here. The project follows
 - Members of a joined server can open and run the workflows whose agents they can use. To change, delete or restore a workflow, a member needs “Can manage” on each of its agents; otherwise the canvas is read-only.
 - Usage shows the tokens of workflow model and condition steps in one Workflows row. Steps that use an agent count under that agent.
 - Consecutive model and condition steps reuse one started provider for 5 minutes, so they start faster. Each step still starts with no earlier text.
-- When analytics is on, OpenBot counts workflow actions and runs: the kind of action, the outcome, the duration and the step counts. It never sends a workflow name, step text or graph.
+- When analytics is on, ZollyBot counts workflow actions and runs: the kind of action, the outcome, the duration and the step counts. It never sends a workflow name, step text or graph.
 
 ### Changed
 
-- The Linux docs and the Linux download page on openbot.run now name Ubuntu 26.04 LTS. OpenBot
+- The Linux docs and the Linux download page on openbot.run now name Ubuntu 26.04 LTS. ZollyBot
   0.48.1 runs on Ubuntu 26.04 with the Electron sandbox on.
 - When nothing comes from the provider for a minute during a turn, the activity line says "Waiting for {provider}…" and stops its shine. A notice above the message box says how long the provider has sent no update. Before, the line looked busy the whole time, also with no internet.
 - When the computer has no network during a turn and nothing comes from the provider for 5 seconds, a "No internet connection" notice shows above the message box, and the activity line says that it waits.
@@ -2022,12 +2022,12 @@ All notable changes to OpenBot will be documented here. The project follows
   text and in the colour of the agent's messages. Before, it showed only their faces.
 - Agents now follow your user-level `CLAUDE.md` or `AGENTS.md`, and the one at the root of the agent
   workspace, when these files set the persona, reply length and format, delegation, or group-chat
-  behavior. Before, OpenBot's built-in style guidance and your files gave the agent two rule sets for
+  behavior. Before, ZollyBot's built-in style guidance and your files gave the agent two rule sets for
   the same decision. Files in cloned repositories do not get this priority. The rules for tools,
   memory, approvals, secrets, private details, safety checks and the browser do not change.
 - A focused field shows a grey border, and a focused button shows a thin grey ring. They no longer
   show a blue glow.
-- The comparison pages on openbot.run now list all the providers that OpenBot runs, including Muse
+- The comparison pages on openbot.run now list all the providers that ZollyBot runs, including Muse
   Code, Pi, Inception and ACP agents, and 11 app languages. New rows compare backup models and
   logins and payments, and most pages also compare voice and Slack, Discord and Telegram.
 - The home page and `llms.txt` on openbot.run now name the new providers and backup models.
@@ -2047,7 +2047,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - An app that an agent suggests in a chat, such as Linear, now shows a green Connected button with a check after you connect it. Before, the card kept its Connect button.
 - When an agent asks another agent for help, the "Waiting for replies" list now shows when that agent waits for your approval, your answer, the browser, or a usage limit. A button opens its chat, where you can answer. Before, the list showed "Working" until the wait ended.
 - The agent usage page now counts all Gemini tokens. Antigravity 1.4.3 sends the tokens of each
-  turn, but OpenBot added them as a session total, so a turn smaller than an earlier turn in the
+  turn, but ZollyBot added them as a session total, so a turn smaller than an earlier turn in the
   same session counted as 0. Gemini thinking tokens now also count as output. Usage that was
   recorded before this fix does not change.
 - The app demo on the home page no longer shows a time zone prompt, an update card or a helper agent from another server. Its dates now show today.
@@ -2064,7 +2064,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Claude, ChatGPT and Muse channel members use less of their plan. A member's next assignment in
   the same conversation gives only the channel messages that it has not read. Before, each
   assignment sent the recent channel history again, up to 60,000 characters. The first assignment
-  after a start of OpenBot, a new conversation, a provider change, or a compaction still sends the
+  after a start of ZollyBot, a new conversation, a provider change, or a compaction still sends the
   complete history.
 - A provider account that you add now shows its usage rings in the page rail when its sign-in ends. Before, the rings showed only after a reload or the next usage refresh, up to 5 minutes later.
 - On a joined server, the usage rings no longer go away when the host resets the usage of a provider account.
@@ -2076,21 +2076,21 @@ All notable changes to OpenBot will be documented here. The project follows
   between them.
 - An agent can click a choice, such as a payment method, when a decorative layer of its label covers
   the radio button.
-- The first Claude turn after OpenBot starts again now has a cost in Analytics and in the turn trace.
-  OpenBot estimates it from Anthropic's list prices, because Claude does not report the cost of that
+- The first Claude turn after ZollyBot starts again now has a cost in Analytics and in the turn trace.
+  ZollyBot estimates it from Anthropic's list prices, because Claude does not report the cost of that
   turn.
-- The Live Activity updates that OpenBot sends to your iPhone cut a long code span with emoji at the
+- The Live Activity updates that ZollyBot sends to your iPhone cut a long code span with emoji at the
   correct length. Before, the cut could split an emoji into half a character, and an emoji counted
   as two characters, so the text stopped too early.
-- The Live Activity updates that OpenBot sends to your iPhone show a reply that starts with inline
+- The Live Activity updates that ZollyBot sends to your iPhone show a reply that starts with inline
   code in three backticks, such as ```` ```npm install``` first ````. Before, the update read that
   line as the start of a code block: the line disappeared and the next lines showed as code.
 - Gemini usage now follows the limit of the model that an agent uses. Google can give a model, such
-  as Gemini 4 Argon, a weekly limit of its own. Before, OpenBot put all Gemini limits together, so a
+  as Gemini 4 Argon, a weekly limit of its own. Before, ZollyBot put all Gemini limits together, so a
   spent Argon limit could show for Gemini 3.8 Flash, or Argon could show room that it did not have.
 - Stop showing a "Provider error" when Codex completes a credential storage fallback. Keep the redacted diagnostic in the provider log. Authentication and storage failures still report errors.
 - A sign-in to a Google MCP server, such as Gmail, Calendar or Drive, now keeps working after the
-  first hour. OpenBot asks Google for a refresh token. **Sign in to these servers again after you
+  first hour. ZollyBot asks Google for a refresh token. **Sign in to these servers again after you
   upgrade.**
 - A custom provider with a base URL on `api.anthropic.com` now uses Anthropic's Messages API, so
   OpenCode adds prompt cache breakpoints. Before, it used Anthropic's OpenAI-compatible endpoint, which
@@ -2101,15 +2101,15 @@ All notable changes to OpenBot will be documented here. The project follows
   checksum. Before, each failure was recorded as `unknown`.
 - When you save or remove a provider API key, agents that a usage limit held now continue at once.
   Before, they waited for the old plan's limit to reset, which could take days.
-- Sign in to an MCP server again when OpenBot cannot read the saved sign-in file. Before, Connect
+- Sign in to an MCP server again when ZollyBot cannot read the saved sign-in file. Before, Connect
   stopped with "The MCP sign-in file is unreadable" until the file was deleted, which dropped every
   saved MCP session.
 - Restart now closes turn rows that stayed `running` although no thread names them as its active turn. Before, such rows stayed `running` for good, as the follow-up data on #2214 showed.
-- An OpenCode agent with more than one chat keeps its OpenBot tools. Before, about 10 minutes after
-  its other chat went idle, every OpenBot tool call failed with `{"error":"unauthorized"}`, including
+- An OpenCode agent with more than one chat keeps its ZollyBot tools. Before, about 10 minutes after
+  its other chat went idle, every ZollyBot tool call failed with `{"error":"unauthorized"}`, including
   routines, teammates and the browser, until OpenCode restarted. Each tool call also runs in the chat
   that made it, when two chats of the agent work at the same time.
-- A long channel keeps working when its history summary comes back too long. OpenBot now asks the lead for a
+- A long channel keeps working when its history summary comes back too long. ZollyBot now asks the lead for a
   shorter summary, and asks once more when the result is still too long. Before, every new assignment in that
   channel failed with "The history summary is invalid" and "The provider could not start this assignment".
 
@@ -2117,12 +2117,12 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- You can change the key of the server on this computer in Server settings › General › Server key. Computers with this version or later, the web client and webhook routes stay connected. Before, a new key showed "Server identity changed" on each device, and each phone had to scan a new code. Older versions of OpenBot and the current phone app still show "Server identity changed". Do this if the key file was copied or exposed.
-- The website compares OpenBot with Viktor at /compare/viktor: models and price, where agents work, what each one reads, who holds your data, teams, approvals and integrations.
-- Connect Bitwarden or a self-hosted Vaultwarden on a joined server. In Server settings › Connectors, an owner or admin enters the server address, the personal API key and the master password. The server signs in with its own Bitwarden CLI, downloads it when it has none, and unlocks again by itself after a restart. Agents on that server can then sign in to sites with the logins in the folder Shared with OpenBot. This works from the desktop app and the browser client.
-- The website compares OpenBot with Paperclip at /compare/paperclip: setup, phones and remote access, how you work with agents, price, and license.
-- When a task needs an API key or a token, the agent now shows a secure form in the chat, as it does for passwords. The key is saved for that agent on the computer or server that runs OpenBot, outside its workspace, and the agent reads it from a file. It does not go into the chat, the logs or a tool argument, and you do not need to connect to the server to give it. Only the server owner or an admin can enter a key. To remove a key, ask the agent to remove it. Deleting the agent deletes its keys.
-- Mobile Connect settings can keep chats and files on a private network. Choose "Private network", and phones, other computers and team members connect to this computer only over Tailscale or the same Wi-Fi. They still sign in with OpenBot, but chats and files never go through OpenBot servers. Settings shows when Tailscale is connected.
+- You can change the key of the server on this computer in Server settings › General › Server key. Computers with this version or later, the web client and webhook routes stay connected. Before, a new key showed "Server identity changed" on each device, and each phone had to scan a new code. Older versions of ZollyBot and the current phone app still show "Server identity changed". Do this if the key file was copied or exposed.
+- The website compares ZollyBot with Viktor at /compare/viktor: models and price, where agents work, what each one reads, who holds your data, teams, approvals and integrations.
+- Connect Bitwarden or a self-hosted Vaultwarden on a joined server. In Server settings › Connectors, an owner or admin enters the server address, the personal API key and the master password. The server signs in with its own Bitwarden CLI, downloads it when it has none, and unlocks again by itself after a restart. Agents on that server can then sign in to sites with the logins in the folder Shared with ZollyBot. This works from the desktop app and the browser client.
+- The website compares ZollyBot with Paperclip at /compare/paperclip: setup, phones and remote access, how you work with agents, price, and license.
+- When a task needs an API key or a token, the agent now shows a secure form in the chat, as it does for passwords. The key is saved for that agent on the computer or server that runs ZollyBot, outside its workspace, and the agent reads it from a file. It does not go into the chat, the logs or a tool argument, and you do not need to connect to the server to give it. Only the server owner or an admin can enter a key. To remove a key, ask the agent to remove it. Deleting the agent deletes its keys.
+- Mobile Connect settings can keep chats and files on a private network. Choose "Private network", and phones, other computers and team members connect to this computer only over Tailscale or the same Wi-Fi. They still sign in with ZollyBot, but chats and files never go through ZollyBot servers. Settings shows when Tailscale is connected.
 - Let an owner or admin of a connected server, self-hosted servers included, change "Tasks at once"
   for each agent of that server in the agent's Advanced settings. The server saves and applies the
   limit. Before, only agents on this computer had the setting.
@@ -2148,11 +2148,11 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Changed
 
-- Each plugin page on openbot.run now shows what an agent can do with the plugin, how to connect it to OpenBot, common questions, and the sources for each statement.
-- The guides "OpenBot 101" and "WTF Is OpenBot?" now have the titles "How to Use OpenBot: Set Up Your First AI Agent" and "What Is OpenBot? Models, Providers and Agents Explained". Their addresses did not change.
+- Each plugin page on openbot.run now shows what an agent can do with the plugin, how to connect it to ZollyBot, common questions, and the sources for each statement.
+- The guides "ZollyBot 101" and "WTF Is ZollyBot?" now have the titles "How to Use ZollyBot: Set Up Your First AI Agent" and "What Is ZollyBot? Models, Providers and Agents Explained". Their addresses did not change.
 - A message that you send no longer shows "Sending…" or turns grey. Only a failed send shows: "Not sent" and its reason beside the time, with Retry, Edit and Dismiss buttons.
 - Product analytics on turns sends how the turn is paid for: a plan, an API key, a free model, or your own endpoint. It does not send keys or accounts. The privacy policy lists the new data.
-- The web client and the desktop app on Windows and Linux show the OpenBot logo in the top-left corner of the window. Before, this corner was empty, because only macOS shows window buttons there. In the web client, the logo opens the OpenBot site.
+- The web client and the desktop app on Windows and Linux show the ZollyBot logo in the top-left corner of the window. Before, this corner was empty, because only macOS shows window buttons there. In the web client, the logo opens the ZollyBot site.
 - On these windows, the server menu starts at the same left edge as the search field and the sidebar rows.
 - A schedule with no routines now shows a faint month where sample runs land and write a short note of what they did, with "Set it once. Wake up to it done." The "Create Routine" button asks which agent to use when the server has more than one, and opens that agent's routine settings on a new routine.
 - An agent or a channel with no memories now shows a faint memory list that fills in by itself: each sample memory writes itself in handwriting, then becomes a normal row. The title says "Tell it once. It will remember.", and an "Add memory" button opens the editor.
@@ -2173,7 +2173,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Keep a failed Codex tool call, such as an image generation that fails, out of the ChatGPT
   provider error notice. Before, the notice stayed on screen in each chat that you opened, also in
   chats of other providers. The agent still gets the error as the tool's result.
-- After an in-app update installs, OpenBot deletes the downloaded update file when the new version starts. Before, a copy of the full update stayed in the updater cache on macOS and Windows. A downloaded update that is newer than the running version stays until you restart.
+- After an in-app update installs, ZollyBot deletes the downloaded update file when the new version starts. Before, a copy of the full update stayed in the updater cache on macOS and Windows. A downloaded update that is newer than the running version stays until you restart.
 - A long preview in an agent's confirm card now has a "Show all" button that opens the full text, and "Show less" closes it again. Before, the preview stopped at a fixed height with no visible sign that more text was there.
 - **On macOS, sign in to Gemini again after you upgrade.**
 - On macOS, a Gemini agent with Workspace only access now uses the Google sign-in. Before, it stopped with "Gemini did not return an authenticated account" while Settings showed Gemini as connected.
@@ -2189,7 +2189,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Voice prompts and read-aloud replies work on Linux (x64 and arm64), as on macOS and Windows.
   Before, the Linux app showed no microphone and no Voice settings.
 - You can now duplicate a whole sidebar section from its menu, in the desktop app and the web
-  client. OpenBot makes a "copy" section right after the first one and copies every agent in it.
+  client. ZollyBot makes a "copy" section right after the first one and copies every agent in it.
   Each copy keeps its settings and files, and starts with no messages. If one agent cannot be
   copied, for example because it is busy, the copy stops and keeps the agents it already made.
 - "Send test event" signs an event that matches the routine and receives it as a real request. The
@@ -2207,7 +2207,7 @@ All notable changes to OpenBot will be documented here. The project follows
   credentials.
 - When an agent's backup models are set to Automatic, a provider error now moves the agent to the next backup model too. This covers a spent balance, an unavailable provider, a rate limit, a sign-in error and a network error. The message runs again on the backup when the agent had not started to write, and the agent goes back to its own model after 10 minutes. Before, only a usage limit moved the agent.
 - `read_agent` now says when a provider error, not a usage limit, keeps an agent on a backup model.
-- Show the Cursor plan usage next to the other providers' usage. The Cursor ring shows the usage of Cursor's own models and of all other models for the billing cycle. OpenBot reads the Cursor CLI's sign-in to ask Cursor for this usage.
+- Show the Cursor plan usage next to the other providers' usage. The Cursor ring shows the usage of Cursor's own models and of all other models for the billing cycle. ZollyBot reads the Cursor CLI's sign-in to ask Cursor for this usage.
 - Right-click a message to reply to it, copy it, react to it or read it aloud. React opens all
   reactions in a submenu. Shift+F10 opens the menu from the keyboard. Over selected text or a link,
   right-click still opens the menu that copies them.
@@ -2215,17 +2215,17 @@ All notable changes to OpenBot will be documented here. The project follows
   a server it checks is down. The run history shows the run as failed, with the reason. The answer
   still shows in the chat and still goes to the routine's result destination. In a routine flow, the
   agents after a failed step are skipped.
-- On Windows, the installer lets you choose the disk and folder for OpenBot. Before, it always
-  installed to `%LOCALAPPDATA%\Programs\OpenBot`. Updates keep the folder that you chose.
+- On Windows, the installer lets you choose the disk and folder for ZollyBot. Before, it always
+  installed to `%LOCALAPPDATA%\Programs\ZollyBot`. Updates keep the folder that you chose.
 - A channel member can now change its channel when a person asks for it in the channel: add or
   remove a member, change the channel instructions, and make, change or delete the channel's
   routines. Each change shows in the channel with the agent and the person who asked. A routine run
   or an agent's own request cannot make these changes.
 - Agent settings have a new switch, "Own browser session". When it is on, the agent's browser tabs keep their own cookies, sign-ins and site data, apart from other agents. Two agents can then use different accounts on the same site, such as WhatsApp Web or Gmail. The switch is off by default, so agents keep the shared session and its sign-ins. A change closes the agent's open tabs. Deleting an agent deletes its own browser session.
-- Reset the usage limits of a Codex account from Settings > Providers. When Codex gave the account a usage reset credit, the account's ⋯ menu shows **Reset usage**. OpenBot asks for confirmation, spends one credit, shows the result, and starts the agents that the limit held. This works for each Codex account, also on a joined server where you are an owner or admin.
+- Reset the usage limits of a Codex account from Settings > Providers. When Codex gave the account a usage reset credit, the account's ⋯ menu shows **Reset usage**. ZollyBot asks for confirmation, spends one credit, shows the result, and starts the agents that the limit held. This works for each Codex account, also on a joined server where you are an owner or admin.
 - Sign in to a site for a server's browser on this computer. In the browser's page menu, select
   "Sign in on this computer" and sign in in the window that opens. When the sign-in is complete,
-  OpenBot sends only that site's sign-in to the server, the tab loads again signed in, and the window
+  ZollyBot sends only that site's sign-in to the server, the tab loads again signed in, and the window
   closes. If the window stays open, select Done. This helps with sites such as X
   that refuse a sign-in from a server address. The server must run this version.
 - When a site refuses a sign-in from the server, the agent shows a card that says so. In the desktop
@@ -2252,9 +2252,9 @@ All notable changes to OpenBot will be documented here. The project follows
 - The agent and channel settings panel opens wider, so routine settings have more room.
 - Save now tells you what is missing, under the name, the instruction or the filter, instead of
   staying unavailable.
-- On Windows, Restart and install updates OpenBot with no installer window, then opens it again.
+- On Windows, Restart and install updates ZollyBot with no installer window, then opens it again.
   **The update from 0.48.1 or older still shows the installer window once. Select Finish to open
-  OpenBot again.** Your settings, agents and chats stay.
+  ZollyBot again.** Your settings, agents and chats stay.
 - The Starter plan of hosted servers is sold out. The add-server dialog shows it as sold out, and a new server must use the Standard or Pro plan. Servers that have the Starter plan keep it.
 - A server with 5 GiB of memory or less, such as the Starter plan, now runs at most 2 turns at the same time. Other messages wait in the queue for a free slot. Before, 4 turns could start together and show a low-memory notice on a server that still had memory.
 - Voice recording warns you before its 2-minute limit. The last 15 seconds count down in the recording bar, two short pips play at 10 seconds left, and a chime plays when it stops. Before, the recording stopped without a sound and you could keep speaking without knowing. A notice above the message box now says why the recording stopped.
@@ -2278,14 +2278,14 @@ All notable changes to OpenBot will be documented here. The project follows
 - A long message in a card that asks if the agent can send it now scrolls, so you can read all of
   the message before you answer. Before, the card showed only the first lines.
 - A Codex chat now starts when `~/.codex/config.toml` has an MCP server with the same name as an
-  OpenBot MCP server of the other type, such as a local `github` server and the GitHub connection.
+  ZollyBot MCP server of the other type, such as a local `github` server and the GitHub connection.
   Before, Codex showed "url is not supported for stdio" and did not load its configuration. The
-  OpenBot server now goes to Codex as `openbot_<name>`, and your own server stays as you wrote it.
+  ZollyBot server now goes to Codex as `zollybot_<name>`, and your own server stays as you wrote it.
 - An OpenCode 2.1 turn that failed in OpenCode's local service now says so and tells you to try again or reconnect OpenCode. Before, the chat showed only "Internal error: Internal service failure".
 - A provider error that is not tied to a chat, such as a provider that did not start, now names the provider in its title, for example "OpenCode error". Before, the title was "Provider error", so you could not tell which provider failed.
 - An OpenCode turn that stops sending anything now ends after 5 minutes with an error that says so. Before, the chat could show "Working on it…" for an hour, and each message you sent again waited behind it. This also applies to Cursor, Cline, Grok and custom ACP agents. A running tool call or a question that waits for you does not count.
 - Stop now ends an OpenCode turn also when OpenCode does not stop it. Before, the turn could stay active after you pressed Stop.
-- An MCP server with a space or another special character in its name no longer stops Gemini and other ACP agents. Before, each task failed with `invalid params`. OpenBot now changes these characters to `_` when it gives the server to the agent.
+- An MCP server with a space or another special character in its name no longer stops Gemini and other ACP agents. Before, each task failed with `invalid params`. ZollyBot now changes these characters to `_` when it gives the server to the agent.
 - A reminder routine now sends its message in the chat when it runs. Before, the agent could decide
   that the reminder had nothing new to report, and the run completed with no message.
 - Show why channel routing failed, for example when the lead's model is unavailable, the lead did not
@@ -2299,14 +2299,14 @@ All notable changes to OpenBot will be documented here. The project follows
   Before, the server test found the tools, but the model did not see them and asked for another
   message. Existing conversations get the fix on their next message and keep their history.
 - Pi now shows as connected soon after you sign in with `/login` in Pi on the host computer, also
-  over SSH on a server. Before, it stayed signed out until OpenBot restarted.
+  over SSH on a server. Before, it stayed signed out until ZollyBot restarted.
 - A hosted server that nobody uses for 10 days now starts for a short time and then goes back to sleep. This keeps its data: the hosting provider deletes the disk of a server that stays stopped for 14 days.
-- OpenBot no longer quits on macOS when an agent opens a page that redirects to another page while it loads, such as a sign-in or consent page.
+- ZollyBot no longer quits on macOS when an agent opens a page that redirects to another page while it loads, such as a sign-in or consent page.
 
 ### Security
 
-- MCP servers that OpenBot starts with its own Bun now use Bun 1.4.4. It has security fixes for
-  TLS, HTTP, WebSocket and `fetch`. OpenBot downloads it when an MCP server needs it.
+- MCP servers that ZollyBot starts with its own Bun now use Bun 1.4.4. It has security fixes for
+  TLS, HTTP, WebSocket and `fetch`. ZollyBot downloads it when an MCP server needs it.
 
 ## [0.48.1] - 2026-10-22
 
@@ -2330,11 +2330,11 @@ All notable changes to OpenBot will be documented here. The project follows
   that you use downloads again at the next dictation. Replies are not read aloud until you download
   the speech model again.
 - Settings → General → Appearance has an Interface size control, from 67% to 200%. It changes the
-  size of text and controls in OpenBot, and OpenBot keeps it after a restart. ⌘ + and ⌘ − (Ctrl on
+  size of text and controls in ZollyBot, and ZollyBot keeps it after a restart. ⌘ + and ⌘ − (Ctrl on
   Windows and Linux) also change it, and ⌘ 0 sets it back to 100%. The View menu has Actual Size,
   Zoom In and Zoom Out.
 - You can choose a GIF as an agent picture, a profile picture or a server logo. An animated GIF
-  stays animated. OpenBot stores it as an animated WebP.
+  stays animated. ZollyBot stores it as an animated WebP.
 - The home page of openbot.run has the LaserFlow light beam from React Bits again. It falls onto the
   app preview and spreads along the top of the preview, in a soft violet haze. The light moves toward
   the pointer. The app preview has no shadow or glow around it.
@@ -2365,25 +2365,25 @@ All notable changes to OpenBot will be documented here. The project follows
   in the sidebar.
 - Restore a deleted channel from its row menu in Deleted channels, on desktop and web. This also
   brings back the channels that the earlier release archived.
-- When OpenBot closes by itself, it now leaves a local record of the reason: a `Quitting` line in
+- When ZollyBot closes by itself, it now leaves a local record of the reason: a `Quitting` line in
   `logs/main/main.log`, an `exit` line and immediate process exit lines in `logs/trace.ndjson`, and
   a crash dump in the `Crashpad` folder when a process crashes. Nothing is uploaded. Do not attach a
   crash dump publicly: it can hold secrets.
-- Agents can list their open waits with `openbot.list_waits`, with each wait ID, note, open time and
+- Agents can list their open waits with `zollybot.list_waits`, with each wait ID, note, open time and
   the routine that wakes it, and close a finished wait by ID. Before, an agent at the limit of 20
   open waits could not find the IDs, so it could not open new waits.
-- `openbot.list_agents` shows the number of open waits of each agent. An agent can list and close
+- `zollybot.list_agents` shows the number of open waits of each agent. An agent can list and close
   the waits of another local agent with `agentId`.
 - When an agent is close to the wait limit, a new wait tells it to close finished waits. At the
   limit, the refusal lists the open waits.
 - Owners and admins of a joined server can now set an agent's backup models from the desktop app
   and the web client. Before, only the computer that runs the agent showed the setting, so a hosted
   server had no way to set it. Members do not see it. The server must also run this version.
-- You can install OpenBot with Nix on x64 or arm64 Linux and on Apple silicon:
-  `nix run github:nightly-labs/openbot`. Nix installs OpenBot updates. A copy that Nix installed does
+- You can install ZollyBot with Nix on x64 or arm64 Linux and on Apple silicon:
+  `nix run github:nightly-labs/openbot`. Nix installs ZollyBot updates. A copy that Nix installed does
   not update itself; Settings shows that Nix installs its updates.
 - Gemini agents now show how full their context is, next to the send button. When the context is
-  80% full, OpenBot compacts it: the agent continues in a new session that starts from the recent
+  80% full, ZollyBot compacts it: the agent continues in a new session that starts from the recent
   conversation. The agent, its chat and its files stay.
 - The context popover has a "Compact now" action for Gemini and Codex agents. It compacts the
   context at once, below 80% too.
@@ -2393,7 +2393,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - When a saved Gemini API key runs your Gemini agents, the Gemini provider page says so. A saved key
   always comes before your Google sign-in, so the work uses the key's project and not your Google AI
   plan, and the Usage panel shows no Gemini limit.
-- When your device's time zone changes, OpenBot asks if you want to move your routines to the new zone. It asks for this computer and for each joined server where you are an owner or admin, in the desktop app and the browser client. The routines keep their clock times, IDs and run history. Before, a routine always kept the zone it was made in, so after a trip it ran at the wrong local time.
+- When your device's time zone changes, ZollyBot asks if you want to move your routines to the new zone. It asks for this computer and for each joined server where you are an owner or admin, in the desktop app and the browser client. The routines keep their clock times, IDs and run history. Before, a routine always kept the zone it was made in, so after a trip it ran at the wrong local time.
 - A joined server now lets its owners and admins choose, from the mobile app, where an agent
   routine sends its answers: Slack, Discord or Telegram. The server must run this version.
 - You can ask an agent in chat to make a webhook routine, for example "start when my CI sends a
@@ -2409,10 +2409,10 @@ All notable changes to OpenBot will be documented here. The project follows
 - **Check agent** for a custom ACP agent now also shows the agent's models, so you can see what the
   agent offers before you save it. An agent that lists its models only after sign-in still passes
   the check.
-- A joined server can now show you agents on providers that your OpenBot does not know yet. The
+- A joined server can now show you agents on providers that your ZollyBot does not know yet. The
   agent stays in your list and you can chat with it. Its provider and model choices are disabled
-  and show "Update OpenBot to use" and the provider name.
-- New providers no longer need a new Team API version. Older OpenBot versions do not see agents
+  and show "Update ZollyBot to use" and the provider name.
+- New providers no longer need a new Team API version. Older ZollyBot versions do not see agents
   on providers that they do not know.
 - Tasks opens in the main pane, as Routines does, and the server menu stays at the top. The agent list is hidden until you click the panel button in the Tasks header. A click on an agent opens it, and a click on Tasks goes back to the tasks.
 - Channel work holds only the agent that does it. Other agents and their tasks keep working, and an
@@ -2430,7 +2430,7 @@ All notable changes to OpenBot will be documented here. The project follows
   remote server, the token chart shows one total line instead of one line for each provider.
 - Agents on ACP providers (such as OpenCode, Grok and custom agents) and on Muse now get their
   instructions once per session, not with each message. The instructions are 20,000 to 30,000
-  characters, so each message used thousands of extra input tokens. OpenBot sends the instructions
+  characters, so each message used thousands of extra input tokens. ZollyBot sends the instructions
   again when they change, such as after a new memory, after the agent compacts its context, after a
   failed message and after a restart. An agent that does not report its context size gets them
   again every 10 messages.
@@ -2449,12 +2449,12 @@ All notable changes to OpenBot will be documented here. The project follows
   sometimes did not show. A tile now shows a spinner while its image loads.
 - An agent now says that Marketplace has no app for a service, such as Whoop. Before, the agent said
   that it left a card to connect the app, but the chat showed no card.
-- Find and start a Codex CLI that npm, Volta, Bun or pnpm installed when you open OpenBot from
-  Finder, the Dock, or a login item. Before, OpenBot reported that Codex was not found or could not
-  start, because the CLI did not get your shell `PATH`. OpenBot now reads the `PATH` of the shell in
+- Find and start a Codex CLI that npm, Volta, Bun or pnpm installed when you open ZollyBot from
+  Finder, the Dock, or a login item. Before, ZollyBot reported that Codex was not found or could not
+  start, because the CLI did not get your shell `PATH`. ZollyBot now reads the `PATH` of the shell in
   `$SHELL`, such as bash or fish, not only zsh.
 - Say whether the downloaded copy or your own copy of Codex or Claude could not start, instead of
-  always asking you to reinstall OpenBot.
+  always asking you to reinstall ZollyBot.
 - On Windows, pick a runnable file when `where` finds a Claude, Codex or other CLI with more than
   one extension.
 - Usage analytics now count the tokens and the estimated cost of task turns. Before, a turn in a
@@ -2490,14 +2490,14 @@ All notable changes to OpenBot will be documented here. The project follows
 - When ChatGPT refuses requests because they come too fast, the agent now shows "Too many requests.
   Wait a moment, then try again." The raw Codex text "exceeded retry limit, last status: 429 Too
   Many Requests" no longer shows.
-- On Windows and Linux, Ctrl+W in the main window no longer closes OpenBot when no browser tab is
-  open. With "Keep OpenBot running in the background" off, it quit the app with no question.
+- On Windows and Linux, Ctrl+W in the main window no longer closes ZollyBot when no browser tab is
+  open. With "Keep ZollyBot running in the background" off, it quit the app with no question.
 - Answer the approval cards that already wait for an agent when you give it Full access, press
   Always allow, or an admin changes its permission from another computer. Before, those cards stayed
   open until you answered each one.
 - Run a Codex MCP tool without a card when the agent has Full access, also when the tool is set to ask
   every time in Codex. Computer Use still asks.
-- Stop showing `thread not loaded` in a Codex chat at each start. OpenBot now reads the history of an
+- Stop showing `thread not loaded` in a Codex chat at each start. ZollyBot now reads the history of an
   agent on a second Codex account through that account, and ignores a session that Codex has no saved
   history for.
 - Start a new Codex session when Codex has no saved history for the old one. Before, each message to
@@ -2506,12 +2506,12 @@ All notable changes to OpenBot will be documented here. The project follows
   a long paste dropped the rest of the text with no warning. Now the field keeps all the text, shows
   a character count near the limit, and shows an error when the text is too long. The instructions
   are not saved until you shorten them.
-- Claude usage now counts each turn once. Before, the first turn after OpenBot resumed a Claude
+- Claude usage now counts each turn once. Before, the first turn after ZollyBot resumed a Claude
   session, such as after a restart or 10 minutes of idle time, counted all the earlier turns of the
   session again. The Usage view and its estimated cost showed too many tokens for Claude agents.
   Usage that was recorded before this version stays as it is. The first turn after a resume has no
   estimated cost.
-- When Google reports that a Gemini usage limit is reached, OpenBot no longer calls it a rate limit
+- When Google reports that a Gemini usage limit is reached, ZollyBot no longer calls it a rate limit
   and no longer tells you to wait a few minutes. The message now says that the limit can be for one
   model, so the usage page of your plan can still show room, and it keeps the reset time from Google.
 - The menu that changes a routine's trigger now fits the space in the window and scrolls. Before, on
@@ -2525,15 +2525,15 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - Settings > Voice has a new local dictation model: **Underdog Bark 3.0 Plus**. It is fast and
-  recognizes English only. It writes mostly lowercase text, with little punctuation. OpenBot
+  recognizes English only. It writes mostly lowercase text, with little punctuation. ZollyBot
   downloads it (about 685 MB) only when you select it.
 - Roles in Server settings let an owner or admin choose the agents that members can use. Each role gives each agent one level: No access, Can view, Can chat or Can manage. A member gets the highest level of Everyone and of their roles. Owners and admins can use all agents. The role menu of each member on the Members page gives the roles and the server role.
 - Import your Hermes Agent profiles in Server settings › Import. Each profile becomes an agent with its persona, memories, skills and scheduled jobs. There are three ways, as for Grok Bot:
-  - **Read this computer:** OpenBot reads the Hermes folder and shows every item, and why an item stays in Hermes, before anything changes. Skills with scripts and MCP servers import only when you allow them, and MCP servers are added turned off. When you import a profile again, its agent is updated, and no second agent is added.
-  - **Install with a command:** type the `/skills install` command in a Hermes chat, send `/openbot-export`, and choose the `.zip` file that Hermes saves.
+  - **Read this computer:** ZollyBot reads the Hermes folder and shows every item, and why an item stays in Hermes, before anything changes. Skills with scripts and MCP servers import only when you allow them, and MCP servers are added turned off. When you import a profile again, its agent is updated, and no second agent is added.
+  - **Install with a command:** type the `/skills install` command in a Hermes chat, send `/zollybot-export`, and choose the `.zip` file that Hermes saves.
   - **Set it up yourself:** add the export skill file to Hermes by hand, then do the same steps.
 - Keys in `.env` and `auth.json` are never copied.
-- Server settings › Import now starts with where your agents are now: Hermes Agent, Grok Bot, or another OpenBot computer.
+- Server settings › Import now starts with where your agents are now: Hermes Agent, Grok Bot, or another ZollyBot computer.
 - Select text in a file that the side panel shows, then quote it or ask the agent to change it. The quote names the file and, in a text file, the lines. Click the quote to open the file at the quoted passage.
 - Oh My Pi (`omp acp`) is now in the list of known agents when you add a custom agent, and the
   agent scan finds an installed `omp` command.
@@ -2554,13 +2554,13 @@ All notable changes to OpenBot will be documented here. The project follows
 - The Tasks page keeps the agent that you chose last on each server. Before, it went back to the first agent each time you opened the page.
 - The agent menu on the Tasks page scrolls when a server has many agents. Before, agents below the bottom of the window could not be chosen.
 - Icons in buttons with text are now the size of the text, not larger.
-- OpenBot now offers new Pi releases. Before, the update check could not read Pi's release tags, so
-  Pi stayed on the version that came with OpenBot.
+- ZollyBot now offers new Pi releases. Before, the update check could not read Pi's release tags, so
+  Pi stayed on the version that came with ZollyBot.
 - In Discord, the agent now gets the images and files of earlier messages. A new conversation also
-  gets the channel's messages from the 15 minutes before it. Before, "@OpenBot make an issue" after
+  gets the channel's messages from the 15 minutes before it. Before, "@ZollyBot make an issue" after
   an image that another person posted without a mention did not see that image, and the agent could
   act on an older request.
-- Keep each agent's provider session when OpenBot stops through a signal, as a terminal, `systemd` or Docker sends it. The Computer Use driver stopped from the same signal and made every agent start a new provider session at the next launch, which lost the provider's own context.
+- Keep each agent's provider session when ZollyBot stops through a signal, as a terminal, `systemd` or Docker sends it. The Computer Use driver stopped from the same signal and made every agent start a new provider session at the next launch, which lost the provider's own context.
 - The Composio listing now connects with a Composio Connect link (`https://connect.composio.dev/mcp`) and its API key. Before, the key went in a header that Composio Connect does not read, and the connection failed with "This server asks for a sign-in".
 - A server that refuses a pasted key now says to check the key. Before, it said to sign in.
 
@@ -2572,10 +2572,10 @@ All notable changes to OpenBot will be documented here. The project follows
   on, the agent asks Codex for the fast tier and the picker shows "Fast" next to the model.
 - Attach ZIP archives in chat. The agent gets the archive unchanged and can extract it. An agent can
   also send a ZIP archive back, and you can download it from the chat. A remote host must run this
-  version of OpenBot to accept ZIP archives.
+  version of ZollyBot to accept ZIP archives.
 - Add Inception as a provider, with the Mercury 3, 2.5 and 2 models. Select Connect on the Inception
-  row and save an Inception API key. Inception runs in the Pi CLI that OpenBot downloads, so download
-  Pi first. OpenBot keeps the key encrypted on this computer and does not change Pi's own settings.
+  row and save an Inception API key. Inception runs in the Pi CLI that ZollyBot downloads, so download
+  Pi first. ZollyBot keeps the key encrypted on this computer and does not change Pi's own settings.
   Inception agents stay on this computer and are not shown to team members.
 - The desktop app and the web app show a notification when an agent needs you to finish a step in the browser, such as a sign-in or a code. Before, only the phone and the MacBook notch showed it, and the phone stayed quiet while you used the desktop app.
 - A message or a routine run that cannot start now shows a notification on desktop, web and phone, as a turn that stopped with an error does.
@@ -2586,7 +2586,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Changed
 
-- OpenBot now installs OpenCode 2 (2.1.1) as its own OpenCode CLI. Your threads keep their OpenCode
+- ZollyBot now installs OpenCode 2 (2.1.1) as its own OpenCode CLI. Your threads keep their OpenCode
   sessions.
 - When you mute this computer's server, or set its notifications to Nothing or Only when it needs me, your phone now gets the events that the desktop does not show. Before, these events reached no device while you used the computer.
 - Mute and the notification level of a server now also stop the agent sounds on desktop, as they do on web.
@@ -2597,7 +2597,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Server settings: **Publish this server** is now in **Members**, above the invitations. General
   keeps the server name, logo, and preferences. The server address row is removed: people join with
   an invitation, not an address.
-- You can publish a server before you name it. OpenBot gives it a name from your account, such as
+- You can publish a server before you name it. ZollyBot gives it a name from your account, such as
   "Ann’s server". You can change the name in General.
 - When product analytics is on, a completed agent turn now also sends the token counts that the
   provider reported for that turn: uncached input, cached input, cache write, output, and total.
@@ -2622,9 +2622,9 @@ All notable changes to OpenBot will be documented here. The project follows
   the same size as the other page titles, so it shows on one line on a wide screen.
 - A remote session stays connected when Signal restarts and the account service is slow to answer.
   Before, the session closed and the device showed it as offline.
-- After a Signal restart, OpenBot computers and devices no longer all connect again at the same time.
+- After a Signal restart, ZollyBot computers and devices no longer all connect again at the same time.
 - OpenCode setup no longer fails with "could not activate the managed CLI" on a computer where
-  OpenCode 2 is already installed. When OpenBot uses an older OpenCode CLI that cannot open the
+  OpenCode 2 is already installed. When ZollyBot uses an older OpenCode CLI that cannot open the
   database of OpenCode 2, setup now tells you to update OpenCode to version 2 or later.
 - With OpenCode 2, an OpenCode thread opens again after a restart, also while OpenCode is still
   starting.
@@ -2645,26 +2645,26 @@ All notable changes to OpenBot will be documented here. The project follows
 - Center the agent avatars in the connectors list of Server settings and on the Slack, Discord and
   Telegram connector pages. Before, each avatar stood about 3 pixels lower than the row text and
   the arrow.
-- OpenBot now keeps your sign-in, API keys and other secrets on Linux desktops such as Hyprland,
+- ZollyBot now keeps your sign-in, API keys and other secrets on Linux desktops such as Hyprland,
   Sway, i3 and LXQt when a Secret Service (such as GNOME Keyring) runs. Before, it asked you to sign
   in on every start, and it could not save a pasted API key.
-- Keep your Codex and ChatGPT thread lists clean. When OpenBot starts a new Codex session for an
+- Keep your Codex and ChatGPT thread lists clean. When ZollyBot starts a new Codex session for an
   agent, for example after you change its tools or reset its context, it now archives the session
   that the new one replaces. Before, each replaced session stayed in your Codex history as a row
-  that starts with "Continue this OpenBot conversation." The agent's conversation in OpenBot does not
+  that starts with "Continue this ZollyBot conversation." The agent's conversation in ZollyBot does not
   change.
-- Pi agents keep their OpenBot tools, browser included, in new conversations. Pi also shows the
-  OpenBot tools with their real names, so a model can find them.
+- Pi agents keep their ZollyBot tools, browser included, in new conversations. Pi also shows the
+  ZollyBot tools with their real names, so a model can find them.
 - A routine run in the chat now animates once. Before, its row and its steps, such as "Invoked" and
   "Started", could animate again when the run changed state, when two runs overlapped, or after a
   reload.
-- When an OpenCode model cannot read a file or image in the chat, OpenBot now tells you to choose a
+- When an OpenCode model cannot read a file or image in the chat, ZollyBot now tells you to choose a
   model that can read files, in a yellow notice. Before, a red error said that the provider failed
   and that you must try again later, but each new message failed again until you changed the model.
 - A task that needs your approval no longer looks stuck in "Making the requested changes…". The task panel
   on desktop and on the web shows the approval with Allow and Deny, and the task says "Waiting for your
   approval". An approval of a task no longer hides an approval of the agent's chat.
-- On Discord, OpenBot reads the images and files of the message that you reply to. Before, it read
+- On Discord, ZollyBot reads the images and files of the message that you reply to. Before, it read
   only the text of that message, and a message with only an image gave no context.
 - A notification for a question, an approval or a browser step now goes away when the request is answered or cancelled, also from another device. Before, it stayed in the Notification Center.
 - When the ChatGPT sign-in of a server had expired, a sign-in with a code from the web client or the phone stopped a few seconds after the code appeared. The code now stays valid until you enter it.
@@ -2676,7 +2676,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- OpenBot can read replies aloud on this computer. Turn on Read replies aloud in Settings › Voice ›
+- ZollyBot can read replies aloud on this computer. Turn on Read replies aloud in Settings › Voice ›
   Spoken replies. When you dictate a message, its reply is read aloud in the language of the reply,
   in 31 languages. Dictate again, or send a new message, to stop it. Choose one of ten voices and
   press Listen to hear a sample. The Supertonic 3 voice model downloads once, about 145 MB, and no
@@ -2692,7 +2692,7 @@ All notable changes to OpenBot will be documented here. The project follows
   and length of your recording. Play, pause, or click the waveform to go to a different part. The
   agent gets only the text, and the recording stays on this computer. The reply to a spoken message
   has a player too: it reads the reply aloud with a timer, and you can pause and resume it. After
-  one full reading, the reply keeps its audio until you close OpenBot: its player shows the waveform
+  one full reading, the reply keeps its audio until you close ZollyBot: its player shows the waveform
   and length, plays again at once, and you can click the waveform to go to a different part.
 - The Voice pane works with an agent on a remote server. The spoken reply runs on this computer,
   speech recognition uses the voice model you chose in Settings › Voice, and only the text goes to the
@@ -2706,8 +2706,8 @@ All notable changes to OpenBot will be documented here. The project follows
 - The production desktop app sends OpenPanel events for the Voice pane, spoken replies, the voice
   model download and the spoken reply settings: counts, times, lengths and results only. It never
   sends what you said, the reply, or audio.
-- Invite users to the OpenBot community from a card at the bottom of the sidebar, in the desktop app
-  and the web client. "Join the Discord" opens the Discord server, and the X button opens the OpenBot
+- Invite users to the ZollyBot community from a card at the bottom of the sidebar, in the desktop app
+  and the web client. "Join the Discord" opens the Discord server, and the X button opens the ZollyBot
   account on X. The card stays closed after you dismiss it. On desktop, it shows after you dismiss
   the mobile app card.
 
@@ -2719,21 +2719,21 @@ All notable changes to OpenBot will be documented here. The project follows
   a higher limit. Global search also finds "Memories per agent".
 - The top of the openbot.run home page no longer shows a grid behind the title.
 - In the web app, an account with no server now sees Create a hosted server as the first action.
-  Download OpenBot and Join with invitation are still there.
+  Download ZollyBot and Join with invitation are still there.
 - Show the License section in Billing also when licenses are not for sale. A purchase then shows a
   message with the address to contact: licenses@openbot.run.
 
 ### Fixed
 
-- Keep the saved account sign-in when OpenBot cannot read or save it at one start. Before, OpenBot
+- Keep the saved account sign-in when ZollyBot cannot read or save it at one start. Before, ZollyBot
   deleted it, and you had to sign in with an email code again after the next restart or update.
-  OpenBot now writes the reason to `logs/account/account.log` in its data folder.
+  ZollyBot now writes the reason to `logs/account/account.log` in its data folder.
 - Keep a question from a ChatGPT agent open until you answer it. Before, with GPT-6 models the
   question often expired after about 20 seconds.
-- On Windows and Linux, "Keep OpenBot running in the background" now works. When it is on, closing
-  the window hides OpenBot, and an icon in the system tray opens it again or quits it. Before, the
-  window closed OpenBot, and the switch was off again after a restart.
-- "Launch OpenBot at login" now opens OpenBot when you sign in to your computer. Before, the switch
+- On Windows and Linux, "Keep ZollyBot running in the background" now works. When it is on, closing
+  the window hides ZollyBot, and an icon in the system tray opens it again or quits it. Before, the
+  window closed ZollyBot, and the switch was off again after a restart.
+- "Launch ZollyBot at login" now opens ZollyBot when you sign in to your computer. Before, the switch
   did nothing and was on again after a restart.
 - OpenCode agents no longer fail on each message with "OpenCode service failure" when OpenCode
   cannot read the agent's session, for example a session that another OpenCode version wrote. The
@@ -2743,15 +2743,15 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- One OpenBot server can connect more than one Slack workspace or Discord server. Settings › Connectors shows "Add workspace" or "Add Discord server" after the first one is set up. One Slack Orchestrator answers every Slack workspace, and one Discord Orchestrator answers every Discord server, as one Telegram Orchestrator already answers every Telegram chat.
-- You can choose which Discord roles can use OpenBot in each Discord server. OpenBot ignores a mention from a member who has none of the roles. With no role chosen, everyone can mention OpenBot, as before.
+- One ZollyBot server can connect more than one Slack workspace or Discord server. Settings › Connectors shows "Add workspace" or "Add Discord server" after the first one is set up. One Slack Orchestrator answers every Slack workspace, and one Discord Orchestrator answers every Discord server, as one Telegram Orchestrator already answers every Telegram chat.
+- You can choose which Discord roles can use ZollyBot in each Discord server. ZollyBot ignores a mention from a member who has none of the roles. With no role chosen, everyone can mention ZollyBot, as before.
 - The context meter in the composer has a New chat button. The earlier messages stay visible, and
   each new message sends less context.
 - An agent can start a new chat for itself with the `start_new_chat` tool, for example from a
   routine. It saves notes first. Turn on "Agent starts new chats" in the agent's settings to allow
   it. It is off by default.
 - Ask side questions in the web client and on joined servers. Before, side questions worked only on
-  the computer that runs the agent. The server must have this version of OpenBot.
+  the computer that runs the agent. The server must have this version of ZollyBot.
 - An agent can show its plan before a long task. Turn on "Show the plan before long tasks" in the
   agent's settings. The agent then posts a short card with its plan and Start, Cancel, and sometimes
   a smaller option. The agent starts after 10 s if nobody answers. It does not show the card for
@@ -2759,7 +2759,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - The chat shows the subagents that a Claude or Codex agent starts. One card for each turn shows how
   many subagents finished, what each one does now, and how long it took. Click a subagent to see its
   task and all of its steps in the side panel.
-- When you make a routine on this computer or on your own remote computer, OpenBot offers an OpenBot
+- When you make a routine on this computer or on your own remote computer, ZollyBot offers an ZollyBot
   server, which runs routines 24/7. The offer shows after an agent's turn ends, at most once in 30
   days. The routine list and the offline notice of a remote computer also show the offer. "Not now"
   hides it for longer each time.
@@ -2772,7 +2772,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- On Windows, OpenBot now finds an OpenCode that you installed with the OpenCode installer or WinGet. Before, it said that OpenCode was not downloaded.
+- On Windows, ZollyBot now finds an OpenCode that you installed with the OpenCode installer or WinGet. Before, it said that OpenCode was not downloaded.
 - On Windows, the Download button of a provider works again after a shutdown or sign-out that was cancelled. Before, each click failed and showed nothing.
 - In Settings, a provider download that fails now shows why. Before, the Download button did nothing.
 - The Cline model picker shows Cline's free models, such as MiniMax M3.1 Flash, MiMo V2.6 Flash and Muse Spark 1.3 Contributor. Before, only the Cline CLI showed them.
@@ -2780,21 +2780,21 @@ All notable changes to OpenBot will be documented here. The project follows
 - Steer on a remote server now shows why it did not steer when the provider, such as OpenCode or
   Grok, cannot steer a running turn. Before, it showed only "Request failed". The message still
   stays in the queue.
-- When you mention OpenBot in a Discord reply to someone else's message, OpenBot now reads the message you replied to. Before, OpenBot said that it could not see what "this" was.
+- When you mention ZollyBot in a Discord reply to someone else's message, ZollyBot now reads the message you replied to. Before, ZollyBot said that it could not see what "this" was.
 - The delete server dialog keeps its height and position when you change between "At period end"
   and "Immediately". Before, it moved because the description and details have different lengths.
-- A Claude agent now makes a routine in OpenBot when you ask for one. Before, it sometimes used
-  Claude's own `schedule` skill and made a claude.ai cloud routine that OpenBot did not show.
-  Claude's own scheduling tools are now off in OpenBot.
+- A Claude agent now makes a routine in ZollyBot when you ask for one. Before, it sometimes used
+  Claude's own `schedule` skill and made a claude.ai cloud routine that ZollyBot did not show.
+  Claude's own scheduling tools are now off in ZollyBot.
 - A chat with unread messages now opens at the "NEW" divider, with the last read message above it.
   The divider stays while you read and goes when you leave the chat. Before, the chat opened at the
   newest message and the divider went away at once, because the open chat marked the messages read.
-- An OpenCode agent now uses the OpenCode Go key that you paste into OpenBot. Before, an old key that `opencode auth login` saved took its place, so a turn failed with "This API key has expired" again after you replaced the key.
+- An OpenCode agent now uses the OpenCode Go key that you paste into ZollyBot. Before, an old key that `opencode auth login` saved took its place, so a turn failed with "This API key has expired" again after you replaced the key.
 - An expired OpenCode key now shows "Your OpenCode API key expired" with an Update key button that opens the provider settings. Before, the chat showed "Internal error".
 - A Workspace-only agent now uses a new provider key on its next turn. Before, it could keep the old key until it was idle for 10 minutes.
 - A cloud server that started again soon after it stopped sometimes stayed at "Starting Cloud
-  server" with `signal/host_unavailable`. The machine continued from memory, and OpenBot did not
-  start on it. The account server now starts OpenBot after such a start.
+  server" with `signal/host_unavailable`. The machine continued from memory, and ZollyBot did not
+  start on it. The account server now starts ZollyBot after such a start.
 - The update banner now shows the full button label in every language. Before, a long label such
   as "Uruchom ponownie" (Restart) in Polish went past the button and the banner cut it off. In
   Polish, the button now says "Restart". In Turkish, the "managed by host" button now says "Ana
@@ -2821,8 +2821,8 @@ All notable changes to OpenBot will be documented here. The project follows
   a long list.
 - "Side question" in the composer "+" menu now opens the side question pane. Before, a click with
   the mouse closed the menu and did nothing.
-- An agent template that contains the OpenBot skills `openbot-data`, `openbot-site-hosting` or
-  `openbot-skill-creator` installs again. Before, the install stopped with an error, because the new
+- An agent template that contains the ZollyBot skills `zollybot-data`, `zollybot-site-hosting` or
+  `zollybot-skill-creator` installs again. Before, the install stopped with an error, because the new
   agent already has these skills. A new publish no longer adds these skills to the template.
 
 ## [0.44.2] - 2026-10-19
@@ -2850,18 +2850,18 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- Start OpenBot when a power loss left the joined server list or the team server settings file
+- Start ZollyBot when a power loss left the joined server list or the team server settings file
   empty. Before, the start stopped with the error "Unexpected token '". The damaged file stays
-  beside the new one with a `.corrupt-<time>` name. OpenBot also flushes each settings file to the
+  beside the new one with a `.corrupt-<time>` name. ZollyBot also flushes each settings file to the
   disk before it replaces the old one, so a power loss cannot empty the file.
 - Name the damaged file when a settings file stops the start. Before, the error quoted the start
   of the file and did not say which file it was.
 - Open the file panel for a local file link over 100 MB. Before, a click on the link showed the
   error "The file exceeds the 100 MB limit." and no panel opened, so you could not open the file,
   show it in the folder or save it. Now the panel shows that no preview is available and gives
-  these actions. OpenBot does not read the file to show the panel.
+  these actions. ZollyBot does not read the file to show the panel.
 - Let Claude agents run tools from Homebrew, `~/.local/bin` and other folders of your shell `PATH`
-  when you open OpenBot from Finder, the Dock, or a login item. Before, the Bash tool and hooks
+  when you open ZollyBot from Finder, the Dock, or a login item. Before, the Bash tool and hooks
   reported `command not found`. An `env.PATH` in your Claude settings still wins.
 - Keep the server and its members connected when an owner or admin changes the role of a member.
   Before, each change to Admin or Member disconnected the host and every connected member, and the
@@ -2872,7 +2872,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Run a message again to its end after the provider refused its first turn. Before, the second run
   of the message showed as interrupted while a Claude, ACP or Pi agent still worked on it. A Claude
   agent then refused each new message with "The Claude thread already has an active turn." until
-  OpenBot restarted.
+  ZollyBot restarted.
 - Move the window by dragging the top row of the Tasks page. Before, only a thin strip beside the
   "Tasks" title moved the window.
 - Open Settings again. In 0.44.0, Settings showed an empty page and the app stopped responding
@@ -2888,13 +2888,13 @@ All notable changes to OpenBot will be documented here. The project follows
 - A provider account that is signing in now says to finish the sign-in in the browser, and its menu has Cancel sign-in. Before, the account showed "Connecting" with only Rename and Remove until the sign-in timed out.
 - A new account sign-in on a joined server's host now stops the earlier one. Before, the earlier account could stay "Connecting" for up to 10 minutes, and Cancel could not stop it.
 - Show the answer of a scheduled, script or webhook routine run one time in the chat of a Claude
-  agent. Before, after OpenBot restarted, the chat showed the same answer two times in the run.
+  agent. Before, after ZollyBot restarted, the chat showed the same answer two times in the run.
 
 ## [0.44.0] - 2026-10-18
 
 ### Added
 
-- Agents can ask with interactive blocks: a confirmation with buttons, reply chips, a list to choose from, or a short form. The agent waits for your answer, as it does for a question. Every provider can use them, Claude too. The blocks show as cards in the desktop app and the web app, and you can skip one as you skip a question. Only the server owner or an admin can press a dangerous button, or answer a block that has one in words. A form can ask for a password or a key: the agent gets it, but OpenBot does not keep it on the card or in your answer. The agent can still repeat it in its reply or its thinking. If you cannot hold a button, press it and confirm in a second step. An app or a mobile app that does not show the blocks yet shows them as an ordinary question that you can answer.
+- Agents can ask with interactive blocks: a confirmation with buttons, reply chips, a list to choose from, or a short form. The agent waits for your answer, as it does for a question. Every provider can use them, Claude too. The blocks show as cards in the desktop app and the web app, and you can skip one as you skip a question. Only the server owner or an admin can press a dangerous button, or answer a block that has one in words. A form can ask for a password or a key: the agent gets it, but ZollyBot does not keep it on the card or in your answer. The agent can still repeat it in its reply or its thinking. If you cannot hold a button, press it and confirm in a second step. An app or a mobile app that does not show the blocks yet shows them as an ordinary question that you can answer.
 - Settings > Profile shows the activity of this computer in the past year: a calendar of active days, the tokens, the messages, the peak day, the streaks, the providers, the models and the teammates that you use most.
 - Share in Settings > Profile makes an image of your last six months. You can copy the image or save it as a file. The image stays on your computer until you send it.
 - Add a Tasks page to the page rail, on desktop and on the web. Write a task, choose the agent, and send it; you can undo the send for 6 seconds. The page groups the tasks of all agents by what they need: Needs you, Working, Waiting and Closed. Click a task to open its conversation beside the list. On desktop, you can also dictate a task. A joined server shows the page when it supports tasks.
@@ -2911,8 +2911,8 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Changed
 
 - Signing out of an MCP server, or removing it, now asks the server's authorization service to revoke the tokens.
-- Agents no longer get the OAuth token of an MCP server that you signed in to. They reach the server through a local address in OpenBot, which adds the token to each call.
-- Save on a new HTTP MCP server now tests it first. When the server asks for a sign-in, OpenBot signs in and then saves. When the server refuses the typed credentials, OpenBot does not save and goes to Headers.
+- Agents no longer get the OAuth token of an MCP server that you signed in to. They reach the server through a local address in ZollyBot, which adds the token to each call.
+- Save on a new HTTP MCP server now tests it first. When the server asks for a sign-in, ZollyBot signs in and then saves. When the server refuses the typed credentials, ZollyBot does not save and goes to Headers.
 - A web address pasted or typed into "Command to launch" now moves to Server URL and selects Streamable HTTP.
 - Profile is now the second tab in Settings, after General.
 - You change your photo and your display name in one Edit profile dialog, in the desktop app and in the web client.
@@ -2947,7 +2947,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A background token renewal no longer registers a new OAuth client with the MCP server.
 - Agents no longer get an MCP token that the server has already refused.
 - An MCP token that expires during a long agent session is now renewed. Before, the agent kept the old token until its session restarted.
-- After you sign out of an MCP server, or the server ends the sign-in, an agent that calls one of its tools now gets a message that tells it to sign in again in OpenBot.
+- After you sign out of an MCP server, or the server ends the sign-in, an agent that calls one of its tools now gets a message that tells it to sign in again in ZollyBot.
 - After you cancel a checkout from the desktop app, the billing page now says that the checkout was
   cancelled and that nothing was charged. Before, it said "Billing updated".
 - The form to report a hosted site now has the site style and shows a clear result or error. Before,
@@ -2964,7 +2964,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Complete the installation of a marketplace agent when the install receipt request fails after the agent is saved.
 - When a setting does not save, a message now tells you why the switch went back. When settings do
   not load, the settings page says so and has a Retry button. Before, it showed default values.
-- When OpenBot cannot read your saved setup at start, it now shows Retry. Before, it opened first-run
+- When ZollyBot cannot read your saved setup at start, it now shows Retry. Before, it opened first-run
   setup.
 - 1Password, Bitwarden, Slack, Discord and Telegram now show "Unknown" and Retry when their status
   does not load. Before, they showed "Not set up". A failed "Open app" for 1Password now shows an
@@ -2978,7 +2978,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - The join, Slack, Discord, billing, site report and error pages on the website now have the same
   header, card and footer. The page-not-found page has its own title.
 - The Slack and Discord connect pages now say what went wrong for each error and offer "Try again"
-  and help when OpenBot does not open.
+  and help when ZollyBot does not open.
 - The join page now says "server", explains how invitation links work, and has link previews.
 - Download links on the website now open the download page. The footer now links to Teams and
   Contact.
@@ -2986,7 +2986,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Hosted sites now show a branded error page in the browser, and their report link uses the correct
   account service address.
 - The web app can now create a hosted server when you have no server to connect to.
-- Stop the provider processes when OpenBot quits while it changes a provider key, updates a provider CLI or reconnects a provider. Before, the new process, or the process that it replaced, could continue to run after OpenBot stopped.
+- Stop the provider processes when ZollyBot quits while it changes a provider key, updates a provider CLI or reconnects a provider. Before, the new process, or the process that it replaced, could continue to run after ZollyBot stopped.
 - The app and the web app now use "server" for a computer that you connect to or join. Before, they
   also said "host" or "computer".
 - Error labels in a conversation now say what failed, for example "Could not send your answer".
@@ -3014,14 +3014,14 @@ All notable changes to OpenBot will be documented here. The project follows
   compaction of the stopped process shows as failed instead of staying hidden.
 - Signing out, or ending a session from a phone or the web, now also closes the live browser view
   of that session.
-- The Live Activity updates that OpenBot sends to your iPhone show a link that an agent reply writes
+- The Live Activity updates that ZollyBot sends to your iPhone show a link that an agent reply writes
   in angle brackets, such as `<https://example.com>`. Before, the update removed the link.
 
 ### Security
 
 - An MCP sign-in now stops an OAuth answer that is larger than 1 MiB or slower than 20 seconds.
 - A public MCP server can no longer send its sign-in to an OAuth endpoint on a private network.
-- A member that the owner or an admin removed could rejoin a server with an invitation or a team link from before the removal. Now that member needs a new invitation or a reactivation. A member who left by their own choice can still rejoin with an earlier invitation. A member who left before 18 October 2026 needs a new invitation, because OpenBot did not record before then who ended a membership.
+- A member that the owner or an admin removed could rejoin a server with an invitation or a team link from before the removal. Now that member needs a new invitation or a reactivation. A member who left by their own choice can still rejoin with an earlier invitation. A member who left before 18 October 2026 needs a new invitation, because ZollyBot did not record before then who ended a membership.
 - An invitation from an admin stayed valid after the admin left, was removed or was demoted. Now it closes, and it no longer counts against the invitation limits.
 - If the public ticket key set had a private key by mistake, `/.well-known/jwks.json` published the private key. Now it publishes only the public members.
 - A checkout return address that starts with `//` or `/\` could send the browser to another site. The account server never made such an address, but now it refuses one.
@@ -3035,7 +3035,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - Add "Join the Discord" to the Help menu of the page rail, on desktop and in the web app. It opens
-  the OpenBot Discord community in the browser.
+  the ZollyBot Discord community in the browser.
 - You can hide an agent that you do not use now, and keep it. Select "Hide agent" in the agent menu. The agent moves to the "Hidden" section at the end of the agent list. Its thread, files, memories, settings, section and pin stay. A hidden agent does not run its routines and does not get new messages. Messages that are already in its queue wait. Select "Restore" to put the agent back in its section. Routine runs that it missed while it was hidden do not run. The hidden state is the same on each device that shows the server. On a joined server, only an owner or an admin can hide or restore an agent.
 - Add a Month view to the Schedule page. It shows the runs of each day of a month in whole weeks,
   with three runs on each day and a count of the other runs. Select a day or the count to open
@@ -3048,7 +3048,7 @@ All notable changes to OpenBot will be documented here. The project follows
   still show only the total. (#1635)
 - On the website, when the agent network fills the frame, click an agent to grow a new network
   from it.
-- On the website, click the OpenBot logo in the agent network to send a signal to the agents.
+- On the website, click the ZollyBot logo in the agent network to send a signal to the agents.
   Each click shows one of three signals at random.
 - On the website, the agent network has easter eggs. Type "hello", "party", "sudo" or the Konami
   code, click the hub quickly many times, or leave the page alone until the agents fall asleep.
@@ -3056,8 +3056,8 @@ All notable changes to OpenBot will be documented here. The project follows
 - On the website, agents in the network chat about their work when you click the hub, and when a
   network that you regrow is complete.
 - Set the size of the virtual display that computer use reads on a self-hosted server, with
-  `--display-size` at the install or `OPENBOT_DISPLAY_SIZE` in `/opt/OpenBot/hosted/openbot.env`,
-  and in Docker with the `OPENBOT_DISPLAY_SIZE` variable. The default stays 1280x800.
+  `--display-size` at the install or `ZOLLYBOT_DISPLAY_SIZE` in `/opt/ZollyBot/hosted/zollybot.env`,
+  and in Docker with the `ZOLLYBOT_DISPLAY_SIZE` variable. The default stays 1280x800.
 - Ask the agent a side question from the composer "+" menu. The agent reads the chat and answers in the side panel. The question and the answer do not go into the chat, and closing the tab deletes them. Side questions work only on the computer that runs the agent.
 - Add a public status page at status.openbot.run. It shows the state of sign-in, connections,
   hosted servers, desktop update downloads and the Marketplace, 90 days of history, incidents and
@@ -3070,9 +3070,9 @@ All notable changes to OpenBot will be documented here. The project follows
   caret, and one message can have more than one quote. Click a quote to go to the quoted text, which
   shows highlighted. The agent gets each quote as a Markdown block quote.
 - The status page sends signed webhooks for new incidents, updates, maintenance and service check
-  changes to the tools of the OpenBot team, with retries for 11 hours. Slack and Discord formats
+  changes to the tools of the ZollyBot team, with retries for 11 hours. Slack and Discord formats
   are available. The feed stays the public way to follow the page. (#2335)
-- `openbot-cli` runs a task on an agent from a terminal or a script and can wait for the answer. It also changes an agent's model, reasoning effort or provider account, and starts a new chat with an agent. It uses the Local scripts API, so only agents with **Local scripts** on can be used. When OpenBot restarts during a wait, the command continues the wait. See `docs/automation.md`. Thanks to @NatanPimentel.
+- `zollybot-cli` runs a task on an agent from a terminal or a script and can wait for the answer. It also changes an agent's model, reasoning effort or provider account, and starts a new chat with an agent. It uses the Local scripts API, so only agents with **Local scripts** on can be used. When ZollyBot restarts during a wait, the command continues the wait. See `docs/automation.md`. Thanks to @NatanPimentel.
 - The Local scripts API has three new routes: `GET /v1/agents/:agentId/deliveries/:deliveryId` gives the state of a sent message and the turn's answer, `POST /v1/agents/:agentId/settings` changes the model, reasoning effort, provider or provider account, and `POST /v1/agents/:agentId/context/clear` starts a new chat, the same as **New chat** in the agent's settings. A change that the agent's state or the listed models refuse answers `409` with the reason.
 
 ### Changed
@@ -3113,18 +3113,18 @@ All notable changes to OpenBot will be documented here. The project follows
   shortcuts work as before, and the Alt key shows the menu bar.
 - Set what an agent may do with one Permissions setting in its agent settings: Workspace only, Ask
   first or Full access. Ask first gives the agent full reach, and it asks you before it uses an
-  OpenBot tool or publishes a site, and when its provider asks for approval. A new Claude agent
+  ZollyBot tool or publishes a site, and when its provider asks for approval. A new Claude agent
   shows Workspace only and Full access, because Claude does not ask for approval with full reach.
   On a joined server, an owner or admin can change the Permissions of its agents.
 - Full access agents now publish, update and delete public sites and use built-in tools without
   asking, as Turbo mode did before. Before, only Turbo mode let an agent do this without asking.
-- A Claude agent with Auto approve off shows Ask first. It asks before it uses an OpenBot tool or
+- A Claude agent with Auto approve off shows Ask first. It asks before it uses an ZollyBot tool or
   publishes a site, as before, but Claude's own tools run without asking. Select Full access or
   Workspace only to change it.
 - "Always allow" on an approval card shows only at Ask first, and moves the agent to Full access.
 - Make agent avatars do less rendering work when the pointer is outside the window. They no longer
   force a page layout on every animation frame.
-- Open the app about 1 to 2 seconds faster. At start, OpenBot no longer reads and checks every
+- Open the app about 1 to 2 seconds faster. At start, ZollyBot no longer reads and checks every
   installed provider CLI again when no file of it changed since the last check passed. A changed,
   added or removed file still gets the full check.
 - Make long chats scroll and open with less work. A message that is not streaming no longer makes
@@ -3148,34 +3148,34 @@ All notable changes to OpenBot will be documented here. The project follows
   canceled subscription, and one subscription with bad data stopped all snapshots. Now the snapshot
   counts such a subscription in `skipped_subscriptions` and leaves it out.
 - A chat update finds the attachments of each changed message from an index. Before, each changed
-  message read every attachment in the database, so a large mailbox sync or a long chat slowed OpenBot.
+  message read every attachment in the database, so a large mailbox sync or a long chat slowed ZollyBot.
 - Long chats stream replies more smoothly. Before, a closed chat search read the full chat again for each streamed part of a reply.
 - Keep the browser client fast while an agent writes a reply. Before, each part of the reply made
   every message in the chat again, so long chats became slow.
 - Send each sign-out and account change to connected apps once. Before, the account service could
   send the same change two times, and a slow connection service could stop the cloud server check
   for minutes.
-- Read Claude session history faster at start and after a provider reconnect. Before, OpenBot wrote
+- Read Claude session history faster at start and after a provider reconnect. Before, ZollyBot wrote
   each message of the selected conversation to its history index in a separate transaction, so a
   long session took seconds to read.
 - The Y axis of the daily usage chart shows each amount at its grid line. Before, the top amount was below its line and the zero amount did not show.
 - A provider with no known cost shows its tokens only. Before, its row said "Unavailable of known cost".
 - Start faster when agents have a long chat history. Before, each start and each provider
-  reconnect imported the full provider history of all agent sessions again. Now OpenBot imports
+  reconnect imported the full provider history of all agent sessions again. Now ZollyBot imports
   only new or changed turns, and does not read a replaced session again after one complete import.
 - Stop the database growth from agent list writes. Before, each message and each turn end added a
-  full copy of the agent list to `openbot.db`, and the old copies stayed. The first write after the
+  full copy of the agent list to `zollybot.db`, and the old copies stayed. The first write after the
   update removes them. Model changes that one agent made to another agent stay recorded.
 - The routine flow check after each turn and queue change reads only the runs it can move. Before, it
   read every routine run and flow step of the last 7 days each time, so a routine that runs often
-  slowed OpenBot.
+  slowed ZollyBot.
 - The home page title, text and buttons no longer move down when the font loads on a slow connection.
 - A reply that streams finds the earlier parts of its message from an index. Before, each update of a
   streaming reply read every earlier event of the chat, so a long chat streamed more slowly over time.
 - The server menu no longer shows Usage and Schedule for each server. The page rail opens them, as the 0.42.0 notes say.
 - The global search command for the routine calendar is now named Open schedule, the same as the Schedule page.
-- Keep only the provider CLI version in use and one older version that works. Before, OpenBot kept
-  a copy of each update for 30 days, and this could use more than 5 GB. OpenBot now removes old
+- Keep only the provider CLI version in use and one older version that works. Before, ZollyBot kept
+  a copy of each update for 30 days, and this could use more than 5 GB. ZollyBot now removes old
   versions within a few hours while it runs, not only when it starts.
 - Show provider runtimes as a separate part of the Storage bar. Before, they were part of
   "App data", which was then almost all of the storage.
@@ -3194,8 +3194,8 @@ All notable changes to OpenBot will be documented here. The project follows
 - The log now records a message that did not start because the provider refused the session or
   the turn.
 - Gemini connects on Windows when its server takes longer than 30 s to start. After a sign-in, a
-  key change, or a start that did not finish in time, OpenBot waits up to 3 minutes for the next
-  start. Before, OpenBot stopped the server while it unpacked, and each try failed with "ACP
+  key change, or a start that did not finish in time, ZollyBot waits up to 3 minutes for the next
+  start. Before, ZollyBot stopped the server while it unpacked, and each try failed with "ACP
   initialization timed out." The error now says which step did not finish: the start or the model
   list. The log records when each provider process starts, first answers, and ends.
 - On the website, the agent network fades out at the bottom of its section. Before, the agents
@@ -3206,17 +3206,17 @@ All notable changes to OpenBot will be documented here. The project follows
   edge with no mark. Tab labels no longer go onto a second line.
 - Keep the side panel tabs when you go back to a chat from another page. Before, the open pane showed with no tabs.
 - Show what the agent works on in Computer Use screenshots and remote desktop on hosted and
-  self-hosted servers and in the Docker image. Before, they showed the OpenBot window. Agents now
-  get their own screen, and OpenBot moves to a hidden one.
-- Use the GPU again on Linux. Before, OpenBot always rendered on the CPU on Linux, so dialogs and
+  self-hosted servers and in the Docker image. Before, they showed the ZollyBot window. Agents now
+  get their own screen, and ZollyBot moves to a hidden one.
+- Use the GPU again on Linux. Before, ZollyBot always rendered on the CPU on Linux, so dialogs and
   panels with a blurred background were slow on computers whose GPU works. If the GPU process
   crashes, or a start stops before it is complete, later starts use software rendering, as before,
-  until an update with a new Chromium version. A server (`OPENBOT_SERVER=1` or a hosted server)
-  always uses software rendering. Set `OPENBOT_DISABLE_GPU=1` to always use software rendering, or
-  `OPENBOT_DISABLE_GPU=0` to try the GPU again.
+  until an update with a new Chromium version. A server (`ZOLLYBOT_SERVER=1` or a hosted server)
+  always uses software rendering. Set `ZOLLYBOT_DISABLE_GPU=1` to always use software rendering, or
+  `ZOLLYBOT_DISABLE_GPU=0` to try the GPU again.
 - An agent now sees why a browser file upload failed, for example a selector that matches two file
   inputs or a file that does not exist, and can try again with a better target. Before, a Codex
-  agent saw only "dynamic tool request failed", and OpenBot showed a "Provider error" message.
+  agent saw only "dynamic tool request failed", and ZollyBot showed a "Provider error" message.
 - When the server reads its member list, it now disconnects a member that was removed or got
   another role. Before, the open session could continue with the old role until it ended.
 - Update the Claude plan limits while an agent works. Before, the limits changed only on the next
@@ -3226,7 +3226,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Keep a record when an agent delete fails. Before, a host on Windows kept no record of the step that
   failed. Now `logs/agents/agents.log` shows the step and its error code, with no file paths.
 - Muse turns no longer fail when the workspace appears more than once in the writable roots.
-- Keep MCP servers such as Vercel signed in after their access token expires. Before, OpenBot did not
+- Keep MCP servers such as Vercel signed in after their access token expires. Before, ZollyBot did not
   ask for a refresh token, so the server refused agents one hour after each sign-in.
 - Show "Sign-in needed" for an MCP server whose access token expired and cannot be refreshed. Before,
   the row also showed "Signed in".
@@ -3236,12 +3236,12 @@ All notable changes to OpenBot will be documented here. The project follows
   update of the agent closed the routine and went back to the agent settings, and the edit in
   progress was lost. Memories, Skills, Tables and Files in agent settings also stay open now.
 - Fix spreadsheet previews for January and February 1900. Keep Excel's February 29, 1900 compatibility date and the correct time in date-and-time cells.
-- An OpenCode agent no longer fails each message and routine run with "The request contains invalid parameters" after a model change or in a long chat. OpenBot now starts a new OpenCode session with the chat history and sends the message again.
-- A Muse agent no longer fails each message with "MCP startup audit failed; MCP is disabled for this runtime" after an MCP server, such as Computer Use, did not start once. OpenBot now starts a new Muse session with the chat history and sends the message again.
+- An OpenCode agent no longer fails each message and routine run with "The request contains invalid parameters" after a model change or in a long chat. ZollyBot now starts a new OpenCode session with the chat history and sends the message again.
+- A Muse agent no longer fails each message with "MCP startup audit failed; MCP is disabled for this runtime" after an MCP server, such as Computer Use, did not start once. ZollyBot now starts a new Muse session with the chat history and sends the message again.
 - GIF and AVIF attachments keep their image format when sent through ACP, Muse and Pi.
 - Keep quoted currency and text prefixes in spreadsheet number previews.
 - The Antigravity model picker shows each Gemini model one time, with its efforts in the Effort menu. The model and effort that you select now apply to the session. An agent saved on a Gemini model with an effort in its name keeps that model and effort.
-- A message that you send while Codex compacts the context now waits in the queue and runs after the compaction. Before, Codex refused it and the message failed. When a compaction takes too long, OpenBot now asks Codex to stop it before the queue continues. Thanks to @Johnny-xuan for the report and the first fix (#1766).
+- A message that you send while Codex compacts the context now waits in the queue and runs after the compaction. Before, Codex refused it and the message failed. When a compaction takes too long, ZollyBot now asks Codex to stop it before the queue continues. Thanks to @Johnny-xuan for the report and the first fix (#1766).
 
 ### Security
 
@@ -3250,7 +3250,7 @@ All notable changes to OpenBot will be documented here. The project follows
   macros, show in the file manager.
   Before, Open on a file from a remote server or from a team member could run it.
 - Remove characters that are not permitted in a file name from the name of a file that a remote
-  server sends, before OpenBot keeps a copy to open it.
+  server sends, before ZollyBot keeps a copy to open it.
 - Limit the downloads of a page in the browser to 4 at one time and to 2 GB each. Before, a page
   could download files until the disk was full.
 - Make the remote connection service safer. It now closes a connection that does not sign in within
@@ -3263,7 +3263,7 @@ All notable changes to OpenBot will be documented here. The project follows
   every cookie in a cookie header, credential values in web addresses, and Google, GitLab, npm,
   Hugging Face, Groq, AWS session and Stripe keys. Before, a secret of these types from a provider
   message could stay in a log.
-- Disable and remove members correctly when an admin uses a team app on a server with an OpenBot
+- Disable and remove members correctly when an admin uses a team app on a server with an ZollyBot
   account. Before, the change was only in the team file of the server: the account kept the
   membership, and the member stayed connected. Now the account changes, and the server closes each
   session of that member. This also applies to a change from the desktop app.
@@ -3272,9 +3272,9 @@ All notable changes to OpenBot will be documented here. The project follows
   all other members.
 - Count sign-in attempts for a user name with spaces around it as attempts for that user name.
 - Send a server invitation email only for an open invitation that an owner or admin of that server
-  made for that address. Before, any signed-in account could send an OpenBot invitation email to
+  made for that address. Before, any signed-in account could send an ZollyBot invitation email to
   any address.
-- Show "OpenBot user" in the skill and agent marketplaces for a creator with no display name, and
+- Show "ZollyBot user" in the skill and agent marketplaces for a creator with no display name, and
   do not search creators by email. Before, the marketplaces showed the email address of such a
   creator.
 
@@ -3283,7 +3283,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - The website has a new section, "Your agents talk to each other". In an animation, Ada, Linus and
-  Grace pass a task through OpenBot. Then a network that is different at each visit grows until it
+  Grace pass a task through ZollyBot. Then a network that is different at each visit grows until it
   fills the screen. With reduced motion, the section shows the complete network.
 - A Help button in the page rail opens a menu with the newest release notes, the full changelog, the guides and Send feedback.
 
@@ -3311,8 +3311,8 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - Add a contact form at `openbot.run/contact`. The Contact buttons on the website open it, and the
-  message goes to the OpenBot team by email.
-- A new customer now gets a "Welcome to OpenBot!" email when the plan of their first cloud server
+  message goes to the ZollyBot team by email.
+- A new customer now gets a "Welcome to ZollyBot!" email when the plan of their first cloud server
   starts. The email shows the plan, the server name, and a link to the web app.
 - An agent can work on tasks at the same time as its chat. Start a task with "New task" in the chat menu, or move a queued message to a task with "Run as task". The agent can also start a task itself.
 - Each task has its own conversation, progress, stop button and result. Open a task from its chip below the chat, or from the chat menu. Closed tasks stay under "Earlier tasks", where you can open them again.
@@ -3322,7 +3322,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Tasks run without Computer Use, so that only the agent's chat controls the screen. Each task has its own browser tabs.
 - You cannot change an agent's provider while its tasks run. After the change, the tasks continue on the new provider.
 - The transfer file keeps the "Tasks at once" setting of each agent.
-- Add an "OpenBot for Teams" section to the website. It shows managed servers, team environments,
+- Add an "ZollyBot for Teams" section to the website. It shows managed servers, team environments,
   custom integrations and launch support, and its Contact us button opens the contact form.
 - Add a For Teams page to the website, at `/teams`. It shows the three setups (local, managed server
   and custom deployment), what a server adds, the steps of a custom deployment, and who it is for. The header
@@ -3340,9 +3340,9 @@ All notable changes to OpenBot will be documented here. The project follows
 - Show why a Telegram connect failed on a joined server. Before, the error said only "Request
   failed.".
 - Stop the Telegram connect dialog from waiting for Telegram after a connect fails.
-- A hosted server could start with "OpenBot database failed its integrity check." after it stopped.
-  The host saved the disk while OpenBot wrote its database, and kept a damaged copy. A hosted server
-  now stops OpenBot and closes the database before the host saves the disk. A server gets this
+- A hosted server could start with "ZollyBot database failed its integrity check." after it stopped.
+  The host saved the disk while ZollyBot wrote its database, and kept a damaged copy. A hosted server
+  now stops ZollyBot and closes the database before the host saves the disk. A server gets this
   change when it updates and starts again.
 - A server that got the stop signal (for example, from `systemctl stop` or `docker stop`) ended at
   once. It now stops its services and closes the database, as the desktop app does when it quits.
@@ -3356,19 +3356,19 @@ All notable changes to OpenBot will be documented here. The project follows
   closed the connection.
 - Keep the numbers in a Markdown list in order when you add an item between existing items in the
   message box. Before, the new item and the item below it had the same number.
-- A server signs in to OpenBot at start when a slow database check holds the start. Before, the
+- A server signs in to ZollyBot at start when a slow database check holds the start. Before, the
   sign-in failed and the server went online about one minute later.
-- Start OpenBot faster after a clean stop when the database is large. Before, each start read the
+- Start ZollyBot faster after a clean stop when the database is large. Before, each start read the
   full database file to check it, which took minutes on a large file. The check now runs only after
   a stop that did not close the database, or after a database upgrade.
 - Stop the database from growing each time a conversation is read. Before, each read wrote the
-  latest messages again when nothing had changed, so `openbot.db` could grow by gigabytes. An
+  latest messages again when nothing had changed, so `zollybot.db` could grow by gigabytes. An
   upgrade deletes the repeated writes that follow each other in a chat, which are most of them,
   and makes the file smaller. On a large database, the first start after the upgrade takes longer.
 - A hosted server no longer stops soon after it starts while you read it in a focused window or tab. Before, it stopped about 15 minutes after a wake when you did not type or click, and showed as asleep. An app that has focus now keeps it on for at most 30 minutes after your last message, change or typing, or after you return to the app.
 - The desktop app and the web client wait while a hosted server starts. Before, they
   stopped waiting after 5 minutes and showed "did not start in time", also when the server came online
-  a minute later. They now stop only when the machine runs and OpenBot on it does not connect in 15
+  a minute later. They now stop only when the machine runs and ZollyBot on it does not connect in 15
   minutes.
 - The desktop app and the web client show the start step and its time while a hosted server starts.
   Restart is not available while the machine starts.
@@ -3376,7 +3376,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - When the cloud provider limits new starts, the account server tries the start again after a delay,
   and the desktop app and the web client say so. Before, they showed "Could not start".
 - A conversation and its unread count load from an index of the message order. Before, each load sorted
-  the whole chat several times, so a client that opened many agents could stall OpenBot for seconds.
+  the whole chat several times, so a client that opened many agents could stall ZollyBot for seconds.
 
 ## [0.40.0] - 2026-10-15
 
@@ -3386,20 +3386,20 @@ All notable changes to OpenBot will be documented here. The project follows
 - Set a server timezone in Server settings → General. Agents use it for a new routine when the message does not give the sender's timezone. Before, a message that waited across a server restart created its routine in the timezone of the server's computer, often UTC.
 - Connect 1Password on a joined server, such as a server with no screen. In Settings › Connectors, an owner or admin of the server pastes a 1Password service account token. The server checks the token, keeps it in its own encrypted store, and keeps the connection after a restart. The page shows the vault names and the login count of that server. Disconnect acts on that server only. Both sides need this release; on an older server, 1Password does not show.
 - An agent routine on this computer can send each answer to a Slack, Discord or Telegram place. Choose the place in "Send answers to" in the routine editor.
-- The run history shows where each answer went. A delivery has its own status: a run that succeeded stays succeeded when its answer is not sent. A connection that does not run gets more attempts for one day. Use "Send again" for an answer that was not sent, or that OpenBot stopped during the send.
-- Agents can set what a routine does with runs that came due while OpenBot was off, and what it does at the account usage limit. An update that changes one of these settings keeps the other.
-- On a joined server, an owner or admin can see and change what a routine does with missed runs, and see the missed runs in the run history. The server must have this version of OpenBot.
-- Routines can run one time, at a local date and time. After the run, the routine stays as a paused record. You can cancel it before it runs. A run missed while OpenBot was closed runs one time at start, unless you set it to skip. A restart does not run it again. Agents use this schedule for reminders, not a yearly schedule. Only the desktop app on the computer that runs OpenBot shows one-time routines for now.
-- Several instances on one Docker host: `openbot-instance backup`, `verify`, `restore` and `backups` back up all data of an instance, check the backup in a temporary folder, and restore it with the same agents and conversations. To back up an instance each day, turn on its timer with `systemctl enable --now openbot-instance-backup@<name>.timer`.
+- The run history shows where each answer went. A delivery has its own status: a run that succeeded stays succeeded when its answer is not sent. A connection that does not run gets more attempts for one day. Use "Send again" for an answer that was not sent, or that ZollyBot stopped during the send.
+- Agents can set what a routine does with runs that came due while ZollyBot was off, and what it does at the account usage limit. An update that changes one of these settings keeps the other.
+- On a joined server, an owner or admin can see and change what a routine does with missed runs, and see the missed runs in the run history. The server must have this version of ZollyBot.
+- Routines can run one time, at a local date and time. After the run, the routine stays as a paused record. You can cancel it before it runs. A run missed while ZollyBot was closed runs one time at start, unless you set it to skip. A restart does not run it again. Agents use this schedule for reminders, not a yearly schedule. Only the desktop app on the computer that runs ZollyBot shows one-time routines for now.
+- Several instances on one Docker host: `zollybot-instance backup`, `verify`, `restore` and `backups` back up all data of an instance, check the backup in a temporary folder, and restore it with the same agents and conversations. To back up an instance each day, turn on its timer with `systemctl enable --now zollybot-instance-backup@<name>.timer`.
 - Settings → Dynamic Island has a Servers list. Turn off a server to hide its agent activity and requests from the island. The server stays connected and its desktop notifications continue. A switch sets whether servers that you add later show in the island.
-- Add links to the OpenBot Discord community on openbot.run: a "Discord" item in the Resources
+- Add links to the ZollyBot Discord community on openbot.run: a "Discord" item in the Resources
   column of the footer, and a Discord icon next to the GitHub and X icons.
-- Add discord.openbot.run, a short address that opens the OpenBot Discord community.
+- Add discord.openbot.run, a short address that opens the ZollyBot Discord community.
 - Agents fill forms in the built-in browser faster. They can fill up to 16 text fields in one step. They do not use this step for password, verification code, or card fields.
-- Send agent notifications to the OpenBot app on Android phones. The phone gets the same events as
+- Send agent notifications to the ZollyBot app on Android phones. The phone gets the same events as
   an iPhone: a finished task, an error, a question, an approval, or a step in the browser. The
-  agent name and the text are sealed, so Google and the OpenBot account service cannot read them.
-- The website compares OpenBot with Instinct at /compare/instinct: where agents work, who holds your data, who approves actions, price, and where you can use each.
+  agent name and the text are sealed, so Google and the ZollyBot account service cannot read them.
+- The website compares ZollyBot with Instinct at /compare/instinct: where agents work, who holds your data, who approves actions, price, and where you can use each.
 
 ### Changed
 
@@ -3407,14 +3407,14 @@ All notable changes to OpenBot will be documented here. The project follows
   memory is low, new turns wait in the queue and the browser opens no new tab. A fixed number of
   turns run at the same time, from the memory limit of the service or the container. Before, these
   servers started every turn and could run out of memory.
-- `openbot status` on a self-hosted server or a container shows the memory limit, the free memory
+- `zollybot status` on a self-hosted server or a container shows the memory limit, the free memory
   and the turn limit.
 - Admins of a hosted server can now restart it from the server menu. Before, only the owner could restart it.
 - The model picker in a conversation shows only the providers that are ready to use. Select + to connect another provider in Settings.
 - A disputed payment for a hosted server ends its plan at once. The server stops and keeps its disk. A refund keeps the plan and the server running.
-- After you delete an agent, a notice with an Undo button shows for 8 seconds. Press Undo to get the agent back in the same place. OpenBot deletes the agent only when the time ends. The time stops while the pointer is on the notice.
-- The "Contact" button in the openbot.run header is now "Community". It opens the OpenBot Discord
-  community instead of the OpenBot account on X.
+- After you delete an agent, a notice with an Undo button shows for 8 seconds. Press Undo to get the agent back in the same place. ZollyBot deletes the agent only when the time ends. The time stops while the pointer is on the notice.
+- The "Contact" button in the openbot.run header is now "Community". It opens the ZollyBot Discord
+  community instead of the ZollyBot account on X.
 - Docker and hosted servers now include bubblewrap. Codex recommends the system copy instead of its bundled copy.
 - Docker documentation explains browser access and how to check a new release before upgrading a self-hosted server. It includes the release metadata source, deployment-file review and cold backup steps.
 - The add server dialog now asks "Need more power or a custom solution?" in its footer, in all languages.
@@ -3424,7 +3424,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- An agent that sent many messages to teammates made each chat open and each finished turn slower, because OpenBot searched all saved message keys again for each message. It now reads them once.
+- An agent that sent many messages to teammates made each chat open and each finished turn slower, because ZollyBot searched all saved message keys again for each message. It now reads them once.
 - File, agent, skill and MCP chips in a message are centred on their line again. Before, their icons sat low, the file type badge went out of its box, the agent face was clipped on the right, and a file chip could cut a short name such as `provider-session.log` with an ellipsis.
 - Skill and MCP chips in a message and in the message box have icons of the same size and line weight as file chips. Before, their icons were larger and heavier.
 - Telegram messages and captions now preserve repeated spaces and tabs. Previously, code indentation and tab-separated text lost their spacing.
@@ -3438,44 +3438,44 @@ All notable changes to OpenBot will be documented here. The project follows
 - Slack author and channel names now recover after a temporary lookup failure. Before, the names stayed as IDs until the connection restarted.
 - Gemini no longer fills the disk on Windows. Each start of the Gemini server unpacks about 310 MB
   into the temporary folder, and a start that was stopped or timed out left that copy behind. Now
-  each Gemini process on Windows uses its own folder in the OpenBot data folder, and OpenBot removes
+  each Gemini process on Windows uses its own folder in the ZollyBot data folder, and ZollyBot removes
   it when the process ends and at each launch.
 - On Windows, Gemini does not start when the disk has less than 1 GB free, and says so.
-- After 3 failed starts in a row, OpenBot stops starting a provider by itself and shows why on the
+- After 3 failed starts in a row, ZollyBot stops starting a provider by itself and shows why on the
   provider row. Refresh the providers to try again.
-- On Windows, to get back the disk space that Gemini used in earlier versions, quit OpenBot and delete the `_MEI` folders in `%TEMP%`.
-- On Linux, the invitation page now offers the Linux installer. Before, Download OpenBot gave the macOS installer.
-- A self-hosted server now starts again when `sudo openbot update` fails or is stopped. Before, the
+- On Windows, to get back the disk space that Gemini used in earlier versions, quit ZollyBot and delete the `_MEI` folders in `%TEMP%`.
+- On Linux, the invitation page now offers the Linux installer. Before, Download ZollyBot gave the macOS installer.
+- A self-hosted server now starts again when `sudo zollybot update` fails or is stopped. Before, the
   server stayed stopped until an operator started it.
 - A browser live view that moves to a new connection now stops the previous view. Before, the previous view kept the screencast and the page size active.
-- Many large chats no longer stop the app for a second or more when their history gets too large to keep in memory. Before, OpenBot measured all chats again for each old message that it removed.
+- Many large chats no longer stop the app for a second or more when their history gets too large to keep in memory. Before, ZollyBot measured all chats again for each old message that it removed.
 - A published site now sends a folder address without a final `/`, such as `/guide`, to `/guide/`. Before, the page opened at `/guide`, and its relative styles, images, scripts and links did not load.
-- Slack, Discord, Telegram and webhook connectors no longer stay at Connecting when Signal accepts the connection but does not answer. After 15 seconds, OpenBot closes that connection and tries again.
-- After a Codex protocol error, OpenBot now stops the old Codex process with SIGKILL when it does not stop within 2 seconds. Before, the old process could continue to run next to its replacement.
+- Slack, Discord, Telegram and webhook connectors no longer stay at Connecting when Signal accepts the connection but does not answer. After 15 seconds, ZollyBot closes that connection and tries again.
+- After a Codex protocol error, ZollyBot now stops the old Codex process with SIGKILL when it does not stop within 2 seconds. Before, the old process could continue to run next to its replacement.
 - In a narrow settings column, the ACP registry actions move under the agent and wrap. Before, long translated labels hid the agent name, covered its version, and cut off Remove runtime.
 - Stopping Pi or Muse while a chat opens now also stops that chat's provider process. Before, the process could stay open after the provider stopped.
 - Record the correct owner when two agents create shared tables at the same time. Before, both
   tables could go to the first agent, and the other agent could not remove its own table. A table
-  that the user makes outside OpenBot also stays without an owner now.
+  that the user makes outside ZollyBot also stays without an owner now.
 - A transfer to another computer keeps executable workspace and shared files executable. Before, an imported script failed to run by its path.
 - ACP registry settings now keep a gap between the search and agent ID fields and their buttons, and between Install and Cancel. Before, these controls touched.
 - A transfer export stops with an error when it cannot read a workspace, skill or shared folder. Before, it left out the folder's files and reported a complete export.
 - Agents can now write, search, and delete full-text (FTS5) and R*Tree tables in the shared database. Before, SQLite refused every use of these tables after `CREATE`, refused to create an R*Tree table, and the table could not be removed. While such a table existed, the shared tables list also showed no row counts.
 - An agent can read the result page after it submits a form in the browser. Before, the click failed and the tab showed an empty page.
-- An agent that answers in Slack, Discord or Telegram no longer stops answering after a provider error. Before, a failed Muse turn start, a provider that exited, a turn that ended before its start was confirmed, or a turn start with no confirmation could hold every later message with "OpenBot is working on another request" until OpenBot restarted.
+- An agent that answers in Slack, Discord or Telegram no longer stops answering after a provider error. Before, a failed Muse turn start, a provider that exited, a turn that ended before its start was confirmed, or a turn start with no confirmation could hold every later message with "ZollyBot is working on another request" until ZollyBot restarted.
 - An agent in a Slack, Discord or Telegram conversation no longer waits for an answer to a question card that nobody there can see. It asks the question in its answer instead.
 - An approval request that did not reach Slack, Discord or Telegram is posted again when the conversation is connected. Before, the turn waited with no notice in the conversation.
-- The "Working" and "Waiting" posts in Slack, Discord and Telegram now end after a restart, a provider crash or a lost connection. Before, they stayed with a Stop button that did nothing. When an answer cannot be posted, the conversation now says that OpenBot could not finish the request.
+- The "Working" and "Waiting" posts in Slack, Discord and Telegram now end after a restart, a provider crash or a lost connection. Before, they stayed with a Stop button that did nothing. When an answer cannot be posted, the conversation now says that ZollyBot could not finish the request.
 - Slack and Discord messages no longer wait minutes to start when a channel or user name lookup is slow.
 - A hosted server that wakes now handles the kept Slack, Discord and Telegram events of each workspace or chat separately. Before, one connection that could not start held back the events of all other connections, and each of its events waited 60 seconds.
-- A Telegram chat that you link while OpenBot connects to Signal again now shows in OpenBot. Before, the link could be lost, and you had to link the chat again.
-- An agent that answers in Discord, Slack or Telegram no longer stops answering after a restart. Before, a restart could make one of its conversations the agent's own chat. Then, after a routine ran there, every new message waited with "OpenBot is working on another request" until OpenBot restarted. A restart no longer does this. An agent that is already in this state keeps its chat and its history, and answers again.
+- A Telegram chat that you link while ZollyBot connects to Signal again now shows in ZollyBot. Before, the link could be lost, and you had to link the chat again.
+- An agent that answers in Discord, Slack or Telegram no longer stops answering after a restart. Before, a restart could make one of its conversations the agent's own chat. Then, after a routine ran there, every new message waited with "ZollyBot is working on another request" until ZollyBot restarted. A restart no longer does this. An agent that is already in this state keeps its chat and its history, and answers again.
 - The chat of such an agent shows its new messages in the app again.
-- Stop the Windows download page and the OpenBot 101 guide from saying that the installer is not
+- Stop the Windows download page and the ZollyBot 101 guide from saying that the installer is not
   code-signed. They now say that SYNTHETIFY LABS signs it, and tell you how to continue when
   SmartScreen still warns about a new release.
 - You can name a sidebar section with a Japanese, Chinese or Korean input method. Before, the Enter that confirms a conversion saved the section, and Escape closed the editor and lost the name.
-- Start custom agents that need Node or another tool from your shell when you open OpenBot from
+- Start custom agents that need Node or another tool from your shell when you open ZollyBot from
   Finder, the Dock, or a login item. Before, they stopped with exit code 127. Check agent now uses
   the same `PATH`, and a `PATH` that you saved on the agent still wins.
 - The Model field in agent settings, first-agent setup and the Slack and Telegram agent forms uses the full width of its row in narrow windows. Before, in windows 720 pixels wide or less, the field stayed at 148 pixels and cut the model name.
@@ -3488,7 +3488,7 @@ All notable changes to OpenBot will be documented here. The project follows
   it needed a new sign-in, but the old CLI was still installed and signed in.
 - Do not show a "Provider error" when Codex uses its bundled bubblewrap. Before, Codex showed this error on each connect on Linux servers, but it worked.
 - Keep the Create agent button visible and clickable when the agent description is long or the window is small. Before, the suggestion cards covered the button.
-- A scheduled routine no longer starts after you pause, delete or reschedule it while another routine is starting. Before, OpenBot could still start the old occurrence. A routine that you edit at that time now uses your new instruction and settings.
+- A scheduled routine no longer starts after you pause, delete or reschedule it while another routine is starting. Before, ZollyBot could still start the old occurrence. A routine that you edit at that time now uses your new instruction and settings.
 - Docker instance restore now verifies the backup before it stops the target or replaces its data.
   A backup with valid checksums but a damaged database could previously replace healthy data.
 - Auto approve and Turbo now accept Codex's request to run an MCP tool. Before, a new tool still asked each time. A Workspace only agent, a Computer Use tool, a tool set to ask every time, forms and sign-in requests still ask.
@@ -3499,13 +3499,13 @@ All notable changes to OpenBot will be documented here. The project follows
 
 - Add Vercel to the Apps catalog. Agents can list projects and deployments, read build and runtime
   logs, and find why a build failed after you sign in to your Vercel account.
-- Agents can capture the screen of the computer that runs them: one display, one window, or an area of a display. You approve each capture first, or Turbo approves it when it has a standing approval for the agent, and the image shows in the conversation. Computer Use in the agent settings turns screen capture on or off for each agent. On macOS, OpenBot asks for the Screen Recording permission and tells you how to turn it on.
+- Agents can capture the screen of the computer that runs them: one display, one window, or an area of a display. You approve each capture first, or Turbo approves it when it has a standing approval for the agent, and the image shows in the conversation. Computer Use in the agent settings turns screen capture on or off for each agent. On macOS, ZollyBot asks for the Screen Recording permission and tells you how to turn it on.
 - Codex, Claude and Grok can have more than one account. In Settings › Providers, select Add account under a provider to sign in to one more account. Each account keeps its own sign-in and its own usage limits, and you can rename or remove an account there.
 - Each agent can use a different account of its provider. Select the account in the model picker. The agent keeps its account after a restart.
 - The Usage menu shows the limits of each account.
 - An owner or admin of a server can add, rename and remove the provider accounts of the server, and select the account of each agent, in the desktop app and in the web client. The sign-in page of a new account opens in the server's browser.
-- An instance of `docker/instances` now updates from the app, like a hosted server: Server settings › Updates and the update dialog pull the new image on the host and make the container again, with the same data. The container never gets the Docker socket: it writes an empty request file, and `openbot-instance-update@<name>.path` on the host runs the update as root. It installs only a newer version. See "Updates from the app" in `docs/docker.md`.
-- **For an instance made before, run `openbot-instance setup`, then `openbot-instance upgrade <name>` once.**
+- An instance of `docker/instances` now updates from the app, like a hosted server: Server settings › Updates and the update dialog pull the new image on the host and make the container again, with the same data. The container never gets the Docker socket: it writes an empty request file, and `zollybot-instance-update@<name>.path` on the host runs the update as root. It installs only a newer version. See "Updates from the app" in `docs/docker.md`.
+- **For an instance made before, run `zollybot-instance setup`, then `zollybot-instance upgrade <name>` once.**
 
 ### Changed
 
@@ -3520,9 +3520,9 @@ All notable changes to OpenBot will be documented here. The project follows
 
 - The server connection notice has a Details button. It shows why the server is away (an update, a start, or a lost connection), each step until the workspace is back, and how long it has taken.
 - Slack, Discord and Telegram now show in Marketplace › Apps, next to GitHub, 1Password and Bitwarden.
-- Run several OpenBot Docker containers on one host, each with its own CPU, memory and disk limit, with `docker/instances/openbot-instance`. The containers cannot reach each other, the host or private networks, only the internet. See "Several instances on one host" in `docs/docker.md`.
-- Server settings > Transfer moves the agents of a server to another server, also between computers. Export one file from the old server and import it into the new one. The file holds the instructions, avatar, model, skills, routines and memories of each agent and, if you want, its workspace files, plus the MCP servers, custom model providers and sidebar sections of the server. It also works with a joined server when you are its owner or an admin, for files up to 100 MB. API keys, sign-ins and chat history are not in the file. After the import, OpenBot shows which providers to sign in to again.
-- An operator can sign a self-hosted server or Docker container in for somebody else with no email code: `openbot login --claim`, which reads the claim from standard input. The account service makes the one-time claim for the owner's email with the new `SERVER_CLAIMS_ADMIN_TOKEN`. The claim works once, for 15 minutes. See "Sign in with a server claim" in `docs/self-hosted-server.md`.
+- Run several ZollyBot Docker containers on one host, each with its own CPU, memory and disk limit, with `docker/instances/zollybot-instance`. The containers cannot reach each other, the host or private networks, only the internet. See "Several instances on one host" in `docs/docker.md`.
+- Server settings > Transfer moves the agents of a server to another server, also between computers. Export one file from the old server and import it into the new one. The file holds the instructions, avatar, model, skills, routines and memories of each agent and, if you want, its workspace files, plus the MCP servers, custom model providers and sidebar sections of the server. It also works with a joined server when you are its owner or an admin, for files up to 100 MB. API keys, sign-ins and chat history are not in the file. After the import, ZollyBot shows which providers to sign in to again.
+- An operator can sign a self-hosted server or Docker container in for somebody else with no email code: `zollybot login --claim`, which reads the claim from standard input. The account service makes the one-time claim for the owner's email with the new `SERVER_CLAIMS_ADMIN_TOKEN`. The claim works once, for 15 minutes. See "Sign in with a server claim" in `docs/self-hosted-server.md`.
 
 ### Changed
 
@@ -3531,24 +3531,24 @@ All notable changes to OpenBot will be documented here. The project follows
 - On an iPhone or an Android phone, the main download button of the home page now opens the phone app's store page. Before, it offered the Mac or Linux installer, which a phone cannot open.
 - When you restart a hosted server, the dialog stays open and shows the restart: the server stops, starts, and is back online. You can hide the dialog; a notification then tells you when the server is back or did not start. If the server does not start, "Try again" restarts it from the dialog.
 - Connect on a provider row now uses the easiest sign-in for the place you are in. On this computer, it opens your browser. On a server, from the app, it opens the sign-in page in your browser and sends the result to the server. In a browser tab, it shows a code. The other way to sign in is in the row's ⋯ menu.
-- In a browser tab, a provider that only the OpenBot app can sign in now tells you to connect it in the app, with a link to get the app.
+- In a browser tab, a provider that only the ZollyBot app can sign in now tells you to connect it in the app, with a link to get the app.
 - In a browser tab, Gemini's ⋯ menu now has "Paste the address", so you can connect it without the app.
 - The Mobile tab of the changelog page shows the stores that have each version of the mobile app:
   iOS, Android, or both. A store that does not have the version yet shows "In review". When the two
   stores released the version on different days, each store shows its own date.
 - On the routine canvas, each connection now ends in an arrow where it goes into the next card, so you can see the order in which a run goes from one agent to the next. The step number in the corner of each agent card is removed; the routine details panel still shows it.
 - On a joined server, 1Password and Bitwarden now show in Server settings › Connectors as "Your computer only". Before, they did not show.
-- When a joined server has a new OpenBot version, a dialog now shows the update steps: download, restart, and back online. One click starts the update. An admin can let the restart wait until agents are idle, restart at once, or cancel the restart. You can hide the dialog while the server updates; a notice keeps the status and opens the dialog again.
+- When a joined server has a new ZollyBot version, a dialog now shows the update steps: download, restart, and back online. One click starts the update. An admin can let the restart wait until agents are idle, restart at once, or cancel the restart. You can hide the dialog while the server updates; a notice keeps the status and opens the dialog again.
 - In Server settings > Updates, "Update when idle" and "Restart now" open the same dialog.
 - The update dialog opens each time you enter a server that has a new version. An update button next to the server name in the sidebar opens it again.
-- The openbot.run website now keeps the first visit of your browser (source, first page, day and campaign tags) in the browser. When you sign in on the web, or open the page after a desktop checkout, OpenBot saves it on your account for product analytics. It contains no referrer, IP address or identifier. [PRIVACY.md](https://github.com/nightly-labs/openbot/blob/main/PRIVACY.md) describes it.
+- The openbot.run website now keeps the first visit of your browser (source, first page, day and campaign tags) in the browser. When you sign in on the web, or open the page after a desktop checkout, ZollyBot saves it on your account for product analytics. It contains no referrer, IP address or identifier. [PRIVACY.md](https://github.com/nightly-labs/openbot/blob/main/PRIVACY.md) describes it.
 
 ### Fixed
 
 - In an MCP form, the `›` in the Server settings header had more space on its left than on its right. Now the space is the same on both sides.
-- When your ChatGPT sign-in expired, creating an agent showed "workspace routing discovery unauthorized (401)". Now OpenBot tells you to sign in again, and the model picker shows the sign-in action.
+- When your ChatGPT sign-in expired, creating an agent showed "workspace routing discovery unauthorized (401)". Now ZollyBot tells you to sign in again, and the model picker shows the sign-in action.
 - When an OpenCode model ends a turn with no answer, the chat now says so, and says when the model stopped after its reasoning. Before, it told you to check sign-in and billing, also for free models where neither is the cause.
-- When you select a server on another computer, OpenBot now connects to it at once. Before, if the connection to that computer stopped recently, the server could show "Connecting" for up to 5 minutes.
+- When you select a server on another computer, ZollyBot now connects to it at once. Before, if the connection to that computer stopped recently, the server could show "Connecting" for up to 5 minutes.
 - Keep a phone or another computer connected when it is slow to read updates, such as a phone in
   the background while an agent works. Before, it could disconnect with "The host event stream has
   a gap.", because this computer sent updates out of order or skipped one that it could not send.
@@ -3565,7 +3565,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A GitHub sign-in that waits for the code now shows "Connecting". Before, it showed as not connected.
 - In Marketplace › Apps, Connect on the GitHub card now shows on a joined server that can run connectors. Before, it showed only when the server could manage MCP servers.
 - The Bitwarden card in Marketplace › Apps now shows the same lock mark as Server settings › Connectors.
-- On a joined server, the Routines view no longer says that the server does not support routine flows while OpenBot connects, reconnects or waits for the server to wake. The view stays empty until the server answers, as it does while routines load.
+- On a joined server, the Routines view no longer says that the server does not support routine flows while ZollyBot connects, reconnects or waits for the server to wake. The view stays empty until the server answers, as it does while routines load.
 
 ## [0.38.2] - 2026-10-13
 
@@ -3578,21 +3578,21 @@ All notable changes to OpenBot will be documented here. The project follows
   uses a desktop app at that time. While the phone shows the Live Activity, the Live Activity shows
   the event in place of a notification, and lights up the screen and plays the sound when the phone
   chose that. It uses the choices of each phone, and seals the agent name and the text
-  so that Apple and the OpenBot account service cannot read them. The server keeps the phones that
+  so that Apple and the ZollyBot account service cannot read them. The server keeps the phones that
   get notifications, so they continue after a restart.
 - You can cancel a Gemini (or other browser) sign-in that waits for the browser. Before, the only way out was Restart, which opened another sign-in page.
 - While a provider connects, its row tells you to finish the sign-in in your browser.
 - Agents can now post to a connected Slack, Discord or Telegram place on their own initiative, from
   any chat or routine run. Ask an agent to "post the summary to #bot-inflow", or put it in a routine
-  prompt. `openbot.messaging_list_places` lists the connections and their channels, and
-  `openbot.messaging_post` posts the text, redacted. Before, an agent could only answer the
+  prompt. `zollybot.messaging_list_places` lists the connections and their channels, and
+  `zollybot.messaging_post` posts the text, redacted. Before, an agent could only answer the
   conversation that addressed it.
 
 ### Changed
 
 - When a queued message waits and no turn runs, the server log now names what holds the queue, so a
   queue that does not start can be diagnosed.
-- The sign-in code email leaves about one second sooner. Before, OpenBot waited for 10 replies from the mail server, one after another, before it showed the code field. Now it waits for 5.
+- The sign-in code email leaves about one second sooner. Before, ZollyBot waited for 10 replies from the mail server, one after another, before it showed the code field. Now it waits for 5.
 - Agents show a draft before they send a message for you, and they send it only after you approve it. A routine whose instruction asks for a send still sends. Before a payment, an agent reads back the item, price and total and asks you to confirm.
 - Agents give the answer first and do not invent facts or sources. An agent says done only after it checks the result.
 - When you say stop, an agent also stops each teammate that it gave work to, and tells you which teammates stopped.
@@ -3603,17 +3603,17 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- Open OpenBot from an invitation link on Windows. Before, Open OpenBot on the invitation page did
-  nothing, because Windows had no handler for `openbot://` links.
-- Show help on the invitation page after Open OpenBot is pressed, in case OpenBot does not open.
+- Open ZollyBot from an invitation link on Windows. Before, Open ZollyBot on the invitation page did
+  nothing, because Windows had no handler for `zollybot://` links.
+- Show help on the invitation page after Open ZollyBot is pressed, in case ZollyBot does not open.
 - Agents now show in their sections when a server starts or reconnects. Before, the sidebar sometimes showed them ungrouped until you refreshed the app.
 - Opening or writing to a chat no longer shows "Read state failed" when the read mark names a message
   that is not saved yet or was removed, such as a queued message on a hosted server. Before, every
   open and every send showed the error again.
-- The Google sign-in for Gemini no longer stops when you return to OpenBot before you finish it in the browser on the first-run screen.
-- A failed Gemini sign-in now shows the reason, such as a timeout or Google's own message. Before, every failure showed "OpenBot could not connect Gemini. Try again."
-- When Google refuses a saved Gemini API key, OpenBot says so. Before, it asked you to sign in with Google, which could not help while the key was saved.
-- OpenBot no longer opens a Google sign-in page by itself when it checks Gemini with an expired sign-in. It shows "Sign in with Google to use Gemini." at once, without a long wait.
+- The Google sign-in for Gemini no longer stops when you return to ZollyBot before you finish it in the browser on the first-run screen.
+- A failed Gemini sign-in now shows the reason, such as a timeout or Google's own message. Before, every failure showed "ZollyBot could not connect Gemini. Try again."
+- When Google refuses a saved Gemini API key, ZollyBot says so. Before, it asked you to sign in with Google, which could not help while the key was saved.
+- ZollyBot no longer opens a Google sign-in page by itself when it checks Gemini with an expired sign-in. It shows "Sign in with Google to use Gemini." at once, without a long wait.
 - A Gemini chat whose session was lost now starts a new session. Before, every next message in that chat failed.
 - When the Gemini plan's quota is reached, the turn fails with a clear message. Before, the quota notice was saved as Gemini's answer.
 - Gemini no longer asks for approval of a tool after you press Stop.
@@ -3635,7 +3635,7 @@ All notable changes to OpenBot will be documented here. The project follows
   a hosted server that sleeps. Signal keeps that message, encrypted for the server, for up to
   10 minutes, and the server answers it when it starts.
 - Dictation can use ElevenLabs Scribe v2 Realtime with your own API key. Select it in **Settings → Voice** and save the key. The text shows while you speak, and a finished sentence stays fixed. The audio goes to ElevenLabs only when you select this model.
-- The Routines canvas is now in the web app and on joined servers. Switch the sidebar to Routines to see an agent's routines, connect agents, edit their tasks, run a routine and ask the agent to edit the canvas. A member who can see an agent can change its canvas; only an owner or admin sees and changes webhook settings. The server must run this version of OpenBot.
+- The Routines canvas is now in the web app and on joined servers. Switch the sidebar to Routines to see an agent's routines, connect agents, edit their tasks, run a routine and ask the agent to edit the canvas. A member who can see an agent can change its canvas; only an owner or admin sees and changes webhook settings. The server must run this version of ZollyBot.
 - Visual replies and HTML files show as pages in the web app, as on desktop. The page runs in a sandboxed frame and cannot read the web app.
 - Image attachments show as thumbnails in the web app, and audio and video attachments of 10 MB or less play in the chat after you select Play.
 - The iPhone app can search the files in the chats of this computer.
@@ -3664,7 +3664,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - An account can now have 50 hosted servers. Before, the limit was 3.
 - A hosted server with a Slack, Discord or Telegram connection now sleeps after 15 minutes with no use,
   as other hosted servers do. Before, a live connection kept it on all the time.
-- Long chats in the web app and on joined servers show the "Earlier" part of the day rail for messages that are not loaded yet, as on this computer. The server must run this version of OpenBot.
+- Long chats in the web app and on joined servers show the "Earlier" part of the day rail for messages that are not loaded yet, as on this computer. The server must run this version of ZollyBot.
 - Agents in one sidebar section now know their section teammates and send work to them first. To make agents work together, put them in one section.
 - When you open an agent whose history is not loaded yet, the loading crew covers the chat until the
   history is ready. Before, a banner showed a Retry button that you could not use. A failed load
@@ -3677,20 +3677,20 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Deprecated
 
-- **Put agents that work together in one sidebar section.** Channels are no longer supported. OpenBot archives every channel when it starts and hides channels on the desktop, the web and the iPhone app. Agents in one section know each other and send work to each other first. Your channel history stays on your computer for now. The next release removes channels and their data.
+- **Put agents that work together in one sidebar section.** Channels are no longer supported. ZollyBot archives every channel when it starts and hides channels on the desktop, the web and the iPhone app. Agents in one section know each other and send work to each other first. Your channel history stays on your computer for now. The next release removes channels and their data.
 
 ### Fixed
 
 - Keep a link in your own message readable when you put the pointer on it. Before, the link text
   almost disappeared into the bubble. A link that shows its full address no longer opens a tooltip
   with the same address.
-- A remote connection that Signal refuses for a reason other than a rate limit, such as an invalid ticket, reconnects at once. Before, OpenBot waited 60 seconds as if Signal had limited its rate.
+- A remote connection that Signal refuses for a reason other than a rate limit, such as an invalid ticket, reconnects at once. Before, ZollyBot waited 60 seconds as if Signal had limited its rate.
 - An image you paste or drop in an agent chat sends again after you had a channel open. Before, the closed channel deleted the attachment as it arrived, and sending failed with "Attachment draft no longer exists".
-- Claude background subagents keep running after the agent's turn ends. Before, OpenBot stopped the idle Claude process after 10 minutes and ended every subagent with "Stream closed", so long research had to start again.
+- Claude background subagents keep running after the agent's turn ends. Before, ZollyBot stopped the idle Claude process after 10 minutes and ended every subagent with "Stream closed", so long research had to start again.
 - The live view of a remote server's browser now stops when you hide the browser, change the tab, or close a sign-in page. Before, the server kept sending the old view.
 - A browser password request now shows the preview of its own page. Before, a slow preview of an earlier request could replace it.
-- When a server connection was lost while OpenBot checked it, for example when you came back to the app, the status showed a short countdown before it connected again. Now it connects again at once.
-- A Claude agent's answer after a background subagent or command ends now shows in the chat. Before, Claude wrote that answer, but OpenBot did not show it, because no message of yours had started the turn.
+- When a server connection was lost while ZollyBot checked it, for example when you came back to the app, the status showed a short countdown before it connected again. Now it connects again at once.
+- A Claude agent's answer after a background subagent or command ends now shows in the chat. Before, Claude wrote that answer, but ZollyBot did not show it, because no message of yours had started the turn.
 - The chat over the Routines canvas shows the agent's answer once, not twice.
 - Start the channel task that has waited longest for the host first. Before, a busy channel could
   start its newer tasks again and again while an older task of another channel stayed queued.
@@ -3699,10 +3699,10 @@ All notable changes to OpenBot will be documented here. The project follows
 - The web client connects to a hosted server that starts within about 5 seconds after the server is ready. Before, it could wait up to 2 minutes between attempts.
 - While a hosted server starts, the web client shows why the last connection attempt failed, with its error code.
 - An owner or admin of a server sees its Slack, Discord and Telegram connectors in the web client's Server settings, as in the desktop app. Before, the web client showed only GitHub. A Slack or Discord install that the web client starts returns to the web client tab.
-- OpenBot uses Electron 44.7.0. This update has V8 engine fixes that can stop rare crashes of the
+- ZollyBot uses Electron 44.7.0. This update has V8 engine fixes that can stop rare crashes of the
   app while it is idle on macOS.
 - A routine run that a local script or a webhook starts can now end quietly, as a scheduled run does.
-  Before, OpenBot sent it as a Test run, so the agent always wrote a report. The run history now
+  Before, ZollyBot sent it as a Test run, so the agent always wrote a report. The run history now
   shows "Script" or "Webhook" for these runs, not "Manual".
 - A client now connects again when it asks to start a hosted server that is stopping. Before, it
   stopped the reconnects and showed the server as offline until the next status check.
@@ -3714,13 +3714,13 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- URL MCP servers have a "Sign-in app" section. Enter the client ID, an optional client secret and optional scopes of an OAuth app that you registered with the server's provider. OpenBot uses this app when the server cannot register OpenBot by itself. The section shows the exact callback URL with a copy button. On a joined server, the host keeps the app and signs in with its own browser.
-- On a joined server that supports it, you can now connect Codex, Claude, Gemini and Muse from your own computer. The sign-in page opens in your browser, and OpenBot sends the callback to the provider's CLI on the host.
+- URL MCP servers have a "Sign-in app" section. Enter the client ID, an optional client secret and optional scopes of an OAuth app that you registered with the server's provider. ZollyBot uses this app when the server cannot register ZollyBot by itself. The section shows the exact callback URL with a copy button. On a joined server, the host keeps the app and signs in with its own browser.
+- On a joined server that supports it, you can now connect Codex, Claude, Gemini and Muse from your own computer. The sign-in page opens in your browser, and ZollyBot sends the callback to the provider's CLI on the host.
 - On a joined server that supports it, Server settings > Connectors now shows the host's GitHub, Slack, Discord and Telegram connections. You can connect, disconnect and reconnect them from your computer. The pages open in your browser, and the host keeps every token.
 - When an agent on a joined server shows a sign-in link, for example for an MCP server of its CLI, the link opens in your browser and the sign-in finishes on the host.
 - The Marketplace can now install an app that signs in with a browser on a joined server that supports this relay. The browser client can also connect providers and install these apps on a joined server.
-- On a joined server that supports it, the sign-in page of a URL MCP server now opens in the browser of your own computer, not in a tab on the host. Your passwords, passkeys and existing sessions work. OpenBot takes the callback on your computer and sends it to the host, and the host keeps the grant.
-- When your computer cannot take the callback of a relayed sign-in, OpenBot asks you to paste the address that the browser shows at the end of the sign-in. The browser client always uses this step.
+- On a joined server that supports it, the sign-in page of a URL MCP server now opens in the browser of your own computer, not in a tab on the host. Your passwords, passkeys and existing sessions work. ZollyBot takes the callback on your computer and sends it to the host, and the host keeps the grant.
+- When your computer cannot take the callback of a relayed sign-in, ZollyBot asks you to paste the address that the browser shows at the end of the sign-in. The browser client always uses this step.
 
 ### Changed
 
@@ -3728,37 +3728,37 @@ All notable changes to OpenBot will be documented here. The project follows
 - Show the words you dictate at the end of your draft, where they will go. Before, they showed as a
   separate grey paragraph under the draft and moved into it when the recording finished.
 - Make the voice recording bar shorter, so the message box has more space for text.
-- MCP sign-in now tries the same local callback port each time (28417), so the callback URL of a sign-in app stays the same. When the port is busy, OpenBot uses a random port.
+- MCP sign-in now tries the same local callback port each time (28417), so the callback URL of a sign-in app stays the same. When the port is busy, ZollyBot uses a random port.
 
 ### Fixed
 
 - Show a moving bar and no percent while a server prepares an update or stages it. Before, the update
   notice showed "Downloading · 0%" for minutes while a cloud server waited for its disk after a resume.
 - A hosted server that had a new release ready took more than 3 minutes to wake. It now wakes in about 20 seconds, as it does without a release.
-- When an agent opened more websites in the built-in browser, or when you came back to the OpenBot window, the browser went back to the first website. It now keeps the website that you chose.
+- When an agent opened more websites in the built-in browser, or when you came back to the ZollyBot window, the browser went back to the first website. It now keeps the website that you chose.
 - A paste into the live view of a remote host's browser now goes to the page. Before, the paste
   went to the last text selection in the window, such as the chat input, or it was lost.
-- A connection to a remote server that stayed open for 45 minutes asked the signalling service for new relay credentials many times a second, until the service closed the socket for a minute. The service could then also close the server owner's own host connection. OpenBot now asks once every 45 minutes, and restarts the network path only when it goes through a relay.
+- A connection to a remote server that stayed open for 45 minutes asked the signalling service for new relay credentials many times a second, until the service closed the socket for a minute. The service could then also close the server owner's own host connection. ZollyBot now asks once every 45 minutes, and restarts the network path only when it goes through a relay.
 - When you refuse a relayed sign-in on a joined server, the command-line tool on the server now gets
   the refusal and stops at once. Before, it waited until its own time limit.
 - The paste step of a relayed sign-in no longer says "this browser" in the desktop app.
 
 ### Security
 
-- OpenBot keeps the client secret of a sign-in app in the encrypted sign-in store, shows only "Secret saved" after you save it, and removes it when you remove the server. Only an owner or admin can change a sign-in app on a joined server. A sign-in app is bound to the first sign-in server that accepts it, and OpenBot never sends it to a different one.
-- The host relays an agent's sign-in link only when the link is an https page with a `state` that returns to a loopback address, and only when a message of that agent holds that exact link. A Slack or Discord grant goes only to the server whose install your computer opened, and only once. No connector route carries a token, and OpenBot does not log sign-in codes or grants.
-- Only an owner or admin can start a relayed sign-in. Each relay completes once, only for the member who started it, and ends after 10 minutes. Your computer sends only the query of the callback. The host checks its `state` and never lets a client choose a host port or address. The page opens only when you click "Open sign-in page" in the dialog that shows its host name, and your computer refuses a page that has no `state`, so a host cannot use your browser for a grant you did not ask for. OpenBot does not log the sign-in code.
+- ZollyBot keeps the client secret of a sign-in app in the encrypted sign-in store, shows only "Secret saved" after you save it, and removes it when you remove the server. Only an owner or admin can change a sign-in app on a joined server. A sign-in app is bound to the first sign-in server that accepts it, and ZollyBot never sends it to a different one.
+- The host relays an agent's sign-in link only when the link is an https page with a `state` that returns to a loopback address, and only when a message of that agent holds that exact link. A Slack or Discord grant goes only to the server whose install your computer opened, and only once. No connector route carries a token, and ZollyBot does not log sign-in codes or grants.
+- Only an owner or admin can start a relayed sign-in. Each relay completes once, only for the member who started it, and ends after 10 minutes. Your computer sends only the query of the callback. The host checks its `state` and never lets a client choose a host port or address. The page opens only when you click "Open sign-in page" in the dialog that shows its host name, and your computer refuses a page that has no `state`, so a host cannot use your browser for a grant you did not ask for. ZollyBot does not log the sign-in code.
 
 ## [0.37.0] - 2026-10-11
 
 ### Added
 
-- A scheduled routine has the setting "If OpenBot was closed at the scheduled time". "Skip this run"
-  is the default. "Run once when OpenBot opens" starts one run for the most recent missed time.
-- The run history shows the runs that OpenBot skipped while it was closed, as one row for each
+- A scheduled routine has the setting "If ZollyBot was closed at the scheduled time". "Skip this run"
+  is the default. "Run once when ZollyBot opens" starts one run for the most recent missed time.
+- The run history shows the runs that ZollyBot skipped while it was closed, as one row for each
   group, and marks a run that started more than one minute late.
-- Connect the phone app to a self-hosted or Docker server. Run `openbot mobile-connect` on the server
-  (`docker exec -it <container> openbot mobile-connect` in Docker) and scan the QR code with the
+- Connect the phone app to a self-hosted or Docker server. Run `zollybot mobile-connect` on the server
+  (`docker exec -it <container> zollybot mobile-connect` in Docker) and scan the QR code with the
   phone app. Before, only the desktop app could show a Mobile Connect code.
 - On this computer, you can log in to Grok, Cursor, Cline and Muse with a code, as you can for
   ChatGPT. On Linux, you can also log in to Claude with a code that you paste.
@@ -3821,13 +3821,13 @@ All notable changes to OpenBot will be documented here. The project follows
 
 - Polish interface. Choose Polski in Settings > General > Language, or keep System default on a
   computer that uses Polish. The web client uses it too.
-- A computer that has not signed in to OpenBot now opens on a language wheel, before sign-in. Turn it with the arrow
+- A computer that has not signed in to ZollyBot now opens on a language wheel, before sign-in. Turn it with the arrow
   keys, the scroll wheel, a drag or the arrow buttons; the screen changes to each language as you
   turn it. Continue saves the language. The wheel shows one time on each computer.
-- The diagnostics export now has the memory and CPU use of OpenBot and of each provider's
+- The diagnostics export now has the memory and CPU use of ZollyBot and of each provider's
   processes, the app's responsiveness, database statement times and crash counts, for today and
   the previous day.
-- With analytics on, OpenBot sends one daily summary of its memory and CPU use, by computer class
+- With analytics on, ZollyBot sends one daily summary of its memory and CPU use, by computer class
   and provider. It does not send process names, command lines or paths.
 - Added a guide to run the Docker image as an AWS ECS service on EC2, with the seccomp profile, the
   data volume, ECS Exec sign-in and CloudWatch logs. AWS Fargate is not supported: it cannot keep
@@ -3877,7 +3877,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- An owner or admin can turn Computer Use and Local scripts on or off for an agent, and select what a message does while the agent works, from the OpenBot iPhone app.
+- An owner or admin can turn Computer Use and Local scripts on or off for an agent, and select what a message does while the agent works, from the ZollyBot iPhone app.
 - On macOS, you can reply to an agent, answer its question and stop its work from the Dynamic Island. The main window stays where it is. "Open chat" still opens the conversation.
 - Add native Pi RPC and Muse MSP providers, managed runtime downloads, and host sign-in.
 - Add ACP provider settings with saved overrides, deferred changes, and reset.
@@ -3905,13 +3905,13 @@ All notable changes to OpenBot will be documented here. The project follows
 - Voice input now uses NVIDIA Parakeet TDT 0.6B v3 in place of Whisper. The words show in the
   message box while you speak, and the full text replaces them when you stop. Parakeet supports
   25 European languages. Japanese, Chinese and Korean dictation is no longer available.
-- The first voice recording downloads a new model of approximately 670 MB. OpenBot deletes the
+- The first voice recording downloads a new model of approximately 670 MB. ZollyBot deletes the
   old Whisper files.
 - While you speak, the microphone button changes into a recording bar with a live waveform.
   The waveform shows small dots in silence and taller bars when you speak.
   ✓ puts the text in the message box, × discards the recording, and the send arrow sends it.
   The message box no longer gets a yellow outline during a recording.
-- Local scripts can send messages, read pending questions and approvals, and submit responses. Agents with Local scripts already enabled get these operations after upgrade without a new opt-in. Browser takeovers and secret questions direct the user to OpenBot.
+- Local scripts can send messages, read pending questions and approvals, and submit responses. Agents with Local scripts already enabled get these operations after upgrade without a new opt-in. Browser takeovers and secret questions direct the user to ZollyBot.
 - Owners and administrators can turn Local scripts on or off from a connected desktop or web client. Scripts run on the host, so a headless server needs no local screen.
 - Existing memories stay saved. During upgrade, recent manual memories receive priority for the essential prompt budget.
 - Remote memory selection uses bounded pages. Older hosts keep memory text editing without the new controls.
@@ -3927,7 +3927,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Fixed
 
 - A paste into a remote desktop now pastes your own clipboard on the host. Before, Cmd+V or Ctrl+V pasted the host's clipboard.
-- The embedded browser now removes the OpenBot and Electron user-agent tokens for sites such as X and LinkedIn, and sends basic client hints for its Chromium version and platform. Google account requests keep the compatibility token needed for sign-in.
+- The embedded browser now removes the ZollyBot and Electron user-agent tokens for sites such as X and LinkedIn, and sends basic client hints for its Chromium version and platform. Google account requests keep the compatibility token needed for sign-in.
 - The owner of a server can now remove it from the account with Remove server, in the server menu or in server settings, also when its computer is offline or gone. Before, an owner could not remove such a server, and it came back on each computer and after each reinstall. The removal applies to all members and all devices. Members lose access, and connected Slack, Discord, Telegram and webhook routes stop. If you add the server again, invite its members again and set up its connections again. Old webhook URLs do not work again. Files and chats on the server's computer stay.
 - Keep chat input focused while another agent uses the browser. Background browser actions could interrupt typing.
 - Keep chats at the latest message when switching agents. Measurements of routine cards and other messages could move the chat away from the bottom.
@@ -3936,12 +3936,12 @@ All notable changes to OpenBot will be documented here. The project follows
 - An agent whose provider says "You've reached your weekly usage limit" now waits for the limit to
   reset, as it does for "You've hit your weekly limit". Before, each queued message and routine run
   started a turn that failed.
-- Switch chats while OpenBot changes which queued message you edit, and each chat now keeps its own draft. Before, the first chat could get the other chat's draft and lose its own.
+- Switch chats while ZollyBot changes which queued message you edit, and each chat now keeps its own draft. Before, the first chat could get the other chat's draft and lose its own.
 - A voice message sent to one chat while you read another no longer scrolls the chat you read to its latest message.
 - Close the chat search or clear the query while a search is running, and a late result no longer opens an old match, possibly in another chat.
-- If a voice recording fails to start after the microphone opened, OpenBot now releases the microphone. Before, the microphone stayed in use.
+- If a voice recording fails to start after the microphone opened, ZollyBot now releases the microphone. Before, the microphone stayed in use.
 - A Stop that arrives after its turn ended no longer stops the next turn of the same agent.
-- A file or site folder whose name starts with two dots, such as `..notes.md`, now opens or publishes from the workspace. Before, OpenBot refused it as outside the workspace.
+- A file or site folder whose name starts with two dots, such as `..notes.md`, now opens or publishes from the workspace. Before, ZollyBot refused it as outside the workspace.
 - If saving the preview of a sent message fails, the message is still delivered. Before, it stayed in the queue until the next restart or queue event.
 - A routine set to repeat every 58 or 59 minutes is now refused when you save it, like every other schedule under the 3-minute minimum. Before, it ran twice within 1 or 2 minutes around each hour. Routines already saved this way keep running and can still be edited.
 - The sidebar section name field keeps focus after you choose New section or Rename. Before, the field could lose focus and the name was lost.
@@ -3957,33 +3957,33 @@ All notable changes to OpenBot will be documented here. The project follows
 - Two attachments whose names differ only in case, such as `Report.txt` and `report.txt`, now both arrive. Before, on macOS and Windows the second file overwrote the first, and the first attachment could not be opened.
 - A Claude turn that ends on an API error, such as an expired sign-in, a low credit balance or an overloaded service, now fails and shows the error. Before, the error text was saved as the agent's answer and the message counted as delivered.
 - When an agent cannot attach a file to its answer, it now gets the reason, for example a file outside its workspace and the shared directory, and can correct the call. Before, Codex agents got only `dynamic tool request failed` and retried the same call.
-- A Codex agent on a Plus or Pro plan now waits for its usage limit to reset. Before, the limit message offered more credits, so OpenBot took it for a spent balance and started each queued message and routine run, and each one failed.
-- Grok agents answer again after their Grok CLI restarts. Before, every message to the agent failed with `Invalid params` after an idle stop, an OpenBot restart or an update.
+- A Codex agent on a Plus or Pro plan now waits for its usage limit to reset. Before, the limit message offered more credits, so ZollyBot took it for a spent balance and started each queued message and routine run, and each one failed.
+- Grok agents answer again after their Grok CLI restarts. Before, every message to the agent failed with `Invalid params` after an idle stop, an ZollyBot restart or an update.
 - Fix remote reconnects that report too many active connections when an old client socket waits for its host. Concurrent reconnects and failed authentication no longer hold extra account slots. Other device sessions stay connected.
 - Wait before reconnecting when Signal limits connection traffic. Before, repeated retries could keep all devices on an account disconnected.
 - Gemini shows its sign-in and start errors. Before, it could show Ready when it could not run.
 - Restart works while a Gemini sign-in waits. Before, the old sign-in could stop the next attempt.
-- On Linux, Gemini sign-in opens in the desktop browser. When no browser opens, OpenBot shows the setup steps. Before, it waited until the sign-in expired.
+- On Linux, Gemini sign-in opens in the desktop browser. When no browser opens, ZollyBot shows the setup steps. Before, it waited until the sign-in expired.
 - Remote provider settings explain that Gemini sign-in opens a browser on the server's computer.
 - The message box and its queue stay below an approval request or a browser takeover. A message that you send while an agent waits for your approval now shows in the queue. Before, the message box went away, and a queued message was not visible until the approval was done.
-- When an agent refuses a request, OpenBot now shows the reason that the agent sends. Before, a Grok agent showed only `Invalid params`, for example when Grok refused a session resume after its CLI restarted.
+- When an agent refuses a request, ZollyBot now shows the reason that the agent sends. Before, a Grok agent showed only `Invalid params`, for example when Grok refused a session resume after its CLI restarted.
 - Messages stay in the queue when you try to steer a provider that does not support it. Custom ACP agents no longer receive a second prompt that can interrupt the running task or lose the queued message.
 - Recover the affected remote peer when a host data channel closes. Other connected clients stay connected.
 - Report failed Live View connections and invalid frames as failures. Close failed views so they can be opened again.
-- A queued channel task now starts when the agent or normal work that held it becomes free, also when that work ended without a turn, for example when a message failed to start or was cancelled. Before, the task could stay queued until the next channel command or a restart of OpenBot.
+- A queued channel task now starts when the agent or normal work that held it becomes free, also when that work ended without a turn, for example when a message failed to start or was cancelled. Before, the task could stay queued until the next channel command or a restart of ZollyBot.
 - A message from an agent with an empty reply id no longer stops the sender's and the recipient's
   conversations from loading or stalls the recipient's queue. Conversations that an earlier version
   saved with such a message load again.
 
 ### Security
 
-- The Bun runtime that OpenBot downloads to start MCP servers is now version 1.4.3, which has security fixes.
+- The Bun runtime that ZollyBot downloads to start MCP servers is now version 1.4.3, which has security fixes.
 
 ## [0.34.1] - 2026-10-09
 
 ### Changed
 
-- The mobile app card at the bottom of the sidebar now says "OpenBot for mobile", because the app
+- The mobile app card at the bottom of the sidebar now says "ZollyBot for mobile", because the app
   is on iPhone and Android. "How to install" opens Settings > Mobile Connect, which shows the steps
   for both phones. If you closed the old iPhone card, the new card shows one more time.
 
@@ -4003,7 +4003,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Right-click the routine canvas to add an agent at that spot: one you already have, or a new one with its name, what it does, and its model.
 - Webhook routines show on the routine canvas. Their details set the webhook: copy the endpoint, regenerate the signing secret, and choose the event type and filters that start a run. Run now tests them.
 - All signed-in server members can check for releases and request an idle update on supported installations. Administrators keep control of cancellation, forced restarts, and automatic-update settings.
-- Turn built-in providers off or on in this computer's provider settings. OpenBot saves the choice, stops unused provider processes, skips their CLI checks, and removes their models from the picker. Change an agent's model before you turn its provider off.
+- Turn built-in providers off or on in this computer's provider settings. ZollyBot saves the choice, stops unused provider processes, skips their CLI checks, and removes their models from the picker. Change an agent's model before you turn its provider off.
 - Russian interface. Choose Русский in Settings > General > Language, or keep System default on a
   computer that uses Russian. The web client uses it too.
 - Add Spanish and German to the language settings. Translate desktop and web-client screens,
@@ -4028,11 +4028,11 @@ All notable changes to OpenBot will be documented here. The project follows
   The button shows on this computer, and on a host where you are an owner or admin.
 - The iPhone and Android apps have their own download pages, `/download/ios` and `/download/android`,
   with the system requirements, the install steps and how to connect the phone to your computer.
-- Telegram: add the OpenBot bot to a Telegram group or start a direct chat with it from **Server settings → Connectors → Telegram**. People mention the bot or reply to it, and the Telegram Orchestrator asks the right agent and posts the answer in the same reply chain, with approvals, stop and files as in Slack.
-- OpenBot sends the page's mouse cursor to the mobile app, which shows it on the live browser view.
+- Telegram: add the ZollyBot bot to a Telegram group or start a direct chat with it from **Server settings → Connectors → Telegram**. People mention the bot or reply to it, and the Telegram Orchestrator asks the right agent and posts the answer in the same reply chain, with approvals, stop and files as in Slack.
+- ZollyBot sends the page's mouse cursor to the mobile app, which shows it on the live browser view.
 - A right-click from the mobile app opens the page's menu on the phone, not on the screen of the
   server. While the phone shows a tab, the page keeps one size, so it does not change shape when
-  the OpenBot window changes size. A tab that an agent gave its own size keeps that size.
+  the ZollyBot window changes size. A tab that an agent gave its own size keeps that size.
 - Choose how many memories each agent can keep, from 64 to 512, in Settings > General. A lower limit keeps all saved memories.
 
 ### Changed
@@ -4043,7 +4043,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Development commands can start without shared secrets and load the encrypted shared development settings when the developer has the development key.
 - Local development identity and overrides persist in ignored state, and the APNs helper writes to that state.
 - Encrypted development settings use `.env.dev` and the shell key `DOTENV_PRIVATE_KEY_DEV`; production settings remain unchanged.
-- The update resets old generated `.env.dev` settings. Existing identity keys and overrides in `.openbot/dev-state.json` remain unchanged.
+- The update resets old generated `.env.dev` settings. Existing identity keys and overrides in `.zollybot/dev-state.json` remain unchanged.
 - Development commands keep account and decryption secrets out of browser and tunnel processes, and secret-dependent E2E commands check required keys before changing test data.
 - New hosted servers start from a snapshot built from the latest completed desktop release. Releases now build and select the production boat snapshot automatically. Failed snapshot builds keep the previous template active.
 - Marketplace app listings in Russian. The tagline, description, server description and example
@@ -4056,22 +4056,22 @@ All notable changes to OpenBot will be documented here. The project follows
   General is shorter: Language is first, and the settings are in four groups with shorter text.
 - Consecutive completed runs of one routine show as one row in the chat, with the number of runs and the time of the first and the newest run. Open the row to see each run. A run that fails, stops or needs attention keeps its own row.
 - Set the default provider for new local agents in Server settings → Providers. Computer permissions remain in Settings → Computer Use.
-- Open a joined server faster when OpenBot starts. The window no longer waits for the account's
+- Open a joined server faster when ZollyBot starts. The window no longer waits for the account's
   server list, the selected server connects while the window loads, and the hidden connection window
   loads while the session is made. A server that has no saved key still waits for the server list.
 - Write the time of each step of a connection to a joined server to the local trace file, for
   diagnostics. The trace does not name the server.
-- Connect to a joined server faster when OpenBot starts again. The app keeps the server's remote
+- Connect to a joined server faster when ZollyBot starts again. The app keeps the server's remote
   session between runs, so the start asks only for a new ticket. It opens the Signal connection while
   it waits for that ticket. The kept session is encrypted, and the app forgets it at sign-out or when
   it starts with no account signed in.
 - Add Settings → General → Fast connection to servers, on by default. Turn it off to end each remote
-  session when OpenBot quits and to keep nothing between runs, as before.
+  session when ZollyBot quits and to keep nothing between runs, as before.
 - Write the time when the Signal connection opens to the local trace file
   (`remote-connect:signal-socket`).
-- When you turn on Settings → General → Fast connection to servers, OpenBot also keeps the remote
+- When you turn on Settings → General → Fast connection to servers, ZollyBot also keeps the remote
   sessions that are open at that time.
-- When a remote connect fails before it gets its ticket, OpenBot closes the Signal connection that
+- When a remote connect fails before it gets its ticket, ZollyBot closes the Signal connection that
   it opened early.
 - Moved Publish from the chat header to the agent side panel. Click the agent name to find it.
 - The search field in the sidebar now opens the global search, the same as Cmd+K (Ctrl+K). It no longer filters the sidebar list.
@@ -4086,7 +4086,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - Group the models of a custom ACP agent by the provider that serves each one. An agent that lists
   `<provider>/<model>` names now shows one section per provider in the model picker, instead of a
   single undifferentiated list.
-- The changelog page names the mobile app "OpenBot Mobile", because the app is now also on Android.
+- The changelog page names the mobile app "ZollyBot Mobile", because the app is now also on Android.
   Next to the TestFlight link, a button opens the Android app on Google Play.
 - The download section of the home page and the `/download` page have iPhone and Android tiles,
   in the same style as the desktop tiles. The links to the requirements pages show iPhone and
@@ -4099,8 +4099,8 @@ All notable changes to OpenBot will be documented here. The project follows
   QR code and the steps for that phone: the Google Play listing for Android, or the TestFlight beta
   for iPhone. The two cards are numbered, so you install the app first and then sign in. The list
   of connected phones shows the logo of each platform.
-- Show the platform logo, a link and the OpenBot logo in the middle of the install QR codes.
-- Show what a hosted server gives at the top of the add-server dialog: it runs OpenBot 24/7 on an
+- Show the platform logo, a link and the ZollyBot logo in the middle of the install QR codes.
+- Show what a hosted server gives at the top of the add-server dialog: it runs ZollyBot 24/7 on an
   external server, keeps agents and routines running when the computer is off, and needs no
   technical setup.
 - Telegram: code blocks in answers keep their language, such as `python`, so Telegram colors the code.
@@ -4113,15 +4113,15 @@ All notable changes to OpenBot will be documented here. The project follows
 - First run changes steps calmly: the old step blurs and fades out, and the next one comes into
   focus. When setup is done, the setup screen blurs away into the app. With reduced motion, the steps
   change at once.
-- When you open OpenBot from first run before the free models are ready, a splash shows: the agents
+- When you open ZollyBot from first run before the free models are ready, a splash shows: the agents
   from the first screen jump in a slow wave, and a line under them fills with the download. The app
   then opens from the splash. Before, a small spinner showed in a button.
 - The agents on the first screen and on the splash follow the pointer with their eyes. An agent
   grows a little under the pointer, and nods when you click it. With reduced motion, they stay still.
 - In the setup provider list, ChatGPT, Claude and Grok show their version under the name, not
-  "Included with OpenBot". Before, an "Update available" badge cut that line off.
+  "Included with ZollyBot". Before, an "Update available" badge cut that line off.
 - The sign-in screen says that the email address also creates an account, and that your chats and
-  files stay on the computer that runs OpenBot.
+  files stay on the computer that runs ZollyBot.
 
 ### Removed
 
@@ -4133,15 +4133,15 @@ All notable changes to OpenBot will be documented here. The project follows
 - Open Settings on the Hosted servers tab at once from "Manage servers". Before, the dialog showed
   another tab first and then jumped when the server list loaded. A slow list now shows a loading
   indicator, and a list that fails to load shows its error on the tab.
-- OpenCode models with no reasoning setting, such as Big Pickle, Kimi, MiMo and Nemotron, now show "Set by OpenCode" in agent settings. Before, the Reasoning control showed "Medium" as the only level, but OpenBot sent no level and OpenCode used the model's own default. Other ACP agents, such as Cursor, show the same "Set by" text for a model that has no reasoning setting.
+- OpenCode models with no reasoning setting, such as Big Pickle, Kimi, MiMo and Nemotron, now show "Set by OpenCode" in agent settings. Before, the Reasoning control showed "Medium" as the only level, but ZollyBot sent no level and OpenCode used the model's own default. Other ACP agents, such as Cursor, show the same "Set by" text for a model that has no reasoning setting.
 - OpenCode MiniMax M3 now offers Low (thinking off) and High (thinking on). Before, it offered only Low, so thinking could not be turned on.
-- Remote hosts can check for compatible OpenBot releases even when they cannot update themselves. Server Settings shows the installed and latest versions, explains the correct update path for hosted servers, system services, containers, and Host Manager installations, and hides installation controls that cannot work.
+- Remote hosts can check for compatible ZollyBot releases even when they cannot update themselves. Server Settings shows the installed and latest versions, explains the correct update path for hosted servers, system services, containers, and Host Manager installations, and hides installation controls that cannot work.
 - Server update status refreshes after a lost connection and does not show a reply from a previously selected host.
 - Show the latest message of a chat or channel in the sidebar as plain text. Before, the preview
   showed raw Markdown, such as `**2 new emails**` with its asterisks, while the chat itself showed
   the same text in bold.
 - Show "Connecting…" in the sidebar and the message box while a joined server connects after you
-  open OpenBot. Before, the app showed "Create your first agent" and asked you to complete agent CLI
+  open ZollyBot. Before, the app showed "Create your first agent" and asked you to complete agent CLI
   setup for some seconds, until the server sent its agents.
 - Grok chats keep their message order after a reload and when you load older messages. Before, a message that you sent while Grok worked could show above Grok's answer to the message before it.
 - A message that you send to a running turn now shows after what the agent did before it. Before, it moved up to the turn's first message.
@@ -4151,7 +4151,7 @@ All notable changes to OpenBot will be documented here. The project follows
   the message failed with "The idempotency key is too long."
 - Cancelling a browser task no longer shows the raw Codex tool cancellation error. Pending browser work stops, incomplete new tabs close, and existing tabs remain available for the next request.
 - Reduce idle animation work for active tasks and pending replies. Pause their repeated animations when the window is hidden or the rows are closed.
-- File chips can now find files outside the workspace from recent ACP and Claude file tool calls. Previously, a chip with only a file name could report a missing file. This lookup is local to the desktop and requires Full access. The last 200 paths per thread stay in memory until OpenBot closes.
+- File chips can now find files outside the workspace from recent ACP and Claude file tool calls. Previously, a chip with only a file name could report a missing file. This lookup is local to the desktop and requires Full access. The last 200 paths per thread stay in memory until ZollyBot closes.
 - Return keyboard focus to the server control after a confirmation closes.
 - Prevent a server connection from closing with “Signal message is invalid” when the browser sends an empty ICE completion marker.
 - The web app now opens the last server you selected in that browser. Each account keeps its own selection.
@@ -4168,13 +4168,13 @@ All notable changes to OpenBot will be documented here. The project follows
   agents.
 - Keep a deleted agent deleted when another device reacts to its message, stops its turn, or steers a
   queued message into its turn. Before, these actions created the agent again.
-- OpenBot starts when an unsent message with a skill or MCP server tag is saved in the message box.
+- ZollyBot starts when an unsent message with a skill or MCP server tag is saved in the message box.
   Before, the app stayed on the startup logo at each launch until you removed the saved draft.
 - Copy, cut, paste and select all now work in the browser of a remote server, with Ctrl or Cmd and
   C, X, V and A. Before, the shortcuts did nothing: the page used the clipboard of the server, not
   your clipboard. The server must also have this update; an older server shows a message that tells
   you to update it.
-- Keep the conversation usable when Cursor reports a missing provider session as "Invalid params". OpenBot now uses its saved conversation to continue in a new provider session.
+- Keep the conversation usable when Cursor reports a missing provider session as "Invalid params". ZollyBot now uses its saved conversation to continue in a new provider session.
 - When you close the global search with Escape, focus goes back to the control that had it before.
 - On the web, a hosted server that sleeps or wakes no longer shows a connection error.
 - A custom MCP server that asks for an OAuth sign-in no longer shows "The server answered 401. Check
@@ -4197,12 +4197,12 @@ All notable changes to OpenBot will be documented here. The project follows
   the action at once.
 - Disconnecting 1Password, or an app from the Marketplace, now asks for confirmation first.
   Before, one click forgot the 1Password token or removed the app and its skills.
-- The Computer Use rim no longer shows over the OpenBot window. When the window that an agent works
-  in is behind OpenBot, OpenBot now covers that part of the rim, as other windows do. When OpenBot
+- The Computer Use rim no longer shows over the ZollyBot window. When the window that an agent works
+  in is behind ZollyBot, ZollyBot now covers that part of the rim, as other windows do. When ZollyBot
   covers all of that window, no rim shows.
 - Center the agent avatar with the name in the profile card of the agent settings panel, and center the
   avatar on the profile page.
-- Antigravity no longer shows "Provider error" notifications for a failed MCP tool call or a timed-out OpenBot browser call. The agent gets the failure as the tool result and can try again.
+- Antigravity no longer shows "Provider error" notifications for a failed MCP tool call or a timed-out ZollyBot browser call. The agent gets the failure as the tool result and can try again.
 - When an agent calls a memory tool with missing text, text that is too long, or a memory ID that it cannot use, the agent now gets a failed tool result that it can correct. The user no longer sees a "Provider error" notification.
 - Keep the connection to a server when a desktop client that is connected to it reconnects to the
   signal server while the connection still works. Before, each such reconnect restarted the
@@ -4213,22 +4213,22 @@ All notable changes to OpenBot will be documented here. The project follows
   showed it as connected. Each stop then failed with "The WebRTC channel is not open." Now the
   client connects again when the server closes the connection. When a request could not go out on
   the closed connection, the client sends it again on the new connection.
-- An OpenCode CLI update no longer stops with only "fetch failed" after the download completes. OpenBot now gets the OpenCode license from npm, the same place as the CLI, so the update needs no GitHub connection.
+- An OpenCode CLI update no longer stops with only "fetch failed" after the download completes. ZollyBot now gets the OpenCode license from npm, the same place as the CLI, so the update needs no GitHub connection.
 - When a runtime download request fails, the error now shows the address and the network reason.
 - A Retry after a failed runtime install now uses the download it already has when that download passes its check, and does not download it again.
 - Read the history of a custom ACP agent from its process. Before, startup could stop with "Cannot
   read properties of undefined (reading 'options')" and the local agent backend did not start, and a
   read of the agent's conversation history could fail with the same error.
-- OpenBot reads your joined servers again when it opens before your account finishes loading.
-  Before, the first read could stop with "Sign in to OpenBot first.", and the server list did not
-  update until a later check. In 0.33.0, OpenBot could fail to start with this error.
-- The installed OpenBot web app now opens the app at `/app`. Before, it opened the landing page.
+- ZollyBot reads your joined servers again when it opens before your account finishes loading.
+  Before, the first read could stop with "Sign in to ZollyBot first.", and the server list did not
+  update until a later check. In 0.33.0, ZollyBot could fail to start with this error.
+- The installed ZollyBot web app now opens the app at `/app`. Before, it opened the landing page.
 - Connect Figma, or another MCP server on this computer, no longer stops with only "fetch failed".
   When nothing answers at the local address, the dialog tells you to turn the server on in its app
   and try again. A connection that this computer blocks, or an address that answers but is not an
   MCP server over Streamable HTTP, now has its own message.
 - In an attachment card, the download and open icons now have the same size and alignment.
-- OpenBot stays open when a Browser tab opens the Chrome Web Store. Before, the app could close a
+- ZollyBot stays open when a Browser tab opens the Chrome Web Store. Before, the app could close a
   few seconds after the page loaded, and again at each start while the tab was saved.
 - Keep the message cursor in place when you add or end lists, insert blank lines, or update attachments. Line breaks and multiline paste now work with undo and redo.
 - Keep text selection and arrow-key movement stable when you use inline tags or leave a suggestion list.
@@ -4253,7 +4253,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - An agent with a full memory now gets an error when it tries to save one more memory, and it can
   merge or forget a memory in the same turn. Before, the new memory was lost when the turn ended.
 - Show a Gemini rate limit or spent quota as an error that says to wait or choose another model.
-  Before, the turn failed with no message, because OpenBot waited for a usage reading that Gemini
+  Before, the turn failed with no message, because ZollyBot waited for a usage reading that Gemini
   does not send. A model that Gemini cannot use and a Google service failure also get their own
   message.
 - Say "Not reported" for Gemini, Cursor, Cline and custom ACP agents in the usage menu. These
@@ -4281,8 +4281,8 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- Show a yellow update notice with an Update button when the selected provider needs a newer runtime. Keep the draft and block sending until the required update is complete, instead of asking the user to reinstall OpenBot.
-- Hide the failed-send error while the required update notice is shown. Keep Edit and Dismiss available, and restore Retry after the update. Show manual update instructions when OpenBot cannot offer an update.
+- Show a yellow update notice with an Update button when the selected provider needs a newer runtime. Keep the draft and block sending until the required update is complete, instead of asking the user to reinstall ZollyBot.
+- Hide the failed-send error while the required update notice is shown. Keep Edit and Dismiss available, and restore Retry after the update. Show manual update instructions when ZollyBot cannot offer an update.
 - Pause webhook requests when you sign out. Sign in again to resume the saved routes without changing their URLs or secrets.
 - Protect saved MCP sign-in credentials from a changed authorization server. Older credentials refresh only when their original authorization server is known.
 
@@ -4331,9 +4331,9 @@ All notable changes to OpenBot will be documented here. The project follows
 - Each agent has a "While working" setting in its settings panel. It uses the app default, or it always queues or always steers for that agent.
 - A message that cannot steer waits in the queue with a "Not steered" label and the reason. Grok, OpenCode, Gemini, Cursor, Cline and custom agents cannot steer a running turn. The message starts when the current turn ends.
 - A message that could not be sent stays in the chat with Retry, Edit and Dismiss. Retry does not send the message two times, also when the first attempt reached the server and only its answer was lost. A server on an older version cannot detect a repeated message, so for it the chat offers only Edit and Dismiss. If you quit or restart before such a message is sent, its text is back in the composer when you return; nothing sends it again on its own.
-- openbot.run has a new /providers section with one page for each coding agent that OpenBot runs:
+- openbot.run has a new /providers section with one page for each coding agent that ZollyBot runs:
   Claude Code, Codex, Gemini, Grok, Cursor, OpenCode, Cline, and local models from Ollama or
-  LM Studio. Each page shows how to set the agent up in OpenBot, what OpenBot adds to it, the
+  LM Studio. Each page shows how to set the agent up in ZollyBot, what ZollyBot adds to it, the
   vendor's own apps and where they run, and answers to common questions. The footer, the provider
   tile on the home page and the matchup comparisons link to these pages.
 - openbot.run has a Markdown copy of each guide, news post, comparison and provider page, at the page URL with `.md` added. `/llms-full.txt` holds all of them in one file for AI assistants.
@@ -4341,11 +4341,11 @@ All notable changes to OpenBot will be documented here. The project follows
 - A folder chip, such as `research/eyeliner/`, now opens a folder view in the file panel. The view shows the files with their size and date. Select a file to open it, and select **Back** to go back to the folder.
 - The file panel can show the source of a Markdown file. It also has **Download file** for each file, and **Show file in Finder** on the desktop.
 - Add a calendar feed for routines in Server Settings > Routines. Apple Calendar (On My Mac) and other calendar apps that read the feed on this computer can subscribe to the next 30 days of runs of active routines, for all agents or for one agent. The private URL works only on this computer, and **New URL** stops the old one.
-- Connect a Discord server in **Server settings → Connectors → Discord**. People mention @OpenBot in a
+- Connect a Discord server in **Server settings → Connectors → Discord**. People mention @ZollyBot in a
   channel, and the Discord Orchestrator agent asks the right agent and answers in the reply chain.
-  Replies to OpenBot continue the conversation. Approvals, **Stop**, reactions and files work as in
+  Replies to ZollyBot continue the conversation. Approvals, **Stop**, reactions and files work as in
   Slack.
-- Connect Bitwarden in Marketplace or Server settings to fill browser passwords and authenticator codes. Share logins through a folder named `Shared with OpenBot`. The CLI session lasts until disconnect, eight idle hours, or app exit.
+- Connect Bitwarden in Marketplace or Server settings to fill browser passwords and authenticator codes. Share logins through a folder named `Shared with ZollyBot`. The CLI session lasts until disconnect, eight idle hours, or app exit.
 
 ### Changed
 
@@ -4364,7 +4364,7 @@ All notable changes to OpenBot will be documented here. The project follows
   each new part read and colored the full reply again.
 - A message you send shows in the chat at once, marked as sending, and the composer stays free for the next one. Before, the composer waited until the server accepted the message. Several messages sent quickly reach the agent in the order you sent them.
 - In the web client, a send that fails no longer blocks the composer until you check the conversation. The message stays in the chat with its failure.
-- Use less CPU and memory while channel agents write replies. Before, OpenBot read the whole
+- Use less CPU and memory while channel agents write replies. Before, ZollyBot read the whole
   conversation and the whole channel history again about ten times each second for each agent.
 - Close the Computer Use highlight windows one minute after no agent controls the computer. Before,
   they used memory for as long as Computer Use was on.
@@ -4378,21 +4378,21 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Fixed
 
 - Failed Antigravity MCP tool calls no longer show a separate provider error notification.
-- Remove claims from the website and documentation that OpenBot does not need an account.
+- Remove claims from the website and documentation that ZollyBot does not need an account.
 - Explain an OpenCode model whose provider rejects its API key, such as a Google Gemma model, and
-  tell how to fix the key. Before, OpenBot showed only "Internal error: API key not valid".
+  tell how to fix the key. Before, ZollyBot showed only "Internal error: API key not valid".
 - The **Add member** menu in channel settings has a search field, and its list scrolls. Before, the menu had no search and did not scroll, so agents above or below the window edge could not be added.
-- Sign in and connect to teams on a company network that inspects TLS, such as Fortinet. OpenBot
+- Sign in and connect to teams on a company network that inspects TLS, such as Fortinet. ZollyBot
   now trusts the root certificates of the operating system, as a browser does.
 - Show which host a company firewall or proxy blocked when sign-in cannot reach the account service.
-  Before, OpenBot asked you to check that the API was running, and a proxy's block page could sign
+  Before, ZollyBot asked you to check that the API was running, and a proxy's block page could sign
   you out.
 - Move the window by its title bar when the browser fills the window. Before, only the area under
   the window buttons moved it. You can also move the window by the header of the browser sidebar.
 - Long text in chat tables now wraps inside its cell. Before, a table could become wider than the
   message, and you had to scroll sideways to read it. Long links and code also break inside the
   cell.
-- Put the cursor back in the message box when you come back to the OpenBot window. Before, you had
+- Put the cursor back in the message box when you come back to the ZollyBot window. Before, you had
   to click the message box again before you could type.
 - A queued message that you steered just as the agent finished its turn no longer shows as done when the agent never read it. It stays in the queue and starts next.
 - The request that an agent sends to another agent, and the result that comes back, no longer add to
@@ -4400,8 +4400,8 @@ All notable changes to OpenBot will be documented here. The project follows
   had no new message for you.
 - The skill list now says when the agent has no skills, when no skill matches, or when the skills did not load. Before, the list did not open.
 - Keep the message you did not send when you go to a different chat. Each agent chat and each
-  channel keeps its own draft. The draft text also stays after you restart OpenBot, for example to
-  install an update. Attached files stay only until you close OpenBot.
+  channel keeps its own draft. The draft text also stays after you restart ZollyBot, for example to
+  install an update. Attached files stay only until you close ZollyBot.
 - The Mobile tab of the changelog shows a new version only when you can install it from the store.
   Before, it showed the version while the store still reviewed the build.
 - **Attach image** now shows PDFs, documents, and all other supported files. Before, on Windows, the file picker showed only images until you selected **All files**.
@@ -4413,15 +4413,15 @@ All notable changes to OpenBot will be documented here. The project follows
 - Type the phrase that an input method picks with Shift and a digit, such as an OpenVanilla
   associated phrase. Before, the message box typed the punctuation of the key, such as "!".
 - A host that clients reconnect to many times no longer runs out of network sockets and becomes unreachable until a restart. After 10 ICE restarts, a remote connection is replaced with a new one.
-- Connect again to a joined server after the computer wakes from sleep. Before, the server could stay unavailable until you restarted OpenBot.
+- Connect again to a joined server after the computer wakes from sleep. Before, the server could stay unavailable until you restarted ZollyBot.
 - Sign in to Framer in the embedded browser. Before, Framer refused every sign-in with "Cannot log
-  you in" or "Verification failed", because the browser identity included the OpenBot name.
+  you in" or "Verification failed", because the browser identity included the ZollyBot name.
 
 ### Security
 
 - The Windows installer and app are now signed by SYNTHETIFY LABS SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ. Windows no longer shows "Unknown publisher" for them, and later updates install only when they have the same signature. Before, the Windows release was not signed.
 - The account service now checks the skills and agent marketplace admin token in constant time. Before, the check time could show how much of a guessed token was correct.
-- Bitwarden fills require an exact HTTPS origin and a current item in the shared folder. Session keys and login values are not saved by OpenBot, and short authenticator codes are redacted from logs.
+- Bitwarden fills require an exact HTTPS origin and a current item in the shared folder. Session keys and login values are not saved by ZollyBot, and short authenticator codes are redacted from logs.
 
 ## [0.30.0] - 2026-10-05
 
@@ -4431,32 +4431,32 @@ All notable changes to OpenBot will be documented here. The project follows
   Connect. Connect opens the app in Marketplace and starts its sign-in there. You can dismiss the
   card and undo.
 - When an agent needs GitHub and it is not connected, the agent shows a GitHub card in the chat.
-- The openbot.run home page shows what OpenBot does, answers common questions, and links to each comparison.
+- The openbot.run home page shows what ZollyBot does, answers common questions, and links to each comparison.
 - An official Docker image, `ghcr.io/nightly-labs/openbot`, for `linux/amd64` and `linux/arm64`. It
-  runs OpenBot as a self-hosted server with the Electron sandbox on. Sign it in with
-  `docker exec -it openbot openbot login`. See `docs/docker.md`.
+  runs ZollyBot as a self-hosted server with the Electron sandbox on. Sign it in with
+  `docker exec -it zollybot zollybot login`. See `docs/docker.md`.
 - openbot.run has a download page for each system: `/download/macos`, `/download/windows` and
   `/download/linux`. Each page gives the system requirements, the install steps and the known limits,
   and `/download` links to all three.
 - openbot.run has a download for Linux on arm64.
 - openbot.run has four new pages in /compare: Codex vs Claude Code, Claude Code vs Antigravity,
   Cursor vs Claude Code, and the best AI agent apps of 2026. Each pair page compares the two apps
-  from their official sources, and shows how OpenBot runs both as one team. The roundup lists 13
+  from their official sources, and shows how ZollyBot runs both as one team. The roundup lists 13
   apps and links each one to its comparisons. The Codex, Antigravity and roundup pages show a
   chart of scores, cost per task and time per task from the Artificial Analysis Coding Agent Index.
 - Connect 1Password in the Marketplace or in Server settings > Connectors. The page shows three
   steps: **Install** puts the 1Password CLI in place for you, with no administrator password; then
   turn on the CLI integration in the 1Password app, which the page sees when you come back; then
-  **Connect 1Password** creates a "Shared with OpenBot" vault and a service account that can read only
+  **Connect 1Password** creates a "Shared with ZollyBot" vault and a service account that can read only
   that vault. You can paste a service account token instead. Agents then sign in to sites in the
-  OpenBot browser with the logins you move into that vault. The browser fills the password or
+  ZollyBot browser with the logins you move into that vault. The browser fills the password or
   authenticator code; agents never see it.
-- Full Turkish language localization across OpenBot, covering 100% of messages including new features, connectors, Marketplace v3, schedule calendar, and all error catalogs.
+- Full Turkish language localization across ZollyBot, covering 100% of messages including new features, connectors, Marketplace v3, schedule calendar, and all error catalogs.
 - Choose the message send shortcut in Settings > General > App behavior (desktop) or
   Account > Preferences > App behavior (web): Enter to send, or ⌘Enter on macOS /
   Ctrl+Enter on Windows and Linux to send with Enter adding a new line. The choice
   stays on the device and browser. An Enter that confirms IME text never sends.
-- When a Claude or Codex account reaches its usage limit, OpenBot shows one desktop notification for
+- When a Claude or Codex account reaches its usage limit, ZollyBot shows one desktop notification for
   the account, with the number of agents that wait and the reset time when the provider gives it.
   Each agent on that account shows "Waits for limit" and the reset time in the sidebar.
 - A routine has a new setting, "If the account is at its limit", on this computer: wait and run
@@ -4483,7 +4483,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Fixed
 
-- The openbot.run home page title reads "Meet OpenBot" to search engines, and its text shows when JavaScript is off.
+- The openbot.run home page title reads "Meet ZollyBot" to search engines, and its text shows when JavaScript is off.
 - The openbot.run home page title shows sooner: it no longer waits for the page script.
 - `www.openbot.run` and `http://openbot.run` now go to `https://openbot.run`.
 - Page addresses that end in `/` now redirect permanently to the address without it.
@@ -4501,10 +4501,10 @@ All notable changes to OpenBot will be documented here. The project follows
   cannot be written, for example when the profile directory is read-only or the disk is full. The new
   name still appears in the app, and the next write of the list saves it.
 - A plugin listing with a server argument that is not text now stops the plugin catalog build. Before, the build dropped the whole argument list, so the listing shipped a server that started with no arguments.
-- The app no longer freezes when an agent declares a very long task resource list. OpenBot now
+- The app no longer freezes when an agent declares a very long task resource list. ZollyBot now
   refuses an oversized list at once, instead of resolving every path in the list first.
 - Signing out, disconnecting or quitting now ends a file download that is still waiting. Before, the
-  download waited for its full 60 s timeout and its timer kept OpenBot from closing.
+  download waited for its full 60 s timeout and its timer kept ZollyBot from closing.
 - Closing a remote connection while Signal checks its ticket no longer uses one of the account's
   remote connection slots. Before, the closed connection kept its slot, and the desktop was told
   that a phone was ready. A later device was then refused because the account was full.
@@ -4521,10 +4521,10 @@ All notable changes to OpenBot will be documented here. The project follows
   v1. That cursor held only a timestamp. The catalog order also leads with the featured flag, so the
   timestamp could not say where the last page stopped. The page now comes again and the rest of the
   catalog follows.
-- On macOS, the message that blocks an update while another OpenBot session runs now tells you when the other session runs in your own user account. Before, it always told you to stop OpenBot in every other macOS user account, even when the blocking process ran in your own account.
+- On macOS, the message that blocks an update while another ZollyBot session runs now tells you when the other session runs in your own user account. Before, it always told you to stop ZollyBot in every other macOS user account, even when the blocking process ran in your own account.
 - Open Desktop now shows why a remote desktop did not start: Sunshine did not start, Moonlight Web
   did not start, or pairing failed. Before, it showed only "request failed".
-- When Sunshine stops on the host, OpenBot ends its remote desktop sessions and starts Sunshine again
+- When Sunshine stops on the host, ZollyBot ends its remote desktop sessions and starts Sunshine again
   for the next session. Before, each new session stayed at "Connecting".
 - Open Desktop shows an error when the host does not start the stream in 60 seconds. Before, it
   stayed at "Connecting" until you closed it.
@@ -4532,28 +4532,28 @@ All notable changes to OpenBot will be documented here. The project follows
   account has several computers and devices. The account limit is now 32 Signal connections, not 8.
   A phone that reconnects after a network change no longer loses its own place to its old connection.
 - After a restart, a Claude agent chat no longer shows the context summary, "[Request interrupted by user]", or the output of a command such as `/compact` as a message from you, and no longer repeats an answer it already showed. The next restart also removes these messages from chats that already show them. An answer that was already repeated stays.
-- You can install the OpenBot website as an app from Chrome, Edge and Android. Before, the site
+- You can install the ZollyBot website as an app from Chrome, Edge and Android. Before, the site
   manifest told the browser to keep the site in a normal tab, so the browser did not offer to
   install it.
 - On a phone, the email sign-in code now fills from the keyboard suggestion or from autofill, also
   with its hyphen. Each character typed on an Android keyboard now goes into the next box. Before,
   each character replaced the first box.
 - Canva opens in the embedded browser. Before, Canva showed an "Update your browser" page and did
-  not let you edit a presentation, because its server refused the OpenBot token in the user agent.
-- Gemini agents no longer fail every turn with "Invalid value at 'tools[0].function_declarations[…]…enum[0]' (TYPE_STRING)". Two OpenBot tools sent numbers in a list of allowed values, which Gemini accepts only as text.
+  not let you edit a presentation, because its server refused the ZollyBot token in the user agent.
+- Gemini agents no longer fail every turn with "Invalid value at 'tools[0].function_declarations[…]…enum[0]' (TYPE_STRING)". Two ZollyBot tools sent numbers in a list of allowed values, which Gemini accepts only as text.
 - When you change an agent's provider, the new provider now gets the work the previous one did: the commands it ran with their results, the files it changed, and its progress notes. Before, it got only the chat messages, so it did not know much of the earlier work.
 - When you ask an agent on a connected server to create a routine, the routine now runs in your
   timezone. Before, it ran in the server's timezone, so a routine for 8:00 could run hours early or
   late. This works from the desktop app and the web client when both the app and the server are
   updated.
-- When you change an agent's provider, OpenBot now saves the earlier provider's work log at the moment of the switch. Before, if that provider stopped soon after the switch, as an unused provider does after a minute, the new provider could get the chat without the earlier work.
+- When you change an agent's provider, ZollyBot now saves the earlier provider's work log at the moment of the switch. Before, if that provider stopped soon after the switch, as an unused provider does after a minute, the new provider could get the chat without the earlier work.
 - A custom agent that serves one folder for each process, such as Command Code (`cmd acp`), lists its
   models while a bot uses it, and runs bots in more than one folder. Before, the model list failed
-  with "This cmd acp process serves ...; start another for ...", because OpenBot used one process
+  with "This cmd acp process serves ...; start another for ...", because ZollyBot used one process
   of the agent for all folders.
 - A steered message to a custom ACP agent that accepts one prompt at a time is not lost. Before, the
-  agent refused it with "A prompt is already running for this session", OpenBot showed a provider
-  error, and the message was not sent. Now OpenBot sends the message when the running reply ends.
+  agent refused it with "A prompt is already running for this session", ZollyBot showed a provider
+  error, and the message was not sent. Now ZollyBot sends the message when the running reply ends.
 - On the website, the page keeps its scroll bar and does not move when you hover over or focus
   "App" in the header. Before, the scroll bar went away, the page moved sideways and stopped
   scrolling.
@@ -4566,7 +4566,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - A chat message that cannot be shown now shows "This message could not be shown". The rest of the
   chat stays usable.
 - A message, a routine run or a local script run that reached an account at its usage limit failed
-  with "Internal error: You've hit your session limit", and OpenBot did not run it again. Now it
+  with "Internal error: You've hit your session limit", and ZollyBot did not run it again. Now it
   waits in the queue and starts after the reset. A turn that had already run a command still fails,
   so the command does not run twice.
 
@@ -4574,23 +4574,23 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- Compare OpenBot with ChatGPT dots on openbot.run/compare.
+- Compare ZollyBot with ChatGPT dots on openbot.run/compare.
 - Each comparison on openbot.run/compare has a "Where you can use it" row. It shows the countries
-  and languages of each product, and that OpenBot has no region lock.
+  and languages of each product, and that ZollyBot has no region lock.
 - A script on your computer can now run an agent's routine and give it a payload, for example to wake the agent when a long build ends. Turn on Local scripts in the agent's settings, then use Copy run command on a routine. The setting is off by default.
 - The openbot.run header menu has a Compare section, and each comparison links to the other comparisons.
-- Install OpenBot as a server on a Linux computer with no screen, such as a VPS, from a terminal:
+- Install ZollyBot as a server on a Linux computer with no screen, such as a VPS, from a terminal:
   `curl -fsSL https://raw.githubusercontent.com/nightly-labs/openbot/main/scripts/install-server.sh | sudo bash`.
-  Sign it in with `sudo openbot login`, and use it from the desktop app, the iPhone app or
-  openbot.run/app. The `openbot` command also shows the status and the log, changes the server name,
-  installs updates, and removes OpenBot with `sudo openbot uninstall`. The install also works on Debian
+  Sign it in with `sudo zollybot login`, and use it from the desktop app, the iPhone app or
+  openbot.run/app. The `zollybot` command also shows the status and the log, changes the server name,
+  installs updates, and removes ZollyBot with `sudo zollybot uninstall`. The install also works on Debian
   12, Debian 13 and Ubuntu 26.04. See docs/self-hosted-server.md.
-- OpenBot writes provider diagnostics to `logs/providers/providers.log` in its data folder: state changes, CLI checks, start times, model list results and provider errors. OpenBot removes credentials from each line, and does not write environment values, tool output or conversation text to the file.
+- ZollyBot writes provider diagnostics to `logs/providers/providers.log` in its data folder: state changes, CLI checks, start times, model list results and provider errors. ZollyBot removes credentials from each line, and does not write environment values, tool output or conversation text to the file.
 - The provider settings show the last error of each provider until the provider lists its models again, with a "Copy diagnostics" action.
 
 ### Changed
 
-- The comparisons on openbot.run/compare include Cursor CLI and hosted OpenBot servers in the EU,
+- The comparisons on openbot.run/compare include Cursor CLI and hosted ZollyBot servers in the EU,
   Claude Cowork's move to cloud-only tasks on 6 October 2026, and Manus 2.0.
 - News, guide and comparison pages on openbot.run load faster: their artwork is WebP and about 3% of its old size.
 - Search results show fuller descriptions of the plugin pages and shorter descriptions of the comparison pages on openbot.run.
@@ -4601,23 +4601,23 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - Your agents can answer in Slack. Open **Server settings → Connectors → Slack**, select **Connect
-  Slack** one time and install OpenBot in your workspace. People mention @OpenBot in a channel or
-  send it a direct message. OpenBot joins every public channel by itself; a private channel needs
-  `/invite @OpenBot`. The connect dialog also
+  Slack** one time and install ZollyBot in your workspace. People mention @ZollyBot in a channel or
+  send it a direct message. ZollyBot joins every public channel by itself; a private channel needs
+  `/invite @ZollyBot`. The connect dialog also
   adds the Slack Orchestrator, an agent on the model you pick, in a collapsed **Integrations** section of
   the sidebar: it receives each request, gives the
   work to the agent that fits best, and posts the answer in the thread. The answer comes in the same thread, can include
   files, and asks the person who wrote for approval with buttons. Reply `stop` to stop a request.
-  Slack's events reach this computer through OpenBot's Signal service, which checks them and passes
-  them on without storing them, so this needs an OpenBot account and a name for this computer. A
+  Slack's events reach this computer through ZollyBot's Signal service, which checks them and passes
+  them on without storing them, so this needs an ZollyBot account and a name for this computer. A
   hosted server stays awake while Slack is connected.
 - Brazilian Portuguese for the desktop app and web client. Select Português (Brasil) in Settings, or use your system language.
 - More of the desktop app and the web client is in Turkish, including server settings, providers, marketplace, routines, usage and remote desktop.
 - Cline is a provider. Its free models have a limit for each model, and the provider of a free model can use your prompts to train models. Select Download on the Cline row in More providers, then sign in with your Cline account in the browser, or set `CLINE_API_KEY`. Cline agents stay on this computer: team members do not see them.
-- You can run your own account service, Signal and TURN for remote access. Start the app with `OPENBOT_AUTH_API_URL` and `OPENBOT_REMOTE_SIGNAL_URL`. Invitations for your service are `openbot://join` links. See [Self-hosted remote access](https://github.com/nightly-labs/openbot/blob/main/docs/self-hosting.md). ([#1263](https://github.com/nightly-labs/openbot/issues/1263))
+- You can run your own account service, Signal and TURN for remote access. Start the app with `ZOLLYBOT_AUTH_API_URL` and `ZOLLYBOT_REMOTE_SIGNAL_URL`. Invitations for your service are `zollybot://join` links. See [Self-hosted remote access](https://github.com/nightly-labs/openbot/blob/main/docs/self-hosting.md). ([#1263](https://github.com/nightly-labs/openbot/issues/1263))
 - A Schedule view shows the routines of all agents and channels on a server in a day or week calendar, with past results and planned runs. Open it from the server menu or the command palette.
-- Restart a provider from its menu in Settings, and restart all custom agents from the Custom agents section. OpenBot waits until no agent of that provider works, then starts the provider again and reads its version, sign-in state and models again. Agents of other providers continue to work, and messages sent during the wait run after the restart.
-- Restart OpenBot when no agent works, from Settings > Updates. New routine runs wait until the restart and run after it. When an update is downloaded, the same action installs it.
+- Restart a provider from its menu in Settings, and restart all custom agents from the Custom agents section. ZollyBot waits until no agent of that provider works, then starts the provider again and reads its version, sign-in state and models again. Agents of other providers continue to work, and messages sent during the wait run after the restart.
+- Restart ZollyBot when no agent works, from Settings > Updates. New routine runs wait until the restart and run after it. When an update is downloaded, the same action installs it.
 - Add sound feedback. When you turn it on, short sounds play across the app: for buttons, switches,
   tabs and menu choices, for dialogs and menus that open and close, for moves between agents,
   channels and servers, and for typing. Other sounds tell you that an action worked or failed,
@@ -4645,7 +4645,7 @@ All notable changes to OpenBot will be documented here. The project follows
   On a built-in display with no notch, the smallest idle island is now 84px, with a 16px gap between
   the logo and the greeting. It was 120px. The same percent can give a different width than before.
   Beside a physical notch, the width does not change.
-- The notice about different OpenBot versions on a server now says which side to update: OpenBot on the server, or this app. It offers the host update only when the server is the older side.
+- The notice about different ZollyBot versions on a server now says which side to update: ZollyBot on the server, or this app. It offers the host update only when the server is the older side.
 - A hosted server now stops about 15 to 30 minutes after your last message, change or typing, also
   when an app is open. Before, an open app that nobody used kept the server running for 1 hour or
   more. While the server is asleep, you can still look at it: a moon beside the server name shows that
@@ -4654,7 +4654,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Fixed
 
 - A custom ACP agent that is slow to start now shows its models. Model discovery waited only 5 seconds for it. ([#1230](https://github.com/nightly-labs/openbot/issues/1230))
-- The **Open OpenBot** button on the page that Slack returns to after you install OpenBot is now in the
+- The **Open ZollyBot** button on the page that Slack returns to after you install ZollyBot is now in the
   middle of the card.
 - A link to a file that an agent edited now opens the file. Before, a link to a file outside the agent's workspace, a link with a line number such as `page.tsx:12`, a `~/` path or a `file://` link showed "not found" or an error. A file outside the workspace opens only for an agent with Full access, and "Open file externally" shows it in the file manager. ([#1240](https://github.com/nightly-labs/openbot/issues/1240))
 - A link to a file that was moved or deleted now says so. Before, it told you to ask the agent to create the file.
@@ -4670,16 +4670,16 @@ All notable changes to OpenBot will be documented here. The project follows
   higher one larger corners. On an external display the island stays a capsule at every height. At
   100% height nothing changes.
 - With the Cursor provider connected, the model picker showed no models for any provider. Now the
-  Cursor models load and you can select them. A model with an id that OpenBot cannot use no longer
+  Cursor models load and you can select them. A model with an id that ZollyBot cannot use no longer
   removes the models of all providers.
-- When a custom ACP agent is slow to list its models, OpenBot now closes the session that it opened
-  to read the list. Before, each slow model list kept one idle agent process open until OpenBot quit.
-- When OpenBot stops an ACP agent (because it is idle, to restart it, or at quit), the errors that
-  the agent writes while it stops go to the log. Before, OpenBot showed each of them as a "Provider
-  error" message. When an agent stops on its own, OpenBot still shows its errors.
-- A provider CLI download no longer fails with "another instance is replacing it" when no other OpenBot runs. When another program holds the new files open, OpenBot now waits for a moment, and then tells you to close that program. ([#1264](https://github.com/nightly-labs/openbot/issues/1264))
+- When a custom ACP agent is slow to list its models, ZollyBot now closes the session that it opened
+  to read the list. Before, each slow model list kept one idle agent process open until ZollyBot quit.
+- When ZollyBot stops an ACP agent (because it is idle, to restart it, or at quit), the errors that
+  the agent writes while it stops go to the log. Before, ZollyBot showed each of them as a "Provider
+  error" message. When an agent stops on its own, ZollyBot still shows its errors.
+- A provider CLI download no longer fails with "another instance is replacing it" when no other ZollyBot runs. When another program holds the new files open, ZollyBot now waits for a moment, and then tells you to close that program. ([#1264](https://github.com/nightly-labs/openbot/issues/1264))
 - A failed update notification now closes when the CLI is updated later. Retry on a provider row now removes the old error text, and the custom provider row no longer shows a second Retry next to Add. ([#1264](https://github.com/nightly-labs/openbot/issues/1264))
-- On a busy computer, a provider CLI that answers slowly no longer shows as broken. OpenBot now waits 10 seconds for its version, says that it did not answer in time, keeps the last known version, and tries again by itself. ([#1258](https://github.com/nightly-labs/openbot/issues/1258))
+- On a busy computer, a provider CLI that answers slowly no longer shows as broken. ZollyBot now waits 10 seconds for its version, says that it did not answer in time, keeps the last known version, and tries again by itself. ([#1258](https://github.com/nightly-labs/openbot/issues/1258))
 - A provider refresh no longer marks a connected provider as failed while its models stay in the model list. ([#1258](https://github.com/nightly-labs/openbot/issues/1258))
 - A desktop chat no longer shows an empty bubble when an agent ends its turn without an answer, for
   example after it reads a teammate update that needs no reply. The phone app and channels already
@@ -4688,25 +4688,25 @@ All notable changes to OpenBot will be documented here. The project follows
 - On Windows, an agent that starts from a `.cmd` or `.bat` file now gets each argument as written.
   Before, the command processor split or changed an argument with a space, a quote, `&` or `%`.
 - An agent request that failed no longer shows an `Error handling request {` toast, and the lines under it no longer show as more toasts. The failure shows in the chat with the reason that the agent gave, and the full text goes to the log.
-- Gemini no longer fails with "Download failed" when its first start after the download is slow. OpenBot now waits up to 3 minutes for a CLI that it just installed to start, and onboarding shows why a download or that first start failed.
+- Gemini no longer fails with "Download failed" when its first start after the download is slow. ZollyBot now waits up to 3 minutes for a CLI that it just installed to start, and onboarding shows why a download or that first start failed.
 - When more than one provider updated at the same time, the update notifications jumped and
   overlapped. Now they stay in place while the downloads continue.
-- On Windows, a provider CLI install (for example OpenCode or Gemini) no longer fails with "another program has its files open" while Windows Defender scans the new files. OpenBot now waits up to 60 seconds for the scan to end.
+- On Windows, a provider CLI install (for example OpenCode or Gemini) no longer fails with "another program has its files open" while Windows Defender scans the new files. ZollyBot now waits up to 60 seconds for the scan to end.
 - A custom agent kept its saved model after a restart. Before, a custom agent that started slowly could move its agents to its default model.
 - The Usage panel shows the remaining Grok usage. Before, a Grok account with no use in the current period showed a dash in place of a percentage.
 - A provider row in the Usage panel shows "Loading…" while usage loads, and "Unavailable" with "No limit reported" when the provider reports no limit. Before, both showed a dash.
 - A Claude Code agent no longer shows a `<task-notification>` block as a message from you after
-  OpenBot restarts. These blocks are notices about background tasks. Notices that earlier versions
-  added are removed the next time OpenBot starts.
+  ZollyBot restarts. These blocks are notices about background tasks. Notices that earlier versions
+  added are removed the next time ZollyBot starts.
 
 ## [0.27.0] - 2026-10-01
 
 ### Added
 
 - Turkish (`tr`) language support across desktop, web, and shared packages.
-- Cursor is a provider. Select Download on the Cursor row in More providers, then sign in with your Cursor account in the browser, or set `CURSOR_API_KEY`. OpenBot uses a `cursor-agent` that you installed yourself until a download exists. Cursor agents stay on this computer: team members do not see them.
+- Cursor is a provider. Select Download on the Cursor row in More providers, then sign in with your Cursor account in the browser, or set `CURSOR_API_KEY`. ZollyBot uses a `cursor-agent` that you installed yourself until a download exists. Cursor agents stay on this computer: team members do not see them.
 - Settings → General → Appearance has a Logo color setting with 10 colors. The chosen color shows on
-  the Dock or taskbar icon, on the Dynamic Island and on the logos in the app. When OpenBot is
+  the Dock or taskbar icon, on the Dynamic Island and on the logos in the app. When ZollyBot is
   closed, the Dock shows the lavender icon, because macOS has no alternate app icon for desktop apps.
   A dev or preview build keeps the color of its build.
 - Global search (⌘K) finds channels, files, routines, commands and settings pages. New filters show Channels, Files and Routines. Select a file to show the message that has it. Select a routine to open its settings. Commands such as New agent and New channel, and each settings page, show in All when the query matches. Files come only from this computer, so a joined server and the web client do not show the Files filter.
@@ -4764,7 +4764,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Added
 
 - In an agent chat on a team, each message from another person stands on the right, with your messages, and shows their name. Their bubble has their own color, so it does not look like yours. Agent messages look the same as before. Messages sent before this update show as yours.
-- A hosted server updates itself. It downloads a new OpenBot release in the background and starts it at its next start, so an open session does not stop.
+- A hosted server updates itself. It downloads a new ZollyBot release in the background and starts it at its next start, so an open session does not stop.
   A server that was set up before this release has no updater, so it stays on its current version.
   **Upgrade such a server one time by hand, as `docs/hosted-servers.md` says.** The data in its home
   folder and in `/srv` stays.
@@ -4787,20 +4787,20 @@ All notable changes to OpenBot will be documented here. The project follows
 - With OpenCode, a Computer Use window read adds much less text to the conversation, so long
   Computer Use sessions stay faster and compact less often. Before, each read of a large window
   added a list of element tokens about three quarters of the size of the window tree.
-- The Computer Use driver stops when OpenBot stops, also after a crash or an out-of-memory kill. Before, the driver kept running and used memory until you logged out. At the next start, OpenBot also stops the driver that the last crashed run left running.
-- OpenBot uses less memory in long sessions. It no longer keeps a second copy of each conversation, and it releases the data of each finished turn.
+- The Computer Use driver stops when ZollyBot stops, also after a crash or an out-of-memory kill. Before, the driver kept running and used memory until you logged out. At the next start, ZollyBot also stops the driver that the last crashed run left running.
+- ZollyBot uses less memory in long sessions. It no longer keeps a second copy of each conversation, and it releases the data of each finished turn.
 - The picture-in-picture browser controls release their memory when the system closes the window.
 - Antigravity and custom ACP agents stay stopped when they are idle. Before, the usage display started them again every five minutes, and a custom agent router then started the process of each custom agent.
-- On a new hosted server, OpenBot keeps running when the server is out of memory. Before, the system could stop OpenBot, or stop all of OpenBot when one agent process used too much memory. Now an agent process stops first.
-- The Dynamic Island shows new messages again when you have more than 10,000 unread replies. Before, it stopped updating, and OpenBot logged an error each time the island changed.
+- On a new hosted server, ZollyBot keeps running when the server is out of memory. Before, the system could stop ZollyBot, or stop all of ZollyBot when one agent process used too much memory. Now an agent process stops first.
+- The Dynamic Island shows new messages again when you have more than 10,000 unread replies. Before, it stopped updating, and ZollyBot logged an error each time the island changed.
 - Each Dynamic Island window uses about half the memory. Before, each window loaded the full app. There is one window for each display.
-- OpenBot keeps at most 16 chats in memory that you only read. Before, each chat that you marked read stayed in memory until you quit, about 1 MB for a long chat.
-- On a hosted server that is out of memory, the kernel now stops an agent process before the processes that OpenBot uses to open browser tabs.
+- ZollyBot keeps at most 16 chats in memory that you only read. Before, each chat that you marked read stayed in memory until you quit, about 1 MB for a long chat.
+- On a hosted server that is out of memory, the kernel now stops an agent process before the processes that ZollyBot uses to open browser tabs.
 - Sending a message, or a change to a queued message, no longer writes all message history to the
   database again. Before, each change wrote every message and delivery, so on a server that ran for
   weeks each change became slower and used more disk.
-- OpenBot stops Codex, OpenCode, Grok or a custom agent when it sends one message larger than 128 MB, and shows the reason. Before, OpenBot kept all of the message in memory with no limit, and the system could stop OpenBot on a hosted server.
-- OpenBot uses less memory when it runs for a long time with many agents. When an agent chat is not used for 10 minutes, OpenBot removes its copy from memory and reads it again from the database when you or the agent use the chat. The chat does not change.
+- ZollyBot stops Codex, OpenCode, Grok or a custom agent when it sends one message larger than 128 MB, and shows the reason. Before, ZollyBot kept all of the message in memory with no limit, and the system could stop ZollyBot on a hosted server.
+- ZollyBot uses less memory when it runs for a long time with many agents. When an agent chat is not used for 10 minutes, ZollyBot removes its copy from memory and reads it again from the database when you or the agent use the chat. The chat does not change.
 - A hosted server uses much less memory when a teammate or a remote device downloads or uploads a file. Before, one 100 MB file could use about 200 MB of memory for the full transfer. Now the server sends and receives files from disk. A server receives two attachment uploads at the same time. Other uploads wait for their turn; they do not fail.
 - With Codex (GPT models), an agent now gets the tools of an MCP server whose name has a space or
   another character that is not a letter, a digit, `_` or `-`, such as "Home Assistant". Before, the
@@ -4811,8 +4811,8 @@ All notable changes to OpenBot will be documented here. The project follows
   left the memory in place.
 - When the live view of a remote host's page ends or fails, the panel now shows the message in the
   language you selected. Before, it always showed the message in English.
-- With automatic downloads on, one restart now installs the newest OpenBot version. Before, OpenBot stopped checking for updates
-  after a download finished. If a newer version shipped before the restart, OpenBot installed the
+- With automatic downloads on, one restart now installs the newest ZollyBot version. Before, ZollyBot stopped checking for updates
+  after a download finished. If a newer version shipped before the restart, ZollyBot installed the
   older download and offered one more update after the restart.
 
 ## [0.25.2] - 2026-09-29
@@ -4823,31 +4823,31 @@ All notable changes to OpenBot will be documented here. The project follows
   Open **Server settings → Import** on a joined server in the desktop app or the browser client. The
   export must be a .zip under 100 MB. When the server already has a skill of the export, the agent of a
   member uses that skill and the import says so.
-- The host keeps the Lock Screen activity of a joined iPhone current while iOS stops the OpenBot app
-  in the background. It encrypts each update for that phone before it goes through the OpenBot
+- The host keeps the Lock Screen activity of a joined iPhone current while iOS stops the ZollyBot app
+  in the background. It encrypts each update for that phone before it goes through the ZollyBot
   account service and Apple, so neither can read it. The host keeps the phone's push token in memory
   only, for the session that gave it.
 - Enter a promotion code on the payment page when you start a plan for a hosted server.
 - Connect an AI provider before you make the first agent on a server that you own or manage. Before,
   a new server opened on the agent form with no provider connected.
 - Sign a server in to Claude and Grok from your own device, when the server has no browser that you
-  can see, such as a hosted server. Claude shows a code on its page that you paste into OpenBot.
+  can see, such as a hosted server. Claude shows a code on its page that you paste into ZollyBot.
 - Connect GitHub in Server settings > Connectors. Every agent on this computer then gets the GitHub
-  tools, and `gh` and `git` sign in as you, in the repositories where you install the OpenBot GitHub
+  tools, and `gh` and `git` sign in as you, in the repositories where you install the ZollyBot GitHub
   App. The panel lists these repositories. You do not need a personal access token.
 - In the repositories where you can push, GitHub shows the issues, pull requests and comments that
-  an agent makes with the GitHub tools as `openbotgit[bot]`, not as you. OpenBot gets short-lived tokens for this from
-  the OpenBot account service, which keeps no token. `gh` still acts as you.
+  an agent makes with the GitHub tools as `zollybotgit[bot]`, not as you. ZollyBot gets short-lived tokens for this from
+  the ZollyBot account service, which keeps no token. `gh` still acts as you.
 - Use remote desktop on a Linux x64 host in an X11 session, including a hosted server. Wayland is not supported.
 - On a hosted server, remote desktop shows the full server desktop with its window manager, so a click moves between windows.
 
 ### Changed
 
-- In a dev or preview build, the OpenBot logo on the Dynamic Island has the color of that build, as
-  the Dock icon does. Two OpenBot apps that are open at the same time are easier to tell apart.
-- Show a new loading screen in the browser app: a small crew of agents hops while OpenBot loads,
+- In a dev or preview build, the ZollyBot logo on the Dynamic Island has the color of that build, as
+  the Dock icon does. Two ZollyBot apps that are open at the same time are easier to tell apart.
+- Show a new loading screen in the browser app: a small crew of agents hops while ZollyBot loads,
   and jumps out when it is ready.
-- Show the OpenBot logo while the desktop app starts, and fade it out when the app is ready.
+- Show the ZollyBot logo while the desktop app starts, and fade it out when the app is ready.
 - Show how long the agent's activity line has stayed the same when it stays for more than 5 seconds,
   so a slow step no longer looks like a stopped agent.
 - Show "Using an app on this computer…" while a Computer Use action runs, and "Deciding the next
@@ -4863,7 +4863,7 @@ All notable changes to OpenBot will be documented here. The project follows
   orange or bright green, and the app icon was gold or soft green.
 - A Grok agent answers again after you sign in to Grok with a different account or change the xAI
   API key. Before, each message in an earlier chat failed with "reasoning `encrypted_content` was
-  not issued to this caller". Now OpenBot starts a new Grok session that keeps the chat history, and
+  not issued to this caller". Now ZollyBot starts a new Grok session that keeps the chat history, and
   sends your message again.
 - On Windows at a display scale other than 100%, the Computer Use border goes around the full
   window. Before, only the top and left edges were on the screen.
@@ -4893,7 +4893,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- Update OpenBot on a joined server from Server settings > Updates. Owners and admins can check for
+- Update ZollyBot on a joined server from Server settings > Updates. Owners and admins can check for
   an update, download it, and restart the host when its agents are idle, or restart it at once.
   The version notice for a server has an "Update host" button.
 - Turn off updates from server admins in Settings > Updates on the computer that runs the server.
@@ -4902,7 +4902,7 @@ All notable changes to OpenBot will be documented here. The project follows
   settings > Updates.
 - A notice shows the download percentage while a server updates, and tells admins when a server
   has a new version.
-- All members of a server see a notice before and while it restarts into an update. OpenBot
+- All members of a server see a notice before and while it restarts into an update. ZollyBot
   connects again when the server is back.
 - Chat messages show LaTeX math as typeset formulas. Write inline math as `$...$` or `\(...\)`, and
   display math as `$$...$$`, `\[...\]` or a `math` code block. A formula that does not parse shows
@@ -4918,19 +4918,19 @@ All notable changes to OpenBot will be documented here. The project follows
   and does not have focus.
 - Mute a server and set its notification level in the web app, from the server menu or Server
   settings. This browser keeps the choice.
-- Explain how to use the OpenBot Marketplace to install agents, plugins, and skills, and submit an agent for review.
+- Explain how to use the ZollyBot Marketplace to install agents, plugins, and skills, and submit an agent for review.
 - Add "New agent" and "Mark all as read" to the sidebar menu that opens when you right-click an empty
   part of the sidebar, on the desktop app and in the browser client. "Mark all as read" marks all
   agent chats and channels as read.
 - Add a hosted server with the plus button in the server rail. Choose a plan and pay on the Stripe
-  page. OpenBot sets up the server when Stripe confirms the payment, and connects to it. Each hosted
+  page. ZollyBot sets up the server when Stripe confirms the payment, and connects to it. Each hosted
   server is a Linux machine.
 - Manage the plans of your servers. Desktop Settings has a Billing tab, and the web app has Billing in
   the account menu. It shows the plan, the storage, the price and the renewal date of each server
   that your account pays for, and a warning when a payment failed.
 - Each server has a menu to change or cancel its plan, or to renew a plan that ends. Payment method
   and invoices opens the Stripe Customer Portal. You enter card details on the Stripe page, not in
-  OpenBot.
+  ZollyBot.
 - The plan of a server sets its member limit: Starter 3, Standard 10 and Pro 25 active members,
   owner included. A server with no plan keeps 3. When a plan goes down or ends, no member is
   removed, but no new member can join until there is a free seat.
@@ -4941,7 +4941,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Changed
 
 - Product analytics records which tools, catalog plugins, websites and routines the agents use, so we
-  can learn which tasks OpenBot is used for. A website is sent only as its registrable domain, such
+  can learn which tasks ZollyBot is used for. A website is sent only as its registrable domain, such
   as `linkedin.com`, never as a URL, path or page title. IP addresses and names with no public
   suffix, such as `.local` hosts, are not sent. The name, address and command of a server that you
   added are not sent. Once a day, the app also sends counts of your agents, routines, skills and
@@ -4972,12 +4972,12 @@ All notable changes to OpenBot will be documented here. The project follows
   position came from the screen layout, so it could point at a different row. The arrows of
   "Try it free" and "Not in the list?" now point at the middle of their targets on both setup
   screens.
-- Install updates on Linux again. Before, OpenBot always refused the install with "Another OpenBot
+- Install updates on Linux again. Before, ZollyBot always refused the install with "Another ZollyBot
   session is still running from this application", also when only one session was open.
 - OpenCode agents no longer stop with "Internal error: OpenCode service failure" after a reconnect
-  or a restart. OpenCode sends this error when it cannot find a stored session. OpenBot now reads
-  OpenCode's session list. If the list does not hold the session, OpenBot starts a new OpenCode
-  session with the conversation history. In all other cases OpenBot keeps the session, tries one
+  or a restart. OpenCode sends this error when it cannot find a stored session. ZollyBot now reads
+  OpenCode's session list. If the list does not hold the session, ZollyBot starts a new OpenCode
+  session with the conversation history. In all other cases ZollyBot keeps the session, tries one
   more time, and then tells you to try again or reconnect OpenCode.
 - Start the server list at the top of the web app. Before, the web app kept the empty space that
   the desktop app keeps for the window controls.
@@ -4999,7 +4999,7 @@ All notable changes to OpenBot will be documented here. The project follows
   or change MCP servers. A new agent gets the access limits of the agent that creates it.
 - Ask an agent to change the provider, model or reasoning effort of another agent, as it can
   change a name. The agent gets an error that names the available models when a model is not
-  available. OpenBot records which agent made the change, and the previous and new model.
+  available. ZollyBot records which agent made the change, and the previous and new model.
 - Find local model servers, such as Ollama and LM Studio, and known ACP agents on your computer.
   Settings shows them under "Found on this computer", where you can add or hide each one. First run
   shows the same list. The scan sends no key and does not start a program that it finds. You can
@@ -5009,7 +5009,7 @@ All notable changes to OpenBot will be documented here. The project follows
   are stored encrypted on your computer.
 - Edit a saved custom endpoint. An empty key field keeps the saved key. "Find again" loads the
   model list from the server.
-- Leave a joined server from its Server settings. OpenBot asks you to confirm, then removes the
+- Leave a joined server from its Server settings. ZollyBot asks you to confirm, then removes the
   server from your server list. The server and its other members stay. To join again, you need a
   new invitation.
 - The iPhone app is in public beta on TestFlight. A card at the bottom of the sidebar shows the
@@ -5019,10 +5019,10 @@ All notable changes to OpenBot will be documented here. The project follows
   Install Paper Desktop, open it once, and open a file. Paper needs no key. The command of a local
   MCP server can now start with `~/`, which is your home folder.
 - Search is available on mobile. It finds agents and the messages in their chats on the connected computer.
-- Resize the sidebar in OpenBot web, and drag it narrow to make it compact. A narrow browser window
+- Resize the sidebar in ZollyBot web, and drag it narrow to make it compact. A narrow browser window
   makes the sidebar compact by itself, as in the desktop app.
-- Open the usage report of a host from its menu in the OpenBot web server rail.
-- Press Cmd+K or Ctrl+K in OpenBot web to search all conversations on the host.
+- Open the usage report of a host from its menu in the ZollyBot web server rail.
+- Press Cmd+K or Ctrl+K in ZollyBot web to search all conversations on the host.
 - The "Waiting for replies" block now has a close button when every teammate has replied or failed. Before, a failed request kept the block above the message box until you sent a new message.
 - Open the server menu from the server name in the web client. The menu switches and adds servers,
   opens server settings and the marketplace, and sets the rail or menu layout, as in the desktop app.
@@ -5031,12 +5031,12 @@ All notable changes to OpenBot will be documented here. The project follows
   **Profile** from the account menu; it opens in the right panel of the agent on screen.
 - The web account menu now has usage, Settings (the host's settings), Marketplace, Send feedback, and
   Message, as in the desktop app. Before, it had only Sign out.
-- Open an invitation link in OpenBot web. The invitation page has an Open in browser button, and the
+- Open an invitation link in ZollyBot web. The invitation page has an Open in browser button, and the
   web client opens the join dialog with the link filled in.
-- Open a plugin listing in OpenBot web. The plugin page has an Open in browser button, and the web
+- Open a plugin listing in ZollyBot web. The plugin page has an Open in browser button, and the web
   client opens the marketplace on that listing.
 - "New chat" in the agent settings starts a new chat with the agent. The agent forgets the earlier chat. The earlier messages stay visible above a divider. The instructions, model, tools, memories, workspace, and browser do not change. It is available on desktop and in the web client, also for an agent on a joined server that is on this version or later.
-- OpenBot now has a macOS build for Intel Macs: download `OpenBot-<version>-x64.dmg` from the release. It includes the provider runtimes, Computer Use, voice input and remote desktop hosting. Intel Macs get updates for the Intel build, and Apple silicon Macs continue to get the ARM64 build. The Host package (PKG) is still for Apple silicon only.
+- ZollyBot now has a macOS build for Intel Macs: download `ZollyBot-<version>-x64.dmg` from the release. It includes the provider runtimes, Computer Use, voice input and remote desktop hosting. Intel Macs get updates for the Intel build, and Apple silicon Macs continue to get the ARM64 build. The Host package (PKG) is still for Apple silicon only.
 - The web client sidebar has channels, as in the desktop app. You can create, edit and delete a
   channel, open deleted channels, and use channel memories and routines. The "+" menu and the
   sidebar context menu have New channel.
@@ -5068,8 +5068,8 @@ All notable changes to OpenBot will be documented here. The project follows
 - The web model picker shows the host's download progress, the Download and Cancel buttons, and
   the host's custom endpoints on the Custom tab, for an owner or admin.
   Your draft stays when you reconnect.
-- Show the OpenBot logo and an animated loading bar on the sign-in background while the web app
-  loads. Before, the page showed only the text "Loading OpenBot…".
+- Show the ZollyBot logo and an animated loading bar on the sign-in background while the web app
+  loads. Before, the page showed only the text "Loading ZollyBot…".
 - Ask before an import adds an agent whose name is already on the server, for example when you
   import the same export again. The dialog names the agents and says that each copy is a separate
   agent. Before, only an info icon next to the name showed this.
@@ -5082,7 +5082,7 @@ All notable changes to OpenBot will be documented here. The project follows
   browser instead of stopping. When a teammate helps, the answer starts with its name. When nothing
   works, the agent says what it tried and what you can do to unblock it, such as installing a plugin.
 - You can make the Dynamic Island as narrow as 20% of its default width. Before, the smallest width was 70%.
-- The OpenBot logo and the greeting in the idle Dynamic Island keep a 16px inset from the edges. Only
+- The ZollyBot logo and the greeting in the idle Dynamic Island keep a 16px inset from the edges. Only
   the space between them changes with the width.
 - The web client now opens the first-agent form when a computer has no agents, with the same text
   as the desktop app and no Cancel button. The model of a new agent is the same default that the
@@ -5128,16 +5128,16 @@ All notable changes to OpenBot will be documented here. The project follows
   `name (2).ext`, and shows a warning. A file that it cannot write is skipped with a warning. Before,
   the agent was not imported.
 - Connect the Figma plugin to the MCP server in the Figma desktop app on your computer. Before, the
-  connect step always failed, because Figma does not accept a browser sign-in from OpenBot. The
+  connect step always failed, because Figma does not accept a browser sign-in from ZollyBot. The
   connect dialog shows the steps that turn on the server in Figma. The server can only read designs
   for now.
 - If you installed the Figma plugin before this version, Plugins shows it as not installed.
   **Remove the old `figma` server from the MCP servers of the agent, then install Figma again from
   Plugins.**
-- On Linux, the window no longer closes a short time after it opens on some GPU drivers. OpenBot now uses software rendering on Linux.
+- On Linux, the window no longer closes a short time after it opens on some GPU drivers. ZollyBot now uses software rendering on Linux.
 - A finished agent reply no longer shows the text of another message after the chat scrolls or loads more messages.
 - Phones and other devices connect to your computer again when its network comes back. Before, the
-  computer stayed offline for them after Wi‑Fi was off, until you restarted OpenBot.
+  computer stayed offline for them after Wi‑Fi was off, until you restarted ZollyBot.
 - Show an error and a Retry button on the web sign-in screen when the session check fails. Before,
   the screen showed the email form with no error.
 - Stop the web sign-out from staying on "Signing out…" when sign-out fails. The account menu now
@@ -5149,9 +5149,9 @@ All notable changes to OpenBot will be documented here. The project follows
 - Mobile chat previews and search results show message text without Markdown marks such as `**`.
 - A tap anywhere on the mobile search field opens the keyboard. Before, a tap near the edge did nothing.
 - A chat opened from mobile search closes with the same zoom into its row as a chat opened from the list.
-- Show the full compatibility screen in OpenBot web when a host cannot talk to this version. Before,
+- Show the full compatibility screen in ZollyBot web when a host cannot talk to this version. Before,
   the web showed "Your computer is disconnected".
-- Keep the server rail of OpenBot web as wide as in the desktop app. Before, it was 8 px narrower, so
+- Keep the server rail of ZollyBot web as wide as in the desktop app. Before, it was 8 px narrower, so
   the sidebar and the chat moved.
 - Keep the message that you pick in global search on screen. Before, a conversation that loaded at
   the same time could scroll to the latest message.
@@ -5172,7 +5172,7 @@ All notable changes to OpenBot will be documented here. The project follows
 - On a MacBook with no notch, the Dynamic Island gets narrower when you make its width smaller. Before,
   it kept an empty space for a notch that was not there, and the width setting had almost no effect.
 - A narrow Dynamic Island no longer cuts off the greeting at its right edge.
-- Pause the browser view in OpenBot web while the marketplace or a notification covers it, as the
+- Pause the browser view in ZollyBot web while the marketplace or a notification covers it, as the
   desktop app does.
 - The web client now shows the queued messages of an agent. You can steer, cancel, reorder, and edit them, as on desktop. The "Waiting for replies" count on the web now agrees with desktop.
 - Keep the server order that you drag in the web client's server rail. Before, the rail said the
@@ -5188,13 +5188,13 @@ All notable changes to OpenBot will be documented here. The project follows
   the viewport first, and the snapshot says when it left text or elements out. Each snapshot also
   shows fewer and shorter console and action entries. Before, each browser action could add up to
   1 MB of page text and log entries to the agent's context.
-- On Linux and macOS, OpenBot finds a provider CLI that you installed yourself, such as OpenCode under
+- On Linux and macOS, ZollyBot finds a provider CLI that you installed yourself, such as OpenCode under
   nvm, when your shell profile prints text at start. Before, a greeting or a tool such as `fastfetch`
-  in `.bashrc` or `.zshrc` made OpenBot show the provider as not downloaded. MCP server commands had
+  in `.bashrc` or `.zshrc` made ZollyBot show the provider as not downloaded. MCP server commands had
   the same fault.
 - The web client now sets the page language to the language of its text. Before, the page always
   said English, and a screen reader could read other languages with an English voice.
-- While the web client loads, it shows the OpenBot loading screen from the first frame. Before, the
+- While the web client loads, it shows the ZollyBot loading screen from the first frame. Before, the
   first frame was an empty page.
 - The web client no longer uses the smooth scroll and the minimum page width of the site pages.
 - A left-click now closes a sidebar context menu. Before, the menu stayed open when you clicked the
@@ -5245,7 +5245,7 @@ All notable changes to OpenBot will be documented here. The project follows
   download the image.
 - Read the changelog on openbot.run/changelog. It shows the changes of each release, and the steps
   to do after an upgrade. The Releases link in the footer now opens this page.
-- Compare OpenBot with Grok Bot, Muse, Hermes Agent, OpenClaw, Manus, Claude Cowork and Devin on
+- Compare ZollyBot with Grok Bot, Muse, Hermes Agent, OpenClaw, Manus, Claude Cowork and Devin on
   openbot.run/compare. The Grok Bot article moved from News to this section. The old link opens the
   new page.
 - Open News, Guides and Plugins on openbot.run from a navigation menu that shows the latest
@@ -5306,7 +5306,7 @@ All notable changes to OpenBot will be documented here. The project follows
 
 ### Added
 
-- Use Gemini with a Google AI Pro or Ultra plan. OpenBot downloads Google's Antigravity server to
+- Use Gemini with a Google AI Pro or Ultra plan. ZollyBot downloads Google's Antigravity server to
   this computer and signs in through your browser. Members of a joined server do not see Gemini
   agents.
 - Select More providers on the onboarding screen to add Gemini or a custom provider.
@@ -5320,7 +5320,7 @@ All notable changes to OpenBot will be documented here. The project follows
   from the web client or from a joined desktop.
 - Show the OpenCode Go quota in Usage when you save a Go key.
 - Show the servers in a menu instead of the server rail. Select the layout in the server name menu.
-  OpenBot keeps the layout for each device.
+  ZollyBot keeps the layout for each device.
 - Select the interface language on mobile.
 
 ### Changed
@@ -5331,7 +5331,7 @@ All notable changes to OpenBot will be documented here. The project follows
   Agents with Full access, which is the default, do not change.**
 - Show more of the interface in French and Japanese.
 - Install the latest provider CLI on a first download. If the release check is slow or fails,
-  OpenBot installs the pinned version.
+  ZollyBot installs the pinned version.
 - Fade streamed text as a trail, and keep the fade across Markdown blocks.
 - Show the server rail and the top row on one surface.
 - Hide saved secret values in all logs, and write a local trace line when the main process fails.
@@ -5339,7 +5339,7 @@ All notable changes to OpenBot will be documented here. The project follows
 ### Fixed
 
 - End the turns of a provider client that stopped. Before, these turns stayed in progress until
-  OpenBot restarted.
+  ZollyBot restarted.
 - Keep queued messages when a file delete fails.
 - Show a request timeout from any provider as a timeout.
 - Sign out and revoke sessions correctly while remote sessions are open. Before, this failed with
@@ -5365,7 +5365,7 @@ contains all changes of 0.21.1.
 ### Changed
 
 - Retry an offline remote host every 5 minutes while the app has focus, and every 15 minutes without
-  focus. Before, OpenBot retried every minute.
+  focus. Before, ZollyBot retried every minute.
 - Send sign-in and invitation emails as HTML with a plain-text part. Out-of-office replies no longer
   answer these emails.
 - Show a new design for the mobile server list and the agent appearance picker.
@@ -5379,24 +5379,24 @@ contains all changes of 0.21.1.
   its last frame.
 - Stop an error in the sidebar when you switch servers.
 - Send desktop host analytics events with the app origin. Before, the analytics server refused all
-  of them. When you turn analytics off, OpenBot does not send these events.
+  of them. When you turn analytics off, ZollyBot does not send these events.
 
 ## [0.21.1] - 2026-09-25
 
 ### Added
 
 - Publish an agent as a template that other people can add. Press Publish in the agent chat header.
-  OpenBot sends the instructions, the routines and the skills to openbot.run. Files and memories are
+  ZollyBot sends the instructions, the routines and the skills to openbot.run. Files and memories are
   not sent, and a field that looks like a secret stops the publish. The link opens a page at
-  `openbot.run/agents/<id>`. Add to OpenBot shows the template in the app, and OpenBot adds the agent
+  `openbot.run/agents/<id>`. Add to ZollyBot shows the template in the app, and ZollyBot adds the agent
   only when you click Add agent. Unpublish removes the template. A new publish keeps the same link.
 - Edit a routine schedule with chips in the routine panel and in the routine card in the chat.
 
 ### Changed
 
 - Show the account profile name and avatar in the browser client.
-- Show that a sign-in server does not accept OpenBot when it refuses the registration, for example
-  Figma. Before, OpenBot showed a credentials error. The Figma listing tells you to use the local MCP
+- Show that a sign-in server does not accept ZollyBot when it refuses the registration, for example
+  Figma. Before, ZollyBot showed a credentials error. The Figma listing tells you to use the local MCP
   server of the Figma desktop app.
 - Get faster answers from the account server.
 
@@ -5405,8 +5405,8 @@ contains all changes of 0.21.1.
 - Delete an agent on Windows. Before, deletion failed with EBUSY because a provider session kept the
   agent workspace open.
 - Remove a deleted agent from its channels. Before, the channel showed an Unavailable member.
-  OpenBot also removes these members at startup.
-- Start OpenBot on Linux from a terminal. Before, the window could freeze at startup.
+  ZollyBot also removes these members at startup.
+- Start ZollyBot on Linux from a terminal. Before, the window could freeze at startup.
 - Send a steer message with the same framing as a new turn.
 - Redact each line of remote diagnostic logs.
 - Show an error when the copy of a channel message or a plugin link fails.
@@ -5416,8 +5416,8 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Import agents from Grok Bot in Server settings, Import. Add the OpenBot export agent to Grok Bot,
-  send it one message, and choose the `.zip` file it saves. OpenBot imports each agent you select
+- Import agents from Grok Bot in Server settings, Import. Add the ZollyBot export agent to Grok Bot,
+  send it one message, and choose the `.zip` file it saves. ZollyBot imports each agent you select
   with its instructions, avatar, skills, routines and memories, and optional workspace files. The
   file is read on this computer and is not uploaded. Chat history is not copied.
 - Dictate a message on mobile. With an empty message field, press the microphone. The text shows in
@@ -5428,7 +5428,7 @@ contains all changes of 0.21.1.
 
 ### Changed
 
-- Use less memory and CPU. OpenBot stops a provider CLI that no agent uses after 60 seconds, keeps
+- Use less memory and CPU. ZollyBot stops a provider CLI that no agent uses after 60 seconds, keeps
   fewer idle Claude, OpenCode and Grok sessions open, and streams attachments from disk. The first
   message to an agent after a long idle time can take a little longer.
 - Scroll and type with fewer frame drops in the mobile chat and agent list.
@@ -5450,16 +5450,16 @@ contains all changes of 0.21.1.
 
 ### Fixed
 
-- Keep an animated WebP avatar animated after upload. Before, OpenBot kept only the first frame.
-- Hide the secret code input while OpenBot sends the code. The input shows again if the code fails.
+- Keep an animated WebP avatar animated after upload. Before, ZollyBot kept only the first frame.
+- Hide the secret code input while ZollyBot sends the code. The input shows again if the code fails.
 - Wrap long text in the avatar upload control.
 
 ## [0.20.0] - 2026-09-23
 
 ### Added
 
-- Show the skills in an agent's workspace skill folders that OpenBot did not install, such as
-  `.agents/skills`. OpenBot does not change these folders. A skill shows a problem when its
+- Show the skills in an agent's workspace skill folders that ZollyBot did not install, such as
+  `.agents/skills`. ZollyBot does not change these folders. A skill shows a problem when its
   `SKILL.md` is not valid, or when the agent's provider does not read its folder.
 - Show disk use and files in a Storage tab in Server Settings, a Files view in agent settings, and a
   Files panel in the chat. An owner or an admin can delete a file and clear caches and logs.
@@ -5467,8 +5467,8 @@ contains all changes of 0.21.1.
   activity, only when it needs you, or nothing.
 - Send a test notification and open the system notification settings from Settings.
 - Mark an agent as Workspace only in the agent settings. The setting is not enforced yet.
-- Check for provider CLI updates from a provider's actions menu. OpenBot offers the latest upstream
-  release of Codex, Claude, OpenCode, and Grok without a new OpenBot version.
+- Check for provider CLI updates from a provider's actions menu. ZollyBot offers the latest upstream
+  release of Codex, Claude, OpenCode, and Grok without a new ZollyBot version.
 - Add Linux arm64 builds.
 - Add a Composio listing that takes your own MCP link.
 - Show file type, size, previews, and upload progress for attachments on mobile, and show images
@@ -5490,7 +5490,7 @@ contains all changes of 0.21.1.
 ### Fixed
 
 - Make Apple and Google sign-in work in the embedded browser.
-- Open OpenBot on a second launch after a quit that did not finish on Windows.
+- Open ZollyBot on a second launch after a quit that did not finish on Windows.
 - Show new chat replies when reduced motion is on.
 - Center the idle emoji in the Dynamic Island.
 
@@ -5498,7 +5498,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Use OpenBot in a web browser at openbot.run/app with your account and your connected hosts.
+- Use ZollyBot in a web browser at openbot.run/app with your account and your connected hosts.
 - Set the Dynamic Island width and height in the new Dynamic Island settings tab on macOS.
 
 ### Changed
@@ -5517,7 +5517,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Use OpenBot in French.
+- Use ZollyBot in French.
 - Open invitation (including permanent links), pairing, and plugin links directly in the mobile app.
 - See a running, waiting, blocked, or failed routine as a mark on the agent row.
 - Update a provider, or sign in with a code, from the new "More actions" menu on each provider row.
@@ -5546,7 +5546,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Use Computer Use with Codex, Claude, Grok, and OpenCode. OpenBot now includes the
+- Use Computer Use with Codex, Claude, Grok, and OpenCode. ZollyBot now includes the
   Computer Use driver on macOS, Windows, and Linux.
 - Set up remote desktop access from Server Settings. Check Sunshine permissions,
   display availability, and the macOS user session; open a helper to grant access.
@@ -5557,7 +5557,7 @@ contains all changes of 0.21.1.
 
 ### Changed
 
-- **On macOS, grant Screen Recording and Accessibility to OpenBot for Computer Use.
+- **On macOS, grant Screen Recording and Accessibility to ZollyBot for Computer Use.
   Grants for the old Codex helper do not carry over. Remote desktop uses separate
   Sunshine grants in the macOS account that runs it.**
 - Enable ordinary auto-approval by default for new agents. Existing saved agent choices
@@ -5586,7 +5586,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Sign in to ChatGPT with a code typed on another device. OpenBot shows the code, opens the
+- Sign in to ChatGPT with a code typed on another device. ZollyBot shows the code, opens the
   verification page, and reports when the sign-in finishes.
 - Set standing approval for one agent or enable Turbo mode for all local agents. Turbo keeps each
   agent's individual approval when it is turned off.
@@ -5595,7 +5595,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Start an MCP server on a computer that has no Node. OpenBot downloads Bun 1.4.2, a JavaScript
+- Start an MCP server on a computer that has no Node. ZollyBot downloads Bun 1.4.2, a JavaScript
   runtime it owns and checks, and starts a STDIO server with it. A computer with its own Node keeps
   using that one: the managed runtime is the floor, not a replacement.
 - Say why an MCP server did not reach an agent. A command this computer does not have, and a
@@ -5609,26 +5609,26 @@ contains all changes of 0.21.1.
   keeps at most five, each one is revoked from the same tab, and a permanent link cannot be bound
   to an email address. Single-use invitations are unchanged. A server that speaks an older Team API
   does not offer the tab, because that protocol carries no permanent link.
-- Update OpenBot for every account on a shared Mac from one place, with the new Host package.
+- Update ZollyBot for every account on a shared Mac from one place, with the new Host package.
   An administrator installs it, and the Mac then downloads a release once, waits until every
-  signed-in account is idle, installs it one time, and starts OpenBot again for each account. A
+  signed-in account is idle, installs it one time, and starts ZollyBot again for each account. A
   managed account shows the host's progress and never installs on its own. The package is signed
   and notarized on its own, and it installs managed-host infrastructure only: the DMG is still the
   application. The installer also creates Standard accounts for tenants.
 
 ### Changed
 
-- **A server declared outside OpenBot no longer reaches a Claude or Codex agent. Add it in
+- **A server declared outside ZollyBot no longer reaches a Claude or Codex agent. Add it in
   Settings, MCP to keep it.** This covers `~/.claude/settings.json`, a project `.mcp.json`, a
   plugin, agent frontmatter and `~/.codex/config.toml`. Nothing is deleted: the declaration stays
-  in its own file and OpenBot does not read it. A notice says this once. OpenCode and Grok document
+  in its own file and ZollyBot does not read it. A notice says this once. OpenCode and Grok document
   no equivalent setting, so their agents can still start servers from their own files, which the
   panel now states.
 - **Sign in again once after upgrading to reach Canva, Figma, Linear, Notion, Sentry or Stripe.**
-  The six listings now connect over HTTP and OpenBot holds the OAuth client itself: it opens the
+  The six listings now connect over HTTP and ZollyBot holds the OAuth client itself: it opens the
   browser, keeps the tokens in the operating system's secret storage, and adds the header when it
   hands the server to a provider. No third-party bridge program is downloaded or started. A bridge
-  that already holds a token keeps it in its own folder, which OpenBot does not read, so the sign-in
+  that already holds a token keeps it in its own folder, which ZollyBot does not read, so the sign-in
   does not carry over. Removing the server forgets its sign-in, and the tokens are redacted on every
   log and export path like every other secret.
 - Replace a Codex thread that started before this release once, keeping its conversation and its
@@ -5663,7 +5663,7 @@ contains all changes of 0.21.1.
 - Show a host's browser tab live to a remote member, with pointer and key input back to the page.
 - Connect an MCP server before it is installed: the install dialog tests the configuration, and
   only a configuration that answers is saved.
-- Open a Marketplace plugin from an `openbot://plugins/<slug>` link on its own detail page.
+- Open a Marketplace plugin from an `zollybot://plugins/<slug>` link on its own detail page.
 - Publish plugin pages on openbot.run from the shipped catalog: fourteen listings, each with its
   own mark.
 - Give each agent one silhouette and a face that matches the work, in the sidebar and the activity
@@ -5692,7 +5692,7 @@ contains all changes of 0.21.1.
 
 - Install an app and its skills together from the new Marketplace **Plugins** tab. Each plugin adds
   its MCP server record and the pinned skill versions its instructions need.
-- Let agents keep records in one shared database at `~/OpenBot/Shared/Data/agent-data.db`. An agent
+- Let agents keep records in one shared database at `~/ZollyBot/Shared/Data/agent-data.db`. An agent
   creates, reads and writes its own tables, and the **Shared tables** view lists every table with its
   owner and lets you delete any of them.
 - Let an agent tell a teammate something without asking for an answer. The message names that no
@@ -5771,7 +5771,7 @@ contains all changes of 0.21.1.
 - Download all files from a message with three or more attachments as one ZIP file.
 - Enter an OpenCode key for paid OpenCode models, with refresh and status in the provider row.
 - Choose provider, model, and reasoning effort when you create an agent, where the host supports it.
-- Read the WTF Is OpenBot guide under `/guides`.
+- Read the WTF Is ZollyBot guide under `/guides`.
 - Open Settings from the application menu with a keyboard shortcut.
 
 ### Changed
@@ -5797,7 +5797,7 @@ contains all changes of 0.21.1.
 - Add custom agent photos to the mobile avatar experience.
 - Queue a message to a busy agent and show why it waits.
 - Add an OpenCode download action to the custom provider row.
-- Add an Introducing OpenBot article under `/news`.
+- Add an Introducing ZollyBot article under `/news`.
 
 ### Changed
 
@@ -5816,7 +5816,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Run OpenBot on Linux x64. The release publishes an AppImage, the one Linux format that updates
+- Run ZollyBot on Linux x64. The release publishes an AppImage, the one Linux format that updates
   itself in place, and the in-app provider download covers Codex, Claude, Grok, and OpenCode there.
   Voice prompts and remote desktop are absent on Linux and report themselves as unavailable, and the
   AppImage is unsigned, as the Windows installer is. `docs/TROUBLESHOOTING.md` covers the AppArmor
@@ -5831,7 +5831,7 @@ contains all changes of 0.21.1.
   and video keep `previewKind: "none"` on the wire, so no released Team API adapter changes meaning.
 - Read `/news` and `/guides` on openbot.run: article pages, an RSS feed, a sitemap, and structured
   data, with article artwork drawn from the title.
-- Say what OpenBot costs on the landing page.
+- Say what ZollyBot costs on the landing page.
 
 ### Changed
 
@@ -5846,7 +5846,7 @@ contains all changes of 0.21.1.
   stays inside the new range.
 - Keep one provider CLI store for each computer, under `provider-runtimes` beside the application
   data. The packaged application already used that path, so nothing moves for an installed user.
-  Several OpenBot instances can now install a provider at the same time without taking a running
+  Several ZollyBot instances can now install a provider at the same time without taking a running
   CLI away from each other. Development profiles no longer offer the same update after every
   restart.
 - Move switches and camera panels with their own motion, and animate an article background
@@ -5881,7 +5881,7 @@ contains all changes of 0.21.1.
   the sidebar the way an agent does. Channels travel over the Team API as `channel-chats-v1`, so a
   phone or a joined server on an older build keeps working without them.
 - Describe your own OpenAI-compatible endpoint and pick its models anywhere a model is chosen.
-  OpenBot encrypts the API key on this computer and gives it only to the local OpenCode process,
+  ZollyBot encrypts the API key on this computer and gives it only to the local OpenCode process,
   and keeps it out of every export, log, and diagnostics report. Every saved endpoint sits under
   one Custom provider row, because which endpoint an agent uses is a model choice rather than a
   provider choice.
@@ -5894,13 +5894,13 @@ contains all changes of 0.21.1.
   you to the OpenCode website is gone.
 - Use OpenCode's free models with no account and no sign-in. A new OpenCode agent answers as soon
   as the CLI is downloaded.
-- Add an optional OpenCode Zen key in Settings for the paid OpenCode Zen models. OpenBot encrypts
+- Add an optional OpenCode Zen key in Settings for the paid OpenCode Zen models. ZollyBot encrypts
   the key on this computer, gives it only to the local OpenCode CLI, and keeps it out of every
   export, log, and diagnostics report.
 - On mobile: open an agent's information and edit it in a sheet, reply to a message and use the
   message actions, send attachments from files or the camera, and pin an agent with a full swipe
   that a screen reader can also do.
-- **On mobile, OpenBot now sends product analytics, and the setting starts on.** Turn it off in
+- **On mobile, ZollyBot now sends product analytics, and the setting starts on.** Turn it off in
   Settings at any time; events wait until you sign in and are dropped if you refuse. Nothing on the
   desktop app changed, and chats, files, and commands are never sent. `PRIVACY.md` describes what
   an event carries.
@@ -5908,7 +5908,7 @@ contains all changes of 0.21.1.
 
 ### Changed
 
-- Keep an OpenCode CLI you installed yourself. OpenBot reports its version, offers an update, and
+- Keep an OpenCode CLI you installed yourself. ZollyBot reports its version, offers an update, and
   never forces the download.
 - Leave the OpenCode Go models out of the model picker when a Zen key is what lists them. OpenCode
   reports Zen and Go as one catalog, but a Zen key does not buy Go, so those models answered every
@@ -5944,7 +5944,7 @@ contains all changes of 0.21.1.
 
 ### Added
 
-- Add OpenCode as a fourth provider. OpenBot drives your own installed OpenCode CLI over ACP, so it
+- Add OpenCode as a fourth provider. ZollyBot drives your own installed OpenCode CLI over ACP, so it
   is not downloaded or pinned like the other runtimes: install OpenCode and run
   `opencode auth login`, then pick it when you create or edit an agent.
 - Add Team API v4, which carries the new provider and agent duplication. Version 1 to 3 stay
@@ -5965,13 +5965,13 @@ contains all changes of 0.21.1.
 - **A paired phone can no longer disconnect a desktop session.** Sign out or revoke a desktop
   session from Settings on the computer that runs it. Phones and other sessions are unaffected, and
   no session is ended by this update.
-- Install and activate OpenBot's pinned provider CLI update instead of asking the CLI to update
+- Install and activate ZollyBot's pinned provider CLI update instead of asking the CLI to update
   itself. A CLI update waits while a provider sign-in is pending.
 - Start the mobile app on the connected route, and block interaction while it loads.
 
 ### Fixed
 
-- Report a provider CLI update that OpenBot refuses to start, instead of leaving the offer on screen.
+- Report a provider CLI update that ZollyBot refuses to start, instead of leaving the offer on screen.
 - Keep an agent whose stored profile holds a value this release cannot read, instead of refusing to
   start. The startup error now names the field it cannot read.
 - Keep an empty sidebar section visible when it holds no agents.
@@ -6000,18 +6000,18 @@ contains all changes of 0.21.1.
 - Add agent and host-wide usage reports with model, provider and daily cost details.
 - Add mobile server settings, member management and invite QR flows.
 - Add marketplace presentation controls for agent categories and creator avatars.
-- Show all integrated provider models and let users update a provider CLI from OpenBot.
+- Show all integrated provider models and let users update a provider CLI from ZollyBot.
 
 ### Changed
 
-- Check for desktop updates every four minutes while OpenBot is running.
+- Check for desktop updates every four minutes while ZollyBot is running.
 - Preserve mobile sign-out when offline by deferring account revocation.
 
 ## [0.5.0] - 2026-09-07
 
 ### Added
 
-- Connect a phone to OpenBot. Pair a device from the desktop app, then read and answer agent chats
+- Connect a phone to ZollyBot. Pair a device from the desktop app, then read and answer agent chats
   from the mobile app, with connection status on every server surface and profile changes synced to
   each connected device.
 - Review and revoke account sessions and paired devices from Settings. A revoked credential ends the
@@ -6030,7 +6030,7 @@ contains all changes of 0.21.1.
 - Retheme the desktop app onto one colour, type and icon system.
 - Rename an agent's **Description** to **Instructions**, and grow the field with its contents.
 - Remove the limit on sidebar agent pins.
-- Isolate the local team server per OpenBot account. The single-host file the previous build wrote is
+- Isolate the local team server per ZollyBot account. The single-host file the previous build wrote is
   imported on first launch and left in place; nothing is deleted.
 - Update the bundled provider runtimes: Codex to `0.153.4`, Claude Code to `2.1.263`
   (`@anthropic-ai/claude-agent-sdk` `0.3.263`) and Grok to `1.0.22`. The runtimes are downloaded on
@@ -6038,8 +6038,8 @@ contains all changes of 0.21.1.
   stays on disk, and a system-installed CLI of your own is not touched.
 - Finish naming the product concept **agent** everywhere: identifiers, IPC channels, CSS, copy, the
   mobile app, and the instructions and tool parameters the models read. Existing agent identifiers are
-  rewritten from `bot-<uuid>` to `agent-<uuid>` and every workspace moves from `~/OpenBot/Bots` to
-  `~/OpenBot/Agents` on first launch. The Team API wire protocol is unchanged — versions 1 to 3 still
+  rewritten from `bot-<uuid>` to `agent-<uuid>` and every workspace moves from `~/ZollyBot/Bots` to
+  `~/ZollyBot/Agents` on first launch. The Team API wire protocol is unchanged — versions 1 to 3 still
   spell the agent `botId`, and a translation layer converts.
 - **Paired phones must be unpaired and paired again after this update.** A phone stores the agent
   identifiers it was given, and those identifiers have changed, so its pins and unread markers point at
@@ -6052,7 +6052,7 @@ contains all changes of 0.21.1.
 - Report weekly usage for the model that is actually active.
 - Recover a provider session the CLI no longer knows, instead of losing the conversation.
 - Keep chat table layout, message spacing and composer alignment consistent.
-- Restore the main window when you activate OpenBot on macOS.
+- Restore the main window when you activate ZollyBot on macOS.
 - Stop the Dynamic Island from clipping as it collapses, and idle avatars nobody is watching.
 - Fix sidebar search focus highlighting and drag overlap, and the mobile sidebar swipe over agent rows.
 
@@ -6116,7 +6116,7 @@ contains all changes of 0.21.1.
 
 ### Fixed
 
-- Support embedded Google sign-in with the current Chromium identity while keeping the OpenBot browser session.
+- Support embedded Google sign-in with the current Chromium identity while keeping the ZollyBot browser session.
 - Clear Bot unread state reliably when a chat opens or refreshes.
 - Preserve agent names before title badges truncate in the sidebar.
 
@@ -6253,7 +6253,7 @@ contains all changes of 0.21.1.
 
 ### Fixed
 
-- Exit a second desktop app process immediately when another OpenBot instance already holds the profile lock.
+- Exit a second desktop app process immediately when another ZollyBot instance already holds the profile lock.
 - Keep the agent activity avatar visible for 500 ms after streaming ends and preserve its layout space when it exits.
 - Show the message queue only while a delivery is starting or running, so the first message does not flash in Queue.
 
@@ -6335,7 +6335,7 @@ contains all changes of 0.21.1.
 ### Changed
 
 - Changed the project license from Apache-2.0 to PolyForm Noncommercial 1.0.0.
-- Publish the OpenBot application for macOS only in this release while Windows application packaging is
+- Publish the ZollyBot application for macOS only in this release while Windows application packaging is
   paused.
 - Start Remote Control only from the server header and keep a hidden session active until the user
   disconnects or changes servers.
@@ -6458,7 +6458,7 @@ contains all changes of 0.21.1.
 ### Changed
 
 - Simplified provider selection to show clear availability without decorative provider cards.
-- Development state reset now deletes `OpenBot Dev` state without creating a backup.
+- Development state reset now deletes `ZollyBot Dev` state without creating a backup.
 
 ### Fixed
 
@@ -6482,5 +6482,5 @@ contains all changes of 0.21.1.
 
 ### Changed
 
-- Standardized the product name and all user-facing branding as `OpenBot`.
-- Replaced the remaining third-party-inspired avatar SVG with an original OpenBot placeholder mark.
+- Standardized the product name and all user-facing branding as `ZollyBot`.
+- Replaced the remaining third-party-inspired avatar SVG with an original ZollyBot placeholder mark.

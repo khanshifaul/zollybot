@@ -1,14 +1,14 @@
-import type { AgentEvent, TeamRealtimeEvent } from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
+import type { AgentEvent, TeamRealtimeEvent } from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import {
   INSTANCE_TRANSFER_REMOTE_BYTES,
   INSTANCE_TRANSFER_ROUTES,
-} from "@openbot/contracts/team-protocol/instance-transfer-v1";
-import { isQueueEditRoute, QueueEditRejectedError } from "@openbot/contracts/team-protocol/queue-edit-v1";
-import type { TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
-import { sourceText } from "@openbot/i18n/source";
-import type { RemoteTeamDirectoryClient } from "@openbot/team-client";
-import { runTeamEffect } from "@openbot/team-client";
+} from "@zollybot/contracts/team-protocol/instance-transfer-v1";
+import { isQueueEditRoute, QueueEditRejectedError } from "@zollybot/contracts/team-protocol/queue-edit-v1";
+import type { TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
+import { sourceText } from "@zollybot/i18n/source";
+import type { RemoteTeamDirectoryClient } from "@zollybot/team-client";
+import { runTeamEffect } from "@zollybot/team-client";
 import {
   createRemoteCommandMailbox,
   type RemoteFileUpload,
@@ -17,9 +17,9 @@ import {
   type RemoteTeamConnectionUpdate,
   type RemoteTeamDiagnostic,
   type RemoteUploadProgress,
-} from "@openbot/team-client/remote-peer";
-import { remoteWorkspaceReadTimeout } from "@openbot/team-client/remote-recovery";
-import { referenceFrom } from "@openbot/user-errors";
+} from "@zollybot/team-client/remote-peer";
+import { remoteWorkspaceReadTimeout } from "@zollybot/team-client/remote-recovery";
+import { referenceFrom } from "@zollybot/user-errors";
 import type { DOMProps } from "expo/dom";
 import * as Crypto from "expo-crypto";
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";

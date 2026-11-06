@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
   Badge,
   Blocks,
@@ -26,15 +27,14 @@ import {
   Switch,
   Text,
   Trash2,
-} from "@openbot/ui";
-import type { BrowserViewRuntime } from "@openbot/ui/features/browser/BrowserLiveView";
+} from "@zollybot/ui";
+import type { BrowserViewRuntime } from "@zollybot/ui/features/browser/BrowserLiveView";
 import {
   McpSignInPageDialog,
   McpSignInRelayDialog,
   type McpSignInRelaySource,
-} from "@openbot/ui/features/settings/McpSignInPage";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/settings/McpSignInPage";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createStore, For, onCleanup, Show } from "solid-js";
 import { type McpPanelSignInApp, McpSignInAppSection } from "./McpSignInAppSection";
 import {
@@ -1343,7 +1343,7 @@ function McpRowMenu(props: {
   const { t } = useText();
   let triggerElement: HTMLElement | undefined;
   // A joined server's sign-in opens a dialog, so it starts once the menu is gone. The menu gives the
-  // focus back to its trigger two frames after it closes (focusRestoreHandler in @openbot/ui
+  // focus back to its trigger two frames after it closes (focusRestoreHandler in @zollybot/ui
   // complex.tsx); a dialog that opened sooner would lose its focus to that. Keep the counts in step.
   let afterClose: (() => void) | undefined;
   return (

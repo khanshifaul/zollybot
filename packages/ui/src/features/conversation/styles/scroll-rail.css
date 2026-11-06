@@ -12,12 +12,12 @@
  */
 .chat-scroll-rail {
   /* A muted neutral: a colour pulls the eye while the reader reads. */
-  --chat-scroll-rail-accent: var(--openbot-text-muted);
-  --chat-scroll-rail-track: color-mix(in srgb, var(--openbot-text-primary) 10%, transparent);
+  --chat-scroll-rail-accent: var(--zollybot-text-muted);
+  --chat-scroll-rail-track: color-mix(in srgb, var(--zollybot-text-primary) 10%, transparent);
   --chat-scroll-rail-glow: color-mix(in srgb, var(--chat-scroll-rail-accent) 60%, transparent);
-  --chat-scroll-rail-ease: var(--openbot-ease-out);
-  --chat-scroll-rail-duration: var(--openbot-duration-island-content);
-  --chat-scroll-rail-quick: var(--openbot-duration-overlay);
+  --chat-scroll-rail-ease: var(--zollybot-ease-out);
+  --chat-scroll-rail-duration: var(--zollybot-duration-island-content);
+  --chat-scroll-rail-quick: var(--zollybot-duration-overlay);
   --chat-scroll-rail-blur: 8px;
 
   position: sticky;
@@ -36,7 +36,7 @@
   height: min(64%, 600px);
   display: flex;
   flex-direction: column;
-  padding: var(--openbot-space-3) 0;
+  padding: var(--zollybot-space-3) 0;
   transform: translateY(-50%);
 }
 
@@ -51,21 +51,21 @@
    only while the rail is open, so a scroll does not filter the transcript under a hidden scrim. */
 .chat-scroll-rail-surface {
   position: absolute;
-  inset-block: calc(-1 * var(--openbot-space-8));
-  inset-inline: calc(-2 * var(--openbot-space-8)) 0;
-  background: color-mix(in srgb, var(--openbot-bg-canvas) 80%, transparent);
+  inset-block: calc(-1 * var(--zollybot-space-8));
+  inset-inline: calc(-2 * var(--zollybot-space-8)) 0;
+  background: color-mix(in srgb, var(--zollybot-bg-canvas) 80%, transparent);
   mask-image:
     linear-gradient(
       to bottom,
       transparent,
-      var(--openbot-text-primary) var(--openbot-space-8),
-      var(--openbot-text-primary) calc(100% - var(--openbot-space-8)),
+      var(--zollybot-text-primary) var(--zollybot-space-8),
+      var(--zollybot-text-primary) calc(100% - var(--zollybot-space-8)),
       transparent
     ),
-    linear-gradient(to right, transparent, var(--openbot-text-primary) calc(2 * var(--openbot-space-8)));
+    linear-gradient(to right, transparent, var(--zollybot-text-primary) calc(2 * var(--zollybot-space-8)));
   mask-composite: intersect;
   opacity: 0;
-  transition: opacity var(--openbot-duration-slow) ease;
+  transition: opacity var(--zollybot-duration-slow) ease;
 }
 
 /* In RTL the rail is on the left edge: the scrim fades out on the right, and the titles come in from
@@ -75,34 +75,34 @@
     linear-gradient(
       to bottom,
       transparent,
-      var(--openbot-text-primary) var(--openbot-space-8),
-      var(--openbot-text-primary) calc(100% - var(--openbot-space-8)),
+      var(--zollybot-text-primary) var(--zollybot-space-8),
+      var(--zollybot-text-primary) calc(100% - var(--zollybot-space-8)),
       transparent
     ),
-    linear-gradient(to left, transparent, var(--openbot-text-primary) calc(2 * var(--openbot-space-8)));
+    linear-gradient(to left, transparent, var(--zollybot-text-primary) calc(2 * var(--zollybot-space-8)));
 }
 
 .chat-scroll-rail-eyebrow {
   position: relative;
   display: flex;
   justify-content: space-between;
-  margin: 0 0 var(--openbot-space-3);
-  padding: 0 var(--openbot-space-4) 0 var(--openbot-space-4);
-  color: var(--openbot-text-dim);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  margin: 0 0 var(--zollybot-space-3);
+  padding: 0 var(--zollybot-space-4) 0 var(--zollybot-space-4);
+  color: var(--zollybot-text-dim);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0;
-  transition: opacity var(--openbot-duration-slow) ease;
+  transition: opacity var(--zollybot-duration-slow) ease;
 }
 
 /* The digits of the current section lift in and sharpen, as in the task list. */
 .chat-scroll-rail-count {
-  --digit-dur: var(--openbot-duration-overlay);
-  --digit-distance: var(--openbot-space-1);
-  --digit-blur: var(--openbot-space-0-5);
-  --digit-ease: var(--openbot-ease-out);
+  --digit-dur: var(--zollybot-duration-overlay);
+  --digit-distance: var(--zollybot-space-1);
+  --digit-blur: var(--zollybot-space-0-5);
+  --digit-ease: var(--zollybot-ease-out);
 
   color: var(--chat-scroll-rail-accent);
   font-variant-numeric: tabular-nums;
@@ -145,26 +145,26 @@
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   padding-block: 0;
-  padding-inline: var(--openbot-space-4) 0;
+  padding-inline: var(--zollybot-space-4) 0;
   /* The button's border would move the bars out of the side padding. */
   border: 0;
   border-radius: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-weight: inherit;
   text-decoration: none;
   outline: none;
 }
 
 .chat-scroll-rail-item[data-state="read"] .chat-scroll-rail-link {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .chat-scroll-rail-item[data-state="active"] .chat-scroll-rail-link,
 .chat-scroll-rail .chat-scroll-rail-link:hover,
 .chat-scroll-rail .chat-scroll-rail-link:focus-visible {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: none;
 }
 
@@ -173,23 +173,23 @@
   min-width: 0;
   overflow: hidden;
   margin-top: -3px;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   line-height: 18px;
   text-align: end;
   text-overflow: ellipsis;
   white-space: nowrap;
   opacity: 0;
   filter: blur(var(--chat-scroll-rail-blur));
-  transform: translateX(var(--openbot-space-2));
+  transform: translateX(var(--zollybot-space-2));
   transition:
-    color var(--openbot-duration-slow) ease,
-    opacity var(--openbot-duration-slow) ease,
-    filter var(--openbot-duration-slow) ease,
+    color var(--zollybot-duration-slow) ease,
+    opacity var(--zollybot-duration-slow) ease,
+    filter var(--zollybot-duration-slow) ease,
     transform var(--chat-scroll-rail-quick) var(--chat-scroll-rail-ease);
 }
 
 :dir(rtl) .chat-scroll-rail-label {
-  transform: translateX(calc(-1 * var(--openbot-space-2)));
+  transform: translateX(calc(-1 * var(--zollybot-space-2)));
 }
 
 .chat-scroll-rail-link:focus-visible .chat-scroll-rail-label {
@@ -205,7 +205,7 @@
   position: relative;
   width: clamp(12px, var(--chat-scroll-rail-inset, 20px), 20px);
   flex: none;
-  padding-bottom: var(--openbot-space-1);
+  padding-bottom: var(--zollybot-space-1);
 }
 
 .chat-scroll-rail .chat-scroll-rail-bar {
@@ -218,9 +218,9 @@
   position: absolute;
   top: 0;
   inset-inline-end: 5px;
-  bottom: var(--openbot-space-1);
+  bottom: var(--zollybot-space-1);
   width: 2px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   transition:
     width var(--chat-scroll-rail-quick) var(--chat-scroll-rail-ease),
     inset-inline-end var(--chat-scroll-rail-quick) var(--chat-scroll-rail-ease),
@@ -255,7 +255,7 @@
   inset-inline-end: 3px;
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--chat-scroll-rail-accent);
   box-shadow:
     0 0 0 3px color-mix(in srgb, var(--chat-scroll-rail-accent) 18%, transparent),
@@ -264,7 +264,7 @@
   transform: translateY(
     calc(
       var(--chat-scroll-rail-head-top) +
-      (var(--chat-scroll-rail-head-length) - var(--openbot-space-1)) *
+      (var(--chat-scroll-rail-head-length) - var(--zollybot-space-1)) *
       var(--chat-scroll-rail-fill, 0) -
       50%
     )
@@ -273,9 +273,9 @@
 
 .chat-scroll-rail-nav:hover .chat-scroll-rail-surface,
 .chat-scroll-rail-nav:has(:focus-visible) .chat-scroll-rail-surface {
-  backdrop-filter: blur(var(--openbot-space-4));
+  backdrop-filter: blur(var(--zollybot-space-4));
   opacity: 1;
-  transition: opacity var(--openbot-duration-overlay) ease;
+  transition: opacity var(--zollybot-duration-overlay) ease;
 }
 
 .chat-scroll-rail-nav:hover .chat-scroll-rail-eyebrow,
@@ -293,7 +293,7 @@
   filter: blur(0);
   transform: none;
   transition:
-    color var(--openbot-duration-slow) ease,
+    color var(--zollybot-duration-slow) ease,
     opacity var(--chat-scroll-rail-quick) ease var(--chat-scroll-rail-delay),
     filter var(--chat-scroll-rail-quick) ease var(--chat-scroll-rail-delay),
     transform var(--chat-scroll-rail-duration) var(--chat-scroll-rail-ease) var(--chat-scroll-rail-delay);

@@ -1,5 +1,5 @@
-import { Clock3, MessageCircleQuestionMark, MousePointer2, ShieldCheck, Tooltip, X } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Clock3, MessageCircleQuestionMark, MousePointer2, ShieldCheck, Tooltip, X } from "@zollybot/ui";
 import { createEffect, createMemo, createSignal, Show, untrack } from "solid-js";
 import type { AvatarMood } from "../../bloub-avatar";
 import { TypingDots } from "../../components/TypingDots";

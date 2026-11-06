@@ -1,7 +1,7 @@
-import type { AvatarImageInput, ChannelCommand, ChannelPage, ChannelSummary } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import type { AgentProfile } from "@openbot/ui/data";
-import { currentText } from "@openbot/ui/text";
+import type { AvatarImageInput, ChannelCommand, ChannelPage, ChannelSummary } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createStore, flush, onSettled, reconcile, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { type DesktopAnalyticsProperties, desktopAnalytics } from "../../analytics";

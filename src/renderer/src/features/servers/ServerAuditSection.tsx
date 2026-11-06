@@ -1,19 +1,19 @@
-import type { OpenBotDesktopApi, ServerAuditEntry } from "@openbot/contracts/ipc";
-import { SERVER_AUDIT_CAPABILITY } from "@openbot/contracts/team-protocol/server-audit-v1";
-import { Alert, AlertContent, AlertDescription } from "@openbot/ui";
-import { ServerAuditLogPanel } from "@openbot/ui/features/servers/ServerAuditLog";
-import type { RoleAgent } from "@openbot/ui/features/servers/ServerRoles";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
+import type { ServerAuditEntry, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { SERVER_AUDIT_CAPABILITY } from "@zollybot/contracts/team-protocol/server-audit-v1";
+import { Alert, AlertContent, AlertDescription } from "@zollybot/ui";
+import { ServerAuditLogPanel } from "@zollybot/ui/features/servers/ServerAuditLog";
+import type { RoleAgent } from "@zollybot/ui/features/servers/ServerRoles";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore, Show, untrack } from "solid-js";
 import { serverCanAdminister } from "./server-capabilities";
 import type { ServerSettingsSectionHost } from "./server-settings-section";
 
 /** The audit call of one server's host. The desktop reaches it through main. */
-export type HostServerAuditCalls = Pick<OpenBotDesktopApi["hostAdmin"], "getAuditLog">;
+export type HostServerAuditCalls = Pick<ZollyBotDesktopApi["hostAdmin"], "getAuditLog">;
 
 export interface ServerAuditOptions {
-  /** The calls of a client with no `window.openbot`, such as the web client. */
+  /** The calls of a client with no `window.zollybot`, such as the web client. */
   calls?: HostServerAuditCalls;
   /** The agents of this dialog's server, for their faces. */
   listAgents: () => Promise<readonly RoleAgent[]>;
@@ -37,7 +37,7 @@ export interface ServerAuditSection {
 export function createServerAuditSection(host: ServerSettingsSectionHost, visible: () => boolean): ServerAuditSection {
   const { t, errorMessage } = useText();
   const { props, configured, actionsAvailable } = host;
-  const calls = (): HostServerAuditCalls => props.serverAudit?.calls ?? window.openbot.hostAdmin;
+  const calls = (): HostServerAuditCalls => props.serverAudit?.calls ?? window.zollybot.hostAdmin;
   const [state, setState] = createStore<AuditState>({ entries: null, agents: [], loadError: null });
   /** Bumped for each read, so an answer for an earlier server or read is dropped. */
   let generation = 0;

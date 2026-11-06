@@ -3,7 +3,7 @@
 // What it grants, recorded here because freezing it makes it permanent: an owner or an admin reads
 // and changes the folders that one agent can change besides its workspace and the shared folder, and
 // the folders in them that it must not change. The host checks each folder as its own folder picker
-// does: it must exist, it must not hold OpenBot data, the workspaces of the agents, the home folder or
+// does: it must exist, it must not hold ZollyBot data, the workspaces of the agents, the home folder or
 // a disk root, and at most 32 folders of each kind are kept. A folder that a kept folder holds is not
 // added again. To pick a folder, an owner or an admin lists the folders in one folder of the host
 // computer; a request without a path lists the home folder. The list leaves out files and hidden

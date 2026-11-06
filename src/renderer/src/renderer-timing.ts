@@ -1,4 +1,4 @@
-import { RENDERER_TIMING_LIMITS } from "@openbot/contracts/ipc";
+import { RENDERER_TIMING_LIMITS } from "@zollybot/contracts/ipc";
 import { appPort } from "./app-port";
 
 /** Tasks longer than this count. The browser reports tasks from 50 ms. */

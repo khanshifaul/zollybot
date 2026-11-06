@@ -1,4 +1,4 @@
-// The servers on this computer: each one is OpenBot itself, started as a child process with its own
+// The servers on this computer: each one is ZollyBot itself, started as a child process with its own
 // user data directory and agent root (`local-server-child.ts`). The desktop app reaches each one
 // over the loopback Team API, as it reaches a joined server, and logs in as its owner at each start.
 //
@@ -25,9 +25,9 @@ import { mkdir, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { createInterface } from "node:readline";
 import { Readable, Writable } from "node:stream";
-import { LOCAL_SERVER_LIMIT, type ServerSummary } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { registerSecretValue } from "@openbot/logging";
+import { LOCAL_SERVER_LIMIT, type ServerSummary } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { registerSecretValue } from "@zollybot/logging";
 import { Deferred, Duration, Effect, Exit, Schema, Scope, Semaphore } from "effect";
 import { causeHelpers } from "../../backend/effect-boundary";
 import type { RemoteMemberRecord } from "../central-auth-records";
@@ -78,7 +78,7 @@ function childEnvironment(
 ): NodeJS.ProcessEnv {
   const environment: NodeJS.ProcessEnv = {};
   for (const [name, value] of Object.entries(process.env)) {
-    if (name === "ELECTRON_RUN_AS_NODE" || name.startsWith("OPENBOT_DEV_")) continue;
+    if (name === "ELECTRON_RUN_AS_NODE" || name.startsWith("ZOLLYBOT_DEV_")) continue;
     environment[name] = value;
   }
   environment[LOCAL_SERVER_ENVIRONMENT.child] = "1";
@@ -156,7 +156,7 @@ export interface LocalServersOptions {
   registryPath: string;
   /** One user data directory for each server, named by its id. */
   userDataRoot: string;
-  /** One agent root for each server, named by its id: `~/OpenBot/Servers`. */
+  /** One agent root for each server, named by its id: `~/ZollyBot/Servers`. */
   agentRoot: string;
   /** The provider CLI store of this app. A child has its own user data, but not its own copy of each CLI. */
   runtimeRoot: string;
@@ -546,7 +546,7 @@ export class LocalServers {
         [...this.#options.command.args, `--user-data-dir=${paths.userData}`],
         {
           env: childEnvironment(entry, paths.agentRoot, this.#options.runtimeRoot, secret),
-          // The control pipe carries only the account commands, and it closes when OpenBot ends. On
+          // The control pipe carries only the account commands, and it closes when ZollyBot ends. On
           // Windows it is fd 3: Electron gives the child a `process.stdin` that only ends (#4868).
           stdio: this.#options.platform === "win32" ? ["ignore", "pipe", "pipe", "pipe"] : ["pipe", "pipe", "pipe"],
           windowsHide: true,

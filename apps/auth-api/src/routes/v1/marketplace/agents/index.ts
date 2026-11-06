@@ -1,6 +1,6 @@
-import { isSkillCategory } from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
 import { createFileRoute } from "@tanstack/solid-router";
+import { isSkillCategory } from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../../server/effect-runtime";
 import { readMultipartFormData } from "../../../../server/json-body";

@@ -17,11 +17,11 @@ import {
   isAgentContextCategories,
   latestTurnAnswer,
   PLAN_CONTINUATION_ITEM_TYPE,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
-import { type CauseCode, classifyFailure, isCauseCode } from "@openbot/telemetry";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
+import { type CauseCode, classifyFailure, isCauseCode } from "@zollybot/telemetry";
 import { Cause, Deferred, Effect, Exit, Schema, Scope } from "effect";
 import type { AgentClient } from "../agent-client";
 import type { AgentStore } from "../agent-store";
@@ -89,7 +89,7 @@ import { TurnTraces, traceMessage } from "./turn-traces";
 import { collectProviderUsage } from "./usage-collection";
 import { USAGE_LIMIT_METHOD, type UsageLimitGate } from "./usage-limit-gate";
 
-const logger = createOpenBotLogger("turn-lifecycle");
+const logger = createZollyBotLogger("turn-lifecycle");
 /** The retry of one turn after which the user gets a notice. A single retry is a normal network error. */
 const RETRY_NOTICE_ATTEMPTS = 3;
 const ENDED_TURN_LIMIT = 256;
@@ -321,7 +321,7 @@ export class TurnLifecycle {
    * `produced` is set by the first item or delta: a refused turn is run again only without one.
    * `acted` is narrower: a tool step or answer text, which a turn run again would repeat. Thinking
    * and the echo of the user's message do not count. `sentAt` (when the message that started the
-   * turn was sent) and `firstOutputAt` split a slow reply into OpenBot's wait and the provider's.
+   * turn was sent) and `firstOutputAt` split a slow reply into ZollyBot's wait and the provider's.
    */
   readonly #runningTurns = new Map<
     string,
@@ -373,7 +373,7 @@ export class TurnLifecycle {
   readonly #lastEventAt = new Map<string, number>();
   /**
    * The running Codex subagents, under their own thread id, with the turn whose list shows them.
-   * Codex sends the items of these threads too, and OpenBot knows no agent for them.
+   * Codex sends the items of these threads too, and ZollyBot knows no agent for them.
    */
   readonly #codexChildren = new Map<string, { agentId: string; threadId: string; turnId: string }>();
   /**
@@ -462,7 +462,7 @@ export class TurnLifecycle {
     return earliest;
   }
 
-  /** When the provider last reported anything for this agent since OpenBot started. */
+  /** When the provider last reported anything for this agent since ZollyBot started. */
   lastEventAt(agentId: string): number | null {
     return this.#lastEventAt.get(agentId) ?? null;
   }
@@ -504,7 +504,7 @@ export class TurnLifecycle {
    * Ends each turn a client ran when the runtime stops it for a reason other than an exit: a
    * sign-out that an account refresh found, or a new client for the same provider. The stopped
    * process sends no `turn/completed` and `#handleExit` skips it, so without this its turns stay
-   * active, and its deliveries running, until OpenBot restarts.
+   * active, and its deliveries running, until ZollyBot restarts.
    *
    * `keepRecoverable` is for a client whose process exited. A turn with a message that is not settled
    * then stays for the delivery recovery, which reads the provider's history for its result and ends
@@ -639,7 +639,7 @@ export class TurnLifecycle {
     if (
       threadId &&
       agentId &&
-      ["turn/started", "thread/tokenUsage/updated", "openbot/usage", "model/rerouted"].includes(notification.method)
+      ["turn/started", "thread/tokenUsage/updated", "zollybot/usage", "model/rerouted"].includes(notification.method)
     ) {
       const usage = this.#usageSession(agentId, threadId, source);
       if (usage) {
@@ -880,7 +880,7 @@ export class TurnLifecycle {
           );
         return;
       }
-      case "openbot/context-compaction": {
+      case "zollybot/context-compaction": {
         if (!threadId || !agentId || this.#conversation.loadedClientFor(threadId) !== source) return;
         const status = getString(params, "status");
         if (status !== "running" && status !== "completed" && status !== "failed") return;
@@ -888,7 +888,7 @@ export class TurnLifecycle {
         this.#compaction.observeCompaction(threadId, status, "none");
         return;
       }
-      case "openbot/turn-progress": {
+      case "zollybot/turn-progress": {
         // A provider's own status for the running turn, such as a retry of a failed API request.
         const turnId = getString(params, "turnId");
         const detail = getString(params, "detail");
@@ -1130,7 +1130,7 @@ export class TurnLifecycle {
       this.#reportedFailures.delete(turnId);
       if (running) {
         this.#keepTurnTiming(turnId, running);
-        // `waitMs` is OpenBot's part of a slow reply: the queue (a usage-limit hold included), the
+        // `waitMs` is ZollyBot's part of a slow reply: the queue (a usage-limit hold included), the
         // provider start, the session and its settings. `firstOutputMs` is the provider's: the time
         // to its first text, thinking or tool step.
         logger.info("A turn finished.", {

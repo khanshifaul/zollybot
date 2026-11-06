@@ -1,10 +1,10 @@
-import type { WorkflowGraph, WorkflowNodeSize } from "@openbot/contracts/ipc";
-import type { TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
+import type { WorkflowGraph, WorkflowNodeSize } from "@zollybot/contracts/ipc";
+import type { TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
 import {
   WORKFLOWS_GITHUB_CAPABILITY,
   WORKFLOWS_GITHUB_ROUTES,
-} from "@openbot/contracts/team-protocol/workflows-github-v1";
-import { WORKFLOWS_CAPABILITY, WORKFLOWS_ROUTES } from "@openbot/contracts/team-protocol/workflows-v1";
+} from "@zollybot/contracts/team-protocol/workflows-github-v1";
+import { WORKFLOWS_CAPABILITY, WORKFLOWS_ROUTES } from "@zollybot/contracts/team-protocol/workflows-v1";
 import {
   decodeRemoteWorkflowDetail,
   decodeRemoteWorkflowGitHubCatalog,
@@ -19,7 +19,7 @@ import {
   decodeRemoteWorkflowSummary,
   decodeRemoteWorkflowVersionGraph,
   decodeRemoteWorkflowVersions,
-} from "@openbot/team-client/workflow-decoding";
+} from "@zollybot/team-client/workflow-decoding";
 import * as Crypto from "expo-crypto";
 import type { WorkspaceRequest } from "@/features/workspace/context/host-request-actions";
 import { requireCapability, type ServerCapabilities } from "@/features/workspace/model/server-capabilities";

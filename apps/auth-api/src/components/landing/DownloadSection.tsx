@@ -1,5 +1,5 @@
-import { type MobilePlatformLogoVariant, PlatformLogo, type PlatformLogoVariant } from "@openbot/brand";
 import { Link } from "@tanstack/solid-router";
+import { type MobilePlatformLogoVariant, PlatformLogo, type PlatformLogoVariant } from "@zollybot/brand";
 import { For, Show } from "solid-js";
 import { DOWNLOAD_PLATFORM_ORDER, DOWNLOAD_PLATFORMS } from "../../lib/download-platforms";
 import { EXTERNAL_LINK_REL } from "../../lib/landing-links";
@@ -48,7 +48,7 @@ export function DownloadSection() {
     <section ref={sectionRef} id="download" class="landing-download" aria-labelledby="download-title">
       <div class="landing-download-inner">
         <header class="landing-download-heading" data-revealed={revealState()}>
-          <h2 id="download-title">Download OpenBot</h2>
+          <h2 id="download-title">Download ZollyBot</h2>
           <p>
             Choose your platform. Run Codex, Claude, Gemini, Grok, OpenCode, Muse Code, Pi or your own model from one
             desktop app, and talk to your agents from your phone.

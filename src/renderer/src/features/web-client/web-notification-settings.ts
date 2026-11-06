@@ -4,11 +4,11 @@ import {
   type ClientAgentSummary,
   type ServerNotificationLevel,
   type ServerSummary,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type {
   NotificationMatrixAgents,
   NotificationMatrixServer,
-} from "@openbot/ui/features/settings/NotificationMatrix";
+} from "@zollybot/ui/features/settings/NotificationMatrix";
 import { createEffect, createMemo, createStore } from "solid-js";
 import type { createWebServerNotifications } from "./web-notification-preferences";
 import type { WebWorkspaceRuntime } from "./web-runtime";

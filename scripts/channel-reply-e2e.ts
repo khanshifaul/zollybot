@@ -8,9 +8,9 @@
 // continues after it, and that a request that asks for more
 // replies than the limit gets no more than two. The model does the tool calls, so a model that does
 // not follow the instructions fails a step. It makes its own channel and deletes it.
-// Writes .openbot-build/channel-reply-e2e/report.json.
+// Writes .zollybot-build/channel-reply-e2e/report.json.
 import assert from "node:assert/strict";
-import type { ChannelMessage, ChannelPage, ChannelTask } from "@openbot/contracts/ipc";
+import type { ChannelMessage, ChannelPage, ChannelTask } from "@zollybot/contracts/ipc";
 import { ChannelClient, connectChannelE2e, waitFor, writeReport } from "./channel-e2e-support";
 
 const REPLY_PREFIX = "channel-reply-";

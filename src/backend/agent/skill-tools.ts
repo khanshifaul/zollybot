@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   CreateLocalSkillInput,
   InstalledSkill,
@@ -8,8 +8,8 @@ import type {
   SetEnabledSkillInput,
   SkillConversationEvent,
   UninstallSkillInput,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { z } from "zod";
 import { ToolOperationFailed, toolStep } from "./tool-operation";
@@ -54,7 +54,7 @@ export const LOCAL_SKILL_TOOL_DEFINITIONS = [
   {
     name: "create_skill",
     description:
-      "Create a reusable local skill from a folder inside your workspace after the user asks to create a skill. Follow openbot-skill-creator. Saves to the shared local library and installs for you. Does not publish or execute scripts.",
+      "Create a reusable local skill from a folder inside your workspace after the user asks to create a skill. Follow zollybot-skill-creator. Saves to the shared local library and installs for you. Does not publish or execute scripts.",
     shape: createSkillSchema.shape,
   },
   {

@@ -1,5 +1,5 @@
-import { Button, ChevronRight, FieldContext } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Button, ChevronRight, FieldContext } from "@zollybot/ui";
 import { children, createUniqueId, onSettled, Show } from "solid-js";
 import { useText } from "../text";
 import { createScrollFades } from "./createScrollFades";

@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the settings context reaches in main: the app-wide preferences, the switches for updates,
@@ -7,44 +7,44 @@ import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
  * Notifications tab.
  */
 export interface SettingsPort {
-  getAgentDefaults: OpenBotDesktopApi["getAgentDefaults"];
-  getAgentMemoryLimitPreference: OpenBotDesktopApi["getAgentMemoryLimitPreference"];
-  getAnalyticsPreference: OpenBotDesktopApi["getAnalyticsPreference"];
-  getAppBehaviorPreference: OpenBotDesktopApi["getAppBehaviorPreference"];
-  getApprovalAutomation: OpenBotDesktopApi["getApprovalAutomation"];
-  getBusyMessageModePreference: OpenBotDesktopApi["getBusyMessageModePreference"];
-  getExternalLinkPreference: OpenBotDesktopApi["getExternalLinkPreference"];
-  listExternalLinkBrowsers: OpenBotDesktopApi["listExternalLinkBrowsers"];
-  chooseExternalLinkApp: OpenBotDesktopApi["chooseExternalLinkApp"];
-  onExternalLinkFallback: OpenBotDesktopApi["onExternalLinkFallback"];
-  getRemoteNetworkRoute: OpenBotDesktopApi["getRemoteNetworkRoute"];
-  getRemoteSessionReusePreference: OpenBotDesktopApi["getRemoteSessionReusePreference"];
-  onAgentMemoryLimitPreference: OpenBotDesktopApi["onAgentMemoryLimitPreference"];
-  onAnalyticsPreference: OpenBotDesktopApi["onAnalyticsPreference"];
-  onApprovalAutomation: OpenBotDesktopApi["onApprovalAutomation"];
-  onOpenSettings: OpenBotDesktopApi["onOpenSettings"];
-  onOpenUpdateSettings: OpenBotDesktopApi["onOpenUpdateSettings"];
-  setAgentDefaults: OpenBotDesktopApi["setAgentDefaults"];
-  setAnalyticsPreference: OpenBotDesktopApi["setAnalyticsPreference"];
-  setAppBehaviorPreference: OpenBotDesktopApi["setAppBehaviorPreference"];
-  setBusyMessageModePreference: OpenBotDesktopApi["setBusyMessageModePreference"];
-  setExternalLinkPreference: OpenBotDesktopApi["setExternalLinkPreference"];
-  setRemoteNetworkRoute: OpenBotDesktopApi["setRemoteNetworkRoute"];
-  setRemoteSessionReusePreference: OpenBotDesktopApi["setRemoteSessionReusePreference"];
+  getAgentDefaults: ZollyBotDesktopApi["getAgentDefaults"];
+  getAgentMemoryLimitPreference: ZollyBotDesktopApi["getAgentMemoryLimitPreference"];
+  getAnalyticsPreference: ZollyBotDesktopApi["getAnalyticsPreference"];
+  getAppBehaviorPreference: ZollyBotDesktopApi["getAppBehaviorPreference"];
+  getApprovalAutomation: ZollyBotDesktopApi["getApprovalAutomation"];
+  getBusyMessageModePreference: ZollyBotDesktopApi["getBusyMessageModePreference"];
+  getExternalLinkPreference: ZollyBotDesktopApi["getExternalLinkPreference"];
+  listExternalLinkBrowsers: ZollyBotDesktopApi["listExternalLinkBrowsers"];
+  chooseExternalLinkApp: ZollyBotDesktopApi["chooseExternalLinkApp"];
+  onExternalLinkFallback: ZollyBotDesktopApi["onExternalLinkFallback"];
+  getRemoteNetworkRoute: ZollyBotDesktopApi["getRemoteNetworkRoute"];
+  getRemoteSessionReusePreference: ZollyBotDesktopApi["getRemoteSessionReusePreference"];
+  onAgentMemoryLimitPreference: ZollyBotDesktopApi["onAgentMemoryLimitPreference"];
+  onAnalyticsPreference: ZollyBotDesktopApi["onAnalyticsPreference"];
+  onApprovalAutomation: ZollyBotDesktopApi["onApprovalAutomation"];
+  onOpenSettings: ZollyBotDesktopApi["onOpenSettings"];
+  onOpenUpdateSettings: ZollyBotDesktopApi["onOpenUpdateSettings"];
+  setAgentDefaults: ZollyBotDesktopApi["setAgentDefaults"];
+  setAnalyticsPreference: ZollyBotDesktopApi["setAnalyticsPreference"];
+  setAppBehaviorPreference: ZollyBotDesktopApi["setAppBehaviorPreference"];
+  setBusyMessageModePreference: ZollyBotDesktopApi["setBusyMessageModePreference"];
+  setExternalLinkPreference: ZollyBotDesktopApi["setExternalLinkPreference"];
+  setRemoteNetworkRoute: ZollyBotDesktopApi["setRemoteNetworkRoute"];
+  setRemoteSessionReusePreference: ZollyBotDesktopApi["setRemoteSessionReusePreference"];
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     "listAgents" | "updateAgent" | "listAgentNotificationLevels" | "setAgentNotificationLevel" | "onScopedEvent"
   >;
-  backgroundProcesses: OpenBotDesktopApi["backgroundProcesses"];
+  backgroundProcesses: ZollyBotDesktopApi["backgroundProcesses"];
   dynamicIsland: Pick<
-    OpenBotDesktopApi["dynamicIsland"],
+    ZollyBotDesktopApi["dynamicIsland"],
     "getBuiltInDisplayGeometry" | "getPreference" | "setPreference"
   >;
-  notifications: Pick<OpenBotDesktopApi["notifications"], "getPreference" | "openSettings" | "setPreference" | "test">;
-  update: Pick<OpenBotDesktopApi["update"], "getPreference" | "onPreference" | "setPreference">;
+  notifications: Pick<ZollyBotDesktopApi["notifications"], "getPreference" | "openSettings" | "setPreference" | "test">;
+  update: Pick<ZollyBotDesktopApi["update"], "getPreference" | "onPreference" | "setPreference">;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function settingsPort(): SettingsPort {
-  return window.openbot;
+  return window.zollybot;
 }

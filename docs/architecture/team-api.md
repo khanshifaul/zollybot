@@ -6,11 +6,11 @@ Current remote connections use Team API protocol v9 over three ordered WebRTC Da
 `events`, and `files`. A sandboxed hidden Chromium page owns each `RTCPeerConnection`. Electron main
 uses a `MessagePort` and transfers binary data as `ArrayBuffer`. Signal carries SDP and ICE only,
 except the Slack requests of an agent's Slack app (see [Messaging connections](channels-and-messaging.md#messaging-connections)).
-OpenBot Mobile uses the same ticket, authentication transcript, framing, RPC codec, and event stream.
+ZollyBot Mobile uses the same ticket, authentication transcript, framing, RPC codec, and event stream.
 In Expo Go, an Expo DOM component owns the browser `RTCPeerConnection` inside a hidden WebView and
 passes only serializable, validated commands and events to the native React UI; no native WebRTC
 module or development build is required.
-The host's network route preference (`openbot-remote-network-route-v1.json`) applies to every
+The host's network route preference (`zollybot-remote-network-route-v1.json`) applies to every
 remote connection to the computer. With `private`, the host gives WebRTC no ICE servers, and the
 hidden page removes each local, remote, and SDP candidate that is not a `host` candidate on a private
 address (RFC 1918, 100.64.0.0/10, `fc00::/7`, or `.local`). A change to `private` closes the
@@ -169,15 +169,15 @@ origin. It reads the servers in the app's order, the agents with their avatar pi
 and the localized text that `ShareExtensionSync` writes to the App Group, and the session from a
 keychain group that only the app and the extension share. The app donates `INSendMessageIntent`
 for each agent it sends to, with its avatar, so the share sheet offers those agents first. With no data, the app lock on, a share that one message cannot hold, or a failed send that the
-user gives to the app, the extension opens `openbot://expo-sharing` as before. Android always uses that
+user gives to the app, the extension opens `zollybot://expo-sharing` as before. Android always uses that
 path. The share waits in native storage through sign-in. The share
 sheet moves its files into the app cache, the user chooses an agent, and that chat's composer gets the
 text and files, which follow the attachment rules above. The phone reads the response headers of a
 shared link; a link to an image of at most 10 MB is downloaded and comes as a file instead of the link. Permanent invitation metadata comes from the shared Team client; revocation stops
 new joins without removing existing members.
-iOS associates `https://openbot.run/join` and `https://openbot.run/agents/*` with `run.openbot.mobile`. Changes to associated
+iOS associates `https://openbot.run/join` and `https://openbot.run/agents/*` with `run.zollybot.mobile`. Changes to associated
 domains require a new native app build and deployment of the website association file. Android
-continues to open HTTPS invitations in the browser, whose button opens `openbot://join`. Enabling
+continues to open HTTPS invitations in the browser, whose button opens `zollybot://join`. Enabling
 verified Android App Links requires the release app-signing certificate's SHA-256 fingerprint,
 `/.well-known/assetlinks.json`, and a matching verified `/join` intent filter. No certificate
 fingerprint is stored in this repository yet.
@@ -273,7 +273,7 @@ Tunnel transport is retired. The old public endpoints return `host_update_requir
 
 The desktop client starts each remote connection with `GET /v1/compatibility`. The response contains the host application version, the minimum and maximum Team API protocol versions, and host capabilities. The client selects the highest protocol in the shared range. Application SemVer does not select or reject a protocol.
 
-The first released Team API protocol is `1`. All later HTTP requests include `OpenBot-Protocol-Version` and `OpenBot-App-Version`. The event socket uses the `openbot-team-v1` WebSocket subprotocol. A host without the compatibility endpoint is treated as an old host and is blocked. A request without the required protocol headers is treated as an old client and is blocked.
+The first released Team API protocol is `1`. All later HTTP requests include `ZollyBot-Protocol-Version` and `ZollyBot-App-Version`. The event socket uses the `zollybot-team-v1` WebSocket subprotocol. A host without the compatibility endpoint is treated as an old host and is blocked. A request without the required protocol headers is treated as an old client and is blocked.
 
 Each protocol has a frozen codec and adapter in `packages/contracts/src/team-protocol`. The v1 HTTP codec owns the fixed route registry and validates JSON requests and responses before the adapter converts current values. Uploads, downloads, and other binary routes use the same negotiated headers and error envelope. The host does not write current service or IPC values directly to the network. Breaking or semantic changes add a new protocol directory and registry entry. A released adapter keeps its original meaning.
 

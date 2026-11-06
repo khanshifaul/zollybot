@@ -1,7 +1,7 @@
 import {
   COMPUTER_ACTIVITY_CAPABILITY,
   COMPUTER_ACTIVITY_ROUTES,
-} from "@openbot/contracts/team-protocol/computer-activity-v1";
+} from "@zollybot/contracts/team-protocol/computer-activity-v1";
 import type { PushNotificationService } from "../push-notifications";
 import type { RouteOutcome, TeamApiRequestContext } from "./request-context";
 import { readJson } from "./request-helpers";

@@ -4,13 +4,13 @@ import { dirname } from "node:path";
 import { text as readText } from "node:stream/consumers";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-import { redactText } from "@openbot/logging";
+import { redactText } from "@zollybot/logging";
 import { Schema } from "effect";
 import { loadSharedDevelopmentEnvironment } from "./development-environment";
 import { readScriptArguments } from "./script-arguments";
 
-// Read-only SQL on the OpenPanel ClickHouse, for the openpanel skill. The user openbot_readonly can only
-// SELECT from the view openbot_readonly.events (openpanel.events of project openbot). The server sets
+// Read-only SQL on the OpenPanel ClickHouse, for the openpanel skill. The user zollybot_readonly can only
+// SELECT from the view zollybot_readonly.events (openpanel.events of project zollybot). The server sets
 // readonly=1 and the time, memory, thread and result limits. ClickHouse has no public port: the script
 // opens an SSH tunnel to the container, or uses OPENPANEL_CLICKHOUSE_URL when a tunnel is already open.
 // The credentials are OPENPANEL_CLICKHOUSE_USER and OPENPANEL_CLICKHOUSE_PASSWORD in

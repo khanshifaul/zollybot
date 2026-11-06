@@ -1,5 +1,5 @@
-import type { UiBlockSpec } from "@openbot/contracts/ui-blocks";
 import type { JSX } from "@solidjs/web";
+import type { UiBlockSpec } from "@zollybot/contracts/ui-blocks";
 import { Match, Switch } from "solid-js";
 import { UiChoiceBlock } from "./UiChoiceBlock";
 import { UiConfirmBlock } from "./UiConfirmBlock";

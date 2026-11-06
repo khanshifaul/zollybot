@@ -1,7 +1,7 @@
 import { win32 } from "node:path";
 import type { LoadSessionResponse, NewSessionRequest, PromptResponse, RequestError } from "@agentclientprotocol/sdk";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
-import type { CauseCode } from "@openbot/telemetry";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
+import type { CauseCode } from "@zollybot/telemetry";
 import { enableCursorMcpServers } from "./cursor-mcp-disabled";
 import { isRecord } from "./protocol";
 
@@ -18,7 +18,7 @@ export interface AcpCustomEndpoint {
  * only for an observed agent version, and name that version where the hook is set.
  */
 export interface AcpFlavor {
-  /** The `clientInfo` that `initialize` sends. Absent: `OPENBOT_ACP_CLIENT_INFO`. */
+  /** The `clientInfo` that `initialize` sends. Absent: `ZOLLYBOT_ACP_CLIENT_INFO`. */
   clientInfo?: { name: string; title: string; version: string };
   /**
    * Whether an error names this missing session. `null` gives the decision to the protocol's
@@ -99,7 +99,7 @@ export interface AcpFlavor {
   thoughtsInsideAnswer?: true;
   /**
    * `session/prompt` stays open with no update while background tasks run, so a silent turn is not
-   * stalled and OpenBot does not end it (`ACP_TURN_STALL_MS`). A prompt that gets no update at all
+   * stalled and ZollyBot does not end it (`ACP_TURN_STALL_MS`). A prompt that gets no update at all
    * is sent again once, and then fails (`ACP_FIRST_UPDATE_MS`).
    */
   promptOpenForBackgroundTasks?: true;
@@ -123,30 +123,30 @@ export interface AcpFlavor {
   subagentTools?: readonly string[];
   /**
    * The agent keeps one MCP server of each name for a directory, and a session that opens there
-   * replaces the server that the others in it use. Their OpenBot servers then share one token.
+   * replaces the server that the others in it use. Their ZollyBot servers then share one token.
    */
   mcpServersPerDirectory?: true;
   /**
    * The agent connects to each MCP server of a session before it answers `session/new` or
-   * `session/load`, and leaves out a server that did not load with no error. A session that OpenBot's
-   * servers did not reach then fails, as the agent cannot use OpenBot's tools.
+   * `session/load`, and leaves out a server that did not load with no error. A session that ZollyBot's
+   * servers did not reach then fails, as the agent cannot use ZollyBot's tools.
    */
   mcpServersLoadWithSession?: true;
-  /** Turns OpenBot's servers back on where the agent's own settings for `cwd` turned them off. */
+  /** Turns ZollyBot's servers back on where the agent's own settings for `cwd` turned them off. */
   enableMcpServers?(cwd: string, names: readonly string[]): void;
-  /** OpenBot compacts by replacing the session, for an agent that reports `usage_update` and has no compact request. */
+  /** ZollyBot compacts by replacing the session, for an agent that reports `usage_update` and has no compact request. */
   contextCompaction?: "handoff";
-  /** A whole answer chunk that is the agent's own transport error, not answer text. OpenBot drops it. */
+  /** A whole answer chunk that is the agent's own transport error, not answer text. ZollyBot drops it. */
   noiseChunk?: RegExp;
   /**
-   * A whole answer chunk that tells that the agent's process lost its sign-in. OpenBot fails the
+   * A whole answer chunk that tells that the agent's process lost its sign-in. ZollyBot fails the
    * turn and ends the process, so the next turn starts a process that reads the sign-in again.
    */
   signInLostChunk?: RegExp;
   /** The `_meta` of each `session/new`, `session/load` and `session/resume` request. */
   sessionMeta?: NewSessionRequest["_meta"];
   /**
-   * OpenBot opens a saved session with `session/load`, also when the agent advertises
+   * ZollyBot opens a saved session with `session/load`, also when the agent advertises
    * `session/resume`, and this tells from a successful load reply that the session is missing.
    */
   loadInsteadOfResume?: { missing(response: LoadSessionResponse): boolean };
@@ -200,7 +200,7 @@ export const CURSOR_ACP_FLAVOR: AcpFlavor = {
   // failed request as "Invalid model value" (#3800). One set per change, not one per turn.
   processWideModel: true,
   // Cursor 2026.10.22-27dcf5f leaves out a disabled or blocked server, and the agent turn then
-  // finds no OpenBot tools (#3058).
+  // finds no ZollyBot tools (#3058).
   mcpServersLoadWithSession: true,
   enableMcpServers: enableCursorMcpServers,
 };

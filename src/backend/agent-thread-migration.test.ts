@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a task does not become a thread, or
 // loses a column; a task row with no thread stops the upgrade; a failed upgrade leaves the new table, or
@@ -24,16 +24,16 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
 /** The agent's own chat and two task conversations, in the columns every release has. */
 function seedThreads(db: DatabaseSync): void {
   const insert = db.prepare("INSERT INTO projection_threads VALUES (?, 'chief', ?, NULL, ?, ?, 1)");
-  insert.run("openbot-thread-chief", 'Chief 界"\\', "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
-  insert.run("openbot-thread-open", "Billing export", "2026-10-01T08:00:00.000Z", "2026-10-01T08:00:00.000Z");
-  insert.run("openbot-thread-closed", "Release notes", "2026-10-01T09:00:00.000Z", "2026-10-01T09:00:00.000Z");
+  insert.run("zollybot-thread-chief", 'Chief 界"\\', "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
+  insert.run("zollybot-thread-open", "Billing export", "2026-10-01T08:00:00.000Z", "2026-10-01T08:00:00.000Z");
+  insert.run("zollybot-thread-closed", "Release notes", "2026-10-01T09:00:00.000Z", "2026-10-01T09:00:00.000Z");
 }
 
 /** An open task of the person, and a closed, failed task that the agent started. From schema 38 on. */
@@ -41,9 +41,9 @@ function seedTasks(db: DatabaseSync): void {
   db.exec(`INSERT INTO projection_agent_tasks
     (task_id, agent_id, thread_id, origin, title, outcome, error, created_at, updated_at, closed_at,
      last_event_sequence)
-    VALUES ('agent-task-open', 'chief', 'openbot-thread-open', 'user', 'Billing export 界"\\', 'completed', NULL,
+    VALUES ('agent-task-open', 'chief', 'zollybot-thread-open', 'user', 'Billing export 界"\\', 'completed', NULL,
         '2026-10-01T08:00:00.000Z', '2026-10-02T08:00:00.000Z', NULL, 4),
-      ('agent-task-closed', 'chief', 'openbot-thread-closed', 'agent', 'Release notes', 'failed', 'Provider said no',
+      ('agent-task-closed', 'chief', 'zollybot-thread-closed', 'agent', 'Release notes', 'failed', 'Provider said no',
         '2026-10-01T09:00:00.000Z', '2026-10-02T09:00:00.000Z', '2026-10-03T09:00:00.000Z', 7)`);
 }
 
@@ -57,7 +57,7 @@ const EMPTY_GITHUB_TABLES = {
 // Migration 48 adds the branch link, null for every moved task.
 const THREADS = [
   {
-    thread_id: "openbot-thread-closed",
+    thread_id: "zollybot-thread-closed",
     agent_id: "chief",
     legacy_task_id: "agent-task-closed",
     origin: "agent",
@@ -75,7 +75,7 @@ const THREADS = [
     routine_id: null,
   },
   {
-    thread_id: "openbot-thread-open",
+    thread_id: "zollybot-thread-open",
     agent_id: "chief",
     legacy_task_id: "agent-task-open",
     origin: "user",
@@ -151,7 +151,7 @@ function insertThread(
     (thread_id, agent_id, legacy_task_id, origin, title, title_source, outcome, error, created_at, updated_at,
      archived_at, last_event_sequence)
     VALUES (?, 'chief', ?, ?, 'Billing export', ?, NULL, NULL, '2026-10-04', '2026-10-04', NULL, 9)`).run(
-    values.threadId ?? "openbot-thread-new",
+    values.threadId ?? "zollybot-thread-new",
     values.legacyTaskId ?? null,
     values.origin ?? "user",
     values.titleSource ?? "user",
@@ -169,7 +169,7 @@ describe("agent thread migration", () => {
       seedTasks(db);
       if (version < 46) migrateUpTo(db, 46);
       const before = contents(db);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(withoutTasks(contents(db))).toEqual({ ...withoutTasks(before), ...EMPTY_GITHUB_TABLES });
       expect(threads(db)).toEqual(THREADS);
       expect(agentTables(db)).toEqual([
@@ -186,10 +186,10 @@ describe("agent thread migration", () => {
     const db = databaseAt(46);
     seedThreads(db);
     seedTasks(db);
-    db.exec("PRAGMA foreign_keys=OFF; DELETE FROM projection_threads WHERE thread_id='openbot-thread-closed'");
+    db.exec("PRAGMA foreign_keys=OFF; DELETE FROM projection_threads WHERE thread_id='zollybot-thread-closed'");
     db.exec("PRAGMA foreign_keys=ON");
     expect(db.prepare("SELECT COUNT(*) AS count FROM projection_agent_tasks").get()).toEqual({ count: 2 });
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(threads(db)).toEqual([THREADS[1]]);
     expectHealthy(db);
   });
@@ -205,7 +205,7 @@ describe("agent thread migration", () => {
     db.exec(`INSERT INTO projection_deliveries
       (delivery_id, message_id, recipient_agent_id, status, turn_id, error, created_at, delivery_json, last_event_sequence)
       VALUES ('delivery-1', 'message-1', 'chief', 'queued', NULL, NULL, '2026-10-04', '{"id":"delivery-1"}', 10)`);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(db.prepare("SELECT message_json FROM projection_mailbox_messages").all()).toEqual([
       { message_json: message },
     ]);
@@ -216,7 +216,7 @@ describe("agent thread migration", () => {
            WHERE legacy_task_id = ? OR (legacy_task_id IS NULL AND thread_id = ?)`,
         )
         .all("agent-task-open", "agent-task-open"),
-    ).toEqual([{ thread_id: "openbot-thread-open" }]);
+    ).toEqual([{ thread_id: "zollybot-thread-open" }]);
     expectHealthy(db);
   });
 
@@ -228,13 +228,13 @@ describe("agent thread migration", () => {
     const tablesBefore = agentTables(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=47
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 47 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 47 failed");
     expect(contents(db)).toEqual(before);
     expect(agentTables(db)).toEqual(tablesBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=47").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(threads(db)).toEqual(THREADS);
     expectHealthy(db);
   });
@@ -245,9 +245,9 @@ describe("agent thread migration", () => {
     seedTasks(db);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
   });
 
@@ -255,15 +255,15 @@ describe("agent thread migration", () => {
     const db = databaseAt(46);
     seedThreads(db);
     seedTasks(db);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     db.prepare(
-      "INSERT INTO projection_threads VALUES ('openbot-thread-new', 'chief', 'Chief', NULL, '2026-10-04', '2026-10-04', 9)",
+      "INSERT INTO projection_threads VALUES ('zollybot-thread-new', 'chief', 'Chief', NULL, '2026-10-04', '2026-10-04', 9)",
     ).run();
-    expect(() => insertThread(db, { threadId: "openbot-thread-unknown" })).toThrow("FOREIGN KEY constraint failed");
+    expect(() => insertThread(db, { threadId: "zollybot-thread-unknown" })).toThrow("FOREIGN KEY constraint failed");
     expect(() => insertThread(db, { origin: "routine" })).toThrow("CHECK constraint failed");
     expect(() => insertThread(db, { titleSource: "channel" })).toThrow("CHECK constraint failed");
     expect(() => insertThread(db, { legacyTaskId: "agent-task-open" })).toThrow("UNIQUE constraint failed");
-    expect(() => insertThread(db, { threadId: "openbot-thread-open" })).toThrow("UNIQUE constraint failed");
+    expect(() => insertThread(db, { threadId: "zollybot-thread-open" })).toThrow("UNIQUE constraint failed");
     insertThread(db);
     expect(threads(db)).toHaveLength(3);
   });
@@ -272,11 +272,11 @@ describe("agent thread migration", () => {
     const db = databaseAt(46);
     seedThreads(db);
     seedTasks(db);
-    migrateOpenBotDatabase(db);
-    db.exec("DELETE FROM projection_threads WHERE thread_id IN ('openbot-thread-open', 'openbot-thread-closed')");
+    migrateZollyBotDatabase(db);
+    db.exec("DELETE FROM projection_threads WHERE thread_id IN ('zollybot-thread-open', 'zollybot-thread-closed')");
     expect(threads(db)).toEqual([]);
     expect(db.prepare("SELECT thread_id FROM projection_threads").all()).toEqual([
-      { thread_id: "openbot-thread-chief" },
+      { thread_id: "zollybot-thread-chief" },
     ]);
     expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   });

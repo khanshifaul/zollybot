@@ -58,7 +58,7 @@ function author(value: unknown): TeamProtocolV2Json {
 
 /** The two channel routes whose responses carry the attention fields. */
 export function isChannelAttentionRoute(path: string): boolean {
-  const pathname = new URL(path, "http://openbot.invalid").pathname;
+  const pathname = new URL(path, "http://zollybot.invalid").pathname;
   return pathname === CHANNEL_ROUTES.list || pathname === CHANNEL_ROUTES.read;
 }
 
@@ -103,7 +103,7 @@ function withPageUiBlocks(projected: TeamProtocolV2Json, source: unknown): TeamP
 
 /** `projected` with the attention fields of `source` that the channels-v1 codec dropped. */
 export function withChannelAttention(path: string, projected: TeamProtocolV2Json, source: unknown): TeamProtocolV2Json {
-  const pathname = new URL(path, "http://openbot.invalid").pathname;
+  const pathname = new URL(path, "http://zollybot.invalid").pathname;
   if (pathname === CHANNEL_ROUTES.read) return withPageUiBlocks(projected, source);
   if (pathname !== CHANNEL_ROUTES.list || !Array.isArray(projected) || !Array.isArray(source)) return projected;
   return projected.map((summary, index) => withSummaryAttention(summary, source[index]));

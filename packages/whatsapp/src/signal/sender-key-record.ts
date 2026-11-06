@@ -1,10 +1,10 @@
-// Sender key states for one (group, sender) pair, with OpenBot's own versioned binary format.
+// Sender key states for one (group, sender) pair, with ZollyBot's own versioned binary format.
 // Our own record holds one state with the signing private key. A received record holds up to five
 // states, oldest first.
 
 import { ProtoFields, ProtoWriter } from "./protobuf";
 
-/** OpenBot sender key record format 1. */
+/** ZollyBot sender key record format 1. */
 const RECORD_FORMAT = 1;
 export const MAX_SENDER_KEY_STATES = 5;
 export const MAX_SENDER_MESSAGE_KEYS = 2000;

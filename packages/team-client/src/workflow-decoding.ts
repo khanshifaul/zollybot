@@ -29,9 +29,9 @@ import {
   WORKFLOW_STEP_STATUSES,
   WORKFLOW_TRIGGER_TYPES,
   WORKFLOW_VERSION_KINDS,
-} from "@openbot/contracts/ipc";
-import { guardedDecoder, guardedListDecoder } from "@openbot/contracts/ipc-decoding";
-import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { guardedDecoder, guardedListDecoder } from "@zollybot/contracts/ipc-decoding";
+import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@zollybot/contracts/runtime-values";
 
 type Json = DynamicRecord;
 

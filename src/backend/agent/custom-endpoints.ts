@@ -1,4 +1,4 @@
-import type { AgentModelOption, AgentReasoningEffort, AgentSummary, UpdateAgentInput } from "@openbot/contracts/ipc";
+import type { AgentModelOption, AgentReasoningEffort, AgentSummary, UpdateAgentInput } from "@zollybot/contracts/ipc";
 import {
   CUSTOM_AGENT_DEFAULT_MODEL,
   CUSTOM_PROVIDER_HARNESSES,
@@ -8,8 +8,8 @@ import {
   defaultProviderModel,
   isCustomProviderHarness,
   PICKER_PROVIDERS,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Exit, Schema, Semaphore } from "effect";
 import type { AgentProvider } from "../agent-client";
 import { type AgentStore, DEFAULT_AGENT_PROVIDER } from "../agent-store";
@@ -504,7 +504,7 @@ export class CustomEndpoints {
 
   /**
    * Drops the moves that wait for `harness` when it did not start. Those agents are on a model that
-   * their harness no longer lists, so they move to a model that it lists, as after a restart of OpenBot.
+   * their harness no longer lists, so they move to a model that it lists, as after a restart of ZollyBot.
    * It runs in the chain, so an edit that moves the endpoint back drops the moves first.
    */
   abandonMovesTo(harness: CustomProviderHarness): Effect.Effect<void> {
@@ -682,7 +682,7 @@ function sameCustomAgent(model: string, agentModel: string): boolean {
  * The listed model and effort that a saved model ID names as `<model>-<effort>`.
  *
  * Antigravity 1.3.0 and later list `gemini-3.1-pro` with a Low and a High effort. Earlier versions of
- * OpenBot listed and saved each effort as a model of its own, `gemini-3.1-pro-high`. An agent saved on
+ * ZollyBot listed and saved each effort as a model of its own, `gemini-3.1-pro-high`. An agent saved on
  * one of these keeps its model and effort. Only an effort that the listed model offers matches.
  */
 function effortVariant(

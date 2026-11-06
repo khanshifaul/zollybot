@@ -1,5 +1,5 @@
-import type { BitwardenConnectorStatus, BitwardenHostConnectInput } from "@openbot/contracts/ipc";
-import { Button, Field, Input, ItemGroup, Lock, SettingsSection, Text } from "@openbot/ui";
+import type { BitwardenConnectorStatus, BitwardenHostConnectInput } from "@zollybot/contracts/ipc";
+import { Button, Field, Input, ItemGroup, Lock, SettingsSection, Text } from "@zollybot/ui";
 import { createSignal, Show } from "solid-js";
 import { useText } from "../../text";
 import { IntegrationPage, type IntegrationPageSlots } from "./IntegrationLayout";

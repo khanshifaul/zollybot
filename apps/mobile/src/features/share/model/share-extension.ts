@@ -1,4 +1,4 @@
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { type NativeModule, requireOptionalNativeModule } from "expo";
 import { Directory, File, Paths } from "expo-file-system";
 import { supportLog, supportLogValue } from "@/features/support/model/support-log";
@@ -52,10 +52,10 @@ declare class ShareExtensionModule extends NativeModule {
 }
 
 /** `modules/share-extension`. Android, Expo Go and a build without the module have no extension to feed. */
-const native = requireOptionalNativeModule<ShareExtensionModule>("OpenBotShareExtension");
+const native = requireOptionalNativeModule<ShareExtensionModule>("ZollyBotShareExtension");
 
 /** The App Group of the app and its extensions. `app.json` names the same group. */
-const APP_GROUP = "group.run.openbot.mobile";
+const APP_GROUP = "group.run.zollybot.mobile";
 /** `plugins/share-extension/ShareExtensionData.swift` and `NotificationService.swift` read this file. */
 const DIRECTORY_FILE = "share-extension.json";
 /**

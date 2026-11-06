@@ -35,7 +35,7 @@ const MAXIMUM_THREADS = 64;
 /** A settings file is a plain name in the runtime directory; empty is the default settings. */
 const SESSION_CONFIG_PATTERN = /^(?:[a-z0-9-]+\.cfg)?$/u;
 
-/** The part of the sherpa-onnx offline recognizer configuration that OpenBot sets. */
+/** The part of the sherpa-onnx offline recognizer configuration that ZollyBot sets. */
 interface RecognizerConfig {
   featConfig: { sampleRate: number; featureDim: number };
   modelConfig: {

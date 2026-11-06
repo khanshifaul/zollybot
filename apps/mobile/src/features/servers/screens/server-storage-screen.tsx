@@ -3,9 +3,9 @@ import {
   type ClearableStorageCategory,
   canAdministerServer,
   type StorageCategory,
-} from "@openbot/contracts/ipc";
-import { isOneOf } from "@openbot/contracts/runtime-values";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+} from "@zollybot/contracts/ipc";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import RotateCw from "lucide-react-native/icons/rotate-cw";
@@ -62,7 +62,7 @@ const CLEAR_CONFIRM: Record<ClearableStorageCategory, { title: MobileTextKey; bo
 const LARGEST_CHATS = 5;
 
 /**
- * Server sheet > Storage: how much space OpenBot takes on the host, which agents and chats take it,
+ * Server sheet > Storage: how much space ZollyBot takes on the host, which agents and chats take it,
  * and every stored file, like Server Settings > Storage on desktop. Every member reads it; an owner
  * or admin also clears caches and logs. Chats and workspaces are never cleared from here.
  */
@@ -306,12 +306,12 @@ export function ServerStorageScreen() {
 
 function useStorageGroupColors(): Record<StorageGroup, string> {
   return {
-    workspaces: String(useCSSVariable("--openbot-chart-storage-workspaces")),
-    files: String(useCSSVariable("--openbot-chart-storage-files")),
-    chats: String(useCSSVariable("--openbot-chart-storage-chats")),
-    downloads: String(useCSSVariable("--openbot-chart-storage-downloads")),
-    runtimes: String(useCSSVariable("--openbot-chart-storage-runtimes")),
-    app: String(useCSSVariable("--openbot-chart-storage-app")),
+    workspaces: String(useCSSVariable("--zollybot-chart-storage-workspaces")),
+    files: String(useCSSVariable("--zollybot-chart-storage-files")),
+    chats: String(useCSSVariable("--zollybot-chart-storage-chats")),
+    downloads: String(useCSSVariable("--zollybot-chart-storage-downloads")),
+    runtimes: String(useCSSVariable("--zollybot-chart-storage-runtimes")),
+    app: String(useCSSVariable("--zollybot-chart-storage-app")),
   };
 }
 

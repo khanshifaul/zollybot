@@ -1,5 +1,5 @@
-import { parseHostedServerActivityReport } from "@openbot/contracts/hosted-servers";
 import { createFileRoute } from "@tanstack/solid-router";
+import { parseHostedServerActivityReport } from "@zollybot/contracts/hosted-servers";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../../../server/effect-runtime";
 import { JsonBodyError, readJsonObject } from "../../../../../server/json-body";

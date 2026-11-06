@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
-import { BROWSER_PROXY_SCHEMES, type BrowserProxyScheme } from "@openbot/contracts/ipc";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
+import { BROWSER_PROXY_SCHEMES, type BrowserProxyScheme } from "@zollybot/contracts/ipc";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
 import {
   checkedColumn,
   databaseRows,
@@ -8,7 +8,7 @@ import {
   requiredNumberColumn,
   requiredStringColumn,
 } from "../database/database-rows";
-import type { OpenBotDatabase } from "../openbot-database";
+import type { ZollyBotDatabase } from "../zollybot-database";
 
 /** A saved proxy address without its password. */
 export interface BrowserProxyAddressRecord {
@@ -21,7 +21,7 @@ export interface BrowserProxyAddressRecord {
   hasPassword: boolean;
 }
 
-/** The computer of one member: the pages go out through the OpenBot desktop app of that member. */
+/** The computer of one member: the pages go out through the ZollyBot desktop app of that member. */
 export interface BrowserProxyComputerRecord {
   kind: "computer";
   id: string;
@@ -58,9 +58,9 @@ export interface BrowserProxyRow {
  * as `BrowserProfileStore` does.
  */
 export class BrowserProxyStore {
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
 
-  constructor(database: OpenBotDatabase) {
+  constructor(database: ZollyBotDatabase) {
     this.#database = database;
   }
 

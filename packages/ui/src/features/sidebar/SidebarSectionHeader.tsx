@@ -7,7 +7,7 @@
  * indent. A folder header ends with a folder icon, and with the unread count while it is closed.
  */
 
-import { SIDEBAR_FOLDER_LEVELS } from "@openbot/contracts/ipc";
+import { SIDEBAR_FOLDER_LEVELS } from "@zollybot/contracts/ipc";
 import {
   ArrowDown,
   ArrowUp,
@@ -23,7 +23,7 @@ import {
   FolderPlus,
   Pencil,
   Trash2,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { useText } from "../../text";
 import { SidebarSectionEditor } from "./SidebarSectionEditor";

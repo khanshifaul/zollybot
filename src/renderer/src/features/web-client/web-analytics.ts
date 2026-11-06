@@ -1,4 +1,4 @@
-import type { CentralAuthUser } from "@openbot/contracts/ipc";
+import type { CentralAuthUser } from "@zollybot/contracts/ipc";
 import { version } from "../../../../../package.json";
 import { type DesktopAnalyticsProperties, desktopAnalytics } from "../../analytics";
 import {

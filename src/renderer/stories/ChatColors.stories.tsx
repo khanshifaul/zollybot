@@ -1,7 +1,7 @@
-import type { AvatarColor } from "@openbot/contracts/ipc";
-import type { AgentMessage } from "@openbot/ui/data";
-import { ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
-import { CHAT_COLOR_PRESETS } from "@openbot/ui/features/settings/ChatColorPicker";
+import type { AvatarColor } from "@zollybot/contracts/ipc";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
+import { CHAT_COLOR_PRESETS } from "@zollybot/ui/features/settings/ChatColorPicker";
 import { For } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

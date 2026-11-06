@@ -1,4 +1,4 @@
-import type { MobileTextKey, MobileTranslate } from "@openbot/i18n/mobile";
+import type { MobileTextKey, MobileTranslate } from "@zollybot/i18n/mobile";
 import type { SharedValue } from "react-native-reanimated";
 import type { LiveConversationPhase } from "../model/live-conversation";
 import type { LiveConversation } from "./use-live-conversation";

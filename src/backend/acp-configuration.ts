@@ -4,10 +4,10 @@ import {
   type AgentSessionSettingsSnapshot,
   type AgentSessionSettingValue,
   isReasoningEffort,
-} from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect, Fiber, type Scope, Semaphore } from "effect";
 import type { AcpConnection } from "./acp-connection";
 import type { AgentProvider } from "./agent-client";
@@ -20,7 +20,7 @@ import {
 } from "./provider-client-effects";
 import { TimeoutError } from "./with-timeout";
 
-const logger = createOpenBotLogger("provider-runtime");
+const logger = createZollyBotLogger("provider-runtime");
 /**
  * How long model discovery may spend on asking an agent for each model's reasoning efforts. One
  * OpenCode sweep of 49 models costs about 20ms, so this is not a target: it is the point where an
@@ -63,7 +63,7 @@ export interface AcpModel {
   reasoningEffortWireValues: Map<string, string>;
   usesModelReasoningEffort: boolean | null;
   /**
-   * A model that OpenBot adds and the agent does not list. The agent takes it as the value of its
+   * A model that ZollyBot adds and the agent does not list. The agent takes it as the value of its
    * `model` option after each option in `config` has the value given there.
    */
   unlisted?: { config: Readonly<Record<string, string>> };
@@ -340,7 +340,7 @@ export class AcpConfiguration {
           candidate.category === category && candidate.type === "select",
       );
       // Cline puts a provider option of the model category before its model option. The first option
-      // of the category did not list the model, and the model was never sent. A model OpenBot added
+      // of the category did not list the model, and the model was never sent. A model ZollyBot added
       // goes to the agent's `model` option, which takes a value it did not list.
       const option =
         (category === "model" &&
@@ -369,7 +369,7 @@ export class AcpConfiguration {
         }
         continue;
       }
-      // An effort travels by OpenBot's name, and the agent's own name for it is read from the option
+      // An effort travels by ZollyBot's name, and the agent's own name for it is read from the option
       // this session published, not from the catalog: the session is the one that has to accept it.
       const values = selectValues(option);
       const wanted = category === "thought_level" ? effortWireValue(values, value) : value;
@@ -709,10 +709,10 @@ function selectValues(option: Extract<SessionConfigOption, { type: "select" }>) 
 }
 
 /**
- * What OpenBot's effort names are sent as, keyed by the OpenBot name.
+ * What ZollyBot's effort names are sent as, keyed by the ZollyBot name.
  *
  * The exact name wins over an alias, whichever comes first. An agent can offer `off` and `none`
- * for the same level: first value per key would make OpenBot's `none` send `off`. An alias is kept
+ * for the same level: first value per key would make ZollyBot's `none` send `off`. An alias is kept
  * for a key the agent has no exact name for, which is how a model with `off` and no `none` stays
  * reachable.
  */
@@ -723,7 +723,7 @@ function reasoningEffortWireValues(values: string[]): Map<string, string> {
     if (!normalized) continue;
     const held = result.get(normalized);
     // `value.toLowerCase()` and not the normalized form of it: an exact name is the agent's own
-    // spelling of the key, and every key OpenBot has is one word.
+    // spelling of the key, and every key ZollyBot has is one word.
     if (held === undefined || (held !== normalized && value.toLowerCase() === normalized)) {
       result.set(normalized, value);
     }
@@ -738,7 +738,7 @@ function effortWireValue(values: { value: string }[], effort: string): string | 
 }
 
 /**
- * The level to send for a saved effort. `minimal`, `none` and `off` were `low` before OpenBot had a
+ * The level to send for a saved effort. `minimal`, `none` and `off` were `low` before ZollyBot had a
  * name for them, so an agent saved as `low` on a model without it still sends the lowest level.
  */
 function listedEffort(effort: string, listed: (level: string) => boolean): string | undefined {

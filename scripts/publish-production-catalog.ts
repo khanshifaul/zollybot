@@ -3,24 +3,24 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { buildProductionCatalog } from "./build-production-catalog";
 
-const logger = createOpenBotLogger("publish-production-catalog");
+const logger = createZollyBotLogger("publish-production-catalog");
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const authApiRoot = join(projectRoot, "apps", "auth-api");
 const executableSuffix = process.platform === "win32" ? ".exe" : "";
 const wrangler = join(projectRoot, "node_modules", ".bin", `wrangler${executableSuffix}`);
 const productionApiUrl = "https://api.openbot.run";
-const productionDatabase = "openbot-auth";
-const productionBucket = "openbot-skills";
+const productionDatabase = "zollybot-auth";
+const productionBucket = "zollybot-skills";
 const owner = {
-  id: "openbot-production-catalog",
-  identityKey: "openbot-production-catalog",
+  id: "zollybot-production-catalog",
+  identityKey: "zollybot-production-catalog",
   email: "catalog@openbot.run",
-  name: "OpenBot",
+  name: "ZollyBot",
   avatarUrl: "https://openbot.run/icon-192x192.png",
 } as const;
 
@@ -92,7 +92,7 @@ export function createPublicationSql(publication: Publication, publishedAt: numb
      their snapshot, and a later catalog that lists the slug again approves a new version. */
   for (const slug of publication.retiredAgents) {
     statements.push(
-      `UPDATE marketplace_agents SET approved_version_id = NULL, featured = 0, updated_at = ${publishedAt} WHERE id = ${sql(`openbot-curated-agent-${slug}`)} AND owner_user_id = ${sql(owner.id)};`,
+      `UPDATE marketplace_agents SET approved_version_id = NULL, featured = 0, updated_at = ${publishedAt} WHERE id = ${sql(`zollybot-curated-agent-${slug}`)} AND owner_user_id = ${sql(owner.id)};`,
     );
   }
 
@@ -104,8 +104,8 @@ export async function publishProductionCatalog(
   target: "local" | "production" = "production",
 ): Promise<void> {
   const mode = target === "local" ? "--local" : "--remote";
-  const bucket = target === "local" ? "openbot-skills-test" : productionBucket;
-  const temporaryRoot = await mkdtemp(join(tmpdir(), "openbot-production-publish-"));
+  const bucket = target === "local" ? "zollybot-skills-test" : productionBucket;
+  const temporaryRoot = await mkdtemp(join(tmpdir(), "zollybot-production-publish-"));
   try {
     const artifactRoot = join(temporaryRoot, "artifacts");
     await buildProductionCatalog(artifactRoot);

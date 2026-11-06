@@ -3,9 +3,9 @@ import { isBoundedString, isIdentifier } from "./ipc-bounded-values";
 import { isDynamicRecord, isOneOf } from "./runtime-values";
 
 /**
- * The instruction files at the root of an agent's workspace, in the order OpenBot reads them. The
- * first one that exists holds the agent's instructions; with none, OpenBot writes `AGENTS.md`.
- * `CLAUDE.md` is read for workspaces that an agent set up before OpenBot read `AGENTS.md`.
+ * The instruction files at the root of an agent's workspace, in the order ZollyBot reads them. The
+ * first one that exists holds the agent's instructions; with none, ZollyBot writes `AGENTS.md`.
+ * `CLAUDE.md` is read for workspaces that an agent set up before ZollyBot read `AGENTS.md`.
  */
 export const AGENT_INSTRUCTION_FILE_NAMES = ["AGENTS.md", "CLAUDE.md"] as const;
 export type AgentInstructionFileName = (typeof AGENT_INSTRUCTION_FILE_NAMES)[number];

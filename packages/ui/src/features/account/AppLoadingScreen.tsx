@@ -1,4 +1,4 @@
-import type { AppTextKey } from "@openbot/i18n";
+import type { AppTextKey } from "@zollybot/i18n";
 import { createEffect, createSignal, For, onCleanup, onSettled, untrack } from "solid-js";
 import { PlushLoader } from "../../plush-loader";
 import { useText } from "../../text";

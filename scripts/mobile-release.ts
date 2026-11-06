@@ -114,7 +114,7 @@ async function overview(): Promise<void> {
     const posted = tags?.has(announcedTag(version, store)) ? " ✓ post" : "";
     return `${state ?? "In review"}${posted}`.padEnd(22);
   };
-  process.stdout.write(`\n${BOLD("OpenBot mobile release")}   ${DIM(`version in app.json: ${appVersion()}`)}\n\n`);
+  process.stdout.write(`\n${BOLD("ZollyBot mobile release")}   ${DIM(`version in app.json: ${appVersion()}`)}\n\n`);
   process.stdout.write(`  ${"Version".padEnd(10)}${"iOS".padEnd(22)}Android\n`);
   for (const { version, dates } of versions) {
     process.stdout.write(

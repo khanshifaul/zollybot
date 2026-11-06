@@ -1,13 +1,13 @@
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
-import { ConfirmDialog } from "@openbot/ui";
-import { AgentUpdateDialog } from "@openbot/ui/features/marketplace/AgentUpdateDialog";
-import { Marketplace } from "@openbot/ui/features/marketplace/Marketplace";
-import type { MarketplaceApp } from "@openbot/ui/features/marketplace/marketplace-model";
-import { createMarketplaceNavigation } from "@openbot/ui/features/marketplace/marketplace-view";
-import { McpConnectDialog } from "@openbot/ui/features/settings/McpConnectDialog";
-import { McpSignInRelayDialog } from "@openbot/ui/features/settings/McpSignInPage";
-import { PluginUninstallDialog } from "@openbot/ui/features/settings/PluginUninstallDialog";
-import { useText } from "@openbot/ui/text";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
+import { ConfirmDialog } from "@zollybot/ui";
+import { AgentUpdateDialog } from "@zollybot/ui/features/marketplace/AgentUpdateDialog";
+import { Marketplace } from "@zollybot/ui/features/marketplace/Marketplace";
+import type { MarketplaceApp } from "@zollybot/ui/features/marketplace/marketplace-model";
+import { createMarketplaceNavigation } from "@zollybot/ui/features/marketplace/marketplace-view";
+import { McpConnectDialog } from "@zollybot/ui/features/settings/McpConnectDialog";
+import { McpSignInRelayDialog } from "@zollybot/ui/features/settings/McpSignInPage";
+import { PluginUninstallDialog } from "@zollybot/ui/features/settings/PluginUninstallDialog";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createSignal, Show, untrack } from "solid-js";
 import {
   createMarketplaceController,
@@ -17,7 +17,7 @@ import {
 
 export interface MarketplaceModalProps extends MarketplaceControllerProps {
   /**
-   * The listing an `openbot://plugins/<slug>` link or a chat suggestion asked for. It opens the app
+   * The listing an `zollybot://plugins/<slug>` link or a chat suggestion asked for. It opens the app
    * page; a link never connects, so what a link can do is show a user a listing they then decide
    * about.
    */

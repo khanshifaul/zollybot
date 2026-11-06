@@ -1,5 +1,5 @@
-import { AGENT_PROVIDERS, type AgentProviderId } from "@openbot/contracts/agent-providers";
-import { sourceText } from "@openbot/i18n/source";
+import { AGENT_PROVIDERS, type AgentProviderId } from "@zollybot/contracts/agent-providers";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result, Schema, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";

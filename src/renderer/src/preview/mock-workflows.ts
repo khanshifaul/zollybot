@@ -6,7 +6,6 @@
 import {
   isWorkflowStepKind,
   nodeAgentId,
-  type OpenBotDesktopApi,
   type StartWorkflowRunInput,
   WORKFLOW_AUTO_VERSION_INTERVAL_MS,
   WORKFLOW_MAX_VERSIONS,
@@ -25,9 +24,10 @@ import {
   type WorkflowTriggerState,
   type WorkflowVersion,
   workflowGitHubTriggerRepositories,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { nextValidRoutineOccurrence } from "@openbot/team-client/routine-schedule";
+  type ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { nextValidRoutineOccurrence } from "@zollybot/team-client/routine-schedule";
 
 const PREVIEW_HOOKS = "https://hooks.openbot.run/wf";
 
@@ -35,8 +35,8 @@ const PREVIEW_HOOKS = "https://hooks.openbot.run/wf";
 const PREVIEW_GITHUB_CATALOG: WorkflowGitHubCatalog = {
   connected: true,
   repositories: [
-    { fullName: "openbot-preview/app", private: false, canWrite: true, events: true },
-    { fullName: "openbot-preview/docs", private: true, canWrite: false, events: true },
+    { fullName: "zollybot-preview/app", private: false, canWrite: true, events: true },
+    { fullName: "zollybot-preview/docs", private: true, canWrite: false, events: true },
   ],
 };
 
@@ -56,7 +56,7 @@ const PREVIEW_GITHUB_OPTIONS: WorkflowGitHubRepositoryOptions = {
 function previewItem(node: WorkflowNode, number: number, title: string): WorkflowGitHubItem {
   const repositories = workflowGitHubTriggerRepositories(node.fields);
   return {
-    repository: repositories[number % Math.max(repositories.length, 1)] ?? "openbot-preview/app",
+    repository: repositories[number % Math.max(repositories.length, 1)] ?? "zollybot-preview/app",
     number,
     pullRequest: false,
     title,
@@ -114,7 +114,7 @@ function mockAnswer(node: WorkflowNode, input: string): string {
 export function mockWorkflows(
   seeds: readonly MockWorkflowSeed[],
   emit: (workflowId: string) => void,
-): OpenBotDesktopApi["workflows"] {
+): ZollyBotDesktopApi["workflows"] {
   const records = new Map<string, MockWorkflowRecord>();
   const stamp = () => new Date().toISOString();
   /** The webhook triggers that have a secret, as `<workflowId>/<nodeId>`. The host makes a route only then. */

@@ -1,15 +1,16 @@
-import { isOpenBillingStatus } from "@openbot/contracts/billing";
-import { DEFAULT_TEAM_MEMBER_LIMIT, INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { InviteSummary, TeamInviteSummary, TeamPresenceMember, TeamRole } from "@openbot/contracts/ipc";
+import type { JSX } from "@solidjs/web";
+import { isOpenBillingStatus } from "@zollybot/contracts/billing";
+import { DEFAULT_TEAM_MEMBER_LIMIT, INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { InviteSummary, TeamInviteSummary, TeamPresenceMember, TeamRole } from "@zollybot/contracts/ipc";
 import {
   LICENSE_INCLUDED_USERS,
   LICENSE_MAX_USERS,
   type License,
   licenseMonthlyAmount,
   licensePlanOf,
-} from "@openbot/contracts/license";
-import { normalizeEmailAddress } from "@openbot/contracts/validation";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/license";
+import { normalizeEmailAddress } from "@zollybot/contracts/validation";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertContent,
@@ -48,13 +49,12 @@ import {
   Text,
   Trash2,
   UserRound,
-} from "@openbot/ui";
-import { formatMinorMoney } from "@openbot/ui/features/billing/LicenseSection";
-import { MemberRoleMenu } from "@openbot/ui/features/servers/ServerRoles";
-import { teamMemberName } from "@openbot/ui/features/team/TeamPersonAvatar";
-import { useText } from "@openbot/ui/text";
-import { prefersReducedMotion } from "@openbot/ui/utils";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { formatMinorMoney } from "@zollybot/ui/features/billing/LicenseSection";
+import { MemberRoleMenu } from "@zollybot/ui/features/servers/ServerRoles";
+import { teamMemberName } from "@zollybot/ui/features/team/TeamPersonAvatar";
+import { useText } from "@zollybot/ui/text";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createEffect, createMemo, createSignal, createStore, For, onCleanup, Show, untrack } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
 import { ServerInvitesEmpty } from "./ServerInvitesEmpty";

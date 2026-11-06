@@ -1,7 +1,6 @@
 // The routines twin of `memories-port.ts`: one settings panel, two owners.
 
 import type {
-  OpenBotDesktopApi,
   RoutineFields,
   RoutineLimitPolicy,
   RoutineMissedPolicy,
@@ -11,8 +10,9 @@ import type {
   RoutineRunFields,
   RoutineRunPlace,
   RoutineSchedule,
-} from "@openbot/contracts/ipc";
-import type { EventRoutine, EventRoutineOwner, EventRoutineTriggerInput } from "@openbot/contracts/ipc-events";
+  ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
+import type { EventRoutine, EventRoutineOwner, EventRoutineTriggerInput } from "@zollybot/contracts/ipc-events";
 import type { EventRoutinesApi, RoutineWebhooksApi } from "./routine-webhooks-api";
 
 interface RoutineSaveInput {
@@ -62,7 +62,7 @@ export interface RoutinesPort {
    */
   limitPolicy: boolean;
   /**
-   * Whether the host keeps what a routine does with a run that came due while OpenBot was closed:
+   * Whether the host keeps what a routine does with a run that came due while ZollyBot was closed:
    * this computer's host, and a remote host with `routine-recovery-v1`. `events-v1` drops the field.
    */
   missedPolicy: boolean;
@@ -91,7 +91,7 @@ export interface RoutinesPort {
 }
 
 function agentRoutineResults(agentId: string): RoutineResultsPort {
-  const api = window.openbot.routineResults;
+  const api = window.zollybot.routineResults;
   return {
     options: () => api.options(),
     destination: (routineId) => api.destination({ agentId, routineId }),
@@ -103,7 +103,7 @@ function agentRoutineResults(agentId: string): RoutineResultsPort {
 
 /** The host calls an agent's routines make. The desktop sends them through preload. */
 export type AgentRoutinesApi = Pick<
-  OpenBotDesktopApi["agent"],
+  ZollyBotDesktopApi["agent"],
   "listRoutines" | "listRoutineRuns" | "createRoutine" | "updateRoutine" | "deleteRoutine" | "testRoutine" | "onEvent"
 >;
 
@@ -111,7 +111,7 @@ export function agentRoutinesPort(
   agentId: string,
   automation = false,
   localHost = false,
-  api: AgentRoutinesApi = window.openbot.agent,
+  api: AgentRoutinesApi = window.zollybot.agent,
 ): RoutinesPort {
   return {
     ownerId: agentId,
@@ -141,7 +141,7 @@ export function agentRoutinesPort(
       await api.testRoutine({ agentId, routineId });
     },
     ...(automation
-      ? { runCommand: (routineId: string) => window.openbot.agent.automationRunCommand({ agentId, routineId }) }
+      ? { runCommand: (routineId: string) => window.zollybot.agent.automationRunCommand({ agentId, routineId }) }
       : {}),
     ...(localHost ? { results: agentRoutineResults(agentId) } : {}),
     subscribe: (reload) =>
@@ -153,7 +153,7 @@ export function agentRoutinesPort(
 
 /** The host calls a channel's routines make. The desktop sends them through preload. */
 export type ChannelRoutinesApi = Pick<
-  OpenBotDesktopApi["agent"],
+  ZollyBotDesktopApi["agent"],
   | "listChannelRoutines"
   | "listChannelRoutineRuns"
   | "createChannelRoutine"
@@ -165,7 +165,7 @@ export type ChannelRoutinesApi = Pick<
 
 export function channelRoutinesPort(
   channelId: string,
-  api: ChannelRoutinesApi = window.openbot.agent,
+  api: ChannelRoutinesApi = window.zollybot.agent,
   localHost = false,
 ): RoutinesPort {
   return {

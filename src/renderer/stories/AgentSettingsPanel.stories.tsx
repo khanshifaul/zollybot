@@ -1,6 +1,6 @@
-import { type AgentFolderList, type BrowserProfileSummary, nextBrowserProfileHue } from "@openbot/contracts/ipc";
-import type { AgentFolderCalls } from "@openbot/ui/features/conversation/AgentFolders";
-import AgentSettingsPanel from "@openbot/ui/features/conversation/AgentSettingsPanel";
+import { type AgentFolderList, type BrowserProfileSummary, nextBrowserProfileHue } from "@zollybot/contracts/ipc";
+import type { AgentFolderCalls } from "@zollybot/ui/features/conversation/AgentFolders";
+import AgentSettingsPanel from "@zollybot/ui/features/conversation/AgentSettingsPanel";
 import { createStore } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -69,13 +69,13 @@ export const NotificationLevel: Story = {
 export const WorkspaceOnly: Story = { args: { agent: { ...STORY_AGENT, access: "workspace" } } };
 
 const STORY_FOLDERS: AgentFolderList = {
-  workspace: "/Users/sam/OpenBot/Agents/Chief",
-  shared: "/Users/sam/OpenBot/Shared",
+  workspace: "/Users/sam/ZollyBot/Agents/Chief",
+  shared: "/Users/sam/ZollyBot/Shared",
   folders: [
     { path: "/Users/sam/Projects/Leads", found: true },
     { path: "/Users/sam/Documents/Contracts 2026", found: false },
   ],
-  excluded: ["/Users/sam/Projects/Leads/Clients/Private", "/Users/sam/OpenBot/Agents/Chief/archive"],
+  excluded: ["/Users/sam/Projects/Leads/Clients/Private", "/Users/sam/ZollyBot/Agents/Chief/archive"],
 };
 
 function storyFolderCalls(): AgentFolderCalls {

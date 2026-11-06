@@ -1,5 +1,5 @@
-import { Button, type ButtonProps } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Button, type ButtonProps } from "@zollybot/ui";
 import { createSignal, onCleanup } from "solid-js";
 
 export interface UiHoldButtonProps {

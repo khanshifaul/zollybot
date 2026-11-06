@@ -1,5 +1,5 @@
-import { installPointerFocusGuard } from "@openbot/ui/pointer-focus";
 import { render } from "@solidjs/web";
+import { installPointerFocusGuard } from "@zollybot/ui/pointer-focus";
 import { syncAppearance } from "./appearance-choice";
 import { BrowserDockSurface } from "./features/browser/BrowserDockSurface";
 import { ComputerUseHighlightSurface } from "./features/computer-use/ComputerUseHighlightSurface";

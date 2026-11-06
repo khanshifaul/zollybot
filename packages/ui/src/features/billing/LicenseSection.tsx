@@ -1,9 +1,10 @@
+import type { JSX } from "@solidjs/web";
 import {
   type BillingCurrency,
   type BillingInterval,
   type BillingSubscriptionStatus,
   isOpenBillingStatus,
-} from "@openbot/contracts/billing";
+} from "@zollybot/contracts/billing";
 import {
   LICENSE_INCLUDED_USERS,
   LICENSE_MAX_USERS,
@@ -23,8 +24,8 @@ import {
   licensePlanOf,
   licensePlanPrice,
   type PricingOrder,
-} from "@openbot/contracts/license";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/license";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertActions,
@@ -57,8 +58,7 @@ import {
   TriangleAlert,
   UsersRound,
   Zap,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createEffect, createSignal, For, Match, onSettled, Show, Switch, untrack } from "solid-js";
 import { useText } from "../../text";
 import { guessHostedCurrency, HOSTED_BILLING_CURRENCY, HostedBillingSwitch } from "../servers/HostedServerPricing";

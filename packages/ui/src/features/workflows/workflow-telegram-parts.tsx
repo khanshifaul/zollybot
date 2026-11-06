@@ -1,9 +1,10 @@
 /**
  * The Telegram settings of a trigger and of an output card. A Telegram trigger starts a run when a person
- * starts a conversation with OpenBot in a linked group chat. A Telegram output replies to that message,
+ * starts a conversation with ZollyBot in a linked group chat. A Telegram output replies to that message,
  * adds a reaction to it, or posts in a chat.
  */
 
+import type { JSX } from "@solidjs/web";
 import {
   WORKFLOW_TELEGRAM_ACTIONS,
   WORKFLOW_TELEGRAM_EMOJI,
@@ -13,10 +14,9 @@ import {
   type WorkflowTelegramAction,
   type WorkflowTelegramEmoji,
   type WorkflowTelegramEvent,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { AtSign, CirclePlus, Megaphone, MessageSquare, MessageSquareReply, Zap } from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { AtSign, CirclePlus, Megaphone, MessageSquare, MessageSquareReply, Zap } from "@zollybot/ui";
 import { Show } from "solid-js";
 import { useText } from "../../text";
 import { TelegramMark } from "../settings/brand-marks";

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { dirname, join } from "node:path";
-import { redactText } from "@openbot/logging";
+import { redactText } from "@zollybot/logging";
 import { Effect } from "effect";
 import {
   app,
@@ -124,7 +124,7 @@ async function main(): Promise<void> {
     ): Promise<DynamicToolResult> =>
       Effect.runPromise(
         host.handleDynamicTool({
-          namespace: "openbot_browser",
+          namespace: "zollybot_browser",
           tool,
           arguments: args,
           ownerAgentId: "fixture-agent",

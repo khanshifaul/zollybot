@@ -1,7 +1,7 @@
 // The payloads of the workflow endpoints. Only a malformed payload fails here, so the text stays
 // English; a graph that is too large is the one exception that a person can cause.
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type CreateWorkflowInput,
   type DecideWorkflowStepInput,
@@ -32,8 +32,8 @@ import {
   type WorkflowRunsInput,
   type WorkflowTriggerInput,
   type WorkflowVersionInput,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { requireString } from "./validation";
 
 const point = ({ x, y }: WorkflowPoint): WorkflowPoint => ({ x, y });

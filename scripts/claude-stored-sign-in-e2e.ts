@@ -7,7 +7,7 @@
 // Cases: an expired access token with a live refresh token starts no process and keeps the email,
 // plan and organization; blank tokens, no credential file, an expired refresh token and
 // `CLAUDE_CODE_OAUTH_TOKEN` each ask the CLI once.
-// `bun scripts/claude-stored-sign-in-e2e.ts`. Writes .openbot-build/claude-stored-sign-in-e2e/report.json.
+// `bun scripts/claude-stored-sign-in-e2e.ts`. Writes .zollybot-build/claude-stored-sign-in-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { chmod, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -16,9 +16,9 @@ import { join, resolve } from "node:path";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { BUILT_IN_PROVIDER_DRIVERS, NO_PROVIDER_CREDENTIALS } from "../src/backend/provider-drivers";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/claude-stored-sign-in-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/claude-stored-sign-in-e2e");
 const REPORT = join(OUT, "report.json");
-const root = await mkdtemp(join(tmpdir(), "openbot-claude-stored-sign-in-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-claude-stored-sign-in-"));
 const executable = join(root, "claude.cjs");
 const logPath = join(root, "claude.jsonl");
 // A sign-in from the shell would decide each case.

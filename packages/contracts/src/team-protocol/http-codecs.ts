@@ -152,7 +152,7 @@ function isCompatibilityRead(method: string, path: string, status: number): bool
   return (
     method === "GET" &&
     status === 200 &&
-    new URL(path, "http://openbot.invalid").pathname === TEAM_API_ROUTES.compatibility
+    new URL(path, "http://zollybot.invalid").pathname === TEAM_API_ROUTES.compatibility
   );
 }
 

@@ -1,4 +1,4 @@
-import type { WorkflowNode, WorkflowStep } from "@openbot/contracts/ipc";
+import type { WorkflowNode, WorkflowStep } from "@zollybot/contracts/ipc";
 import { Button, Typography } from "heroui-native";
 import { useState } from "react";
 import { Pressable, View } from "react-native";

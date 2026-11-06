@@ -1,9 +1,9 @@
-import { parseProviderModelVisibilityChange, parseProviderModelVisibilityProvider } from "@openbot/contracts/ipc";
+import { parseProviderModelVisibilityChange, parseProviderModelVisibilityProvider } from "@zollybot/contracts/ipc";
 import {
   MODEL_VISIBILITY_CAPABILITY,
   MODEL_VISIBILITY_ROUTES,
-} from "@openbot/contracts/team-protocol/model-visibility-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/model-visibility-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAdmin } from "./dependencies";
 import { HttpError } from "./http-error";

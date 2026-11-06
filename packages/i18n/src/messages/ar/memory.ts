@@ -39,7 +39,7 @@ export const messages = {
   "memory.clearAll": "مسح كل الذكريات",
   "memory.clearTitle": "مسح كل الذكريات؟",
   "memory.clearDescription":
-    "سيزيل OpenBot نهائيًا كل الذكريات المحفوظة لـ {name} وعددها {total}. ستبقى الرسائل الأصلية في سجل المحادثة.",
+    "سيزيل ZollyBot نهائيًا كل الذكريات المحفوظة لـ {name} وعددها {total}. ستبقى الرسائل الأصلية في سجل المحادثة.",
   "memory.loadFailed": "تعذّر تحميل الذكريات.",
   "memory.saveFailed": "تعذّر حفظ الذكرى.",
   "memory.updateFailed": "تعذّر تحديث الذكرى.",

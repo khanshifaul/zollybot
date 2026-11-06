@@ -1,5 +1,5 @@
-import { isRemoteNetworkRoute, type RemoteNetworkRoute } from "@openbot/contracts/ipc";
-import { Badge, RadioGroup } from "@openbot/ui";
+import { isRemoteNetworkRoute, type RemoteNetworkRoute } from "@zollybot/contracts/ipc";
+import { Badge, RadioGroup } from "@zollybot/ui";
 import { Show } from "solid-js";
 import { useText } from "../../text";
 
@@ -10,7 +10,7 @@ interface RemoteNetworkRouteChoiceProps {
   onChange: (route: RemoteNetworkRoute) => void;
 }
 
-/** The two routes as cards with a radio dot. OpenBot is the default and has the recommended badge. */
+/** The two routes as cards with a radio dot. ZollyBot is the default and has the recommended badge. */
 export function RemoteNetworkRouteChoice(props: RemoteNetworkRouteChoiceProps) {
   const { t } = useText();
   return (
@@ -23,17 +23,17 @@ export function RemoteNetworkRouteChoice(props: RemoteNetworkRouteChoiceProps) {
         if (isRemoteNetworkRoute(value)) props.onChange(value);
       }}
     >
-      <RadioGroup.Item class="settings-mobile-route-option" value="openbot">
+      <RadioGroup.Item class="settings-mobile-route-option" value="zollybot">
         <RadioGroup.ItemInput />
         <RadioGroup.ItemControl class="settings-mobile-route-card">
           <span class="settings-mobile-route-dot" aria-hidden="true" />
           <span class="settings-mobile-route-text">
             <RadioGroup.ItemLabel class="settings-mobile-route-name">
-              {t("settings.mobileConnect.route.openbot.title")}
-              <Badge variant="info-light">{t("settings.mobileConnect.route.openbot.badge")}</Badge>
+              {t("settings.mobileConnect.route.zollybot.title")}
+              <Badge variant="info-light">{t("settings.mobileConnect.route.zollybot.badge")}</Badge>
             </RadioGroup.ItemLabel>
             <RadioGroup.ItemDescription class="settings-mobile-route-hint">
-              {t("settings.mobileConnect.route.openbot.description")}
+              {t("settings.mobileConnect.route.zollybot.description")}
             </RadioGroup.ItemDescription>
           </span>
         </RadioGroup.ItemControl>

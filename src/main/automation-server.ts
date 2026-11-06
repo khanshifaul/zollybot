@@ -2,7 +2,7 @@ import { randomBytes, timingSafeEqual } from "node:crypto";
 import { chmod, mkdir, rm } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { join } from "node:path";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AgentDefaults,
   type AgentModelOption,
@@ -16,12 +16,12 @@ import {
   type Routine,
   type RoutineRun,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { ContextResetBusyError } from "@openbot/contracts/team-protocol/context-reset-v1";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, registerSecretValue, toLogValue } from "@openbot/logging";
-import { RoutineInputError } from "@openbot/team-client/routine-schedule";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { ContextResetBusyError } from "@zollybot/contracts/team-protocol/context-reset-v1";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
+import { RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import { Effect, Exit, Schema, Scope, Semaphore } from "effect";
 import { AgentSettingsRefused } from "../backend/agent/agent-settings-refused";
 import { InactiveAttentionRequest } from "../backend/agent/inactive-attention-request";
@@ -35,7 +35,7 @@ import { listenLoopback } from "./listen-loopback";
 import { HttpError } from "./team-api/http-error";
 import { approvalDecision, promptAnswers } from "./team-api/request-helpers";
 
-const logger = createOpenBotLogger("automation");
+const logger = createZollyBotLogger("automation");
 
 const HOUR_MS = 60 * 60 * 1000;
 // A payload is at most 4,000 characters; four UTF-8 bytes each plus JSON escapes stay below this.
@@ -276,7 +276,7 @@ export class AutomationServer {
         ...pending,
         prompts: pending.prompts.map((prompt) => ({
           ...prompt,
-          questions: prompt.requiresOpenBot
+          questions: prompt.requiresZollyBot
             ? []
             : prompt.questions.map(({ id, header, question, options }) => ({ id, header, question, options })),
         })),

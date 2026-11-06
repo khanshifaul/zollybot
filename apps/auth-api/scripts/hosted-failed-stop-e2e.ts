@@ -1,25 +1,25 @@
 // Runs the real account server hosted-server service on a migrated SQLite database, with a boat API
-// that answers as after a stop that it cancelled. boat runs the pre-stop hook, which stops OpenBot and
+// that answers as after a stop that it cancelled. boat runs the pre-stop hook, which stops ZollyBot and
 // makes the flag in /run, and then it can cancel the stop, for example when it cannot pause a Docker
-// container that restarts. The sandbox then runs with OpenBot stopped. A client or a connector that
-// cannot reach such a server must make the Worker run the command that starts OpenBot for an old flag.
+// container that restarts. The sandbox then runs with ZollyBot stopped. A client or a connector that
+// cannot reach such a server must make the Worker run the command that starts ZollyBot for an old flag.
 // A server that boat still stops must not get the command, and a failed command must not fail the wake.
 // The command runs after the reply.
 //
 // Run: bun run test:hosted-failed-stop
-// It writes .openbot-build/hosted-failed-stop-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/hosted-failed-stop-e2e/report.json and exits non-zero on a failure.
 import { readdirSync, readFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { setTimeout as delay } from "node:timers/promises";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { HostedServerService } from "../src/server/hosted-server-service";
 import { sqliteD1 } from "./sqlite-d1";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
-const OUT = join(ROOT, ".openbot-build", "hosted-failed-stop-e2e");
+const OUT = join(ROOT, ".zollybot-build", "hosted-failed-stop-e2e");
 const MIGRATIONS = join(ROOT, "apps", "auth-api", "migrations");
 const SERVER_ID = "server-1";
 const SANDBOX_ID = "bx_1";
@@ -31,7 +31,7 @@ const OWNER = {
   analyticsEnabled: null,
   chatColor: null,
 };
-const FLAG = "/run/openbot-pre-stop";
+const FLAG = "/run/zollybot-pre-stop";
 
 /** The state that boat reports for the sandbox. `idle` after a cancelled stop, `archiving` during a stop. */
 type SandboxAnswer = "idle" | "archiving";
@@ -118,7 +118,7 @@ async function reachWith(options: {
   };
 }
 
-/** The command starts OpenBot only for a flag older than 5 minutes, and touches nothing else. */
+/** The command starts ZollyBot only for a flag older than 5 minutes, and touches nothing else. */
 function commandStartsOnlyForAnOldFlag(commands: { path: string; body: unknown }[]) {
   const body = commands[0]?.body;
   if (!isDynamicRecord(body)) return false;
@@ -128,7 +128,7 @@ function commandStartsOnlyForAnOldFlag(commands: { path: string; body: unknown }
     commands[0]?.path === `/sandboxes/${SANDBOX_ID}/commands` &&
     text.startsWith(`if find ${FLAG} -mmin +5 2>/dev/null | grep -q .; then `) &&
     text.includes(`sudo -n rm -f ${FLAG}`) &&
-    text.includes("sudo -n systemctl start --no-block openbot.service") &&
+    text.includes("sudo -n systemctl start --no-block zollybot.service") &&
     typeof body.timeoutSeconds === "number" &&
     body.timeoutSeconds <= 15
   );

@@ -1,5 +1,5 @@
-import type { AppInfo } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import type { AppInfo } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Bell,
   Bot,
@@ -12,7 +12,7 @@ import {
   Settings,
   Smartphone,
   UserRound,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 
 export type SettingsTab =
   | "general"

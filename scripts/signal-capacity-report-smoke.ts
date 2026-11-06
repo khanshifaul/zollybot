@@ -4,19 +4,19 @@
 // local OpenPanel capture server. Runs the real reporter against them and checks its first event: the
 // counts, the server client headers, and that no token or secret is in the event or the log. Then runs
 // the reporter without the OpenPanel client and checks that it stops and sends nothing.
-// Writes .openbot-build/signal-capacity-report/report.json.
+// Writes .zollybot-build/signal-capacity-report/report.json.
 import assert from "node:assert/strict";
 import { type ChildProcess, spawn } from "node:child_process";
 import { generateKeyPairSync, randomBytes } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createServer, type IncomingMessage, type Server } from "node:http";
 import { resolve } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { exportJWK } from "jose";
 
-const logger = createOpenBotLogger("signal-capacity-report-smoke");
+const logger = createZollyBotLogger("signal-capacity-report-smoke");
 const root = resolve(import.meta.dirname, "..");
-const outputDirectory = resolve(root, ".openbot-build/signal-capacity-report");
+const outputDirectory = resolve(root, ".zollybot-build/signal-capacity-report");
 const reporterPath = resolve(root, "remote/api/src/capacity-report.ts");
 const metricsToken = randomBytes(24).toString("hex");
 const clientSecret = `sec_${randomBytes(16).toString("hex")}`;
@@ -142,12 +142,12 @@ const signalMetricsUrl = `http://127.0.0.1:${healthPort}/metrics`;
 
 const sockets: WebSocket[] = [];
 try {
-  await waitForMetrics(signalMetricsUrl, signal, (page) => page.includes("openbot_remote_signal_sockets 0"));
+  await waitForMetrics(signalMetricsUrl, signal, (page) => page.includes("zollybot_remote_signal_sockets 0"));
   for (let index = 0; index < OPEN_SOCKETS; index += 1) {
     sockets.push(new WebSocket(`ws://127.0.0.1:${signalPort}/v1/signal`));
   }
   await waitForMetrics(signalMetricsUrl, signal, (page) =>
-    page.includes(`openbot_remote_signal_sockets ${OPEN_SOCKETS}`),
+    page.includes(`zollybot_remote_signal_sockets ${OPEN_SOCKETS}`),
   );
 
   const reporterEnvironment = {

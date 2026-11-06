@@ -1,8 +1,8 @@
 import {
   WHATSAPP_CONNECTOR_CAPABILITY,
   WHATSAPP_CONNECTOR_ROUTES,
-} from "@openbot/contracts/team-protocol/whatsapp-connector-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/whatsapp-connector-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import {

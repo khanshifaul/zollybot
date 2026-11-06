@@ -1,8 +1,8 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { TeamMemberSummary } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { AGENT_TASKS_CAPABILITY, AGENT_TASKS_ROUTES } from "@openbot/contracts/team-protocol/agent-tasks-v1";
-import { sourceText } from "@openbot/i18n/source";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { TeamMemberSummary } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { AGENT_TASKS_CAPABILITY, AGENT_TASKS_ROUTES } from "@zollybot/contracts/team-protocol/agent-tasks-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAgentTasks } from "./dependencies";
 import { HttpError } from "./http-error";

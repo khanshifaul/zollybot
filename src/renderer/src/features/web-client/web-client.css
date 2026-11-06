@@ -4,8 +4,8 @@
 .web-app {
   min-width: 0;
   height: 100dvh;
-  color: var(--openbot-text-primary);
-  background: var(--openbot-bg-canvas);
+  color: var(--zollybot-text-primary);
+  background: var(--zollybot-bg-canvas);
 }
 .web-app-frame {
   min-width: 0;
@@ -15,7 +15,7 @@
 /* The browser has no window controls, so the rail starts at the top. */
 .web-app-frame > .server-rail,
 .web-other-tab-window > .server-rail {
-  padding-top: var(--openbot-space-3);
+  padding-top: var(--zollybot-space-3);
 }
 
 .web-app-frame > .server-rail::before,
@@ -36,7 +36,7 @@
 .web-consent-row.first-run-choice-improve {
   align-items: flex-start;
   border-top: 0;
-  padding: var(--openbot-space-1) 0 0;
+  padding: var(--zollybot-space-1) 0 0;
 }
 
 .web-consent-row .ui-checkbox {
@@ -45,7 +45,7 @@
 
 /* Under the box, the lock line and the Terms notice form the footer of the form. */
 .web-consent-row + .account-login-footer {
-  margin-top: var(--openbot-space-3);
+  margin-top: var(--zollybot-space-3);
 }
 
 .account-login-footer .first-run-consent-notice {
@@ -69,7 +69,7 @@
     padding-bottom: calc(
       var(--web-mobile-navigation-height) +
       env(safe-area-inset-bottom, 0px) +
-      var(--openbot-space-3)
+      var(--zollybot-space-3)
     );
   }
 
@@ -137,7 +137,7 @@
 
   .web-mobile-navigation {
     position: fixed;
-    z-index: var(--openbot-layer-popover);
+    z-index: var(--zollybot-layer-popover);
     right: 0;
     bottom: 0;
     left: 0;
@@ -145,11 +145,11 @@
     min-height: var(--web-mobile-navigation-height);
     align-items: center;
     justify-content: center;
-    border-top: 1px solid var(--openbot-border);
-    background: color-mix(in srgb, var(--openbot-bg-sidebar) 94%, transparent);
-    padding: var(--openbot-space-2) max(var(--openbot-space-3), env(safe-area-inset-left, 0px))
-      calc(var(--openbot-space-2) + env(safe-area-inset-bottom, 0px))
-      max(var(--openbot-space-3), env(safe-area-inset-right, 0px));
+    border-top: 1px solid var(--zollybot-border);
+    background: color-mix(in srgb, var(--zollybot-bg-sidebar) 94%, transparent);
+    padding: var(--zollybot-space-2) max(var(--zollybot-space-3), env(safe-area-inset-left, 0px))
+      calc(var(--zollybot-space-2) + env(safe-area-inset-bottom, 0px))
+      max(var(--zollybot-space-3), env(safe-area-inset-right, 0px));
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
   }
@@ -158,7 +158,7 @@
     display: grid;
     width: min(100%, 360px);
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--openbot-space-1);
+    gap: var(--zollybot-space-1);
   }
 
   .web-mobile-navigation-button {
@@ -166,32 +166,32 @@
     min-height: 44px;
     align-items: center;
     justify-content: center;
-    gap: var(--openbot-space-2);
+    gap: var(--zollybot-space-2);
     border: 1px solid transparent;
-    border-radius: var(--openbot-radius-lg);
-    color: var(--openbot-text-muted);
-    font-size: var(--openbot-text-sm);
-    font-weight: var(--openbot-weight-semibold);
+    border-radius: var(--zollybot-radius-lg);
+    color: var(--zollybot-text-muted);
+    font-size: var(--zollybot-text-sm);
+    font-weight: var(--zollybot-weight-semibold);
   }
 
   .web-mobile-navigation-button > svg {
-    width: var(--openbot-icon-md);
-    height: var(--openbot-icon-md);
-    stroke-width: var(--openbot-icon-stroke);
+    width: var(--zollybot-icon-md);
+    height: var(--zollybot-icon-md);
+    stroke-width: var(--zollybot-icon-stroke);
   }
 
   .web-mobile-navigation-button[data-active="true"] {
-    border-color: var(--openbot-border);
-    background: var(--openbot-bg-control);
-    color: var(--openbot-text-primary);
+    border-color: var(--zollybot-border);
+    background: var(--zollybot-bg-control);
+    color: var(--zollybot-text-primary);
   }
 
   .web-app-frame[data-web-mobile-pane="conversation"] .conversation-header {
-    padding-inline: var(--openbot-space-2);
+    padding-inline: var(--zollybot-space-2);
   }
 
   .web-app-frame[data-web-mobile-pane="conversation"] .conversation-header-actions {
-    gap: var(--openbot-space-1);
+    gap: var(--zollybot-space-1);
   }
 
   .web-app-frame[data-web-mobile-pane="conversation"] .conversation-header .provider-model-trigger {
@@ -259,11 +259,11 @@
   }
 
   .web-app .join-server-backdrop {
-    padding: var(--openbot-space-3);
+    padding: var(--zollybot-space-3);
   }
 
   .web-app .join-server-content {
-    padding: var(--openbot-space-6) var(--openbot-space-4);
+    padding: var(--zollybot-space-6) var(--zollybot-space-4);
   }
 
   .web-app .ui-dialog-content {
@@ -282,67 +282,67 @@
   display: grid;
   place-items: center;
   overflow-y: auto;
-  padding: var(--openbot-space-8) var(--openbot-space-4);
+  padding: var(--zollybot-space-8) var(--zollybot-space-4);
 }
 
 .web-connect-card {
   display: flex;
   width: min(420px, 100%);
   flex-direction: column;
-  gap: var(--openbot-space-6);
+  gap: var(--zollybot-space-6);
 }
 
 .web-connect-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   text-align: center;
 }
 
 .web-connect-header .ui-heading {
-  font-size: var(--openbot-text-3xl);
-  font-weight: var(--openbot-weight-bold);
-  line-height: var(--openbot-leading-3xl);
+  font-size: var(--zollybot-text-3xl);
+  font-weight: var(--zollybot-weight-bold);
+  line-height: var(--zollybot-leading-3xl);
 }
 
 .web-connect-header .ui-text {
   max-width: 340px;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .web-connect-logo {
-  --app-logo-background: var(--openbot-surface-light);
+  --app-logo-background: var(--zollybot-surface-light);
   width: 64px;
   height: 64px;
   flex: 0 0 auto;
-  margin-bottom: var(--openbot-space-4);
-  border-radius: var(--openbot-radius-xl);
+  margin-bottom: var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-xl);
   box-shadow:
-    0 12px 28px var(--openbot-shadow-dialog),
-    inset 0 1px 0 var(--openbot-border-strong);
+    0 12px 28px var(--zollybot-shadow-dialog),
+    inset 0 1px 0 var(--zollybot-border-strong);
 }
 
 .web-connect-steps {
   display: grid;
   margin: 0;
-  padding: var(--openbot-space-1);
+  padding: var(--zollybot-space-1);
   list-style: none;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
 }
 
 .web-connect-steps li {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-2) var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
 }
 
 .web-connect-steps li + li {
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .web-connect-steps .ui-text {
@@ -352,23 +352,23 @@
 
 .web-connect-step-number {
   display: grid;
-  width: var(--openbot-control-xs);
-  height: var(--openbot-control-xs);
+  width: var(--zollybot-control-xs);
+  height: var(--zollybot-control-xs);
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-semibold);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .web-connect-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 /* Side by side; the buttons stack when the card is too narrow for both labels. */
@@ -376,7 +376,7 @@
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .web-connect-primary-actions .ui-button {
@@ -387,17 +387,17 @@
 /* The public site sets `a { color: inherit }`, which beats the zero-specificity button colour. */
 .web-connect-download.ui-button-variant-default,
 .web-connect-download.ui-button-variant-default:hover {
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .web-connect-download.ui-button-variant-outline {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 /* The same hover query as the shared outline button, so a tap leaves no hover colour. */
 @media (hover: hover) and (pointer: fine) and (min-width: 601px) {
   .web-connect-download.ui-button-variant-outline:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 }
 
@@ -406,20 +406,20 @@
 }
 
 .web-connect-refresh.ui-button {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .web-connect-hosted.ui-button svg,
 .web-connect-actions .ui-button svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .web-connect-refresh.ui-button svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /* Takes the whole window in place of the workspace. */

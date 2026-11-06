@@ -11,7 +11,7 @@ import type {
   VaultItemKind,
   VaultItemOrigin,
   VaultSaveInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { Effect } from "effect";
 import type { PasswordVaultError } from "./password-vault";
 

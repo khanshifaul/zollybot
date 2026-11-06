@@ -10,8 +10,8 @@ import {
   WORKFLOW_TELEGRAM_TEXT_LIMIT,
   WORKFLOW_TELEGRAM_TRIGGER_CHAT,
   type WorkflowNode,
-} from "@openbot/contracts/ipc";
-import { isOneOf } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
 import { Typography } from "heroui-native";
 import { useUniwind } from "uniwind";
 import { SettingsNote, SettingsRow, SettingsSection } from "@/features/settings/components/settings-content";

@@ -12,7 +12,7 @@ final class NoPresenterException: Exception {
 /// One share sheet with many files. `expo-sharing` takes one file only.
 public class ShareFilesModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("OpenBotShareFiles")
+    Name("ZollyBotShareFiles")
 
     AsyncFunction("shareAsync") { [weak self] (urls: [URL], _: String, promise: Promise) in
       guard !urls.isEmpty else { throw NoFilesException() }

@@ -1,4 +1,4 @@
 FROM coturn/coturn:4.17.2-r0
-COPY remote/coturn/turnserver.conf /etc/coturn/openbot.conf
-COPY remote/coturn/entrypoint.sh /usr/local/bin/openbot-coturn
-ENTRYPOINT ["/usr/local/bin/openbot-coturn"]
+COPY remote/coturn/turnserver.conf /etc/coturn/zollybot.conf
+COPY remote/coturn/entrypoint.sh /usr/local/bin/zollybot-coturn
+ENTRYPOINT ["/usr/local/bin/zollybot-coturn"]

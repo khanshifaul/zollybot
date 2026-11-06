@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   createMcpServerId,
   isMcpKeyValue,
@@ -8,13 +8,13 @@ import {
   type McpServerConfig,
   mcpConfigErrors,
   normalizeMcpConfig,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, type Logger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, type Logger } from "@zollybot/logging";
 import { databaseRow, databaseRows, requiredNumberColumn, requiredStringColumn } from "./database/database-rows";
 import { registerMcpSecretValues } from "./mcp-redaction";
-import type { OpenBotDatabase } from "./openbot-database";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 /**
  * The MCP server configurations this machine holds.
@@ -64,8 +64,8 @@ export class McpServerStore {
   private readonly reported = new Set<string>();
 
   constructor(
-    private readonly database: OpenBotDatabase,
-    private readonly logger: Pick<Logger, "warn"> = createOpenBotLogger("mcp-server-store"),
+    private readonly database: ZollyBotDatabase,
+    private readonly logger: Pick<Logger, "warn"> = createZollyBotLogger("mcp-server-store"),
   ) {}
 
   list(): McpServerConfig[] {

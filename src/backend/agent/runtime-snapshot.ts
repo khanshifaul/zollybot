@@ -1,4 +1,4 @@
-import { CHAT_VISUAL_ITEM_TYPE_PREFIX } from "@openbot/contracts/chat-visual";
+import { CHAT_VISUAL_ITEM_TYPE_PREFIX } from "@zollybot/contracts/chat-visual";
 import {
   AGENT_RUNTIME_PERMISSION_PATHS_LIMIT,
   AGENT_RUNTIME_QUESTION_DESCRIPTION_LIMIT,
@@ -12,9 +12,9 @@ import {
   CONVERSATION_PLAN_ITEM_TYPE,
   CONVERSATION_SUBAGENTS_ITEM_TYPE,
   ROUTINE_QUIET_ANSWER_ITEM_TYPE,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { MailboxStore } from "../mailbox-store";
-import type { OpenBotDatabase } from "../openbot-database";
+import type { ZollyBotDatabase } from "../zollybot-database";
 import type { AttentionRegistry } from "./attention-registry";
 import type { ConversationRuntime } from "./conversation-runtime";
 import type { TurnLifecycle } from "./turn-lifecycle";
@@ -148,7 +148,7 @@ export interface RuntimeSnapshotSources {
   threadContextStates?: AgentRuntimeSnapshot["threadContextStates"];
   agents: AgentSummary[];
   conversation: Pick<ConversationRuntime, "loadedSnapshot">;
-  database: Pick<OpenBotDatabase, "readConversationRuntime">;
+  database: Pick<ZollyBotDatabase, "readConversationRuntime">;
   mailbox: Pick<MailboxStore, "listRuntimeWork">;
   turn: Pick<TurnLifecycle, "failedTurns" | "subagentTurns">;
   attention: Pick<AttentionRegistry, "runtimeAttention">;

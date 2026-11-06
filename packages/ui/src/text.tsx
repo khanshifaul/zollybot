@@ -1,4 +1,5 @@
 import { I18nProvider as ControlLocaleProvider } from "@kobalte/core/i18n";
+import type { JSX } from "@solidjs/web";
 import {
   type AppFormat,
   type AppTranslate,
@@ -6,15 +7,14 @@ import {
   localizeSourceText,
   type TranslatedLocale,
   translateFor,
-} from "@openbot/i18n";
-import { type UserErrorDetails, userErrorDetails, userErrorMessage } from "@openbot/user-errors";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/i18n";
+import { type UserErrorDetails, userErrorDetails, userErrorMessage } from "@zollybot/user-errors";
 import { createContext, createEffect, createSignal, type ParentProps, useContext } from "solid-js";
 
 /**
  * The interface language, as shared components read it.
  *
- * This is the one application value `@openbot/ui` reads from a context instead of a prop: nearly
+ * This is the one application value `@zollybot/ui` reads from a context instead of a prop: nearly
  * every component renders text, and threading a translator through each prop list would change
  * every signature for no gain in testability. The app provides the value; outside a provider - a
  * unit test, a story, a page without the app - it is English.
@@ -72,7 +72,7 @@ const TextContext = createContext<TextValue>(
 
 export interface TextProviderProps {
   locale: TranslatedLocale;
-  /** The locale of numbers and dates (`formatLocale` from `@openbot/i18n`). The default is `locale`. */
+  /** The locale of numbers and dates (`formatLocale` from `@zollybot/i18n`). The default is `locale`. */
   formatLocale?: string | undefined;
 }
 

@@ -1,5 +1,5 @@
-import { TEAM_AGENT_CREATE_MODEL_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import { FIRST_AGENT_SUGGESTIONS, FirstAgentSetup } from "@openbot/ui/features/agents/FirstAgentSetup";
+import { TEAM_AGENT_CREATE_MODEL_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import { FIRST_AGENT_SUGGESTIONS, FirstAgentSetup } from "@zollybot/ui/features/agents/FirstAgentSetup";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import { useProviders } from "../../providers";
 import { useAuth } from "../account/account-context";

@@ -1,20 +1,20 @@
 // End-to-end check of Hermes Agent on a self-hosted server (#4881). It makes a test image from the
-// OpenBot release image with the packages of this checkout's `scripts/hosting/packages.txt`, and
+// ZollyBot release image with the packages of this checkout's `scripts/hosting/packages.txt`, and
 // points Hermes at a mock OpenAI-compatible model on this computer. Then:
 //
 //   1. The `HermesInstaller` of this checkout, which the Hermes row's Download runs, installs Hermes
-//      in the container as the service user `openbot` (`--install`). A Cancel during the install
+//      in the container as the service user `zollybot` (`--install`). A Cancel during the install
 //      stops it with no installer process left, and the next Download installs Hermes to `ready`.
 //   2. The real release server in the container finds Hermes, and the Hermes row is `available` with
 //      the mock model.
-//   3. The Hermes driver of this checkout runs in the container as `openbot` (`--inside`): model list,
+//   3. The Hermes driver of this checkout runs in the container as `zollybot` (`--inside`): model list,
 //      one turn that reaches the mock model, and a resume in a new process.
 //
 // It needs Docker and network access for the image, the Hermes installer and Bun. No account is used.
 //
 //   bun run test:hermes-server [-- --image ghcr.io/nightly-labs/openbot:0.60.0]
 //
-// The report is `.openbot-build/hermes-server-e2e/report.json`.
+// The report is `.zollybot-build/hermes-server-e2e/report.json`.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
@@ -24,11 +24,11 @@ import { join, resolve } from "node:path";
 import { getString, isRecord } from "../src/backend/protocol";
 
 const REPO = resolve(import.meta.dirname, "..");
-const OUT = join(REPO, ".openbot-build/hermes-server-e2e");
+const OUT = join(REPO, ".zollybot-build/hermes-server-e2e");
 const REPLY = "HERMES_SERVER_E2E_OK";
 const MODEL = "mock-model";
 const BUN_VERSION = "1.4.2";
-const PROVIDERS_LOG = "/data/.config/OpenBot/logs/providers/providers.log";
+const PROVIDERS_LOG = "/data/.config/ZollyBot/logs/providers/providers.log";
 
 if (process.argv.includes("--install")) {
   await install();
@@ -50,7 +50,7 @@ interface InstallResult {
   final: string;
 }
 
-/** In the container, as `openbot`: the Download of the Hermes row, with a Cancel first. */
+/** In the container, as `zollybot`: the Download of the Hermes row, with a Cancel first. */
 async function install(): Promise<void> {
   const { Effect } = await import("effect");
   const { runCauseEffect } = await import("../src/backend/effect-boundary");
@@ -133,7 +133,7 @@ interface InsideResult {
   resumedStatus: string | null;
 }
 
-/** In the container, as `openbot`: the Hermes driver of this checkout with the user's own Hermes. */
+/** In the container, as `zollybot`: the Hermes driver of this checkout with the user's own Hermes. */
 async function inside(): Promise<void> {
   const { runCauseEffect } = await import("../src/backend/effect-boundary");
   const { decodeModelListResponse } = await import("../src/backend/protocol");
@@ -260,25 +260,25 @@ function startMockModel(requests: string[]) {
 async function host(): Promise<void> {
   const image = argument("--image") ?? "ghcr.io/nightly-labs/openbot:latest";
   const tag = randomBytes(4).toString("hex");
-  const testImage = `openbot-hermes-server-e2e:${tag}`;
-  const volume = `openbot-hermes-server-e2e-${tag}`;
-  const server = `openbot-hermes-server-e2e-${tag}`;
+  const testImage = `zollybot-hermes-server-e2e:${tag}`;
+  const volume = `zollybot-hermes-server-e2e-${tag}`;
+  const server = `zollybot-hermes-server-e2e-${tag}`;
   const checks: Check[] = [];
   const requests: string[] = [];
   const check = (name: string, ok: boolean, detail: string) => {
     checks.push({ name, ok, detail });
     process.stdout.write(`${ok ? "pass" : "FAIL"} ${name}: ${detail}\n`);
   };
-  const build = await mkdtemp(join(tmpdir(), "openbot-hermes-server-e2e-"));
+  const build = await mkdtemp(join(tmpdir(), "zollybot-hermes-server-e2e-"));
   const mock = startMockModel(requests);
   const baseUrl = `http://host.docker.internal:${mock.port}/v1`;
   let failure: string | undefined;
   let version = "unknown";
   await mkdir(OUT, { recursive: true });
 
-  /** A shell command as `openbot` in a new container on the data volume. */
+  /** A shell command as `zollybot` in a new container on the data volume. */
   const oneShot = `${server}-shell`;
-  const asOpenBot = (script: string, extra: string[] = [], timeoutMs?: number) =>
+  const asZollyBot = (script: string, extra: string[] = [], timeoutMs?: number) =>
     run(
       "docker",
       [
@@ -314,16 +314,16 @@ async function host(): Promise<void> {
         "USER root",
         "COPY packages.txt /tmp/packages.txt",
         "RUN apt-get update && sed -e '/^#/d' -e '/^$/d' -e '/^apparmor$/d' /tmp/packages.txt | xargs apt-get install --yes --no-install-recommends && rm -rf /var/lib/apt/lists/* /tmp/packages.txt",
-        "USER openbot",
+        "USER zollybot",
         "",
       ].join("\n"),
     );
     await must("docker", ["build", "--quiet", "--tag", testImage, build]);
-    version = (await must("docker", ["run", "--rm", "--entrypoint", "openbot", testImage, "version"])).trim();
-    check("image", true, `${image}, OpenBot ${version}`);
+    version = (await must("docker", ["run", "--rm", "--entrypoint", "zollybot", testImage, "version"])).trim();
+    check("image", true, `${image}, ZollyBot ${version}`);
 
     // Hermes as the service user, with the Download of the Hermes row: a Cancel, then the install.
-    const installed = await asOpenBot(
+    const installed = await asZollyBot(
       `curl -fsSL https://bun.sh/install | bash -s bun-v${BUN_VERSION} >/dev/null 2>&1
       cd /src && ~/.bun/bin/bun scripts/hermes-server-e2e.ts --install
       ~/.local/bin/hermes --version
@@ -358,7 +358,7 @@ async function host(): Promise<void> {
     );
     check("hermes install", true, installed.stdout.trim().split("\n").at(-1) ?? "");
 
-    // The real server: OpenBot finds Hermes and reads its model, with no sign-in of the account.
+    // The real server: ZollyBot finds Hermes and reads its model, with no sign-in of the account.
     await must("docker", [
       "run",
       "--detach",
@@ -402,8 +402,8 @@ async function host(): Promise<void> {
     );
     await must("docker", ["stop", "--timeout", "60", server]);
 
-    // The driver of this checkout as `openbot`, with the user's Hermes: a turn and a resume.
-    const driven = await asOpenBot(
+    // The driver of this checkout as `zollybot`, with the user's Hermes: a turn and a resume.
+    const driven = await asZollyBot(
       "cd /src && ~/.bun/bin/bun scripts/hermes-server-e2e.ts --inside",
       ["-v", `${REPO}:/src:ro`],
       600_000,

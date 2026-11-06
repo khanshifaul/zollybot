@@ -4,8 +4,7 @@ import type {
   RoutineRun,
   RoutineRunStatus,
   UpdateRoutineInput,
-} from "@openbot/contracts/ipc";
-import type { OpenBotDatabase } from "./openbot-database";
+} from "@zollybot/contracts/ipc";
 import {
   type DueRoutine,
   type OwnedRoutine,
@@ -16,6 +15,7 @@ import {
   type WebhookReceiveResult,
 } from "./routine-store";
 import { ROUTINE_TABLES } from "./routine-tables";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 export interface DueRoutineTrigger {
   routine: Routine;
@@ -30,7 +30,7 @@ export interface DueRoutineTrigger {
  * so this file only translates - which is why the callers did not change with the extraction.
  */
 export class AgentRoutineStore extends RoutineStore {
-  constructor(database: OpenBotDatabase) {
+  constructor(database: ZollyBotDatabase) {
     super(database, ROUTINE_TABLES.agent);
   }
 

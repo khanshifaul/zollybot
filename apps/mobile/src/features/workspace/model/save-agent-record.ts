@@ -1,5 +1,5 @@
-import type { AgentMemory, Routine } from "@openbot/contracts/ipc";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
+import type { AgentMemory, Routine } from "@zollybot/contracts/ipc";
 
 // Cancel reads started before the write so their older results cannot replace the saved record.
 export async function saveAgentRecord<T extends AgentMemory | Routine>(

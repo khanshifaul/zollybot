@@ -1,23 +1,23 @@
+import type { JSX } from "@solidjs/web";
 import type {
   AgentAccessChange,
   AgentAccessRole,
   AgentAccessSnapshot,
-  OpenBotDesktopApi,
-} from "@openbot/contracts/ipc";
-import { AGENT_ACCESS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-access-v1";
-import { Alert, AlertContent, AlertDescription } from "@openbot/ui";
-import { type RoleAgent, type ServerRolePage, ServerRolesPanel } from "@openbot/ui/features/servers/ServerRoles";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+  ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
+import { AGENT_ACCESS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-access-v1";
+import { Alert, AlertContent, AlertDescription } from "@zollybot/ui";
+import { type RoleAgent, type ServerRolePage, ServerRolesPanel } from "@zollybot/ui/features/servers/ServerRoles";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore, Show, untrack } from "solid-js";
 import { serverCanAdminister } from "./server-capabilities";
 import type { ServerSettingsSectionHost } from "./server-settings-section";
 
 /** The role calls of one server's host. The desktop reaches them through main. */
-export type HostAgentAccessCalls = Pick<OpenBotDesktopApi["hostAdmin"], "getAgentAccess" | "setAgentAccess">;
+export type HostAgentAccessCalls = Pick<ZollyBotDesktopApi["hostAdmin"], "getAgentAccess" | "setAgentAccess">;
 
 export interface ServerAgentAccessOptions {
-  /** The calls of a client with no `window.openbot`, such as the web client. */
+  /** The calls of a client with no `window.zollybot`, such as the web client. */
   calls?: HostAgentAccessCalls;
   /** The agents of this dialog's server, in their order. */
   listAgents: () => Promise<readonly RoleAgent[]>;
@@ -63,7 +63,7 @@ function copyChange(snapshot: AgentAccessSnapshot): AgentAccessChange {
 export function createServerRolesSection(host: ServerSettingsSectionHost, visible: () => boolean): ServerRolesSection {
   const { t, errorMessage } = useText();
   const { props, configured, actionsAvailable, busy, run } = host;
-  const calls = (): HostAgentAccessCalls => props.agentAccess?.calls ?? window.openbot.hostAdmin;
+  const calls = (): HostAgentAccessCalls => props.agentAccess?.calls ?? window.zollybot.hostAdmin;
   const [state, setState] = createStore<RolesState>({
     snapshot: null,
     agents: [],

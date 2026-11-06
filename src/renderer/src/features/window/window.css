@@ -3,10 +3,10 @@
  * one L around the card. */
 .app-window {
   /* The frame is darker than the card, so the card comes forward. */
-  --window-frame: var(--openbot-bg-frame);
+  --window-frame: var(--zollybot-bg-frame);
   /* The thin frame at the right and the bottom of the card */
-  --window-edge: var(--openbot-space-1);
-  --window-hairline-height: var(--openbot-icon-lg);
+  --window-edge: var(--zollybot-space-1);
+  --window-hairline-height: var(--zollybot-icon-lg);
   display: grid;
   width: 100%;
   height: 100%;
@@ -44,7 +44,7 @@
   > :is(.web-app-frame, .app-frame:not(.app-frame-platform-darwin)):not(.app-frame-with-server-rail)
   > .sidebar:not(.sidebar-compact)
   .sidebar-topbar {
-  padding-inline-start: var(--openbot-space-3);
+  padding-inline-start: var(--zollybot-space-3);
 }
 
 @media (min-width: 721px) {
@@ -60,7 +60,7 @@
     > .app-frame-platform-darwin:not(.app-frame-with-server-rail, .web-app-frame)
     > .sidebar:not(.sidebar-compact)
     .sidebar-topbar {
-    padding-inline-start: var(--openbot-space-6);
+    padding-inline-start: var(--zollybot-space-6);
   }
 
   /* One card holds the sidebar, the chat and the side panel, below the top row. The frame draws the
@@ -79,9 +79,9 @@
     z-index: -1;
     inset-block: calc(var(--left-header-height) - 1px) var(--window-edge);
     inset-inline: 0 var(--window-edge);
-    border: 1px solid var(--openbot-border);
-    border-radius: var(--openbot-radius-card);
-    background: var(--openbot-bg-canvas);
+    border: 1px solid var(--zollybot-border);
+    border-radius: var(--zollybot-radius-card);
+    background: var(--zollybot-bg-canvas);
     content: "";
     pointer-events: none;
   }
@@ -103,7 +103,7 @@
   /* The sidebar shows the card, and the channel title sits on the top row, so an avatar outline takes
    * the colour of the one it is on. */
   .app-window > .app-frame-edge > .sidebar {
-    --agent-avatar-outline: var(--openbot-bg-canvas);
+    --agent-avatar-outline: var(--zollybot-bg-canvas);
   }
 
   .app-window > .app-frame-edge .channel-title {
@@ -122,7 +122,7 @@
     width: 1px;
     border: 0;
     border-radius: 0;
-    background: var(--openbot-border);
+    background: var(--zollybot-border);
   }
 
   .app-window > .app-frame-edge > .sidebar:not(.sidebar-compact) .sidebar-topbar::after,
@@ -135,7 +135,7 @@
     width: 1px;
     height: var(--window-hairline-height);
     translate: 0 -50%;
-    background: var(--openbot-border-strong);
+    background: var(--zollybot-border-strong);
     content: "";
     pointer-events: none;
   }
@@ -155,7 +155,7 @@
     width: 1px;
     border: 0;
     border-radius: 0;
-    background: var(--openbot-border);
+    background: var(--zollybot-border);
   }
 
   .app-window
@@ -189,8 +189,8 @@
   /* A maximized pane covers the hidden chat. A chat preview frame keeps its own visibility, so the
    * pane paints the card under it. */
   .app-window > .app-frame-edge .side-panel-maximized > :is(.settings-panel, .browser-panel) {
-    border-end-end-radius: calc(var(--openbot-radius-card) - 1px);
-    background: var(--openbot-bg-canvas);
+    border-end-end-radius: calc(var(--zollybot-radius-card) - 1px);
+    background: var(--zollybot-bg-canvas);
   }
 
   /* The routine canvas fills the card, so its board follows the card's rounded corner. */
@@ -198,32 +198,32 @@
     border-top: 0;
     border-inline-end: 0;
     border-radius: 0;
-    border-end-end-radius: calc(var(--openbot-radius-card) - 1px);
+    border-end-end-radius: calc(var(--zollybot-radius-card) - 1px);
   }
 
   /* The top row controls are flat: one height and one radius, with no line. A control fills on hover,
    * and an open control keeps a stronger fill. */
   .app-window > .app-frame-edge .conversation-header-actions {
-    gap: var(--openbot-space-2);
+    gap: var(--zollybot-space-2);
   }
 
   .app-window
     > .app-frame-edge
     :is(.conversation-header, .tasks-page-header)
     :is(.provider-model-trigger, .header-panel-toggle) {
-    height: var(--openbot-control-sm);
+    height: var(--zollybot-control-sm);
     border-color: transparent;
-    border-radius: var(--openbot-radius-md);
+    border-radius: var(--zollybot-radius-md);
     background: transparent;
     box-shadow: none;
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 
   .app-window > .app-frame-edge :is(.conversation-header, .tasks-page-header) .header-panel-toggle {
-    width: var(--openbot-control-sm);
-    min-width: var(--openbot-control-sm);
+    width: var(--zollybot-control-sm);
+    min-width: var(--zollybot-control-sm);
     padding: 0;
-    color: var(--openbot-text-muted);
+    color: var(--zollybot-text-muted);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -232,8 +232,8 @@
       :is(.conversation-header, .tasks-page-header)
       :is(.provider-model-trigger, .header-panel-toggle):hover {
       border-color: transparent;
-      background: var(--openbot-bg-control-hover);
-      color: var(--openbot-text-primary);
+      background: var(--zollybot-bg-control-hover);
+      color: var(--zollybot-text-primary);
     }
   }
 
@@ -245,25 +245,25 @@
       .side-panel-toggle
     ) {
     border-color: transparent;
-    background: var(--openbot-bg-control-active);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-bg-control-active);
+    color: var(--zollybot-text-primary);
   }
 
   /* A short line between the model and the side panel button */
   .app-window > .app-frame-edge .conversation-header-actions > .side-panel-toggle {
     position: relative;
-    margin-inline-start: calc(var(--openbot-space-2) + 1px);
+    margin-inline-start: calc(var(--zollybot-space-2) + 1px);
     overflow: visible;
   }
 
   .app-window > .app-frame-edge .conversation-header-actions > .side-panel-toggle::before {
     position: absolute;
     top: 50%;
-    inset-inline-start: calc(-1 * var(--openbot-space-2) - 1px);
+    inset-inline-start: calc(-1 * var(--zollybot-space-2) - 1px);
     width: 1px;
     height: var(--window-hairline-height);
     translate: 0 -50%;
-    background: var(--openbot-border-strong);
+    background: var(--zollybot-border-strong);
     content: "";
     pointer-events: none;
   }
@@ -280,7 +280,7 @@
     flex: none;
     height: var(--left-header-height);
     flex-wrap: nowrap;
-    padding: 0 var(--openbot-space-3);
+    padding: 0 var(--zollybot-space-3);
     border-bottom: 0;
     -webkit-app-region: drag;
   }
@@ -291,7 +291,7 @@
     :is(.agent-usage-header, .routine-planner-title)
     > :is(.agent-usage-identity, .agent-usage-controls, .routine-planner-identity, p) {
     flex-wrap: nowrap;
-    gap: var(--openbot-space-2);
+    gap: var(--zollybot-space-2);
     -webkit-app-region: no-drag;
   }
 
@@ -300,11 +300,11 @@
   }
 
   .app-window > .app-frame-edge > .window-page :is(.agent-usage-identity, .routine-planner-title) h2 {
-    gap: var(--openbot-space-2);
-    font-size: var(--openbot-text-md);
-    font-weight: var(--openbot-weight-medium);
+    gap: var(--zollybot-space-2);
+    font-size: var(--zollybot-text-md);
+    font-weight: var(--zollybot-weight-medium);
     white-space: nowrap;
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   /* In a narrow window, the title gets shorter and the controls keep their size. */
@@ -322,16 +322,16 @@
     > .window-page
     :is(.agent-usage-header, .routine-planner-title)
     :is(.ui-select-trigger, .ui-icon-button) {
-    height: var(--openbot-control-sm);
+    height: var(--zollybot-control-sm);
     border-color: transparent;
-    border-radius: var(--openbot-radius-md);
+    border-radius: var(--zollybot-radius-md);
     background: transparent;
     box-shadow: none;
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 
   .app-window > .app-frame-edge > .window-page :is(.agent-usage-header, .routine-planner-title) .ui-icon-button {
-    width: var(--openbot-control-sm);
+    width: var(--zollybot-control-sm);
   }
 
   @media (hover: hover) {
@@ -340,8 +340,8 @@
       > .window-page
       :is(.agent-usage-header, .routine-planner-title)
       :is(.ui-select-trigger, .ui-icon-button):hover {
-      background: var(--openbot-bg-control-hover);
-      color: var(--openbot-text-primary);
+      background: var(--zollybot-bg-control-hover);
+      color: var(--zollybot-text-primary);
     }
   }
 
@@ -362,13 +362,13 @@
   }
 
   .app-window > .app-frame-edge > .window-page .routine-planner-toolbar {
-    padding: var(--openbot-space-4) var(--openbot-space-6) 0;
+    padding: var(--zollybot-space-4) var(--zollybot-space-6) 0;
   }
 
   .app-window > .app-frame-edge > .window-page .routine-planner-body {
     min-height: 0;
     overflow-y: auto;
-    padding: var(--openbot-space-4) var(--openbot-space-6) var(--openbot-space-6);
+    padding: var(--zollybot-space-4) var(--zollybot-space-6) var(--zollybot-space-6);
   }
 
   /* The empty month fills the card and clips at its bottom edge, so the pitch stays in the middle of
@@ -413,13 +413,13 @@
     right: 0;
     left: 0;
     height: var(--left-header-height);
-    padding: 0 var(--openbot-space-3);
+    padding: 0 var(--zollybot-space-3);
     -webkit-app-region: drag;
   }
 
   .app-window > .app-frame-edge > .app-frame-panes .tasks-page-header h2 {
-    font-size: var(--openbot-text-md);
-    font-weight: var(--openbot-weight-medium);
+    font-size: var(--zollybot-text-md);
+    font-weight: var(--zollybot-weight-medium);
     white-space: nowrap;
   }
 
@@ -434,11 +434,11 @@
   }
 
   .app-window > .app-frame-edge > .app-frame-panes .tasks-page-column {
-    padding-top: var(--openbot-space-6);
+    padding-top: var(--zollybot-space-6);
   }
 
   .app-window > .app-frame-edge > .app-frame-panes .tasks-page-side {
-    border-end-end-radius: calc(var(--openbot-radius-card) - 1px);
+    border-end-end-radius: calc(var(--zollybot-radius-card) - 1px);
   }
 
   /* The Tasks page opens with the agent list hidden. Its header button shows the list. Until then the
@@ -509,7 +509,7 @@
   }
 
   .app-frame-edge[data-window-page-kind="settings"] > .window-page > .settings-page > .settings-page-path-row {
-    padding: 0 var(--openbot-space-3);
+    padding: 0 var(--zollybot-space-3);
     -webkit-app-region: drag;
   }
 
@@ -586,7 +586,7 @@
 
   .app-window > .app-frame-edge > .window-page .skills-marketplace-topbar {
     min-height: 0;
-    padding: 0 var(--openbot-space-3);
+    padding: 0 var(--zollybot-space-3);
     border-bottom: 0;
     -webkit-app-region: drag;
   }
@@ -597,8 +597,8 @@
   }
 
   .app-window > .app-frame-edge > .window-page .skills-marketplace-topbar .marketplace-title {
-    font-size: var(--openbot-text-md);
-    font-weight: var(--openbot-weight-medium);
+    font-size: var(--zollybot-text-md);
+    font-weight: var(--zollybot-weight-medium);
     white-space: nowrap;
   }
 
@@ -628,7 +628,7 @@
   grid-column: 2;
   grid-row: 1;
   align-items: center;
-  padding: var(--openbot-space-4) 0 0;
+  padding: var(--zollybot-space-4) 0 0;
 }
 
 .settings-page-path-row:empty {
@@ -640,7 +640,7 @@
   width: 100%;
   max-width: 784px;
   margin-inline: auto;
-  padding-inline: var(--openbot-space-8);
+  padding-inline: var(--zollybot-space-8);
 }
 
 .settings-page-nav {
@@ -649,10 +649,10 @@
   min-width: 0;
   min-height: 0;
   flex-direction: column;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   overflow: hidden;
-  border-inline-end: 1px solid var(--openbot-border);
-  padding: var(--openbot-space-4) var(--openbot-space-3) 0;
+  border-inline-end: 1px solid var(--zollybot-border);
+  padding: var(--zollybot-space-4) var(--zollybot-space-3) 0;
 }
 
 /* The title and the search stay at the top. The list below them scrolls. */
@@ -661,16 +661,16 @@
   min-height: 0;
   flex: 1 1 auto;
   overflow-y: auto;
-  padding-bottom: var(--openbot-space-3);
+  padding-bottom: var(--zollybot-space-3);
 }
 
 .settings-page-title {
-  margin: 0 0 var(--openbot-space-3);
-  padding: 0 var(--openbot-space-2);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-lg);
+  margin: 0 0 var(--zollybot-space-3);
+  padding: 0 var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-lg);
 }
 
 /* The heading takes the focus when the page opens, only so a screen reader reads it. */
@@ -681,14 +681,14 @@
 /* A capsule search field */
 .settings-page-search {
   flex: none;
-  border-radius: var(--openbot-radius-pill);
-  padding: 0 var(--openbot-space-3);
+  border-radius: var(--zollybot-radius-pill);
+  padding: 0 var(--zollybot-space-3);
 }
 
 .settings-page-search > svg {
   flex: none;
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .settings-page-search input {
@@ -702,10 +702,10 @@
 
 /* The text that shows when no setting matches the search */
 .settings-page-empty {
-  margin: var(--openbot-space-4) 0 var(--openbot-space-1);
-  padding: 0 var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  margin: var(--zollybot-space-4) 0 var(--zollybot-space-1);
+  padding: 0 var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 /* The server mark and name, as the server menu shows them */
@@ -713,30 +713,30 @@
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-page-server .server-menu-mark {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 .settings-page-nav-group .settings-modal-nav-item {
-  padding-inline: var(--openbot-space-3);
+  padding-inline: var(--zollybot-space-3);
 }
 
 .settings-page-nav-group .settings-modal-nav-item[data-selected] {
-  background: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-medium);
+  background: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 /* A search result: the section with its icon, and below it the matching row title */
 .settings-page-results {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-0-5);
-  margin: var(--openbot-space-2) 0 0;
+  gap: var(--zollybot-space-0-5);
+  margin: var(--zollybot-space-2) 0 0;
   padding-inline: 0;
   list-style: none;
 }
@@ -747,12 +747,12 @@
   height: auto;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
   border: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   background: transparent;
-  padding: var(--openbot-space-1-5) var(--openbot-space-2);
-  color: var(--openbot-text-primary);
+  padding: var(--zollybot-space-1-5) var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
   font: inherit;
   text-align: start;
   cursor: pointer;
@@ -760,32 +760,32 @@
 
 @media (hover: hover) and (pointer: fine) {
   .settings-page-result:hover {
-    background: var(--openbot-bg-control-hover);
+    background: var(--zollybot-bg-control-hover);
   }
 }
 
 .settings-page-result:focus-visible {
   outline: 0;
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .settings-page-result-section {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .settings-page-result-section svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .settings-page-result-title {
   overflow: hidden;
-  padding-inline-start: calc(var(--openbot-icon-sm) + var(--openbot-space-2));
-  font-size: var(--openbot-text-md);
+  padding-inline-start: calc(var(--zollybot-icon-sm) + var(--zollybot-space-2));
+  font-size: var(--zollybot-text-md);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -823,8 +823,8 @@
 
 /* The row that a search result opened */
 .settings-page-content [data-search-match] {
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-control-active);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-control-active);
 }
 
 /* A narrow window stacks the page: the heading and the sections above the panel. */
@@ -841,7 +841,7 @@
   }
 
   .settings-page-path-row > .settings-page-path {
-    padding-inline: var(--openbot-space-4);
+    padding-inline: var(--zollybot-space-4);
   }
 
   .settings-page-content {
@@ -853,18 +853,18 @@
     grid-column: 1;
     grid-row: 1;
     border-inline-end: 0;
-    border-bottom: 1px solid var(--openbot-border);
-    padding: var(--openbot-space-3) var(--openbot-space-3) 0;
+    border-bottom: 1px solid var(--zollybot-border);
+    padding: var(--zollybot-space-3) var(--zollybot-space-3) 0;
   }
 
   .settings-page-title {
-    margin-bottom: var(--openbot-space-2);
+    margin-bottom: var(--zollybot-space-2);
   }
 
   .settings-page-sections,
   .settings-page-results {
     max-height: 40dvh;
-    padding-bottom: var(--openbot-space-2);
+    padding-bottom: var(--zollybot-space-2);
   }
 }
 
@@ -889,22 +889,22 @@
 .quit-shortcut-backdrop {
   position: fixed;
   inset: 0;
-  z-index: var(--openbot-layer-tooltip);
+  z-index: var(--zollybot-layer-tooltip);
   display: grid;
   place-items: center;
-  background: var(--openbot-dialog-overlay);
-  backdrop-filter: blur(var(--openbot-space-2));
+  background: var(--zollybot-dialog-overlay);
+  backdrop-filter: blur(var(--zollybot-space-2));
   pointer-events: none;
-  animation: quit-shortcut-in var(--openbot-duration-fast) var(--openbot-ease-out);
+  animation: quit-shortcut-in var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .quit-shortcut-hint {
-  padding: var(--openbot-space-3) var(--openbot-space-6);
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
+  padding: var(--zollybot-space-3) var(--zollybot-space-6);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
   font-weight: 500;
   white-space: nowrap;
 }

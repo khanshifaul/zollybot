@@ -1,9 +1,9 @@
-import { isProviderAccountId } from "@openbot/contracts/ipc";
+import { isProviderAccountId } from "@zollybot/contracts/ipc";
 import {
   PROVIDER_USAGE_RESET_CAPABILITY,
   PROVIDER_USAGE_RESET_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-usage-reset-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/provider-usage-reset-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import { parseProviderId } from "../ipc/app-inputs";
 import type { TeamApiProviderUsageResets } from "./dependencies";

@@ -16,17 +16,17 @@ import {
   isWhatsAppGroupList,
   messagingPage,
   type WhatsAppGroupList,
-} from "@openbot/contracts/ipc";
-import { decodeRecord, nullableString } from "@openbot/contracts/ipc-decoding";
-import { CONNECTORS_CAPABILITY, CONNECTORS_ROUTES } from "@openbot/contracts/team-protocol/connectors-v1";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { DISCORD_ACCESS_CAPABILITY, DISCORD_ACCESS_ROUTES } from "@openbot/contracts/team-protocol/discord-access-v1";
-import type { TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
+} from "@zollybot/contracts/ipc";
+import { decodeRecord, nullableString } from "@zollybot/contracts/ipc-decoding";
+import { CONNECTORS_CAPABILITY, CONNECTORS_ROUTES } from "@zollybot/contracts/team-protocol/connectors-v1";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { DISCORD_ACCESS_CAPABILITY, DISCORD_ACCESS_ROUTES } from "@zollybot/contracts/team-protocol/discord-access-v1";
+import type { TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
 import {
   WHATSAPP_CONNECTOR_CAPABILITY,
   WHATSAPP_CONNECTOR_ROUTES,
-} from "@openbot/contracts/team-protocol/whatsapp-connector-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/whatsapp-connector-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { MessagingService } from "../../backend/messaging/messaging-service";

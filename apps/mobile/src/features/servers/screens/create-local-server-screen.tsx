@@ -1,7 +1,7 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { HostLocalServer } from "@openbot/team-client/team-admin-requests";
-import type { UserErrorDetails } from "@openbot/user-errors";
 import { useQuery } from "@tanstack/react-query";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { HostLocalServer } from "@zollybot/team-client/team-admin-requests";
+import type { UserErrorDetails } from "@zollybot/user-errors";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Button, Spinner, Typography } from "heroui-native";

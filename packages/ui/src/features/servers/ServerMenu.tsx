@@ -1,5 +1,5 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   AppWindow,
   BellOff,
@@ -13,8 +13,8 @@ import {
   Moon,
   PanelLeft,
   Plus,
-} from "@openbot/ui";
-import { SwapLabel } from "@openbot/ui/components/SwapLabel";
+} from "@zollybot/ui";
+import { SwapLabel } from "@zollybot/ui/components/SwapLabel";
 import { createEffect, createSignal, For, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import { type ServerActionCallbacks, ServerActionItems } from "./ServerActionItems";

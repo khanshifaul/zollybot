@@ -1,9 +1,9 @@
-import type { BrowserPreview, BrowserTakeoverRequest, LocalBrowserSecretResponse } from "@openbot/contracts/ipc";
-import { Button, Checkbox, ErrorReference, Input, Lock, Maximize2, Monitor, ShieldCheck, X } from "@openbot/ui";
-import { OtpInput } from "@openbot/ui/features/account/OtpInput";
-import { BrowserTakeoverPreview } from "@openbot/ui/features/conversation/BrowserTakeoverPreview";
-import { useText } from "@openbot/ui/text";
-import { errorReference } from "@openbot/user-errors";
+import type { BrowserPreview, BrowserTakeoverRequest, LocalBrowserSecretResponse } from "@zollybot/contracts/ipc";
+import { Button, Checkbox, ErrorReference, Input, Lock, Maximize2, Monitor, ShieldCheck, X } from "@zollybot/ui";
+import { OtpInput } from "@zollybot/ui/features/account/OtpInput";
+import { BrowserTakeoverPreview } from "@zollybot/ui/features/conversation/BrowserTakeoverPreview";
+import { useText } from "@zollybot/ui/text";
+import { errorReference } from "@zollybot/user-errors";
 import { createEffect, createMemo, createSignal, createUniqueId, onCleanup, Show } from "solid-js";
 
 /**

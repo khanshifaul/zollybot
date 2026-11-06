@@ -1,5 +1,6 @@
-import { expandChatTagReferences } from "@openbot/contracts/chat-tag-references";
-import type { AppTextKey } from "@openbot/i18n";
+import { Dynamic, type JSX } from "@solidjs/web";
+import { expandChatTagReferences } from "@zollybot/contracts/chat-tag-references";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   ArrowDown,
   ArrowRightToLine,
@@ -18,11 +19,10 @@ import {
   type Settings,
   Spinner,
   Tabs,
-} from "@openbot/ui";
-import type { AgentMessage, AgentProfile } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
-import { Dynamic, type JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import type { AgentMessage, AgentProfile } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import {
   type Accessor,
   createEffect,

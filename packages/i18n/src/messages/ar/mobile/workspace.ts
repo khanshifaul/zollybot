@@ -18,7 +18,7 @@ export const messages = {
   "mobile.workspace.error.leaveOwnServer": "يمكن مغادرة الخوادم البعيدة المنضم إليها فقط.",
   "mobile.workspace.error.removeOwnedServerOnly": "يمكن للمالك فقط إزالة هذا الخادم.",
   "mobile.workspace.error.agentNotOnHost": "الوكيل غير موجود على هذا المضيف.",
-  "mobile.workspace.error.filesUnsupported": "لا يدعم هذا المضيف إدارة الملفات. حدّث OpenBot على المضيف.",
+  "mobile.workspace.error.filesUnsupported": "لا يدعم هذا المضيف إدارة الملفات. حدّث ZollyBot على المضيف.",
   "mobile.workspace.error.agentUnavailableOnHost": "الوكيل غير متاح على هذا المضيف.",
   "mobile.workspace.error.agentUnavailable": "الوكيل غير متاح.",
   "mobile.workspace.error.formUnavailable": "هذا النموذج لم يعد متاحًا.",

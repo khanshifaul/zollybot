@@ -1,5 +1,5 @@
-import { SERVER_AUDIT_CAPABILITY, SERVER_AUDIT_ROUTES } from "@openbot/contracts/team-protocol/server-audit-v1";
-import { sourceText } from "@openbot/i18n/source";
+import { SERVER_AUDIT_CAPABILITY, SERVER_AUDIT_ROUTES } from "@zollybot/contracts/team-protocol/server-audit-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import type { TeamApiServerAudit } from "./dependencies";
 import { HttpError } from "./http-error";
 import type { RouteOutcome, TeamApiRequestContext } from "./request-context";

@@ -1,4 +1,4 @@
-import { referenceFrom } from "@openbot/user-errors";
+import { referenceFrom } from "@zollybot/user-errors";
 import { CodedError } from "expo";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Linking } from "react-native";

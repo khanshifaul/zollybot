@@ -10,24 +10,24 @@ import {
   type WorkflowSaveResult,
   type WorkflowSummary,
   type WorkflowVersion,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { toast } from "@openbot/ui";
-import type { WorkflowCanvasProps } from "@openbot/ui/features/workflows/WorkflowCanvas";
-import type { WorkflowBuild } from "@openbot/ui/features/workflows/workflow-build";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { toast } from "@zollybot/ui";
+import type { WorkflowCanvasProps } from "@zollybot/ui/features/workflows/WorkflowCanvas";
+import type { WorkflowBuild } from "@zollybot/ui/features/workflows/workflow-build";
 import {
   EMPTY_GITHUB_HISTORY,
   githubItemUrl,
   type WorkflowGitHubCanvas,
-} from "@openbot/ui/features/workflows/workflow-github";
+} from "@zollybot/ui/features/workflows/workflow-github";
 import type {
   WorkflowDiscordServer,
   WorkflowPlace,
   WorkflowSlackWorkspace,
   WorkflowTelegramChat,
-} from "@openbot/ui/features/workflows/workflow-model";
-import { EMPTY_WORKFLOW_RUN_VIEW, type WorkflowRunView } from "@openbot/ui/features/workflows/workflow-run-view";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/workflows/workflow-model";
+import { EMPTY_WORKFLOW_RUN_VIEW, type WorkflowRunView } from "@zollybot/ui/features/workflows/workflow-run-view";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, onSettled, untrack } from "solid-js";
 import type { DesktopAnalyticsScope, WorkflowAnalyticsAction } from "../../analytics";
 import { createGitHubConnector } from "../connectors/github-connector";

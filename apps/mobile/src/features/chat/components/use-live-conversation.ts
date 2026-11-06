@@ -5,7 +5,7 @@ import {
   isAgentAnswer,
   latestTurnAnswer,
   type QueueDelivery,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import { useEffect, useId, useRef, useState } from "react";
 import { BackHandler } from "react-native";

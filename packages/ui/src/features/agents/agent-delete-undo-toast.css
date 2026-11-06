@@ -10,17 +10,17 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   overflow: hidden;
-  padding: var(--openbot-space-3);
-  padding-bottom: calc(var(--openbot-space-3) + var(--openbot-space-1));
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface-raised);
+  padding: var(--zollybot-space-3);
+  padding-bottom: calc(var(--zollybot-space-3) + var(--zollybot-space-1));
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
   box-shadow:
-    0 0 0 1px var(--openbot-border),
-    var(--openbot-shadow-raised);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
+    0 0 0 1px var(--zollybot-border),
+    var(--zollybot-shadow-raised);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
 }
 
 /* Without a fixed track, the grid row grows to the drawing's width, and the drawing's 128% height
@@ -39,18 +39,18 @@
 
 .agent-delete-undo-toast-title {
   overflow: hidden;
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .agent-delete-undo-toast-detail {
   overflow: hidden;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -69,7 +69,7 @@
 }
 
 .agent-delete-undo-toast-bar .ui-progress-fill {
-  background: var(--openbot-accent);
-  transition-duration: var(--openbot-duration-fast);
+  background: var(--zollybot-accent);
+  transition-duration: var(--zollybot-duration-fast);
   transition-timing-function: linear;
 }

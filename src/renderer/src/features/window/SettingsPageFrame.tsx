@@ -1,7 +1,7 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import { ServerMark } from "@openbot/ui/features/servers/ServerRail";
-import type { SettingsPagePlacement } from "@openbot/ui/features/settings/SettingsDialogShell";
 import type { JSX } from "@solidjs/web";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import { ServerMark } from "@zollybot/ui/features/servers/ServerRail";
+import type { SettingsPagePlacement } from "@zollybot/ui/features/settings/SettingsDialogShell";
 import { onSettled } from "solid-js";
 
 /**

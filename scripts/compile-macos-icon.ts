@@ -18,13 +18,13 @@ import { execFileSync } from "node:child_process";
 import { copyFile, cp, mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 
-const logger = createOpenBotLogger("compile-macos-icon");
+const logger = createZollyBotLogger("compile-macos-icon");
 const sourcePath = resolve("build/icon-production.icon");
 const targetPath = resolve("build/macos/Assets.car");
 
-const workPath = await mkdtemp(join(tmpdir(), "openbot-macos-icon-"));
+const workPath = await mkdtemp(join(tmpdir(), "zollybot-macos-icon-"));
 try {
   // actool names the icon after the file, and the app reads it as `CFBundleIconName: Icon`.
   const iconPath = join(workPath, "Icon.icon");

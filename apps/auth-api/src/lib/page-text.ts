@@ -1,5 +1,5 @@
-import type { AppTranslate, TranslatedLocale } from "@openbot/i18n";
-import { appLanguageOption } from "@openbot/i18n/languages";
+import type { AppTranslate, TranslatedLocale } from "@zollybot/i18n";
+import { appLanguageOption } from "@zollybot/i18n/languages";
 
 /** The text of one page in one language. Loader data carries it from the server to the browser. */
 export interface PageText<Text> {
@@ -22,7 +22,7 @@ export async function loadPageText<Text>(
   locale: TranslatedLocale,
   build: (t: AppTranslate) => Text,
 ): Promise<PageText<Text>> {
-  const { loadLocale, localeLoaded, translateFor } = await import("@openbot/i18n");
+  const { loadLocale, localeLoaded, translateFor } = await import("@zollybot/i18n");
   await loadLocale(locale).catch(() => undefined);
   const shown = localeLoaded(locale) ? locale : "en";
   return { lang: appLanguageOption(shown).lang ?? shown, locale: shown, text: build(translateFor(shown)) };

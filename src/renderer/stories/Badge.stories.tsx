@@ -1,4 +1,4 @@
-import { Badge, Heading } from "@openbot/ui";
+import { Badge, Heading } from "@zollybot/ui";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 
 const meta = {

@@ -1,6 +1,6 @@
 // Starts the Antigravity provider end to end on the real driver and `ProviderRuntime`, with a fake
 // server that, like the Windows PyInstaller build, unpacks itself into the temporary folder at each
-// start. Checks that each process gets its own temporary folder and that OpenBot removes it, that
+// start. Checks that each process gets its own temporary folder and that ZollyBot removes it, that
 // failed starts stop after the limit, that an automatic refresh does not start the provider again
 // and a user refresh does, that low disk space stops a start before the process spawns, that a
 // launch removes what an earlier run left, and that a server that unpacks for longer than the
@@ -10,13 +10,13 @@
 // a retry that waits longer (#3532), and that a saved key whose `authenticate` never answers ends the
 // key change with a timeout, not a row that stays connecting. The row of that check says that no
 // sign-in waits, and the row of a Connect whose Google page is open says that one does, until Cancel.
-// `bun scripts/antigravity-start-e2e.ts`. Writes .openbot-build/antigravity-start-e2e/report.json.
+// `bun scripts/antigravity-start-e2e.ts`. Writes .zollybot-build/antigravity-start-e2e/report.json.
 import assert from "node:assert/strict";
 import { chmod, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, sep } from "node:path";
-import { sourceText } from "@openbot/i18n/source";
-import { teeLogLines } from "@openbot/logging";
+import { sourceText } from "@zollybot/i18n/source";
+import { teeLogLines } from "@zollybot/logging";
 import { Effect, Result } from "effect";
 import { ConversationRuntime } from "../src/backend/agent/conversation-runtime";
 import { ProviderRuntime } from "../src/backend/agent/provider-runtime";
@@ -24,15 +24,15 @@ import type { AgentClient, AgentProvider } from "../src/backend/agent-client";
 import { AgentStore } from "../src/backend/agent-store";
 import { type AgentCliInfo, ANTIGRAVITY_MANIFEST } from "../src/backend/cli";
 import { runCauseEffect } from "../src/backend/effect-boundary";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import {
   BUILT_IN_PROVIDER_DRIVERS,
   NO_PROVIDER_CREDENTIALS,
   requireProviderDriver,
 } from "../src/backend/provider-drivers";
 import { sweepProviderTemp } from "../src/backend/provider-temp";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/antigravity-start-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/antigravity-start-e2e");
 const WAIT_MS = 15_000;
 /** Longer than the runtime's 5 s request timeout, and far shorter than the long start timeout. */
 const SLOW_UNPACK_MS = 7_000;
@@ -170,7 +170,7 @@ interface Report {
   };
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-antigravity-start-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-antigravity-start-e2e-"));
 const log = join(root, "agy.jsonl");
 const report: Report = { passed: false };
 process.env.FAKE_AGY_LOG = log;
@@ -210,7 +210,7 @@ function runtime(
   firstInstall = false,
   savedKey: string | null = null,
 ): { providers: ProviderRuntime; store: AgentStore } {
-  const store = new AgentStore(join(root, "profile"), join(root, "home"), new OpenBotDatabase(join(root, "profile")));
+  const store = new AgentStore(join(root, "profile"), join(root, "home"), new ZollyBotDatabase(join(root, "profile")));
   const providers = new ProviderRuntime({
     offProviders: BUILT_IN_PROVIDER_DRIVERS.map((driver) => driver.id).filter((id) => id !== "antigravity"),
     conversation: new ConversationRuntime(
@@ -278,7 +278,7 @@ try {
   await installFakeAgy(join(root, "agy"));
   const cli: AgentCliInfo = { executable, version: "1.2.1", source: "managed" };
 
-  // 1. A process that is stopped while it unpacks: its folder is in OpenBot's root and is removed.
+  // 1. A process that is stopped while it unpacks: its folder is in ZollyBot's root and is removed.
   process.env.FAKE_AGY_MODE = "hang";
   const stoppedRoot = join(root, "temp-stopped");
   const client: AgentClient = requireProviderDriver("antigravity").createClient(cli, 5_000, {
@@ -300,7 +300,7 @@ try {
     unpackedWhileRunning,
     leftAfterStop: await entries(tempRoot),
   };
-  assert.ok(envInRoot, "TMP, TEMP and TMPDIR point into OpenBot's temporary root");
+  assert.ok(envInRoot, "TMP, TEMP and TMPDIR point into ZollyBot's temporary root");
   assert.ok(unpackedWhileRunning, "the fake server unpacked while it ran");
 
   // 2. Failed starts stop after the limit, whatever asks for the provider.

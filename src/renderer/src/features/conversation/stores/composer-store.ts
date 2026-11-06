@@ -1,4 +1,4 @@
-import { attachmentReferenceIds } from "@openbot/contracts/attachment-references";
+import { attachmentReferenceIds } from "@zollybot/contracts/attachment-references";
 import { createMemo } from "solid-js";
 import { appendVoiceTranscript } from "../../../voice-recording";
 import { EMPTY_DRAFT, rowAttachments, type StoredQueueEdit } from "../composer-draft";

@@ -19,7 +19,7 @@ export interface AgentFolderCoverage {
 }
 
 /**
- * Why main refused a folder. `protected` is a folder that holds OpenBot data or other agents, the
+ * Why main refused a folder. `protected` is a folder that holds ZollyBot data or other agents, the
  * home folder or a disk root. `missing` is not an existing folder.
  */
 export const AGENT_FOLDER_REFUSALS = ["protected", "missing", "limit"] as const;
@@ -33,7 +33,7 @@ export interface AgentFolder {
 
 /**
  * The folders of one agent, with the two that it can always change. `excluded` are folders in them
- * that the agent must not change. Claude and the providers that OpenBot runs in a sandbox are blocked
+ * that the agent must not change. Claude and the providers that ZollyBot runs in a sandbox are blocked
  * there; Codex can only be told, because it cannot deny a folder inside a writable root.
  */
 export interface AgentFolderList {

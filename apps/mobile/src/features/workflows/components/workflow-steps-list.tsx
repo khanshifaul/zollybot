@@ -1,5 +1,5 @@
-import type { WorkflowGraph, WorkflowNode } from "@openbot/contracts/ipc";
-import type { MobileTranslate } from "@openbot/i18n/mobile";
+import type { WorkflowGraph, WorkflowNode } from "@zollybot/contracts/ipc";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import { Typography } from "heroui-native";
 import { useRef } from "react";
 import { Pressable, View } from "react-native";

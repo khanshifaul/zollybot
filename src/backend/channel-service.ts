@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { realpathSync } from "node:fs";
 import { basename, dirname, isAbsolute, join, normalize, sep } from "node:path";
-import { leadingAddress } from "@openbot/contracts/chat-tag-references";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { leadingAddress } from "@zollybot/contracts/chat-tag-references";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AgentAccessLevel,
   type AgentEvent,
@@ -25,10 +25,10 @@ import {
   type DeleteChannelMessageInput,
   type QueueHold,
   type UpdateChannelMemoryInput,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { isFixedSourceText, matchingSourceKeys, sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { isFixedSourceText, matchingSourceKeys, sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Deferred, Effect, Exit, Fiber, Result, Schema, Scope } from "effect";
 import { type ChannelOperationError, channelFailure, channelResult, channelSync } from "./channel-effects";
 import {
@@ -59,10 +59,10 @@ import { CHANNEL_REPLY_ID_PREFIX, channelReplyExpectedResult, checkChannelReply,
 import { type ChannelAssignment, type ChannelContext, ChannelStore } from "./channel-store";
 import type { DeliveryContext, MailboxStore } from "./mailbox-store";
 import { type MessageDeleteAccess, MessageDeleteRefused } from "./message-delete";
-import type { OpenBotDatabase } from "./openbot-database";
 import { extractJsonObject, StructuredOutputError } from "./structured-output";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
-const logger = createOpenBotLogger("channel-service");
+const logger = createZollyBotLogger("channel-service");
 
 export interface ChannelHooks {
   agents(): AgentSummary[];
@@ -246,7 +246,7 @@ export class ChannelService {
   readonly #preparedFacts = new Map<string, string>();
 
   constructor(
-    database: OpenBotDatabase,
+    database: ZollyBotDatabase,
     readonly mailbox: MailboxStore,
     readonly images: ChannelImages,
     readonly hooks: ChannelHooks,

@@ -9,21 +9,21 @@
 // removes the downloads of providers that are off in one step, and never one that is on: one that a
 // program holds fails and is named, and the others still go. A provider that runs the CLI the user
 // installed runs nothing from the store, so its download can go. The real resolver picks that CLI
-// over OpenBot's copy when it is as new, and an update still starts the copy it downloaded.
+// over ZollyBot's copy when it is as new, and an update still starts the copy it downloaded.
 // `bun scripts/provider-runtime-remove-e2e.ts`.
-// Writes .openbot-build/provider-runtime-remove-e2e/report.json.
+// Writes .zollybot-build/provider-runtime-remove-e2e/report.json.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { chmod, mkdir, mkdtemp, readFile, rm, stat, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
-import type { AgentProviderId, ManagedProviderId } from "@openbot/contracts/agent-providers";
+import type { AgentProviderId, ManagedProviderId } from "@zollybot/contracts/agent-providers";
 import { resolveCodexCli, resolveInstalledFirst } from "../src/backend/cli";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { INSTALL_RECORD } from "../src/main/provider-runtime-descriptors";
 import { ProviderRuntimeManager } from "../src/main/provider-runtime-manager";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/provider-runtime-remove-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/provider-runtime-remove-e2e");
 const DAY_MS = 24 * 60 * 60 * 1000;
 /** Off since long ago, with two versions, a partial download and a verification record. */
 const OFF: ManagedProviderId = "cursor";
@@ -35,9 +35,9 @@ const SIBLING: ManagedProviderId = "cline";
 const TURNED_OFF: ManagedProviderId = "grok";
 /** On at the start, then turned off; a sibling stamped it after this instance did. */
 const SHARED: ManagedProviderId = "antigravity";
-/** Off, and the user pointed OpenBot at a CLI of their own. */
+/** Off, and the user pointed ZollyBot at a CLI of their own. */
 const CONFIGURED: ManagedProviderId = "claude";
-const CONFIGURED_ENV = `OPENBOT_${CONFIGURED.toUpperCase()}_PATH`;
+const CONFIGURED_ENV = `ZOLLYBOT_${CONFIGURED.toUpperCase()}_PATH`;
 /** Off, but DeepSeek, which is on, runs on its CLI. */
 const PI: ManagedProviderId = "pi";
 /** Off, but its versions cannot be moved: a program holds them, as Windows does with an open CLI. */
@@ -80,7 +80,7 @@ interface Report {
   choice?: Record<string, { source: string; version: string }>;
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-provider-runtime-remove-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-provider-runtime-remove-e2e-"));
 const store = join(root, "provider-runtimes");
 const downloads = join(root, "downloads");
 const report: Report = { passed: false };
@@ -312,7 +312,7 @@ try {
     "the page keeps every provider that is on, and what the provider page refuses",
   );
 
-  // The provider now runs the CLI the user installed, so no agent runs OpenBot's copy.
+  // The provider now runs the CLI the user installed, so no agent runs ZollyBot's copy.
   manager.setSystemVersion(ON, "9.9.9");
   report.installedMeasured = await measure(ON);
   assert.ok(report.installedMeasured >= 4096, "the copy of a provider that runs the user's CLI counts");
@@ -326,7 +326,7 @@ try {
   report.installedRemoved = { phase: installedSnapshot.providers[ON].phase, gone: !(await exists(onVersion)) };
   assert.deepEqual(report.installedRemoved, { phase: "not-downloaded", gone: true }, "the copy is removed");
 
-  // The real Codex resolver, with a CLI on PATH and OpenBot's copy that answer their versions.
+  // The real Codex resolver, with a CLI on PATH and ZollyBot's copy that answer their versions.
   const fakeCodex = async (name: string, version: string) => {
     const path = join(root, "choice", name, "codex");
     await mkdir(dirname(path), { recursive: true });
@@ -365,7 +365,7 @@ try {
       update: { source: "managed", version: "0.200.0" },
       noInstalled: { source: "managed", version: "0.200.0" },
     },
-    "the user's CLI wins when it is as new, and an update starts OpenBot's copy",
+    "the user's CLI wins when it is as new, and an update starts ZollyBot's copy",
   );
 
   report.passed = true;

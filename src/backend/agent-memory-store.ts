@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES, essentialMemoryBytes } from "@openbot/contracts/agent-memory-context";
+import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES, essentialMemoryBytes } from "@zollybot/contracts/agent-memory-context";
 import {
   type AgentMemory,
   type AgentMemorySelection,
@@ -7,13 +7,13 @@ import {
   type AgentMemorySelectionState,
   DEFAULT_AGENT_MEMORY_LIMIT,
   type MemoryEntry,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Schema } from "effect";
 import { initializeAgentMemorySelection } from "./agent-memory-selection";
 import { databaseRows, requiredNumberColumn, requiredStringColumn } from "./database/database-rows";
 import { MemoryStore, type MemoryTables, type SaveMemoryInput } from "./memory-store";
-import type { OpenBotDatabase } from "./openbot-database";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 export class AgentMemorySelectionError extends Schema.TaggedError<AgentMemorySelectionError>()(
   "AgentMemorySelectionError",
@@ -60,7 +60,7 @@ function agentMemoryTables(limit: () => number): MemoryTables {
 
 /** Owns saved agent memories, their selection, and local recall. Channel memories remain separate. */
 export class AgentMemoryStore extends MemoryStore {
-  constructor(database: OpenBotDatabase, limit: () => number = () => DEFAULT_AGENT_MEMORY_LIMIT) {
+  constructor(database: ZollyBotDatabase, limit: () => number = () => DEFAULT_AGENT_MEMORY_LIMIT) {
     super(database, agentMemoryTables(limit));
   }
 

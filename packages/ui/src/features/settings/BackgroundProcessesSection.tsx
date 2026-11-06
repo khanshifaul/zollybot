@@ -1,4 +1,4 @@
-import type { BackgroundProcess } from "@openbot/contracts/ipc";
+import type { BackgroundProcess } from "@zollybot/contracts/ipc";
 import {
   Button,
   Item,
@@ -10,7 +10,7 @@ import {
   ItemTitle,
   Server,
   SettingsSection,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { useText } from "../../text";
 import { AgentAvatar } from "../agents/AgentAvatar";

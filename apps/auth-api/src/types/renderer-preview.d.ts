@@ -1,10 +1,10 @@
-declare module "@openbot/renderer-preview" {
+declare module "@zollybot/renderer-preview" {
   import type { JSX } from "@solidjs/web";
 
-  export interface OpenBotPlaygroundProps {
+  export interface ZollyBotPlaygroundProps {
     variant?: "default" | "landing";
     theme?: "dark" | "light";
   }
 
-  export function OpenBotPlayground(props: OpenBotPlaygroundProps): JSX.Element;
+  export function ZollyBotPlayground(props: ZollyBotPlaygroundProps): JSX.Element;
 }

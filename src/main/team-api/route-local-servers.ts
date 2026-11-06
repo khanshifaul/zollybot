@@ -1,6 +1,6 @@
-import { isString } from "@openbot/contracts/runtime-values";
-import { LOCAL_SERVERS_CAPABILITY, LOCAL_SERVERS_ROUTES } from "@openbot/contracts/team-protocol/local-servers-v1";
-import { matchingSourceKeys, sourceText } from "@openbot/i18n/source";
+import { isString } from "@zollybot/contracts/runtime-values";
+import { LOCAL_SERVERS_CAPABILITY, LOCAL_SERVERS_ROUTES } from "@zollybot/contracts/team-protocol/local-servers-v1";
+import { matchingSourceKeys, sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAdmin } from "./dependencies";
 import { HttpError } from "./http-error";

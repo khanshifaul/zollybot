@@ -5,12 +5,12 @@
 //   failure and a background child that ends after its turn.
 // - Kimi, Cline, Hermes: a subagent tool call gives a card with its task and its report or error.
 //   Kimi's background call is not shown. A turn that the person stops stops its subagent.
-// `bun run test:acp-subagents`. Writes .openbot-build/acp-subagents-e2e/report.json.
+// `bun run test:acp-subagents`. Writes .zollybot-build/acp-subagents-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { ConversationSubagent } from "@openbot/contracts/ipc";
+import type { ConversationSubagent } from "@zollybot/contracts/ipc";
 import { AcpAgentClient } from "../src/backend/acp-client";
 import { CLINE_ACP_FLAVOR, HERMES_ACP_FLAVOR, KIMI_ACP_FLAVOR } from "../src/backend/acp-flavor";
 import { SUBAGENTS_UPDATED_METHOD, subagentsFromNotification } from "../src/backend/agent/subagent-updates";
@@ -21,7 +21,7 @@ import { type AppServerNotification, getString } from "../src/backend/protocol";
 import { NO_PROVIDER_CREDENTIALS, requireProviderDriver } from "../src/backend/provider-drivers";
 import { installFakeAgent, readJsonl, runTurn, startThread, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/acp-subagents-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/acp-subagents-e2e");
 const WAIT_MS = 20_000;
 
 /** The parts of a subagent that the card shows, without its times. */
@@ -44,7 +44,7 @@ interface Report {
   openCodeAskedForChildUpdates: boolean | null;
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-acp-subagents-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-acp-subagents-e2e-"));
 const report: Report = { passed: false, cards: {}, notifications: {}, openCodeAskedForChildUpdates: null };
 const clients: AgentClient[] = [];
 
@@ -139,7 +139,7 @@ try {
     assert.equal((await runTurn(client, thread, { text: "work" })).status, "completed");
     const entries = await readJsonl<{ event: string; childUpdates?: boolean }>(log);
     report.openCodeAskedForChildUpdates = entries.find((entry) => entry.event === "initialize")?.childUpdates ?? null;
-    assert.equal(report.openCodeAskedForChildUpdates, true, "OpenBot asks OpenCode for child session updates.");
+    assert.equal(report.openCodeAskedForChildUpdates, true, "ZollyBot asks OpenCode for child session updates.");
     const cards = save("opencode/work", work.lists);
     assert.deepEqual(cards, [
       {

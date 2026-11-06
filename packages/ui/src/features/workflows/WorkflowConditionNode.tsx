@@ -1,7 +1,7 @@
 /** A condition: a rule that sends the run down one of two branches. */
 
-import { AGENT_REASONING_EFFORTS, type AgentModelId, type AgentReasoningEffort } from "@openbot/contracts/ipc";
-import { Button, CircleCheck, Play, Split, Textarea } from "@openbot/ui";
+import { AGENT_REASONING_EFFORTS, type AgentModelId, type AgentReasoningEffort } from "@zollybot/contracts/ipc";
+import { Button, CircleCheck, Play, Split, Textarea } from "@zollybot/ui";
 import { createMemo, For, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import { BRANCH_NAME, resultValue, useBoard } from "./workflow-board";

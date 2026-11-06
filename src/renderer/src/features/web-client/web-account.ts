@@ -1,6 +1,6 @@
-import type { AccountSession, AvatarColor, AvatarImageInput } from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { currentText } from "@openbot/ui/text";
+import type { AccountSession, AvatarColor, AvatarImageInput } from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { currentText } from "@zollybot/ui/text";
 
 /**
  * The desktop Settings > Profile calls for a signed-in browser. They use the
@@ -41,7 +41,7 @@ export function createWebAccountCalls(
           ? {}
           : {
               "Content-Type": init.contentType ?? "application/json",
-              "X-OpenBot-Browser": "1",
+              "X-ZollyBot-Browser": "1",
             },
       ...(init.body === undefined ? {} : { body: init.body }),
     }).catch(() => {

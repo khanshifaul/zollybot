@@ -1,5 +1,5 @@
-import type { BrowserViewContextMenu, BrowserViewCursor } from "@openbot/contracts/team-protocol/browser-view-v1";
 import { type SkImage, Skia } from "@shopify/react-native-skia";
+import type { BrowserViewContextMenu, BrowserViewCursor } from "@zollybot/contracts/team-protocol/browser-view-v1";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 import { useMobileWorkspaceActions } from "@/features/workspace/context/mobile-workspace-context";

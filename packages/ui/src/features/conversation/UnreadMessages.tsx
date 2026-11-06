@@ -1,4 +1,4 @@
-import { Button } from "@openbot/ui";
+import { Button } from "@zollybot/ui";
 import { untrack } from "solid-js";
 import { useText } from "../../text";
 import { newMessagesLabel, preferredMessageScrollBehavior } from "./MessageNavigation";

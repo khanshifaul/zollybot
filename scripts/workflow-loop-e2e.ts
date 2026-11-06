@@ -6,23 +6,23 @@
 // from a node inside the loop starts at that node and takes the earlier answer of the node before it.
 //
 // Run: bun scripts/workflow-loop-e2e.ts
-// Writes .openbot-build/workflow-loop-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/workflow-loop-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { type WorkflowGraph, type WorkflowStep, workflowLoopEdges } from "@openbot/contracts/ipc";
+import { type WorkflowGraph, type WorkflowStep, workflowLoopEdges } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { runCauseEffect } from "../src/backend/effect-boundary";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
 import { WorkflowRunStore } from "../src/backend/workflows/workflow-run-store";
 import { WorkflowStore } from "../src/backend/workflows/workflow-store";
 import { workflowScheduleDueAt } from "../src/backend/workflows/workflow-triggers";
 import { createWorkflows, type WorkflowsHandle } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/workflow-loop-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/workflow-loop-e2e");
 const WAIT_MS = 5_000;
 
 interface Report {
@@ -54,8 +54,8 @@ const GRAPH: WorkflowGraph = {
   strokes: [],
 };
 
-const directory = await mkdtemp(join(tmpdir(), "openbot-workflow-loop-"));
-const database = new OpenBotDatabase(directory);
+const directory = await mkdtemp(join(tmpdir(), "zollybot-workflow-loop-"));
+const database = new ZollyBotDatabase(directory);
 let service: WorkflowsHandle | null = null;
 
 async function open() {

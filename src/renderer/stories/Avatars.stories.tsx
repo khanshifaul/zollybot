@@ -1,9 +1,9 @@
 import { BloubBot, POSES } from "@norbert_bodziony/bloub";
-import type { AvatarMood } from "@openbot/brand/bloub-avatar-motion";
-import { Button } from "@openbot/ui";
-import { bloubAvatarProfile } from "@openbot/ui/bloub-avatar";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { TeamPersonAvatar } from "@openbot/ui/features/team/TeamPersonAvatar";
+import type { AvatarMood } from "@zollybot/brand/bloub-avatar-motion";
+import { Button } from "@zollybot/ui";
+import { bloubAvatarProfile } from "@zollybot/ui/bloub-avatar";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { TeamPersonAvatar } from "@zollybot/ui/features/team/TeamPersonAvatar";
 import { createStore, For, Show } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { STORY_AGENTS, STORY_PRESENCE } from "./fixtures";
@@ -115,7 +115,7 @@ export const SizesAndMoods: AgentStory = {
   render: () => (
     <div
       class="grid gap-6 p-8"
-      style={{ background: "var(--openbot-bg-canvas)", color: "var(--openbot-text-primary)" }}
+      style={{ background: "var(--zollybot-bg-canvas)", color: "var(--zollybot-text-primary)" }}
     >
       {AVATAR_MOODS.map((mood) => (
         <section class="grid gap-3" aria-label={`${mood} avatar sizes`}>
@@ -130,7 +130,7 @@ export const SizesAndMoods: AgentStory = {
                   motion="hover"
                   style={{ width: `${size}px`, height: `${size}px` }}
                 />
-                <small style={{ color: "var(--openbot-text-muted)" }}>{size}</small>
+                <small style={{ color: "var(--zollybot-text-muted)" }}>{size}</small>
               </div>
             ))}
           </div>
@@ -148,7 +148,7 @@ export const PlushAndFlat: AgentStory = {
   render: () => (
     <div
       class="grid gap-6 p-8"
-      style={{ background: "var(--openbot-bg-canvas)", color: "var(--openbot-text-primary)" }}
+      style={{ background: "var(--zollybot-bg-canvas)", color: "var(--zollybot-text-primary)" }}
     >
       {PLUSH_AND_FLAT_SEEDS.map((seed) => {
         const profile = bloubAvatarProfile(seed, null);
@@ -193,7 +193,7 @@ export const Moods: AgentStory = {
       {AVATAR_MOODS.map((mood) => (
         <div class="grid justify-items-center gap-3">
           <AgentAvatar seed="story-avatar" hue={215} mood={mood} motion="always" class="size-12" />
-          <small style={{ color: "var(--openbot-text-muted)" }}>{mood}</small>
+          <small style={{ color: "var(--zollybot-text-muted)" }}>{mood}</small>
         </div>
       ))}
     </div>

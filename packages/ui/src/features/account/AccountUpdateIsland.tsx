@@ -1,6 +1,6 @@
-import type { UpdateStatus } from "@openbot/contracts/ipc";
-import { isUpdateActivePhase, isUpdateBusyPhase } from "@openbot/contracts/ipc";
-import { Button, Download, RefreshCw, Spinner } from "@openbot/ui";
+import type { UpdateStatus } from "@zollybot/contracts/ipc";
+import { isUpdateActivePhase, isUpdateBusyPhase } from "@zollybot/contracts/ipc";
+import { Button, Download, RefreshCw, Spinner } from "@zollybot/ui";
 import { createEffect, createMemo, createSignal, For, Show, untrack } from "solid-js";
 import { createDigitRoll } from "../../digit-roll";
 import { useText } from "../../text";
@@ -11,7 +11,7 @@ import { rendererDuration } from "../conversation/activity-timing";
 // it is built from; keep this in step with `--panel-close-dur` in
 // account-update-island.css.
 function islandCloseDuration(): number {
-  return rendererDuration("--openbot-duration-slow", 200) + rendererDuration("--openbot-duration-normal", 160);
+  return rendererDuration("--zollybot-duration-slow", 200) + rendererDuration("--zollybot-duration-normal", 160);
 }
 
 interface AccountUpdateIslandProps {

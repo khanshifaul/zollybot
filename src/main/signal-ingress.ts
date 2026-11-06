@@ -1,31 +1,31 @@
-import type { MessagingPlatform } from "@openbot/contracts/ipc";
-import { decodeSignalServerMessage } from "@openbot/contracts/signal-protocol/decode";
-import { type DiscordApiRequest, decodeDiscordApiError } from "@openbot/contracts/signal-protocol/discord-api";
-import { DISCORD_API_PATH } from "@openbot/contracts/signal-protocol/discord-route";
-import type { GitHubDeliveryStatus } from "@openbot/contracts/signal-protocol/github-route";
+import type { MessagingPlatform } from "@zollybot/contracts/ipc";
+import { decodeSignalServerMessage } from "@zollybot/contracts/signal-protocol/decode";
+import { type DiscordApiRequest, decodeDiscordApiError } from "@zollybot/contracts/signal-protocol/discord-api";
+import { DISCORD_API_PATH } from "@zollybot/contracts/signal-protocol/discord-route";
+import type { GitHubDeliveryStatus } from "@zollybot/contracts/signal-protocol/github-route";
 import {
   INGRESS_QUEUE_CAPABILITY,
   openQueuedDelivery,
   type QueuedSignalMessage,
-} from "@openbot/contracts/signal-protocol/ingress-queue";
+} from "@zollybot/contracts/signal-protocol/ingress-queue";
 import {
   SIGNAL_PROTOCOL_VERSION,
   type SignalClientMessage,
   type SignalServerMessage,
   SLACK_DELIVERY_RESPONSE_BYTES_LIMIT,
   type WebhookDeliveryStatus,
-} from "@openbot/contracts/signal-protocol/messages";
+} from "@zollybot/contracts/signal-protocol/messages";
 import {
   TELEGRAM_CAPABILITY,
   type TelegramCallMethod,
   type TelegramCallParams,
   type TelegramCallResult,
-} from "@openbot/contracts/signal-protocol/telegram-route";
+} from "@zollybot/contracts/signal-protocol/telegram-route";
 import {
   STANDARD_WEBHOOKS_FORMAT,
   type WebhookSignatureFormat,
-} from "@openbot/contracts/signal-protocol/webhook-route";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/signal-protocol/webhook-route";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Context, Deferred, Effect, Exit, Layer, ManagedRuntime, Option, Result, Scope, Semaphore } from "effect";
 import WebSocket from "ws";
 import {
@@ -43,7 +43,7 @@ import type { IngressQueueKey } from "./ingress-queue-key";
 import { type RemoteWorkflowError, remoteDecode } from "./remote-service-effects";
 import { downloadTelegramFile, signalHttpOrigin, uploadTelegramFile } from "./telegram-files";
 
-const logger = createOpenBotLogger("signal-ingress");
+const logger = createZollyBotLogger("signal-ingress");
 
 /** The route of a kept delivery, as Signal keeps its order: one Slack team, Discord guild or Telegram chat. */
 function queuedRoute(message: QueuedSignalMessage): string {
@@ -105,7 +105,7 @@ class SignalIngressAccount extends Context.Service<
     githubRoute(hostId: string): Effect.Effect<string, RemoteWorkflowError>;
     telegramRoute(hostId: string): Effect.Effect<string | null>;
   }
->()("openbot/main/SignalIngressAccount") {
+>()("zollybot/main/SignalIngressAccount") {
   static layer(options: SignalIngressOptions) {
     return Layer.succeed(
       SignalIngressAccount,
@@ -145,7 +145,7 @@ export interface WebhookIngressDelivery {
   timestamp: string;
   signature: string;
   body: Uint8Array;
-  /** Absent for an `X-OpenBot-Signature` request. */
+  /** Absent for an `X-ZollyBot-Signature` request. */
   format?: WebhookSignatureFormat;
 }
 
@@ -155,7 +155,7 @@ interface WebhookIngressAnswer {
 
 export type WebhookIngressHandler = (delivery: WebhookIngressDelivery) => Effect.Effect<WebhookIngressAnswer, unknown>;
 
-/** One event of the OpenBot GitHub App, with the exact body that GitHub signed. */
+/** One event of the ZollyBot GitHub App, with the exact body that GitHub signed. */
 export interface GitHubIngressDelivery {
   event: string;
   deliveryId: string;

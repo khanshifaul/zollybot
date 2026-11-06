@@ -21,17 +21,17 @@ import {
   type VoiceServerRoutes,
   type VoiceServerSettings,
   type VoiceTranscriptionResult,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, registerSecretValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, registerSecretValue } from "@zollybot/logging";
 import { Effect, Schema } from "effect";
 import { readLimitedBody } from "../backend/limited-body";
 import { PreferenceStore } from "./preference-file";
 import type { VoiceApiKeyStore } from "./voice-api-key-store";
 import { VoiceOperationError } from "./voice-model-service";
 
-const logger = createOpenBotLogger("voice-server-service");
+const logger = createZollyBotLogger("voice-server-service");
 
 /** The user waits for the list in the dialog, and a remote server can be slow. */
 const PROBE_TIMEOUT_MS = 8_000;

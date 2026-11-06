@@ -10,8 +10,8 @@
     transform var(--panel-close-dur) var(--panel-ease),
     opacity var(--panel-close-dur) var(--panel-ease),
     filter var(--panel-close-dur) var(--panel-ease),
-    border-color var(--openbot-duration-slow) ease,
-    box-shadow var(--openbot-duration-slow) ease;
+    border-color var(--zollybot-duration-slow) ease,
+    box-shadow var(--zollybot-duration-slow) ease;
 }
 
 .file-preview-panel.t-panel-slide[data-open="true"] {
@@ -19,8 +19,8 @@
     transform var(--panel-open-dur) var(--panel-ease),
     opacity var(--panel-open-dur) var(--panel-ease),
     filter var(--panel-open-dur) var(--panel-ease),
-    border-color var(--openbot-duration-slow) ease,
-    box-shadow var(--openbot-duration-slow) ease;
+    border-color var(--zollybot-duration-slow) ease,
+    box-shadow var(--zollybot-duration-slow) ease;
 }
 
 .file-preview-header {
@@ -29,7 +29,7 @@
   flex: 0 0 auto;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid var(--openbot-border);
+  border-bottom: 1px solid var(--zollybot-border);
   padding-block: 0;
   padding-inline: 11px 7px;
 }
@@ -39,8 +39,8 @@
   flex: 1;
   overflow: hidden;
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -57,15 +57,15 @@
   width: 15px;
   height: 15px;
   flex: 0 0 auto;
-  color: var(--openbot-text-muted);
-  stroke-width: var(--openbot-icon-stroke);
+  color: var(--zollybot-text-muted);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .file-preview-content {
   min-height: 0;
   flex: 1;
   overflow: auto;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
 }
 
 .markdown-file-preview {
@@ -76,25 +76,25 @@
   max-width: 760px;
   margin: 0 auto;
   padding: 24px 26px 48px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   overflow-wrap: anywhere;
 }
 
 .file-preview-markdown > .message-markdown {
-  font-size: var(--openbot-text-md);
+  font-size: var(--zollybot-text-md);
   line-height: 1.6;
 }
 
 .file-preview-markdown-status {
   min-width: 0;
   margin: 0;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface);
   padding: 18px 20px;
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
   line-height: 1.55;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
@@ -105,9 +105,9 @@
   min-height: 100%;
   margin: 0;
   padding: 18px 20px 48px;
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
   line-height: 1.55;
   tab-size: 2;
   white-space: pre;
@@ -138,7 +138,7 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
 }
 
 .file-preview-audio {
@@ -151,7 +151,7 @@
   display: block;
   width: 100%;
   max-height: 100%;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
   object-fit: contain;
 }
 
@@ -159,13 +159,13 @@
   min-width: 0;
   min-height: 100%;
   padding: 20px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .file-preview-spreadsheet-status {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
   white-space: pre-wrap;
 }
 
@@ -177,53 +177,53 @@
 }
 
 .file-preview-spreadsheet-tabs button {
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-bg-control);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-bg-control);
   padding: 6px 10px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   white-space: nowrap;
 }
 
 .file-preview-spreadsheet-tabs button[aria-pressed="true"] {
-  border-color: var(--openbot-border-strong);
-  background: var(--openbot-bg-surface);
-  color: var(--openbot-text-primary);
+  border-color: var(--zollybot-border-strong);
+  background: var(--zollybot-bg-surface);
+  color: var(--zollybot-text-primary);
 }
 
 .file-preview-spreadsheet-table-wrap {
   min-height: 0;
   overflow: auto;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface);
 }
 
 .file-preview-spreadsheet-table {
   width: max-content;
   min-width: 100%;
   border-collapse: collapse;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
 }
 
 .file-preview-spreadsheet-table caption {
   padding: 10px 12px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   text-align: start;
 }
 
 .file-preview-spreadsheet-table th,
 .file-preview-spreadsheet-table td {
-  border-top: 1px solid var(--openbot-border);
-  border-inline-end: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
+  border-inline-end: 1px solid var(--zollybot-border);
   padding: 8px 12px;
   text-align: start;
   white-space: pre;
 }
 
 .file-preview-spreadsheet-table th {
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
   font-weight: 600;
 }
 
@@ -234,8 +234,8 @@
 
 .file-preview-spreadsheet-note {
   margin: 10px 0 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 .file-preview-unsupported {
   display: grid;
@@ -244,7 +244,7 @@
   justify-items: center;
   gap: 8px;
   padding: 24px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-align: center;
 }
 
@@ -255,13 +255,13 @@
 }
 
 .file-preview-unsupported strong {
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
 }
 
 .file-preview-unsupported span {
   max-width: 260px;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   line-height: 1.45;
 }
 
@@ -273,19 +273,19 @@
   position: sticky;
   bottom: 0;
   margin: 0;
-  border-top: 1px solid var(--openbot-border);
-  background: var(--openbot-bg-control);
+  border-top: 1px solid var(--zollybot-border);
+  background: var(--zollybot-bg-control);
   padding: 7px 12px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   text-align: center;
 }
 .browser-pip-window {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
 }
 
 .browser-pip-surface {
@@ -308,19 +308,19 @@
   gap: 10px;
   justify-content: stretch;
   padding: 6px 10px;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   text-align: start;
 }
 
 .file-preview-folder-name {
   overflow: hidden;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .file-preview-folder-meta {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -328,8 +328,8 @@
 .file-preview-folder-empty {
   margin: 0;
   padding: 24px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   text-align: center;
 }
 

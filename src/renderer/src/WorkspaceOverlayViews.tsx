@@ -1,7 +1,7 @@
-import type { AddedAgent, McpServerConfig, ServerSummary } from "@openbot/contracts/ipc";
-import { MCP_SERVERS_CAPABILITY } from "@openbot/contracts/ipc";
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
 import type { ComponentProps } from "@solidjs/web";
+import type { AddedAgent, McpServerConfig, ServerSummary } from "@zollybot/contracts/ipc";
+import { MCP_SERVERS_CAPABILITY } from "@zollybot/contracts/ipc";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
 import { createMemo, Loading, omit, Show } from "solid-js";
 import type { AgentTemplateInstallCalls } from "./features/agent-templates/agent-templates-port";
 import { ChannelCreateDialog } from "./features/channels/ChannelCreateDialog";

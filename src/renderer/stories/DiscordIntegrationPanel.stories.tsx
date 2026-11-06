@@ -1,10 +1,10 @@
-import { MESSAGING_LIMITS, type MessagingConnection, type MessagingRole } from "@openbot/contracts/ipc";
+import { MESSAGING_LIMITS, type MessagingConnection, type MessagingRole } from "@zollybot/contracts/ipc";
 import {
   type DiscordAccessControl,
   SlackConnectDialog,
   type SlackIntegrationAgent,
   SlackIntegrationPanel,
-} from "@openbot/ui/features/settings/SlackIntegrationPanel";
+} from "@zollybot/ui/features/settings/SlackIntegrationPanel";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { STORY_AGENT_SUMMARIES } from "./fixtures";
@@ -87,7 +87,7 @@ const args = (connections: MessagingConnection[], busy = false) => ({
   onAddOrchestrator: fn(),
 });
 
-/** Who can use OpenBot, with `allowed` saved for every Discord server. */
+/** Who can use ZollyBot, with `allowed` saved for every Discord server. */
 function access(allowed: MessagingRole[], unsupported = false): DiscordAccessControl {
   return {
     allowed: () => allowed,
@@ -139,13 +139,13 @@ export const AtLimit: Story = {
   ),
 };
 
-/** No role is chosen, so everyone in the Discord server can mention OpenBot. */
+/** No role is chosen, so everyone in the Discord server can mention ZollyBot. */
 export const DiscordAccessEveryone: Story = { args: { ...args([guild()]), access: access([]) } };
 
-/** Only members with Admin or Moderator can mention OpenBot. */
+/** Only members with Admin or Moderator can mention ZollyBot. */
 export const DiscordAccessRoles: Story = { args: { ...args([guild()]), access: access(ROLES.slice(0, 2)) } };
 
-/** The joined server's OpenBot is too old to choose roles. */
+/** The joined server's ZollyBot is too old to choose roles. */
 export const DiscordAccessUnsupported: Story = {
   args: { ...args([guild()]), hostName: "Studio Mac", access: access([], true) },
 };

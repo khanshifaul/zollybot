@@ -5,14 +5,14 @@ import {
   canAdministerServer,
   pasteCodeSignInSupported,
   type ServerSummary,
-} from "@openbot/contracts/ipc";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { PROVIDER_HOST_SIGN_IN_PROVIDERS } from "@openbot/contracts/team-protocol/provider-host-sign-in-v1";
-import { PROVIDERS_ADMIN_CODE_SIGN_IN_PROVIDERS } from "@openbot/contracts/team-protocol/providers-v1";
-import { PROVIDERS_SIGN_IN_V3_PROVIDERS } from "@openbot/contracts/team-protocol/providers-v3";
-import { PROVIDERS_V4_SIGN_IN_PROVIDERS } from "@openbot/contracts/team-protocol/providers-v4";
-import { PROVIDERS_V8_CAPABILITY } from "@openbot/contracts/team-protocol/providers-v8";
-import { SIGN_IN_RELAY_PROVIDERS } from "@openbot/contracts/team-protocol/sign-in-relay-v1";
+} from "@zollybot/contracts/ipc";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { PROVIDER_HOST_SIGN_IN_PROVIDERS } from "@zollybot/contracts/team-protocol/provider-host-sign-in-v1";
+import { PROVIDERS_ADMIN_CODE_SIGN_IN_PROVIDERS } from "@zollybot/contracts/team-protocol/providers-v1";
+import { PROVIDERS_SIGN_IN_V3_PROVIDERS } from "@zollybot/contracts/team-protocol/providers-v3";
+import { PROVIDERS_V4_SIGN_IN_PROVIDERS } from "@zollybot/contracts/team-protocol/providers-v4";
+import { PROVIDERS_V8_CAPABILITY } from "@zollybot/contracts/team-protocol/providers-v8";
+import { SIGN_IN_RELAY_PROVIDERS } from "@zollybot/contracts/team-protocol/sign-in-relay-v1";
 
 /**
  * Whether a server can be asked for a capability-gated feature. A local server
@@ -228,7 +228,7 @@ export function serverCodeRouteProviders(server: ServerSummary | undefined): rea
 
 /**
  * The providers that a code sign-in reaches on this computer, for when the browser callback cannot
- * reach OpenBot: each provider whose driver has one. A pasted code needs a terminal that only some
+ * reach ZollyBot: each provider whose driver has one. A pasted code needs a terminal that only some
  * platforms give it.
  */
 export function localCodeSignInProviders(platform: string | undefined): readonly AgentProviderId[] {
@@ -256,7 +256,7 @@ export function activeServerHasProviderSettings(server: ServerSummary): boolean 
 }
 
 /**
- * Which side of a connection runs the older OpenBot release, so a version notice can say what to
+ * Which side of a connection runs the older ZollyBot release, so a version notice can say what to
  * update. Only the release numbers count. `null` when they are equal or one does not parse.
  */
 export function olderAppSide(clientVersion: string, hostVersion: string): "client" | "host" | null {

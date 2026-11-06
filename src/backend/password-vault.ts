@@ -1,7 +1,7 @@
 // The password vault that the browser fills logins from. The main process implements it with the
 // 1Password connection; the agent service only reads it.
 
-import type { PasswordManagerId } from "@openbot/contracts/ipc";
+import type { PasswordManagerId } from "@zollybot/contracts/ipc";
 import { type Effect, Schema } from "effect";
 import { getDomain } from "tldts";
 

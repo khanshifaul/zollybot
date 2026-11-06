@@ -71,7 +71,7 @@ export interface ChannelDraft {
   members: ChannelMember[];
   leadAgentId: string | null;
   /**
-   * An isolated channel keeps what its members learn in it: `openbot.remember` saves a channel
+   * An isolated channel keeps what its members learn in it: `zollybot.remember` saves a channel
    * memory there, not a memory of the agent (#4332). Absent is off. A save without it keeps the
    * stored value, so a client from before it does not turn it off.
    */
@@ -88,7 +88,7 @@ export interface Channel extends ChannelDraft {
   archived: boolean;
   revision: number;
   createdAt: string;
-  /** An `openbot-avatar://channel/` URL of the uploaded image. Only `setChannelImage` changes it. */
+  /** An `zollybot-avatar://channel/` URL of the uploaded image. Only `setChannelImage` changes it. */
   imageUrl?: string | null;
 }
 

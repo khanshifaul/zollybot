@@ -1,6 +1,6 @@
-import { decodeHostKeyHandover, type HostKeyHandover } from "@openbot/contracts/host-key-handover";
-import { isString } from "@openbot/contracts/runtime-values";
 import { createFileRoute } from "@tanstack/solid-router";
+import { decodeHostKeyHandover, type HostKeyHandover } from "@zollybot/contracts/host-key-handover";
+import { isString } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../../../server/effect-runtime";
 import { readJsonObject } from "../../../../../server/json-body";

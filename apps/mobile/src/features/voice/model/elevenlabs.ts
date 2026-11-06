@@ -1,4 +1,4 @@
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import type { ElevenLabsVoice } from "./voice-settings";
 
 const API = "https://api.elevenlabs.io";

@@ -1,4 +1,5 @@
-import { ProviderLogo } from "@openbot/brand";
+import type { JSX } from "@solidjs/web";
+import { ProviderLogo } from "@zollybot/brand";
 import type {
   AccountUsage,
   AccountUsageWindow,
@@ -14,7 +15,7 @@ import type {
   ForeignProviderId,
   ProviderAccountStatus,
   ProviderRuntimeStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   agentProviderCliName,
   agentProviderName,
@@ -26,9 +27,9 @@ import {
   isReasoningEffort,
   PICKER_PROVIDERS,
   providerDisplayName,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
-import { planLimitWindowKind, spentUsageWindow } from "@openbot/team-client/plan-limits";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
+import { planLimitWindowKind, spentUsageWindow } from "@zollybot/team-client/plan-limits";
 import {
   Badge,
   Button,
@@ -47,10 +48,9 @@ import {
   Tabs,
   Tooltip,
   Zap,
-} from "@openbot/ui";
-import { ContentExitMotion } from "@openbot/ui/menu-motion";
-import { cx } from "@openbot/ui/utils";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { ContentExitMotion } from "@zollybot/ui/menu-motion";
+import { cx } from "@zollybot/ui/utils";
 import { createEffect, createMemo, createSignal, For, onSettled, Show, untrack } from "solid-js";
 import { formatUsageReset, usageWindowLabel } from "../features/account/account-usage-view";
 import { currentText, type TextValue, useText } from "../text";
@@ -115,7 +115,7 @@ interface ProviderModelPickerProps {
   accountUsage?: AccountUsage | null | undefined;
   /**
    * The agent's provider when this build does not know it. The host still runs the agent, so the
-   * picker shows its model, and it cannot open until OpenBot is updated.
+   * picker shows its model, and it cannot open until ZollyBot is updated.
    */
   foreignProvider?: ForeignProviderId | undefined;
   /**
@@ -948,7 +948,7 @@ export function ProviderModelPicker(props: ProviderModelPickerProps) {
                   if (ownsSelection()) props.onReasoningEffortChange?.(effort);
                   else setQueuedEffort({ key, effort });
                 }
-                // The provider the tab's status is for: a custom agent has no runtime OpenBot downloads.
+                // The provider the tab's status is for: a custom agent has no runtime ZollyBot downloads.
                 const runtime = () => {
                   const value = props.runtimeStatuses?.[status().id];
                   if (

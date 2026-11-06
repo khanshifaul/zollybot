@@ -18,14 +18,14 @@ import {
   agentExclusionCoverage,
   agentFolderCoverage,
   folderInside,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { AgentService } from "../backend/agent-service";
 import { runCauseEffect } from "../backend/effect-boundary";
 import { oneAtATimePerKey } from "./ipc/one-at-a-time";
 
 export interface AgentFoldersDependencies {
   service: Pick<AgentService, "listAgents" | "updateAgent" | "sharedRoot">;
-  /** The app's own data, with `openbot.db`. */
+  /** The app's own data, with `zollybot.db`. */
   userDataPath: string;
 }
 
@@ -143,18 +143,18 @@ export function createAgentFolders({ service, userDataPath }: AgentFoldersDepend
   }
 
   /**
-   * A folder in or around OpenBot's own data or the OpenBot folder, or one that holds this agent's
-   * workspace or the shared folder. The OpenBot folder holds the workspaces of the other agents; the
+   * A folder in or around ZollyBot's own data or the ZollyBot folder, or one that holds this agent's
+   * workspace or the shared folder. The ZollyBot folder holds the workspaces of the other agents; the
    * home folder and a disk root hold it too.
    */
   async function isProtected(path: string, roots: readonly string[]): Promise<boolean> {
-    // The shared folder is in the OpenBot folder, beside the agent workspaces.
-    const [openbot, userData] = await Promise.all([realFolder(dirname(service.sharedRoot)), realFolder(userDataPath)]);
+    // The shared folder is in the ZollyBot folder, beside the agent workspaces.
+    const [zollybot, userData] = await Promise.all([realFolder(dirname(service.sharedRoot)), realFolder(userDataPath)]);
     return (
       parse(path).root === path ||
       folderInside(userData, path) ||
-      folderInside(openbot, path) ||
-      [openbot, userData, ...roots].some((root) => folderInside(path, root))
+      folderInside(zollybot, path) ||
+      [zollybot, userData, ...roots].some((root) => folderInside(path, root))
     );
   }
 
@@ -246,7 +246,7 @@ export function createAgentFolders({ service, userDataPath }: AgentFoldersDepend
     /**
      * The folders in `path`, or in the home folder, sorted by name, for a device that cannot open the
      * folder picker of this computer. Hidden folders stay out, as the picker hides them. Null when
-     * the folder is not there or this computer does not let OpenBot read it.
+     * the folder is not there or this computer does not let ZollyBot read it.
      */
     async browse(path: string | null): Promise<AgentFolderBrowse | null> {
       const folder = await realFolder(path ?? homedir());

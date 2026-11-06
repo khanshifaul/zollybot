@@ -1,5 +1,5 @@
-import type { HostedServerSleep, ServerConnectionState, ServerSummary } from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
+import type { HostedServerSleep, ServerConnectionState, ServerSummary } from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   BellOff,
   buttonVariants,
@@ -9,7 +9,7 @@ import {
   Plus,
   ServerGradientLogo,
   Tooltip,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createEffect, createSignal, createStore, For, onCleanup, Show } from "solid-js";
 import { createScrollFades } from "../../components/createScrollFades";
 import { createVerticalDragPreview } from "../../components/createVerticalDragPreview";

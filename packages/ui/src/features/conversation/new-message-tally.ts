@@ -8,8 +8,8 @@
  * so it is here and it is tested as data.
  */
 
-import { ROUTINE_QUIET_ANSWER_ITEM_TYPE } from "@openbot/contracts/ipc";
-import type { AgentMessage } from "@openbot/ui/data";
+import { ROUTINE_QUIET_ANSWER_ITEM_TYPE } from "@zollybot/contracts/ipc";
+import type { AgentMessage } from "@zollybot/ui/data";
 
 export interface TimelineRow {
   id: string;

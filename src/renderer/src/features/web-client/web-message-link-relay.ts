@@ -5,16 +5,16 @@
 import {
   type McpSignInRelayPage,
   type McpTestResult,
-  type OpenBotDesktopApi,
   relayableSignInLink,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
+  type ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
 import { openWebLink } from "./web-attachments";
 import { webMcpRelay } from "./web-mcp-relay";
 
 export type WebMessageLinks = Pick<
-  OpenBotDesktopApi["agent"],
+  ZollyBotDesktopApi["agent"],
   "openMessageLink" | "pasteMessageLink" | "cancelMessageLink"
 >;
 

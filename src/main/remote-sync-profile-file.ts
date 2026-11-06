@@ -1,17 +1,17 @@
 import { appendFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { RemoteRequestRecord, RemoteSyncProfileSink } from "@openbot/team-client/sync-profile";
+import type { RemoteRequestRecord, RemoteSyncProfileSink } from "@zollybot/team-client/sync-profile";
 import { Effect, Semaphore } from "effect";
 
 const FILE_NAME = "dev-sync-profile.ndjson";
 
 /**
  * The request records of `bun run perf:remote`, for an unpackaged build started with
- * `OPENBOT_DEV_SYNC_PROFILE=1`. The file is in the profile root, outside `logs`, and no export or
+ * `ZOLLYBOT_DEV_SYNC_PROFILE=1`. The file is in the profile root, outside `logs`, and no export or
  * report reads it. Each start begins an empty file, so it holds the requests of this process only.
  * A `start` line marks each request that went out and an `end` line holds its record, so the
  * harness can tell when no request is in flight. The first line holds the epoch time the process
- * started and the added `OPENBOT_DEV_RTT_MS`, so the harness can time a start and check its latency.
+ * started and the added `ZOLLYBOT_DEV_RTT_MS`, so the harness can time a start and check its latency.
  */
 export function remoteSyncProfileFile(input: {
   isPackaged: boolean;

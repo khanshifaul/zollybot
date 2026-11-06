@@ -32,7 +32,7 @@ export const messages = {
   "provider.status.checking": "Controllo",
   "provider.status.off": "Disattivato",
   "provider.gemini.hostSignIn":
-    "Per connettere Gemini, apri OpenBot sull'host e seleziona «Connetti» in Impostazioni server > Provider. L'accesso a Google richiede un browser su quell'host. L'accesso remoto non è supportato.",
+    "Per connettere Gemini, apri ZollyBot sull'host e seleziona «Connetti» in Impostazioni server > Provider. L'accesso a Google richiede un browser su quell'host. L'accesso remoto non è supportato.",
 
   "provider.key.free": "Gratuito",
 
@@ -60,13 +60,13 @@ export const messages = {
   "provider.aria.cancelSignIn": "Annulla l'accesso a {name}",
   "provider.aria.apiKey": "Chiave API di {name}",
   "provider.connecting.browserHint": "Completa l'accesso se si apre una pagina del browser.",
-  "provider.connecting.cancelFailed": "OpenBot non è riuscito ad annullare l'accesso a {name}. Riprova.",
+  "provider.connecting.cancelFailed": "ZollyBot non è riuscito ad annullare l'accesso a {name}. Riprova.",
   "provider.aria.install": "Installa {name}",
   "provider.aria.signIn": "Accedi a {name}",
   "provider.aria.codeFallback": "Accedi a {name} con un codice",
   "provider.aria.moreActions": "Altre azioni per {name}",
 
-  "provider.aria.use": "Usa {name} in OpenBot",
+  "provider.aria.use": "Usa {name} in ZollyBot",
   "provider.use.inUseOne": "{agent} usa {name}. Cambia il modello di questo agente, poi disattiva {name}.",
   "provider.use.inUse": {
     one: "{count} agente usa {name}. Cambia il modello di questo agente, poi disattiva {name}.",
@@ -74,7 +74,7 @@ export const messages = {
   },
 
   "provider.codeLogin.title": "Accedi a {name} con un codice",
-  "provider.codeLogin.description": "Completa l'accesso sul telefono o in un altro browser. OpenBot aspetta qui.",
+  "provider.codeLogin.description": "Completa l'accesso sul telefono o in un altro browser. ZollyBot aspetta qui.",
   "provider.codeLogin.starting": "Richiesta del codice a {name}…",
   "provider.codeLogin.qrLabel": "Codice QR per la pagina di accesso di {name}",
   "provider.codeLogin.open": "Apri",
@@ -95,12 +95,12 @@ export const messages = {
   "provider.codeLogin.pageDescription": "Questa pagina è aperta nel browser su {host}. Accedi da qui.",
   "provider.codeLogin.relayStarting": "Avvio dell'accesso a {name} su {host}…",
   "provider.codeLogin.pageOpening": "Apertura della pagina di accesso di {name} su {host}…",
-  "provider.codeLogin.linkStep": "Accedi a {name}. OpenBot continua da solo.",
+  "provider.codeLogin.linkStep": "Accedi a {name}. ZollyBot continua da solo.",
   "provider.codeLogin.chatgptDeviceSetting":
     "In ChatGPT su un computer, apri le impostazioni di sicurezza e attiva l’accesso con codice dispositivo per Codex. Per un account di lavoro, lo attiva l’amministratore del workspace.",
-  "provider.useApp.title": "Connetti {name} nell'app OpenBot",
+  "provider.useApp.title": "Connetti {name} nell'app ZollyBot",
   "provider.useApp.description":
-    "L'accesso a {name} torna al computer che lo ha avviato, e una scheda del browser non può riceverlo. Connetti {name} nell'app OpenBot. L'app completa l'accesso da sola.",
+    "L'accesso a {name} torna al computer che lo ha avviato, e una scheda del browser non può riceverlo. Connetti {name} nell'app ZollyBot. L'app completa l'accesso da sola.",
   "provider.useApp.download": "Scarica l'app",
 
   "provider.picker.noEndpoints": "Ancora nessun endpoint",
@@ -111,7 +111,7 @@ export const messages = {
   "provider.picker.providers": "Provider di modelli",
   "provider.picker.downloading": "Download {percent}",
   "provider.picker.unavailable": "{name} non è disponibile.",
-  "provider.picker.updateToUse": "Aggiorna OpenBot per usare {name}",
+  "provider.picker.updateToUse": "Aggiorna ZollyBot per usare {name}",
   "provider.picker.models": "Modelli di {name}",
   "provider.picker.addProvider": "Aggiungi provider",
   "provider.picker.download": "Download di {name}",
@@ -164,15 +164,15 @@ export const messages = {
   "provider.claudeKey.label": "Chiave API di Anthropic",
   "provider.inceptionKey.title": "Chiave API di Inception",
   "provider.inceptionKey.description":
-    "Salva una chiave API di Inception su questo computer per usare i modelli Mercury. OpenBot li esegue nella CLI di Pi che scarica.",
+    "Salva una chiave API di Inception su questo computer per usare i modelli Mercury. ZollyBot li esegue nella CLI di Pi che scarica.",
   "provider.inceptionKey.label": "Chiave API di Inception",
   "provider.deepseekKey.title": "Chiave API di DeepSeek",
   "provider.deepseekKey.description":
-    "Salva una chiave API di DeepSeek su questo computer per usare i modelli DeepSeek. OpenBot li esegue nella CLI di Pi che scarica.",
+    "Salva una chiave API di DeepSeek su questo computer per usare i modelli DeepSeek. ZollyBot li esegue nella CLI di Pi che scarica.",
   "provider.deepseekKey.label": "Chiave API di DeepSeek",
   "provider.openrouterKey.title": "Chiave API di OpenRouter",
   "provider.openrouterKey.description":
-    "Salva una chiave API di OpenRouter su questo computer per usare i modelli di OpenRouter. OpenBot li esegue nella CLI di Pi che scarica.",
+    "Salva una chiave API di OpenRouter su questo computer per usare i modelli di OpenRouter. ZollyBot li esegue nella CLI di Pi che scarica.",
   "provider.openrouterKey.label": "Chiave API di OpenRouter",
 
   "provider.openCodeKey.title": "Accedi a OpenCode Go",
@@ -220,10 +220,10 @@ export const messages = {
   "provider.settings.disconnectTitle": "Disconnettere {name}?",
   "provider.settings.disconnectOthers": "Gli altri account {provider} attendono finché non ricolleghi {provider}.",
   "provider.settings.disconnectLocal":
-    "OpenBot disconnette {provider} su questo computer. Anche la CLI {provider} nel terminale viene disconnessa.",
-  "provider.settings.disconnectHost": "OpenBot disconnette {provider} sul server.",
+    "ZollyBot disconnette {provider} su questo computer. Anche la CLI {provider} nel terminale viene disconnessa.",
+  "provider.settings.disconnectHost": "ZollyBot disconnette {provider} sul server.",
   "provider.settings.versionInstalledByUser": "{version} · installata da te",
-  "provider.settings.versionDownloaded": "{version} · scaricata da OpenBot",
+  "provider.settings.versionDownloaded": "{version} · scaricata da ZollyBot",
   "provider.settings.cache": "Cache",
   "provider.settings.promptCache": "Cache dei prompt",
   "provider.settings.promptCacheDescription":
@@ -245,8 +245,8 @@ export const messages = {
   "provider.settings.modelsLoadFailed": "Impossibile caricare i modelli di questo server.",
   "provider.settings.deleteTitle": "Elimina {name}",
   "provider.settings.deleteOn":
-    "Disattiva {name} ed elimina la CLI scaricata da OpenBot. Account, accessi e agenti restano.",
+    "Disattiva {name} ed elimina la CLI scaricata da ZollyBot. Account, accessi e agenti restano.",
   "provider.settings.deleteOff":
-    "Elimina la CLI che OpenBot ha scaricato per {name} ({size}). Account, accessi e agenti restano.",
+    "Elimina la CLI che ZollyBot ha scaricato per {name} ({size}). Account, accessi e agenti restano.",
   "provider.settings.removeDownloadFailed": "Impossibile rimuovere il download.",
 } as const satisfies PartialTranslation<typeof source>;

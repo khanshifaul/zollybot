@@ -1,6 +1,6 @@
 // Drives `discord-mobile-release-announcement.ts` and `publish-mobile-release.ts` as processes, in
 // a temporary copy of the files they read, against one local server that stands in for the account
-// Worker, the GitHub API and the Discord webhook. Writes .openbot-build/mobile-release-announcement-e2e.json.
+// Worker, the GitHub API and the Discord webhook. Writes .zollybot-build/mobile-release-announcement-e2e.json.
 //
 //   bun scripts/mobile-release-announcement-e2e.ts
 
@@ -13,9 +13,9 @@ import { resolveMobileFeatures } from "../packages/contracts/src/mobile-features
 import { isDynamicRecord, isString } from "../packages/contracts/src/runtime-values";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const REPORT = join(root, ".openbot-build", "mobile-release-announcement-e2e.json");
+const REPORT = join(root, ".zollybot-build", "mobile-release-announcement-e2e.json");
 const ROLE_ID = "123456789012345678";
-const REPOSITORY = "example/openbot";
+const REPOSITORY = "example/zollybot";
 
 type Store = "ios" | "android";
 
@@ -90,7 +90,7 @@ const server = Bun.serve({
 });
 const site = `http://127.0.0.1:${server.port}`;
 
-const work = mkdtempSync(join(tmpdir(), "openbot-mobile-release-e2e-"));
+const work = mkdtempSync(join(tmpdir(), "zollybot-mobile-release-e2e-"));
 mkdirSync(join(work, "apps/mobile"), { recursive: true });
 mkdirSync(join(work, "apps/auth-api/src/server"), { recursive: true });
 cpSync(
@@ -175,7 +175,7 @@ try {
     result.status === 0 &&
       state.posts.length === 1 &&
       lastPost().includes(`<@&${ROLE_ID}>`) &&
-      lastPost().includes("**OpenBot v1.4.7 is out on iOS**\nThe Android version comes out later.") &&
+      lastPost().includes("**ZollyBot v1.4.7 is out on iOS**\nThe Android version comes out later.") &&
       !lastPost().includes("[Android]") &&
       state.tags.has("mobile-announced/v1.4.7/ios"),
     { output: result.output, post: lastPost(), tags: [...state.tags] },
@@ -214,7 +214,7 @@ try {
     "posts the second store",
     result.status === 0 &&
       state.posts.length === 2 &&
-      lastPost().includes("**OpenBot v1.4.7 is out on Android**\nIt is already out on iOS.") &&
+      lastPost().includes("**ZollyBot v1.4.7 is out on Android**\nIt is already out on iOS.") &&
       lastPost().includes("[iOS]") &&
       state.tags.has("mobile-announced/v1.4.7/android"),
     { output: result.output, post: lastPost() },
@@ -227,7 +227,7 @@ try {
     "posts both stores in one post",
     result.status === 0 &&
       state.posts.length === 3 &&
-      lastPost().includes("**OpenBot v1.4.7 is out on iOS and Android**\n\n"),
+      lastPost().includes("**ZollyBot v1.4.7 is out on iOS and Android**\n\n"),
     { output: result.output, post: lastPost() },
   );
 
@@ -238,7 +238,7 @@ try {
   result = await announce();
   check(
     "a skipped store gets no line",
-    result.status === 0 && lastPost().includes("**OpenBot v1.4.7 is out on iOS**\n\n- One."),
+    result.status === 0 && lastPost().includes("**ZollyBot v1.4.7 is out on iOS**\n\n- One."),
     { output: result.output, post: lastPost() },
   );
 
@@ -313,7 +313,7 @@ try {
     "--version posts an older version",
     result.status === 0 &&
       state.posts.length === beforeOlder + 1 &&
-      lastPost().includes("OpenBot v1.4.6 is out on iOS"),
+      lastPost().includes("ZollyBot v1.4.6 is out on iOS"),
     result.output,
   );
   writeFileSync(

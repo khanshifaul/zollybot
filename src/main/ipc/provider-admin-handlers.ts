@@ -1,13 +1,13 @@
-import { PROVIDERS_V5_CAPABILITY, PROVIDERS_V5_ROUTES } from "@openbot/contracts/team-protocol/providers-v5";
-import { PROVIDERS_V8_CAPABILITY, PROVIDERS_V8_ROUTES } from "@openbot/contracts/team-protocol/providers-v8";
+import { PROVIDERS_V5_CAPABILITY, PROVIDERS_V5_ROUTES } from "@zollybot/contracts/team-protocol/providers-v5";
+import { PROVIDERS_V8_CAPABILITY, PROVIDERS_V8_ROUTES } from "@zollybot/contracts/team-protocol/providers-v8";
 import { Cause, Effect, Exit, Fiber } from "effect";
 import type { RemoteWorkflowError } from "../remote-service-effects";
 // The providers of one server's host: code sign-in, API keys, managed CLI runtimes and custom
 // endpoints. On a joined server they belong to the host, so the request goes there, and the host
 // answers only an owner or admin. A key only travels towards the host; no result carries one.
 
-import type { DownloadableProviderId } from "@openbot/contracts/agent-providers";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import type { DownloadableProviderId } from "@zollybot/contracts/agent-providers";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AgentProviderId,
   type AgentStatus,
@@ -24,52 +24,52 @@ import {
   type PasteProviderRelaySignInInput,
   type ProviderRelaySignInStatus,
   type SubmitProviderCodeLoginInput,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
 import {
   CUSTOM_PROVIDER_HARNESS_CAPABILITY,
   CUSTOM_PROVIDER_HARNESS_ROUTES,
-} from "@openbot/contracts/team-protocol/custom-provider-harness-v1";
-import { providerAccountRelay } from "@openbot/contracts/team-protocol/provider-account-relays";
+} from "@zollybot/contracts/team-protocol/custom-provider-harness-v1";
+import { providerAccountRelay } from "@zollybot/contracts/team-protocol/provider-account-relays";
 import {
   PROVIDER_ACCOUNTS_CAPABILITY,
   PROVIDER_ACCOUNTS_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-accounts-v1";
+} from "@zollybot/contracts/team-protocol/provider-accounts-v1";
 import {
   PROVIDER_DEFAULT_CAPABILITY,
   PROVIDER_DEFAULT_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-default-v1";
+} from "@zollybot/contracts/team-protocol/provider-default-v1";
 import {
   PROVIDER_HOST_SIGN_IN_CAPABILITY,
   PROVIDER_HOST_SIGN_IN_ERROR_LIMIT,
   PROVIDER_HOST_SIGN_IN_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-host-sign-in-v1";
+} from "@zollybot/contracts/team-protocol/provider-host-sign-in-v1";
 import {
   PROVIDER_SIGN_OUT_CAPABILITY,
   PROVIDER_SIGN_OUT_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-sign-out-v1";
+} from "@zollybot/contracts/team-protocol/provider-sign-out-v1";
 import {
   PROVIDER_USAGE_RESET_CAPABILITY,
   PROVIDER_USAGE_RESET_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-usage-reset-v1";
-import { PROVIDERS_ADMIN_CAPABILITY, PROVIDERS_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/providers-v1";
+} from "@zollybot/contracts/team-protocol/provider-usage-reset-v1";
+import { PROVIDERS_ADMIN_CAPABILITY, PROVIDERS_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/providers-v1";
 import {
   PROVIDERS_RUNTIMES_V2_CAPABILITY,
   PROVIDERS_RUNTIMES_V2_ROUTES,
-} from "@openbot/contracts/team-protocol/providers-v2";
+} from "@zollybot/contracts/team-protocol/providers-v2";
 import {
   PROVIDERS_SIGN_IN_V3_CAPABILITY,
   PROVIDERS_SIGN_IN_V3_ROUTES,
-} from "@openbot/contracts/team-protocol/providers-v3";
-import { PROVIDERS_V4_CAPABILITY, PROVIDERS_V4_ROUTES } from "@openbot/contracts/team-protocol/providers-v4";
+} from "@zollybot/contracts/team-protocol/providers-v3";
+import { PROVIDERS_V4_CAPABILITY, PROVIDERS_V4_ROUTES } from "@zollybot/contracts/team-protocol/providers-v4";
 import {
   SIGN_IN_RELAY_CAPABILITY,
   SIGN_IN_RELAY_PROVIDERS,
   SIGN_IN_RELAY_ROUTES,
-} from "@openbot/contracts/team-protocol/sign-in-relay-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/sign-in-relay-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { normalizePastedCode } from "../../backend/agent/cli-code-login";
 import { AgentLifecycleFailed, type AgentService } from "../../backend/agent-service";
 import { runCauseEffect } from "../../backend/effect-boundary";

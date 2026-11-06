@@ -11,9 +11,9 @@ import {
   isReservedMcpServerName,
   type McpServerConfig,
   type McpTransport,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Deferred, Effect, Schema } from "effect";
 import { agentLaunchPath, isExecutable, isWindowsRunnable } from "./cli";
 import { causeHelpers } from "./effect-boundary";
@@ -27,7 +27,7 @@ const execFileAsync = promisify(execFile);
 export type McpServerSource = () => readonly McpServerConfig[];
 
 /**
- * What OpenBot can lend a machine that does not have it: the `bin` directories of the tool runtimes
+ * What ZollyBot can lend a machine that does not have it: the `bin` directories of the tool runtimes
  * it downloaded, and the command words it can answer itself.
  *
  * Both are a floor, never a choice. The directories are appended *after* the user's own `PATH`, so
@@ -51,10 +51,10 @@ export const NO_MCP_TOOL_RUNTIMES: McpToolRuntimes = { binDirectories: [], comma
 export type McpToolRuntimeSource = () => McpToolRuntimes;
 
 /**
- * Where one http server is reached, and the bearer OpenBot adds, asked at each spawn.
+ * Where one http server is reached, and the bearer ZollyBot adds, asked at each spawn.
  *
  * The bearer is never stored on the row: a value in the configuration would be a credential the
- * panel shows, the Team API carries and a user edits. A server OpenBot signed in to is reached
+ * panel shows, the Team API carries and a user edits. A server ZollyBot signed in to is reached
  * through the loopback OAuth proxy (`McpOAuthProxy`): `url` is then the proxy route, `authorization`
  * is that route's own bearer, and the OAuth token never leaves this process. Asked per
  * configuration rather than per URL, because two rows on one URL are two routes.
@@ -137,7 +137,7 @@ export type UsableMcpServer =
       path: string | null;
       /** Where an http server is reached: its own URL, or a route of the OAuth proxy. `""` for stdio. */
       url: string;
-      /** The bearer OpenBot adds at hand-off. `null` for all others. */
+      /** The bearer ZollyBot adds at hand-off. `null` for all others. */
       authorization: string | null;
       /** See `McpEndpoint.proxied`. */
       proxied: boolean;
@@ -186,12 +186,12 @@ export function computerUseParam(params: unknown): boolean {
 }
 
 /**
- * The agent of a `thread/start` or `thread/resume`. `ThreadLifecycle` sends `openbotAgentId` to
+ * The agent of a `thread/start` or `thread/resume`. `ThreadLifecycle` sends `zollybotAgentId` to
  * Claude and the ACP clients, which read the MCP servers themselves, so that the proxy can name the
  * agent to a server it signed in to.
  */
 export function mcpAgentParam(params: unknown): string | null {
-  return isDynamicRecord(params) && typeof params.openbotAgentId === "string" ? params.openbotAgentId : null;
+  return isDynamicRecord(params) && typeof params.zollybotAgentId === "string" ? params.zollybotAgentId : null;
 }
 
 export const usableMcpServers = Effect.fnUntraced(function* (
@@ -501,7 +501,7 @@ export function claudeMcpServers(servers: readonly UsableMcpServer[]): McpHandof
  * **Names travel as `providerMcpServerName`.** Antigravity refuses `session/new` with `invalid
  * params` when one name has a space, so a server the user named "My Server" failed every Gemini
  * task (#2801). A changed name that another server already has, such as "computer use", or that is
- * one of OpenBot's own, is reported as a drop. So is the second of two names that become the same.
+ * one of ZollyBot's own, is reported as a drop. So is the second of two names that become the same.
  */
 export type AcpMcpServer =
   | { name: string; command: string; args: string[]; env: Array<{ name: string; value: string }> }
@@ -558,7 +558,7 @@ export function acpMcpServers(servers: readonly UsableMcpServer[]): McpHandoff<A
  *
  * **stdio takes its working directory as `cwd`.** Codex starts the server there; without it, Codex
  * starts it in its own directory. A server whose start script names a local `.venv` was left out
- * when OpenBot did not send the key, so a Codex agent had no tools from it (#3869).
+ * when ZollyBot did not send the key, so a Codex agent had no tools from it (#3869).
  *
  * **http travels as `url` with `http_headers`.** Both were confirmed against the pinned Codex
  * app-server: an entry with an invalid credential is listed as failed with the server's own 401,
@@ -569,7 +569,7 @@ export function acpMcpServers(servers: readonly UsableMcpServer[]): McpHandoff<A
  * and gave a Codex agent no tools. Two names that become the same key keep the first; the second is
  * reported as a drop.
  *
- * **A key Codex's own files use with the other transport travels as `openbot_<key>`.** See
+ * **A key Codex's own files use with the other transport travels as `zollybot_<key>`.** See
  * `codexMcpServerKey`.
  */
 export type CodexMcpServer =
@@ -584,13 +584,13 @@ export type CodexMcpServer =
   | { url: string; http_headers: Record<string, string> };
 
 /**
- * The disabled placeholders OpenBot saves in the Codex user file for its own servers, so Codex can
+ * The disabled placeholders ZollyBot saves in the Codex user file for its own servers, so Codex can
  * keep their tool approvals. They are not the user's entries.
  */
-export const CODEX_PLACEHOLDER_COMMAND = "openbot-mcp";
+export const CODEX_PLACEHOLDER_COMMAND = "zollybot-mcp";
 export const CODEX_PLACEHOLDER_URL = "http://127.0.0.1:1";
 
-/** The transport of each server that Codex's own files declare, without OpenBot's placeholders. */
+/** The transport of each server that Codex's own files declare, without ZollyBot's placeholders. */
 export type CodexOwnTransports = Readonly<Record<string, McpTransport>>;
 
 /** What Codex declares in its own files: each name turned off, and the transport each one uses. */
@@ -640,7 +640,7 @@ export function providerMcpServerName(name: string): string {
 /**
  * The key one server travels under to Codex. Codex merges a thread entry with the entry of the same
  * key in its own files. A stdio `command` and an http `url` under one key stop Codex from loading
- * its configuration at all, and the chat cannot start. The server then travels as `openbot_<key>`,
+ * its configuration at all, and the chat cannot start. The server then travels as `zollybot_<key>`,
  * and the user's own entry stays as written, turned off. A clash with the same transport keeps the
  * key.
  *
@@ -649,11 +649,11 @@ export function providerMcpServerName(name: string): string {
 export function codexMcpServerKey(config: McpServerConfig, own: CodexOwnTransports = {}): string {
   const name = providerMcpServerName(config.name);
   return config.id !== COMPUTER_USE_MCP_SERVER_ID && Object.hasOwn(own, name) && own[name] !== config.transport
-    ? `openbot_${name}`
+    ? `zollybot_${name}`
     : name;
 }
 
-/** Whether a key from `codexMcpServerKey` is taken by another server, or a renamed key by OpenBot's own tools. */
+/** Whether a key from `codexMcpServerKey` is taken by another server, or a renamed key by ZollyBot's own tools. */
 function codexMcpServerKeyTaken(
   key: string,
   config: McpServerConfig,
@@ -666,7 +666,7 @@ function codexMcpServerKeyTaken(
 }
 
 /**
- * The thread's `mcp_servers`: every name from Codex's own files turned off, then OpenBot's servers
+ * The thread's `mcp_servers`: every name from Codex's own files turned off, then ZollyBot's servers
  * turned on. A name in both resolves to the one the panel shows, with the approvals Codex saved.
  */
 export function codexThreadMcpServers(
@@ -681,7 +681,7 @@ export function codexThreadMcpServers(
 }
 
 /**
- * The MCP namespaces that Codex declares in each request, beside OpenBot's own. Codex defers the
+ * The MCP namespaces that Codex declares in each request, beside ZollyBot's own. Codex defers the
  * tools of every other server: behind its `tool_search`, or, for a code-mode-only model such as GPT-6,
  * into `exec`, where the developer instructions name the servers. A direct namespace sends the schema
  * of each of its tools in each request (#4468). Computer Use stays direct: its results are
@@ -765,18 +765,18 @@ function secretDigest(config: McpServerConfig): string {
 }
 
 /**
- * The headers one http server is handed, with OpenBot's bearer added here and only here.
+ * The headers one http server is handed, with ZollyBot's bearer added here and only here.
  *
  * The bearer is never written to the row: a credential written into `McpServerConfig.headers`
  * would be one the panel shows, the Team API carries to a remote administrator, and a user can edit
- * into something OpenBot then refreshes over. Added at the hand-off, it is a value `McpHandoffLog`
+ * into something ZollyBot then refreshes over. Added at the hand-off, it is a value `McpHandoffLog`
  * has already seen, so every log, export and send path removes it.
  *
  * A proxied server is handed the proxy bearer alone. The proxy adds the row's own headers upstream,
  * so a key the user typed beside a sign-in stays in this process too.
  *
  * A header the user typed wins otherwise. Someone who pasted their own `Authorization` has said
- * which credential this server takes, and silently replacing it would be OpenBot overruling them
+ * which credential this server takes, and silently replacing it would be ZollyBot overruling them
  * with an account they did not choose. Such a row is never proxied: see `McpGateway.endpoint`.
  */
 export function mcpHandoffHeaders(server: ResolvedMcpServer): Record<string, string> {

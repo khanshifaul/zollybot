@@ -1,5 +1,5 @@
-import type { McpServerConfig, McpSignInState } from "@openbot/contracts/ipc";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { McpServerConfig, McpSignInState } from "@zollybot/contracts/ipc";
 import { useRef } from "react";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import {

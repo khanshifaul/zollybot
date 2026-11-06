@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import type { AgentProviderId } from "@openbot/contracts/agent-providers";
+import type { AgentProviderId } from "@zollybot/contracts/agent-providers";
 import {
   type AccountUsage,
   type AccountUsageLimit,
@@ -12,12 +12,12 @@ import {
   type ProviderUsageResetOutcome,
   type ProviderUsageResets,
   usageQuotaForModel,
-} from "@openbot/contracts/ipc";
-import { CLAUDE_API_KEY_ACCOUNT_ID } from "@openbot/contracts/team-protocol/claude-api-key-v1";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { CLAUDE_API_KEY_ACCOUNT_ID } from "@zollybot/contracts/team-protocol/claude-api-key-v1";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Cause, Effect, Fiber, Schema, type Scope } from "effect";
-import { googleSignInByOpenBot, startAcpAuthentication } from "./../acp-sign-in";
+import { googleSignInByZollyBot, startAcpAuthentication } from "./../acp-sign-in";
 import type { AgentClient } from "./../agent-client";
 import { type AgentCliInfo, cliPathEnvironment, cliSpawnTarget } from "./../cli";
 import type { AccountReadResult } from "./../protocol";
@@ -33,7 +33,7 @@ import { ProviderProcessFailed, waitForSuccessfulProcess } from "./provider-stat
 import { providerLabel } from "./thread-items";
 import { UsageReadGate } from "./usage-read-gate";
 
-const logger = createOpenBotLogger("provider-accounts");
+const logger = createZollyBotLogger("provider-accounts");
 
 /** How long an account check stays good. `UsageReadGate` paces the usage readings. */
 const ACCOUNT_CHECK_TTL_MS = 5 * 60_000;
@@ -253,7 +253,7 @@ export class ProviderAccounts {
         if ("kind" in command) {
           // A Reconnect signs the account out first: its saved token would answer with no browser page.
           // The server prints Google's page, which a host shows and this computer opens itself, except
-          // at a Windows computer, where the server opens it (`googleSignInByOpenBot`).
+          // at a Windows computer, where the server opens it (`googleSignInByZollyBot`).
           const login = yield* startAcpAuthentication({
             executable: cli.executable,
             argv: command.argv,
@@ -262,7 +262,7 @@ export class ProviderAccounts {
             timeoutMs: command.timeoutMs,
             ...(added ? {} : { logout: true }),
             privateTemp: this.#host.signInTemp(provider),
-            ...(googleSignInByOpenBot(onHost) ? { openGoogleSignIn: openExternal } : {}),
+            ...(googleSignInByZollyBot(onHost) ? { openGoogleSignIn: openExternal } : {}),
           });
           return yield* login.done;
         }

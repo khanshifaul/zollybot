@@ -1,5 +1,5 @@
-import type { MachineMetric } from "@openbot/contracts/ipc";
-import { Button, IconButton, RadialProgress, X } from "@openbot/ui";
+import type { MachineMetric } from "@zollybot/contracts/ipc";
+import { Button, IconButton, RadialProgress, X } from "@zollybot/ui";
 import { Show } from "solid-js";
 import { useText } from "../../text";
 

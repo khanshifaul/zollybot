@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import type {
   AvatarColor,
   AvatarHue,
@@ -7,8 +8,7 @@ import type {
   SidebarLayoutAction,
   SidebarLayoutSnapshot,
   TeamPresenceMember,
-} from "@openbot/contracts/ipc";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/contracts/ipc";
 import type { AvatarMood } from "../../bloub-avatar";
 import type { AgentProfile } from "../../data";
 import type { ServerMenuProps } from "../servers/ServerMenu";
@@ -63,7 +63,7 @@ export interface SidebarProps {
    * it is set. `back` and `forward` name the chat that each arrow opens, or are null when there is none.
    */
   chatHistory?: SidebarChatHistory | undefined;
-  /** A new OpenBot version of the server. The header shows a button that opens its update. */
+  /** A new ZollyBot version of the server. The header shows a button that opens its update. */
   serverUpdate?: { version: string; running: boolean; onOpen: () => void } | undefined;
   agents: AgentProfile[];
   activeAgentId: string;

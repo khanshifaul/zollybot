@@ -1,11 +1,11 @@
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { Directory, File, Paths } from "expo-file-system";
 import { Platform } from "react-native";
 import { supportLog, supportLogValue } from "@/features/support/model/support-log";
 import { type AvatarFileAgent, agentAvatarFile, syncAvatarFolder } from "@/features/workspace/model/agent-avatar-file";
 
 /**
- * `OpenBotMessagingService.kt` reads this file and the pictures of its folder in the files folder of
+ * `ZollyBotMessagingService.kt` reads this file and the pictures of its folder in the files folder of
  * the app (`Paths.document`), and shows the picture of the agent as the large icon of its
  * notification. iOS reads the pictures of the share extension (`share-extension.ts`).
  */

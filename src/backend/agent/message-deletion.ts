@@ -1,4 +1,8 @@
-import type { ConversationMessage, ConversationSnapshot, DeleteConversationMessageInput } from "@openbot/contracts/ipc";
+import type {
+  ConversationMessage,
+  ConversationSnapshot,
+  DeleteConversationMessageInput,
+} from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentStore } from "../agent-store";
 import type { AgentTasks } from "../agent-tasks/agent-tasks";
@@ -29,7 +33,7 @@ interface DeletionTarget {
  * Owns the delete of one shown message from an agent's own chat or from a side thread. It checks who
  * may delete the message and that no running work uses it, removes the mailbox copy with its files,
  * then records the delete with the conversation change, so no later sync, import or replay brings the
- * message back. The provider session can still hold the message: OpenBot does not change it.
+ * message back. The provider session can still hold the message: ZollyBot does not change it.
  *
  * It never imports the agent service facade.
  */

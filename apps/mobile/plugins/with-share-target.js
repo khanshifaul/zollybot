@@ -21,7 +21,7 @@ const {
 //   keychain items keep their group.
 // - The extension takes `INSendMessageIntent`, so the share sheet offers the agents that the app donates.
 // - Info.plist sets the display name to the target name, `expo-sharing-extension`. The iOS share
-//   sheet shows that name under the OpenBot icon, so the extension gets the app's name.
+//   sheet shows that name under the ZollyBot icon, so the extension gets the app's name.
 
 const TARGET_NAME = "expo-sharing-extension";
 const SOURCE_DIRECTORY = path.join(__dirname, "share-extension");
@@ -63,7 +63,7 @@ const withExtensionFiles = (config, keychainGroup) =>
       buildPage(path.join(directory, PAGE));
       changePlist(path.join(directory, "Info.plist"), (info) => {
         info.CFBundleDisplayName = mod.name;
-        info.OpenBotShareKeychainGroup = keychainGroup;
+        info.ZollyBotShareKeychainGroup = keychainGroup;
         info.NSExtension.NSExtensionAttributes.IntentsSupported = [SEND_MESSAGE_INTENT];
       });
       changePlist(path.join(directory, `${TARGET_NAME}.entitlements`), (entitlements) => {
@@ -165,7 +165,7 @@ const withAppKeychainGroup = (config, keychainGroup) =>
 /** @type {import('expo/config-plugins').ConfigPlugin<string>} */
 const withAppInfo = (config, keychainGroup) =>
   withInfoPlist(config, (mod) => {
-    mod.modResults.OpenBotShareKeychainGroup = keychainGroup;
+    mod.modResults.ZollyBotShareKeychainGroup = keychainGroup;
     // iOS shows the donated agents in the share sheet only for an app that declares the intent.
     const types = mod.modResults.NSUserActivityTypes ?? [];
     if (!types.includes(SEND_MESSAGE_INTENT)) types.push(SEND_MESSAGE_INTENT);

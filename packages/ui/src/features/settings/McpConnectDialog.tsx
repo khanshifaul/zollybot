@@ -6,9 +6,9 @@
  * once. A key cannot: the dialog waits for it.
  */
 
-import type { McpServerConfig, McpTestResult } from "@openbot/contracts/ipc";
-import type { McpConnectFlow } from "@openbot/contracts/mcp-connect-flows";
 import type { JSX } from "@solidjs/web";
+import type { McpServerConfig, McpTestResult } from "@zollybot/contracts/ipc";
+import type { McpConnectFlow } from "@zollybot/contracts/mcp-connect-flows";
 import { Match, Switch } from "solid-js";
 import type { McpConnectSubject } from "./McpConnectShell";
 import { McpKeyDialog } from "./McpKeyDialog";

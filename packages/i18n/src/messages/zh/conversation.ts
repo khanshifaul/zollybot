@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "搜索 OpenBot",
+  "conversation.globalSearch.title": "搜索 ZollyBot",
   "conversation.globalSearch.filter": "筛选结果",
   "conversation.globalSearch.tab.all": "全部",
   "conversation.globalSearch.tab.messages": "消息",
@@ -90,7 +90,7 @@ export const messages = {
   "conversation.threads.error.start": "无法启动话题。",
   "conversation.threads.error.branch": "无法为聊天创建分支。",
   "conversation.threads.error.send": "无法把消息发送到话题。",
-  "conversation.threads.error.files": "此服务器不接受话题中的文件。请更新它上面的 OpenBot。",
+  "conversation.threads.error.files": "此服务器不接受话题中的文件。请更新它上面的 ZollyBot。",
   "conversation.threads.error.stop": "无法停止话题。",
   "conversation.threads.error.archive": "无法归档话题。",
   "conversation.threads.error.restore": "无法恢复话题。",

@@ -9,8 +9,8 @@ import type {
   AgentSummary,
   ProviderModelVisibility,
   ProviderModelVisibilityChange,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { Clock, Effect, Result, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { OPENCODE_CONFINED_ENV } from "../backend/process-confinement";
@@ -275,7 +275,7 @@ interface ProviderPicker {
 }
 
 export interface ModelVisibilityOptions {
-  /** `openbot-model-visibility-v1.json` in the user data folder. */
+  /** `zollybot-model-visibility-v1.json` in the user data folder. */
   path: string;
   catalog: ModelReleaseCatalog;
   /** Every model the connected providers list. */

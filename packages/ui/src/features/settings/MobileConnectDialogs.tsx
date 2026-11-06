@@ -1,5 +1,6 @@
-import { AppLogo, type MobilePlatformLogoVariant, PlatformLogo } from "@openbot/brand";
-import type { AppTextKey } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import { AppLogo, type MobilePlatformLogoVariant, PlatformLogo } from "@zollybot/brand";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   ArrowLeft,
   ArrowRight,
@@ -20,8 +21,7 @@ import {
   SlidingTabs,
   Text,
   X,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createEffect, createSignal, For, Match, onCleanup, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { ANDROID_PLAY_STORE_URL } from "../mobile-app/android-play-store";

@@ -1,7 +1,7 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { FilePreview, InstalledSkill, MarketplaceSkillDetail } from "@openbot/contracts/ipc";
-import { assignedSkillCount, isFolderSkill, isSkillEnabled, userAssignedSkills } from "@openbot/contracts/ipc";
-import type { AppTranslate } from "@openbot/i18n";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { FilePreview, InstalledSkill, MarketplaceSkillDetail } from "@zollybot/contracts/ipc";
+import { assignedSkillCount, isFolderSkill, isSkillEnabled, userAssignedSkills } from "@zollybot/contracts/ipc";
+import type { AppTranslate } from "@zollybot/i18n";
 import {
   Button,
   ChevronRight,
@@ -15,11 +15,11 @@ import {
   Switch,
   Trash2,
   X,
-} from "@openbot/ui";
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
-import { SkillGlyph } from "@openbot/ui/features/conversation/SkillGlyph";
-import { SkillLibraryToolbar } from "@openbot/ui/features/conversation/SkillLibraryToolbar";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
+import { SkillGlyph } from "@zollybot/ui/features/conversation/SkillGlyph";
+import { SkillLibraryToolbar } from "@zollybot/ui/features/conversation/SkillLibraryToolbar";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, For, onSettled, Show, untrack } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
 import { SkillPreview } from "../../components/SkillPreview";
@@ -726,7 +726,7 @@ function SkillMoreMenu(props: {
 /** Where the host keeps the skill's SKILL.md, relative to the agent workspace, in the order to read. */
 function hostSkillPaths(skill: InstalledSkill): string[] {
   if (isFolderSkill(skill)) return [`${skill.location}/SKILL.md`];
-  if (!isSkillEnabled(skill)) return [`.openbot/skills-disabled/${skill.slug}/SKILL.md`];
+  if (!isSkillEnabled(skill)) return [`.zollybot/skills-disabled/${skill.slug}/SKILL.md`];
   // The host writes a copy to each managed skill folder.
   return [".agents/skills", ".claude/skills"].map((folder) => `${folder}/${skill.slug}/SKILL.md`);
 }

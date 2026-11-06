@@ -25,7 +25,7 @@ and state which default you set aside. Do not argue by citing this file.
 
 ## Non-negotiable
 
-- **Migrations are irreversible.** No backup of `openbot.db` is made before an upgrade. Preserve all
+- **Migrations are irreversible.** No backup of `zollybot.db` is made before an upgrade. Preserve all
   user data and support every shipped source schema. Never assume a backup exists.
 - **Released Team API adapters are permanent.** Do not change a shipped wire protocol's meaning.
 - **Keep the renderer-to-main trust boundary:** Electron sandboxing, context isolation, navigation
@@ -40,7 +40,7 @@ adding a module or moving ownership between workspaces.
 ## Product constraints
 
 - Workspaces, conversations, attachments, browser data, and team data stay on the computer that
-  runs OpenBot. Providers, visited pages, and plugins can use the network. Exception: a signed-in
+  runs ZollyBot. Providers, visited pages, and plugins can use the network. Exception: a signed-in
   phone keeps an encrypted, read-only copy of the agents, sections, recent chats, channels and drawer
   values of its servers (`apps/mobile/src/features/workspace/model/workspace-cache.ts`). The copy stays
   on that phone, the host stays the source of truth, and sign-out, session expiry and server removal delete it.
@@ -77,13 +77,13 @@ adding a module or moving ownership between workspaces.
 
 ## Shared UI
 
-`packages/ui` (`@openbot/ui`) owns shared SolidJS controls and feature components used by
+`packages/ui` (`@zollybot/ui`) owns shared SolidJS controls and feature components used by
 desktop, public web, and Storybook. Reuse these components before adding UI. Import primitives
-from `@openbot/ui` and feature components from explicit subpaths such as
-`@openbot/ui/features/sidebar/Sidebar`. Do not copy them back into an app.
+from `@zollybot/ui` and feature components from explicit subpaths such as
+`@zollybot/ui/features/sidebar/Sidebar`. Do not copy them back into an app.
 
 Keep shared components independent of application contexts, desktop storage, host connections,
-and `window.openbot`. Pass data and actions through typed props. Platform adapters and the main
+and `window.zollybot`. Pass data and actions through typed props. Platform adapters and the main
 conversation controller stay in the renderer. Component extraction must preserve the existing
 UI, styles, and behavior unless the user requests a design change. Native mobile shares brand
 tokens and contracts; it does not render SolidJS DOM components.
@@ -92,7 +92,7 @@ Read [packages/ui/AGENTS.md](packages/ui/AGENTS.md) before changing shared UI.
 
 ## Interface text
 
-Text that a user reads comes from `@openbot/i18n` catalog keys, on desktop, web and mobile. Do not
+Text that a user reads comes from `@zollybot/i18n` catalog keys, on desktop, web and mobile. Do not
 write a literal. Errors that the main process, backend or team client send use `sourceText(key)`.
 Read [docs/i18n.md](docs/i18n.md) before adding a key or a language.
 
@@ -135,7 +135,7 @@ State which surfaces a change touches. Check all affected consumers and reverse 
 - Desktop renderer (`src/renderer`), mobile (`apps/mobile`), public web (`apps/auth-api`; no separate
   landing app), hosted-site routing (`apps/site-router`), and Signal (`remote/api`).
 - IPC contracts (`packages/contracts`) and their preview implementation
-  (`src/renderer/src/preview/mock-openbot.ts`).
+  (`src/renderer/src/preview/mock-zollybot.ts`).
 - Reverse actions: snooze/unsnooze, pause/resume, revoke/reconnect, mute/unmute.
 - Migrations and the separate latest schema for new databases.
 - Documentation: `README.md` commands, `docs/architecture/`, and `PRIVACY.md` when outbound data
@@ -152,7 +152,7 @@ State which surfaces a change touches. Check all affected consumers and reverse 
 - Use the development loader. It reads the development key from the shell; without the key,
   local development must work with generated defaults. Commands that need external secrets must
   stop before remote changes when those secrets are missing. An invalid key must fail safely.
-- Keep generated identity and saved local overrides in ignored `.openbot/dev-state.json`.
+- Keep generated identity and saved local overrides in ignored `.zollybot/dev-state.json`.
   New manual overrides use shell variables. Do not add `.env.local` or `.env.generated`.
 - `.env.keys` stores decryption keys, not service settings. Keep it ignored. Preserve existing
   production key handling and CI/GitHub secrets unless the developer requests a change.
@@ -160,7 +160,7 @@ State which surfaces a change touches. Check all affected consumers and reverse 
   `DOTENV_PRIVATE_KEY_DEV`. Every encrypted env file, `remote/.env.production` included, uses one of
   them. Never make a new key pair. Pass `-fk` with the root `.env.keys` so Dotenvx does not make one.
 - For direct Cloudflare changes, `apps/auth-api/.env.production` holds `CLOUDFLARE_API_TOKEN`
-  (write access to all resources in the OpenBot account) and `CLOUDFLARE_ACCOUNT_ID`. Load them
+  (write access to all resources in the ZollyBot account) and `CLOUDFLARE_ACCOUNT_ID`. Load them
   with `bunx dotenvx run -f apps/auth-api/.env.production -fk <root>/.env.keys -- <command>`. A worktree
   has no `.env.keys`; use the one in the main checkout. Never print the token: do not use
   `dotenvx get` or `echo`. Ask before a change that deletes data or affects production users.
@@ -181,7 +181,7 @@ See [account service setup](apps/auth-api/README.md) for loading and deployment 
   when it cannot confirm a PID's identity; resolve the process, then `bun run dev:forget`. Dead
   records do not reserve ports.
 - Reuse a running dev instance. `bun run dev` opens a profile tied to this worktree; `--shared`
-  opens the shared `OpenBot Dev` profile. Use the ports the stack reports rather than a fixed port.
+  opens the shared `ZollyBot Dev` profile. Use the ports the stack reports rather than a fixed port.
 
 See [README.md — Commands](README.md#commands) for the flags these commands take, and
 [docs/architecture/change-rules.md](docs/architecture/change-rules.md#change-rules) for why the registry works this way, when a dev command
@@ -190,7 +190,7 @@ does not behave as expected.
 ## Terms
 
 - **bot** is not for new product code. Released names stay: Team API v1-v3 `bot`/`botId`,
-  `bots.json`, `legacy-import:bots:v1`, and `~/OpenBot/Bots` path prefixes.
+  `bots.json`, `legacy-import:bots:v1`, and `~/ZollyBot/Bots` path prefixes.
 - **teammate** and **group** are prompt and UI words, never types.
 
 Use [docs/glossary.md](docs/glossary.md) when naming a new type, table, IPC channel or product
@@ -229,7 +229,7 @@ risks since the last release.
 - Use E2E tests only. Do not add unit tests. An E2E test is a script under `scripts/` (such as
   `scripts/*-e2e.ts` or `scripts/*-smoke.ts`) that drives the real app, process or service. At the
   end, it writes a verifiable and repeatable artifact, such as a JSON report or a screenshot under
-  `.openbot-build/`.
+  `.zollybot-build/`.
 - Vitest files are permitted only for these protected areas:
   - Database migrations: data-preservation fixtures for every affected released schema, plus the
     failure and rollback cases that [src/backend/AGENTS.md](src/backend/AGENTS.md) lists. A
@@ -273,3 +273,48 @@ They describe the enforced syntax, fixture behavior, and reasons for removed rul
   or `@ts-ignore`; disables rules through `biome.json` overrides or removes a GritQL plugin; widens
   a boundary to `any` or `unknown`; or uses an assertion to bypass a checker. Fix the domain issue,
   or explain why the rule is wrong and let the developer decide.
+
+<!-- gitnexus:start -->
+# GitNexus — Code Intelligence
+
+This project is indexed by GitNexus as **zollybot** (163558 symbols, 604265 relationships, 1392 execution flows).
+
+> Index stale? Run `node .gitnexus/run.cjs analyze --index-only` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? Bootstrap with `npx`, `bunx`, or `pnpm dlx` — e.g. `bunx gitnexus@latest analyze` (npm 11 npx crash; #1939).
+
+## Always Do
+
+- **MUST run impact before editing.** Use `impact({target: "symbolName", direction: "upstream"})` or `node .gitnexus/run.cjs impact "symbolName" --direction upstream --repo .`; report callers, processes, and risk. Never substitute grep for graph analysis.
+- **MUST analyze graph changes before committing.** Use `detect_changes({scope: "all"})` (MCP) or `node .gitnexus/run.cjs detect-changes --scope all --repo .` (CLI fallback). `partial: true` or `truncated: true` is not a clean check — a zero means unseen, not unaffected; re-run it. For regression review: `detect_changes({scope: "compare", base_ref: "main"})` or `node .gitnexus/run.cjs detect-changes --scope compare --base-ref "main" --repo .`.
+- MUST warn on HIGH/CRITICAL `risk` pre-edit; never use `riskSharedAxes` to waive a HIGH/CRITICAL `risk` warning. Compare File/symbol: MCP File omits axes; Graph-RAG expands File.
+- **MUST treat `risk: UNKNOWN` as unresolved, not as low.** An empty caller set is not evidence the symbol is unused — it can also mean the callers are not resolvable by the index (plain-object property access, dynamic dispatch, cross-language calls). `impact` pairs `UNKNOWN` with a `riskNote` saying so. Confirm with a text search before treating the symbol as safe to change or delete; do not proceed on the strength of a zero.
+- **MUST use `query({search_query: "concept"})` for concepts/flows, `context({name: "symbolName"})` for a named symbol, or `impact` for blast radius, on read-only callers, dependencies, imports, or execution flow.** Graph first; text search only for empty/`UNKNOWN`/literals.
+- For security review, `explain({target: "fileOrSymbol"})` lists taint findings (source→sink flows; needs `analyze --pdg`).
+
+## Never Do
+
+- NEVER edit a function, class, or method before MCP/CLI impact analysis.
+- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis, and never read `UNKNOWN` as an all-clear — it means the walk could not answer, which is the one verdict that requires confirming by other means.
+- NEVER rename symbols with find-and-replace — use `rename` which understands the call graph.
+- NEVER commit before MCP/CLI graph change analysis.
+
+## Resources
+
+| Resource | Use for |
+| --- | --- |
+| `gitnexus://repo/zollybot/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/zollybot/clusters` | All functional areas |
+| `gitnexus://repo/zollybot/processes` | All execution flows |
+| `gitnexus://repo/zollybot/process/{name}` | Step-by-step execution trace |
+
+## CLI
+
+| Task | Read this skill file |
+| --- | --- |
+| Understand architecture / "How does X work?" | `.claude/skills/gitnexus-exploring/SKILL.md` |
+| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus-impact-analysis/SKILL.md` |
+| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus-debugging/SKILL.md` |
+| Rename / extract / split / refactor | `.claude/skills/gitnexus-refactoring/SKILL.md` |
+| Tools, resources, schema reference | `.claude/skills/gitnexus-guide/SKILL.md` |
+| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus-cli/SKILL.md` |
+
+<!-- gitnexus:end -->

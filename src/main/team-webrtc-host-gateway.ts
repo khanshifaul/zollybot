@@ -1,6 +1,6 @@
-import { ticketNamesSignalHome } from "@openbot/contracts/signal-protocol/ticket";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+import { ticketNamesSignalHome } from "@zollybot/contracts/signal-protocol/ticket";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Context, Deferred, Effect, Exit, Fiber, Layer, ManagedRuntime, Scope } from "effect";
 import { RemoteWorkflowError } from "./remote-service-effects";
 import type { TeamWebRtcBridge } from "./team-webrtc-bridge";
@@ -18,7 +18,7 @@ interface TeamWebRtcHostGatewayOptions extends TeamWebRtcHostPeerOptions {
   privateNetwork?: () => boolean;
 }
 
-const logger = createOpenBotLogger("team-webrtc-host");
+const logger = createZollyBotLogger("team-webrtc-host");
 
 // How long the host's Signal socket can stay closed before the host asks for another Signal machine.
 // The time starts at the first close and stops when Signal accepts the host again.
@@ -30,7 +30,7 @@ class HostSignal extends Context.Service<
     connect(peerId: string, signalUrl: string, token: string): Effect.Effect<void, RemoteWorkflowError>;
     disconnect(peerId: string): Effect.Effect<void, RemoteWorkflowError>;
   }
->()("openbot/main/HostSignal") {
+>()("zollybot/main/HostSignal") {
   static layer(
     bridge: TeamWebRtcBridge,
     scope: Scope.Scope,

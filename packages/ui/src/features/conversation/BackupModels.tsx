@@ -1,5 +1,5 @@
-import { ProviderLogo } from "@openbot/brand";
-import { agentProviderName, isKnownAgentProvider } from "@openbot/contracts/agent-providers";
+import { ProviderLogo } from "@zollybot/brand";
+import { agentProviderName, isKnownAgentProvider } from "@zollybot/contracts/agent-providers";
 import {
   AGENT_BACKUP_MODEL_LIMIT,
   type AgentBackupModels,
@@ -9,7 +9,7 @@ import {
   type ClientAgentModelOption,
   DEFAULT_PROVIDER_ACCOUNT_ID,
   sameAgentModelChoice,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   ArrowLeftRight,
   Badge,
@@ -30,9 +30,9 @@ import {
   Switch,
   Text,
   Trash2,
-} from "@openbot/ui";
-import { SettingsLinkGroup } from "@openbot/ui/components/SettingsPanel";
-import { errorReference } from "@openbot/user-errors";
+} from "@zollybot/ui";
+import { SettingsLinkGroup } from "@zollybot/ui/components/SettingsPanel";
+import { errorReference } from "@zollybot/user-errors";
 import { createSignal, createUniqueId, For, Show } from "solid-js";
 import { providerAccountName } from "../../components/provider-accounts";
 import { currentText, useText } from "../../text";

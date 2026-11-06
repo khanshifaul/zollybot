@@ -9,27 +9,27 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  column-gap: var(--openbot-space-3);
-  padding: var(--openbot-space-4);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface-raised);
-  box-shadow: 0 0 0 1px var(--openbot-border);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
+  column-gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
+  box-shadow: 0 0 0 1px var(--zollybot-border);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
 }
 
 .social-follow-toast-close {
   position: absolute;
-  top: var(--openbot-space-2);
-  inset-inline-end: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
+  top: var(--zollybot-space-2);
+  inset-inline-end: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
 }
 
 /* The plush hops in after the card, leans toward a network under the pointer, and bounces on thanks. */
 .social-follow-toast-plush {
   position: relative;
   display: inline-flex;
-  animation: social-follow-plush-hop 560ms var(--openbot-ease-out) 120ms both;
+  animation: social-follow-plush-hop 560ms var(--zollybot-ease-out) 120ms both;
 }
 
 .social-follow-plush {
@@ -37,8 +37,8 @@
   display: inline-flex;
   flex: none;
   transition:
-    rotate var(--openbot-duration-normal) var(--openbot-ease-out),
-    translate var(--openbot-duration-normal) var(--openbot-ease-out);
+    rotate var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    translate var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .social-follow-toast-plush[data-face="wide"] .social-follow-plush {
@@ -47,52 +47,52 @@
 }
 
 .social-follow-toast-plush[data-face="happy"] .social-follow-plush {
-  animation: social-follow-plush-bounce 520ms var(--openbot-ease-out);
+  animation: social-follow-plush-bounce 520ms var(--zollybot-ease-out);
 }
 
 .social-follow-toast-main {
   display: grid;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   min-width: 0;
 }
 
 .social-follow-toast-copy {
   display: grid;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
   /* The close button sits in the top corner. */
-  padding-inline-end: var(--openbot-space-6);
+  padding-inline-end: var(--zollybot-space-6);
 }
 
 .social-follow-toast-copy strong {
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
-  font-weight: var(--openbot-weight-semibold);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .social-follow-toast-copy p {
   margin: 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-wrap: pretty;
 }
 
 .social-follow-toast-copy[data-thanks] {
-  animation: social-follow-rise var(--openbot-duration-overlay) var(--openbot-ease-out) both;
+  animation: social-follow-rise var(--zollybot-duration-overlay) var(--zollybot-ease-out) both;
 }
 
 /* The network row: filled round chips, aligned with the text. Seven chips fit in the text column. */
 .social-follow-networks {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .social-follow-networks li {
-  animation: social-follow-rise var(--openbot-duration-overlay) var(--openbot-ease-out) both;
+  animation: social-follow-rise var(--zollybot-duration-overlay) var(--zollybot-ease-out) both;
 }
 
 .social-follow-networks li:nth-child(1) {
@@ -126,23 +126,23 @@
 /* The follow request: one outline button with the network mark, below the thanks. */
 .social-follow-toast-follow {
   display: flex;
-  animation: social-follow-rise var(--openbot-duration-overlay) var(--openbot-ease-out) 120ms both;
+  animation: social-follow-rise var(--zollybot-duration-overlay) var(--zollybot-ease-out) 120ms both;
 }
 
 .social-follow-toast .social-follow-network {
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-secondary);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-secondary);
   transition:
-    background var(--openbot-duration-fast) var(--openbot-ease-out),
-    color var(--openbot-duration-fast) var(--openbot-ease-out),
-    translate var(--openbot-duration-normal) var(--openbot-ease-out),
-    scale var(--openbot-duration-fast) var(--openbot-ease-out);
+    background var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    color var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    translate var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    scale var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .social-follow-toast .social-follow-network:hover {
-  background: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
   translate: 0 -2px;
 }
 
@@ -151,8 +151,8 @@
 }
 
 .social-follow-mark {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: none;
 }
 
@@ -168,11 +168,11 @@
   fill: currentColor;
   top: 0;
   left: 50%;
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  color: var(--openbot-beam-pink);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  color: var(--zollybot-beam-pink);
   opacity: 0;
-  animation: social-follow-heart 1100ms var(--openbot-ease-out) forwards;
+  animation: social-follow-heart 1100ms var(--zollybot-ease-out) forwards;
 }
 
 .social-follow-heart[data-index="0"] {
@@ -182,8 +182,8 @@
 
 .social-follow-heart[data-index="1"] {
   --social-follow-heart-x: 2px;
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 .social-follow-heart[data-index="2"] {

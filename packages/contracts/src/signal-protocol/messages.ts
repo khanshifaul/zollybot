@@ -3,15 +3,15 @@
 // Signal (`remote/api`) relays SDP and ICE between a host and its clients and hands out resume
 // tokens and TURN credentials. Team chats, files and commands never pass through it - those travel
 // on the WebRTC data channels it helped negotiate, and their protocol is `../team-protocol` instead.
-// The one exception is Slack: the OpenBot Slack app posts every workspace's events to Signal.
+// The one exception is Slack: the ZollyBot Slack app posts every workspace's events to Signal.
 // Signal checks the Slack signature, reads only the workspace ID, and passes the request body to
 // the `ingress` socket of the host that the workspace is linked to, without storing or logging it.
-// Discord is the second: Signal holds the OpenBot Discord bot's Gateway connection, passes each
-// guild's mentions of OpenBot to the guild's host, and makes the host's Discord calls
+// Discord is the second: Signal holds the ZollyBot Discord bot's Gateway connection, passes each
+// guild's mentions of ZollyBot to the guild's host, and makes the host's Discord calls
 // (`./discord-api.ts`).
-// Telegram is the third: the OpenBot bot's updates come to Signal, which passes each to the host of
+// Telegram is the third: the ZollyBot bot's updates come to Signal, which passes each to the host of
 // its chat, and the host calls the Bot API through Signal, which holds the token (`./telegram-route.ts`).
-// GitHub is the fourth: the OpenBot GitHub App's events come to Signal, which checks the App's
+// GitHub is the fourth: the ZollyBot GitHub App's events come to Signal, which checks the App's
 // signature and passes each to every host whose GitHub triggers watch its repository
 // (`./github-route.ts`).
 //
@@ -162,7 +162,7 @@ export type SignalClientMessage =
       // keeps the events of a route for this host while the host starts.
       queueKey?: string;
       // `ingress` only, and optional: the webhook signature formats that this host checks in addition
-      // to `X-OpenBot-Signature` (`./webhook-route.ts`). An older Signal ignores it, and Signal ignores
+      // to `X-ZollyBot-Signature` (`./webhook-route.ts`). An older Signal ignores it, and Signal ignores
       // a format that it does not know.
       webhookFormats?: string[];
     }
@@ -318,7 +318,7 @@ export type SignalServerMessage =
       deliveryId: string;
       signature: string;
       bodyBase64: string;
-      // Absent for an `X-OpenBot-Signature` request. Present only when the host named the format in
+      // Absent for an `X-ZollyBot-Signature` request. Present only when the host named the format in
       // its `ingress` hello.
       format?: WebhookSignatureFormat;
     }

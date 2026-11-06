@@ -1,4 +1,4 @@
-import type { ConversationPlan, ConversationPlanStep } from "@openbot/contracts/ipc";
+import type { ConversationPlan, ConversationPlanStep } from "@zollybot/contracts/ipc";
 import { nextStepContinuationPrompt, planContinuationPrompt } from "./delivery-content";
 
 export interface PlanContinuationOptions {

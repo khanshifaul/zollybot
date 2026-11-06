@@ -1,27 +1,27 @@
-import { rasterImageMimeType } from "@openbot/contracts/attachment-files";
+import { rasterImageMimeType } from "@zollybot/contracts/attachment-files";
 import {
   attachmentReferenceIds,
   expandAttachmentReferences,
   rewriteAttachmentReferences,
   serializeAttachmentReference,
-} from "@openbot/contracts/attachment-references";
-import { fileQuoteTarget } from "@openbot/contracts/chat-tag-references";
-import { ATTACHMENT_LIMITS, INPUT_LIMITS } from "@openbot/contracts/input-limits";
+} from "@zollybot/contracts/attachment-references";
+import { fileQuoteTarget } from "@zollybot/contracts/chat-tag-references";
+import { ATTACHMENT_LIMITS, INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AttachmentDataInput,
   type DraftAttachment,
   LOCAL_SERVER_ID,
   type QueueDelivery,
-} from "@openbot/contracts/ipc";
-import { TEAM_MESSAGE_CLIENT_ID_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import { isQueueEditRejected, TEAM_QUEUE_EDIT_CAPABILITY } from "@openbot/contracts/team-protocol/queue-edit-v1";
-import type { QuestionPromptComposerAnswer } from "@openbot/ui/components/QuestionPromptBubble";
+} from "@zollybot/contracts/ipc";
+import { TEAM_MESSAGE_CLIENT_ID_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import { isQueueEditRejected, TEAM_QUEUE_EDIT_CAPABILITY } from "@zollybot/contracts/team-protocol/queue-edit-v1";
+import type { QuestionPromptComposerAnswer } from "@zollybot/ui/components/QuestionPromptBubble";
 import {
   type ComposerPasteResult,
   type ComposerSelection,
   expandComposerMentions,
-} from "@openbot/ui/features/conversation/ComposerEditor";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/ComposerEditor";
+import { currentText } from "@zollybot/ui/text";
 import { playActionSound } from "../../../action-sounds";
 import { claimDictatedSend, forgetDictatedMessage } from "../../speech/speech-replies";
 import { rememberAttachmentKinds } from "../attachment-analytics";

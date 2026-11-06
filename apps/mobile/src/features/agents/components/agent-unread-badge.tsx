@@ -30,7 +30,7 @@ export function AgentUnreadBadge({
 }) {
   const { format } = useText();
   const [background] = useThemeColor(["background"]);
-  const [plum, cream] = useCSSVariable(["--openbot-felt-plum-bottom", "--openbot-felt-cream"]);
+  const [plum, cream] = useCSSVariable(["--zollybot-felt-plum-bottom", "--zollybot-felt-cream"]);
   const felt = Math.round(avatarSize * FELT);
   const ring = Math.round(avatarSize * RING);
   const fontSize = Math.round(avatarSize * DIGITS);

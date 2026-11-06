@@ -3,17 +3,17 @@ import {
   itemTypeCountsAsUnread,
   READ_EXCLUDED_ITEM_TYPE_PREFIXES,
   READ_EXCLUDED_ITEM_TYPES,
-} from "@openbot/contracts/conversation-read";
-import type { AgentSummary, ConversationReadState, ConversationSnapshot } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/conversation-read";
+import type { AgentSummary, ConversationReadState, ConversationSnapshot } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   type ConversationMarkerExclusions,
   ORDER_KEY_COLUMNS,
   ORDER_KEY_DESC,
   ORDERED_THREAD_MESSAGES,
 } from "./database/conversation-queries";
-import type { OpenBotDatabase } from "./openbot-database";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 export type { ConversationMarkerExclusions } from "./database/conversation-queries";
 
@@ -25,7 +25,7 @@ const UNREAD_FILTER = [
 ].join(" AND ");
 
 export class ConversationReadStore {
-  constructor(readonly database: OpenBotDatabase) {}
+  constructor(readonly database: ZollyBotDatabase) {}
 
   listStates(
     memberId: string,

@@ -1,5 +1,5 @@
-import { canPreviewAttachment, type StoredFileRow } from "@openbot/contracts/ipc";
-import { AgentFilesView } from "@openbot/ui/features/files/AgentFilesView";
+import { canPreviewAttachment, type StoredFileRow } from "@zollybot/contracts/ipc";
+import { AgentFilesView } from "@zollybot/ui/features/files/AgentFilesView";
 import type { StorageUsageResource } from "./storage-usage";
 
 export interface AgentFilesOptions {

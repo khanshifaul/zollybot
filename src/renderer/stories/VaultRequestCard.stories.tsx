@@ -1,7 +1,7 @@
-import type { VaultSaveInput } from "@openbot/contracts/ipc";
-import { cardBrand, vaultExpiryText } from "@openbot/contracts/ipc";
-import type { UiBlockStatus, UiVaultRequestKind, UiVaultSavedItem } from "@openbot/contracts/ui-blocks";
-import { VaultRequestCard } from "@openbot/ui/features/vault/VaultRequestCard";
+import type { VaultSaveInput } from "@zollybot/contracts/ipc";
+import { cardBrand, vaultExpiryText } from "@zollybot/contracts/ipc";
+import type { UiBlockStatus, UiVaultRequestKind, UiVaultSavedItem } from "@zollybot/contracts/ui-blocks";
+import { VaultRequestCard } from "@zollybot/ui/features/vault/VaultRequestCard";
 import { createSignal } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 

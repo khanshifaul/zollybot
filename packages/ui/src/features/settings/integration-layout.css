@@ -7,21 +7,21 @@
   width: var(--integration-tile);
   height: var(--integration-tile);
   place-items: center;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-primary);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-primary);
 }
 
 .integration-logo-tile[data-size="lg"] {
   --integration-tile: 48px;
-  border-radius: var(--openbot-radius-lg);
+  border-radius: var(--zollybot-radius-lg);
 }
 
 .integration-logo-tile > svg {
   width: 55%;
   height: 55%;
-  stroke-width: var(--openbot-icon-stroke-lg);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 /* An app icon fills its tile. */
@@ -33,18 +33,18 @@
 }
 
 .integration-status {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .integration-status-dot {
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: currentColor;
 }
 
 .integration-status[data-status="unavailable"] .integration-status-dot {
-  background: var(--openbot-transparent);
+  background: var(--zollybot-transparent);
   box-shadow: inset 0 0 0 1px currentColor;
 }
 
@@ -53,64 +53,64 @@
 /* One gap between every part of an integration page. */
 .integration-page {
   display: grid;
-  gap: var(--openbot-space-6);
+  gap: var(--zollybot-space-6);
 }
 
 .integration-detail-header {
   display: flex;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   align-items: center;
 }
 
 .integration-detail-copy {
   display: grid;
   flex: 1;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   min-width: 0;
 }
 
 .integration-detail-title {
   display: flex;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   align-items: center;
 }
 
 /* A mark after the name, such as a shield, sits on the name's centre line. */
 .integration-detail-name {
   display: inline-flex;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   align-items: center;
 }
 
 .integration-detail-actions {
   display: flex;
   flex: none;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 /* ------------------------------------------------ connect dialog */
 
 .integration-wizard {
   display: grid;
-  gap: var(--openbot-space-4);
-  padding: var(--openbot-space-6);
-  border-radius: var(--openbot-radius-xl);
-  background: var(--openbot-bg-sheet);
-  box-shadow: var(--openbot-shadow-dialog);
+  gap: var(--zollybot-space-4);
+  padding: var(--zollybot-space-6);
+  border-radius: var(--zollybot-radius-xl);
+  background: var(--zollybot-bg-sheet);
+  box-shadow: var(--zollybot-shadow-dialog);
 }
 
 .integration-wizard-head {
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   justify-items: center;
   text-align: center;
 }
 
 .integration-wizard-logos {
   display: flex;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   align-items: center;
-  margin-bottom: var(--openbot-space-2);
+  margin-bottom: var(--zollybot-space-2);
 }
 
 .integration-wizard-app {
@@ -118,13 +118,13 @@
   height: 36px;
 }
 
-/* Dots flow from OpenBot to the other app while the flow runs. */
+/* Dots flow from ZollyBot to the other app while the flow runs. */
 .integration-wizard-link {
   width: 40px;
   height: 2px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background:
-    radial-gradient(circle, var(--openbot-accent) 0 1px, var(--openbot-transparent) 1.5px) 0 50% / 8px 2px repeat-x;
+    radial-gradient(circle, var(--zollybot-accent) 0 1px, var(--zollybot-transparent) 1.5px) 0 50% / 8px 2px repeat-x;
   animation: integration-wizard-flow 0.6s linear infinite;
 }
 
@@ -135,37 +135,37 @@
 }
 
 .integration-wizard-logos[data-link="connected"] .integration-wizard-link {
-  background: var(--openbot-success);
+  background: var(--zollybot-success);
   animation: none;
 }
 
 .integration-wizard-logos[data-link="broken"] .integration-wizard-link {
   background:
-    radial-gradient(circle, var(--openbot-border-strong) 0 1px, var(--openbot-transparent) 1.5px) 0 50% / 8px 2px
+    radial-gradient(circle, var(--zollybot-border-strong) 0 1px, var(--zollybot-transparent) 1.5px) 0 50% / 8px 2px
     repeat-x;
   animation: none;
 }
 
-/* The other app breathes while OpenBot waits for it. */
+/* The other app breathes while ZollyBot waits for it. */
 .integration-wizard-target {
   display: inline-grid;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .integration-wizard-logos[data-link="connecting"] .integration-wizard-target {
-  animation: integration-wizard-pulse 1.8s var(--openbot-ease-out) infinite;
+  animation: integration-wizard-pulse 1.8s var(--zollybot-ease-out) infinite;
 }
 
 .integration-wizard-logos[data-link="connected"] .integration-wizard-target {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--openbot-success) 30%, var(--openbot-transparent));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zollybot-success) 30%, var(--zollybot-transparent));
 }
 
 @keyframes integration-wizard-pulse {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--openbot-accent) 45%, var(--openbot-transparent));
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--zollybot-accent) 45%, var(--zollybot-transparent));
   }
   100% {
-    box-shadow: 0 0 0 8px var(--openbot-transparent);
+    box-shadow: 0 0 0 8px var(--zollybot-transparent);
   }
 }
 
@@ -178,7 +178,7 @@
 
 .integration-wizard-body {
   display: grid;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 /* A body whose parts are all hidden, such as a plugin dialog before a failure, takes no gap. */
@@ -188,33 +188,33 @@
 
 .integration-wizard-form {
   display: grid;
-  gap: var(--openbot-space-4);
+  gap: var(--zollybot-space-4);
 }
 
 .integration-wizard-foot {
   display: flex;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   justify-content: flex-end;
 }
 
 /* CopyButton draws its icon at full size; match the 14px icons of the other footer buttons. */
 .integration-wizard-foot .ui-button > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /* Above the settings window the flow opens from. */
 .integration-dialog-backdrop {
-  z-index: calc(var(--openbot-layer-dialog) + 1);
+  z-index: calc(var(--zollybot-layer-dialog) + 1);
 }
 
 .integration-wizard-dialog {
   position: fixed;
   top: 50%;
   left: 50%;
-  z-index: calc(var(--openbot-layer-dialog) + 1);
-  width: min(440px, calc(100vw - var(--openbot-space-6) * 2));
-  max-height: calc(100dvh - var(--openbot-space-6) * 2);
+  z-index: calc(var(--zollybot-layer-dialog) + 1);
+  width: min(440px, calc(100vw - var(--zollybot-space-6) * 2));
+  max-height: calc(100dvh - var(--zollybot-space-6) * 2);
   overflow-y: auto;
   outline: 0;
   transform: translate(-50%, -50%);
@@ -222,13 +222,13 @@
 
 /* A page drawn in the dialog, such as a joined server's sign-in page, needs room to type in. */
 .integration-wizard-dialog[data-wide] {
-  width: min(720px, calc(100vw - var(--openbot-space-6) * 2));
+  width: min(720px, calc(100vw - var(--zollybot-space-6) * 2));
 }
 
 /* Over the Marketplace window and the menus it opens. Both portals are children of `body`, so the
    order of insertion alone cannot put this one on top. */
 :is(.integration-dialog-backdrop, .integration-wizard-dialog)[data-nested] {
-  z-index: calc(var(--openbot-layer-dialog-host) + 2);
+  z-index: calc(var(--zollybot-layer-dialog-host) + 2);
 }
 
 .integration-wizard-dialog h2 {
@@ -237,8 +237,8 @@
 
 .integration-dialog-close {
   position: absolute;
-  top: var(--openbot-space-3);
-  inset-inline-end: var(--openbot-space-3);
+  top: var(--zollybot-space-3);
+  inset-inline-end: var(--zollybot-space-3);
 }
 
 /* ------------------------------------------------ stepper */
@@ -246,7 +246,7 @@
 .integration-stepper {
   display: flex;
   align-items: center;
-  margin: 0 0 var(--openbot-space-2);
+  margin: 0 0 var(--zollybot-space-2);
   padding: 0;
   list-style: none;
 }
@@ -254,8 +254,8 @@
 .integration-step {
   display: flex;
   align-items: center;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 /* The line to a step: quiet until the flow reaches that step, then it fills from the left. */
@@ -263,11 +263,11 @@
   display: block;
   width: 24px;
   height: 2px;
-  margin-inline: var(--openbot-space-1);
-  border-radius: var(--openbot-radius-pill);
+  margin-inline: var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-pill);
   background:
-    linear-gradient(to right, var(--openbot-success), var(--openbot-accent)) no-repeat,
-    var(--openbot-border-strong);
+    linear-gradient(to right, var(--zollybot-success), var(--zollybot-accent)) no-repeat,
+    var(--zollybot-border-strong);
   background-size:
     0% 100%,
     auto;
@@ -278,17 +278,17 @@
   background-size:
     100% 100%,
     auto;
-  animation: integration-step-fill 0.4s var(--openbot-ease-out);
+  animation: integration-step-fill 0.4s var(--zollybot-ease-out);
 }
 
 .integration-step + .integration-step[data-state="done"]::before {
   background:
-    linear-gradient(var(--openbot-success), var(--openbot-success)) no-repeat,
-    var(--openbot-border-strong);
+    linear-gradient(var(--zollybot-success), var(--zollybot-success)) no-repeat,
+    var(--zollybot-border-strong);
   background-size:
     100% 100%,
     auto;
-  animation: integration-step-fill 0.4s var(--openbot-ease-out);
+  animation: integration-step-fill 0.4s var(--zollybot-ease-out);
 }
 
 @keyframes integration-step-fill {
@@ -312,27 +312,27 @@
   width: 20px;
   height: 20px;
   place-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  font-size: var(--openbot-text-sm);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
-  font-weight: var(--openbot-weight-medium);
+  font-weight: var(--zollybot-weight-medium);
   line-height: 1;
 }
 
 .integration-step[data-state="current"] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .integration-step[data-state="current"] .integration-step-index {
-  border-color: var(--openbot-accent);
-  background: var(--openbot-accent);
-  color: var(--openbot-text-on-accent);
+  border-color: var(--zollybot-accent);
+  background: var(--zollybot-accent);
+  color: var(--zollybot-text-on-accent);
 }
 
 .integration-step[data-state="done"] .integration-step-index {
-  border-color: var(--openbot-success);
-  color: var(--openbot-success);
+  border-color: var(--zollybot-success);
+  color: var(--zollybot-success);
 }
 
 /* ------------------------------------------------ card content */
@@ -340,24 +340,24 @@
 /* Content of a card that is not rows: a form, a list, information. One body, so no row divider cuts it. */
 .integration-card-body {
   display: grid;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
 }
 
 /* A field in a card has the size of the buttons beside it, as in Server settings. */
 .integration-card-body :where(.ui-input) {
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 /* The last line of a card: what the rows above it mean. */
 .integration-card-note {
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
 }
 
 /* On the card fill, the danger tone needs its text step for contrast. */
 .integration-card-note[data-tone="danger"] {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 /* ------------------------------------------------ disconnect dialog */
@@ -366,23 +366,23 @@
 .integration-effects {
   display: grid;
   margin: 0;
-  padding: var(--openbot-space-1);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
+  padding: var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
   list-style: none;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .integration-effects li {
   display: flex;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   align-items: center;
-  padding: var(--openbot-space-2);
+  padding: var(--zollybot-space-2);
 }
 
 .integration-effects li + li {
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .integration-effect-icon {
@@ -391,29 +391,29 @@
   width: 28px;
   height: 28px;
   place-items: center;
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-muted);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-muted);
 }
 
 .integration-effects .integration-effect-icon > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .integration-effects li[data-tone="danger"] .integration-effect-icon {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger-text);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger-text);
 }
 
 .integration-effects li[data-tone="success"] .integration-effect-icon {
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success);
 }
 
 /* The label on the soft danger fill reads the text step, as the shared confirmation does for contrast. */
 .integration-confirm.ui-button-variant-destructive {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 /* ------------------------------------------------ linked rows */
@@ -421,12 +421,12 @@
 /* The whole row opens the integration, as on Marketplace cards. Buttons in the row stay on top. */
 .integrations-hub-row {
   position: relative;
-  border-radius: var(--openbot-radius-md);
-  transition: background-color var(--openbot-duration-hover) var(--openbot-ease-out);
+  border-radius: var(--zollybot-radius-md);
+  transition: background-color var(--zollybot-duration-hover) var(--zollybot-ease-out);
 }
 
 .integrations-hub-row:has(> .integrations-hub-hitarea:hover) {
-  background: var(--openbot-hover);
+  background: var(--zollybot-hover);
 }
 
 .integrations-hub-hitarea {
@@ -438,22 +438,22 @@
   padding: 0;
   border: 0;
   border-radius: inherit;
-  background: var(--openbot-transparent);
+  background: var(--zollybot-transparent);
   cursor: pointer;
   transition: none;
 }
 
 .integrations-hub-hitarea:hover:not(:disabled):not([data-disabled]) {
-  background: var(--openbot-transparent);
+  background: var(--zollybot-transparent);
 }
 
 .integrations-hub-hitarea:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: -2px;
 }
 
 .integrations-hub-actions {
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .integrations-hub-actions .ui-button {
@@ -462,10 +462,10 @@
 }
 
 .integrations-hub-chevron {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  margin: 0 var(--openbot-space-1-5);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  margin: 0 var(--zollybot-space-1-5);
+  color: var(--zollybot-text-muted);
 }
 
 /* Right to left, the arrow points the other way. */
@@ -475,7 +475,7 @@
 
 .integrations-face-stack {
   display: inline-flex;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
   align-items: center;
 }
 
@@ -483,12 +483,12 @@
   display: inline-grid;
   min-width: 24px;
   height: 24px;
-  padding: 0 var(--openbot-space-1);
+  padding: 0 var(--zollybot-space-1);
   place-items: center;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .integrations-agent-face {
@@ -505,7 +505,7 @@
 
 /* In a list that also has agent faces, an icon stays in the middle of the same column, so the titles align. */
 .ui-item-group:has(.integrations-agent-face:not([data-size="sm"])) .ui-item-media > svg {
-  margin-inline: calc((32px - var(--openbot-icon-lg)) / 2);
+  margin-inline: calc((32px - var(--zollybot-icon-lg)) / 2);
 }
 
 /* An agent avatar stands low in its box. Lift it to the middle, as the marketplace avatar does. */

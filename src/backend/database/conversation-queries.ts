@@ -1,5 +1,5 @@
-import { CHAT_VISUAL_ITEM_TYPE_PREFIX } from "@openbot/contracts/chat-visual";
-import { sortConversationMessages } from "@openbot/contracts/conversation-order";
+import { CHAT_VISUAL_ITEM_TYPE_PREFIX } from "@zollybot/contracts/chat-visual";
+import { sortConversationMessages } from "@zollybot/contracts/conversation-order";
 import type {
   ConversationFileSearchPage,
   ConversationFileSearchResult,
@@ -9,7 +9,7 @@ import type {
   ConversationSearchPage,
   ConversationSnapshot,
   SentMessageStats,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   HOSTED_SITE_EVENT_ITEM_TYPE_PREFIX,
   isAttachmentSummary,
@@ -18,8 +18,8 @@ import {
   ROUTINE_QUIET_ANSWER_ITEM_TYPE,
   ROUTINE_RUN_EVENT_ITEM_TYPE_PREFIX,
   SKILL_EVENT_ITEM_TYPE_PREFIX,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import { COLLAPSE_WHITESPACE_FUNCTION, type DatabaseCore, LOWERCASE_FUNCTION } from "./database-core";
 import {
   databaseRow,

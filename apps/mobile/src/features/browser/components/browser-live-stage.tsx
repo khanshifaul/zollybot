@@ -1,5 +1,5 @@
-import type { BrowserViewCursor, BrowserViewInput } from "@openbot/contracts/team-protocol/browser-view-v1";
 import { Canvas, FilterMode, Group, Image, MipmapMode, type SkImage } from "@shopify/react-native-skia";
+import type { BrowserViewCursor, BrowserViewInput } from "@zollybot/contracts/team-protocol/browser-view-v1";
 import { type Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { type LayoutChangeEvent, StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector, type TouchData } from "react-native-gesture-handler";

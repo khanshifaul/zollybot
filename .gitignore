@@ -35,8 +35,8 @@ Shared/
 !apps/mobile/src/shared/
 !apps/mobile/src/shared/**
 index-*.css
-.openbot-browser-test/
-.openbot-build/
+.zollybot-browser-test/
+.zollybot-build/
 # The home page beam, a React Bits port. Its license forbids a public copy; CI checks it out
 # from the private nightly-labs/openbot-laser-flow repository.
 /apps/auth-api/src/vendor/laser-flow/
@@ -66,4 +66,4 @@ keys
 /TASKS.md
 
 # Persistent local development identity and migration recovery.
-.openbot/
+.zollybot/

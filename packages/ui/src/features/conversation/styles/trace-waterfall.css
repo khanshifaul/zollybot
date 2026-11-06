@@ -1,16 +1,16 @@
 /* The trace of an agent run: the totals, then one timeline row for each span. */
 
 .trace {
-  --trace-surface: var(--openbot-bg-surface);
+  --trace-surface: var(--zollybot-bg-surface);
   /* `cqw` resolves where these are used, inside the scroll body, so a narrow trace keeps its timeline. */
   --trace-name-width: min(260px, 45cqw);
   /* Room on the right of the timeline for the label after the last bar. */
   --trace-label-room: min(150px, 25cqw);
-  --trace-lane-pad: var(--openbot-space-3);
+  --trace-lane-pad: var(--zollybot-space-3);
   --trace-row-height: 36px;
   --trace-bar-height: 16px;
   /* The colour of the agent that did a span. The top agent and its own calls stay neutral. */
-  --trace-hue: var(--openbot-text-muted);
+  --trace-hue: var(--zollybot-text-muted);
   display: flex;
   min-width: 0;
   min-height: 0;
@@ -18,29 +18,29 @@
   flex: 1 1 auto;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-card);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-card);
   background: var(--trace-surface);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .trace-header {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding-block: var(--openbot-space-2);
-  padding-inline: var(--openbot-space-4) var(--openbot-space-2);
-  border-bottom: 1px solid var(--openbot-border);
+  gap: var(--zollybot-space-2);
+  padding-block: var(--zollybot-space-2);
+  padding-inline: var(--zollybot-space-4) var(--zollybot-space-2);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 .trace-title {
   flex: 1 1 auto;
   margin: 0;
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-md);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-md);
 }
 
 /* The speed menu is compact: it holds one short value. */
@@ -51,8 +51,8 @@
 
 .trace-select .trace-select-trigger {
   width: auto;
-  gap: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-2) var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-1-5);
   font-variant-numeric: tabular-nums;
 }
 
@@ -64,22 +64,22 @@
 .trace-search-icon {
   position: absolute;
   top: 50%;
-  inset-inline-start: var(--openbot-space-2);
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  color: var(--openbot-text-muted);
+  inset-inline-start: var(--zollybot-space-2);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  color: var(--zollybot-text-muted);
   translate: 0 -50%;
   pointer-events: none;
 }
 
 .trace-search .trace-search-input {
   width: 100%;
-  padding-inline: calc(var(--openbot-space-2) * 2 + var(--openbot-icon-xs)) var(--openbot-space-8);
+  padding-inline: calc(var(--zollybot-space-2) * 2 + var(--zollybot-icon-xs)) var(--zollybot-space-8);
 }
 
 /* A focused field gets a neutral border only, as the other fields of the app. */
 .trace-search .trace-search-input:focus-visible {
-  border-color: var(--openbot-text-muted);
+  border-color: var(--zollybot-text-muted);
   box-shadow: none;
   outline: none;
 }
@@ -92,7 +92,7 @@
 .trace-search-kbd {
   position: absolute;
   top: 50%;
-  inset-inline-end: var(--openbot-space-1-5);
+  inset-inline-end: var(--zollybot-space-1-5);
   translate: 0 -50%;
   pointer-events: none;
 }
@@ -109,38 +109,38 @@
 .trace-total {
   display: grid;
   flex: 1 1 96px;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
   min-width: 0;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  border-inline-end: 1px solid var(--openbot-border);
-  border-bottom: 1px solid var(--openbot-border);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  border-inline-end: 1px solid var(--zollybot-border);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 .trace-total-label {
   overflow: hidden;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 /* The same roll as the task list: the digits that change lift in and sharpen. */
 .trace-total-value {
-  --digit-dur: var(--openbot-duration-overlay);
-  --digit-distance: var(--openbot-space-1);
-  --digit-blur: var(--openbot-space-0-5);
-  --digit-ease: var(--openbot-ease-out);
+  --digit-dur: var(--zollybot-duration-overlay);
+  --digit-distance: var(--zollybot-space-1);
+  --digit-blur: var(--zollybot-space-0-5);
+  --digit-ease: var(--zollybot-ease-out);
 
   margin: 0;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
   font-variant-numeric: tabular-nums;
-  line-height: var(--openbot-leading-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .trace-body {
-  --trace-fade: var(--openbot-space-6);
+  --trace-fade: var(--zollybot-space-6);
   /* No edge is faded until the list scrolls: one opaque layer for each edge. */
-  --trace-mask-top: linear-gradient(var(--openbot-text-primary), var(--openbot-text-primary));
-  --trace-mask-bottom: linear-gradient(var(--openbot-text-primary), var(--openbot-text-primary));
+  --trace-mask-top: linear-gradient(var(--zollybot-text-primary), var(--zollybot-text-primary));
+  --trace-mask-bottom: linear-gradient(var(--zollybot-text-primary), var(--zollybot-text-primary));
   min-height: 0;
   flex: 1 1 auto;
   overflow: auto;
@@ -164,16 +164,16 @@
 .trace-body.scroll-fade-top {
   --trace-mask-top: linear-gradient(
     to bottom,
-    var(--openbot-text-primary) var(--trace-stack),
+    var(--zollybot-text-primary) var(--trace-stack),
     transparent var(--trace-stack),
-    var(--openbot-text-primary) calc(var(--trace-stack) + var(--trace-fade))
+    var(--zollybot-text-primary) calc(var(--trace-stack) + var(--trace-fade))
   );
 }
 
 .trace-body.scroll-fade-bottom {
   --trace-mask-bottom: linear-gradient(
     to bottom,
-    var(--openbot-text-primary) calc(100% - var(--trace-fade)),
+    var(--zollybot-text-primary) calc(100% - var(--trace-fade)),
     transparent
   );
 }
@@ -194,7 +194,7 @@
   height: var(--trace-row-height);
   box-sizing: border-box;
   grid-template-columns: var(--trace-name-width) minmax(0, 1fr);
-  border-bottom: 1px solid var(--openbot-border);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 /* The rows under a parent slide closed when it folds and open when it unfolds. `clip`, not `hidden`:
@@ -202,7 +202,7 @@
 .trace-branch-children {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: grid-template-rows var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .trace-branch-children[data-open] {
@@ -213,7 +213,7 @@
   min-height: 0;
   overflow: clip;
   opacity: 0;
-  transition: opacity var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .trace-branch-children[data-open] > .trace-branch-clip {
@@ -222,7 +222,7 @@
 
 /* A row that a search or a replay adds fades in. */
 .trace-row {
-  transition: opacity var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 @starting-style {
@@ -243,27 +243,27 @@
 /* Five agent colours. The calls of an agent take its colour through `--trace-hue`. */
 .trace-row[data-hue="1"],
 .trace-handoff[data-hue="1"] {
-  --trace-hue: var(--openbot-chart-storage-downloads);
+  --trace-hue: var(--zollybot-chart-storage-downloads);
 }
 
 .trace-row[data-hue="2"],
 .trace-handoff[data-hue="2"] {
-  --trace-hue: var(--openbot-chart-storage-files);
+  --trace-hue: var(--zollybot-chart-storage-files);
 }
 
 .trace-row[data-hue="3"],
 .trace-handoff[data-hue="3"] {
-  --trace-hue: var(--openbot-chart-storage-chats);
+  --trace-hue: var(--zollybot-chart-storage-chats);
 }
 
 .trace-row[data-hue="4"],
 .trace-handoff[data-hue="4"] {
-  --trace-hue: var(--openbot-chart-storage-workspaces);
+  --trace-hue: var(--zollybot-chart-storage-workspaces);
 }
 
 .trace-row[data-hue="5"],
 .trace-handoff[data-hue="5"] {
-  --trace-hue: var(--openbot-chart-storage-runtimes);
+  --trace-hue: var(--zollybot-chart-storage-runtimes);
 }
 
 .trace-name {
@@ -273,11 +273,11 @@
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  --trace-indent: var(--openbot-space-4);
-  --trace-guide-at: calc(var(--openbot-control-xs) / 2);
-  padding-inline: calc(var(--openbot-space-2) + var(--trace-depth, 0) * var(--trace-indent)) var(--openbot-space-2);
-  border-right: 1px solid var(--openbot-border);
+  gap: var(--zollybot-space-1-5);
+  --trace-indent: var(--zollybot-space-4);
+  --trace-guide-at: calc(var(--zollybot-control-xs) / 2);
+  padding-inline: calc(var(--zollybot-space-2) + var(--trace-depth, 0) * var(--trace-indent)) var(--zollybot-space-2);
+  border-right: 1px solid var(--zollybot-border);
   /* The tint of a row under the pointer, then one guide line for each tree level above the row,
    * under the chevron of that level. */
   background:
@@ -285,10 +285,10 @@
     repeating-linear-gradient(
       to right,
       transparent 0 var(--trace-guide-at),
-      var(--openbot-border) var(--trace-guide-at) calc(var(--trace-guide-at) + 1px),
+      var(--zollybot-border) var(--trace-guide-at) calc(var(--trace-guide-at) + 1px),
       transparent calc(var(--trace-guide-at) + 1px) var(--trace-indent)
     )
-    var(--openbot-space-2) 0 / calc(var(--trace-depth, 0) * var(--trace-indent)) 100% no-repeat,
+    var(--zollybot-space-2) 0 / calc(var(--trace-depth, 0) * var(--trace-indent)) 100% no-repeat,
     var(--trace-surface);
 }
 
@@ -300,12 +300,12 @@
 
 .trace-row[data-hovered],
 .trace-row:has(.trace-name-button:focus-visible) {
-  --trace-row-tint: var(--openbot-hover);
+  --trace-row-tint: var(--zollybot-hover);
 }
 
 .trace-row[data-hovered] .trace-bar:not(.trace-segment),
 .trace-segment[data-hovered] {
-  outline: 1px solid var(--openbot-text-secondary);
+  outline: 1px solid var(--zollybot-text-secondary);
   outline-offset: 1px;
 }
 
@@ -315,9 +315,9 @@
   min-width: 0;
   flex: 1 1 auto;
   justify-content: flex-start;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   padding: 0;
-  border-radius: var(--openbot-radius-xs);
+  border-radius: var(--zollybot-radius-xs);
   background: transparent;
   color: inherit;
   font-size: inherit;
@@ -333,7 +333,7 @@
 /* The row's tint shows the keyboard stop, so the name gets a thin neutral ring and no halo. */
 .trace-name .trace-name-button.ui-button:focus-visible {
   box-shadow: none;
-  outline: 1px solid var(--openbot-text-muted);
+  outline: 1px solid var(--zollybot-text-muted);
   outline-offset: 1px;
 }
 
@@ -345,7 +345,7 @@
 }
 
 .trace-axis-name {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* An open row is not a lit toggle, so the chevron has no fill. */
@@ -354,9 +354,9 @@
 }
 
 .trace-toggle-icon {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  transition: rotate var(--openbot-duration-fast) var(--openbot-ease-out);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  transition: rotate var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .trace-toggle[aria-expanded="false"] .trace-toggle-icon {
@@ -364,15 +364,15 @@
 }
 
 .trace-toggle-space {
-  width: var(--openbot-control-xs);
+  width: var(--zollybot-control-xs);
   flex: 0 0 auto;
 }
 
 .trace-icon {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
   flex: 0 0 auto;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* The icon of a row sits on a quiet tile. An agent's icon has the agent's colour. */
@@ -383,10 +383,10 @@
   box-sizing: border-box;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-sm);
-  background: color-mix(in srgb, var(--openbot-text-primary) 4%, var(--trace-surface));
-  color: var(--openbot-text-secondary);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-sm);
+  background: color-mix(in srgb, var(--zollybot-text-primary) 4%, var(--trace-surface));
+  color: var(--zollybot-text-secondary);
 }
 
 .trace-glyph[data-agent] {
@@ -394,23 +394,23 @@
 }
 
 .trace-row:not([data-hue]) .trace-glyph[data-agent] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .trace-glyph[data-failed] {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .trace-glyph-icon {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
 .trace-spinner {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
   flex: 0 0 auto;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   animation: ui-spin 1s linear infinite;
 }
 
@@ -423,11 +423,11 @@
 }
 
 .trace-row[data-parent] .trace-span-name {
-  font-weight: var(--openbot-weight-semibold);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .trace-row[data-failed] .trace-span-name {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 /* A light moves along the name of a running step. It repaints the text on each frame, so only the
@@ -436,11 +436,11 @@
   background:
     linear-gradient(
       90deg,
-      var(--openbot-text-muted) 0%,
-      var(--openbot-text-muted) 35%,
-      var(--openbot-text-primary) 50%,
-      var(--openbot-text-muted) 65%,
-      var(--openbot-text-muted) 100%
+      var(--zollybot-text-muted) 0%,
+      var(--zollybot-text-muted) 35%,
+      var(--zollybot-text-primary) 50%,
+      var(--zollybot-text-muted) 65%,
+      var(--zollybot-text-muted) 100%
     )
     0 0 / 300% 100%;
   background-clip: text;
@@ -465,7 +465,7 @@
   flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -506,8 +506,8 @@
 
 .trace-tick {
   top: 50%;
-  padding-left: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
+  padding-left: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
   font-variant-numeric: tabular-nums;
   translate: 0 -50%;
   white-space: nowrap;
@@ -518,20 +518,20 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: var(--openbot-border);
+  background: var(--zollybot-border);
 }
 
 .trace-now {
   z-index: 2;
-  background: var(--openbot-text-dim);
+  background: var(--zollybot-text-dim);
 }
 
 .trace-now-dot {
   bottom: 0;
   width: 7px;
   height: 7px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-text-primary);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-text-primary);
   translate: -3px 50%;
 }
 
@@ -539,7 +539,7 @@
  * transition. */
 .trace-bar {
   transform-origin: left center;
-  transition: scale var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: scale var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 @starting-style {
@@ -556,7 +556,7 @@
   box-sizing: border-box;
   place-items: center;
   overflow: hidden;
-  border-radius: var(--openbot-radius-xs);
+  border-radius: var(--zollybot-radius-xs);
   translate: 0 -50%;
 }
 
@@ -589,7 +589,7 @@
 .trace-bar[data-failed],
 .trace-swatch[data-failed] {
   border: 0;
-  background: var(--openbot-danger);
+  background: var(--zollybot-danger);
 }
 
 .trace-bar.trace-track {
@@ -602,7 +602,7 @@
   background-image: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in srgb, var(--openbot-text-primary) 35%, transparent) 50%,
+    color-mix(in srgb, var(--zollybot-text-primary) 35%, transparent) 50%,
     transparent 100%
   );
   background-repeat: no-repeat;
@@ -623,14 +623,14 @@
 .trace-bar-icon {
   width: 12px;
   height: 12px;
-  color: var(--openbot-text-on-accent);
+  color: var(--zollybot-text-on-accent);
 }
 
 /* The line from a parent row down to its subagents' bars. It starts under the parent's lane and ends
  * at the top of the last subagent's row. A line has the colour of the agent that hands off, so the
  * rows that draw parts of it do not give it their own colour. */
 .trace-handoff {
-  --trace-elbow: var(--openbot-space-2);
+  --trace-elbow: var(--zollybot-space-2);
   top: calc((var(--trace-from) + 1.5) * var(--trace-row-height) + var(--trace-bar-height) / 2);
   width: var(--trace-elbow);
   height: calc((var(--trace-to) - var(--trace-from) - 0.5) * var(--trace-row-height) - var(--trace-bar-height) / 2);
@@ -639,12 +639,12 @@
   translate: calc(-1 * var(--trace-elbow)) 0;
   /* The rows slide when a parent folds, so the line follows them at the same pace. */
   transition:
-    top var(--openbot-duration-slow) var(--openbot-ease-out),
-    height var(--openbot-duration-slow) var(--openbot-ease-out);
+    top var(--zollybot-duration-slow) var(--zollybot-ease-out),
+    height var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .trace-handoff:not([data-hue]) {
-  --trace-hue: var(--openbot-text-muted);
+  --trace-hue: var(--zollybot-text-muted);
 }
 
 /* The branch into a subagent's bar. The line goes on past it to the next subagent, and turns into the
@@ -658,7 +658,7 @@
 
 .trace-handoff.trace-handoff-end[data-last] {
   border-left: 2px dotted var(--trace-hue);
-  border-bottom-left-radius: var(--openbot-radius-xs);
+  border-bottom-left-radius: var(--zollybot-radius-xs);
 }
 
 /* A parent row is opaque while it stays at the top, so it draws the part of a line that passes it. */
@@ -671,9 +671,9 @@
   top: 50%;
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  padding-left: var(--openbot-space-1-5);
-  color: var(--openbot-text-muted);
+  gap: var(--zollybot-space-1-5);
+  padding-left: var(--zollybot-space-1-5);
+  color: var(--zollybot-text-muted);
   font-variant-numeric: tabular-nums;
   translate: 0 -50%;
   white-space: nowrap;
@@ -681,8 +681,8 @@
 
 .trace-empty {
   display: grid;
-  gap: var(--openbot-space-1);
-  padding: var(--openbot-space-8) var(--openbot-space-4);
+  gap: var(--zollybot-space-1);
+  padding: var(--zollybot-space-8) var(--zollybot-space-4);
   text-align: center;
 }
 
@@ -692,11 +692,11 @@
 }
 
 .trace-empty-title {
-  font-weight: var(--openbot-weight-medium);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .trace-empty-description {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .trace-footer {
@@ -704,29 +704,29 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2) var(--openbot-space-4);
-  padding-block: var(--openbot-space-2);
-  padding-inline: var(--openbot-space-4) var(--openbot-space-2);
-  border-top: 1px solid var(--openbot-border);
+  gap: var(--zollybot-space-2) var(--zollybot-space-4);
+  padding-block: var(--zollybot-space-2);
+  padding-inline: var(--zollybot-space-4) var(--zollybot-space-2);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 /* Each key is a small bar in the shape of the bars above it. The top agent's neutral colour is too dim here,
  * so the keys use the secondary text colour. */
 .trace-legend {
-  --trace-hue: var(--openbot-text-secondary);
+  --trace-hue: var(--zollybot-text-secondary);
   display: flex;
   flex-wrap: wrap;
-  gap: var(--openbot-space-1) var(--openbot-space-4);
+  gap: var(--zollybot-space-1) var(--zollybot-space-4);
   margin: 0;
   padding: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   list-style: none;
 }
 
 .trace-legend-item {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .trace-swatch {
@@ -734,7 +734,7 @@
   height: 8px;
   flex: none;
   box-sizing: border-box;
-  border-radius: var(--openbot-radius-xs);
+  border-radius: var(--zollybot-radius-xs);
 }
 
 /* The handoff key is a piece of the dotted line that goes down to a subagent. */
@@ -747,24 +747,24 @@
 .trace-replay {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .trace-replay .trace-play {
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .trace-replay .trace-select {
-  margin-inline-start: var(--openbot-space-1);
+  margin-inline-start: var(--zollybot-space-1);
 }
 
 .ui-dialog-content.trace-dialog {
   width: min(1040px, 100%);
-  max-height: min(680px, calc(100dvh - 2 * var(--openbot-space-6)));
+  max-height: min(680px, calc(100dvh - 2 * var(--zollybot-space-6)));
   display: flex;
   overflow: hidden;
   outline: 0;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 .trace.trace-in-dialog {

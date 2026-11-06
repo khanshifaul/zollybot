@@ -99,8 +99,8 @@ const report = Effect.fn("CapacityReport.report")(function* (config: ReporterCon
     event_schema_version: SCHEMA_VERSION,
     turn_host: config.turnHost,
     turn_allocations: total(turn, "turn_total_allocations"),
-    signal_sockets: total(signal, "openbot_remote_signal_sockets"),
-    signal_peer_connections: total(signal, "openbot_remote_peer_connections"),
+    signal_sockets: total(signal, "zollybot_remote_signal_sockets"),
+    signal_peer_connections: total(signal, "zollybot_remote_peer_connections"),
   };
   // coturn writes a type only after its first allocation; send 0 so that the charts have no gaps.
   for (const type of ALLOCATION_TYPES.values()) properties[`turn_allocations_${type}`] = 0;

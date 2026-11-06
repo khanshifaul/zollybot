@@ -4,13 +4,13 @@ import type {
   AnalyticsTotals,
   HostAnalytics,
   HostAnalyticsInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   type AgentAnalytics,
   type AgentAnalyticsInput,
   type ClientAgentSummary,
   emptyAnalyticsTotals,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 // The weight separates the agents from each other: without it every mock agent draws the
 // same curve, and the per-agent table previews as identical rows with equal shares.

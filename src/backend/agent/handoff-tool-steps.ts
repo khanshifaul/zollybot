@@ -1,5 +1,5 @@
-import { type DynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { redactText } from "@openbot/logging";
+import { type DynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { redactText } from "@zollybot/logging";
 import { Effect } from "effect";
 import type { AgentClient } from "../agent-client";
 import { getArray, getRecord, getString, isRecord } from "../protocol";

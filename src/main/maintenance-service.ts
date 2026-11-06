@@ -4,8 +4,8 @@ import { copyFile, mkdir, mkdtemp, rename, rm, writeFile } from "node:fs/promise
 import { arch, release as osRelease, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { promisify } from "node:util";
-import type { AgentSummary, ExportResult } from "@openbot/contracts/ipc";
-import type { AppTranslate } from "@openbot/i18n";
+import type { AgentSummary, ExportResult } from "@zollybot/contracts/ipc";
+import type { AppTranslate } from "@zollybot/i18n";
 import { Effect } from "effect";
 import { app, type BrowserWindow, dialog } from "electron";
 import type { AgentService } from "../backend/agent-service";
@@ -28,22 +28,22 @@ interface MaintenanceContext {
   parentWindow: BrowserWindow | null;
   translate: AppTranslate;
 }
-export const exportOpenBotData = Effect.fn("Archive.exportOpenBotData")(function* (
+export const exportZollyBotData = Effect.fn("Archive.exportZollyBotData")(function* (
   context: Pick<MaintenanceContext, "service" | "mailbox" | "parentWindow" | "translate">,
 ): Effect.fn.Return<ExportResult, ArchiveOperationError> {
   const destination = yield* chooseExportDestinationEffect(
     context.parentWindow,
-    `OpenBot-backup-${new Date().toISOString().slice(0, 10)}.zip`,
+    `ZollyBot-backup-${new Date().toISOString().slice(0, 10)}.zip`,
     [{ name: context.translate("dialog.filter.zipArchive"), extensions: ["zip"] }],
   );
   if (!destination) return { saved: false };
 
   const archiveCandidate = `${destination}.${randomUUID()}.tmp.zip`;
   return yield* Effect.acquireUseRelease(
-    archiveCall(() => mkdtemp(join(tmpdir(), "openbot-export-"))),
+    archiveCall(() => mkdtemp(join(tmpdir(), "zollybot-export-"))),
     (temporaryRoot) =>
       Effect.gen(function* () {
-        const exportRoot = join(temporaryRoot, "OpenBot Backup");
+        const exportRoot = join(temporaryRoot, "ZollyBot Backup");
         yield* archiveCall(() => mkdir(exportRoot, { recursive: true, mode: 0o700 })).pipe(Effect.uninterruptible);
         const agents = context.service.listAgents();
         const [conversations, queues, attachments] = yield* Effect.all(
@@ -69,7 +69,7 @@ export const exportOpenBotData = Effect.fn("Archive.exportOpenBotData")(function
           // hands a reader the wrong shape under a version that promised the old one.
           schemaVersion: 4,
           exportedAt: new Date().toISOString(),
-          application: { name: "OpenBot", version: app.getVersion() },
+          application: { name: "ZollyBot", version: app.getVersion() },
           scope: {
             includes: ["agent profiles", "agent memories", "conversation snapshots", "queues", "attachments"],
             excludes: [
@@ -87,7 +87,7 @@ export const exportOpenBotData = Effect.fn("Archive.exportOpenBotData")(function
           queues,
         };
         yield* archiveCall(() =>
-          writeFile(join(exportRoot, "openbot-data.json"), `${JSON.stringify(manifest, null, 2)}\n`, {
+          writeFile(join(exportRoot, "zollybot-data.json"), `${JSON.stringify(manifest, null, 2)}\n`, {
             encoding: "utf8",
             mode: 0o600,
           }),
@@ -136,7 +136,7 @@ export const exportDiagnostics = Effect.fn("Archive.exportDiagnostics")(function
 ): Effect.fn.Return<ExportResult, ArchiveOperationError> {
   const destination = yield* chooseExportDestinationEffect(
     context.parentWindow,
-    `OpenBot-diagnostics-${new Date().toISOString().slice(0, 10)}.json`,
+    `ZollyBot-diagnostics-${new Date().toISOString().slice(0, 10)}.json`,
     [{ name: context.translate("dialog.filter.jsonDocument"), extensions: ["json"] }],
   );
   if (!destination) return { saved: false };

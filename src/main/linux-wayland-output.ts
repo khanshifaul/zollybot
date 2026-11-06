@@ -5,21 +5,21 @@
 //
 // Electron runs the ESM main script, top-level awaits included, before Chromium connects. Here main
 // asks the compositor for its globals. With no `wl_output` and an X11 display (XWayland), it starts
-// OpenBot again with `--ozone-platform=x11` and exits: the X11 platform does not wait for a monitor.
+// ZollyBot again with `--ozone-platform=x11` and exits: the X11 platform does not wait for a monitor.
 // When the monitor is on again, the window shows through XWayland. The next start uses Wayland again.
 
 import { spawn } from "node:child_process";
 import { createConnection } from "node:net";
 import { endianness } from "node:os";
 import { isAbsolute, join } from "node:path";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect, Option, Schema } from "effect";
 import { app } from "electron";
 
-const logger = createOpenBotLogger("main");
+const logger = createZollyBotLogger("main");
 
 /** Set on the new process only, so that it logs why it uses X11 and never starts again itself. */
-const RESTART_MARKER = "OPENBOT_XWAYLAND_RESTART";
+const RESTART_MARKER = "ZOLLYBOT_XWAYLAND_RESTART";
 const PROBE_TIMEOUT = "2 seconds";
 
 // Object ids of the probe: 1 is `wl_display`; the client picks 2 for the registry and 3 for the callback.
@@ -151,7 +151,7 @@ export function takeXWaylandRestartMarker(environment: NodeJS.ProcessEnv, argv: 
 }
 
 /**
- * The Ozone platform of this process, for an OpenBot child process such as a local server. On XWayland,
+ * The Ozone platform of this process, for an ZollyBot child process such as a local server. On XWayland,
  * the child must not wait for a monitor on Wayland. Elsewhere it is the platform that the child chooses.
  */
 export function ozonePlatformArguments(): string[] {
@@ -161,7 +161,7 @@ export function ozonePlatformArguments(): string[] {
 }
 
 /**
- * True when a new OpenBot process on XWayland has started, and this one must exit before Chromium
+ * True when a new ZollyBot process on XWayland has started, and this one must exit before Chromium
  * connects to Wayland. Run it before the single-instance lock, so that the new process can take it.
  * The new process has `--ozone-platform=x11`, so it does not start again.
  */
@@ -182,14 +182,14 @@ export const restartOnXWaylandWithoutMonitor = Effect.fn("restartOnXWaylandWitho
   );
   if (Option.isNone(globals) || globals.value.has("wl_output")) return false;
   if (!environment.DISPLAY) {
-    logger.warn("The Wayland session has no monitor and no XWayland. OpenBot starts when a monitor is on.");
+    logger.warn("The Wayland session has no monitor and no XWayland. ZollyBot starts when a monitor is on.");
     return false;
   }
   return yield* startOnX11(environment).pipe(
     Effect.as(true),
     Effect.catch((error) =>
       Effect.sync(() => {
-        logger.warn("Could not start OpenBot on XWayland:", toLogValue(error.cause));
+        logger.warn("Could not start ZollyBot on XWayland:", toLogValue(error.cause));
         return false;
       }),
     ),

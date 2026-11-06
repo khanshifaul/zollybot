@@ -1,5 +1,5 @@
-import type { AgentSessionSettingValue } from "@openbot/contracts/ipc";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { AgentSessionSettingValue } from "@zollybot/contracts/ipc";
 import { Typography } from "heroui-native";
 import { Fragment, useState } from "react";
 import { useUniwind } from "uniwind";

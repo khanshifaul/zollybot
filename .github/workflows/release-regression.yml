@@ -8,7 +8,7 @@ name: Release regression report
 #
 # Access: the SSH key opens one local forward as the user `openpanel-ci` on the analytics server.
 # That user has no shell and can forward only to 127.0.0.1:18123, a socket proxy to the OpenPanel
-# ClickHouse. There, the ClickHouse user can only read the OpenBot events, with time, memory and
+# ClickHouse. There, the ClickHouse user can only read the ZollyBot events, with time, memory and
 # query limits.
 on:
   schedule:
@@ -123,4 +123,4 @@ jobs:
           if [ -S "$dir/control" ]; then
             ssh -q -F /dev/null -S "$dir/control" -O exit tunnel || true
           fi
-          rm -rf "$RUNNER_TEMP/release-regression-ssh" .openbot-build/release-regression
+          rm -rf "$RUNNER_TEMP/release-regression-ssh" .zollybot-build/release-regression

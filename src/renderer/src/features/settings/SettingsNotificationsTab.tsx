@@ -1,4 +1,4 @@
-import type { ServerNotificationLevel } from "@openbot/contracts/ipc";
+import type { ServerNotificationLevel } from "@zollybot/contracts/ipc";
 import {
   Button,
   Item,
@@ -10,14 +10,14 @@ import {
   SettingsSection,
   SwitchField,
   toast,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import {
   ACTION_SOUND_CHOICES,
   type GeneralSettingsValue,
   TASK_SOUND_CHOICES,
-} from "@openbot/ui/features/settings/app-settings";
-import { NotificationMatrix, NotificationScopeTitle } from "@openbot/ui/features/settings/NotificationMatrix";
-import { SoundChoiceSelect } from "@openbot/ui/features/settings/SoundChoiceSelect";
+} from "@zollybot/ui/features/settings/app-settings";
+import { NotificationMatrix, NotificationScopeTitle } from "@zollybot/ui/features/settings/NotificationMatrix";
+import { SoundChoiceSelect } from "@zollybot/ui/features/settings/SoundChoiceSelect";
 import { Show } from "solid-js";
 import { playSoundChoice } from "../../completion-sound";
 import { useI18n } from "../../i18n-context";

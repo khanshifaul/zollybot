@@ -1,5 +1,5 @@
-import type { AgentApproval, AgentTask, ConversationSnapshot } from "@openbot/contracts/ipc";
-import type { AgentProfile } from "@openbot/ui/data";
+import type { AgentApproval, AgentTask, ConversationSnapshot } from "@zollybot/contracts/ipc";
+import type { AgentProfile } from "@zollybot/ui/data";
 import { createSignal, onCleanup } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -7,7 +7,7 @@ import { TasksView } from "../src/features/tasks/TasksView";
 import { desktopTasksSource } from "../src/features/tasks/tasks-port";
 import { PlatformProvider } from "../src/platform";
 import { requireFixture, STORY_AGENTS } from "./fixtures";
-import { createMockOpenBot } from "./mock-openbot";
+import { createMockZollyBot } from "./mock-zollybot";
 
 /*
  * The Tasks page of a server: a composer that starts a task for one agent, and the tasks of all agents
@@ -191,18 +191,18 @@ function TasksPageStory(props: {
   agents?: AgentProfile[];
   agentsToggle?: boolean;
 }) {
-  const previousApi = window.openbot;
+  const previousApi = window.zollybot;
   const [agentsOpen, setAgentsOpen] = createSignal(false);
   const tasks: Record<string, AgentTask[]> = {};
   for (const task of props.tasks) tasks[task.agentId] = [...(tasks[task.agentId] ?? []), task];
-  const mock = createMockOpenBot({
+  const mock = createMockZollyBot({
     tasks,
     taskConversations: Object.fromEntries(props.tasks.map((task) => [task.id, conversationOf(task)])),
   });
-  window.openbot = mock.api;
+  window.zollybot = mock.api;
   onCleanup(() => {
     mock.dispose();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
   });
   return (
     <PlatformProvider>
@@ -250,7 +250,7 @@ const WAITING_APPROVAL: AgentApproval = {
   turnId: "task-board-update-turn",
   kind: "file-change",
   command: null,
-  cwd: "/Users/you/OpenBot/Agents/Chief",
+  cwd: "/Users/you/ZollyBot/Agents/Chief",
   reason: "Save board-update.md on the Desktop",
   grantRoot: "/Users/you/Desktop",
   permissions: null,

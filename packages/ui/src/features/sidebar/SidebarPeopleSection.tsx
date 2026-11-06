@@ -4,7 +4,7 @@
  * the same id the layout used - see `SIDEBAR_DRAG_SELECTORS`.
  */
 
-import { Button } from "@openbot/ui";
+import { Button } from "@zollybot/ui";
 import { createMemo, For, Show } from "solid-js";
 import { useText } from "../../text";
 import { TeamPersonAvatar, teamMemberName } from "../team/TeamPersonAvatar";

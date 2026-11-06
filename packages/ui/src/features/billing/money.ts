@@ -1,5 +1,5 @@
-import type { BillingCurrency } from "@openbot/contracts/billing";
-import type { AppFormat } from "@openbot/i18n";
+import type { BillingCurrency } from "@zollybot/contracts/billing";
+import type { AppFormat } from "@zollybot/i18n";
 
 /**
  * A money amount in minor units, with the narrow currency sign as in Add server, and cents only when it

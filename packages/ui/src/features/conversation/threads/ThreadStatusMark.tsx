@@ -1,9 +1,9 @@
-import type { AppTextKey } from "@openbot/i18n";
-import { Clock3, Split, X } from "@openbot/ui";
-import { TypingDots } from "@openbot/ui/components/TypingDots";
-import { SidebarWaitIcon } from "@openbot/ui/features/sidebar/SidebarAgentIndicator";
-import type { SidebarWaitReason } from "@openbot/ui/features/sidebar/sidebar-types";
-import { type TextValue, useText } from "@openbot/ui/text";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Clock3, Split, X } from "@zollybot/ui";
+import { TypingDots } from "@zollybot/ui/components/TypingDots";
+import { SidebarWaitIcon } from "@zollybot/ui/features/sidebar/SidebarAgentIndicator";
+import type { SidebarWaitReason } from "@zollybot/ui/features/sidebar/sidebar-types";
+import { type TextValue, useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 import type { ThreadStatus } from "./thread-types";
 

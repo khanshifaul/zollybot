@@ -1,7 +1,7 @@
-import { isAppLanguage } from "@openbot/contracts/app-language";
-import type { TranslatedLocale } from "@openbot/i18n";
 import { createIsomorphicFn } from "@tanstack/solid-start";
 import { getRequestHeader } from "@tanstack/solid-start/server";
+import { isAppLanguage } from "@zollybot/contracts/app-language";
+import type { TranslatedLocale } from "@zollybot/i18n";
 
 /** One language range of an `Accept-Language` header, with its quality. */
 interface LanguageRange {

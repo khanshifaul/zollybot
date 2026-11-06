@@ -5,7 +5,7 @@ import type {
   AgentTasksSnapshot,
   ConversationSnapshot,
   StartAgentTaskInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 export type TaskEvent = Extract<
   AgentEvent,
@@ -38,22 +38,22 @@ export interface TasksSource {
   onEvent(serverId: string, apply: (event: TaskEvent) => void, reload: () => void): () => void;
 }
 
-/** The tasks on desktop: main reaches the tasks of any server. Read on each call: tests and stories replace `window.openbot` per case. */
+/** The tasks on desktop: main reaches the tasks of any server. Read on each call: tests and stories replace `window.zollybot` per case. */
 export function desktopTasksSource(): TasksSource {
   return {
-    list: (agentId, serverId) => window.openbot.agent.listTasks(agentId, serverId),
-    read: (input, serverId) => window.openbot.agent.readTask(input, serverId),
-    start: (input, serverId) => window.openbot.agent.startTask(input, serverId),
-    send: (input, serverId) => window.openbot.agent.sendMessage(input, serverId),
-    stop: (input, serverId) => window.openbot.agent.stopTask(input, serverId),
-    close: (input, serverId) => window.openbot.agent.closeTask(input, serverId),
-    reopen: (input, serverId) => window.openbot.agent.reopenTask(input, serverId),
+    list: (agentId, serverId) => window.zollybot.agent.listTasks(agentId, serverId),
+    read: (input, serverId) => window.zollybot.agent.readTask(input, serverId),
+    start: (input, serverId) => window.zollybot.agent.startTask(input, serverId),
+    send: (input, serverId) => window.zollybot.agent.sendMessage(input, serverId),
+    stop: (input, serverId) => window.zollybot.agent.stopTask(input, serverId),
+    close: (input, serverId) => window.zollybot.agent.closeTask(input, serverId),
+    reopen: (input, serverId) => window.zollybot.agent.reopenTask(input, serverId),
     onEvent(serverId, apply, reload) {
-      const unsubscribe = window.openbot.agent.onScopedEvent((scoped) => {
+      const unsubscribe = window.zollybot.agent.onScopedEvent((scoped) => {
         if (scoped.serverId === serverId && isTaskEvent(scoped.event)) apply(scoped.event);
       });
       let online = true;
-      const reconnect = window.openbot.servers.onEvent((servers) => {
+      const reconnect = window.zollybot.servers.onEvent((servers) => {
         const now = servers.some((server) => server.id === serverId && server.state === "online");
         if (now && !online) reload();
         online = now;

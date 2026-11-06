@@ -1,13 +1,13 @@
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { z } from "zod";
-import { BROWSER_DYNAMIC_TOOLS, OPENBOT_BROWSER_NAMESPACE } from "../browser-tools";
-import { OPENBOT_DYNAMIC_TOOLS, OPENBOT_TOOL_DEFINITIONS } from "../openbot-tools";
+import { BROWSER_DYNAMIC_TOOLS, ZOLLYBOT_BROWSER_NAMESPACE } from "../browser-tools";
 import type { DynamicToolCallParams } from "../protocol";
+import { ZOLLYBOT_DYNAMIC_TOOLS, ZOLLYBOT_TOOL_DEFINITIONS } from "../zollybot-tools";
 import { advertisedJsonSchema } from "./advertised-json-schema";
 import { toolGuidance } from "./tool-guidance";
 
 /** Discovery changes visibility only. Original definitions and execution owners stay authoritative. */
-export const BUILTIN_TOOL_CATALOG = [OPENBOT_DYNAMIC_TOOLS, ...BROWSER_DYNAMIC_TOOLS].flatMap((namespace) =>
+export const BUILTIN_TOOL_CATALOG = [ZOLLYBOT_DYNAMIC_TOOLS, ...BROWSER_DYNAMIC_TOOLS].flatMap((namespace) =>
   namespace.tools.map((tool) => ({
     namespace: namespace.name,
     tool: tool.name,
@@ -33,7 +33,7 @@ const DIRECT_NAMES = new Set([
   "suggest_marketplace_app",
 ]);
 
-const BROWSER_SCRIPT_TOOL = requireTool(`${OPENBOT_BROWSER_NAMESPACE}.run_script`);
+const BROWSER_SCRIPT_TOOL = requireTool(`${ZOLLYBOT_BROWSER_NAMESPACE}.run_script`);
 
 // Names keep the complete, stable catalog below 4,000 characters without schema duplication.
 const INITIAL_TOOL_CATALOG = BUILTIN_TOOL_CATALOG.map((tool) => tool.name).join(", ");
@@ -65,7 +65,7 @@ const describeSchema = z
 const callSchema = z.strictObject(callShape).refine((input) => input.name !== undefined || input.tool !== undefined);
 
 export const VISIBLE_TOOL_DEFINITIONS = [
-  ...OPENBOT_TOOL_DEFINITIONS.filter((tool) => DIRECT_NAMES.has(tool.name)),
+  ...ZOLLYBOT_TOOL_DEFINITIONS.filter((tool) => DIRECT_NAMES.has(tool.name)),
   {
     name: "tool_search",
     description: `Find built-in tools by keywords or qualified name: queries (array) or query. Returns short descriptions, default 5, max 10; the best matches also give inputSchema and guidance. Run found tools with tool_call, not directly. Describe others before use. Catalog: ${INITIAL_TOOL_CATALOG}`,
@@ -87,8 +87,8 @@ export const VISIBLE_TOOL_DEFINITIONS = [
 export const VISIBLE_DYNAMIC_TOOLS = [
   {
     type: "namespace" as const,
-    name: "openbot",
-    description: "OpenBot tools. Search, then call other built-in and browser tools.",
+    name: "zollybot",
+    description: "ZollyBot tools. Search, then call other built-in and browser tools.",
     tools: VISIBLE_TOOL_DEFINITIONS.map((definition) => ({
       type: "function" as const,
       name: definition.name,
@@ -99,11 +99,11 @@ export const VISIBLE_DYNAMIC_TOOLS = [
 ];
 
 /**
- * Claude names a bridge call `mcp__openbot__tool_call`. Readers of its items get the name of the tool it
+ * Claude names a bridge call `mcp__zollybot__tool_call`. Readers of its items get the name of the tool it
  * calls, in the form Claude gives a direct tool. A name outside the catalog is model text and stays out.
  */
 export function claudeBridgedToolName(name: string, input: unknown): string {
-  if (name !== "mcp__openbot__tool_call") return name;
+  if (name !== "mcp__zollybot__tool_call") return name;
   const called = bridgedName(input);
   const entry = called ? BUILTIN_TOOL_CATALOG.find((tool) => tool.name === called) : undefined;
   return entry ? `mcp__${entry.namespace}__${entry.tool}` : name;
@@ -118,7 +118,7 @@ function bridgedName(input: unknown): string | null {
 
 /**
  * Claude loads its own deferred tools with a search and then calls them directly. After a search here,
- * it called openbot.list_workflows as mcp__openbot__list_workflows, and each refused name cost a model step.
+ * it called zollybot.list_workflows as mcp__zollybot__list_workflows, and each refused name cost a model step.
  */
 const CALL_NOTE = "These are not direct tools: run each with tool_call {name, arguments}.";
 
@@ -127,7 +127,7 @@ const CALL_NOTE = "These are not direct tools: run each with tool_call {name, ar
  * finds no browser tool. Without this note the agent reports that it has no tool for that service.
  */
 const BROWSER_SEARCH_NOTE =
-  "No browser tool is in these results. A website or web app with no dedicated tool, such as mail or a calendar, is reached through openbot_browser. Call openbot_browser.list_tabs first: your signed-in tabs stay open across sessions.";
+  "No browser tool is in these results. A website or web app with no dedicated tool, such as mail or a calendar, is reached through zollybot_browser. Call zollybot_browser.list_tabs first: your signed-in tabs stay open across sessions.";
 
 /**
  * Pi declares the tools of the user's MCP servers only after its own `tool_search` loads them. A model
@@ -161,7 +161,7 @@ const READY_SEARCH_RESULTS = 3;
 const WORKFLOW_WORDS = new Set(["workflow", "workflows"]);
 const WORKFLOW_TOOLS = BUILTIN_TOOL_CATALOG.filter(
   (entry) =>
-    entry.namespace === OPENBOT_DYNAMIC_TOOLS.name && words(entry.tool).some((word) => WORKFLOW_WORDS.has(word)),
+    entry.namespace === ZOLLYBOT_DYNAMIC_TOOLS.name && words(entry.tool).some((word) => WORKFLOW_WORDS.has(word)),
 );
 
 function requireTool(name: string) {
@@ -243,7 +243,7 @@ export function discoverTools(params: DynamicToolCallParams) {
     }
     // Agents search for the single actions that they know, such as click and navigate, and then use
     // one model turn per action. A browser result therefore always brings the multi-step tool.
-    if ([...ready].some((entry) => entry.namespace === OPENBOT_BROWSER_NAMESPACE)) {
+    if ([...ready].some((entry) => entry.namespace === ZOLLYBOT_BROWSER_NAMESPACE)) {
       if (!found.some(({ entry }) => entry === BROWSER_SCRIPT_TOOL))
         found.push({ entry: BROWSER_SCRIPT_TOOL, strong: true });
       ready.add(BROWSER_SCRIPT_TOOL);
@@ -259,8 +259,8 @@ export function discoverTools(params: DynamicToolCallParams) {
       tools,
       ...(guidance.length > 0 ? { guidance } : {}),
     };
-    // A workflow search asks for OpenBot's own workflows, not for a website.
-    return workflowSearch || found.some(({ entry }) => entry.namespace === OPENBOT_BROWSER_NAMESPACE)
+    // A workflow search asks for ZollyBot's own workflows, not for a website.
+    return workflowSearch || found.some(({ entry }) => entry.namespace === ZOLLYBOT_BROWSER_NAMESPACE)
       ? result
       : { ...result, note: BROWSER_SEARCH_NOTE };
   }

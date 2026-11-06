@@ -5,8 +5,8 @@ import {
   type McpServerConfig,
   RESERVED_MCP_SERVER_NAMES,
   type Routine,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import type { AnalyticsInventoryDayStore } from "./analytics";
@@ -35,8 +35,8 @@ export function analyticsInventoryDayStore(path: string): AnalyticsInventoryDayS
   };
 }
 
-const CURATED_SKILL_PREFIX = "openbot-curated-skill-";
-const CURATED_AGENT_PREFIX = "openbot-curated-agent-";
+const CURATED_SKILL_PREFIX = "zollybot-curated-skill-";
+const CURATED_AGENT_PREFIX = "zollybot-curated-agent-";
 const BUILTIN_SERVER_NAMES = new Set<string>([...RESERVED_MCP_SERVER_NAMES, COMPUTER_USE_MCP_SERVER_NAME]);
 
 export interface AnalyticsInventorySources {
@@ -50,7 +50,7 @@ export interface AnalyticsInventorySources {
 }
 
 /**
- * Counts what this computer has set up. Only OpenBot's own catalog names leave this function:
+ * Counts what this computer has set up. Only ZollyBot's own catalog names leave this function:
  * a custom server, a community listing or a local skill is a count, never a name.
  */
 export const collectAnalyticsInventory = Effect.fn("Analytics.collectInventory")(function* (

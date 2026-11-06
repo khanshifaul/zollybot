@@ -1,4 +1,4 @@
-import { MESSAGE_DELETE_CAPABILITY } from "@openbot/contracts/team-protocol/message-delete-v1";
+import { MESSAGE_DELETE_CAPABILITY } from "@zollybot/contracts/team-protocol/message-delete-v1";
 import { createSimpleContext } from "../../simple-context";
 import { useAgents } from "../agents/agents-context";
 import { useServers } from "../servers/servers-context";

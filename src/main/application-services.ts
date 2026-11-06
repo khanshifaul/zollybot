@@ -1,8 +1,8 @@
-import { isManagedRuntimeProvider, type ManagedProviderId } from "@openbot/contracts/agent-providers";
-import { ANALYTICS_GENERATIONS, openPanelTransport, ReportQueue } from "@openbot/telemetry";
-import { fileReportStorage } from "@openbot/telemetry/node";
-import { makeWASocket } from "@openbot/whatsapp/baileys";
-import { makeOpenBotSignalRepository } from "@openbot/whatsapp/signal-repository";
+import { isManagedRuntimeProvider, type ManagedProviderId } from "@zollybot/contracts/agent-providers";
+import { ANALYTICS_GENERATIONS, openPanelTransport, ReportQueue } from "@zollybot/telemetry";
+import { fileReportStorage } from "@zollybot/telemetry/node";
+import { makeWASocket } from "@zollybot/whatsapp/baileys";
+import { makeZollyBotSignalRepository } from "@zollybot/whatsapp/signal-repository";
 import { Effect, Fiber, Schema } from "effect";
 import { toAgentRemovalFailed } from "../backend/agent/agent-removal";
 import { toHostedSiteOperationFailed } from "../backend/agent/hosted-site-coordinator";
@@ -76,7 +76,7 @@ import { homedir, hostname, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 import type { Readable } from "node:stream";
-import { selfHostedApiOrigin } from "@openbot/contracts/invite-links";
+import { selfHostedApiOrigin } from "@zollybot/contracts/invite-links";
 import type {
   AgentStatus,
   AppVariant,
@@ -89,7 +89,7 @@ import type {
   VoiceModelStatus,
   VoiceServerSettings,
   VoiceStreamTranscript,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   agentBrowserProfile,
   IPC_ENDPOINTS,
@@ -97,13 +97,13 @@ import {
   isUpdateBusyPhase,
   LOCAL_SERVER_ID,
   latestTurnAnswer,
-} from "@openbot/contracts/ipc";
-import { decodeRecord, requiredString } from "@openbot/contracts/ipc-decoding";
-import { localeDirection } from "@openbot/i18n";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, registerSecretValue, toLogValue } from "@openbot/logging";
-import { REMOTE_ACCOUNT_CHECK_INTERVAL_MS } from "@openbot/team-client";
-import { installRemoteSyncProfileSink } from "@openbot/team-client/sync-profile";
+} from "@zollybot/contracts/ipc";
+import { decodeRecord, requiredString } from "@zollybot/contracts/ipc-decoding";
+import { localeDirection } from "@zollybot/i18n";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
+import { REMOTE_ACCOUNT_CHECK_INTERVAL_MS } from "@zollybot/team-client";
+import { installRemoteSyncProfileSink } from "@zollybot/team-client/sync-profile";
 import {
   app,
   BrowserWindow,
@@ -134,12 +134,12 @@ import { slackDriver } from "../backend/messaging/slack/slack-driver";
 import { telegramDriver } from "../backend/messaging/telegram/telegram-driver";
 import { whatsAppDriver } from "../backend/messaging/whatsapp/whatsapp-driver";
 import { WhatsAppRuntime } from "../backend/messaging/whatsapp/whatsapp-runtime";
-import { OpenBotDatabase } from "../backend/openbot-database";
 import { passwordVaultRouter } from "../backend/password-vault-router";
 import { sweepProviderTemp } from "../backend/provider-temp";
 import { SidebarLayoutStore } from "../backend/sidebar-layout-store";
 import { StorageUsageScanner, StorageUsageService } from "../backend/storage-usage";
 import { TeamChatStore } from "../backend/team-chat-store";
+import { ZollyBotDatabase } from "../backend/zollybot-database";
 import { AGENT_ACCESS_FILE, AgentAccessStore } from "./agent-access-store";
 import {
   type AgentDefaultsPreferenceStore,
@@ -370,7 +370,7 @@ import {
   type UpdateAdapter,
   UpdateService,
 } from "./update-service";
-import { listSiblingOpenBotInstances } from "./update-sibling-instances";
+import { listSiblingZollyBotInstances } from "./update-sibling-instances";
 import { VaultService } from "./vault-service";
 import { VaultStore } from "./vault-store";
 import { VoiceApiKeyStore } from "./voice-api-key-store";
@@ -392,66 +392,66 @@ import { spawnVoiceTranscriptionHost } from "./voice-transcription-host-process"
 import { VoiceTranscriptionService } from "./voice-transcription-service";
 import { WebhookRelay } from "./webhook-relay";
 
-const logger = createOpenBotLogger("application-services");
-const SETUP_FILE = "openbot-setup-v2.json";
-const ANALYTICS_PREFERENCE_FILE = "openbot-analytics-preference-v1.json";
-const ANALYTICS_INVENTORY_FILE = "openbot-analytics-inventory-v1.json";
-const ANALYTICS_INSTALL_ID_FILE = "openbot-analytics-install-id-v1.json";
-const APPROVAL_AUTOMATION_FILE = "openbot-approval-automation-v3.json";
-const V2_APPROVAL_AUTOMATION_FILE = "openbot-approval-automation-v2.json";
-const ROUTINE_FEED_FILE = "openbot-routine-feed-v1.json";
-const LEGACY_APPROVAL_AUTOMATION_FILE = "openbot-approval-automation-v1.json";
-const LANGUAGE_PREFERENCE_FILE = "openbot-language-preference-v1.json";
-const LOGO_COLOR_PREFERENCE_FILE = "openbot-logo-color-preference-v1.json";
-const APPEARANCE_PREFERENCE_FILE = "openbot-appearance-preference-v1.json";
-const INTERFACE_SIZE_PREFERENCE_FILE = "openbot-interface-size-preference-v1.json";
-const NOTIFICATION_PREFERENCE_FILE = "openbot-notification-preference-v1.json";
-const PUSH_NOTIFICATION_FILE = "openbot-push-notifications-v1.json";
-const BUSY_MESSAGE_MODE_PREFERENCE_FILE = "openbot-busy-message-mode-v1.json";
-const PROVIDER_CLI_APP_VERSION_FILE = "openbot-provider-cli-app-version-v1.json";
-const AGENT_DEFAULTS_PREFERENCE_FILE = "openbot-agent-defaults-v1.json";
-const AGENT_MEMORY_LIMIT_PREFERENCE_FILE = "openbot-agent-memory-limit-v1.json";
-const MEMORY_REVIEW_PREFERENCE_FILE = "openbot-memory-review-v1.json";
-const AGENT_NOTIFICATION_LEVELS_FILE = "openbot-agent-notification-levels-v1.json";
-const SIDEBAR_PINS_FILE = "openbot-sidebar-pins-v1.json";
-const SERVER_TIMEZONE_PREFERENCE_FILE = "openbot-server-timezone-v1.json";
-const PROMPT_CACHE_TTL_PREFERENCE_FILE = "openbot-prompt-cache-ttl-v1.json";
-const MODEL_VISIBILITY_PREFERENCE_FILE = "openbot-model-visibility-v1.json";
-const REMOTE_SESSION_REUSE_PREFERENCE_FILE = "openbot-remote-session-reuse-preference-v1.json";
-const EXTERNAL_LINK_PREFERENCE_FILE = "openbot-external-link-preference-v1.json";
-const REMOTE_NETWORK_ROUTE_PREFERENCE_FILE = "openbot-remote-network-route-v1.json";
-const APP_BEHAVIOR_PREFERENCE_FILE = "openbot-app-behavior-preference-v1.json";
-const DYNAMIC_ISLAND_PREFERENCE_FILE = "openbot-dynamic-island-preference-v1.json";
-const BROWSER_STATE_FILE = "openbot-browser-state-v1.json";
-const SIDEBAR_LAYOUT_FILE = "openbot-sidebar-layout-v1.json";
-const TEAM_FILE = "openbot-team-server-v1.json";
+const logger = createZollyBotLogger("application-services");
+const SETUP_FILE = "zollybot-setup-v2.json";
+const ANALYTICS_PREFERENCE_FILE = "zollybot-analytics-preference-v1.json";
+const ANALYTICS_INVENTORY_FILE = "zollybot-analytics-inventory-v1.json";
+const ANALYTICS_INSTALL_ID_FILE = "zollybot-analytics-install-id-v1.json";
+const APPROVAL_AUTOMATION_FILE = "zollybot-approval-automation-v3.json";
+const V2_APPROVAL_AUTOMATION_FILE = "zollybot-approval-automation-v2.json";
+const ROUTINE_FEED_FILE = "zollybot-routine-feed-v1.json";
+const LEGACY_APPROVAL_AUTOMATION_FILE = "zollybot-approval-automation-v1.json";
+const LANGUAGE_PREFERENCE_FILE = "zollybot-language-preference-v1.json";
+const LOGO_COLOR_PREFERENCE_FILE = "zollybot-logo-color-preference-v1.json";
+const APPEARANCE_PREFERENCE_FILE = "zollybot-appearance-preference-v1.json";
+const INTERFACE_SIZE_PREFERENCE_FILE = "zollybot-interface-size-preference-v1.json";
+const NOTIFICATION_PREFERENCE_FILE = "zollybot-notification-preference-v1.json";
+const PUSH_NOTIFICATION_FILE = "zollybot-push-notifications-v1.json";
+const BUSY_MESSAGE_MODE_PREFERENCE_FILE = "zollybot-busy-message-mode-v1.json";
+const PROVIDER_CLI_APP_VERSION_FILE = "zollybot-provider-cli-app-version-v1.json";
+const AGENT_DEFAULTS_PREFERENCE_FILE = "zollybot-agent-defaults-v1.json";
+const AGENT_MEMORY_LIMIT_PREFERENCE_FILE = "zollybot-agent-memory-limit-v1.json";
+const MEMORY_REVIEW_PREFERENCE_FILE = "zollybot-memory-review-v1.json";
+const AGENT_NOTIFICATION_LEVELS_FILE = "zollybot-agent-notification-levels-v1.json";
+const SIDEBAR_PINS_FILE = "zollybot-sidebar-pins-v1.json";
+const SERVER_TIMEZONE_PREFERENCE_FILE = "zollybot-server-timezone-v1.json";
+const PROMPT_CACHE_TTL_PREFERENCE_FILE = "zollybot-prompt-cache-ttl-v1.json";
+const MODEL_VISIBILITY_PREFERENCE_FILE = "zollybot-model-visibility-v1.json";
+const REMOTE_SESSION_REUSE_PREFERENCE_FILE = "zollybot-remote-session-reuse-preference-v1.json";
+const EXTERNAL_LINK_PREFERENCE_FILE = "zollybot-external-link-preference-v1.json";
+const REMOTE_NETWORK_ROUTE_PREFERENCE_FILE = "zollybot-remote-network-route-v1.json";
+const APP_BEHAVIOR_PREFERENCE_FILE = "zollybot-app-behavior-preference-v1.json";
+const DYNAMIC_ISLAND_PREFERENCE_FILE = "zollybot-dynamic-island-preference-v1.json";
+const BROWSER_STATE_FILE = "zollybot-browser-state-v1.json";
+const SIDEBAR_LAYOUT_FILE = "zollybot-sidebar-layout-v1.json";
+const TEAM_FILE = "zollybot-team-server-v1.json";
 /** One host per account. The v1 file above stays as the last build without accounts left it. */
-const TEAM_FILE_V2 = "openbot-team-server-v2.json";
-const REMOTE_SERVERS_FILE = "openbot-remote-servers-v1.json";
-const CENTRAL_AUTH_FILE = "openbot-central-auth-v1.bin";
-const REMOTE_SESSIONS_FILE = "openbot-remote-sessions-v1.bin";
-const LEGACY_REMOTE_DESKTOP_CREDENTIAL_FILE = "openbot-remote-desktop-credential-v1.json";
-const REMOTE_DESKTOP_RUNTIME_SECRET_FILE = "openbot-remote-desktop-runtime-v1.json";
-const CUSTOM_PROVIDERS_FILE = "openbot-custom-providers-v1.json";
-const PROVIDER_CREDENTIAL_FILE = "openbot-provider-credentials-v1.json";
-const MESSAGING_CREDENTIAL_FILE = "openbot-messaging-credentials-v1.json";
-const INGRESS_QUEUE_KEY_FILE = "openbot-ingress-queue-key-v1.json";
+const TEAM_FILE_V2 = "zollybot-team-server-v2.json";
+const REMOTE_SERVERS_FILE = "zollybot-remote-servers-v1.json";
+const CENTRAL_AUTH_FILE = "zollybot-central-auth-v1.bin";
+const REMOTE_SESSIONS_FILE = "zollybot-remote-sessions-v1.bin";
+const LEGACY_REMOTE_DESKTOP_CREDENTIAL_FILE = "zollybot-remote-desktop-credential-v1.json";
+const REMOTE_DESKTOP_RUNTIME_SECRET_FILE = "zollybot-remote-desktop-runtime-v1.json";
+const CUSTOM_PROVIDERS_FILE = "zollybot-custom-providers-v1.json";
+const PROVIDER_CREDENTIAL_FILE = "zollybot-provider-credentials-v1.json";
+const MESSAGING_CREDENTIAL_FILE = "zollybot-messaging-credentials-v1.json";
+const INGRESS_QUEUE_KEY_FILE = "zollybot-ingress-queue-key-v1.json";
 /** The MCP sign-ins. Separate from the keys above: a key is typed by the user, a token is not. */
-const MCP_OAUTH_FILE = "openbot-mcp-oauth-v1.json";
-const MCP_OAUTH_PROXY_FILE = "openbot-mcp-oauth-proxy-v1.json";
+const MCP_OAUTH_FILE = "zollybot-mcp-oauth-v1.json";
+const MCP_OAUTH_PROXY_FILE = "zollybot-mcp-oauth-proxy-v1.json";
 /** The one GitHub sign-in of this computer, with the same cipher as the MCP sign-ins. */
-const GITHUB_CONNECTOR_FILE = "openbot-github-connector-v1.json";
-const LINK_ACCOUNT_FILE = "openbot-link-account-v1.json";
+const GITHUB_CONNECTOR_FILE = "zollybot-github-connector-v1.json";
+const LINK_ACCOUNT_FILE = "zollybot-link-account-v1.json";
 /** The 1Password service account token of this computer, with the same cipher. */
-const ONEPASSWORD_CONNECTOR_FILE = "openbot-onepassword-connector-v1.json";
+const ONEPASSWORD_CONNECTOR_FILE = "zollybot-onepassword-connector-v1.json";
 /** The Bitwarden API key and master password of a host connection (`bitwarden-connector-v1`), with the same cipher. */
-const BITWARDEN_CONNECTOR_FILE = "openbot-bitwarden-connector-v1.json";
+const BITWARDEN_CONNECTOR_FILE = "zollybot-bitwarden-connector-v1.json";
 /** The Proton Pass agent access key of this computer or host, with the same cipher. */
-const PROTONPASS_CONNECTOR_FILE = "openbot-protonpass-connector-v1.json";
+const PROTONPASS_CONNECTOR_FILE = "zollybot-protonpass-connector-v1.json";
 /** The logins, payment cards and contact info of the Vault in Server settings, with the same cipher. */
-const VAULT_FILE = "openbot-vault-v1.json";
+const VAULT_FILE = "zollybot-vault-v1.json";
 /** Which agent each imported Hermes profile made, so a second import updates that agent. */
-const HERMES_IMPORT_LINKS_FILE = "openbot-hermes-imports-v1.json";
+const HERMES_IMPORT_LINKS_FILE = "zollybot-hermes-imports-v1.json";
 
 /**
  * Where each service stops, as a position in the shutdown sequence rather than a position in the
@@ -465,7 +465,7 @@ const HERMES_IMPORT_LINKS_FILE = "openbot-hermes-imports-v1.json";
  * the Electron binary - which is also the name macOS shows in the Privacy & Security panes, and the
  * reason a dev grant does not carry over to a packaged build.
  */
-const PACKAGED_BUNDLE_IDENTIFIER = "app.openbot.desktop";
+const PACKAGED_BUNDLE_IDENTIFIER = "app.zollybot.desktop";
 const DEVELOPMENT_BUNDLE_IDENTIFIER = "com.github.Electron";
 
 const TEARDOWN_ORDER = {
@@ -789,7 +789,7 @@ async function createMessagingServices({
   const messagingCredentialLoadError = await Effect.runPromise(messagingCredentials.load());
   if (messagingCredentialLoadError)
     logger.warn(
-      `OpenBot could not read the messaging token file (${messagingCredentialLoadError.name}). It was left unchanged.`,
+      `ZollyBot could not read the messaging token file (${messagingCredentialLoadError.name}). It was left unchanged.`,
     );
   // The Signal socket that brings the events of the Slack workspaces, Discord guilds and Telegram chats
   // linked to this host, and makes its Discord and Telegram calls.
@@ -815,13 +815,13 @@ async function createMessagingServices({
     Effect.runPromise(signalIngress.dispose()),
   );
   // Development only: `bun run dev:slack` names this loopback port, so a Slack install returns to this
-  // dev app and not to an installed OpenBot that owns `openbot://`.
-  const developmentSlackCallbackPort = app.isPackaged ? 0 : Number(process.env.OPENBOT_DEV_SLACK_CALLBACK_PORT ?? 0);
+  // dev app and not to an installed ZollyBot that owns `zollybot://`.
+  const developmentSlackCallbackPort = app.isPackaged ? 0 : Number(process.env.ZOLLYBOT_DEV_SLACK_CALLBACK_PORT ?? 0);
   // The WhatsApp numbers linked as devices of this computer. Their keys stay in `<userData>/whatsapp`.
   const whatsapp = new WhatsAppRuntime({
     root: join(app.getPath("userData"), "whatsapp"),
     createSocket: (config) => makeWASocket(config),
-    makeSignalRepository: makeOpenBotSignalRepository,
+    makeSignalRepository: makeZollyBotSignalRepository,
   });
   const messaging = new MessagingService({
     threads: service.messaging,
@@ -847,7 +847,7 @@ async function createMessagingServices({
       whatsAppDriver({ runtime: whatsapp }),
     ],
     downloadsRoot: join(app.getPath("userData"), "messaging-downloads"),
-    statusPath: join(app.getPath("userData"), "openbot-messaging-status-v1.json"),
+    statusPath: join(app.getPath("userData"), "zollybot-messaging-status-v1.json"),
     ingress: signalIngress,
     whatsapp,
     sidebar: sidebarLayout,
@@ -953,7 +953,7 @@ async function createMessagingServices({
   );
   teardown.push(TEARDOWN_ORDER.messaging, "the messaging connections", () => Effect.runPromise(messaging.stop()));
   if (developmentSlackCallbackPort > 0) {
-    // As `openbot://` does for a packaged build, a finished install brings OpenBot to the front.
+    // As `zollybot://` does for a packaged build, a finished install brings ZollyBot to the front.
     const callback = await startSlackDevCallbackServer(developmentSlackCallbackPort, async (nonce, grant) => {
       const received = await runCauseEffect(messaging.completeSlackWorkspace(nonce, grant));
       if (received) app.focus({ steal: true });
@@ -991,8 +991,8 @@ export async function createApplicationServices({
   prepareForUpdateInstall,
   quitting,
 }: ApplicationServiceContext): Promise<ApplicationServices> {
-  // The start of the first `openbot:services.*` step, for the `system_startup` summary.
-  performance.mark("openbot:services.start");
+  // The start of the first `zollybot:services.*` step, for the `system_startup` summary.
+  performance.mark("zollybot:services.start");
   // First, so the provider lines of the whole startup reach the file.
   teardown.push(
     TEARDOWN_ORDER.providerLog,
@@ -1051,12 +1051,12 @@ export async function createApplicationServices({
   });
   teardown.push(TEARDOWN_ORDER.dynamicIsland, "the Dynamic Island", () => dynamicIsland.destroy());
   const centralAuthApiUrl = readCentralAuthApiUrl(
-    process.env.OPENBOT_AUTH_API_URL,
+    process.env.ZOLLYBOT_AUTH_API_URL,
     app.isPackaged ? "https://api.openbot.run" : "http://127.0.0.1:3100",
   );
   const centralAuth = new CentralAuthManager({
     apiUrl: centralAuthApiUrl,
-    mobileConnectApiUrl: readMobileConnectApiUrl(process.env.OPENBOT_MOBILE_AUTH_API_URL, centralAuthApiUrl),
+    mobileConnectApiUrl: readMobileConnectApiUrl(process.env.ZOLLYBOT_MOBILE_AUTH_API_URL, centralAuthApiUrl),
     storagePath: join(app.getPath("userData"), CENTRAL_AUTH_FILE),
     ...safeStorageCipher("error.app.macSecureStorageUnavailable"),
     keyringChanged: () => secretStorage().madeKeyFile(),
@@ -1119,35 +1119,35 @@ export async function createApplicationServices({
   const store = new AgentStore(
     app.getPath("userData"),
     homedir(),
-    new OpenBotDatabase(app.getPath("userData")),
+    new ZollyBotDatabase(app.getPath("userData")),
     () => agentDefaults.get(),
     localServerChild?.agentRoot,
   );
   // Phase marks for `dev:bench`, so a slow start shows which group of awaits it waited on. They
   // change nothing.
-  performance.mark("openbot:services.pre-store");
+  performance.mark("zollybot:services.pre-store");
   await runCauseEffect(store.initialize());
-  performance.mark("openbot:services.store");
+  performance.mark("zollybot:services.store");
   // Closing copies the write-ahead log into the database file and removes it. A step that passed its
   // limit, such as a slow agent stop, still writes, so the close waits a short time for it.
   teardown.push(TEARDOWN_ORDER.database, "the database", () => store.database.close(), { afterAbandonedSteps: true });
   const managedSkills = new ManagedSkillService(
     app.isPackaged
-      ? join(process.resourcesPath, "managed-skills", "openbot-site-hosting", "SKILL.md")
-      : resolve(__dirname, "../../resources/managed-skills/openbot-site-hosting/SKILL.md"),
+      ? join(process.resourcesPath, "managed-skills", "zollybot-site-hosting", "SKILL.md")
+      : resolve(__dirname, "../../resources/managed-skills/zollybot-site-hosting/SKILL.md"),
   );
   const skillCreator = new ManagedSkillService(
     app.isPackaged
-      ? join(process.resourcesPath, "managed-skills", "openbot-skill-creator", "SKILL.md")
-      : resolve(__dirname, "../../resources/managed-skills/openbot-skill-creator/SKILL.md"),
+      ? join(process.resourcesPath, "managed-skills", "zollybot-skill-creator", "SKILL.md")
+      : resolve(__dirname, "../../resources/managed-skills/zollybot-skill-creator/SKILL.md"),
     undefined,
     undefined,
     SKILL_CREATOR_SKILL_SLUG,
   );
   const dataSkill = new ManagedSkillService(
     app.isPackaged
-      ? join(process.resourcesPath, "managed-skills", "openbot-data", "SKILL.md")
-      : resolve(__dirname, "../../resources/managed-skills/openbot-data/SKILL.md"),
+      ? join(process.resourcesPath, "managed-skills", "zollybot-data", "SKILL.md")
+      : resolve(__dirname, "../../resources/managed-skills/zollybot-data/SKILL.md"),
     undefined,
     undefined,
     DATA_SKILL_SLUG,
@@ -1155,7 +1155,7 @@ export async function createApplicationServices({
   await Effect.runPromise(managedSkills.syncAll(store.list()));
   await Effect.runPromise(skillCreator.syncAll(store.list()));
   await Effect.runPromise(dataSkill.syncAll(store.list()));
-  performance.mark("openbot:services.skills");
+  performance.mark("zollybot:services.skills");
   const hostedSites = new HostedSiteDesktopService(centralAuth, () => {
     // Read at request time: the team store is created later, and the server can register after launch.
     const hostId = teamStore.getIdentity()?.serverId;
@@ -1182,7 +1182,7 @@ export async function createApplicationServices({
   const developmentUrl = process.env.ELECTRON_RENDERER_URL;
   const teamWebRtcBridge = new TeamWebRtcBridge({
     developmentUrl: developmentUrl ?? null,
-    iceTransportPolicy: developmentUrl && process.env.OPENBOT_DEV_ICE_TRANSPORT_POLICY === "relay" ? "relay" : "all",
+    iceTransportPolicy: developmentUrl && process.env.ZOLLYBOT_DEV_ICE_TRANSPORT_POLICY === "relay" ? "relay" : "all",
   });
   teamWebRtcBridge.on("accountProfileChanged", refreshAccountProfile);
   teardown.push(TEARDOWN_ORDER.teamWebRtcBridge, "the team WebRTC bridge", () =>
@@ -1191,7 +1191,7 @@ export async function createApplicationServices({
   // The computers of members that share their connection with this server, for computer proxies.
   const browserEgress = new BrowserEgressHost(teamWebRtcBridge);
   teardown.push(TEARDOWN_ORDER.browserEgress, "the computer proxies of members", () => browserEgress.dispose());
-  // Only a hosted, self-hosted or container server: one unit or container holds OpenBot and every
+  // Only a hosted, self-hosted or container server: one unit or container holds ZollyBot and every
   // agent process. The desktop app does not hold turns for memory.
   const hostMemory =
     hostedServer || serverModeEnvironment
@@ -1234,7 +1234,7 @@ export async function createApplicationServices({
   });
   teardown.push(TEARDOWN_ORDER.browser, "the browser", () => runCauseEffect(browser.destroy()));
   await runCauseEffect(browser.restore(store.list().map((agent) => ({ id: agent.id, threadId: agent.threadId }))));
-  performance.mark("openbot:services.browser");
+  performance.mark("zollybot:services.browser");
   const browserPictureInPicture = new BrowserPictureInPicture({
     // A value, deliberately: the window this is docked to is the one that exists now. The event
     // callback below is the opposite case and re-reads, because it fires long after a macOS window
@@ -1393,16 +1393,16 @@ export async function createApplicationServices({
    * The installed CLIs are the computer's, the partial downloads are this profile's.
    *
    * Development gives every renderer port and every `--isolated` worktree a `userData` of its own,
-   * so a store kept there started empty each time: OpenBot fell back to the user's own CLI, offered
+   * so a store kept there started empty each time: ZollyBot fell back to the user's own CLI, offered
    * the pinned version against it, and downloaded 144 MB again for a profile that would be replaced
-   * by the next port. The packaged app's `userData` is `appData/OpenBot` already, so the shared
+   * by the next port. The packaged app's `userData` is `appData/ZollyBot` already, so the shared
    * store is the path it always used. The switch is read here rather than imported from the entry
    * point, which this file may not reach into; both readers read the same immutable value.
    */
-  const providerUse = new ProviderUseSettingsStore(join(app.getPath("userData"), "openbot-provider-use-v1.json"));
+  const providerUse = new ProviderUseSettingsStore(join(app.getPath("userData"), "zollybot-provider-use-v1.json"));
   await runCauseEffect(providerUse.load());
   const providerAccounts = new ProviderAccountStore(
-    join(app.getPath("userData"), "openbot-provider-accounts-v1.json"),
+    join(app.getPath("userData"), "zollybot-provider-accounts-v1.json"),
     join(app.getPath("userData"), "provider-accounts"),
   );
   await runCauseEffect(providerAccounts.load());
@@ -1468,7 +1468,7 @@ export async function createApplicationServices({
   const providerDetectionSettings = new ProviderDetectionSettingsStore(
     join(app.getPath("userData"), PROVIDER_DETECTION_SETTINGS_FILE),
   );
-  performance.mark("openbot:services.preferences");
+  performance.mark("zollybot:services.preferences");
   await runCauseEffect(providerDetectionSettings.load());
   const providerDetection = await Effect.runPromise(
     createProviderDetection({
@@ -1492,14 +1492,14 @@ export async function createApplicationServices({
   // An unreadable key file is reported, not fatal: the app starts, OpenCode runs on the free models,
   // and Settings tells the user to save the key again. Only the error's class is logged, because a
   // parse message quotes the file.
-  performance.mark("openbot:services.provider-detection");
+  performance.mark("zollybot:services.provider-detection");
   const credentialLoadError = await Effect.runPromise(providerCredentials.load());
   if (credentialLoadError) {
-    logger.warn(`OpenBot could not read the provider key file (${credentialLoadError.name}). It was left unchanged.`);
+    logger.warn(`ZollyBot could not read the provider key file (${credentialLoadError.name}). It was left unchanged.`);
   }
   /*
    * The MCP sign-ins, in their own file with the same cipher. `mcp-remote` used to keep these where
-   * OpenBot could not redact them; here they are covered by the same rule as every other secret.
+   * ZollyBot could not redact them; here they are covered by the same rule as every other secret.
    *
    * Unreadable is not fatal, for the same reason as the keys above: every signed-in server asks for
    * a sign-in again, and nothing else on this machine stops working.
@@ -1507,7 +1507,7 @@ export async function createApplicationServices({
   const mcpOAuthStore = new McpOAuthStore(join(app.getPath("userData"), MCP_OAUTH_FILE), secretCipher);
   const mcpOAuthLoadError = await Effect.runPromise(mcpOAuthStore.load());
   if (mcpOAuthLoadError) {
-    logger.warn(`OpenBot could not read the MCP sign-in file (${mcpOAuthLoadError.name}). It was left unchanged.`);
+    logger.warn(`ZollyBot could not read the MCP sign-in file (${mcpOAuthLoadError.name}). It was left unchanged.`);
   }
   // The OAuth proxy port, so a Codex session resumed after a restart reaches the same address.
   const mcpOAuthProxySettings = new McpOAuthProxySettingsFile(
@@ -1517,13 +1517,13 @@ export async function createApplicationServices({
   const mcpOAuthProxyLoadError = await Effect.runPromise(mcpOAuthProxySettings.load());
   if (mcpOAuthProxyLoadError) {
     logger.warn(
-      `OpenBot could not read the MCP sign-in proxy file (${mcpOAuthProxyLoadError.name}). A new port is used.`,
+      `ZollyBot could not read the MCP sign-in proxy file (${mcpOAuthProxyLoadError.name}). A new port is used.`,
     );
   }
   /*
    * Where a returning grant lands. The loopback listener is the address RFC 8252 gives a native
-   * app and the only one some authorization servers accept - Canva refuses `openbot://mcp-auth`
-   * on its own authorization page, where OpenBot cannot see the failure or explain it.
+   * app and the only one some authorization servers accept - Canva refuses `zollybot://mcp-auth`
+   * on its own authorization page, where ZollyBot cannot see the failure or explain it.
    *
    * A port that cannot be bound is not fatal: the deep link is still registered with the
    * operating system, and the servers that accept it keep working. It is logged because it
@@ -1544,7 +1544,7 @@ export async function createApplicationServices({
         ? { port: Number(new URL(mcpOAuthRedirect.redirectUrl).port), path: MCP_OAUTH_REDIRECT_PATH }
         : null,
   });
-  performance.mark("openbot:services.mcp-sign-in-file");
+  performance.mark("zollybot:services.mcp-sign-in-file");
   const mcpOAuthRedirect = await startMcpOAuthRedirectServer({
     language,
     preferredPort: MCP_OAUTH_REDIRECT_PORT,
@@ -1562,7 +1562,7 @@ export async function createApplicationServices({
     },
   }).catch((error: unknown) => {
     logger.warn(
-      "OpenBot could not listen for MCP sign-ins on this machine, so the openbot:// link is used instead. Servers that refuse it cannot be signed in to:",
+      "ZollyBot could not listen for MCP sign-ins on this machine, so the zollybot:// link is used instead. Servers that refuse it cannot be signed in to:",
       toLogValue(error),
     );
     return null;
@@ -1574,7 +1574,7 @@ export async function createApplicationServices({
     storage: mcpOAuthStore,
     openExternal: openLink,
     redirectUrl: mcpOAuthRedirect?.redirectUrl ?? MCP_OAUTH_REDIRECT_URL,
-    logger: createOpenBotLogger("mcp-oauth"),
+    logger: createZollyBotLogger("mcp-oauth"),
   });
   mcpOAuthAuthority = mcpOAuth;
   teardown.push(TEARDOWN_ORDER.mcpOAuth, "MCP token refresh", () => Effect.runPromise(mcpOAuth.close()));
@@ -1603,7 +1603,7 @@ export async function createApplicationServices({
   teardown.push(TEARDOWN_ORDER.linkAccount, "the Link account", () => Effect.runPromise(linkAccount.dispose()));
   /*
    * The Bitwarden connection. A host connection's API key and master password are stored, so the
-   * host unlocks again after a restart; its CLI data and OpenBot's copy of `bw` stay outside every
+   * host unlocks again after a restart; its CLI data and ZollyBot's copy of `bw` stay outside every
    * root an agent can write.
    */
   const bitwardenCliTarget = runtimeTarget(process.platform, process.arch);
@@ -1652,13 +1652,13 @@ export async function createApplicationServices({
     openExternal: openLink,
   });
   await runCauseEffect(onePasswordConnector.load());
-  performance.mark("openbot:services.connectors");
+  performance.mark("zollybot:services.connectors");
   teardown.push(TEARDOWN_ORDER.onePasswordConnector, "the 1Password connection", () =>
     runCauseEffect(onePasswordConnector.dispose()),
   );
   /*
    * The password-manager engine. 1Password and Bitwarden keep their own services, panels and
-   * teardown, and the browser reads their logins directly. The Proton Pass CLI data and OpenBot's
+   * teardown, and the browser reads their logins directly. The Proton Pass CLI data and ZollyBot's
    * copy of `pass-cli` stay outside every root an agent can write.
    */
   const protonPassCliTarget = runtimeTarget(process.platform, process.arch);
@@ -1695,7 +1695,7 @@ export async function createApplicationServices({
       onStatementSettled: (durationMs) => statementTimings.record(durationMs),
     }),
   });
-  // Looked up again on demand, because a user may install the driver while OpenBot runs, and the
+  // Looked up again on demand, because a user may install the driver while ZollyBot runs, and the
   // panel's "Check again" has to see it.
   const resolveCuaDriverExecutable = () => {
     const installDirectory = process.env.CUA_DRIVER_RS_INSTALL_DIR ?? process.env.CUA_DRIVER_BIN_DIR;
@@ -1708,7 +1708,7 @@ export async function createApplicationServices({
       architecture: process.arch,
       homeDirectory: homedir(),
       pathVariable: process.env.PATH ?? null,
-      overrides: [process.env.OPENBOT_CUA_DRIVER_PATH, process.env.CUA_DRIVER_PATH],
+      overrides: [process.env.ZOLLYBOT_CUA_DRIVER_PATH, process.env.CUA_DRIVER_PATH],
       ...(installDirectory === undefined ? {} : { installDirectory }),
       ...(localAppDataDirectory === undefined ? {} : { localAppDataDirectory }),
       applicationsDirectory: "/Applications",
@@ -1745,11 +1745,11 @@ export async function createApplicationServices({
   // daemon: stopping it first would leave them reading a socket nothing answers.
   teardown.push(TEARDOWN_ORDER.cuaDriver, "the Computer Use driver", () => runCauseEffect(cuaDriver.stop()));
   /*
-   * The rim OpenBot draws over the window an agent works in.
+   * The rim ZollyBot draws over the window an agent works in.
    *
    * It asks the daemon two read-only questions over a connection of its own: whether any agent
    * holds a live session, and where every window is. Both answers come from the daemon's own view,
-   * which an MCP client of OpenBot's could not see: the tools report only the sessions of the lease
+   * which an MCP client of ZollyBot's could not see: the tools report only the sessions of the lease
    * that asks, and the agent's lease is its own.
    */
   const computerUseReads = new CuaDriverDaemonClient(() =>
@@ -1762,7 +1762,7 @@ export async function createApplicationServices({
     displays: computerUseDisplays,
     // `service` is built below; the controller starts only after it.
     idle: () => service.earliestRunningTurnStartedAt() === null,
-    // The driver's own cursor on one screen, OpenBot's inside this overlay on more than one. The
+    // The driver's own cursor on one screen, ZollyBot's inside this overlay on more than one. The
     // runtime answers `null` for the screen it draws itself, so only one cursor is ever drawn.
     readPointer: () => {
       const pointer = cuaDriver.lastPointer(COMPUTER_USE_CURSOR_MAX_AGE_MS);
@@ -1800,7 +1800,7 @@ export async function createApplicationServices({
     computerUseHighlight.destroy();
     await Effect.runPromise(computerUseReads.close());
   });
-  // The overlays are OpenBot windows, so they can mark only the display OpenBot is on. With an agent
+  // The overlays are ZollyBot windows, so they can mark only the display ZollyBot is on. With an agent
   // display of its own, the driver works where they cannot be drawn.
   const drawsComputerUseHighlight = !hasSeparateAgentDisplay(process.platform);
   const computerUsePermissionHelp = new ComputerUsePermissionHelpWindowController({
@@ -1833,7 +1833,7 @@ export async function createApplicationServices({
   // tree stop ends every command it started, so none outlives its folder. Elsewhere the system
   // folder stays: a macOS path in userData has a space and is too long for a Unix socket.
   const providerTempDirectory = join(app.getPath("userData"), "provider-temp");
-  performance.mark("openbot:services.computer-use");
+  performance.mark("zollybot:services.computer-use");
   if (process.platform === "win32") await Effect.runPromise(sweepProviderTemp(providerTempDirectory));
   // Outside every workspace. Each saved key is masked in the logs before the first agent starts. The
   // Vault's keys are written only when an agent lists its keys; a file left from the last run that the
@@ -1872,8 +1872,8 @@ export async function createApplicationServices({
         ensureToolRuntimesReady: () => providerRuntimes.ensureToolRuntimesReady(),
         toolRuntimes: () => providerRuntimes.mcpToolRuntimes(),
       }),
-    // `desktopCapturer` captures the display OpenBot is on. With an agent display of its own, that
-    // is only the OpenBot window, so agents take their screenshots with the Computer Use driver.
+    // `desktopCapturer` captures the display ZollyBot is on. With an agent display of its own, that
+    // is only the ZollyBot window, so agents take their screenshots with the Computer Use driver.
     screenCapture: hasSeparateAgentDisplay(process.platform)
       ? null
       : new ScreenCapturer({
@@ -1955,7 +1955,7 @@ export async function createApplicationServices({
       { prefix: "", vault: onePasswordConnector },
       { prefix: "bitwarden:", vault: bitwardenConnector },
       ...passwordManagers.routes(),
-      { prefix: "openbot:", vault: vault.logins },
+      { prefix: "zollybot:", vault: vault.logins },
     ]),
     vaultItems: vault.items,
     linkWallet: linkAccount,
@@ -2189,7 +2189,7 @@ export async function createApplicationServices({
   // The host id is read when the Signal socket opens, and the team store is built further down, so
   // it starts as "no name yet".
   let ingressHostId: () => string | null = () => null;
-  performance.mark("openbot:services.routines");
+  performance.mark("zollybot:services.routines");
   // The repositories that the saved GitHub triggers watch. It holds the GitHub route of the ingress
   // socket, which is made next.
   const githubRelay = new GitHubRelay({
@@ -2222,7 +2222,7 @@ export async function createApplicationServices({
   cuaDriver.onStateChanged((state) => service.setComputerUseCapability(computerUseCapability(state)));
   // Only when a live session would hold the wrong tool set: this deactivates every agent's stored
   // provider session, so the driver stays quiet for a grant, for the warm-up below, and from the
-  // moment OpenBot quits, where the sessions are being left for the next run.
+  // moment ZollyBot quits, where the sessions are being left for the next run.
   cuaDriver.onMcpServerChanged(() => {
     void runCauseEffect(service.notifyComputerUseChanged()).catch((error) =>
       logger.warn("Provider tools did not refresh.", toLogValue(error)),
@@ -2265,7 +2265,7 @@ export async function createApplicationServices({
   });
   /*
    * Where the decision put the download: onboarding, which is the screen this start is about to
-   * show. A user who finished onboarding before OpenBot downloaded a runtime at all is asked for
+   * show. A user who finished onboarding before ZollyBot downloaded a runtime at all is asked for
    * one here too, but only when this machine already has an MCP server to start.
    *
    * Nothing waits for it and nothing reports it. MCP is optional, so a failed download must not
@@ -2275,7 +2275,7 @@ export async function createApplicationServices({
     Effect.runFork(providerRuntimes.ensureToolRuntimes());
   // After `new AgentService`, which owns the channels: the layout files channels beside agents, and
   // reconciling against the agents alone would read every channel as gone and drop where it sits.
-  performance.mark("openbot:services.messaging");
+  performance.mark("zollybot:services.messaging");
   await runCauseEffect(sidebarLayout.reconcileAgents(service.sidebarChatIds()));
 
   /*
@@ -2384,7 +2384,7 @@ export async function createApplicationServices({
     join(app.getPath("userData"), TEAM_FILE),
   );
   await runCauseEffect(teamStore.initialize());
-  performance.mark("openbot:services.team");
+  performance.mark("zollybot:services.team");
   const machineAlertStore = new MachineAlertPreferenceStore(
     join(app.getPath("userData"), MACHINE_ALERTS_PREFERENCE_FILE),
   );
@@ -2455,7 +2455,7 @@ export async function createApplicationServices({
       applyDevelopmentRemoteAccount({
         role: developmentRemoteRole,
         testClientEnabled: developmentTestClientEnabled,
-        clientTransport: readDevelopmentClientTransport(process.env.OPENBOT_DEV_CLIENT_TRANSPORT),
+        clientTransport: readDevelopmentClientTransport(process.env.ZOLLYBOT_DEV_CLIENT_TRANSPORT),
         centralAuth,
         teamStore,
         setupFile,
@@ -2484,7 +2484,7 @@ export async function createApplicationServices({
   }
 
   const teamChatStore = new TeamChatStore(store.database);
-  performance.mark("openbot:services.hosted");
+  performance.mark("zollybot:services.hosted");
   const remoteDesktopRuntime = await Effect.runPromise(
     resolveRemoteDesktopRuntime({
       isPackaged: app.isPackaged,
@@ -2492,9 +2492,9 @@ export async function createApplicationServices({
       sourceRoot: resolve(__dirname, "../.."),
       platform: process.platform === "darwin" || process.platform === "win32" ? process.platform : "linux",
       architecture: process.arch,
-      ...(process.env.OPENBOT_REMOTE_DESKTOP_RUNTIME_PATH === undefined
+      ...(process.env.ZOLLYBOT_REMOTE_DESKTOP_RUNTIME_PATH === undefined
         ? {}
-        : { overrideRoot: process.env.OPENBOT_REMOTE_DESKTOP_RUNTIME_PATH }),
+        : { overrideRoot: process.env.ZOLLYBOT_REMOTE_DESKTOP_RUNTIME_PATH }),
     }),
   );
   const agentAdminSettings = createAgentAdminSettings({ agents: service, approvalAutomation });
@@ -2655,7 +2655,7 @@ export async function createApplicationServices({
         : Effect.fail(new RemoteWorkflowError({ cause: new Error(sourceText("error.team.localServersUnsupported")) })),
     );
   // Development only: a shorter or longer time without input before a phone notifies, to test it.
-  const awaySeconds = app.isPackaged ? Number.NaN : Number(process.env.OPENBOT_DEV_AWAY_SECONDS);
+  const awaySeconds = app.isPackaged ? Number.NaN : Number(process.env.ZOLLYBOT_DEV_AWAY_SECONDS);
   const awayAfterMs = Number.isInteger(awaySeconds) && awaySeconds > 0 ? awaySeconds * 1_000 : DESKTOP_USE_MS;
   const computerIdle = createComputerIdle(
     (contents) =>
@@ -2863,7 +2863,7 @@ export async function createApplicationServices({
     hostComputerInUse: (event) => {
       const window = windows.getMainWindow();
       if (!window || window.isDestroyed()) return false;
-      // Also a locked screen. In a Wayland session, `computerIdle` counts the input in OpenBot only.
+      // Also a locked screen. In a Wayland session, `computerIdle` counts the input in ZollyBot only.
       if (powerMonitor.getSystemIdleState(awayAfterMs / 1_000) !== "active") return false;
       if (computerIdle.seconds() * 1_000 >= awayAfterMs) return false;
       if (window.isFocused()) return true;
@@ -2988,7 +2988,7 @@ export async function createApplicationServices({
   if (analyticsPlatform !== "darwin" && analyticsPlatform !== "win32" && analyticsPlatform !== "linux") {
     throw new Error(`Unsupported analytics platform: ${analyticsPlatform}`);
   }
-  performance.mark("openbot:services.remote-desktop");
+  performance.mark("zollybot:services.remote-desktop");
   const analyticsEnabled = (app.isPackaged && appVariant === "production") || analyticsCaptureUrl !== null;
   const analyticsInstallId = analyticsEnabled
     ? await Effect.runPromise(
@@ -2997,10 +2997,10 @@ export async function createApplicationServices({
     : null;
   const failureReports = analyticsEnabled
     ? new ReportQueue(
-        fileReportStorage(join(app.getPath("userData"), "openbot-error-reports-v1.json")),
+        fileReportStorage(join(app.getPath("userData"), "zollybot-error-reports-v1.json")),
         openPanelTransport({
           clientId: "6c989975-87ef-4f0c-857e-ab449a65b5c2",
-          origin: "openbot-app://app",
+          origin: "zollybot-app://app",
           ...(analyticsCaptureUrl ? { endpoint: `${analyticsCaptureUrl}/track` } : {}),
         }),
         {
@@ -3115,11 +3115,11 @@ export async function createApplicationServices({
     (summary) => analytics.handleRemoteConnect(summary),
   );
   // Development only: a network round trip added to the WebRTC client, for `bun run perf:remote`.
-  const developmentRoundTripMs = app.isPackaged ? 0 : Math.max(0, Number(process.env.OPENBOT_DEV_RTT_MS) || 0);
+  const developmentRoundTripMs = app.isPackaged ? 0 : Math.max(0, Number(process.env.ZOLLYBOT_DEV_RTT_MS) || 0);
   installRemoteSyncProfileSink(
     remoteSyncProfileFile({
       isPackaged: app.isPackaged,
-      setting: process.env.OPENBOT_DEV_SYNC_PROFILE,
+      setting: process.env.ZOLLYBOT_DEV_SYNC_PROFILE,
       userData: app.getPath("userData"),
       roundTripMs: developmentRoundTripMs,
     }),
@@ -3217,7 +3217,7 @@ export async function createApplicationServices({
     remoteServers.off("changed", browserEgressClient.reconcile);
     browserEgressClient.dispose();
   });
-  performance.mark("openbot:services.plugin-catalog");
+  performance.mark("zollybot:services.plugin-catalog");
   // Not on a server: a local server is a workspace of the desktop app.
   const localServers =
     localServerChild || serverModeEnvironment || hostedServer
@@ -3225,7 +3225,7 @@ export async function createApplicationServices({
       : new LocalServers({
           registryPath: join(app.getPath("userData"), LOCAL_SERVERS_FILE),
           userDataRoot: join(app.getPath("userData"), "local-servers"),
-          agentRoot: join(homedir(), "OpenBot", "Servers"),
+          agentRoot: join(homedir(), "ZollyBot", "Servers"),
           runtimeRoot: providerRuntimesRoot,
           cipher: safeStorageCipher("error.app.macSecureStorageUnavailable"),
           remoteServers,
@@ -3273,7 +3273,7 @@ export async function createApplicationServices({
     await Effect.runPromise(localServers.load());
   }
   await runCauseEffect(remoteServers.initialize());
-  performance.mark("openbot:services.remote-servers");
+  performance.mark("zollybot:services.remote-servers");
   criticalActionTargets = { agents: service, host, remoteServers };
   // After `remoteServers.initialize()`. The client half polls for the host's connection file and
   // throws when it never appears, before any window is shown - see the module it lives in. It reads
@@ -3284,7 +3284,7 @@ export async function createApplicationServices({
       startDevelopmentRemoteRole({
         role: developmentRemoteRole,
         testClientEnabled: developmentTestClientEnabled,
-        clientTransport: readDevelopmentClientTransport(process.env.OPENBOT_DEV_CLIENT_TRANSPORT),
+        clientTransport: readDevelopmentClientTransport(process.env.ZOLLYBOT_DEV_CLIENT_TRANSPORT),
         host,
         remoteServers,
       }),
@@ -3369,25 +3369,25 @@ export async function createApplicationServices({
   });
   await runCauseEffect(voiceApiKeys.load());
   const voice = new VoiceTranscriptionService({
-    resourcesRoot: app.isPackaged ? join(process.resourcesPath, "voice") : resolve(".openbot-build/voice"),
-    // `voice:prepare` puts Parakeet in `.openbot-build/voice/model` for development. In development
-    // the other models download to `.openbot-build/voice` when you select them.
+    resourcesRoot: app.isPackaged ? join(process.resourcesPath, "voice") : resolve(".zollybot-build/voice"),
+    // `voice:prepare` puts Parakeet in `.zollybot-build/voice/model` for development. In development
+    // the other models download to `.zollybot-build/voice` when you select them.
     modelDirectories: {
       "parakeet-tdt-0.6b-v3": app.isPackaged
         ? join(app.getPath("userData"), "runtimes", PARAKEET_MODEL_DIRECTORY)
-        : resolve(".openbot-build/voice/model"),
+        : resolve(".zollybot-build/voice/model"),
       "parakeet-unified-en-0.6b": app.isPackaged
         ? join(app.getPath("userData"), "runtimes", PARAKEET_UNIFIED_MODEL_DIRECTORY)
-        : resolve(".openbot-build/voice", PARAKEET_UNIFIED_MODEL_DIRECTORY),
+        : resolve(".zollybot-build/voice", PARAKEET_UNIFIED_MODEL_DIRECTORY),
       "bark-3.0-plus": app.isPackaged
         ? join(app.getPath("userData"), "runtimes", BARK_PLUS_MODEL_DIRECTORY)
-        : resolve(".openbot-build/voice", BARK_PLUS_MODEL_DIRECTORY),
+        : resolve(".zollybot-build/voice", BARK_PLUS_MODEL_DIRECTORY),
       "whisper-turbo": app.isPackaged
         ? join(app.getPath("userData"), "runtimes", WHISPER_TURBO_MODEL_DIRECTORY)
-        : resolve(".openbot-build/voice", WHISPER_TURBO_MODEL_DIRECTORY),
+        : resolve(".zollybot-build/voice", WHISPER_TURBO_MODEL_DIRECTORY),
       "cohere-transcribe-03-2026": app.isPackaged
         ? join(app.getPath("userData"), "runtimes", COHERE_TRANSCRIBE_MODEL_DIRECTORY)
-        : resolve(".openbot-build/voice", COHERE_TRANSCRIBE_MODEL_DIRECTORY),
+        : resolve(".zollybot-build/voice", COHERE_TRANSCRIBE_MODEL_DIRECTORY),
     },
     preferences: voicePreferences,
     apiKeys: voiceApiKeys,
@@ -3406,10 +3406,10 @@ export async function createApplicationServices({
   const speechPreferences = new SpeechPreferenceStore(join(app.getPath("userData"), "speech-preference.json"));
   await runCauseEffect(speechPreferences.load());
   const speech = new VoiceSpeechService({
-    resourcesRoot: app.isPackaged ? join(process.resourcesPath, "voice") : resolve(".openbot-build/voice"),
+    resourcesRoot: app.isPackaged ? join(process.resourcesPath, "voice") : resolve(".zollybot-build/voice"),
     modelDirectory: app.isPackaged
       ? join(app.getPath("userData"), "runtimes", SUPERTONIC_MODEL_DIRECTORY)
-      : resolve(".openbot-build/voice", SUPERTONIC_MODEL_DIRECTORY),
+      : resolve(".zollybot-build/voice", SUPERTONIC_MODEL_DIRECTORY),
     preferences: speechPreferences,
     spawnHost: spawnVoiceSpeechHost,
   });
@@ -3429,7 +3429,7 @@ export async function createApplicationServices({
   // Skip the file check in dev: unpacked runs never enable updates, so avoid touching resourcesPath.
   const updateMetadataAvailable = app.isPackaged && existsSync(join(process.resourcesPath, "app-update.yml"));
   // A hosted or self-installed server runs a release that root owns. Root installs updates for it
-  // when openbot-hosted-update has installed its request units. A container of openbot-instance asks
+  // when zollybot-hosted-update has installed its request units. A container of zollybot-instance asks
   // the host instead, which pulls the image. Other containers have neither.
   const containerInstaller =
     app.isPackaged &&
@@ -3440,7 +3440,7 @@ export async function createApplicationServices({
     containerInstaller ||
     (app.isPackaged &&
       process.platform === "linux" &&
-      (process.env.OPENBOT_HOSTED_SERVER === "1" || installationMode === "self") &&
+      (process.env.ZOLLYBOT_HOSTED_SERVER === "1" || installationMode === "self") &&
       existsSync(HOSTED_UPDATE_TRIGGER));
   // A local server is the same application as its parent, which installs the update for both.
   const updatesEnabled =
@@ -3450,7 +3450,7 @@ export async function createApplicationServices({
     (hostedInstaller || (supportsInstalledUpdates(process.platform) && updateMetadataAvailable)) &&
     isValidSemver(currentVersion);
   if (app.isPackaged && updateMetadataAvailable && !isValidSemver(currentVersion)) {
-    logger.warn(`OpenBot updates are disabled because the application version is not valid SemVer: ${currentVersion}`);
+    logger.warn(`ZollyBot updates are disabled because the application version is not valid SemVer: ${currentVersion}`);
   }
   let updateAdapter: UpdateAdapter = createDisabledUpdateAdapter();
   let updaterEnabled = updatesEnabled;
@@ -3476,13 +3476,13 @@ export async function createApplicationServices({
     autoDownload: updatePreference.autoDownload,
     beforeInstall: prepareForUpdateInstall,
     // Packaged runs share one application bundle across macOS users. Installing while another
-    // login session runs OpenBot from that bundle would replace it underneath that session, so
+    // login session runs ZollyBot from that bundle would replace it underneath that session, so
     // the service refuses the install until every sibling session stopped. Unpackaged runs never
     // enable updates, so there is nothing to guard there.
     ...(app.isPackaged
       ? {
           checkSiblingInstances: () =>
-            listSiblingOpenBotInstances({
+            listSiblingZollyBotInstances({
               executablePath: app.getPath("exe"),
               currentPid: process.pid,
               platform: process.platform,
@@ -3493,7 +3493,7 @@ export async function createApplicationServices({
                   if (siblings.length === 0) return;
                   const list = siblings.map(({ pid, uid }) => `pid ${pid} (uid ${uid})`).join(", ");
                   logger.warn(
-                    `OpenBot update install refused: other OpenBot processes run from this application: ${list}`,
+                    `ZollyBot update install refused: other ZollyBot processes run from this application: ${list}`,
                   );
                 }),
               ),
@@ -3505,7 +3505,7 @@ export async function createApplicationServices({
     logDirectory: join(app.getPath("userData"), "logs", "update"),
     // Squirrel.Mac only. The path is meaningless under a Linux or Windows home directory.
     ...(process.platform === "darwin"
-      ? { shipItDirectory: join(homedir(), "Library", "Caches", "app.openbot.desktop.ShipIt") }
+      ? { shipItDirectory: join(homedir(), "Library", "Caches", "app.zollybot.desktop.ShipIt") }
       : {}),
     updaterCacheDirectory,
   });
@@ -3522,7 +3522,7 @@ export async function createApplicationServices({
       yield* routineFlowRuntime.sweep();
       // Ends the workflow steps a restart cut off, and moves the runs on.
       yield* workflowRuntime.sweep();
-      // Marks the posts a restart cut off, and sends the answers that ended while OpenBot was closed.
+      // Marks the posts a restart cut off, and sends the answers that ended while ZollyBot was closed.
       yield* routineResultRuntime.recover();
     }),
   );
@@ -3703,9 +3703,9 @@ export async function createApplicationServices({
       await Effect.runPromise(serverMode.close());
     });
   }
-  performance.mark("openbot:services.updates");
+  performance.mark("zollybot:services.updates");
   await runCauseEffect(hostUpdateCoordinator.tick());
-  performance.mark("openbot:services.host-update");
+  performance.mark("zollybot:services.host-update");
   hostUpdateCoordinator.start();
   teardown.push(TEARDOWN_ORDER.hostUpdateCoordinator, "the host update coordinator", () =>
     Effect.runPromise(hostUpdateCoordinator.stop()),

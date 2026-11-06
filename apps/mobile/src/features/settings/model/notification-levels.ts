@@ -1,4 +1,4 @@
-import type { AgentNotificationLevelsSnapshot, ServerNotificationLevel } from "@openbot/contracts/ipc";
+import type { AgentNotificationLevelsSnapshot, ServerNotificationLevel } from "@zollybot/contracts/ipc";
 import { create } from "zustand";
 import { type ServerNotificationSetting, serverNotificationSetting } from "./push-notifications";
 

@@ -1,5 +1,5 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { Channel, ChannelDraft, ChannelIcon } from "@openbot/contracts/ipc";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { Channel, ChannelDraft, ChannelIcon } from "@zollybot/contracts/ipc";
 import {
   Button,
   buttonVariants,
@@ -13,16 +13,16 @@ import {
   Search,
   SwitchField,
   Tooltip,
-} from "@openbot/ui";
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
-import { ResizableTextarea } from "@openbot/ui/components/ResizableTextarea";
-import { SettingsField, SettingsLinkGroup, SettingsLinkRow } from "@openbot/ui/components/SettingsPanel";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { InstructionsLimit, instructionsTooLong } from "@openbot/ui/features/agents/InstructionsLimit";
-import { ChannelMemberRow } from "@openbot/ui/features/channels/ChannelMemberRow";
-import { ChannelPictureEditor } from "@openbot/ui/features/channels/ChannelPictureEditor";
-import { ContentExitMotion } from "@openbot/ui/menu-motion";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
+import { ResizableTextarea } from "@zollybot/ui/components/ResizableTextarea";
+import { SettingsField, SettingsLinkGroup, SettingsLinkRow } from "@zollybot/ui/components/SettingsPanel";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { InstructionsLimit, instructionsTooLong } from "@zollybot/ui/features/agents/InstructionsLimit";
+import { ChannelMemberRow } from "@zollybot/ui/features/channels/ChannelMemberRow";
+import { ChannelPictureEditor } from "@zollybot/ui/features/channels/ChannelPictureEditor";
+import { ContentExitMotion } from "@zollybot/ui/menu-motion";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore, For, onSettled, Show } from "solid-js";
 import { useChannels } from "./channels-context";
 import { matchesAgentSearch, toggleChannelMember } from "./channels-draft";

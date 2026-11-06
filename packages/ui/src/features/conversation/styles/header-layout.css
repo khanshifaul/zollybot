@@ -26,31 +26,31 @@
   width: min(308px, calc(100% - 32px));
   height: 34px;
   align-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
-  box-shadow: var(--openbot-shadow-raised);
-  color: var(--openbot-text-muted);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
+  box-shadow: var(--zollybot-shadow-raised);
+  color: var(--zollybot-text-muted);
 }
 
 .chat-search-icon {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
   margin-inline-start: 11px;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .chat-search .chat-search-input {
   min-width: 0;
-  height: var(--openbot-control-md);
+  height: var(--zollybot-control-md);
   flex: 1;
   border: 0;
   background: transparent;
   padding: 0 8px;
   box-shadow: none;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
 }
 
 .chat-search .chat-search-input:focus {
@@ -65,8 +65,8 @@
 
 .chat-search-position {
   min-width: 38px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
@@ -75,12 +75,12 @@
   width: 1px;
   height: 20px;
   flex: 0 0 auto;
-  background: var(--openbot-border);
+  background: var(--zollybot-border);
 }
 
 .chat-search .chat-search-button {
   width: 26px;
-  height: var(--openbot-control-md);
+  height: var(--zollybot-control-md);
   flex: 0 0 auto;
   border: 0;
   border-radius: inherit;
@@ -88,26 +88,26 @@
 }
 
 .chat-search-button svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .chat-search .chat-search-close {
   margin-inline-end: 3px;
 }
 
-::highlight(openbot-chat-search-results) {
-  background: var(--openbot-accent-soft);
+::highlight(zollybot-chat-search-results) {
+  background: var(--zollybot-accent-soft);
 }
 
-::highlight(openbot-chat-search-current) {
-  background: var(--openbot-warning);
-  color: var(--openbot-paper-text);
+::highlight(zollybot-chat-search-current) {
+  background: var(--zollybot-warning);
+  color: var(--zollybot-paper-text);
 }
 
 .conversation-title[aria-label="View agent settings"]:hover {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .browser-panel {
@@ -119,10 +119,10 @@
   display: flex;
   width: var(--browser-panel-width, 380px);
   flex-direction: column;
-  border-inline-start: 1px solid var(--openbot-border);
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  border-inline-start: 1px solid var(--zollybot-border);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
   transition:
-    border-color var(--openbot-duration-slow) ease,
-    box-shadow var(--openbot-duration-slow) ease;
+    border-color var(--zollybot-duration-slow) ease,
+    box-shadow var(--zollybot-duration-slow) ease;
 }

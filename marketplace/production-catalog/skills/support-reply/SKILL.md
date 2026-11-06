@@ -13,7 +13,7 @@ description: "Draft a customer reply that states what is known and the next step
 
 ## Inputs
 
-1. **The ticket.** Tool path: the helpdesk or shared inbox in a signed-in tab (`openbot_browser.list_tabs` first),
+1. **The ticket.** Tool path: the helpdesk or shared inbox in a signed-in tab (`zollybot_browser.list_tabs` first),
    or an installed plugin found with `tool_search`. Paste path: the message text the user gives.
 2. **Product facts.** The help center, documentation, release notes or status page, read in the browser, or text
    the user gives.

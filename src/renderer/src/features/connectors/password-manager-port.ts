@@ -1,12 +1,12 @@
 import type {
-  OpenBotDesktopApi,
   PasswordManagerConnectInput,
   PasswordManagerId,
   PasswordManagerStatus,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+  ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 
-type DesktopPasswordManagers = OpenBotDesktopApi["passwordManagers"];
+type DesktopPasswordManagers = ZollyBotDesktopApi["passwordManagers"];
 
 /**
  * What a password manager page reaches: the managers of one place, this computer or a joined server.
@@ -17,9 +17,9 @@ export type PasswordManagerPort = Pick<
   "list" | "connect" | "cancel" | "disconnect" | "openSignIn" | "onChanged"
 >;
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function passwordManagerPort(): PasswordManagerPort {
-  const api = () => window.openbot.passwordManagers;
+  const api = () => window.zollybot.passwordManagers;
   return {
     list: () => api().list(),
     connect: (input) => api().connect(input),
@@ -116,7 +116,7 @@ export function hostPasswordManagerPort(serverId: () => string | undefined): Pas
     if (!id) throw new Error(sourceText("error.team.connectorsUnsupported"));
     return id;
   };
-  const api = () => window.openbot.passwordManagers;
+  const api = () => window.zollybot.passwordManagers;
   return polledPasswordManagerPort({
     list: async () => api().hostList(server()),
     connect: async (input) => api().hostConnect(input, server()),

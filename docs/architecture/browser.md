@@ -19,7 +19,7 @@ Small screens switch between the same conversation and workspace components. The
 panel receives the web live-view runtime and hides unsupported native controls. `BrowserLiveView`
 accepts an explicit runtime; desktop and the existing preview still default to the preload-compatible
 API. The web Storybook runtime uses
-`preview/mock-openbot.ts` through `preview/mock-web-runtime.ts`.
+`preview/mock-zollybot.ts` through `preview/mock-web-runtime.ts`.
 
 The browser runtime uses `packages/team-client` for the directory, authenticated WebRTC peer,
 Signal recovery, file transfers, and browser-view streams. The stream codec lives in contracts;
@@ -29,21 +29,21 @@ Browser tickets and session termination require the same account-session hash th
 remote session. Existing bearer-token endpoints retain their behavior. The browser edits the
 account's name, avatar, and sessions through `v1/me/profile`, `v1/me/avatar`, and `v1/me/sessions`,
 which call the same `AuthService` methods and avatar storage (`avatar-storage.ts`) as the bearer
-routes. The avatar upload is the one write that is not JSON; the origin and `X-OpenBot-Browser`
+routes. The avatar upload is the one write that is not JSON; the origin and `X-ZollyBot-Browser`
 checks still apply. `web-account.ts` makes these calls, and the Profile tab of the web Settings dialog
 (`WebAccountSettings.tsx`) shows them.
 
 An owner or admin gets the host controls of a desktop remote admin. Shared components keep their
 desktop port as the default and take injected calls: `web-server-settings.ts` gives
 `ServerSettingsModal` the host identity, MCP, and storage routes through
-`@openbot/team-client/team-admin-requests`, and member and invitation calls through the closed
+`@zollybot/team-client/team-admin-requests`, and member and invitation calls through the closed
 `/api/browser/*` list. The Worker applies the same `RemoteControlPlane` role checks as the bearer
 routes. A member or role change revokes every session on the host; the browser reconnects once when
 the directory still lists the host. `ConversationRuntime.admin` carries the skills and shared-table
 calls to the agent settings panel, which shows only Skills and Tables in the browser. Memories,
 routines, and files stay on the desktop. The Permissions select writes access and auto-approve through
 the agent-admin route. `web-marketplace.ts` gives `MarketplaceModal` its calls: the public catalog routes of
-the account service that serves `/app` (`@openbot/team-client/marketplace-catalog`), and installs on
+the account service that serves `/app` (`@zollybot/team-client/marketplace-catalog`), and installs on
 the host over `skills-admin-v1`, `agent-install-v1`, `agent-update-v1`, and `mcp-servers-v1`. Try skill and a plugin
 prompt add a line to the agent's draft, as on desktop. A shared agent page also links
 `/app?agent=<id>`: `WebApp` reads the id once, removes the query, and keeps it through sign-in;
@@ -83,7 +83,7 @@ so a supplied image or text MIME type cannot enable a preview. Remote support is
 the `media-attachments` capability; released protocol adapters keep their existing meanings.
 
 ZIP attachments use the same contract with `application/zip` and no inline preview. Import copies
-and hashes the archive; OpenBot never extracts it. Remote support is additive through the
+and hashes the archive; ZollyBot never extracts it. Remote support is additive through the
 `zip-attachments` capability.
 
 MP4 attachments use the MP3 and MOV contract with `video/mp4`. Remote support is additive through
@@ -106,8 +106,8 @@ Enter key. A page focus or input handler that moves focus stops it with an error
 text is already in the field. The check also reads each frame element that holds the target,
 because a frame in another process can keep its active element after the page takes focus.
 `bun run test:browser --scenario=typing-focus` covers it and writes
-`.openbot-build/browser-typing-focus.json`.
-The browser session and service-worker fallback remove the `OpenBot/` and `Electron/` user-agent
+`.zollybot-build/browser-typing-focus.json`.
+The browser session and service-worker fallback remove the `ZollyBot/` and `Electron/` user-agent
 tokens. They keep the installed Chromium version and host platform. Requests to `accounts.google.com`
 keep the `Electron/` token because Google rejects the account identifier step without it. This
 exception does not change the page identity or the identity sent to other sites.
@@ -117,7 +117,7 @@ be the same as `navigator.userAgentData.brands`, with the GREASE brand and its o
 chooses both from the major version). Cloudflare rejects a request whose brands differ from the page.
 It preserves hints supplied by Chromium and does not add high-entropy hints. The focused check is
 `bun run test:browser --scenario=identity`; add `--google-live` for the Google identifier check.
-The local identity report is `.openbot-build/browser-identity.json`.
+The local identity report is `.zollybot-build/browser-identity.json`.
 Website popups are adopted into managed `WebContentsView` tabs through Electron's window creation
 hook. Native guests retain their opener, request body, and the browser session of the opener. Local tab and
 agent tool results expose `openerTabId` while that relationship is live. Independent `noopener`
@@ -144,7 +144,7 @@ it checks local file access.
 
 ### Fill inspected ordinary fields
 
-`openbot_browser.fill_fields` is a deferred tool in the original browser catalog. It replaces
+`zollybot_browser.fill_fields` is a deferred tool in the original browser catalog. It replaces
 1 to 16 main-frame native text inputs or textareas from one fresh snapshot revision. The combined
 literal text has a 16 KiB UTF-8 limit. The total operation deadline, including its final capture,
 is at most 30 seconds. It performs no submit, Enter, click, navigation, target search, or caller
@@ -183,7 +183,7 @@ codes; page exceptions do not enter the new progress result or diagnostic action
 `bun scripts/browser-fill-fields-e2e.ts` compiles only its native fixture and uses an owned hidden
 Electron process with a temporary profile and synthetic loopback forms. It must not make a window
 visible or request native focus to obtain a passing result. It is a local check, not a CI step; on
-Linux, run it under `xvfb-run -a`. The report is `.openbot-build/browser-fill-fields-e2e/report.json`.
+Linux, run it under `xvfb-run -a`. The report is `.zollybot-build/browser-fill-fields-e2e/report.json`.
 It includes actual runtime versions, completed cases, three warm-up pairs and twenty measured pairs,
 serialized result bytes, and observed snapshot counts. Measurements include tool execution and loopback fixture
 confirmation. They do not measure provider tokens, model speed, or billable cost.
@@ -191,7 +191,7 @@ confirmation. They do not measure provider tokens, model speed, or billable cost
 ### Run many steps in one call
 
 Each single action tool takes one model turn, and the model reads the page with a separate snapshot.
-`openbot_browser.run_script` does many actions in one call and returns one final snapshot, so a long
+`zollybot_browser.run_script` does many actions in one call and returns one final snapshot, so a long
 task takes fewer turns.
 
 `run_script` takes JavaScript that awaits helpers named after the action tools (`navigate`, `click`,
@@ -233,7 +233,7 @@ backend bundle keeps the QuickJS packages external, so the WebAssembly file load
 
 `bun run test:browser-steps` compiles its native fixture and drives a hidden Electron process with
 loopback pages, like the fill fields check. CI runs it in the `browser` job under `xvfb-run -a`.
-The report is `.openbot-build/browser-steps-e2e/report.json`.
+The report is `.zollybot-build/browser-steps-e2e/report.json`.
 
 ### Browser sessions
 
@@ -242,9 +242,9 @@ fields `ownBrowserSession` and `browserProfileId` (`agent_json`) select it:
 
 | Choice | Partition |
 | --- | --- |
-| Shared (default) | `persist:openbot-browser` |
-| Only this agent | `persist:openbot-browser-agent-<key>`. The key is the first 32 hex characters of the SHA-256 of the agent id. |
-| Named profile | `persist:openbot-browser-profile-<id>`. The id is 32 random hex characters. |
+| Shared (default) | `persist:zollybot-browser` |
+| Only this agent | `persist:zollybot-browser-agent-<key>`. The key is the first 32 hex characters of the SHA-256 of the agent id. |
+| Named profile | `persist:zollybot-browser-profile-<id>`. The id is 32 random hex characters. |
 
 Named profiles are rows of the `browser_profiles` table (migration 45). Many agents can use one
 profile, so they share its sign-ins; a profile has no owner agent, and the tab rules below do not
@@ -286,7 +286,7 @@ settings > Browser profiles and in Agent info > Advanced > Browser profile.
 
 A named profile can use a saved proxy (migration 56: `browser_proxies` and `browser_profile_proxies`).
 Without one it is "Automatic": `{ mode: "system" }`, the proxy settings of the computer that runs
-OpenBot. The shared profile and "Only this agent" are always Automatic. A proxy is one address,
+ZollyBot. The shared profile and "Only this agent" are always Automatic. A proxy is one address,
 `scheme://[user[:password]@]host[:port]` with socks5, http or https (`parseBrowserProxyAddress`).
 Without a scheme it is http and needs a port: `user:password@host:port` or the
 `host:port:user:password` form of proxy sellers. The password can contain a raw `/`, `#` or `@`.
@@ -328,7 +328,7 @@ A proxy can also be the computer of a member (`kind = 'computer'`, one row for e
 The member selects "Use your computer…" in the Proxy submenu, or Share in the Proxies section, of a
 joined server. The desktop app then stores the server id in `browserEgressServerIds`
 (`remote-server-store.ts`), calls `/v1/admin/browser-proxies/computer`, and opens the
-`openbot.browser-egress.v1` data channel while it is connected (`BrowserEgressClient`). The host binds
+`zollybot.browser-egress.v1` data channel while it is connected (`BrowserEgressClient`). The host binds
 the channel to the membership that signed in on that peer (`BrowserEgressHost.peerMemberChanged`);
 the newest open peer of a member carries its connections. A tab of a profile with a computer proxy
 uses the same loopback relay, with `BrowserEgressHost.exit` as its exit: each browser connection
@@ -432,7 +432,7 @@ version (`apps/auth-api/src/server/mobile-features-config.ts`).
 
 ## Secure browser authentication
 
-`openbot_browser.submit_secret` uses the existing attention/takeover lifecycle with optional public
+`zollybot_browser.submit_secret` uses the existing attention/takeover lifecycle with optional public
 secret-request metadata. The attention registry creates a fresh request ID and owns the pending
 response. The secret travels through a dedicated typed IPC endpoint or the optional
 `browser-secret-handoff` Team API capability, never a prompt answer or provider tool argument.
@@ -444,7 +444,7 @@ A password can also go to the Vault of the server that runs the agent. The local
 only an owner or admin can use; the released route keeps its fields. The card shows the save box on
 every password request, and for a member or an older host it shows the box off with the reason.
 
-`openbot_browser.request_vault_item` asks the user to add a login, a card or contact info that the
+`zollybot_browser.request_vault_item` asks the user to add a login, a card or contact info that the
 Vault does not have. The attention registry surfaces a `form` UI block with `uiBlock.vault.kind`.
 The agent can fill in the fields that are not secret; the password, card number and security code
 are secret form fields, so the stored block never holds them. The desktop card opens the Vault

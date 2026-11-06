@@ -9,9 +9,9 @@
  * every edit goes out through a callback, so the caller decides what an edit does.
  */
 
-import { Button, ContextMenu, Minus, Plus, Scan } from "@openbot/ui";
-import { prefersReducedMotion } from "@openbot/ui/utils";
 import type { JSX } from "@solidjs/web";
+import { Button, ContextMenu, Minus, Plus, Scan } from "@zollybot/ui";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createMemo, createSignal, createStore, For, onSettled, Show } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { useText } from "../../text";

@@ -1,6 +1,6 @@
-import type { AgentApproval } from "@openbot/contracts/ipc";
-import type { AgentProfile } from "@openbot/ui/data";
-import type { SidebarApproval, SidebarAttention } from "@openbot/ui/features/sidebar/sidebar-agent-states";
+import type { AgentApproval } from "@zollybot/contracts/ipc";
+import type { AgentProfile } from "@zollybot/ui/data";
+import type { SidebarApproval, SidebarAttention } from "@zollybot/ui/features/sidebar/sidebar-agent-states";
 import { attentionAgentId, type PendingAttentionPrompts } from "./agent-runtime-snapshot";
 
 export interface AgentThreadAttentionInput {

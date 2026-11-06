@@ -1,10 +1,10 @@
-import type { AgentMessage } from "@openbot/ui/data";
-import { ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
 import {
   RoutineScheduleCard,
   type RoutineScheduleCardProps,
-} from "@openbot/ui/features/conversation/RoutineScheduleCard";
-import { ROUTINE_WORKDAYS, type RoutineScheduleDraft } from "@openbot/ui/features/conversation/routine-schedule-draft";
+} from "@zollybot/ui/features/conversation/RoutineScheduleCard";
+import { ROUTINE_WORKDAYS, type RoutineScheduleDraft } from "@zollybot/ui/features/conversation/routine-schedule-draft";
 import { createSignal } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -44,7 +44,7 @@ function CardStage(props: CardArgs & { editable?: boolean }) {
 const meta = {
   title: "Routines/Schedule card",
   render: (args) => (
-    <main style={{ width: "min(560px, 100vw)", padding: "var(--openbot-space-4)" }}>
+    <main style={{ width: "min(560px, 100vw)", padding: "var(--zollybot-space-4)" }}>
       <CardStage {...args} />
     </main>
   ),
@@ -95,7 +95,7 @@ export const Deleted: Story = {
 
 export const ReadOnly: Story = {
   render: (args) => (
-    <main style={{ width: "min(560px, 100vw)", padding: "var(--openbot-space-4)" }}>
+    <main style={{ width: "min(560px, 100vw)", padding: "var(--zollybot-space-4)" }}>
       <CardStage {...args} editable={false} />
     </main>
   ),

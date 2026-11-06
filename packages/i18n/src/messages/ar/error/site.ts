@@ -5,7 +5,7 @@ export const messages = {
   "error.site.absolutePath": "اختر مسارًا مطلقًا لمجلد الموقع.",
   "error.site.rootSymlink": "الروابط الرمزية غير مسموح بها في المواقع المستضافة.",
   "error.site.notDirectory": "يجب أن يكون مصدر الموقع مجلدًا.",
-  "error.site.outsideWorkspace": "يجب أن يكون الموقع داخل مساحة العمل لهذا الوكيل أو داخل OpenBot Shared.",
+  "error.site.outsideWorkspace": "يجب أن يكون الموقع داخل مساحة العمل لهذا الوكيل أو داخل ZollyBot Shared.",
   "error.site.packageJsonInvalid": "ملف package.json للموقع غير صالح.",
   "error.site.astroServerOutput": "يجب أن يستخدم Astro إخراجًا ثابتًا.",
   "error.site.astroAdapter": "محوّلات خادم Astro وتكامل React غير مسموح بها.",

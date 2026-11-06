@@ -1,20 +1,20 @@
 // Adapted from the report in nightly-labs/openbot#3824: "Gemini shows MCP errors for cloudflare and
-// higgsfield servers". An agent saved an http MCP server that asks for a sign-in OpenBot does not
-// hold. OpenBot gives such a row to the provider as written, the server answers 401, and Antigravity
+// higgsfield servers". An agent saved an http MCP server that asks for a sign-in ZollyBot does not
+// hold. ZollyBot gives such a row to the provider as written, the server answers 401, and Antigravity
 // ends every turn with "The MCP server 'higgsfield' failed to initialize". Other providers start
 // without that server. Runs the real Antigravity driver over a fake server that acts as 1.4.4 does.
 // Cases: the turn resumes the session without the server and answers, the server is reported as a
 // drop, a new session gets the server again (a sign-in or a fix can have changed it) and leaves it
-// out the same way, and a failed server that OpenBot did not give
+// out the same way, and a failed server that ZollyBot did not give
 // (the user's own `mcp_config.json`) stays the turn's error. A last case sends the failure message
 // before the stderr line: the turn still goes on, and the message is not shown as an answer.
 // `bun run test:antigravity-mcp-load-failure`. Writes
-// .openbot-build/antigravity-mcp-load-failure-e2e/report.json.
+// .zollybot-build/antigravity-mcp-load-failure-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { McpServerConfig } from "@openbot/contracts/ipc";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
 import type { AgentClient } from "../src/backend/agent-client";
 import type { AgentCliInfo } from "../src/backend/cli";
 import type { McpServerDrop } from "../src/backend/mcp-provider-shapes";
@@ -22,7 +22,7 @@ import { getString } from "../src/backend/protocol";
 import { requireProviderDriver } from "../src/backend/provider-drivers";
 import { installFakeAgent, readJsonl, runTurn, startThread, stopClients, type TurnResult } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/antigravity-mcp-load-failure-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/antigravity-mcp-load-failure-e2e");
 
 interface LogEntry {
   method: string;
@@ -40,7 +40,7 @@ interface Report {
   error?: string;
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-antigravity-mcp-load-failure-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-antigravity-mcp-load-failure-e2e-"));
 const report: Report = { passed: false, turns: {} };
 const clients: AgentClient[] = [];
 
@@ -89,7 +89,7 @@ try {
   });
   client.start();
 
-  // 1. The server that OpenBot gave fails: the session opens again without it, and the turn answers.
+  // 1. The server that ZollyBot gave fails: the session opens again without it, and the turn answers.
   const thread = await startThread(client, { cwd: workspace });
   const first = await runTurn(client, thread, { text: "Reply with OK only.", timeoutMs: 30_000 });
   report.turns.first = first;
@@ -115,7 +115,7 @@ try {
     "Each session reports the server that it left out.",
   );
 
-  // 3. A server that OpenBot did not give is not OpenBot's to leave out: the turn fails as before.
+  // 3. A server that ZollyBot did not give is not ZollyBot's to leave out: the turn fails as before.
   const foreign = await runTurn(client, thread, { text: "fail cloudflare", timeoutMs: 30_000 });
   report.turns.foreign = foreign;
   assert.equal(foreign.status, "failed", "The turn fails.");
@@ -140,7 +140,7 @@ try {
   assert.deepEqual(
     resumed[0]?.names?.filter((name) => !opened[0]?.names?.includes(name)),
     [],
-    "The resumed session keeps the same OpenBot tools.",
+    "The resumed session keeps the same ZollyBot tools.",
   );
   const prompts = requests.filter((request) => request.method === "session/prompt");
   assert.deepEqual(

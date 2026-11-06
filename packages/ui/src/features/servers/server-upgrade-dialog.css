@@ -6,47 +6,47 @@
 
 .server-upgrade-meter {
   display: grid;
-  gap: var(--openbot-space-1-5);
-  margin: var(--openbot-space-1) 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-1-5);
+  margin: var(--zollybot-space-1) 0;
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .server-upgrade-meter .ui-progress-fill {
-  background: var(--openbot-warning);
+  background: var(--zollybot-warning);
 }
 
 .server-upgrade-meter[data-level="full"] .ui-progress-fill {
-  background: var(--openbot-danger);
+  background: var(--zollybot-danger);
 }
 
 .server-upgrade-compare {
   width: 100%;
-  margin-top: var(--openbot-space-2);
+  margin-top: var(--zollybot-space-2);
   border-collapse: collapse;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
 }
 
 .server-upgrade-compare th,
 .server-upgrade-compare td {
-  padding: var(--openbot-space-2) 0;
-  border-bottom: 1px solid var(--openbot-border);
+  padding: var(--zollybot-space-2) 0;
+  border-bottom: 1px solid var(--zollybot-border);
   text-align: start;
 }
 
 .server-upgrade-compare thead th {
-  color: var(--openbot-text-muted);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-muted);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .server-upgrade-compare tbody th {
-  color: var(--openbot-text-secondary);
-  font-weight: var(--openbot-weight-regular);
+  color: var(--zollybot-text-secondary);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .server-upgrade-compare tbody td:last-child {
-  font-weight: var(--openbot-weight-semibold);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .server-upgrade-compare tbody tr:last-child > * {
@@ -55,8 +55,8 @@
 
 .server-upgrade-error {
   margin: 0;
-  color: var(--openbot-danger);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-danger);
+  font-size: var(--zollybot-text-sm);
 }
 
 /* Three actions do not fit at phone width, so they go to a second line. */

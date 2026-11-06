@@ -1,8 +1,17 @@
-import type { RemoteDesktopErrorCode, RemoteDesktopSession, ServerSummary } from "@openbot/contracts/ipc";
-import { ArrowLeft, Button, Monitor, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@openbot/ui";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
 import { type JSX, Portal } from "@solidjs/web";
+import type { RemoteDesktopErrorCode, RemoteDesktopSession, ServerSummary } from "@zollybot/contracts/ipc";
+import {
+  ArrowLeft,
+  Button,
+  Monitor,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@zollybot/ui";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, onSettled, Show } from "solid-js";
 import { z } from "zod";
 
@@ -29,7 +38,7 @@ type ViewerState = "idle" | "connecting" | "connected" | "error";
 const STREAM_READY_TIMEOUT_MS = 60_000;
 type RemoteDisplay = RemoteDesktopSession["displays"][number];
 const viewerMessageSchema = z.object({
-  source: z.literal("openbot-moonlight"),
+  source: z.literal("zollybot-moonlight"),
   type: z.literal("viewer-state"),
   sessionId: z.string().min(1),
   state: z.enum(["connecting", "connected", "error"]),
@@ -218,7 +227,7 @@ export function RemoteDesktopWorkspace(props: RemoteDesktopWorkspaceProps) {
                 onClick={props.onHide}
               >
                 <ArrowLeft size={14} aria-hidden="true" />
-                {t("remoteDesktop.backToOpenBot")}
+                {t("remoteDesktop.backToZollyBot")}
               </Button>
               <Button
                 type="button"

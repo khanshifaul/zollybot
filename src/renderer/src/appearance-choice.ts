@@ -7,12 +7,12 @@ import {
   isAppThemePalette,
   sameThemePalettes,
   selectedThemePalette,
-} from "@openbot/contracts/app-appearance";
+} from "@zollybot/contracts/app-appearance";
 import {
   type AppearanceSelectValue,
   appearanceChangeOfSelectValue,
   appearanceSelectValue,
-} from "@openbot/ui/features/settings/AppearanceSelect";
+} from "@zollybot/ui/features/settings/AppearanceSelect";
 import { createSignal, onSettled } from "solid-js";
 import { appPort } from "./app-port";
 import { syncColorScheme } from "./color-scheme";
@@ -90,10 +90,10 @@ export function useAppearanceChoice() {
 }
 
 /** This window's copy of the choice, so the first paint after a launch has the saved colors. */
-const CACHED_APPEARANCE_KEY = "openbot.appearance";
-const CACHED_TRANSPARENT_WINDOW_KEY = "openbot.transparentWindow";
+const CACHED_APPEARANCE_KEY = "zollybot.appearance";
+const CACHED_TRANSPARENT_WINDOW_KEY = "zollybot.transparentWindow";
 /** The selected palette whole, so the first paint has its colors before main answers. */
-const CACHED_THEME_PALETTE_KEY = "openbot.themePalette";
+const CACHED_THEME_PALETTE_KEY = "zollybot.themePalette";
 
 function cachedPalette(): AppThemePalette | null {
   const text = window.localStorage.getItem(CACHED_THEME_PALETTE_KEY);
@@ -153,7 +153,7 @@ export function syncAppearance(options: { windowGlass?: boolean } = {}): void {
   applyThemePalette(selectedThemePalette(preference));
   const showGlass = () => {
     if (options.windowGlass)
-      document.documentElement.toggleAttribute("data-openbot-window-glass", preference.transparentWindow);
+      document.documentElement.toggleAttribute("data-zollybot-window-glass", preference.transparentWindow);
   };
   showGlass();
   const apply = (next: AppAppearancePreference) => {

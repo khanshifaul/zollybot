@@ -1,3 +1,4 @@
+import type { UseQueryResult } from "@tanstack/react-query";
 import {
   MESSAGING_LIMITS,
   type MessagingConnection,
@@ -5,8 +6,7 @@ import {
   type WhatsAppOverview,
   type WhatsAppPairingRequest,
   type WhatsAppSender,
-} from "@openbot/contracts/ipc";
-import type { UseQueryResult } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { router } from "expo-router";
 import { Typography } from "heroui-native";
 import UserRound from "lucide-react-native/icons/user-round";
@@ -71,7 +71,7 @@ function numberNote({ t, format }: MobileText, connection: MessagingConnection, 
 /**
  * Marketplace › Apps › WhatsApp of a joined server (`whatsapp-connector-v1`). Each number
  * links the host as a device from WhatsApp on a phone, and one WhatsApp Orchestrator answers all
- * numbers. Only the allowed contacts and groups reach it. On a number only for OpenBot, an unknown
+ * numbers. Only the allowed contacts and groups reach it. On a number only for ZollyBot, an unknown
  * person gets a code that the owner approves here. The host keeps the WhatsApp session and its keys.
  */
 export function WhatsAppConnectorPage({
@@ -86,7 +86,7 @@ export function WhatsAppConnectorPage({
   const text = useText();
   const { t, errorMessage } = text;
   const { theme } = useUniwind();
-  const muted = String(useCSSVariable("--openbot-text-grouped-secondary"));
+  const muted = String(useCSSVariable("--zollybot-text-grouped-secondary"));
   const {
     disconnectWhatsAppNumber,
     reconnectWhatsAppNumber,

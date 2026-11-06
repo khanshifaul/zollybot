@@ -1,4 +1,4 @@
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 
 /**
  * The analytics ID of one install when the user does not share analytics with their account. It is

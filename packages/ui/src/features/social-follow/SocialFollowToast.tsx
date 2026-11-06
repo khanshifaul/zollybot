@@ -1,4 +1,4 @@
-import { Button, Heart, IconButton, PlushMascot, type PlushMascotFace, X } from "@openbot/ui";
+import { Button, Heart, IconButton, PlushMascot, type PlushMascotFace, X } from "@zollybot/ui";
 import { createSignal, createUniqueId, For, Match, Show, Switch } from "solid-js";
 import { currentText } from "../../text";
 import { SocialNetworkMark } from "./social-marks";
@@ -21,7 +21,7 @@ interface SocialFollowToastProps {
 }
 
 /**
- * The request for a post about OpenBot, then for a follow on the same network. Raise it unstyled,
+ * The request for a post about ZollyBot, then for a follow on the same network. Raise it unstyled,
  * with sonner's own timer and close button off (`duration: Infinity`), in the
  * `social-follow-toast-host` class. The caller holds the step: sonner renders the content more than
  * once, and each copy would get its own.

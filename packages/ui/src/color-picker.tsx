@@ -14,16 +14,16 @@
  * The port keeps the area with its loupe, the hue slider, the eye dropper, the format switch with
  * the hex field or the RGB and HSL channels, the swatch and the presets with the hopping ring. The
  * presets are "no color" and the swatches of the caller. It drops alpha, because a tint has no
- * opacity. Springs come from `@openbot/ui/spring-motion` as CSS `linear()` curves and WAAPI
+ * opacity. Springs come from `@zollybot/ui/spring-motion` as CSS `linear()` curves and WAAPI
  * keyframes. The panel has a 1px ring and no drop shadow.
  *
  * `ColorPickerPopover` floats the picker beside its trigger, and `ColorPickerTrigger` is a trigger
  * that looks like the select triggers.
  */
 
-import type { AvatarColor } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
 import { type JSX, Portal } from "@solidjs/web";
+import type { AvatarColor } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import Pipette from "lucide-solid/icons/pipette";
 import { createEffect, createMemo, createSignal, For, onSettled, Show, untrack } from "solid-js";
@@ -704,7 +704,7 @@ function Presets(props: {
 // The popover and the select-like trigger
 // ---------------------------------------------------------------------------
 
-/** A duration token in milliseconds, for example `--openbot-duration-dialog: 180ms`. */
+/** A duration token in milliseconds, for example `--zollybot-duration-dialog: 180ms`. */
 function durationToken(element: Element, name: string): number {
   return Number.parseFloat(getComputedStyle(element).getPropertyValue(name)) || 0;
 }
@@ -714,7 +714,7 @@ async function playClose(panel: HTMLElement, shift: number): Promise<void> {
   if (reducedMotion()) return;
   const animation = panel.animate(
     { opacity: [1, 0], transform: ["none", `translateY(${shift}px) scale(0.96)`] },
-    { duration: durationToken(panel, "--openbot-duration-dialog"), easing: "ease-in", fill: "forwards" },
+    { duration: durationToken(panel, "--zollybot-duration-dialog"), easing: "ease-in", fill: "forwards" },
   );
   await animation.finished.catch(() => undefined);
 }

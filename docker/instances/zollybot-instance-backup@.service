@@ -1,0 +1,10 @@
+# Backs up instance %i and verifies the backup. zollybot-instance-backup@%i.timer starts it. `setup`
+# replaces /opt/zollybot-docker/instances/ with the folder of zollybot-instance.
+[Unit]
+Description=Back up ZollyBot instance %i
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/zollybot-docker/instances/zollybot-instance backup %i --verify
+TimeoutStartSec=6h

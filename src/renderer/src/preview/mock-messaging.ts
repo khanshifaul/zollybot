@@ -9,8 +9,8 @@ import {
   type WhatsAppAccount,
   type WhatsAppGroup,
   type WhatsAppLinkState,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { clone } from "./mock-support";
 
 /**
@@ -58,14 +58,14 @@ const PREVIEW_WHATSAPP_GROUPS: readonly WhatsAppGroup[] = [
   { id: "120363000000000003@g.us", name: "Acme team" },
 ];
 
-/** The person who writes to a preview number only for OpenBot, a moment after it links. */
+/** The person who writes to a preview number only for ZollyBot, a moment after it links. */
 const PREVIEW_WHATSAPP_STRANGER = { senderId: "447700900555", name: "Grace Hopper" };
 
 /**
  * The Slack workspaces, Discord servers, Telegram chats and WhatsApp numbers of the preview host.
  * Connecting Slack or Discord connects a preview workspace at once. A Telegram link adds a preview chat
  * after a moment, as the user picks it in Telegram. A WhatsApp link shows a QR code or a pairing code,
- * and the preview phone links after a few reads; on a number only for OpenBot, a person then writes and
+ * and the preview phone links after a few reads; on a number only for ZollyBot, a person then writes and
  * waits for the owner. `orchestrator` names the preview agent that stands in for the orchestrators.
  */
 export function createMockMessaging(orchestrator: () => string): MessagingDesktopApi {
@@ -131,7 +131,7 @@ export function createMockMessaging(orchestrator: () => string): MessagingDeskto
   /** The link that runs, the choice it started with, and how often the dialog read it. */
   let link: { state: WhatsAppLinkState; input: StartWhatsAppLinkInput; reads: number } | null = null;
   const previewQr = (rotation: number) =>
-    `2@openbot-preview-${linkedNumbers + 1}-${rotation},openbot-preview-noise-key,openbot-preview-identity-key,preview`;
+    `2@zollybot-preview-${linkedNumbers + 1}-${rotation},zollybot-preview-noise-key,zollybot-preview-identity-key,preview`;
   const changeNumber = (workspaceId: string, update: Partial<MessagingConnection>) => {
     const current = numbers.get(workspaceId);
     if (!current) throw new Error(sourceText("error.messaging.whatsappNotConnected"));

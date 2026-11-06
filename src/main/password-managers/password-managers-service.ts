@@ -8,8 +8,8 @@ import {
   type PasswordManagerConnectMethod,
   type PasswordManagerId,
   type PasswordManagerStatus,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import type { PasswordVaultSource } from "../../backend/password-vault-router";
 import { type PasswordManagerDriver, type PasswordManagerError, passwordManagerFailure } from "./driver";

@@ -1,6 +1,6 @@
-import { toast } from "@openbot/ui";
-import { WhatsNewDialog } from "@openbot/ui/features/updates/WhatsNewDialog";
-import { useText } from "@openbot/ui/text";
+import { toast } from "@zollybot/ui";
+import { WhatsNewDialog } from "@zollybot/ui/features/updates/WhatsNewDialog";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, untrack } from "solid-js";
 import { appPort } from "../../app-port";
 import { useWhatsNew } from "./whats-new-context";

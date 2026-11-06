@@ -1,4 +1,4 @@
-import { runTeamEffect } from "@openbot/team-client";
+import { runTeamEffect } from "@zollybot/team-client";
 import {
   agentTaskControl,
   listAgentTasks,
@@ -7,7 +7,7 @@ import {
   startAgentTask,
   type TeamApiRequest,
   type TeamRequestError,
-} from "@openbot/team-client/team-api-requests";
+} from "@zollybot/team-client/team-api-requests";
 import { Effect } from "effect";
 import { isTaskEvent, type TasksSource } from "../tasks/tasks-port";
 import { withoutPreviewUrls } from "./web-agent-threads";

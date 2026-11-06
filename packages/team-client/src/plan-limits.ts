@@ -10,8 +10,8 @@ import {
   isAccountUsage,
   isAgentProvider,
   usageQuotaForModel,
-} from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
+} from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import { Effect, Schema } from "effect";
 import { listProviderAccounts, providerAccountUsage } from "./team-admin-requests";
 import type { TeamApiRequest } from "./team-api-requests";

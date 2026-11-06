@@ -1,4 +1,4 @@
-import { isCustomProviderHarness } from "@openbot/contracts/ipc";
+import { isCustomProviderHarness } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentClient } from "../agent-client";
 

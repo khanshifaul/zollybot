@@ -1,5 +1,6 @@
-import { canPreviewAttachment } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import { Dynamic } from "@solidjs/web";
+import { canPreviewAttachment } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Badge,
   Button,
@@ -22,10 +23,9 @@ import {
   Skeleton,
   Trash2,
   TriangleAlert,
-} from "@openbot/ui";
-import type { AgentProfile } from "@openbot/ui/data";
-import { useText } from "@openbot/ui/text";
-import { Dynamic } from "@solidjs/web";
+} from "@zollybot/ui";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { useText } from "@zollybot/ui/text";
 import { createMemo, createSignal, createStore, For, Show } from "solid-js";
 import { fileBadge } from "../conversation/AttachmentCards";
 import { attachmentReferenceBadge, attachmentReferenceTone } from "../conversation/AttachmentReference";

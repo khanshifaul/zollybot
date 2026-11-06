@@ -1,7 +1,7 @@
 #!/bin/sh
 # Administrator setup. Build the standalone helper as an unprivileged developer first:
-# bun build scripts/host-manager.ts --compile --outfile /tmp/openbot-host-manager
-# sudo scripts/install-host-update-agent.sh --managed /tmp/openbot-host-manager client-acme client-bravo
+# bun build scripts/host-manager.ts --compile --outfile /tmp/zollybot-host-manager
+# sudo scripts/install-host-update-agent.sh --managed /tmp/zollybot-host-manager client-acme client-bravo
 set -eu
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 export LC_ALL=C
@@ -13,7 +13,7 @@ shift
 HELPER=$1
 shift
 ASSETS=$(cd "$(dirname "$0")/../build/macos/host-updates" && pwd)
-ROOT='/Library/Application Support/OpenBot/HostManager'
+ROOT='/Library/Application Support/ZollyBot/HostManager'
 
 check_dir() {
   [ ! -L "$1" ] && [ -d "$1" ] && [ "$(stat -f %u "$1")" = 0 ] || exit 1
@@ -25,7 +25,7 @@ check_dir() {
   fi
 }
 for path in / /Library '/Library/Application Support' /Library/LaunchAgents /Library/LaunchDaemons; do check_dir "$path"; done
-for path in '/Library/Application Support/OpenBot' "$ROOT"; do
+for path in '/Library/Application Support/ZollyBot' "$ROOT"; do
   if [ ! -e "$path" ] && [ ! -L "$path" ]; then mkdir -m 755 "$path"; fi
   check_dir "$path"
 done
@@ -58,21 +58,21 @@ for tenant in "$@"; do
 done
 # The operator supplies trusted compiled code. Never compile repository hooks as root.
 [ -f "$HELPER" ] && [ ! -L "$HELPER" ] || exit 1
-for destination in "$ROOT/host-manager" "$ROOT/openbot-relaunch.sh" /Library/LaunchAgents/app.openbot.desktop.relaunch.plist /Library/LaunchDaemons/app.openbot.host-manager.plist; do
+for destination in "$ROOT/host-manager" "$ROOT/zollybot-relaunch.sh" /Library/LaunchAgents/app.zollybot.desktop.relaunch.plist /Library/LaunchDaemons/app.zollybot.host-manager.plist; do
   [ ! -e "$destination" ] && [ ! -L "$destination" ] || { echo "Existing installation asset: $destination" >&2; exit 1; }
 done
 install -o root -g wheel -m 755 "$HELPER" "$ROOT/host-manager"
-install -o root -g wheel -m 755 "$ASSETS/openbot-relaunch.sh" "$ROOT/openbot-relaunch.sh"
+install -o root -g wheel -m 755 "$ASSETS/zollybot-relaunch.sh" "$ROOT/zollybot-relaunch.sh"
 # UIDS contains only numbers returned by id above.
 # shellcheck disable=SC2086
 "$ROOT/host-manager" --setup $UIDS
-install -o root -g wheel -m 644 "$ASSETS/app.openbot.desktop.relaunch.plist" /Library/LaunchAgents/app.openbot.desktop.relaunch.plist
-install -o root -g wheel -m 644 "$ASSETS/app.openbot.host-manager.plist" /Library/LaunchDaemons/app.openbot.host-manager.plist
-launchctl bootstrap system /Library/LaunchDaemons/app.openbot.host-manager.plist
+install -o root -g wheel -m 644 "$ASSETS/app.zollybot.desktop.relaunch.plist" /Library/LaunchAgents/app.zollybot.desktop.relaunch.plist
+install -o root -g wheel -m 644 "$ASSETS/app.zollybot.host-manager.plist" /Library/LaunchDaemons/app.zollybot.host-manager.plist
+launchctl bootstrap system /Library/LaunchDaemons/app.zollybot.host-manager.plist
 for tenant in "$@"; do
   tenant_uid=$(id -u "$tenant")
-  if ! launchctl bootstrap "gui/$tenant_uid" /Library/LaunchAgents/app.openbot.desktop.relaunch.plist; then
+  if ! launchctl bootstrap "gui/$tenant_uid" /Library/LaunchAgents/app.zollybot.desktop.relaunch.plist; then
     echo "LaunchAgent for $tenant will load at the next GUI login."
   fi
 done
-ls -ld /Applications/OpenBot.app "$ROOT"
+ls -ld /Applications/ZollyBot.app "$ROOT"

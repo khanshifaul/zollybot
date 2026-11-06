@@ -5,7 +5,7 @@
 // the token.
 //
 // Run: bun apps/auth-api/scripts/signal-entry-failover-e2e.ts
-// It writes .openbot-build/signal-entry-failover-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/signal-entry-failover-e2e/report.json and exits non-zero on a failure.
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
@@ -20,7 +20,7 @@ import { createWorkerHandler } from "../src/server/worker-handler";
 import { sqliteD1 } from "./sqlite-d1";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
-const OUT = join(ROOT, ".openbot-build", "signal-entry-failover-e2e");
+const OUT = join(ROOT, ".zollybot-build", "signal-entry-failover-e2e");
 const MIGRATIONS = join(ROOT, "apps", "auth-api", "migrations");
 const TOKEN = "cf-token-e2e-secret";
 const ZONE = "zone-1";

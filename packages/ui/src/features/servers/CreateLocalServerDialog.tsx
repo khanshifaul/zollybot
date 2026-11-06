@@ -1,5 +1,5 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { LOCAL_SERVER_LIMIT } from "@openbot/contracts/ipc";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { LOCAL_SERVER_LIMIT } from "@zollybot/contracts/ipc";
 import {
   Alert,
   AlertContent,
@@ -12,7 +12,7 @@ import {
   Input,
   OctagonX,
   TriangleAlert,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createSignal, Show } from "solid-js";
 import { useText } from "../../text";
 

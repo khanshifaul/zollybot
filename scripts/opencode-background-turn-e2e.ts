@@ -3,7 +3,7 @@
 // the background turn shows as a turn of the agent's own, from `session/load`, with all its items;
 // that text before a tool call stays thinking there too; that a message sent meanwhile waits for it;
 // and that a stopped background turn does not come back.
-// `bun run test:opencode-background-turn`. Writes .openbot-build/opencode-background-turn-e2e/report.json.
+// `bun run test:opencode-background-turn`. Writes .zollybot-build/opencode-background-turn-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -15,7 +15,7 @@ import { type AppServerNotification, getRecord, getString, isRecord } from "../s
 import { NO_PROVIDER_CREDENTIALS, requireProviderDriver } from "../src/backend/provider-drivers";
 import { installFakeAgent, readJsonl, runTurn, startThread, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/opencode-background-turn-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/opencode-background-turn-e2e");
 /** The background turn ends when its session stays unchanged for 15 s; this leaves room for that. */
 const WAIT_MS = 60_000;
 
@@ -38,7 +38,7 @@ interface Report {
   events: Record<string, Event[]>;
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-opencode-background-turn-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-opencode-background-turn-e2e-"));
 const release = join(root, "release");
 const log = join(root, "fake.jsonl");
 const report: Report = { passed: false, events: {} };

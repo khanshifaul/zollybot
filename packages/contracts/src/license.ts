@@ -37,44 +37,44 @@ export const LICENSE_PLANS: readonly LicensePlan[] = LICENSE_TIERS.flatMap((tier
 );
 
 /** The Stripe Price lookup key of the Team monthly license. A license from before the tiers uses it. */
-export const LICENSE_LOOKUP_KEY = "openbot_license_month";
+export const LICENSE_LOOKUP_KEY = "zollybot_license_month";
 
 /** The Stripe Price lookup key of one license plan. `stripe-bootstrap.ts` creates them. */
 export function licenseLookupKey(plan: LicensePlan): string {
   const bundle = plan.bundle ? "bundle_" : "";
   return plan.tier === "team"
-    ? `openbot_license_${bundle}${plan.interval}`
-    : `openbot_license_starter_${bundle}${plan.interval}`;
+    ? `zollybot_license_${bundle}${plan.interval}`
+    : `zollybot_license_starter_${bundle}${plan.interval}`;
 }
 
 /** The lookup keys of all license Prices. */
 export const LICENSE_LOOKUP_KEYS: readonly string[] = LICENSE_PLANS.map(licenseLookupKey);
 /** The Stripe Product of the license. */
-export const LICENSE_PRODUCT_ID = "openbot_license";
+export const LICENSE_PRODUCT_ID = "zollybot_license";
 /**
  * The subscription metadata of a license. It names the account with `BILLING_METADATA.userId` and has
  * no server id, so a Worker that knows only server plans ignores it.
  */
 export const LICENSE_METADATA = {
-  kind: "openbot_kind",
+  kind: "zollybot_kind",
   /**
    * The most users that Stripe invoiced in the period that ends at `paidPeriodEnd`. Fewer users apply
    * with no refund, so a later increase up to this count is already paid.
    */
-  paidUsers: "openbot_paid_users",
+  paidUsers: "zollybot_paid_users",
   /** The end of the period that `paidUsers` is for, in milliseconds since the epoch. */
-  paidPeriodEnd: "openbot_paid_period_end",
-  /** The tier of a license Price. Not `openbot_plan`: the server plan sync reads that key. */
-  tier: "openbot_license_tier",
+  paidPeriodEnd: "zollybot_paid_period_end",
+  /** The tier of a license Price. Not `zollybot_plan`: the server plan sync reads that key. */
+  tier: "zollybot_license_tier",
   /** The billing interval of a license Price. */
-  interval: "openbot_license_interval",
+  interval: "zollybot_license_interval",
   /** "true" on a bundle Price. */
-  bundle: "openbot_license_bundle",
+  bundle: "zollybot_license_bundle",
   /**
    * On a license that a server order paid for: the subscription of the server and the license that the
    * customer paid in one Checkout. The split reads it so that it makes the license only once.
    */
-  orderSubscription: "openbot_order_subscription",
+  orderSubscription: "zollybot_order_subscription",
 } as const;
 export const LICENSE_METADATA_KIND = "license";
 
@@ -85,10 +85,10 @@ export const LICENSE_METADATA_KIND = "license";
  * on the subscription, and the split makes a license that is free until `licenseTrialEnd`.
  */
 export const ORDER_METADATA = {
-  licenseTier: "openbot_order_license_tier",
-  licenseUsers: "openbot_order_license_users",
-  licenseInterval: "openbot_order_license_interval",
-  licenseTrialEnd: "openbot_order_license_trial_end",
+  licenseTier: "zollybot_order_license_tier",
+  licenseUsers: "zollybot_order_license_users",
+  licenseInterval: "zollybot_order_license_interval",
+  licenseTrialEnd: "zollybot_order_license_trial_end",
 } as const;
 
 /** The base price of the Team tier includes this many users. It is also the smallest Team license. */

@@ -1,8 +1,8 @@
 import {
   PROVIDER_SIGN_OUT_CAPABILITY,
   PROVIDER_SIGN_OUT_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-sign-out-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/provider-sign-out-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import { parseProviderId } from "../ipc/app-inputs";
 import type { TeamApiProviderSignOut } from "./dependencies";

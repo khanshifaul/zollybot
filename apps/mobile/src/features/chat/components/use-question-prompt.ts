@@ -1,4 +1,4 @@
-import type { AgentPromptResolution, RespondToPromptInput } from "@openbot/contracts/ipc";
+import type { AgentPromptResolution, RespondToPromptInput } from "@zollybot/contracts/ipc";
 import { useRef, useState } from "react";
 import type { ChatMessage } from "@/features/chat/model/chat-messages";
 import { answeredPromptResolution, nextUnansweredQuestion } from "@/features/chat/model/question-prompt";

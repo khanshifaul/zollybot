@@ -62,4 +62,4 @@ declare class SpeechModule extends NativeModule<SpeechEvents> {
  * a build without it, such as Expo Go or an app binary from before it, which an update can still
  * reach. The chat then keeps dictation and has no voice conversation.
  */
-export const speechNative = requireOptionalNativeModule<SpeechModule>("OpenBotSpeech");
+export const speechNative = requireOptionalNativeModule<SpeechModule>("ZollyBotSpeech");

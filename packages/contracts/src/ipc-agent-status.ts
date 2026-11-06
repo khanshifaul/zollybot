@@ -48,7 +48,7 @@ export interface AgentProviderStatus {
   email?: string | null;
   connectionState?: "connecting";
   /**
-   * Sent with `connectionState`: true while a sign-in waits for the user, false while OpenBot checks
+   * Sent with `connectionState`: true while a sign-in waits for the user, false while ZollyBot checks
    * the provider again after a key change, a restart or an update, when no browser page opens. A
    * status without it, such as a joined server's, does not say.
    */
@@ -56,8 +56,8 @@ export interface AgentProviderStatus {
   checkError?: string | null;
   /**
    * Who owns the CLI binary in use. `system` is an install the user made and can update themselves,
-   * with the CLI's own updater; `managed` is the pinned copy OpenBot downloaded, which only an
-   * OpenBot release moves. The two have different update stories, so the picker has to tell them
+   * with the CLI's own updater; `managed` is the pinned copy ZollyBot downloaded, which only an
+   * ZollyBot release moves. The two have different update stories, so the picker has to tell them
    * apart, and only the provider that resolved a CLI reports one at all.
    */
   cliSource?: "system" | "managed";
@@ -66,7 +66,7 @@ export interface AgentProviderStatus {
   /**
    * A saved API key serves the provider's turns in place of the plan sign-in, so the plan's usage
    * does not apply. Gemini: its saved key comes before the Google account. Codex: its own login is
-   * an OpenAI API key. Muse: OpenBot's saved key. Local only: released Team API adapters omit it.
+   * an OpenAI API key. Muse: ZollyBot's saved key. Local only: released Team API adapters omit it.
    */
   apiKeyInUse?: boolean;
   /**
@@ -378,7 +378,7 @@ export interface SubmitProviderCodeLoginInput {
 }
 
 /**
- * Whether a key is stored. `unreadable` is a key file OpenBot could not decrypt or parse: the
+ * Whether a key is stored. `unreadable` is a key file ZollyBot could not decrypt or parse: the
  * provider then runs with no key, and the file stays on disk until the user replaces or removes it.
  */
 export type ProviderApiKeyStatus = "missing" | "saved" | "unreadable";
@@ -406,12 +406,12 @@ export type ProviderCodeLoginStart =
       verificationUrl: string;
       /** The same page with the code filled in, when the provider gives one. The dialog's QR code opens it. */
       verificationUrlComplete?: string;
-      /** Epoch milliseconds. When OpenBot gives up on this code, which is what the dialog counts down to. */
+      /** Epoch milliseconds. When ZollyBot gives up on this code, which is what the dialog counts down to. */
       expiresAt: number;
     }
   | {
       /**
-       * The user signs in on the page, which then shows a code for them to copy back. OpenBot types
+       * The user signs in on the page, which then shows a code for them to copy back. ZollyBot types
        * it into the provider's CLI with `submitProviderCodeLogin`.
        */
       kind: "paste";

@@ -1,5 +1,5 @@
-import { Button, Check, Copy } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Button, Check, Copy } from "@zollybot/ui";
 import { createSignal, For, onCleanup } from "solid-js";
 import { firstTextDirection } from "../../content-direction";
 import { useText } from "../../text";

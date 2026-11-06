@@ -6,14 +6,14 @@
 // two accounts of one server, with `#account-…` addresses, and checks that each keeps its own row.
 // The cipher is fake, so this does not open Keychain or a browser.
 //
-// `bun scripts/mcp-oauth-store-e2e.ts`. Writes .openbot-build/mcp-oauth-store-e2e/report.json.
+// `bun scripts/mcp-oauth-store-e2e.ts`. Writes .zollybot-build/mcp-oauth-store-e2e/report.json.
 import assert from "node:assert/strict";
 import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { mcpAccountUrl } from "@openbot/contracts/mcp-accounts";
-import { sourceText } from "@openbot/i18n/source";
+import { mcpAccountUrl } from "@zollybot/contracts/mcp-accounts";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { z } from "zod";
 import { runCauseEffect } from "../src/backend/effect-boundary";
@@ -27,7 +27,7 @@ import {
 import { McpOAuthStore } from "../src/main/mcp-oauth-store";
 import type { SecretCipher } from "../src/main/provider-credential-store";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/mcp-oauth-store-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/mcp-oauth-store-e2e");
 const NOTION = "https://mcp.notion.com/mcp";
 const VERCEL = "https://mcp.vercel.com/";
 const STRIPE = "https://mcp.stripe.com/";
@@ -189,7 +189,7 @@ async function connect(
   }
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-mcp-oauth-store-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-mcp-oauth-store-"));
 const auth = await startAuthorizationServer();
 
 try {

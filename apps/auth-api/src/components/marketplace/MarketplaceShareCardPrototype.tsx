@@ -1,12 +1,12 @@
-import { AppLogo } from "@openbot/brand";
-import type { MarketplaceAgentSummary } from "@openbot/contracts/ipc";
-import { ShieldCheck } from "@openbot/ui/icons";
 import type { JSX } from "@solidjs/web";
+import { AppLogo } from "@zollybot/brand";
+import type { MarketplaceAgentSummary } from "@zollybot/contracts/ipc";
+import { ShieldCheck } from "@zollybot/ui/icons";
 import { createSignal, Loading, lazy, onSettled, Show } from "solid-js";
 import { isVerifiedAgent } from "./marketplace-prototype-fixtures";
 
 const AgentAvatar = lazy(() =>
-  import("@openbot/ui/features/agents/AgentAvatar").then((module) => ({ default: module.AgentAvatar })),
+  import("@zollybot/ui/features/agents/AgentAvatar").then((module) => ({ default: module.AgentAvatar })),
 );
 
 /*
@@ -24,7 +24,7 @@ const AgentAvatar = lazy(() =>
 const SHARE_HOST = "openbot.run";
 
 function shareTitle(agent: MarketplaceAgentSummary): string {
-  return `${agent.name} — OpenBot agent`;
+  return `${agent.name} — ZollyBot agent`;
 }
 
 export function ShareCard(props: { agent: MarketplaceAgentSummary }): JSX.Element {
@@ -33,7 +33,7 @@ export function ShareCard(props: { agent: MarketplaceAgentSummary }): JSX.Elemen
       <CardAvatar agent={props.agent} />
       <span class="marketplace-share-brand">
         <AppLogo variant="production" class="marketplace-share-logo" />
-        OpenBot
+        ZollyBot
       </span>
       <span class="marketplace-share-copy">
         <span class="marketplace-share-name">
@@ -101,7 +101,7 @@ export function MessagesFrame(props: { agent: MarketplaceAgentSummary }): JSX.El
 export function SlackFrame(props: { agent: MarketplaceAgentSummary }): JSX.Element {
   return (
     <figure class="marketplace-share-slack">
-      <span class="marketplace-share-slack-site">OpenBot</span>
+      <span class="marketplace-share-slack-site">ZollyBot</span>
       <span class="marketplace-share-slack-title">{shareTitle(props.agent)}</span>
       <span class="marketplace-share-slack-description">{props.agent.title}</span>
       <div class="marketplace-share-slack-media">

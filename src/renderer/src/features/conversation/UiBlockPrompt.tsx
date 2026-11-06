@@ -1,4 +1,4 @@
-import { type VaultSaveInput, vaultExpiryText } from "@openbot/contracts/ipc";
+import { type VaultSaveInput, vaultExpiryText } from "@zollybot/contracts/ipc";
 import {
   type ConversationUiBlock,
   UI_BLOCK_SUBMIT_ACTION_ID,
@@ -9,12 +9,12 @@ import {
   uiBlockAnswersFromResponse,
   uiBlockFallbackQuestions,
   uiBlockOutcomeText,
-} from "@openbot/contracts/ui-blocks";
-import type { AgentProfile } from "@openbot/ui/data";
-import { MarkdownMessageText } from "@openbot/ui/features/conversation/MarkdownMessageText";
-import { UiBlockingBlock } from "@openbot/ui/features/conversation/ui-blocks/UiBlockingBlock";
-import { VaultRequestCard } from "@openbot/ui/features/vault/VaultRequestCard";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ui-blocks";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { MarkdownMessageText } from "@zollybot/ui/features/conversation/MarkdownMessageText";
+import { UiBlockingBlock } from "@zollybot/ui/features/conversation/ui-blocks/UiBlockingBlock";
+import { VaultRequestCard } from "@zollybot/ui/features/vault/VaultRequestCard";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, onCleanup, Show } from "solid-js";
 import type { PromptAnswerOptions } from "./conversation-types";
 

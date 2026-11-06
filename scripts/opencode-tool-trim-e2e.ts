@@ -1,11 +1,11 @@
 // Runs the real `opencode` provider driver and the real OpenCode binary against a fake
-// OpenAI-compatible server, to check the Code Mode catalog that each request carries. OpenBot denies
-// OpenCode's `session_*` and `worktree_*` tools: OpenBot names its own chats, and `session_move` would
+// OpenAI-compatible server, to check the Code Mode catalog that each request carries. ZollyBot denies
+// OpenCode's `session_*` and `worktree_*` tools: ZollyBot names its own chats, and `session_move` would
 // move the session out of the agent's workspace. `worktree_remove` stays, because OpenCode checks it
 // with the `edit` permission. The user's own config denies `opencode_models`, so the catalog also
-// shows that OpenCode keeps the user's rules beside OpenBot's.
+// shows that OpenCode keeps the user's rules beside ZollyBot's.
 // `OPENCODE_CLI=<opencode> bun scripts/opencode-tool-trim-e2e.ts`.
-// Writes .openbot-build/opencode-tool-trim-e2e/report.json.
+// Writes .zollybot-build/opencode-tool-trim-e2e/report.json.
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -22,7 +22,7 @@ import { getArray, getString } from "../src/backend/protocol";
 import { requireProviderDriver } from "../src/backend/provider-drivers";
 import { runTurn, startThread, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/opencode-tool-trim-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/opencode-tool-trim-e2e");
 const NL = String.fromCharCode(10);
 const ENDPOINT = "spark";
 const MODEL = "agent-model";
@@ -46,7 +46,7 @@ interface Report {
 }
 
 const report: Report = { passed: false, requests: [] };
-const root = await mkdtemp(join(tmpdir(), "openbot-opencode-trim-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-opencode-trim-e2e-"));
 const clients: AgentClient[] = [];
 const run = promisify(execFile);
 
@@ -84,7 +84,7 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
   });
 });
 
-/** A free TCP port for OpenCode's managed service, so the test does not meet a running OpenBot's. */
+/** A free TCP port for OpenCode's managed service, so the test does not meet a running ZollyBot's. */
 async function freePort(): Promise<number> {
   const probe = createTcpServer();
   await new Promise<void>((listening) => probe.listen(0, "127.0.0.1", listening));

@@ -1,10 +1,10 @@
-appId: app.openbot.desktop
-productName: OpenBot
+appId: app.zollybot.desktop
+productName: ZollyBot
 copyright: Copyright © 2026 Synthetify Labs spółka z ograniczoną odpowiedzialnością
 protocols:
-  - name: OpenBot invitations
+  - name: ZollyBot invitations
     schemes:
-      - openbot
+      - zollybot
 asar: true
 artifactName: ${productName}-${version}-${arch}.${ext}
 electronUpdaterCompatibility: ">=2.16"
@@ -21,7 +21,7 @@ electronFuses:
 publish:
   provider: github
   owner: nightly-labs
-  repo: openbot
+  repo: zollybot
 files:
   - out/**/*
   - package.json
@@ -47,7 +47,7 @@ extraResources:
     to: plugin-catalog
   - from: resources/agent-import
     to: agent-import
-  # `openbot-cli.mjs` runs tasks on agents through the Local scripts API; see docs/automation.md.
+  # `zollybot-cli.mjs` runs tasks on agents through the Local scripts API; see docs/automation.md.
   - from: resources/cli
     to: cli
   # `cpu-limit.cjs` makes os.cpus() follow the CPU limit for the Node programs of agents on a server.
@@ -119,14 +119,14 @@ mac:
       filter:
         - "*.png"
     # The sherpa-onnx addon and its libraries. The dictation and speech models are downloaded on demand.
-    - from: .openbot-build/voice/runtime
+    - from: .zollybot-build/voice/runtime
       to: voice/runtime
     - from: build/remote-desktop-runtime
       to: remote-desktop-runtime
     - from: build/cua-driver/darwin/${arch}
       to: cua-driver/darwin/${arch}
   # The Computer Use driver arrives signed by Cua AI with the hardened runtime, a secure timestamp
-  # and `com.apple.security.automation.apple-events`. Re-signing it with OpenBot's inherited
+  # and `com.apple.security.automation.apple-events`. Re-signing it with ZollyBot's inherited
   # entitlements would drop that entitlement and break the driver's Automation route, so its own
   # Developer ID signature is kept. Notarization accepts a nested binary signed by another team.
   signIgnore:
@@ -137,12 +137,12 @@ mac:
   extendInfo:
     CFBundleIconName: Icon
     ElectronTeamID: ZTRDTUL87R
-    NSMicrophoneUsageDescription: OpenBot uses the microphone to transcribe voice prompts locally on this Mac.
-    # Computer Use runs the driver as a child process, so macOS asks for both grants in OpenBot's
+    NSMicrophoneUsageDescription: ZollyBot uses the microphone to transcribe voice prompts locally on this Mac.
+    # Computer Use runs the driver as a child process, so macOS asks for both grants in ZollyBot's
     # name and shows these sentences. Under the hardened runtime, macOS shows the Automation prompt
     # only when the app has `com.apple.security.automation.apple-events` in its entitlements.
-    NSScreenCaptureUsageDescription: OpenBot captures the screen so an agent can see the app windows you ask it to control.
-    NSAppleEventsUsageDescription: OpenBot sends Automation events so an agent can control the apps you ask it to control.
+    NSScreenCaptureUsageDescription: ZollyBot captures the screen so an agent can see the app windows you ask it to control.
+    NSAppleEventsUsageDescription: ZollyBot sends Automation events so an agent can control the apps you ask it to control.
     NSUserActivityTypes:
       - NSUserActivityTypeBrowsingWeb
   # No `arch` here: a target's own `arch` list replaces the one given on the command line, so
@@ -155,7 +155,7 @@ mac:
 win:
   icon: build/icon-production.ico
   extraResources:
-    - from: .openbot-build/voice/runtime
+    - from: .zollybot-build/voice/runtime
       to: voice/runtime
     - from: build/remote-desktop-runtime
       to: remote-desktop-runtime
@@ -166,7 +166,7 @@ win:
       arch:
         - x64
 # The assisted installer lets the user choose the disk and folder. `build/installer.nsh` keeps it
-# per-user and moves the install into an `OpenBot` subfolder when the chosen folder holds other
+# per-user and moves the install into an `ZollyBot` subfolder when the chosen folder holds other
 # files, because the uninstaller deletes the whole folder. An update reads the folder from
 # `InstallLocation`. The app starts it silently (`src/main/update-service.ts`), so an update shows
 # no page.
@@ -178,8 +178,8 @@ linux:
   icon: build/icon-production.png
   synopsis: A local-first multi-agent desktop workspace.
   extraResources:
-    - from: build/linux/openbot.apparmor
-      to: linux/openbot.apparmor
+    - from: build/linux/zollybot.apparmor
+      to: linux/zollybot.apparmor
     # A hosted server installs the packages, scripts and units of the release that it updates to.
     - from: scripts/hosting
       to: hosting
@@ -187,7 +187,7 @@ linux:
         - "**/*"
         - "!*.ts"
     # The sherpa-onnx addon and its libraries. The dictation and speech models are downloaded on demand.
-    - from: .openbot-build/voice/runtime
+    - from: .zollybot-build/voice/runtime
       to: voice/runtime
     # Only the x64 build installs this runtime. For arm64 the directory does not exist, and
     # electron-builder skips a missing source with a warning.

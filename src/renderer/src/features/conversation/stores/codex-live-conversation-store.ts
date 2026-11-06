@@ -1,6 +1,6 @@
-import type { OpenBotDesktopApi, VoiceLiveEvent } from "@openbot/contracts/ipc";
-import type { VoicePanelPhase } from "@openbot/ui/features/conversation/VoicePanel";
-import { currentText } from "@openbot/ui/text";
+import type { VoiceLiveEvent, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import type { VoicePanelPhase } from "@zollybot/ui/features/conversation/VoicePanel";
+import { currentText } from "@zollybot/ui/text";
 import { createStore, onCleanup } from "solid-js";
 import { SPEECH_LEVEL_COUNT } from "../../speech/speech-playback";
 import { voiceCaptureError } from "../voice-status";
@@ -13,11 +13,11 @@ const LEVEL_RANGE_DB = 50;
 /** The data channel that the realtime model sends its events on, and takes commands from. */
 const EVENTS_CHANNEL = "oai-events";
 
-export type CodexLivePort = Pick<OpenBotDesktopApi["voice"], "startLive" | "stopLive" | "onLiveEvent">;
+export type CodexLivePort = Pick<ZollyBotDesktopApi["voice"], "startLive" | "stopLive" | "onLiveEvent">;
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 function codexLivePort(): CodexLivePort {
-  return window.openbot.voice;
+  return window.zollybot.voice;
 }
 
 type LiveStep = "starting" | "listening" | "thinking" | "speaking";

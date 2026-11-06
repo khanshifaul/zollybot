@@ -13,8 +13,8 @@
 .agent-folders-entry-add {
   position: absolute;
   top: 50%;
-  inset-inline-end: calc(var(--openbot-space-3) + 14px + var(--openbot-space-2));
-  color: var(--openbot-text-muted);
+  inset-inline-end: calc(var(--zollybot-space-3) + 14px + var(--zollybot-space-2));
+  color: var(--zollybot-text-muted);
   transform: translateY(-50%);
 }
 
@@ -33,12 +33,12 @@
 
 /* A folder that is no longer on the disk shows on the row, so the user does not have to open the page. */
 .agent-folders-lost {
-  color: var(--openbot-warning-text);
+  color: var(--zollybot-warning-text);
 }
 
 /* The value holds the count, a dot, then the warning; the row's 8px gap is too wide around a dot. */
 .agent-folders-dot {
-  margin-inline: calc(var(--openbot-space-1) * -1);
+  margin-inline: calc(var(--zollybot-space-1) * -1);
 }
 
 /* While a folder is dragged over the side panel, the Folders row and the Added group show where it goes. */
@@ -47,19 +47,19 @@
   outline: 1px dashed transparent;
   outline-offset: -1px;
   transition:
-    outline-color var(--openbot-duration-fast) var(--openbot-ease-out),
-    background-color var(--openbot-duration-fast) var(--openbot-ease-out);
+    outline-color var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    background-color var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .agent-folders-entry[data-dragging],
 .agent-folders-drop-target[data-dragging] {
-  outline-color: var(--openbot-text-muted);
-  background-color: var(--openbot-hover);
+  outline-color: var(--zollybot-text-muted);
+  background-color: var(--zollybot-hover);
 }
 
 .agent-folders-page {
   display: grid;
-  gap: var(--openbot-space-4);
+  gap: var(--zollybot-space-4);
 }
 
 /* Icon, text, then the actions the row has: Locate… for a missing folder, then X. */
@@ -69,10 +69,10 @@
   grid-auto-flow: column;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   min-height: 48px;
-  padding-block: var(--openbot-space-1-5);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-1-5);
+  padding-block: var(--zollybot-space-1-5);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-1-5);
 }
 
 .agent-folders-text {
@@ -82,24 +82,24 @@
 
 .agent-folders-name {
   overflow: hidden;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .agent-folders-path {
   overflow: hidden;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .agent-folders-row[data-missing] .settings-link-icon,
 .agent-folders-row[data-missing] .agent-folders-path {
-  color: var(--openbot-warning-text);
+  color: var(--zollybot-warning-text);
 }
 
 /* The note on the Folders page when the agent can change all files. */
@@ -107,20 +107,20 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding-block: var(--openbot-space-2);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
+  padding-block: var(--zollybot-space-2);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-2);
 }
 
 .agent-folders-access-text {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
   text-wrap: pretty;
 }
 
 .agent-folders-remove {
   position: relative;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* The button is 32px; the row is 48px tall, so it can take a 44px target. */
@@ -131,27 +131,27 @@
 }
 
 .agent-folders-add {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .agent-folders-drop-target[data-dragging] .agent-folders-add {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* A folder the user just added comes in under the others. */
 @media (prefers-reduced-motion: no-preference) {
   .agent-folders-row[data-fresh] {
-    animation: agent-folders-row-in var(--openbot-duration-normal) var(--openbot-ease-out) both;
+    animation: agent-folders-row-in var(--zollybot-duration-normal) var(--zollybot-ease-out) both;
   }
 
   .agent-folders-chat-drop {
-    animation: agent-folders-fade-in var(--openbot-duration-fast) var(--openbot-ease-out) both;
+    animation: agent-folders-fade-in var(--zollybot-duration-fast) var(--zollybot-ease-out) both;
   }
 
   /* The user tried to add a folder that this row already gives: the row shows itself once. */
   .agent-folders-row[data-flash],
   .agent-folders-entry[data-flash] {
-    animation: agent-folders-row-flash 900ms var(--openbot-ease-out);
+    animation: agent-folders-row-flash 900ms var(--zollybot-ease-out);
   }
 }
 
@@ -166,7 +166,7 @@
 @keyframes agent-folders-row-flash {
   from,
   40% {
-    background-color: var(--openbot-hover);
+    background-color: var(--zollybot-hover);
   }
 }
 
@@ -188,11 +188,11 @@
 .agent-folders-chat-drop {
   position: absolute;
   z-index: 60;
-  inset: var(--openbot-space-3);
+  inset: var(--zollybot-space-3);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--openbot-space-3);
-  border-radius: var(--openbot-radius-lg);
+  gap: var(--zollybot-space-3);
+  border-radius: var(--zollybot-radius-lg);
   background: color-mix(in srgb, var(--background) 70%, transparent);
   pointer-events: none;
   backdrop-filter: blur(3px);
@@ -200,7 +200,7 @@
 
 /* The settings panel takes its own drops, so the overlay stops at its edge. */
 .conversation-panel:has(.settings-panel) .agent-folders-chat-drop {
-  inset-inline-end: calc(var(--settings-panel-width, 360px) + var(--openbot-space-3));
+  inset-inline-end: calc(var(--settings-panel-width, 360px) + var(--zollybot-space-3));
 }
 
 .agent-folders-chat-zone {
@@ -208,18 +208,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-6);
-  border: 1px dashed var(--openbot-text-muted);
-  border-radius: var(--openbot-radius-lg);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
-  font-weight: var(--openbot-weight-semibold);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-6);
+  border: 1px dashed var(--zollybot-text-muted);
+  border-radius: var(--zollybot-radius-lg);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-semibold);
   text-align: center;
   text-wrap: balance;
   transition:
-    border-color var(--openbot-duration-fast) var(--openbot-ease-out),
-    background-color var(--openbot-duration-fast) var(--openbot-ease-out);
+    border-color var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    background-color var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .agent-folders-chat-zone > span {
@@ -231,20 +231,20 @@
 }
 
 .agent-folders-chat-zone[data-dragging] {
-  border-color: color-mix(in srgb, var(--accent) 70%, var(--openbot-text-primary));
-  background: var(--openbot-hover);
+  border-color: color-mix(in srgb, var(--accent) 70%, var(--zollybot-text-primary));
+  background: var(--zollybot-hover);
 }
 
 .agent-folders-chat-zone svg {
   flex: none;
   width: 24px;
   height: 24px;
-  color: var(--openbot-text-secondary);
-  transition: color var(--openbot-duration-fast) var(--openbot-ease-out);
+  color: var(--zollybot-text-secondary);
+  transition: color var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .agent-folders-chat-zone[data-dragging] svg {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* The folder picker for an agent on another computer. It uses the frame of the "More providers"
@@ -252,16 +252,16 @@
 .host-folder-picker-places {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--openbot-space-1);
-  padding: 0 var(--openbot-space-3) var(--openbot-space-2);
+  gap: var(--zollybot-space-1);
+  padding: 0 var(--zollybot-space-3) var(--zollybot-space-2);
 }
 
 .host-folder-picker-path {
   margin: 0;
-  padding: 0 var(--openbot-space-3) var(--openbot-space-2);
+  padding: 0 var(--zollybot-space-3) var(--zollybot-space-2);
   overflow-wrap: anywhere;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .host-folder-picker .provider-more-list {
@@ -271,15 +271,15 @@
 
 .host-folder-picker-note {
   margin: 0;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .host-folder-picker-footer {
   display: flex;
   flex-shrink: 0;
   justify-content: flex-end;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-2) var(--openbot-space-1) var(--openbot-space-1);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-2) var(--zollybot-space-1) var(--zollybot-space-1);
 }

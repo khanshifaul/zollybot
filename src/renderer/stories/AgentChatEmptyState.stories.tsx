@@ -1,5 +1,5 @@
-import type { RoutineFields } from "@openbot/contracts/ipc";
-import type { AgentProfile } from "@openbot/ui/data";
+import type { RoutineFields } from "@zollybot/contracts/ipc";
+import type { AgentProfile } from "@zollybot/ui/data";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { StoryConversation } from "./conversation-story-support";
 import { requireFixture, STORY_AGENT, STORY_AGENTS, STORY_MARKETPLACE_AGENT_DETAILS } from "./fixtures";
@@ -19,7 +19,7 @@ const AGENT: AgentProfile = {
   title: template.title,
   description: template.description,
   threadId: "thread-desk-researcher",
-  workspacePath: "/mock/OpenBot/Agents/desk-researcher",
+  workspacePath: "/mock/ZollyBot/Agents/desk-researcher",
   avatarSeed: template.avatarSeed,
   avatarHue: template.avatarHue,
   avatarUrl: template.avatarUrl,

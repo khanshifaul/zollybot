@@ -1,10 +1,11 @@
+import type { JSX } from "@solidjs/web";
 import {
   type AvatarHue,
   BROWSER_PROFILE_NAME_MAX,
   type BrowserProfileSummary,
   type BrowserProxySummary,
   browserProxyAddressText,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   Button,
   buttonVariants,
@@ -27,9 +28,8 @@ import {
   Text,
   Trash2,
   Waypoints,
-} from "@openbot/ui";
-import { errorReference, type UserErrorDetails } from "@openbot/user-errors";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { errorReference, type UserErrorDetails } from "@zollybot/user-errors";
 import { createStore, For, Show } from "solid-js";
 import { useText } from "../../text";
 import { BrowserProfileColorMenu, BrowserProfileDot } from "./BrowserProfileColor";

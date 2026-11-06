@@ -39,47 +39,47 @@ import {
   parseUpdateAgentPlanCardInput,
   parseUpdateAgentTaskLimitInput,
   parseUpdateBrowserProfileInput,
-} from "@openbot/contracts/ipc";
-import { AGENT_ADMIN_CAPABILITY, AGENT_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/agent-admin-v1";
+} from "@zollybot/contracts/ipc";
+import { AGENT_ADMIN_CAPABILITY, AGENT_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/agent-admin-v1";
 import {
   AGENT_BACKUP_MODELS_CAPABILITY,
   AGENT_BACKUP_MODELS_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-backup-models-v1";
+} from "@zollybot/contracts/team-protocol/agent-backup-models-v1";
 import {
   AGENT_FAST_MODE_CAPABILITY,
   AGENT_FAST_MODE_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-fast-mode-v1";
+} from "@zollybot/contracts/team-protocol/agent-fast-mode-v1";
 import {
   AGENT_HOST_SETTINGS_CAPABILITY,
   AGENT_HOST_SETTINGS_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-host-settings-v1";
-import { AGENT_INSTALL_CAPABILITY, AGENT_INSTALL_ROUTES } from "@openbot/contracts/team-protocol/agent-install-v1";
-import { AGENT_NEW_CHAT_CAPABILITY, AGENT_NEW_CHAT_ROUTES } from "@openbot/contracts/team-protocol/agent-new-chat-v1";
+} from "@zollybot/contracts/team-protocol/agent-host-settings-v1";
+import { AGENT_INSTALL_CAPABILITY, AGENT_INSTALL_ROUTES } from "@zollybot/contracts/team-protocol/agent-install-v1";
+import { AGENT_NEW_CHAT_CAPABILITY, AGENT_NEW_CHAT_ROUTES } from "@zollybot/contracts/team-protocol/agent-new-chat-v1";
 import {
   AGENT_PLAN_CARD_CAPABILITY,
   AGENT_PLAN_CARD_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-plan-card-v1";
+} from "@zollybot/contracts/team-protocol/agent-plan-card-v1";
 import {
   AGENT_PUBLISH_CAPABILITY,
   AGENT_PUBLISH_IMAGE_BYTES,
   AGENT_PUBLISH_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-publish-v1";
+} from "@zollybot/contracts/team-protocol/agent-publish-v1";
 import {
   AGENT_TASK_LIMIT_CAPABILITY,
   AGENT_TASK_LIMIT_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-task-limit-v1";
-import { AGENT_UPDATE_CAPABILITY, AGENT_UPDATE_ROUTES } from "@openbot/contracts/team-protocol/agent-update-v1";
+} from "@zollybot/contracts/team-protocol/agent-task-limit-v1";
+import { AGENT_UPDATE_CAPABILITY, AGENT_UPDATE_ROUTES } from "@zollybot/contracts/team-protocol/agent-update-v1";
 import {
   BROWSER_PROFILES_CAPABILITY,
   BROWSER_PROFILES_ROUTES,
-} from "@openbot/contracts/team-protocol/browser-profiles-v1";
+} from "@zollybot/contracts/team-protocol/browser-profiles-v1";
 import {
   BROWSER_PROXIES_CAPABILITY,
   BROWSER_PROXIES_ROUTES,
-} from "@openbot/contracts/team-protocol/browser-proxies-v1";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { SKILLS_ADMIN_CAPABILITY, SKILLS_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/skills-admin-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/browser-proxies-v1";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { SKILLS_ADMIN_CAPABILITY, SKILLS_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/skills-admin-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { AgentAdminSettingsService } from "../agent-admin-settings";
 import type { AgentHostSettingsService } from "../agent-host-settings";

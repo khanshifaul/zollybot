@@ -1,4 +1,4 @@
-import { decodeHostReleaseStatus, type HostReleaseStatus } from "@openbot/contracts/ipc";
+import { decodeHostReleaseStatus, type HostReleaseStatus } from "@zollybot/contracts/ipc";
 // What the Team API client will accept from a remote host. `packages/contracts/src/ipc-decoding.ts`
 // supplies the primitives; this family says which shapes survive them.
 //
@@ -17,8 +17,8 @@ import { decodeHostReleaseStatus, type HostReleaseStatus } from "@openbot/contra
 // already checks; the two consequences worth naming (a host older than 63b55606 omitting `avatarUrl`,
 // a browser preview that is not a bounded JPEG data URL) are covered where they are reached.
 
-import { emptyDecoder } from "@openbot/contracts/ipc-decoding";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+import { emptyDecoder } from "@zollybot/contracts/ipc-decoding";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 
 export type ResponseDecoder<T> = (value: unknown) => T;
 

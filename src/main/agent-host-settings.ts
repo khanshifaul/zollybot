@@ -24,8 +24,8 @@ import {
   type UpdateAgentNewChatInput,
   type UpdateAgentPlanCardInput,
   type UpdateAgentTaskLimitInput,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import type { AgentService } from "../backend/agent-service";
 import { causeHelpers } from "../backend/effect-boundary";
 import { AgentNotFoundError } from "./agent-admin-settings";

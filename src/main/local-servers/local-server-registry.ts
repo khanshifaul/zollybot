@@ -12,7 +12,7 @@
 // Electron-free, with the cipher injected.
 
 import { readFile } from "node:fs/promises";
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result, Schema, Semaphore } from "effect";
 import {
   isEmptyStoredFile,
@@ -21,7 +21,7 @@ import {
   writeJsonFileAtomically,
 } from "../../backend/atomic-json-file";
 
-export const LOCAL_SERVERS_FILE = "openbot-local-servers-v1.json";
+export const LOCAL_SERVERS_FILE = "zollybot-local-servers-v1.json";
 
 /** The folder names come from this id, so a changed file cannot name a path outside the two roots. */
 const folderId = Schema.String.check(

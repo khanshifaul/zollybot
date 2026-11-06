@@ -1,11 +1,11 @@
-import { rankAgentMentions } from "@openbot/contracts/agent-mention-rank";
-import { attachmentReferenceIds } from "@openbot/contracts/attachment-references";
-import { EVERYONE_MENTION, serializeChatTagReference } from "@openbot/contracts/chat-tag-references";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { DraftAttachment } from "@openbot/contracts/ipc";
-import { AppWindow, Badge, Blocks, Listbox, Puzzle, Split, UsersRound } from "@openbot/ui";
-import { usesTouchLayout } from "@openbot/ui/utils";
 import { Dynamic, Portal } from "@solidjs/web";
+import { rankAgentMentions } from "@zollybot/contracts/agent-mention-rank";
+import { attachmentReferenceIds } from "@zollybot/contracts/attachment-references";
+import { EVERYONE_MENTION, serializeChatTagReference } from "@zollybot/contracts/chat-tag-references";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { DraftAttachment } from "@zollybot/contracts/ipc";
+import { AppWindow, Badge, Blocks, Listbox, Puzzle, Split, UsersRound } from "@zollybot/ui";
+import { usesTouchLayout } from "@zollybot/ui/utils";
 import {
   createEffect,
   createMemo,

@@ -5,11 +5,11 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { FuseV1Options, getCurrentFuseWire } from "@electron/fuses";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger } from "@openbot/logging";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { isMissingFileError } from "../src/backend/file-errors";
 
-const logger = createOpenBotLogger("verify-macos-package");
+const logger = createZollyBotLogger("verify-macos-package");
 
 const FUSE_DISABLED = 48;
 const FUSE_ENABLED = 49;
@@ -34,13 +34,13 @@ const EXPECTED_MACOS_ICON_FILES = [
 // electron-builder writes the default x64 build to `dist/mac` and adds a suffix for any other one.
 // The package is built for the runner's own architecture, so that is the one to verify.
 const architecture = process.arch === "arm64" ? "arm64" : process.arch === "x64" ? "x64" : null;
-if (!architecture) throw new Error(`OpenBot does not ship for macOS ${process.arch}.`);
+if (!architecture) throw new Error(`ZollyBot does not ship for macOS ${process.arch}.`);
 const machOArchitecture = architecture === "arm64" ? "arm64" : "x86_64";
 const appPath = resolve(
-  process.argv[2] ?? (architecture === "arm64" ? "dist/mac-arm64/OpenBot.app" : "dist/mac/OpenBot.app"),
+  process.argv[2] ?? (architecture === "arm64" ? "dist/mac-arm64/ZollyBot.app" : "dist/mac/ZollyBot.app"),
 );
 const contentsPath = resolve(appPath, "Contents");
-const executablePath = resolve(contentsPath, "MacOS/OpenBot");
+const executablePath = resolve(contentsPath, "MacOS/ZollyBot");
 const resourcesPath = resolve(contentsPath, "Resources");
 const packagedIconPath = resolve(resourcesPath, "icon.icns");
 const sourceIconPath = resolve("build/icon-production.icns");
@@ -93,9 +93,9 @@ await Promise.all([
   access(resolve(resourcesPath, "remote-desktop-runtime/source-manifest.json")),
   access(resolve(resourcesPath, "remote-desktop-runtime/DISTRIBUTION-SHA256SUMS.txt")),
   access(resolve(resourcesPath, "remote-desktop-runtime/sources/Sunshine-v2026.516.143833-source.tar.gz")),
-  access(resolve(resourcesPath, "remote-desktop-runtime/sources/sunshine-v2026.516.143833-openbot.patch")),
-  access(resolve(resourcesPath, "remote-desktop-runtime/sources/moonlight-web-stream-v2.10.0-openbot-source.tar.gz")),
-  access(resolve(resourcesPath, "remote-desktop-runtime/sources/moonlight-web-stream-v2.10.0-openbot.patch")),
+  access(resolve(resourcesPath, "remote-desktop-runtime/sources/sunshine-v2026.516.143833-zollybot.patch")),
+  access(resolve(resourcesPath, "remote-desktop-runtime/sources/moonlight-web-stream-v2.10.0-zollybot-source.tar.gz")),
+  access(resolve(resourcesPath, "remote-desktop-runtime/sources/moonlight-web-stream-v2.10.0-zollybot.patch")),
   access(resolve(remoteRuntimePath, "Sunshine.app/Contents/MacOS/Sunshine")),
   access(resolve(remoteRuntimePath, "web-server")),
   access(resolve(remoteRuntimePath, "streamer")),
@@ -115,7 +115,7 @@ await Promise.all(
   ),
 );
 // `signIgnore` keeps the driver's own Developer ID signature, and with it the Automation
-// entitlement that re-signing under OpenBot's inherited entitlements would drop.
+// entitlement that re-signing under ZollyBot's inherited entitlements would drop.
 assertCuaDriverSignature(resolve(cuaDriverPath, "cua-driver"));
 await verifyPackagedIcon(packagedIconPath, sourceIconPath);
 await verifyPackagedIconCatalog(packagedIconCatalogPath, sourceIconCatalogPath);
@@ -127,9 +127,9 @@ await assertAbsent(
 
 const plist = JSON.parse(run("plutil", ["-convert", "json", "-o", "-", plistPath]));
 if (!isDynamicRecord(plist)) throw new Error("Info.plist is not a JSON object.");
-expectEqual(plist.CFBundleDisplayName, "OpenBot", "display name");
-expectEqual(plist.CFBundleExecutable, "OpenBot", "executable name");
-expectEqual(plist.CFBundleIdentifier, "app.openbot.desktop", "bundle identifier");
+expectEqual(plist.CFBundleDisplayName, "ZollyBot", "display name");
+expectEqual(plist.CFBundleExecutable, "ZollyBot", "executable name");
+expectEqual(plist.CFBundleIdentifier, "app.zollybot.desktop", "bundle identifier");
 expectEqual(plist.CFBundleIconFile, "icon.icns", "application icon");
 expectEqual(plist.CFBundleIconName, "Icon", "macOS 26 application icon");
 expectEqual(plist.LSMinimumSystemVersion, "13.0", "minimum macOS version");
@@ -140,7 +140,7 @@ if (!Array.isArray(plist.NSUserActivityTypes) || !plist.NSUserActivityTypes.incl
 if (!plist.ElectronAsarIntegrity) throw new Error("ASAR integrity metadata is missing.");
 expectEqual(
   plist.NSMicrophoneUsageDescription,
-  "OpenBot uses the microphone to transcribe voice prompts locally on this Mac.",
+  "ZollyBot uses the microphone to transcribe voice prompts locally on this Mac.",
   "microphone usage description",
 );
 
@@ -216,7 +216,7 @@ await verifyLaunch(executablePath);
 
 logger.info(`Verified ${appPath}`);
 logger.info(
-  `OpenBot ${String(packageJson.version)} · ${machOArchitecture} · icon · GPL remote runtime · WebRTC remote stack · ASAR integrity · hardened fuses · launch`,
+  `ZollyBot ${String(packageJson.version)} · ${machOArchitecture} · icon · GPL remote runtime · WebRTC remote stack · ASAR integrity · hardened fuses · launch`,
 );
 
 function expectEqual(actual: unknown, expected: unknown, label: string): void {
@@ -240,8 +240,8 @@ async function verifyPackagedIcon(packagedPath: string, sourcePath: string): Pro
     throw new Error("The packaged macOS icon does not match build/icon-production.icns.");
   }
 
-  const iconRoot = await mkdtemp(join(tmpdir(), "openbot-icon-"));
-  const iconSetPath = join(iconRoot, "OpenBot.iconset");
+  const iconRoot = await mkdtemp(join(tmpdir(), "zollybot-icon-"));
+  const iconSetPath = join(iconRoot, "ZollyBot.iconset");
   try {
     run("iconutil", ["--convert", "iconset", packagedPath, "--output", iconSetPath]);
     await Promise.all(EXPECTED_MACOS_ICON_FILES.map((name) => access(join(iconSetPath, name))));
@@ -258,7 +258,7 @@ async function verifyPackagedIconCatalog(packagedPath: string, sourcePath: strin
   }
 }
 
-/** The Computer Use driver keeps the signature it was published with, not OpenBot's. */
+/** The Computer Use driver keeps the signature it was published with, not ZollyBot's. */
 function assertCuaDriverSignature(binary: string): void {
   const description = run("codesign", ["-dvvv", binary], true);
   if (!description.includes("Authority=Developer ID Application: Cua AI, Inc. (YCK386LBJ7)")) {
@@ -284,15 +284,15 @@ function run(command: string, args: string[], includeStderr = false): string {
 }
 
 async function verifyLaunch(executable: string): Promise<void> {
-  const userDataPath = await mkdtemp(join(tmpdir(), "openbot-package-smoke-"));
+  const userDataPath = await mkdtemp(join(tmpdir(), "zollybot-package-smoke-"));
   const child = spawn(executable, [`--user-data-dir=${userDataPath}`, "--use-mock-keychain"], {
     env: {
       ...process.env,
       CODEX_HOME: join(userDataPath, "codex-home"),
       CLAUDE_CONFIG_DIR: join(userDataPath, "claude-home"),
-      OPENBOT_CODEX_PATH: join(userDataPath, "missing-codex"),
-      OPENBOT_CLAUDE_PATH: join(userDataPath, "missing-claude"),
-      OPENBOT_GROK_PATH: join(userDataPath, "missing-grok"),
+      ZOLLYBOT_CODEX_PATH: join(userDataPath, "missing-codex"),
+      ZOLLYBOT_CLAUDE_PATH: join(userDataPath, "missing-claude"),
+      ZOLLYBOT_GROK_PATH: join(userDataPath, "missing-grok"),
     },
     stdio: ["ignore", "ignore", "pipe"],
   });
@@ -305,7 +305,7 @@ async function verifyLaunch(executable: string): Promise<void> {
   const launchExit = new Promise<never>((_, reject) => {
     child.once("exit", (code, signal) => {
       reject(
-        new Error(`Packaged OpenBot exited during launch (${signal ?? `code ${String(code)}`}): ${stderr.trim()}`),
+        new Error(`Packaged ZollyBot exited during launch (${signal ?? `code ${String(code)}`}): ${stderr.trim()}`),
       );
     });
   });
@@ -332,7 +332,7 @@ async function verifyLaunch(executable: string): Promise<void> {
     await verifySecondInstanceExits(executable, userDataPath, launchExit);
     if (child.exitCode !== null || child.signalCode !== null) {
       throw new Error(
-        `Packaged OpenBot exited when a second instance started (${child.signalCode ?? `code ${String(child.exitCode)}`}): ${stderr.trim()}`,
+        `Packaged ZollyBot exited when a second instance started (${child.signalCode ?? `code ${String(child.exitCode)}`}): ${stderr.trim()}`,
       );
     }
   } finally {
@@ -362,7 +362,7 @@ async function waitForFirstInstance(
     const limit = Date.now() + launchStepLimitMs;
     while (!(await reached())) {
       if (Date.now() > limit) {
-        throw new Error(`Packaged OpenBot did not ${step} in 5 minutes: ${stderr().trim()}`);
+        throw new Error(`Packaged ZollyBot did not ${step} in 5 minutes: ${stderr().trim()}`);
       }
       await delay(200, undefined, { signal: stop.signal });
     }
@@ -409,9 +409,9 @@ async function verifySecondInstanceExits(
       ...process.env,
       CODEX_HOME: join(userDataPath, "codex-home"),
       CLAUDE_CONFIG_DIR: join(userDataPath, "claude-home"),
-      OPENBOT_CODEX_PATH: join(userDataPath, "missing-codex"),
-      OPENBOT_CLAUDE_PATH: join(userDataPath, "missing-claude"),
-      OPENBOT_GROK_PATH: join(userDataPath, "missing-grok"),
+      ZOLLYBOT_CODEX_PATH: join(userDataPath, "missing-codex"),
+      ZOLLYBOT_CLAUDE_PATH: join(userDataPath, "missing-claude"),
+      ZOLLYBOT_GROK_PATH: join(userDataPath, "missing-grok"),
     },
     stdio: ["ignore", "ignore", "pipe"],
   });
@@ -432,11 +432,11 @@ async function verifySecondInstanceExits(
       delay(launchStepLimitMs, null, { signal: stop.signal }),
     ]);
     if (!result) {
-      throw new Error(`A second OpenBot instance did not exit in 5 minutes: ${stderr.trim()}`);
+      throw new Error(`A second ZollyBot instance did not exit in 5 minutes: ${stderr.trim()}`);
     }
     if (result.code !== 0 || result.signal) {
       throw new Error(
-        `A second OpenBot instance exited unexpectedly (${result.signal ?? `code ${String(result.code)}`}): ${stderr.trim()}`,
+        `A second ZollyBot instance exited unexpectedly (${result.signal ?? `code ${String(result.code)}`}): ${stderr.trim()}`,
       );
     }
   } finally {

@@ -3,8 +3,8 @@ import { stat } from "node:fs/promises";
 import { extname } from "node:path";
 import { Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { sourceText } from "@openbot/i18n/source";
-import { WhatsAppStoreUnreadable } from "@openbot/whatsapp/auth-store";
+import { sourceText } from "@zollybot/i18n/source";
+import { WhatsAppStoreUnreadable } from "@zollybot/whatsapp/auth-store";
 import {
   type AnyMessageContent,
   downloadMediaMessage,
@@ -12,7 +12,7 @@ import {
   type MiscMessageGenerationOptions,
   type WAMessage,
   type WAMessageKey,
-} from "@openbot/whatsapp/baileys";
+} from "@zollybot/whatsapp/baileys";
 import { Effect, Result } from "effect";
 import type { MessagingAnswerFile } from "../messaging-threads";
 import {
@@ -45,7 +45,7 @@ const WHATSAPP_FILE_BYTES_LIMIT = 64 * 1024 * 1024;
 const EDIT_WINDOW_MS = 14 * 60_000;
 const PLACE_NAME_TIMEOUT_MS = 5_000;
 /**
- * In "Message yourself", WhatsApp shows OpenBot's posts on the right, as the owner's own. A last line of
+ * In "Message yourself", WhatsApp shows ZollyBot's posts on the right, as the owner's own. A last line of
  * blank braille characters (U+2800, which WhatsApp does not trim) makes the bubble as wide as the chat
  * allows, so the answer starts at the left, as a reply does. The time stays on that line.
  */
@@ -334,7 +334,7 @@ class WhatsAppAdapter implements MessagingAdapter {
     });
   }
 
-  /** The owner's own chat and the allowed chats. OpenBot posts nowhere else. */
+  /** The owner's own chat and the allowed chats. ZollyBot posts nowhere else. */
   places(): Effect.Effect<MessagingPlace[], MessagingAdapterError> {
     return Effect.gen({ self: this }, function* () {
       const identity = whatsAppIdentity(this.#handle);
@@ -408,7 +408,7 @@ class WhatsAppAdapter implements MessagingAdapter {
     });
   }
 
-  /** The message to quote. WhatsApp needs its key and some content; the text is what OpenBot saw of it. */
+  /** The message to quote. WhatsApp needs its key and some content; the text is what ZollyBot saw of it. */
   #quoted(target: MessageTarget, messageId: string): WAMessage {
     const facts = this.#handle.chats.keyOf(messageId);
     return {

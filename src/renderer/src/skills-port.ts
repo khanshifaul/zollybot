@@ -1,10 +1,10 @@
 import type {
   InstalledSkill,
   InstallSkillInput,
-  OpenBotDesktopApi,
   SetEnabledSkillInput,
   UninstallSkillInput,
-} from "@openbot/contracts/ipc";
+  ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
 
 /**
  * What the skill screens reach in main: the marketplace, the agent skills dialog and the local
@@ -13,7 +13,7 @@ import type {
  */
 export interface SkillsPort {
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     | "addMarketplaceAgent"
     | "cancelMcpSignIn"
     | "completeMcpSignInRelay"
@@ -32,10 +32,10 @@ export interface SkillsPort {
     | "testMcpServer"
     | "uninstallAgentSkill"
   >;
-  marketplaceAgents: Pick<OpenBotDesktopApi["marketplaceAgents"], "get" | "getListing" | "install" | "list">;
-  macAutomation: Pick<OpenBotDesktopApi["macAutomation"], "request">;
+  marketplaceAgents: Pick<ZollyBotDesktopApi["marketplaceAgents"], "get" | "getListing" | "install" | "list">;
+  macAutomation: Pick<ZollyBotDesktopApi["macAutomation"], "request">;
   skills: Pick<
-    OpenBotDesktopApi["skills"],
+    ZollyBotDesktopApi["skills"],
     | "get"
     | "getBySlug"
     | "install"
@@ -49,9 +49,9 @@ export interface SkillsPort {
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function skillsPort(): SkillsPort {
-  return window.openbot;
+  return window.zollybot;
 }
 
 /** The marketplace reads the agent skills dialog uses for descriptions and details. */

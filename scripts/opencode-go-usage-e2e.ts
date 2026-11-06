@@ -4,7 +4,7 @@
 // connection comes first, then the `opencode-go` key in `auth.json`, then `OPENCODE_API_KEY` (#3548),
 // that a rejected key moves the read to the next one, that an inactive, OAuth or self-hosted Console
 // row is not read, that `OPENCODE_AUTH_CONTENT` replaces the local sign-in, and that no key sends
-// nothing. `bun scripts/opencode-go-usage-e2e.ts`. Writes .openbot-build/opencode-go-usage-e2e/report.json.
+// nothing. `bun scripts/opencode-go-usage-e2e.ts`. Writes .zollybot-build/opencode-go-usage-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -14,7 +14,7 @@ import { runCauseEffect } from "../src/backend/effect-boundary";
 import { readOpenCodeGoUsage } from "../src/backend/opencode-usage";
 import type { AccountRateLimitsReadResult } from "../src/backend/protocol";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/opencode-go-usage-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/opencode-go-usage-e2e");
 const USAGE_URL = "https://opencode.ai/zen/go/v1/usage";
 const RESETS_AT = "2026-11-01T10:00:00.000Z";
 
@@ -39,7 +39,7 @@ interface Report {
 }
 
 const report: Report = { passed: false };
-const root = await mkdtemp(join(tmpdir(), "openbot-opencode-go-usage-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-opencode-go-usage-e2e-"));
 const dataDirectory = join(root, "data", "opencode");
 const authFile = join(dataDirectory, "auth.json");
 const databaseFile = join(dataDirectory, "opencode.db");
@@ -104,7 +104,7 @@ try {
   assert.deepEqual(none.sent, [], "no request without a key");
   assert.equal(none.reading.rateLimits, null);
 
-  // 2. The case of #3548: the key is only in the environment that started OpenBot.
+  // 2. The case of #3548: the key is only in the environment that started ZollyBot.
   process.env.OPENCODE_API_KEY = "fake-env";
   const env = await readUsage(null, ["fake-env"]);
   report.environmentKey = env;

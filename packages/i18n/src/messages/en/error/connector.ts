@@ -2,20 +2,20 @@ import { defineMessages } from "../../../message";
 
 export const messages = defineMessages("error.connector", {
   // The built-in GitHub connection: the device flow, the token refresh and the stored file.
-  "error.connector.githubUnavailable": "This build of OpenBot has no GitHub App.",
+  "error.connector.githubUnavailable": "This build of ZollyBot has no GitHub App.",
   "error.connector.githubDenied": "The GitHub sign-in was refused.",
   "error.connector.githubCodeExpired": "The GitHub code expired. Connect GitHub again.",
   "error.connector.githubDeviceFlowDisabled": "The GitHub App does not allow device sign-in.",
   "error.connector.githubClientUnknown": "GitHub does not know the Client ID of this GitHub App.",
   "error.connector.githubUnexpected": "GitHub sent an unexpected answer: {detail}",
-  "error.connector.githubUnreachable": "OpenBot cannot reach GitHub: {detail}",
+  "error.connector.githubUnreachable": "ZollyBot cannot reach GitHub: {detail}",
   "error.connector.githubExpired": "The GitHub connection expired. Connect GitHub again.",
   "error.connector.githubFileUnreadable": "The GitHub connection file is unreadable.",
   "error.connector.githubFileTooLarge": "The GitHub connection file is too large.",
   "error.connector.linkDenied": "The Link sign-in was refused.",
   "error.connector.linkCodeExpired": "The Link sign-in expired. Connect Link again.",
   "error.connector.linkUnexpected": "Link sent an unexpected answer: {detail}",
-  "error.connector.linkUnreachable": "OpenBot cannot reach Link: {detail}",
+  "error.connector.linkUnreachable": "ZollyBot cannot reach Link: {detail}",
   "error.connector.linkExpired": "The Link connection expired. Connect Link again.",
   "error.connector.linkNotConnected": "Link is not connected. Connect it in Server settings > Vault > Cards.",
   "error.connector.linkNoCard": "The Link account has no card. Add a card in Link.",
@@ -23,9 +23,9 @@ export const messages = defineMessages("error.connector", {
   "error.connector.linkFileTooLarge": "The Link connection file is too large.",
   // The 1Password connection: the CLI that creates the service account, the token and the stored file.
   "error.connector.onePasswordCliMissing":
-    "OpenBot cannot find the 1Password CLI. Install it and turn on its integration in the 1Password app, or use a service account token.",
+    "ZollyBot cannot find the 1Password CLI. Install it and turn on its integration in the 1Password app, or use a service account token.",
   "error.connector.onePasswordCliInstallFailed":
-    "OpenBot could not install the 1Password CLI. Check the connection to the internet, then try again.",
+    "ZollyBot could not install the 1Password CLI. Check the connection to the internet, then try again.",
   "error.connector.onePasswordCliSignedOut":
     "The 1Password CLI is not signed in. Turn on its integration in the 1Password app, then connect again.",
   "error.connector.onePasswordCliFailed": "The 1Password CLI failed: {detail}",
@@ -36,15 +36,15 @@ export const messages = defineMessages("error.connector", {
   "error.connector.onePasswordFileUnreadable": "The 1Password connection file is unreadable.",
   "error.connector.onePasswordFileTooLarge": "The 1Password connection file is too large.",
   "error.connector.bitwardenFailed":
-    "Could not read Bitwarden. Install the bw CLI, sign in, unlock it, and create one folder named Shared with OpenBot. Connect with a new session key.",
+    "Could not read Bitwarden. Install the bw CLI, sign in, unlock it, and create one folder named Shared with ZollyBot. Connect with a new session key.",
   "error.connector.bitwardenHostInput":
     "Enter an HTTPS server address, the API key client_id and client_secret, and the master password.",
   "error.connector.bitwardenHostFailed":
-    "Could not open Bitwarden on this server. Check the server address, the API key and the master password, and make sure that one folder is named Shared with OpenBot. Then connect again.",
+    "Could not open Bitwarden on this server. Check the server address, the API key and the master password, and make sure that one folder is named Shared with ZollyBot. Then connect again.",
   "error.connector.bitwardenCliInstallFailed":
     "Could not install the Bitwarden CLI on this server. Check its network connection, then connect again.",
   "error.connector.bitwardenFileUnreadable": "The Bitwarden connection file is unreadable.",
-  "error.connector.passwordManagerUnknown": "OpenBot does not know this password manager.",
+  "error.connector.passwordManagerUnknown": "ZollyBot does not know this password manager.",
   "error.connector.passwordManagerMethod": "This password manager cannot connect this way.",
   "error.connector.passwordManagerNoSignIn": "No sign-in page is open. Connect again.",
   "error.connector.protonPassFailed": "Could not connect Proton Pass. Connect again.",
@@ -59,5 +59,5 @@ export const messages = defineMessages("error.connector", {
   "error.connector.protonPassFileUnreadable": "The Proton Pass connection file is unreadable.",
   "error.connector.protonPassSignInTimeout": "The Proton sign-in took too long. Connect again.",
   "error.connector.protonPassSetupFailed":
-    "Could not make the vault Shared with OpenBot or its access key in Proton Pass. Connect again.",
+    "Could not make the vault Shared with ZollyBot or its access key in Proton Pass. Connect again.",
 });

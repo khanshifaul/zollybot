@@ -1,8 +1,8 @@
-import { serializeAttachmentReference } from "@openbot/contracts/attachment-references";
-import { serializeChatTagReference } from "@openbot/contracts/chat-tag-references";
-import type { DraftAttachment, InstalledSkill } from "@openbot/contracts/ipc";
-import type { ComposerBrowserTab, ComposerThread } from "@openbot/ui/data";
-import { ComposerEditor } from "@openbot/ui/features/conversation/ComposerEditor";
+import { serializeAttachmentReference } from "@zollybot/contracts/attachment-references";
+import { serializeChatTagReference } from "@zollybot/contracts/chat-tag-references";
+import type { DraftAttachment, InstalledSkill } from "@zollybot/contracts/ipc";
+import type { ComposerBrowserTab, ComposerThread } from "@zollybot/ui/data";
+import { ComposerEditor } from "@zollybot/ui/features/conversation/ComposerEditor";
 import { createSignal } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -74,7 +74,7 @@ const installedSkills: InstalledSkill[] = [
   },
   {
     skillId: "skill-site-hosting",
-    slug: "openbot-site-hosting",
+    slug: "zollybot-site-hosting",
     name: "Site Hosting",
     installedVersion: 1,
     availableVersion: 1,
@@ -107,12 +107,12 @@ const longDescriptionSkill: InstalledSkill = {
 
 /** The agent's open browser tabs. One title is long, so the row cuts it off. */
 const browserTabs: ComposerBrowserTab[] = [
-  { id: "browser-tab-docs", title: "OpenBot documentation", url: "https://openbot.run/docs" },
+  { id: "browser-tab-docs", title: "ZollyBot documentation", url: "https://openbot.run/docs" },
   { id: "browser-tab-linear", title: "Plans and pricing – Linear", url: "https://linear.app/pricing" },
   {
     id: "browser-tab-github",
-    title: "Let a channel lead cancel its own runs at a person's request · Pull Request #4981 · openbot/openbot",
-    url: "https://github.com/openbot/openbot/pull/4981",
+    title: "Let a channel lead cancel its own runs at a person's request · Pull Request #4981 · zollybot/zollybot",
+    url: "https://github.com/zollybot/zollybot/pull/4981",
   },
 ];
 

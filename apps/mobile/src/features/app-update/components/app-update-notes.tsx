@@ -1,4 +1,4 @@
-import type { MobileReleaseNoteGroup, MobileReleaseNotes } from "@openbot/contracts/mobile-features";
+import type { MobileReleaseNoteGroup, MobileReleaseNotes } from "@zollybot/contracts/mobile-features";
 import { Button, Spinner, Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
 import { type PropsWithChildren, type ReactNode, useState } from "react";

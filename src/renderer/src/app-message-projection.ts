@@ -1,4 +1,4 @@
-import type { ClientAgentSummary, ConversationMessage, QueueDeliveryStatus } from "@openbot/contracts/ipc";
+import type { ClientAgentSummary, ConversationMessage, QueueDeliveryStatus } from "@zollybot/contracts/ipc";
 import {
   AGENT_INSTRUCTIONS_CHANGE_ITEM_TYPE,
   CONVERSATION_MEMORY_CHANGES_ITEM_TYPE,
@@ -16,19 +16,19 @@ import {
   routineConversationEvent,
   routineRunConversationEvent,
   skillConversationEvent,
-} from "@openbot/contracts/ipc";
-import { markdownPreviewText } from "@openbot/contracts/markdown-preview-text";
-import { cleanAgentMessageText } from "@openbot/team-client/agent-message-text";
+} from "@zollybot/contracts/ipc";
+import { markdownPreviewText } from "@zollybot/contracts/markdown-preview-text";
+import { cleanAgentMessageText } from "@zollybot/team-client/agent-message-text";
 import type {
   AgentDeliveryMarkerStatus,
   AgentMessage,
   AgentMessagePlan,
   AgentProfile,
   ChatActionMarkerModel,
-} from "@openbot/ui/data";
-import { formatChatTimestamp } from "@openbot/ui/features/conversation/chat-timestamp";
-import type { TaskListItem } from "@openbot/ui/features/conversation/TaskList";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/data";
+import { formatChatTimestamp } from "@zollybot/ui/features/conversation/chat-timestamp";
+import type { TaskListItem } from "@zollybot/ui/features/conversation/TaskList";
+import { currentText } from "@zollybot/ui/text";
 import { isRoutineEventItem } from "./features/conversation/conversation-read-state";
 
 export function toAgentProfile(stored: ClientAgentSummary): AgentProfile {

@@ -1,9 +1,9 @@
 import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import { playableMediaKind } from "@openbot/contracts/attachment-files";
-import { rewriteAttachmentReferences } from "@openbot/contracts/attachment-references";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { playableMediaKind } from "@zollybot/contracts/attachment-files";
+import { rewriteAttachmentReferences } from "@zollybot/contracts/attachment-references";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentRuntimeWorkItem,
   AttachmentDataInput,
@@ -20,7 +20,7 @@ import type {
   QueuedMessageReceipt,
   QueueSnapshot,
   QueueSteerFallback,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   AGENT_EXCHANGE_ITEM_TYPE,
   AGENT_RUNTIME_ATTENTION_LIMIT,
@@ -29,11 +29,11 @@ import {
   isConversationMessageSender,
   isMessageReaction,
   QUEUE_STEER_FALLBACKS,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isNumber, isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { QueueEditRejectedError } from "@openbot/contracts/team-protocol/queue-edit-v1";
-import { sourceText } from "@openbot/i18n/source";
-import { redactText } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isNumber, isOneOf, isString } from "@zollybot/contracts/runtime-values";
+import { QueueEditRejectedError } from "@zollybot/contracts/team-protocol/queue-edit-v1";
+import { sourceText } from "@zollybot/i18n/source";
+import { redactText } from "@zollybot/logging";
 import { Effect, Result } from "effect";
 import {
   AttachmentFiles,
@@ -52,9 +52,9 @@ import { isEmptyStoredFile, parseStoredJson } from "./atomic-json-file";
 import { routineNameInLimit } from "./database/legacy-conversation-message";
 import { mailboxReactionRowKey } from "./database/mailbox-projection";
 import { MailboxDeliveryGate } from "./mailbox-delivery-gate";
-import { OpenBotDatabase } from "./openbot-database";
 import { isRecord } from "./protocol";
 import { recordRestartActivity } from "./restart-activity";
+import { ZollyBotDatabase } from "./zollybot-database";
 
 const MAX_ATTACHMENTS = INPUT_LIMITS.attachments;
 /** How much of a delivery's error the note for a failed request quotes. */
@@ -130,7 +130,7 @@ export interface UsageLimitContinuation {
 }
 
 /**
- * The turns that OpenBot added to a delivery because its plan still had open steps. `queued` is set
+ * The turns that ZollyBot added to a delivery because its plan still had open steps. `queued` is set
  * from the end of one turn to the start of the next; the queue then shows the delivery as running.
  */
 interface PlanContinuationMarker {
@@ -155,7 +155,7 @@ interface StoredDelivery {
   steerFallback?: QueueSteerFallback;
   /** The interrupted turn whose work continues after a usage-limit switch. Kept out of queue snapshots. */
   resumeAfterUsageLimit?: UsageLimitContinuation;
-  /** OpenBot's automatic plan continuations of this delivery. Kept out of queue snapshots. */
+  /** ZollyBot's automatic plan continuations of this delivery. Kept out of queue snapshots. */
   planContinuation?: PlanContinuationMarker;
 }
 
@@ -256,7 +256,7 @@ export const MAILBOX_CONVERSATION_MESSAGE_LIMIT = 100;
 export class MailboxStore {
   readonly #statePath: string;
   readonly #files: AttachmentFiles;
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
   readonly #queueUpdates = new Set<string>();
   readonly #deliveryGate = new MailboxDeliveryGate();
   readonly #stagedGeneratedAttachments = new Map<string, StoredGeneratedAttachment>();
@@ -270,7 +270,7 @@ export class MailboxStore {
     reactionKeys: new Set<string>(),
   };
 
-  constructor(userDataPath: string, sharedRoot: string, database = new OpenBotDatabase(userDataPath)) {
+  constructor(userDataPath: string, sharedRoot: string, database = new ZollyBotDatabase(userDataPath)) {
     this.#statePath = join(userDataPath, "mailbox.json");
     this.#files = new AttachmentFiles({ userDataPath, sharedRoot });
     this.#database = database;
@@ -1987,7 +1987,7 @@ export class MailboxStore {
       recipientAgentIds: [requesterId],
       text: [
         "Status: blocked",
-        `Result: OpenBot note, not written by this teammate: the request failed before the teammate answered. ${(delivery.error ?? "The provider gave no reason.").slice(0, FAILED_REQUEST_REASON_LIMIT)}`,
+        `Result: ZollyBot note, not written by this teammate: the request failed before the teammate answered. ${(delivery.error ?? "The provider gave no reason.").slice(0, FAILED_REQUEST_REASON_LIMIT)}`,
         "Evidence: none",
         "Unblock: The user must fix the cause, then ask for the request again.",
       ].join("\n"),
@@ -3239,7 +3239,7 @@ function compareQueueOrder(left: StoredDelivery, right: StoredDelivery): number 
  * Mailbox state written before the bot-to-agent rename spells the product agent `bot`. The validators
  * below run *before* normalization and throw "Stored mailbox projection is invalid.", so an old
  * spelling does not degrade -- it blocks startup outright. Migration v13 rewrites the database, but a
- * user who restores `openbot.db` from their own copy of the file never runs it, and `mailbox.json`
+ * user who restores `zollybot.db` from their own copy of the file never runs it, and `mailbox.json`
  * predates the database entirely. So every read tolerates both spellings and every write emits only
  * the new one. This renames keys and the `sender.kind` / `actor.kind` discriminant, never message text.
  */

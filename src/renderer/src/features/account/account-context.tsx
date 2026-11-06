@@ -4,8 +4,8 @@ import type {
   AvatarColor,
   AvatarImageInput,
   CentralAuthState,
-} from "@openbot/contracts/ipc";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import { currentText } from "@zollybot/ui/text";
 import { createMemo, createSignal, createStore, flush, onCleanup, onSettled } from "solid-js";
 import { type DesktopAnalyticsProperties, desktopAnalytics } from "../../analytics";
 import { createSimpleContext } from "../../simple-context";

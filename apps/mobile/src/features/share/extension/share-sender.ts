@@ -8,22 +8,22 @@
  * and it gives each file only when the page asks for it, so one file at a time is in memory.
  */
 
-import { isQueuedMessageReceipt } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { TEAM_MESSAGE_CLIENT_ID_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import type { TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
-import { TEAM_PROTOCOL_V3 } from "@openbot/contracts/team-protocol/v3";
-import { decodeTeamProtocolSupportV9 } from "@openbot/contracts/team-protocol/v9";
-import { runTeamEffect } from "@openbot/team-client";
-import { verifyEd25519Base64Url } from "@openbot/team-client/ed25519";
-import { RemoteTeamDirectoryClient } from "@openbot/team-client/remote-directory";
+import { isQueuedMessageReceipt } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { TEAM_MESSAGE_CLIENT_ID_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import type { TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
+import { TEAM_PROTOCOL_V3 } from "@zollybot/contracts/team-protocol/v3";
+import { decodeTeamProtocolSupportV9 } from "@zollybot/contracts/team-protocol/v9";
+import { runTeamEffect } from "@zollybot/team-client";
+import { verifyEd25519Base64Url } from "@zollybot/team-client/ed25519";
+import { RemoteTeamDirectoryClient } from "@zollybot/team-client/remote-directory";
 import {
   createRemoteTeamPeer,
   MOBILE_ATTACHMENT_BYTES,
   type RemoteFileUpload,
   type RemoteTeamPeerActions,
-} from "@openbot/team-client/remote-peer";
+} from "@zollybot/team-client/remote-peer";
 
 /** What the extension asks the page to send. The extension has checked the values. */
 interface ShareSendRequest {
@@ -63,8 +63,8 @@ type NativeMessage =
 declare global {
   /** The page's globals: the handler that `ShareSender.swift` registers, and the function it calls. */
   interface Window {
-    webkit?: { messageHandlers?: { openbot?: { postMessage(message: NativeMessage): Promise<unknown> } } };
-    openbotShareSend?: (request: ShareSendRequest) => Promise<ShareSendResult>;
+    webkit?: { messageHandlers?: { zollybot?: { postMessage(message: NativeMessage): Promise<unknown> } } };
+    zollybotShareSend?: (request: ShareSendRequest) => Promise<ShareSendResult>;
   }
 }
 
@@ -88,7 +88,7 @@ class ShareStageError extends Error {
 
 /** Sends a message to the extension and reads its reply with `decode`. */
 async function postNative<T>(message: NativeMessage, decode: (reply: unknown) => T): Promise<T> {
-  const handler = window.webkit?.messageHandlers?.openbot;
+  const handler = window.webkit?.messageHandlers?.zollybot;
   if (!handler) throw new Error("The share extension bridge is missing.");
   return decode(await handler.postMessage(message));
 }
@@ -235,7 +235,7 @@ async function send(request: ShareSendRequest): Promise<void> {
           );
           const { minimum, maximum } = compatibility.protocol;
           if (minimum > TEAM_PROTOCOL_V3 || maximum < TEAM_PROTOCOL_V3) {
-            throw new ShareStageError("compatibility", "The server needs another OpenBot version.");
+            throw new ShareStageError("compatibility", "The server needs another ZollyBot version.");
           }
           for (const [index, file] of request.files.entries()) {
             const query = new URLSearchParams({ name: file.name, mime: file.mimeType });
@@ -301,7 +301,7 @@ async function send(request: ShareSendRequest): Promise<void> {
   }
 }
 
-async function openbotShareSend(request: ShareSendRequest): Promise<ShareSendResult> {
+async function zollybotShareSend(request: ShareSendRequest): Promise<ShareSendResult> {
   try {
     await send(request);
     return { ok: true };
@@ -310,4 +310,4 @@ async function openbotShareSend(request: ShareSendRequest): Promise<ShareSendRes
   }
 }
 
-window.openbotShareSend = openbotShareSend;
+window.zollybotShareSend = zollybotShareSend;

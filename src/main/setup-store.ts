@@ -5,8 +5,8 @@ import {
   isAgentModel,
   isAgentProvider,
   type SaveSetupInput,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";

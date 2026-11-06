@@ -1,5 +1,5 @@
-import type { AgentPromptQuestion } from "@openbot/contracts/ipc";
-import { QuestionPromptBubble } from "@openbot/ui/components/QuestionPromptBubble";
+import type { AgentPromptQuestion } from "@zollybot/contracts/ipc";
+import { QuestionPromptBubble } from "@zollybot/ui/components/QuestionPromptBubble";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { StoryConversation } from "./conversation-story-support";

@@ -1,16 +1,16 @@
 .browser-takeover-card {
   display: flex;
   width: min(540px, 100%);
-  margin: var(--openbot-space-3) 0 var(--openbot-space-6);
+  margin: var(--zollybot-space-3) 0 var(--zollybot-space-6);
   flex-direction: column;
-  gap: var(--openbot-space-4);
-  animation: browser-takeover-in var(--openbot-duration-slow) var(--openbot-ease-out) both;
+  gap: var(--zollybot-space-4);
+  animation: browser-takeover-in var(--zollybot-duration-slow) var(--zollybot-ease-out) both;
 }
 
 .browser-takeover-copy {
-  margin-top: calc(-1 * var(--openbot-space-2));
+  margin-top: calc(-1 * var(--zollybot-space-2));
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .browser-takeover-copy p {
@@ -19,37 +19,37 @@
 
 .browser-takeover-copy p {
   max-width: 54ch;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-md);
 }
 
 .browser-takeover-preview {
   min-width: 0;
   overflow: hidden;
   margin: 0;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-canvas);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-canvas);
 }
 
 .browser-takeover-preview-bar {
   display: flex;
-  height: var(--openbot-control-sm);
+  height: var(--zollybot-control-sm);
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  border-bottom: 1px solid var(--openbot-border);
-  background: var(--openbot-bg-control);
-  padding: 0 var(--openbot-space-3);
-  color: var(--openbot-text-secondary);
+  gap: var(--zollybot-space-1-5);
+  border-bottom: 1px solid var(--zollybot-border);
+  background: var(--zollybot-bg-control);
+  padding: 0 var(--zollybot-space-3);
+  color: var(--zollybot-text-secondary);
 }
 
 .browser-takeover-preview-bar svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: 0 0 auto;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .browser-takeover-preview-bar span,
@@ -62,14 +62,14 @@
 .browser-takeover-preview-bar span {
   min-width: 0;
   flex: 1;
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .browser-takeover-preview-bar small {
   max-width: 42%;
-  color: var(--openbot-text-readable);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-readable);
+  font-size: var(--zollybot-text-sm);
 }
 
 .browser-takeover-preview-viewport {
@@ -77,7 +77,7 @@
   aspect-ratio: 16 / 10;
   overflow: hidden;
   place-items: stretch;
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
 }
 
 /* The viewport is the button that opens the page, so it keeps the frame it has as a plain
@@ -101,22 +101,22 @@
   align-items: center;
   justify-self: center;
   align-self: center;
-  gap: var(--openbot-space-1);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-canvas);
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-canvas);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
   line-height: 1;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--openbot-duration-fast) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .browser-takeover-preview-open-label > svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .browser-takeover-preview-open:hover .browser-takeover-preview-open-label,
@@ -141,25 +141,25 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
-  padding: var(--openbot-space-6);
+  gap: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
+  padding: var(--zollybot-space-6);
   text-align: center;
 }
 
 .browser-takeover-preview-fallback svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  margin-bottom: var(--openbot-space-1);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  margin-bottom: var(--zollybot-space-1);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .browser-takeover-preview-fallback strong {
   max-width: 100%;
   overflow: hidden;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -167,8 +167,8 @@
 .browser-takeover-preview-fallback span {
   max-width: 100%;
   overflow: hidden;
-  color: var(--openbot-text-readable);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-readable);
+  font-size: var(--zollybot-text-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -178,7 +178,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .browser-takeover-finish {
@@ -188,11 +188,11 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .browser-takeover-actions .ui-button {
-  transition: transform var(--openbot-duration-fast) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .browser-takeover-actions .ui-button:active:not(:disabled) {
@@ -214,17 +214,17 @@
 .approval-card {
   display: flex;
   width: min(540px, 100%);
-  margin: var(--openbot-space-3) 0 var(--openbot-space-6);
+  margin: var(--zollybot-space-3) 0 var(--zollybot-space-6);
   flex-direction: column;
-  gap: var(--openbot-space-4);
-  animation: approval-card-in var(--openbot-duration-slow) var(--openbot-ease-out) both;
+  gap: var(--zollybot-space-4);
+  animation: approval-card-in var(--zollybot-duration-slow) var(--zollybot-ease-out) both;
 }
 
 .approval-card-footer {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .approval-card-footer > :last-child {
@@ -232,15 +232,15 @@
 }
 
 .approval-button {
-  border-radius: var(--openbot-radius-pill);
-  font-size: var(--openbot-text-lg);
-  font-weight: var(--openbot-weight-regular);
+  border-radius: var(--zollybot-radius-pill);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .approval-card-content {
   display: grid;
   min-width: 0;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .approval-card-content:empty {
@@ -252,55 +252,55 @@
 .approval-permissions {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface);
 }
 
 .approval-command-block code {
   display: block;
   overflow-x: auto;
-  padding: var(--openbot-space-3);
-  color: var(--openbot-text-secondary);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-md);
+  padding: var(--zollybot-space-3);
+  color: var(--zollybot-text-secondary);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-md);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .approval-cwd {
-  border-bottom: 1px solid var(--openbot-border);
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  border-bottom: 1px solid var(--zollybot-border);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
   overflow-wrap: anywhere;
 }
 
 .approval-detail-row {
   display: grid;
-  gap: var(--openbot-space-1);
-  padding: var(--openbot-space-3);
+  gap: var(--zollybot-space-1);
+  padding: var(--zollybot-space-3);
 }
 
 .approval-detail-label {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .approval-detail-row strong {
-  color: var(--openbot-text-secondary);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-secondary);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
   overflow-wrap: anywhere;
 }
 
 .approval-permissions {
   display: grid;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-3);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-3);
 }
 
 .approval-permissions:empty {
@@ -308,16 +308,16 @@
 }
 
 .approval-permissions span {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
   overflow-wrap: anywhere;
 }
 
 .approval-reason {
-  margin: calc(-1 * var(--openbot-space-2)) 0 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  margin: calc(-1 * var(--zollybot-space-2)) 0 0;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
   overflow-wrap: anywhere;
 }
 

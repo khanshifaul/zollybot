@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   RoutineFields,
   RoutineLimitPolicy,
@@ -9,7 +9,7 @@ import type {
   RoutineRunSource,
   RoutineRunStatus,
   RoutineSchedule,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   isRoutineSchedule,
   ROUTINE_LIMIT_POLICIES,
@@ -17,10 +17,10 @@ import {
   ROUTINE_MISSED_POLICIES,
   ROUTINE_RUN_PLACES,
   ROUTINE_RUN_SOURCES,
-} from "@openbot/contracts/ipc";
-import type { EventFilter, EventJsonValue, EventRoutineOwner } from "@openbot/contracts/ipc-events";
-import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import type { EventFilter, EventJsonValue, EventRoutineOwner } from "@zollybot/contracts/ipc-events";
+import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   nextRoutineOccurrence,
   nextValidRoutineOccurrence,
@@ -29,16 +29,16 @@ import {
   routineOnceInstant,
   validateRoutineSchedule,
   validateStoredRoutineSchedule,
-} from "@openbot/team-client/routine-schedule";
+} from "@zollybot/team-client/routine-schedule";
 import {
   databaseRows,
   optionalStringColumn,
   requiredNumberColumn,
   requiredStringColumn,
 } from "./database/database-rows";
-import type { OpenBotDatabase } from "./openbot-database";
 import { hasWebhookReceipt, insertWebhookReceipt, revokeRoutineWebhooks } from "./webhook-route-store";
 import { parseEventFilters, validateWebhookTrigger, webhookMismatch, webhookRunInstruction } from "./webhook-trigger";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 /**
  * Three table names, one owner column and one handle column are the whole difference between an
@@ -175,7 +175,7 @@ export interface RoutineHoldWindow {
  */
 export class RoutineStore {
   constructor(
-    protected readonly database: OpenBotDatabase,
+    protected readonly database: ZollyBotDatabase,
     protected readonly tables: RoutineTables,
   ) {}
 
@@ -806,7 +806,7 @@ export class RoutineStore {
   }
 
   /**
-   * A one-time routine that came due while OpenBot was closed. A run that a crash left behind
+   * A one-time routine that came due while ZollyBot was closed. A run that a crash left behind
    * finishes it. Otherwise `run-once` keeps it due, so the scheduler runs it now, and `skip`
    * records the missed time and finishes it.
    */
@@ -970,7 +970,7 @@ export class RoutineStore {
   }
 
   #insertRun(
-    db: OpenBotDatabase["connection"],
+    db: ZollyBotDatabase["connection"],
     runId: string,
     routine: RunSource,
     triggerId: string | null,
@@ -1098,7 +1098,7 @@ export class RoutineStore {
   }
 
   /** The column exists only on the agent table, so it is written apart from the shared insert. */
-  #writeRunIn(db: OpenBotDatabase["connection"], routineId: string, runIn: RoutineRunPlace): void {
+  #writeRunIn(db: ZollyBotDatabase["connection"], routineId: string, runIn: RoutineRunPlace): void {
     if (!this.tables.runInColumn) return;
     db.prepare(`UPDATE ${this.tables.routineTable} SET run_in = ? WHERE routine_id = ?`).run(runIn, routineId);
   }
@@ -1184,7 +1184,7 @@ export class RoutineStore {
   #mutateRun(
     runId: string,
     eventType: string,
-    mutate: (db: OpenBotDatabase["connection"], sequence: number, now: string) => void,
+    mutate: (db: ZollyBotDatabase["connection"], sequence: number, now: string) => void,
   ): OwnedRoutineRun {
     const current = this.#requireRun(runId);
     return this.database.dispatch(
@@ -1198,7 +1198,7 @@ export class RoutineStore {
   }
 
   #insertTrigger(
-    db: OpenBotDatabase["connection"],
+    db: ZollyBotDatabase["connection"],
     routineId: string,
     timezone: string,
     schedule: RoutineSchedule,
@@ -1320,7 +1320,7 @@ function limitPolicyFor(schedule: RoutineSchedule, requested: RoutineLimitPolicy
   return schedule.kind === "once" ? "wait" : (requested ?? "wait");
 }
 
-/** A one-time routine that came due while OpenBot was closed runs late by default; it has no next run. */
+/** A one-time routine that came due while ZollyBot was closed runs late by default; it has no next run. */
 function defaultMissedPolicy(schedule: RoutineSchedule): RoutineMissedPolicy {
   return schedule.kind === "once" ? "run-once" : "skip";
 }

@@ -6,7 +6,7 @@ import {
   type CustomProviderHarness,
   type CustomProviderRestart,
   type SaveCustomProviderInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { AcpAgentCheck, CustomAcpAgentDraft } from "./custom-acp-agent-form";
 import {
   type CustomProviderDraft,

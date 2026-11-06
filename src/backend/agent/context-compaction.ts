@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentContextCategoryUsage, AgentContextState } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentContextCategoryUsage, AgentContextState } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect, Schema } from "effect";
 import type { AgentClient } from "../agent-client";
 import type { AgentStore } from "../agent-store";
@@ -31,7 +31,7 @@ interface ThreadContextBudget {
   awaitingUsage: boolean;
 }
 
-const logger = createOpenBotLogger("context-compaction");
+const logger = createZollyBotLogger("context-compaction");
 
 const CONTEXT_COMPACTION_THRESHOLD = 0.8;
 /**
@@ -42,16 +42,16 @@ const CONTEXT_COMPACTION_THRESHOLD = 0.8;
  * compacted it without end (#5150).
  */
 const INEFFECTIVE_COMPACTION_SHARE = CONTEXT_COMPACTION_THRESHOLD;
-/** After this many such compactions in a row, OpenBot stops asking for more and tells the user. */
+/** After this many such compactions in a row, ZollyBot stops asking for more and tells the user. */
 const INEFFECTIVE_COMPACTION_LIMIT = 2;
 /**
- * After this many failed compactions in a row, OpenBot stops asking for more and tells the user. A
+ * After this many failed compactions in a row, ZollyBot stops asking for more and tells the user. A
  * failed compaction leaves the session full, and each one sends the whole session to the model: one
  * session compacted every 19 seconds for 7 hours and used up the plan limit.
  */
 const FAILED_COMPACTION_LIMIT = 2;
 
-/** Whether OpenBot asks for no more automatic compactions of this session. "Compact now" still works. */
+/** Whether ZollyBot asks for no more automatic compactions of this session. "Compact now" still works. */
 function stopped(budget: ThreadContextBudget): boolean {
   return (
     budget.ineffectiveCompactions >= INEFFECTIVE_COMPACTION_LIMIT || budget.failedCompactions >= FAILED_COMPACTION_LIMIT
@@ -76,7 +76,7 @@ export const USAGE_CHANGE_DELAY_MS = 250;
 
 export interface ContextCompactionOptions {
   /**
-   * How long the provider takes to start a compaction before OpenBot stops it. A started compaction
+   * How long the provider takes to start a compaction before ZollyBot stops it. A started compaction
    * runs `CONTEXT_COMPACTION_RUN_FACTOR` times as long. Tests make it short.
    */
   timeoutMs?: number | undefined;
@@ -99,7 +99,7 @@ export interface ContextCompactionOptions {
   compacted?(threadId: string): void;
 }
 
-/** Whether OpenBot can ask for a compaction of this client, automatically or for the user. */
+/** Whether ZollyBot can ask for a compaction of this client, automatically or for the user. */
 export function compactsOnRequest(mode: AgentClient["contextCompaction"]): boolean {
   return mode === "events" || mode === "request" || mode === "handoff";
 }
@@ -141,7 +141,7 @@ export class ContextCompaction {
   readonly #compacting = new Map<string, { agentId: string; client: AgentClient | null; turnId: string | null }>();
   readonly #refusals = new Map<string, RefusalHold>();
   readonly #timeoutMs: number;
-  /** How long a started compaction runs before OpenBot stops it. */
+  /** How long a started compaction runs before ZollyBot stops it. */
   readonly #runTimeoutMs: number;
   /** How long a stopped compaction, or a refused queue, waits for the turn to end. */
   readonly #graceMs: number;

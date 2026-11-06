@@ -6,14 +6,14 @@ import type {
   AgentSummary,
   ProviderAccountStatus,
   UpdateAgentInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   AGENT_PROVIDERS,
   DEFAULT_PROVIDER_ACCOUNT_ID,
   defaultProviderModel,
   sameAgentModelChoice,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import type { AgentProvider } from "../agent-client";
 import { AgentSettingsRefused } from "./agent-settings-refused";
 import { providerLabel } from "./thread-items";

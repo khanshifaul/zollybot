@@ -1,6 +1,6 @@
-import { chatVisualReply } from "@openbot/contracts/chat-visual";
-import { sortConversationMessages } from "@openbot/contracts/conversation-order";
-import { itemTypeCountsAsUnread } from "@openbot/contracts/conversation-read";
+import { chatVisualReply } from "@zollybot/contracts/chat-visual";
+import { sortConversationMessages } from "@zollybot/contracts/conversation-order";
+import { itemTypeCountsAsUnread } from "@zollybot/contracts/conversation-read";
 import type {
   AgentExchangeSummary,
   AttachmentSummary,
@@ -14,7 +14,7 @@ import type {
   QueueDelivery,
   RoutineConversationEventAction,
   RoutineRunStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   CONVERSATION_PLAN_ITEM_TYPE,
   channelRoutingConversationEvent,
@@ -22,9 +22,9 @@ import {
   parseConversationPlanText,
   routineConversationEvent,
   routineRunConversationEvent,
-} from "@openbot/contracts/ipc";
-import type { ConversationUiBlock } from "@openbot/contracts/ui-blocks";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+} from "@zollybot/contracts/ipc";
+import type { ConversationUiBlock } from "@zollybot/contracts/ui-blocks";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 
 export type RoutineMarkerEvent = RoutineConversationEventAction | RoutineRunStatus;
 

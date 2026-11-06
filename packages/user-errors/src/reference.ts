@@ -1,6 +1,6 @@
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 
-// No import of `@openbot/logging` or the catalogs here: `@openbot/team-client` runs in a browser and
+// No import of `@zollybot/logging` or the catalogs here: `@zollybot/team-client` runs in a browser and
 // in React Native, and builds references with this module only.
 
 export const NETWORK_MESSAGE =

@@ -335,7 +335,7 @@ serveFakeAcpAgent(
       const root = request.params.sessionId ?? "";
       // The agent service puts its instructions before the user's text, and they use these words too.
       const text = request.params.prompt?.map((part) => part.text ?? "").join("") ?? "";
-      const prompt = text.split("</openbot-developer-instructions>").at(-1) ?? "";
+      const prompt = text.split("</zollybot-developer-instructions>").at(-1) ?? "";
       const reply = () => peer.reply(request, { stopReason: "end_turn" });
       if (prompt.includes("stop")) {
         stoppedWork(peer, root);

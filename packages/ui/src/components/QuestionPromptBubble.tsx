@@ -1,12 +1,12 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AgentPromptQuestion,
   type AgentPromptResolution,
   MCP_ELICITATION_DECISION_QUESTION_ID,
-} from "@openbot/contracts/ipc";
-import { Bubble, BubbleContent, Button, Kbd, Questionnaire, Spinner, X } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
-import { prefersReducedMotion } from "@openbot/ui/utils";
+} from "@zollybot/contracts/ipc";
+import { Bubble, BubbleContent, Button, Kbd, Questionnaire, Spinner, X } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createStore, For, onCleanup, onSettled, Show, untrack } from "solid-js";
 import { MarkdownInlineText, markdownPlainText } from "../features/conversation/MarkdownMessageText";
 import { isSendShortcutKey, type SendShortcut, sendShortcutAriaKey } from "../features/conversation/send-shortcut";

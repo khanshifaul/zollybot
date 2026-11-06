@@ -5,11 +5,11 @@
  * is still and full.
  */
 
-import type { TeamInviteSummary } from "@openbot/contracts/ipc";
-import { Button, Heading } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
-import { prefersReducedMotion } from "@openbot/ui/utils";
 import type { JSX } from "@solidjs/web";
+import type { TeamInviteSummary } from "@zollybot/contracts/ipc";
+import { Button, Heading } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createMemo, createSignal, For, onSettled } from "solid-js";
 
 /** A new sample row lands on each step. */

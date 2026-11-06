@@ -1,6 +1,6 @@
-import { IconButton, PanelRight, X } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
 import { render } from "@solidjs/web";
+import { IconButton, PanelRight, X } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createSignal } from "solid-js";
 import "../../styles.css";
 import { syncAppearance } from "../../appearance-choice";

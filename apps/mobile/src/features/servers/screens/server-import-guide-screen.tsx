@@ -8,10 +8,10 @@ import {
   HERMES_SKILL_COMMAND,
   parseAgentImportSkillSource,
   type RemoteAgentImportResult,
-} from "@openbot/contracts/ipc";
-import { AGENT_IMPORT_UPLOAD_BYTES } from "@openbot/contracts/team-protocol/agent-import-v1";
-import { sourceText } from "@openbot/i18n/source";
-import type { RemoteFileUpload } from "@openbot/team-client/remote-peer";
+} from "@zollybot/contracts/ipc";
+import { AGENT_IMPORT_UPLOAD_BYTES } from "@zollybot/contracts/team-protocol/agent-import-v1";
+import { sourceText } from "@zollybot/i18n/source";
+import type { RemoteFileUpload } from "@zollybot/team-client/remote-peer";
 import * as Clipboard from "expo-clipboard";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";

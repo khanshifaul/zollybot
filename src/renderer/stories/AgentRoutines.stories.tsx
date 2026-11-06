@@ -1,4 +1,4 @@
-import type { Routine, RoutineResultDelivery, RoutineResultDestination, RoutineRun } from "@openbot/contracts/ipc";
+import type { Routine, RoutineResultDelivery, RoutineResultDestination, RoutineRun } from "@zollybot/contracts/ipc";
 import { onCleanup } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -7,7 +7,7 @@ import AgentSettingsPanel from "../src/features/conversation/AgentSettingsPanel"
 import { desktopEventRoutinesApi } from "../src/features/conversation/routine-webhooks-api";
 import { agentRoutinesPort, eventRoutinesPort } from "../src/features/conversation/routines-port";
 import { STORY_AGENT, STORY_AGENT_STATUS, STORY_MODELS, storyRuntimeSettings } from "./fixtures";
-import { createMockOpenBot, type MockOpenBotOptions } from "./mock-openbot";
+import { createMockZollyBot, type MockZollyBotOptions } from "./mock-zollybot";
 
 const morningBrief: Routine = {
   id: "routine-morning-brief",
@@ -59,18 +59,18 @@ function RoutinesStory(props: {
   routines?: Routine[];
   runs?: RoutineRun[];
   localHost?: boolean;
-  results?: Pick<MockOpenBotOptions, "routineResultOptions" | "routineResultDestinations" | "routineResultDeliveries">;
+  results?: Pick<MockZollyBotOptions, "routineResultOptions" | "routineResultDestinations" | "routineResultDeliveries">;
 }) {
-  const previousApi = window.openbot;
-  const mock = createMockOpenBot({ routines: { chief: props.routines ?? storyRoutines }, ...props.results });
-  window.openbot = mock.api;
+  const previousApi = window.zollybot;
+  const mock = createMockZollyBot({ routines: { chief: props.routines ?? storyRoutines }, ...props.results });
+  window.zollybot = mock.api;
   if (props.runs) mock.api.agent.listRoutineRuns = async () => structuredClone(props.runs ?? []);
   onCleanup(() => {
     mock.dispose();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
   });
   return (
-    <main style={{ width: "380px", height: "720px", overflow: "auto", background: "var(--openbot-bg-canvas)" }}>
+    <main style={{ width: "380px", height: "720px", overflow: "auto", background: "var(--zollybot-bg-canvas)" }}>
       <AgentRoutinesSettings
         port={agentRoutinesPort("chief", false, props.localHost === true, mock.api.agent)}
         onCountChange={fn()}
@@ -83,9 +83,9 @@ function RoutinesStory(props: {
 
 /** A routine that a webhook starts, on the preview host. */
 function WebhookRoutineStory() {
-  const previousApi = window.openbot;
-  const mock = createMockOpenBot({ routines: { chief: [] } });
-  window.openbot = mock.api;
+  const previousApi = window.zollybot;
+  const mock = createMockZollyBot({ routines: { chief: [] } });
+  window.zollybot = mock.api;
   const owner = { kind: "agent", id: "chief" } as const;
   const api = desktopEventRoutinesApi("story-server", false, true);
   const seeded = api.saveRoutine({
@@ -126,32 +126,32 @@ function WebhookRoutineStory() {
   );
   onCleanup(() => {
     mock.dispose();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
   });
   return (
-    <main style={{ width: "380px", height: "720px", overflow: "auto", background: "var(--openbot-bg-canvas)" }}>
+    <main style={{ width: "380px", height: "720px", overflow: "auto", background: "var(--zollybot-bg-canvas)" }}>
       <AgentRoutinesSettings port={port} onCountChange={fn()} onBack={fn()} onClose={fn()} />
     </main>
   );
 }
 
 function FullSettingsPanelStory() {
-  const previousApi = window.openbot;
-  const previousWidth = window.localStorage.getItem("openbot:settings-panel-width");
-  const mock = createMockOpenBot({ routines: { chief: storyRoutines } });
-  window.openbot = mock.api;
+  const previousApi = window.zollybot;
+  const previousWidth = window.localStorage.getItem("zollybot:settings-panel-width");
+  const mock = createMockZollyBot({ routines: { chief: storyRoutines } });
+  window.zollybot = mock.api;
   mock.api.agent.listRoutineRuns = async (input) =>
     input.routineId === morningBrief.id ? structuredClone(fullPanelRuns) : [];
-  window.localStorage.setItem("openbot:settings-panel-width", "380");
+  window.localStorage.setItem("zollybot:settings-panel-width", "380");
 
   onCleanup(() => {
     mock.dispose();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
     if (previousWidth === null) {
-      window.localStorage.removeItem("openbot:settings-panel-width");
+      window.localStorage.removeItem("zollybot:settings-panel-width");
       return;
     }
-    window.localStorage.setItem("openbot:settings-panel-width", previousWidth);
+    window.localStorage.setItem("zollybot:settings-panel-width", previousWidth);
   });
 
   return (
@@ -184,7 +184,7 @@ function FullSettingsPanelStory() {
 const meta = {
   title: "Settings/Agent Routines",
   component: AgentRoutinesSettings,
-  args: { port: agentRoutinesPort("chief", false, false, createMockOpenBot().api.agent), onCountChange: fn() },
+  args: { port: agentRoutinesPort("chief", false, false, createMockZollyBot().api.agent), onCountChange: fn() },
   parameters: { layout: "centered", a11y: { test: "error" } },
 } satisfies Meta<typeof AgentRoutinesSettings>;
 
@@ -232,7 +232,7 @@ export const RunHistoryStatuses: Story = {
 };
 
 /**
- * OpenBot was closed for five occurrences of an hourly routine set to run once when OpenBot opens.
+ * ZollyBot was closed for five occurrences of an hourly routine set to run once when ZollyBot opens.
  * It ran the newest one late and recorded the four before it as skipped. Yesterday it skipped one.
  * The times are on the hour.
  */
@@ -292,7 +292,7 @@ function storyDelivery(
 
 /**
  * Each answer of the morning brief also goes to a Slack channel. One went, one waited a day for its
- * connection, and OpenBot stopped during one. Each run succeeded: the delivery has its own status.
+ * connection, and ZollyBot stopped during one. Each run succeeded: the delivery has its own status.
  */
 export const ResultDestination: Story = {
   render: () => (

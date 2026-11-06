@@ -3,8 +3,8 @@ import type {
   ChannelSummary,
   ClientAgentSummary,
   ServerNotificationLevel,
-} from "@openbot/contracts/ipc";
-import type { AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTranslate } from "@zollybot/i18n";
 import { type AgentNotificationChannel, plainPreview } from "./agent-notifications";
 
 export interface ChannelNotificationContent {

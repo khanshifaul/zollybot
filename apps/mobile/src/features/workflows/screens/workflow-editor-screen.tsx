@@ -1,5 +1,5 @@
-import type { WorkflowDetail, WorkflowNode } from "@openbot/contracts/ipc";
 import { useQueryClient } from "@tanstack/react-query";
+import type { WorkflowDetail, WorkflowNode } from "@zollybot/contracts/ipc";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";
@@ -75,7 +75,7 @@ function EditorStepRow({
 }) {
   const { t } = useText();
   const { theme } = useUniwind();
-  const [muted, danger] = useCSSVariable(["--openbot-text-grouped-secondary", "--openbot-danger-text"]);
+  const [muted, danger] = useCSSVariable(["--zollybot-text-grouped-secondary", "--zollybot-danger-text"]);
   const menu = useRef<MenuComponentRef | null>(null);
   const { move, duplicate, remove, connect } = useWorkflowDraft.getState();
   const outline = draft.mode === "outline" ? draft.outline : null;
@@ -222,7 +222,7 @@ function confirmRemove(node: WorkflowNode, draft: WorkflowDraft, remove: (id: st
 
 /** The last row of a list: it adds a step at its end. */
 function AddRow({ list, index, label }: { list: FlowList; index: number; label: string }) {
-  const accent = String(useCSSVariable("--openbot-accent-text"));
+  const accent = String(useCSSVariable("--zollybot-accent-text"));
   return (
     <SettingsRow
       disclosure={false}
@@ -243,7 +243,7 @@ export function WorkflowEditorScreen() {
   const { serverId, workflowId } = useLocalSearchParams<{ serverId: string; workflowId?: string }>();
   const queryClient = useQueryClient();
   const queryScope = useQueryScope();
-  const danger = String(useCSSVariable("--openbot-danger-text"));
+  const danger = String(useCSSVariable("--zollybot-danger-text"));
   const detail = useWorkflowDetail(serverId, workflowId ?? "");
   const draft = useWorkflowDraft((state) => state.draft);
   const { start, setTitle, graphSaved } = useWorkflowDraft.getState();

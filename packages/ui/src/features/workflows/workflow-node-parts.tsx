@@ -4,10 +4,11 @@
  * results strip. The control blocks share their choice pills, the toolbar menus and the colours.
  */
 
-import type { ProviderLogoVariant } from "@openbot/brand";
-import { isKnownAgentProvider } from "@openbot/contracts/agent-providers";
-import { isAgentProviderRef } from "@openbot/contracts/ipc";
-import type { AppFormat, AppTextKey, AppTranslate } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import type { ProviderLogoVariant } from "@zollybot/brand";
+import { isKnownAgentProvider } from "@zollybot/contracts/agent-providers";
+import { isAgentProviderRef } from "@zollybot/contracts/ipc";
+import type { AppFormat, AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   Button,
   buttonVariants,
@@ -35,8 +36,7 @@ import {
   Trash2,
   TriangleAlert,
   Type,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { children, createEffect, createSignal, createStore, For, onSettled, Show, untrack } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { useText } from "../../text";
@@ -807,7 +807,7 @@ export const translated = <T extends string>(t: AppTranslate, choices: readonly 
   choices.map((choice) => ({ value: choice.value, label: t(choice.label) }));
 
 export const colorVar = (color: CanvasColor) =>
-  color === "ink" ? "var(--openbot-text-primary)" : `var(--openbot-file-${color})`;
+  color === "ink" ? "var(--zollybot-text-primary)" : `var(--zollybot-file-${color})`;
 
 /** A round colour sample, for a toolbar button or a menu item. */
 export function Swatch(props: { color: CanvasColor }) {

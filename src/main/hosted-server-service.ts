@@ -13,16 +13,16 @@ import {
   parseHostedServerList,
   parseHostedServerStatus,
   parseHostedServerSummary,
-} from "@openbot/contracts/hosted-servers";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/hosted-servers";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   createHostedServerStatusCheck,
   createHostedServerWake,
   type HostedServerAvailability,
   type HostedServerWakeResponse,
   WAKE_RECONNECT_STATES,
-} from "@openbot/team-client/hosted-server-wake";
+} from "@zollybot/team-client/hosted-server-wake";
 import { Effect, type Layer } from "effect";
 import {
   type AccountRequestClient,
@@ -41,8 +41,8 @@ export type HostedServerAuthClient = AccountRequestClient;
  * process. A packaged build never sends it.
  */
 export function takeHostingDeveloperKey(environment: NodeJS.ProcessEnv, isPackaged: boolean): string | null {
-  const key = environment.OPENBOT_HOSTING_DEVELOPER_KEY?.trim() || null;
-  delete environment.OPENBOT_HOSTING_DEVELOPER_KEY;
+  const key = environment.ZOLLYBOT_HOSTING_DEVELOPER_KEY?.trim() || null;
+  delete environment.ZOLLYBOT_HOSTING_DEVELOPER_KEY;
   return isPackaged ? null : key;
 }
 

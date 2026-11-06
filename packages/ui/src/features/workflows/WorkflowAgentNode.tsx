@@ -1,8 +1,8 @@
 /** An agent step: a task that one agent does, with the agent and its model. */
 
-import { ProviderLogo } from "@openbot/brand";
-import type { AgentModelId } from "@openbot/contracts/ipc";
-import { Bot, Button, buttonVariants, ChevronDown, DropdownMenu, Play, Textarea, TriangleAlert } from "@openbot/ui";
+import { ProviderLogo } from "@zollybot/brand";
+import type { AgentModelId } from "@zollybot/contracts/ipc";
+import { Bot, Button, buttonVariants, ChevronDown, DropdownMenu, Play, Textarea, TriangleAlert } from "@zollybot/ui";
 import { Show, untrack } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { useText } from "../../text";

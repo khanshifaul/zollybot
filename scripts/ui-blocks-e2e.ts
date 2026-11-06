@@ -1,7 +1,7 @@
 // Runs `ask_ui` blocks end to end on the real modules: the real `AttentionRegistry` answers each block as
 // the desktop, a team member and a released client do, and the real Team API codecs carry the stored
 // conversation as a host sends it to each kind of client. No provider or account is used.
-// `bun scripts/ui-blocks-e2e.ts`. Writes .openbot-build/ui-blocks-e2e/report.json.
+// `bun scripts/ui-blocks-e2e.ts`. Writes .zollybot-build/ui-blocks-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -11,35 +11,35 @@ import {
   type ConversationPage,
   type ConversationSnapshot,
   isConversationMessage,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   TEAM_BOOTSTRAP_CAPABILITIES,
   TEAM_CURRENT_CAPABILITIES,
   TEAM_UI_BLOCKS_CAPABILITY,
   teamCapabilitiesForProtocol,
-} from "@openbot/contracts/team-protocol/current";
+} from "@zollybot/contracts/team-protocol/current";
 import {
   addUiBlockAutoAnswers,
   TEAM_UI_BLOCK_AUTO_ANSWER_CAPABILITY,
   withUiBlockAutoAnswers,
-} from "@openbot/contracts/team-protocol/ui-block-auto-answer-v1";
+} from "@zollybot/contracts/team-protocol/ui-block-auto-answer-v1";
 import {
   addUiBlockVaultRequests,
   TEAM_UI_BLOCK_VAULT_CAPABILITY,
   withUiBlockVaultRequests,
-} from "@openbot/contracts/team-protocol/ui-block-vault-v1";
+} from "@zollybot/contracts/team-protocol/ui-block-vault-v1";
 import {
   decodeTeamProtocolV6CurrentHttpResponse,
   encodeTeamProtocolV6CurrentHttpResponse,
-} from "@openbot/contracts/team-protocol/v6-adapter";
+} from "@zollybot/contracts/team-protocol/v6-adapter";
 import {
   decodeTeamProtocolV7CurrentHttpResponse,
   encodeTeamProtocolV7CurrentHttpResponse,
-} from "@openbot/contracts/team-protocol/v7-adapter";
+} from "@zollybot/contracts/team-protocol/v7-adapter";
 import {
   decodeTeamProtocolV7BaseCurrentEvent,
   encodeTeamProtocolV7BaseCurrentEvent,
-} from "@openbot/contracts/team-protocol/v7-base-adapter";
+} from "@zollybot/contracts/team-protocol/v7-base-adapter";
 import {
   type ConversationUiBlock,
   normalizeUiBlockSpec,
@@ -48,7 +48,7 @@ import {
   type UiBlockValue,
   type UiBlockVaultRequest,
   uiBlockAnswersFromResponse,
-} from "@openbot/contracts/ui-blocks";
+} from "@zollybot/contracts/ui-blocks";
 import { Effect } from "effect";
 import { AttentionRegistry, type PromptResponder } from "../src/backend/agent/attention-registry";
 import { ForbiddenAttentionAnswer } from "../src/backend/agent/inactive-attention-request";
@@ -56,7 +56,7 @@ import { CodexAppServerClient } from "../src/backend/app-server-client";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import type { RequestId } from "../src/backend/protocol";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/ui-blocks-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/ui-blocks-e2e");
 const PAGE_PATH = "/v1/agents/agent-1/conversation-page";
 const THREAD = "thread-1";
 const SECRET = "e2e-secret-4be1c0";
@@ -74,12 +74,12 @@ interface AgentAnswer {
   next?: string;
 }
 
-/** Records what OpenBot answers to the agent. The process never starts: only the answer is read. */
+/** Records what ZollyBot answers to the agent. The process never starts: only the answer is read. */
 class RecordingClient extends CodexAppServerClient {
   readonly answers = new Map<RequestId, { success: boolean; value: AgentAnswer | null }>();
   readonly #waiters = new Map<RequestId, () => void>();
 
-  /** Resolves when OpenBot answers the request, so that a host timer is awaited, not slept on. */
+  /** Resolves when ZollyBot answers the request, so that a host timer is awaited, not slept on. */
   answered(id: RequestId): Promise<void> {
     if (this.answers.has(id)) return Promise.resolve();
     return new Promise((resolve) => this.#waiters.set(id, resolve));

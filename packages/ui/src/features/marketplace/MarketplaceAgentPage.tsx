@@ -1,5 +1,5 @@
-import type { MarketplaceAgentDetail, MarketplaceAgentSummary } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import type { MarketplaceAgentDetail, MarketplaceAgentSummary } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   CalendarClock,
@@ -16,10 +16,10 @@ import {
   SettingsSection,
   Text,
   UsersRound,
-} from "@openbot/ui";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { routineScheduleSummary } from "@openbot/ui/features/conversation/routine-schedule-ui";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { routineScheduleSummary } from "@zollybot/ui/features/conversation/routine-schedule-ui";
+import { useText } from "@zollybot/ui/text";
 import { For, Show } from "solid-js";
 import { IntegrationPage, type IntegrationStatus, LogoTile } from "../settings/IntegrationLayout";
 import { CopyListingLink, DetailState, SkillIcon } from "./MarketplaceParts";
@@ -28,7 +28,7 @@ import { CATEGORY_LABELS } from "./marketplace-listing";
 import type { MarketplaceModel } from "./marketplace-model";
 import { createDetail, type MarketplaceScope } from "./marketplace-view";
 
-/** Made by OpenBot; made by another user and reviewed by OpenBot; or shared before its first review. */
+/** Made by ZollyBot; made by another user and reviewed by ZollyBot; or shared before its first review. */
 type Trust = "verified" | "reviewed" | "pending";
 
 function trustOf(agent: MarketplaceAgentSummary | MarketplaceAgentDetail): Trust {
@@ -202,7 +202,7 @@ function AgentInformation(props: { agent: MarketplaceAgentSummary | MarketplaceA
   );
 }
 
-/** Who made the agent and whether OpenBot reviewed it, for an agent without the shield. */
+/** Who made the agent and whether ZollyBot reviewed it, for an agent without the shield. */
 function TrustLine(props: { model: MarketplaceModel; agent: MarketplaceAgentSummary | MarketplaceAgentDetail }) {
   const { t } = useText();
   const trust = (): Exclude<Trust, "verified"> | undefined => {

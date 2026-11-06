@@ -1,5 +1,5 @@
-import type { AgentEvent } from "@openbot/contracts/ipc";
 import type { QueryClient } from "@tanstack/react-query";
+import type { AgentEvent } from "@zollybot/contracts/ipc";
 import { queryKeys } from "@/features/workspace/model/query-keys";
 
 type QueueEvent = Extract<AgentEvent, { type: "queue-changed" | "queue-invalidated" }>;

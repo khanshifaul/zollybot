@@ -48,7 +48,7 @@ OpenPanel reads campaign attribution from whichever event creates the session, a
 are sent concurrently.
 See [PRIVACY.md](../../PRIVACY.md) for the data boundary.
 
-`rememberLandingFirstTouch` saves the first visit in `localStorage` (`@openbot/contracts/first-touch`
+`rememberLandingFirstTouch` saves the first visit in `localStorage` (`@zollybot/contracts/first-touch`
 owns the shape, the parser and the 90-day age). The web client sends it with `email/verify`, and
 `/billing/return` sends it with the Checkout Session ID to `POST /api/browser/checkout-attribution`.
 `AccountAttribution` (`src/server/account-attribution.ts`) checks it again, keeps the first value
@@ -88,18 +88,18 @@ Database time comes from `AgentDatabaseSupervisor`, from the send of a statement
 the end of the host. The supervisor sends a statement only after the host reports ready, so the
 start of the host process is not counted. Renderer and child process exits other than a
 clean exit are written to the trace as `crash` spans at once, and counted at the next sample. A
-utility process with the reason `killed` is neither: OpenBot stops these processes itself. An exit in
+utility process with the reason `killed` is neither: ZollyBot stops these processes itself. An exit in
 the last minute before a quit is not counted: a stop signal can end the child processes before the
 main process starts its teardown. The trace still has it, after the `exit` span of that quit.
 
-`index.ts` writes one `exit` span and one line in `logs/main/main.log` when OpenBot starts to quit.
+`index.ts` writes one `exit` span and one line in `logs/main/main.log` when ZollyBot starts to quit.
 The name is the first reason: `main_window_closed` (Windows and Linux, where closing the main
 window quits), `signal`, `session_end` or `quit` (the menu, the tray, an update or a restart). The
 main log holds every line of the `main` logger, redacted, in two files of 1 MB. `crashReporter`
 keeps local crash dumps in `app.getPath("crashDumps")` and never uploads them. A process that ends
-with no `exit` span and no dump was stopped from outside OpenBot (#2675).
+with no `exit` span and no dump was stopped from outside ZollyBot (#2675).
 
-`run-marker.ts` keeps `openbot-run-marker-v1.json` in the user data folder of the process that holds
+`run-marker.ts` keeps `zollybot-run-marker-v1.json` in the user data folder of the process that holds
 the single-instance lock. It writes `running` at the start, the time of the last sign of life once a
 minute and at sleep and wake, `quitting` with the reason in `recordExit`, `quit_timeout` before the
 shutdown deadline exit, and `clean` after `teardown.runAll()`. It adds no teardown step, so the
@@ -131,7 +131,7 @@ App windows (`src/renderer/src/renderer-timing.ts`) count long tasks and input d
 The main handler decodes bounded counts only; `ResourceMonitor` buffers them and adds them to the day
 at the next sample. The same channel carries the main window's `workspaceReady` flag:
 `StartupTiming` (`src/main/startup-timing.ts`) reads the time on the main clock and sends one
-`system_startup` per main process from the `openbot:*` startup marks. It keeps the last start in
+`system_startup` per main process from the `zollybot:*` startup marks. It keeps the last start in
 `startup-history.json` to tell a cold start from a warm one. Turn timing comes from the drain
 scheduler and `TurnLifecycle`, which keep the queue pick, the provider start and the first output of
 each turn until `HostAnalytics` takes them at `turn-completed`.
@@ -191,10 +191,10 @@ Desktop opens Usage from the server context menu. It keeps the previous workspac
 inert until Back, so conversation drafts and settings survive navigation. Agent settings opens
 the same report with an agent filter. Host changes clear the filter and stale responses are rejected.
 The iPhone app opens Usage from the server menu in a sheet. It reads the same route through
-`readHostAnalytics` in `@openbot/team-client` and shows the per-agent rows; a row or the header
+`readHostAnalytics` in `@zollybot/team-client` and shows the per-agent rows; a row or the header
 filter narrows the report to one agent. The agent Usage page reads the same route with the agent
 filter, so its chart has the provider split too; a host without `host-analytics` gets the
-agent-scoped route and one area. The series pivot is in `@openbot/team-client/usage-series`, which
+agent-scoped route and one area. The series pivot is in `@zollybot/team-client/usage-series`, which
 the desktop chart also reads.
 
 `host:get-analytics` and the optional `host-analytics` capability expose `GET /v1/analytics`.
@@ -211,4 +211,4 @@ is stored by the account service or Signal service.
 
 The desktop chart adapts Zaidan's chart and interactive area composition. The pinned
 `solid-recharts` dependency has a Solid 2 compatibility patch and uses the application's single
-Solid runtime. Chart colors use OpenBot tokens. Daily tables provide exact accessible values.
+Solid runtime. Chart colors use ZollyBot tokens. Daily tables provide exact accessible values.

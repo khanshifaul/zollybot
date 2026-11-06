@@ -1,6 +1,6 @@
-import type { HostedServerIssue } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
 import type { JSX } from "@solidjs/web";
+import type { HostedServerIssue } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import { createEffect, createMemo, createSignal, For, Show } from "solid-js";
 import { ConfirmDialog } from "../../confirm-dialog";
 import { ErrorReference } from "../../error-reference";
@@ -30,7 +30,7 @@ export interface ServerStatusDialogProps {
   phase: ServerWorkspacePhase;
   initial: boolean;
   issue?: HostedServerIssue | null;
-  /** The OpenBot version that the server restarts into. */
+  /** The ZollyBot version that the server restarts into. */
   updateVersion?: string | null;
   remainingSeconds?: number;
   detail?: string | null;

@@ -5,7 +5,7 @@
 // - a host that never reports ready fails the waiting request with the start message and is ended;
 // - a host that exits before ready fails the waiting request and is not started again in a loop;
 // - a prewarmed host answers the first statement with no second start.
-// `bun run test:agent-database-host-start`. Writes .openbot-build/agent-database-host-start-e2e/report.json.
+// `bun run test:agent-database-host-start`. Writes .zollybot-build/agent-database-host-start-e2e/report.json.
 import assert from "node:assert/strict";
 import { type ChildProcess, spawn } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -23,7 +23,7 @@ import {
   AgentDatabaseSupervisor,
 } from "../src/backend/agent-data/agent-database-supervisor";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-database-host-start-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-database-host-start-e2e");
 const HOST = resolve(import.meta.dirname, "../src/backend/agent-data/agent-database-host.ts");
 /** Wide for a loaded CI runner: the first statement creates the file and the metadata tables. */
 const STATEMENT_DEADLINE_MS = 1_000;
@@ -49,7 +49,7 @@ interface Report {
   failure?: string;
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-agent-database-host-start-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-agent-database-host-start-e2e-"));
 const report: Report = { passed: false };
 const children: ChildProcess[] = [];
 

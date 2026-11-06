@@ -6,8 +6,8 @@ import {
   ReportQueue,
   type ReportStorage,
   telemetryIO,
-} from "@openbot/telemetry";
-import { errorReference } from "@openbot/user-errors";
+} from "@zollybot/telemetry";
+import { errorReference } from "@zollybot/user-errors";
 import { Effect } from "effect";
 import * as Application from "expo-application";
 import { randomUUID } from "expo-crypto";
@@ -18,7 +18,7 @@ const storage: ReportStorage = {
   read: () =>
     telemetryIO(async () => {
       const { File, Paths } = await import("expo-file-system");
-      const file = new File(Paths.document, "openbot-error-reports-v1.json");
+      const file = new File(Paths.document, "zollybot-error-reports-v1.json");
       if (!file.exists) return null;
       try {
         return JSON.parse(await file.text());
@@ -30,8 +30,8 @@ const storage: ReportStorage = {
   write: (value) =>
     telemetryIO(async () => {
       const { File, Paths } = await import("expo-file-system");
-      const file = new File(Paths.document, "openbot-error-reports-v1.json");
-      const temporary = new File(Paths.document, "openbot-error-reports-v1.tmp");
+      const file = new File(Paths.document, "zollybot-error-reports-v1.json");
+      const temporary = new File(Paths.document, "zollybot-error-reports-v1.tmp");
       await temporary.write(JSON.stringify(value));
       await temporary.move(file, { overwrite: true });
     }),

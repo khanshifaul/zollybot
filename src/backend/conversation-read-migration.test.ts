@@ -4,13 +4,13 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { ConversationSnapshot } from "@openbot/contracts/ipc";
+import type { ConversationSnapshot } from "@zollybot/contracts/ipc";
 import { afterEach, describe, expect, it } from "vitest";
 import { ConversationReadStore } from "./conversation-read-store";
 import { runCauseEffect } from "./effect-boundary";
-import { OpenBotDatabase } from "./openbot-database";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
 import { directThreadId, TeamChatStore } from "./team-chat-store";
+import { ZollyBotDatabase } from "./zollybot-database";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 const roots: string[] = [];
 
@@ -20,9 +20,9 @@ afterEach(async () => {
 
 describe("conversation read-state migration", () => {
   it("baselines agent history that existed before the read-state migration", async () => {
-    const root = await mkdtemp(join(tmpdir(), "openbot-conversation-read-migration-"));
+    const root = await mkdtemp(join(tmpdir(), "zollybot-conversation-read-migration-"));
     roots.push(root);
-    const legacy = legacyDatabase(join(root, "openbot.db"));
+    const legacy = legacyDatabase(join(root, "zollybot.db"));
     legacy
       .prepare(
         `INSERT INTO projection_threads (
@@ -85,12 +85,12 @@ describe("conversation read-state migration", () => {
         legacyDirectMessage.createdAt,
         JSON.stringify(legacyDirectMessage),
       );
-    migrateOpenBotDatabase(legacy, {
+    migrateZollyBotDatabase(legacy, {
       appliedAt: "2026-08-19T10:00:00.000Z",
     });
     legacy.close();
 
-    const database = new OpenBotDatabase(root);
+    const database = new ZollyBotDatabase(root);
     await runCauseEffect(database.initialize());
     const reads = new ConversationReadStore(database);
     const legacySnapshot = snapshot([message("legacy-answer", "assistant")]);

@@ -1,12 +1,12 @@
-import { AppLogo } from "@openbot/brand";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AppVariant, CentralAuthIssue, CentralAuthState } from "@openbot/contracts/ipc";
-import { normalizeEmailAddress, normalizeOneTimeCode } from "@openbot/contracts/validation";
-import type { TranslatedLocale } from "@openbot/i18n";
-import { appLanguageOption } from "@openbot/i18n/languages";
-import { ArrowLeft, Button, ErrorReference, Globe2, Input, Lock, RefreshCw } from "@openbot/ui";
-import { errorReference, type UserErrorDetails } from "@openbot/user-errors";
 import type { JSX } from "@solidjs/web";
+import { AppLogo } from "@zollybot/brand";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AppVariant, CentralAuthIssue, CentralAuthState } from "@zollybot/contracts/ipc";
+import { normalizeEmailAddress, normalizeOneTimeCode } from "@zollybot/contracts/validation";
+import type { TranslatedLocale } from "@zollybot/i18n";
+import { appLanguageOption } from "@zollybot/i18n/languages";
+import { ArrowLeft, Button, ErrorReference, Globe2, Input, Lock, RefreshCw } from "@zollybot/ui";
+import { errorReference, type UserErrorDetails } from "@zollybot/user-errors";
 import { createEffect, createMemo, createSignal, onCleanup, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import { OtpInput, type OtpInputStatus } from "./OtpInput";
@@ -47,7 +47,7 @@ const UNCERTAIN_EMAIL_DELIVERY_ISSUES = new Set([
   "email_delivery_unknown",
 ]);
 
-const PRODUCT_NAME = "OpenBot";
+const PRODUCT_NAME = "ZollyBot";
 const EMAIL_PLACEHOLDER = "you@example.com";
 const EMAIL_MARKER = "\u0000";
 

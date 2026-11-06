@@ -1,4 +1,4 @@
--- OpenBot checked the skill beyond the listing review. Only an admin sets it, as featured. The Worker
+-- ZollyBot checked the skill beyond the listing review. Only an admin sets it, as featured. The Worker
 -- that runs before this deploy does not read the column, and its inserts get the default 0.
 ALTER TABLE marketplace_skills ADD COLUMN verified INTEGER NOT NULL DEFAULT 0 CHECK(verified IN (0, 1));
 

@@ -7,7 +7,7 @@ import {
   type BillingPlanId,
   billingListPrices,
   billingLookupKey,
-} from "@openbot/contracts/billing";
+} from "@zollybot/contracts/billing";
 import {
   LICENSE_LOOKUP_KEYS,
   LICENSE_METADATA,
@@ -19,13 +19,13 @@ import {
   licenseIncludedUsers,
   licenseLookupKey,
   licensePlanPrice,
-} from "@openbot/contracts/license";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/license";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { z } from "zod";
 
 /**
  * Creates the Stripe catalog that the account server reads: one Product for each plan, and one Price
- * for each plan and interval with the lookup key `openbot_{plan}_{interval}`. It also creates the
+ * for each plan and interval with the lookup key `zollybot_{plan}_{interval}`. It also creates the
  * license Product and one Price for each license plan (`LICENSE_PLANS`), and sets the Customer Portal
  * features. Run it again at any time: it changes only what differs.
  *
@@ -37,7 +37,7 @@ import { z } from "zod";
  * `bootstrapStripe` and stores the secret itself.
  */
 
-const logger = createOpenBotLogger("stripe-bootstrap");
+const logger = createZollyBotLogger("stripe-bootstrap");
 const STRIPE_API_VERSION = "2025-03-31.basil";
 
 const PLAN_NAME: Record<BillingPlanId, string> = { starter: "Starter", standard: "Standard", pro: "Pro" };
@@ -121,15 +121,15 @@ class StripeAdmin {
 }
 
 function productId(plan: BillingPlanId): string {
-  return `openbot_${plan}`;
+  return `zollybot_${plan}`;
 }
 
 async function ensureProduct(stripe: StripeAdmin, plan: BillingPlanId): Promise<void> {
   const id = productId(plan);
   const body = new URLSearchParams({
-    name: `OpenBot ${PLAN_NAME[plan]}`,
+    name: `ZollyBot ${PLAN_NAME[plan]}`,
     active: "true",
-    "metadata[openbot_plan]": plan,
+    "metadata[zollybot_plan]": plan,
   });
   const existing = await stripe.findProduct(id);
   if (existing) {
@@ -184,8 +184,8 @@ async function ensurePrice(
     transfer_lookup_key: "true",
     "currency_options[usd][unit_amount]": String(amounts.usd),
     "currency_options[pln][unit_amount]": String(amounts.pln),
-    "metadata[openbot_plan]": plan,
-    "metadata[openbot_interval]": interval,
+    "metadata[zollybot_plan]": plan,
+    "metadata[zollybot_interval]": interval,
   });
   const created = await stripe.request("POST", "/v1/prices", body, priceSchema);
   logger.info(`${current ? "Replaced" : "Created"} price ${lookupKey}.`);
@@ -203,7 +203,7 @@ function licensePriceSignature(prices: Readonly<Record<string, LicensePrice>>, i
 
 async function ensureLicenseProduct(stripe: StripeAdmin): Promise<void> {
   const body = new URLSearchParams({
-    name: "OpenBot commercial license",
+    name: "ZollyBot commercial license",
     active: "true",
     [`metadata[${LICENSE_METADATA.kind}]`]: LICENSE_METADATA_KIND,
   });
@@ -240,7 +240,7 @@ async function ensureLicensePrice(stripe: StripeAdmin, existing: readonly Price[
     current.product === LICENSE_PRODUCT_ID &&
     current.currency === "eur" &&
     current.recurring?.interval === plan.interval &&
-    current.metadata?.openbot_license_prices === signature &&
+    current.metadata?.zollybot_license_prices === signature &&
     current.metadata?.[LICENSE_METADATA.tier] === plan.tier &&
     current.metadata?.[LICENSE_METADATA.interval] === plan.interval &&
     current.metadata?.[LICENSE_METADATA.bundle] === bundle
@@ -258,7 +258,7 @@ async function ensureLicensePrice(stripe: StripeAdmin, existing: readonly Price[
     [`metadata[${LICENSE_METADATA.tier}]`]: plan.tier,
     [`metadata[${LICENSE_METADATA.interval}]`]: plan.interval,
     [`metadata[${LICENSE_METADATA.bundle}]`]: bundle,
-    "metadata[openbot_license_prices]": signature,
+    "metadata[zollybot_license_prices]": signature,
   });
   if (plan.tier === "team") {
     body.set("billing_scheme", "tiered");
@@ -300,7 +300,7 @@ async function defaultPortalConfiguration(stripe: StripeAdmin): Promise<string> 
   const customer = await stripe.request(
     "POST",
     "/v1/customers",
-    new URLSearchParams({ description: "OpenBot bootstrap: creates the default Customer Portal configuration" }),
+    new URLSearchParams({ description: "ZollyBot bootstrap: creates the default Customer Portal configuration" }),
     z.object({ id: z.string() }),
   );
   try {
@@ -358,7 +358,7 @@ async function ensureWebhookEndpoint(stripe: StripeAdmin, url: string, replace: 
   if (parsed.protocol !== "https:" || !parsed.pathname.endsWith("/v1/stripe/webhook")) {
     throw new Error("--webhook-url must be an https URL that ends with /v1/stripe/webhook.");
   }
-  const body = new URLSearchParams({ url: parsed.href, description: "OpenBot account server" });
+  const body = new URLSearchParams({ url: parsed.href, description: "ZollyBot account server" });
   for (const event of BILLING_WEBHOOK_EVENTS) body.append("enabled_events[]", event);
   let current: { id: string } | null = null;
   let startingAfter: string | null = null;

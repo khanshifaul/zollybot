@@ -1,16 +1,16 @@
-import { DEFAULT_APP_LANGUAGE } from "@openbot/contracts/app-language";
-import { loadLocale, resolveLocale } from "@openbot/i18n";
 import { createLazyFileRoute } from "@tanstack/solid-router";
+import { DEFAULT_APP_LANGUAGE } from "@zollybot/contracts/app-language";
+import { loadLocale, resolveLocale } from "@zollybot/i18n";
 import { createSignal, lazy, onSettled, Show } from "solid-js";
 import "../../../../src/renderer/src/preview/preview.css";
 
 // The demo follows the visitor's language. Its catalogs load with the code, so the demo does not
 // start in English; if they fail, the demo shows English.
-const OpenBotPlayground = lazy(() =>
+const ZollyBotPlayground = lazy(() =>
   Promise.all([
-    import("@openbot/renderer-preview"),
+    import("@zollybot/renderer-preview"),
     loadLocale(resolveLocale(DEFAULT_APP_LANGUAGE, navigator.language)).catch(() => undefined),
-  ]).then(([module]) => ({ default: module.OpenBotPlayground })),
+  ]).then(([module]) => ({ default: module.ZollyBotPlayground })),
 );
 
 export const Route = createLazyFileRoute("/app-preview")({ component: AppPreviewPage });
@@ -22,12 +22,12 @@ export function AppPreviewPage() {
   });
 
   return (
-    <div id="root" class="openbot-playground-root" data-preview-variant="landing">
+    <div id="root" class="zollybot-playground-root" data-preview-variant="landing">
       <Show
         when={mounted()}
-        fallback={<div class="openbot-playground-loading" role="status" aria-label="Loading OpenBot preview" />}
+        fallback={<div class="zollybot-playground-loading" role="status" aria-label="Loading ZollyBot preview" />}
       >
-        <OpenBotPlayground variant="landing" />
+        <ZollyBotPlayground variant="landing" />
       </Show>
     </div>
   );

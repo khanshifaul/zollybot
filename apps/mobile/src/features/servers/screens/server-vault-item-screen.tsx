@@ -8,7 +8,7 @@ import {
   type VaultItemSummary,
   type VaultSaveInput,
   type VaultState,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";

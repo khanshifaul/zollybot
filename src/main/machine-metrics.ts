@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { readFile, statfs } from "node:fs/promises";
 import { cpus, freemem, totalmem } from "node:os";
-import type { MachineMetrics } from "@openbot/contracts/ipc";
+import type { MachineMetrics } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { readCgroupRoot, readLinuxMemory } from "./server-memory";
 

@@ -4,8 +4,8 @@
 
 Checked on 2026-09-08. No production changes were made for this investigation.
 
-- SSH target: `sui-alexandria`. Compose directory: `/opt/openbot/remote`.
-- Signal container: `openbot-remote-remote-api-1`, created `2026-09-01T10:53:29.873613544Z`.
+- SSH target: `sui-alexandria`. Compose directory: `/opt/zollybot/remote`.
+- Signal container: `zollybot-remote-remote-api-1`, created `2026-09-01T10:53:29.873613544Z`.
 - Running image: `sha256:7f94a50aee8b89ccf16803c0b9811f6fe19a5d876d14cfeed51deb97e4eee6dd`.
 - Running `signal-service.ts` SHA-256: `b1514f74e6b2ff708c430154b793261a667b5b107c69ee6bd79e6c0fd2356efc`.
   Its client admission code rejects every different session when a host already has a connection.
@@ -15,15 +15,15 @@ Checked on 2026-09-08. No production changes were made for this investigation.
   This is version evidence, not an end-to-end compatibility result.
 - D1 records `0018_remote_device_sessions.sql` as applied at `2026-09-04 12:21:44`.
   The SELECT changed no data. Do not apply this migration again or reverse it.
-- `/opt/openbot` is not a Git checkout. The public Signal health routes do not identify the source version.
+- `/opt/zollybot` is not a Git checkout. The public Signal health routes do not identify the source version.
 
 To repeat the read-only checks, run from this repository:
 
 ```sh
-ssh sui-alexandria 'docker inspect openbot-remote-remote-api-1 --format "{{.Image}} {{.Created}}"'
-ssh sui-alexandria 'docker exec openbot-remote-remote-api-1 sha256sum /app/remote/api/src/signal-service.ts'
+ssh sui-alexandria 'docker inspect zollybot-remote-remote-api-1 --format "{{.Image}} {{.Created}}"'
+ssh sui-alexandria 'docker exec zollybot-remote-remote-api-1 sha256sum /app/remote/api/src/signal-service.ts'
 bunx wrangler deployments list --cwd apps/auth-api --json
-bunx wrangler d1 execute openbot-auth --cwd apps/auth-api --remote \
+bunx wrangler d1 execute zollybot-auth --cwd apps/auth-api --remote \
   --command "SELECT name, applied_at FROM d1_migrations WHERE name = '0018_remote_device_sessions.sql'" --json
 ```
 
@@ -37,13 +37,13 @@ CI deployment procedure. Do not infer Worker compatibility from its date alone.
 Stage the approved source on the host without replacing its configuration or key files:
 
 ```sh
-release_dir="/opt/openbot/releases/$(git rev-parse HEAD)"
+release_dir="/opt/zollybot/releases/$(git rev-parse HEAD)"
 ssh sui-alexandria "mkdir -p '$release_dir'"
 git archive HEAD | ssh sui-alexandria "tar --exclude='.env*' --exclude='*/.env*' -x -C '$release_dir'"
-ssh sui-alexandria "ln -s /opt/openbot/remote/.env.production '$release_dir/remote/.env.production'"
-ssh sui-alexandria "ln -s /opt/openbot/runtime '$release_dir/runtime'"
-ssh sui-alexandria "ln -s /opt/openbot/node_modules '$release_dir/node_modules'"
-ssh sui-alexandria "ln -s /opt/openbot/remote/.env.keys '$release_dir/remote/.env.keys'"
+ssh sui-alexandria "ln -s /opt/zollybot/remote/.env.production '$release_dir/remote/.env.production'"
+ssh sui-alexandria "ln -s /opt/zollybot/runtime '$release_dir/runtime'"
+ssh sui-alexandria "ln -s /opt/zollybot/node_modules '$release_dir/node_modules'"
+ssh sui-alexandria "ln -s /opt/zollybot/remote/.env.keys '$release_dir/remote/.env.keys'"
 ```
 
 The runtime and dependency links let the existing Dotenvx wrapper run. Docker installs Signal
@@ -53,16 +53,16 @@ On `sui-alexandria`, change to that release directory. Retain the running image 
 Run only these Signal commands; `remote:update` also updates coturn and is not appropriate here.
 
 ```sh
-signal_previous_image=$(docker inspect openbot-remote-remote-api-1 --format '{{.Image}}')
-docker image tag "$signal_previous_image" openbot-remote-api:before-325
+signal_previous_image=$(docker inspect zollybot-remote-remote-api-1 --format '{{.Image}}')
+docker image tag "$signal_previous_image" zollybot-remote-api:before-325
 # The release directory is named after the commit. `/health/live` shows it after the start.
 source_commit=$(basename "$PWD")
 printf '%s\n' "$source_commit" | grep -Eqx '[0-9a-f]{40}' || { echo "Not in a release directory." >&2; exit 1; }
 remote/bin/dotenvx run --overload -f remote/.env.production -fk remote/.env.keys -- \
-  docker compose -p openbot-remote -f remote/compose.yaml build --build-arg "OPENBOT_SOURCE_COMMIT=$source_commit" remote-api
+  docker compose -p zollybot-remote -f remote/compose.yaml build --build-arg "ZOLLYBOT_SOURCE_COMMIT=$source_commit" remote-api
 remote/bin/dotenvx run --overload -f remote/.env.production -fk remote/.env.keys -- \
-  docker compose -p openbot-remote -f remote/compose.yaml up -d --no-build --no-deps remote-api
-docker inspect openbot-remote-remote-api-1 --format '{{.Image}} {{.State.Health.Status}}'
+  docker compose -p zollybot-remote -f remote/compose.yaml up -d --no-build --no-deps remote-api
+docker inspect zollybot-remote-remote-api-1 --format '{{.Image}} {{.State.Health.Status}}'
 curl --fail --silent --show-error https://signal.openbot.run/health/ready
 curl --fail --silent --show-error https://signal.openbot.run/health/live
 curl --fail --silent --show-error https://signal.openbot.run/health/turn
@@ -73,7 +73,7 @@ curl --fail --silent --show-error https://signal.openbot.run/health/turn
 minute. The status page probes it for "Connections".
 
 `/health/live` must show the release commit. Builds made before this field existed show no `commit`;
-builds made without `OPENBOT_SOURCE_COMMIT` show `unknown`.
+builds made without `ZOLLYBOT_SOURCE_COMMIT` show `unknown`.
 
 Wait for Docker health to become `healthy`. Check the running source for `multiplex` and record its
 checksum. Keep the previous image until the device checks below pass. Do not print container environment
@@ -87,10 +87,10 @@ and stays stopped. Build and start it after `remote-api`, with the same `--build
 
 ```sh
 remote/bin/dotenvx run --overload -f remote/.env.production -fk remote/.env.keys -- \
-  docker compose -p openbot-remote -f remote/compose.yaml build --build-arg "OPENBOT_SOURCE_COMMIT=$source_commit" capacity-report
+  docker compose -p zollybot-remote -f remote/compose.yaml build --build-arg "ZOLLYBOT_SOURCE_COMMIT=$source_commit" capacity-report
 remote/bin/dotenvx run --overload -f remote/.env.production -fk remote/.env.keys -- \
-  docker compose -p openbot-remote -f remote/compose.yaml up -d --no-build --no-deps capacity-report
-docker logs openbot-remote-capacity-report-1 2>&1 | tail -5
+  docker compose -p zollybot-remote -f remote/compose.yaml up -d --no-build --no-deps capacity-report
+docker logs zollybot-remote-capacity-report-1 2>&1 | tail -5
 ```
 
 A failed sample writes only `Capacity report failed.` and its source (`turn`, `signal` or `openpanel`).
@@ -105,9 +105,9 @@ connection; health checks alone do not prove it.
 If the new Signal fails, restore the retained image from the same release directory:
 
 ```sh
-docker image tag openbot-remote-api:before-325 openbot-remote-remote-api
+docker image tag zollybot-remote-api:before-325 zollybot-remote-remote-api
 remote/bin/dotenvx run --overload -f remote/.env.production -fk remote/.env.keys -- \
-  docker compose -p openbot-remote -f remote/compose.yaml up -d --no-build --no-deps --force-recreate remote-api
+  docker compose -p zollybot-remote -f remote/compose.yaml up -d --no-build --no-deps --force-recreate remote-api
 ```
 
 Rollback restores the old one-session limit. It does not reverse D1 migrations or revoke device sessions.
@@ -115,7 +115,7 @@ Rollback restores the old one-session limit. It does not reverse D1 migrations o
 ## Standby Signal
 
 The ssh host `signal2` (`65.109.88.58`) runs a standby copy of Signal, coturn and Nginx in the
-Compose project `openbot-remote`, next to an IOTA validator. Its Signal gets no traffic: clients,
+Compose project `zollybot-remote`, next to an IOTA validator. Its Signal gets no traffic: clients,
 hosts, the Worker, Slack, Telegram and routine webhooks all use `signal.openbot.run`, which points to
 `sui-alexandria`. Its coturn is the second TURN relay (see [TURN relays](../remote/README.md#turn-relays)).
 
@@ -123,7 +123,7 @@ hosts, the Worker, Slack, Telegram and routine webhooks all use `signal.openbot.
   `curl --fail https://signal2.openbot.run/health/ready`.
 - Its certificate covers `signal.openbot.run`, `turn2.openbot.run` and `signal2.openbot.run`
   (`ACME_EXTRA_DOMAINS=signal2.openbot.run`).
-- Its `/opt/openbot/remote/.env.production` is a copy of the production file with these changes:
+- Its `/opt/zollybot/remote/.env.production` is a copy of the production file with these changes:
   `TURN_DOMAIN=turn2.openbot.run`, `TURN_PUBLIC_IP=65.109.88.58`, `ACME_EXTRA_DOMAINS`,
   `REMOTE_SIGNAL_PUBLIC_PORT=8091`, `TURN_EXTRA_HOSTS=turn.openbot.run`, and empty
   `DISCORD_BOT_TOKEN`, `DISCORD_APPLICATION_ID` and `TELEGRAM_WEBHOOK_ORIGIN`. `REMOTE_SIGNAL_BIND_ADDRESS=127.0.0.1` comes from the production file;
@@ -174,7 +174,7 @@ change, and each one needs its own approval.
    `SIGNAL_ENTRY_HOST=signal.openbot.run`. Give `signal2` the Discord, Telegram and Slack values of the
    production file: the entry rule starts the bots only on the entry machine.
 4. Deploy the same Signal commit to both machines and recreate only `remote-api`. Check
-   `openbot_remote_signal_entry` in `/metrics`: 1 on `sui-alexandria`, 0 on `signal2`.
+   `zollybot_remote_signal_entry` in `/metrics`: 1 on `sui-alexandria`, 0 on `signal2`.
 5. Worker variables, after step 4:
    `REMOTE_SIGNAL_HOMES=a=wss://signal1.openbot.run/v1/signal,b=wss://signal2.openbot.run/v1/signal` and
    `REMOTE_AUTH_WEBHOOK_URLS=https://signal1.openbot.run/internal/auth-events,https://signal2.openbot.run/internal/auth-events`.
@@ -213,7 +213,7 @@ Failover drill (after approval): stop `remote-api` on `signal2`, check that a ho
 its clients connect on `signal1` within 1 minute, then start it again. Hosts stay on their new home
 until it fails. Then do the same for `sui-alexandria` in a quiet hour, which also moves the entry:
 check that `dig signal.openbot.run` gives `65.109.88.58` within 3 minutes and that
-`openbot_remote_signal_entry` is 1 on `signal2`. To move the entry back, set the A record by hand.
+`zollybot_remote_signal_entry` is 1 on `signal2`. To move the entry back, set the A record by hand.
 
 Known limits: the host status shows the home URL from its first ticket and does not change after a
 move. A host that goes back to a released desktop sends no `signalHome`; its ticket request removes the

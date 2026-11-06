@@ -1,4 +1,4 @@
-import { type AgentModelOption, type AgentSummary, defaultProviderModel } from "@openbot/contracts/ipc";
+import { type AgentModelOption, type AgentSummary, defaultProviderModel } from "@zollybot/contracts/ipc";
 import { inputPrice } from "./usage-pricing";
 
 /**

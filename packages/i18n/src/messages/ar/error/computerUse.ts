@@ -2,9 +2,9 @@ import type { PartialTranslation } from "../../../message";
 import type { messages as source } from "../../en/error/computerUse";
 
 export const messages = {
-  "error.computerUse.noAppToDrag": "لا يحتوي هذا الإصدار من OpenBot على تطبيق للسحب.",
+  "error.computerUse.noAppToDrag": "لا يحتوي هذا الإصدار من ZollyBot على تطبيق للسحب.",
   "error.computerUse.helpWindowChanged": "تغيّرت نافذة مساعدة الأذونات قبل بدء السحب.",
-  "error.computerUse.noAppToShow": "لا يحتوي هذا الإصدار من OpenBot على تطبيق للعرض.",
+  "error.computerUse.noAppToShow": "لا يحتوي هذا الإصدار من ZollyBot على تطبيق للعرض.",
   "error.computerUse.noDriver": "لا يوجد على هذا الحاسوب برنامج تشغيل للتحكم في الحاسوب.",
   "error.computerUse.socketPathTooLong": "طول مسار مقبس التحكم في الحاسوب {length} حرفًا، ويسمح هذا النظام بـ {limit}.",
   "error.computerUse.socketDirectoryNotDirectory": "مجلد مقبس التحكم في الحاسوب {path} ليس مجلدًا.",

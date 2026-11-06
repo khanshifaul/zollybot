@@ -35,7 +35,7 @@ import {
   isQueueSnapshot,
   type QueuedMessageReceipt,
   type QueueSnapshot,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   decodeRecord,
   guardedListDecoder,
@@ -44,8 +44,8 @@ import {
   requiredBoolean,
   requiredNumber,
   requiredString,
-} from "@openbot/contracts/ipc-decoding";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc-decoding";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 
 export function decodeAttachmentDownloadProgress(value: unknown): AttachmentDownloadProgress {
   const progress = decodeRecord(value, "attachment download progress");

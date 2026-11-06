@@ -1,5 +1,5 @@
-import type { AttachmentSummary, ImageGenerationInfo } from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
+import type { AttachmentSummary, ImageGenerationInfo } from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
 import { Effect, Exit, Fiber, Result, Schema, Scope } from "effect";
 import { newAssistantMessage } from "../conversation-snapshots";
 import { causeHelpers } from "../effect-boundary";

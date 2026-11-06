@@ -1,11 +1,11 @@
-import { type VaultSaveInput, vaultExpiryText } from "@openbot/contracts/ipc";
+import { type VaultSaveInput, vaultExpiryText } from "@zollybot/contracts/ipc";
 import {
   type ConversationUiBlock,
   UI_BLOCK_SUBMIT_ACTION_ID,
   type UiBlockSpec,
   type UiVaultRequestKind,
   uiBlockAnswersFromResponse,
-} from "@openbot/contracts/ui-blocks";
+} from "@zollybot/contracts/ui-blocks";
 import type { VaultDraft } from "@/features/servers/model/vault-items";
 
 /**

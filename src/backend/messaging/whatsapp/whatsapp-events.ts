@@ -10,7 +10,7 @@ import {
   normalizeMessageContent,
   proto,
   type WAMessage,
-} from "@openbot/whatsapp/baileys";
+} from "@zollybot/whatsapp/baileys";
 import type { InboundAction, InboundFile, InboundMessage, MessageTarget } from "../messaging-types";
 import type { WhatsAppChatState } from "./whatsapp-chats";
 import { type SenderDecision, senderDecision, type WhatsAppSenderRules } from "./whatsapp-senders";
@@ -289,7 +289,7 @@ function quoteOf(contextInfo: proto.IContextInfo, context: WhatsAppInboundContex
   };
 }
 
-/** The text with each mention as `@<id>`, and OpenBot's own mention taken out. */
+/** The text with each mention as `@<id>`, and ZollyBot's own mention taken out. */
 function withMentions(text: string, mentioned: string[], me: WhatsAppIdentity): string {
   let result = text;
   for (const jid of mentioned) {

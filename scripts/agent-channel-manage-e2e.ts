@@ -11,19 +11,19 @@
 // a run of another member, the run of its current task, a run that ended, and a routine run. After
 // a person cancels a run of the lead with the channel controls, the next packet of the lead names
 // that run and its subtask as cancelled, and not the run of another member.
-// `bun scripts/agent-channel-manage-e2e.ts`. Writes .openbot-build/agent-channel-manage-e2e/report.json.
+// `bun scripts/agent-channel-manage-e2e.ts`. Writes .zollybot-build/agent-channel-manage-e2e/report.json.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS, type ChannelMessage, isChannelChangeMarker } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS, type ChannelMessage, isChannelChangeMarker } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-channel-manage-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-channel-manage-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-channel-manage-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-channel-manage-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -33,14 +33,14 @@ const inputLog = join(root, "inputs.jsonl");
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 const CALL_MARK = "CHANNEL-CALL";
 // A turn whose current assignment has this text (with a real line break) runs until it is interrupted.
@@ -54,7 +54,7 @@ let limitedVisibleAgentId = "";
 
 /**
  * A Codex app-server with the methods that the service calls. A turn whose input has
- * `CHANNEL-CALL <<ARGS{"__tool":"…",…}ARGS>>` calls `openbot.<__tool>` with the rest of that JSON
+ * `CHANNEL-CALL <<ARGS{"__tool":"…",…}ARGS>>` calls `zollybot.<__tool>` with the rest of that JSON
  * through `tool_call`, logs the result, and ends. A channel packet also repeats earlier requests, so
  * the last call in the input is the current assignment. A `taskId` of `$CURRENT_TASK` becomes the id
  * of the task in the packet. A turn with `HOLD_MARK` runs until it is interrupted. Other turns answer
@@ -123,9 +123,9 @@ const answer = (message) => {
           threadId: params.threadId,
           turnId,
           callId: "call-" + turnId,
-          namespace: "openbot",
+          namespace: "zollybot",
           tool: "tool_call",
-          arguments: { name: "openbot." + __tool, arguments: args },
+          arguments: { name: "zollybot." + __tool, arguments: args },
         },
       });
     }
@@ -245,7 +245,7 @@ function pass(name: string, condition: boolean, detail?: string) {
 }
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 const agents = new AgentService({

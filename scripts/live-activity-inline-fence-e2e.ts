@@ -7,15 +7,15 @@ import { createHash, randomBytes } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { type AgentEvent, type AgentRuntimeSnapshot, isAgentRuntimeSnapshot } from "@openbot/contracts/ipc";
-import { LIVE_ACTIVITY_SEALED_LIMIT, type LiveActivityRelayPush } from "@openbot/contracts/live-activity-relay";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import type { AgentLiveActivityProps } from "@openbot/team-client/live-activity-props";
+import { type AgentEvent, type AgentRuntimeSnapshot, isAgentRuntimeSnapshot } from "@zollybot/contracts/ipc";
+import { LIVE_ACTIVITY_SEALED_LIMIT, type LiveActivityRelayPush } from "@zollybot/contracts/live-activity-relay";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import type { AgentLiveActivityProps } from "@zollybot/team-client/live-activity-props";
 import {
   encodeLiveActivityBytes,
   LIVE_ACTIVITY_SECRET_BYTES,
   liveActivityKeys,
-} from "@openbot/team-client/live-activity-seal";
+} from "@zollybot/team-client/live-activity-seal";
 import { Effect } from "effect";
 import { openSealedLiveActivity } from "../apps/mobile/src/features/live-activity/model/live-activity-open";
 import { LiveActivityPushService } from "../src/main/live-activity-push";
@@ -280,7 +280,7 @@ const validArguments =
   /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/u.test(phase);
 const output = join(
   ROOT,
-  ".openbot-build/live-activity-inline-fence-e2e",
+  ".zollybot-build/live-activity-inline-fence-e2e",
   validArguments ? phase : "invalid-arguments",
 );
 const report: Report = {

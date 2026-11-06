@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
-import { agentProviderDescriptor } from "@openbot/contracts/agent-providers";
-import { expandAttachmentReferences } from "@openbot/contracts/attachment-references";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { agentProviderDescriptor } from "@zollybot/contracts/agent-providers";
+import { expandAttachmentReferences } from "@zollybot/contracts/attachment-references";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   AGENT_TASK_QUEUED_PREVIEW,
   type AgentEvent,
@@ -15,14 +15,14 @@ import {
   type BranchAgentTaskInput,
   type ConversationMessage,
   type ConversationSnapshot,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Deferred, Effect, Schema, Semaphore } from "effect";
 import { z } from "zod";
 import type { ConversationRuntime } from "../agent/conversation-runtime";
 import type { TaskLanes } from "../agent/drain-scheduler";
-import { type OpenBotToolResponse, openBotToolFailure, openBotToolResult } from "../agent/routine-tools";
+import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "../agent/routine-tools";
 import {
   type AgentThreadOrigin,
   type AgentThreadRecord,
@@ -33,7 +33,7 @@ import type { MailboxStore } from "../mailbox-store";
 import type { DynamicToolCallParams } from "../protocol";
 import { storedSync } from "../stored-state-effects";
 
-const logger = createOpenBotLogger("agent-tasks");
+const logger = createZollyBotLogger("agent-tasks");
 
 /**
  * The most unfinished tasks that an agent can have when it starts one more itself. A finished task does
@@ -64,7 +64,7 @@ export interface AgentTasksHooks {
   queued(agentId: string): void;
   /** The stored active turn of a thread, also when its conversation is not loaded. */
   turnActive(agentId: string, threadId: string): boolean;
-  /** OpenBot archived finished tasks of one agent: their memory reviews start, and a waiting task lane can start. */
+  /** ZollyBot archived finished tasks of one agent: their memory reviews start, and a waiting task lane can start. */
   archived(agentId: string, tasks: readonly AgentThreadRecord[]): Effect.Effect<void>;
 }
 
@@ -275,7 +275,7 @@ export class AgentTasks implements TaskLanes {
         ? taskTitle(messages.findLast((message) => message.author === "user")?.text ?? "") ||
           sourceText("status.agent.branchTitle")
         : branchTitle(source.title, this.#store.titles(input.agentId));
-    const threadId = `openbot-thread-${randomUUID()}`;
+    const threadId = `zollybot-thread-${randomUUID()}`;
     const staged: string[] = [];
     const record = yield* Effect.gen({ self: this }, function* () {
       const files = new Map<string, AttachmentSummary>();
@@ -515,7 +515,7 @@ export class AgentTasks implements TaskLanes {
     this: AgentTasks,
     params: DynamicToolCallParams,
     caller: AgentTaskCaller,
-  ): Effect.fn.Return<OpenBotToolResponse | null> {
+  ): Effect.fn.Return<ZollyBotToolResponse | null> {
     if (params.tool !== START_TASK_TOOL) return null;
     const parsed = startTaskToolSchema.safeParse(params.arguments);
     if (!parsed.success) return openBotToolFailure(sourceText("error.backend.taskToolInvalid"));
@@ -532,7 +532,7 @@ export class AgentTasks implements TaskLanes {
     params: DynamicToolCallParams,
     caller: AgentTaskCaller,
     input: z.infer<typeof startTaskToolSchema>,
-  ): Effect.fn.Return<OpenBotToolResponse> {
+  ): Effect.fn.Return<ZollyBotToolResponse> {
     const idempotencyKey = `start-task:${createHash("sha256")
       .update(JSON.stringify([caller.agentId, params.turnId, params.callId]))
       .digest("hex")}`;
@@ -751,7 +751,7 @@ function branchTitle(sourceTitle: string, titles: readonly string[]): string {
   return `${prefix}${last + 1}`;
 }
 
-function startedTaskResult(task: AgentThreadRecord): OpenBotToolResponse {
+function startedTaskResult(task: AgentThreadRecord): ZollyBotToolResponse {
   return openBotToolResult({
     taskId: task.taskId,
     title: task.title,

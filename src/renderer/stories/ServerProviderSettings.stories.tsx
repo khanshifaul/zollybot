@@ -9,11 +9,11 @@ import {
   type ProviderRuntimeStatus,
   type ServerSummary,
   type UpdateCustomProviderInput,
-} from "@openbot/contracts/ipc";
-import { Toaster, toast } from "@openbot/ui";
-import type { ProviderAccountActions } from "@openbot/ui/components/provider-accounts";
-import type { ProviderDetection } from "@openbot/ui/features/custom-providers/detected-providers";
-import type { ProviderDetectionSettingsValue } from "@openbot/ui/features/custom-providers/ProviderDetectionSettings";
+} from "@zollybot/contracts/ipc";
+import { Toaster, toast } from "@zollybot/ui";
+import type { ProviderAccountActions } from "@zollybot/ui/components/provider-accounts";
+import type { ProviderDetection } from "@zollybot/ui/features/custom-providers/detected-providers";
+import type { ProviderDetectionSettingsValue } from "@zollybot/ui/features/custom-providers/ProviderDetectionSettings";
 import { createSignal, onCleanup } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -22,7 +22,7 @@ import { ServerSettingsModal } from "../src/features/servers/ServerSettingsModal
 import type { HostProviderSettings } from "../src/features/settings/ProviderSettingsSection";
 import { STORY_HOST_STATUS, STORY_INVITES, STORY_PRESENCE, STORY_SERVERS } from "../src/preview/fixtures";
 import { createStoryDetection, STORY_DETECTED_PROVIDERS } from "./detected-providers-fixture";
-import { createMockOpenBot } from "./mock-openbot";
+import { createMockZollyBot } from "./mock-zollybot";
 import { createFakeConnection } from "./provider-connection-fixture";
 import { SettingsPageStory } from "./settings-page-story";
 
@@ -199,8 +199,8 @@ function ServerProvidersStory(props: {
             },
           ],
         };
-  const previousApi = window.openbot;
-  const mock = createMockOpenBot({
+  const previousApi = window.zollybot;
+  const mock = createMockZollyBot({
     ...(props.providerUpdate
       ? {
           providerRuntimeSnapshot: {
@@ -213,11 +213,11 @@ function ServerProvidersStory(props: {
     ...(props.providerUpdateFailure ? { providerRuntimeFailure: true } : {}),
   });
   const runtimes = createProviderRuntimeStore(() => (props.providerUpdate ? mock.api.providerRuntimes : undefined));
-  window.openbot = mock.api;
+  window.zollybot = mock.api;
   onCleanup(() => {
     mock.dispose();
     toast.dismiss();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
   });
   const [preference, setPreference] = createSignal<AppSetupState>({
     completed: true,

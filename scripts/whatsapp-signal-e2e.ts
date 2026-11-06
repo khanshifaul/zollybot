@@ -1,14 +1,14 @@
-// End-to-end check of OpenBot's clean-room Signal implementation for the WhatsApp connector
+// End-to-end check of ZollyBot's clean-room Signal implementation for the WhatsApp connector
 // (`packages/whatsapp/src/signal`, `packages/whatsapp/src/signal-repository.ts`).
 //
 // 1. Known-answer vectors in `packages/whatsapp/test-vectors`: X25519, signatures, pairwise sessions
 //    (as receiver and as byte-exact sender), out-of-order delivery, forward limit and sender keys.
-// 2. Parties that run through `makeOpenBotSignalRepository` with the Baileys transaction layer over
-//    an in-memory key store that stores values as the OpenBot auth store does (BufferJSON).
-// 3. When `OPENBOT_WA_ORACLE` names a reference implementation, a differential conversation against
+// 2. Parties that run through `makeZollyBotSignalRepository` with the Baileys transaction layer over
+//    an in-memory key store that stores values as the ZollyBot auth store does (BufferJSON).
+// 3. When `ZOLLYBOT_WA_ORACLE` names a reference implementation, a differential conversation against
 //    it in both directions. CI has no oracle, so the report marks it as skipped.
 //
-// `bun scripts/whatsapp-signal-e2e.ts`. Writes .openbot-build/whatsapp-signal-e2e.json and exits
+// `bun scripts/whatsapp-signal-e2e.ts`. Writes .zollybot-build/whatsapp-signal-e2e.json and exits
 // non-zero when a check fails.
 
 import assert from "node:assert/strict";
@@ -18,7 +18,7 @@ import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 import {
   type AuthenticationCreds,
   addTransactionCapability,
@@ -36,8 +36,8 @@ import {
   type SocketConfig,
   unpadRandomMax16,
   writeRandomPadMax16,
-} from "@openbot/whatsapp/baileys";
-import { makeOpenBotSignalRepository } from "@openbot/whatsapp/signal-repository";
+} from "@zollybot/whatsapp/baileys";
+import { makeZollyBotSignalRepository } from "@zollybot/whatsapp/signal-repository";
 import { Schema } from "effect";
 import { addressToString, jidToAddress } from "../packages/whatsapp/src/signal/address";
 import { publicKeyOf, sharedKey, sign, verify, withKeyType } from "../packages/whatsapp/src/signal/curve";
@@ -75,10 +75,10 @@ import pkmsgVectors from "../packages/whatsapp/test-vectors/session-pkmsg.json";
 import signatureVectors from "../packages/whatsapp/test-vectors/signatures.json";
 import x25519Vectors from "../packages/whatsapp/test-vectors/x25519.json";
 
-const REPORT = resolve(import.meta.dirname, "../.openbot-build/whatsapp-signal-e2e.json");
+const REPORT = resolve(import.meta.dirname, "../.zollybot-build/whatsapp-signal-e2e.json");
 /** The reference oracle, only from an explicit path: a fixed path in `/tmp` could hold anyone's file. */
-const ORACLE = process.env.OPENBOT_WA_ORACLE ?? "";
-const log = createOpenBotLogger("whatsapp-signal-e2e");
+const ORACLE = process.env.ZOLLYBOT_WA_ORACLE ?? "";
+const log = createZollyBotLogger("whatsapp-signal-e2e");
 
 type BaileysLogger = SocketConfig["logger"];
 type E2ESession = Parameters<SignalRepository["injectE2ESession"]>[0]["session"];
@@ -423,7 +423,7 @@ async function checkSenderKeyVectors(): Promise<void> {
 // ---------------------------------------------------------------------------------------------
 // Repository parties
 
-/** Stores each value as JSON text with BufferJSON, as the OpenBot auth store does. */
+/** Stores each value as JSON text with BufferJSON, as the ZollyBot auth store does. */
 class MemoryKeyStore implements SignalKeyStore {
   readonly #values = new Map<string, string>();
 
@@ -459,7 +459,7 @@ interface Party {
 
 function openRepository(store: MemoryKeyStore, creds: AuthenticationCreds): SignalRepositoryWithLIDStore {
   const keys = addTransactionCapability(store, silentLogger, { maxCommitRetries: 1, delayBetweenTriesMs: 0 });
-  return makeOpenBotSignalRepository({ creds, keys }, silentLogger);
+  return makeZollyBotSignalRepository({ creds, keys }, silentLogger);
 }
 
 function makeParty(jid: string): Party {
@@ -780,10 +780,10 @@ function oracle(command: string, input: { [key: string]: OracleValue }, state?: 
 
 async function checkOracleDifferential(): Promise<"ran" | "skipped"> {
   if (!ORACLE || !existsSync(ORACLE)) {
-    log.info(`SKIP differential: ${ORACLE ? `${ORACLE} does not exist` : "OPENBOT_WA_ORACLE is not set"}`);
+    log.info(`SKIP differential: ${ORACLE ? `${ORACLE} does not exist` : "ZOLLYBOT_WA_ORACLE is not set"}`);
     return "skipped";
   }
-  const dir = await mkdtemp(join(tmpdir(), "openbot-wa-oracle-"));
+  const dir = await mkdtemp(join(tmpdir(), "zollybot-wa-oracle-"));
   try {
     await check("oracle/signatures both ways", () => {
       const ours = Curve.generateKeyPair();
@@ -805,7 +805,7 @@ async function checkOracleDifferential(): Promise<"ran" | "skipped"> {
     const oracleJid = "100000000000010:4@lid";
     const oracleAddress = addressToString(jidToAddress(oracleJid));
 
-    await check("oracle/pairwise: OpenBot initiates", async () => {
+    await check("oracle/pairwise: ZollyBot initiates", async () => {
       const state = join(dir, "peer-a.json");
       const bundle = oracle(
         "init",
@@ -946,7 +946,7 @@ async function checkOracleDifferential(): Promise<"ran" | "skipped"> {
       const ourAddress = addressToString(jidToAddress(us.jid));
       const group = "120363000000000099@g.us";
 
-      // Oracle -> OpenBot.
+      // Oracle -> ZollyBot.
       const created = oracle(
         "skdm-create",
         {
@@ -980,7 +980,7 @@ async function checkOracleDifferential(): Promise<"ran" | "skipped"> {
         assert.equal(new TextDecoder().decode(plaintext), message.text);
       }
 
-      // OpenBot -> oracle.
+      // ZollyBot -> oracle.
       const ours: Array<{ text: string; ciphertext: Uint8Array; senderKeyDistributionMessage: Uint8Array }> = [];
       for (const text of ["h0", "h1", "h2", "h3"]) {
         ours.push({ text, ...(await us.repo.encryptGroupMessage({ group, data: utf8(text), meId: us.jid })) });

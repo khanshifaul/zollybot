@@ -1,5 +1,5 @@
-import type { AgentTasksSnapshot } from "@openbot/contracts/ipc";
 import { useQueryClient } from "@tanstack/react-query";
+import type { AgentTasksSnapshot } from "@zollybot/contracts/ipc";
 import { useEffect } from "react";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import { useAgentThreadUnreadCounts } from "@/features/chat/components/use-agent-thread-reads";

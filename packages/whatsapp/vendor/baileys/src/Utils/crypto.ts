@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, createHmac, hkdfSync, randomBytes } from 'crypto'
-// OPENBOT PATCH: curve operations come from OpenBot's own Signal module, not libsignal (GPL-3.0).
+// OPENBOT PATCH: curve operations come from ZollyBot's own Signal module, not libsignal (GPL-3.0).
 import * as curve from '../../../../src/signal/curve'
 import { KEY_BUNDLE_TYPE } from '../Defaults'
 import type { KeyPair } from '../Types'

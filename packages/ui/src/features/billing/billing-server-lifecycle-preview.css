@@ -4,16 +4,16 @@
 
 .billing-lifecycle-card {
   overflow: hidden;
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
-  box-shadow: 0 0 0 1px var(--openbot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
+  box-shadow: 0 0 0 1px var(--zollybot-border);
 }
 
 .billing-lifecycle-identity {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-4);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-4);
 }
 
 .billing-lifecycle-server-icon,
@@ -21,68 +21,68 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: var(--openbot-control-xl);
-  height: var(--openbot-control-xl);
-  border-radius: var(--openbot-radius-md);
-  color: var(--openbot-text-secondary);
-  background: var(--openbot-bg-control-hover);
+  width: var(--zollybot-control-xl);
+  height: var(--zollybot-control-xl);
+  border-radius: var(--zollybot-radius-md);
+  color: var(--zollybot-text-secondary);
+  background: var(--zollybot-bg-control-hover);
 }
 
 .billing-lifecycle-server-icon svg,
 .billing-lifecycle-dialog-icon svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .billing-lifecycle-server-copy {
   display: grid;
   flex: 1;
   min-width: 0;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .billing-lifecycle-billing {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-4);
-  border-top: 1px solid var(--openbot-border);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-4);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .billing-lifecycle-billing[data-scheduled] {
-  background: color-mix(in srgb, var(--openbot-warning-soft) 35%, transparent);
+  background: color-mix(in srgb, var(--zollybot-warning-soft) 35%, transparent);
 }
 
 .billing-lifecycle-billing-copy {
   display: grid;
   flex: 1;
   min-width: 0;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .billing-lifecycle-calendar {
   flex-shrink: 0;
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  color: var(--openbot-warning-text);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  color: var(--zollybot-warning-text);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .billing-lifecycle-receipt {
   display: grid;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-4);
-  margin-bottom: var(--openbot-space-4);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-4);
+  margin-bottom: var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface);
 }
 
 .billing-lifecycle-receipt > div {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--openbot-space-4);
+  gap: var(--zollybot-space-4);
 }
 
 .billing-lifecycle-receipt > div > :last-child {
@@ -97,7 +97,7 @@
 @container (max-width: 450px) {
   .billing-lifecycle-identity {
     flex-wrap: wrap;
-    gap: var(--openbot-space-2);
+    gap: var(--zollybot-space-2);
   }
 
   .billing-lifecycle-server-icon {
@@ -121,7 +121,7 @@
   .billing-lifecycle-receipt > div {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--openbot-space-1);
+    gap: var(--zollybot-space-1);
   }
 
   .billing-lifecycle-receipt > div > :last-child {
@@ -130,45 +130,45 @@
 }
 
 .billing-lifecycle-menu.ui-action-menu {
-  z-index: var(--openbot-layer-dialog-host);
+  z-index: var(--zollybot-layer-dialog-host);
 }
 
 .billing-lifecycle-list {
   display: grid;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .billing-lifecycle-price {
   display: grid;
   justify-items: end;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 
 .billing-lifecycle-timing {
   display: grid;
-  gap: var(--openbot-space-2);
-  margin-bottom: var(--openbot-space-4);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-2);
+  margin-bottom: var(--zollybot-space-4);
+  font-size: var(--zollybot-text-sm);
 }
 
 .billing-lifecycle-timing-option {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-3);
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-md);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-3);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .billing-lifecycle-timing-option[data-checked] {
-  border-color: var(--openbot-accent);
-  background: var(--openbot-bg-surface);
+  border-color: var(--zollybot-accent);
+  background: var(--zollybot-bg-surface);
 }
 
 .billing-lifecycle-timing-option[data-focus-visible] {
-  outline: 1px solid var(--openbot-accent);
+  outline: 1px solid var(--zollybot-accent);
 }
 
 .billing-lifecycle-timing-option label {
@@ -178,16 +178,16 @@
 
 .billing-lifecycle-radio {
   flex-shrink: 0;
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .billing-lifecycle-radio[data-checked] {
-  border-color: var(--openbot-accent);
-  background: var(--openbot-accent);
-  box-shadow: inset 0 0 0 var(--openbot-space-1) var(--openbot-bg-canvas);
+  border-color: var(--zollybot-accent);
+  background: var(--zollybot-accent);
+  box-shadow: inset 0 0 0 var(--zollybot-space-1) var(--zollybot-bg-canvas);
 }
 
 @container (max-width: 450px) {

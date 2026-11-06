@@ -87,7 +87,7 @@ export function nearestAvatarHue(color: AvatarColor): AvatarHue | null {
 
 // Square brackets are in the set because a provider CLI puts them there: the Claude CLI reports its
 // 1M-context Fable variant as `claude-fable-5-1[1m]`, and every id this guard sees was minted by a
-// CLI OpenBot does not control. `=` and `,` are there for the same reason: the Cursor CLI lists its
+// CLI ZollyBot does not control. `=` and `,` are there for the same reason: the Cursor CLI lists its
 // variants as `gpt-5.6-sol[context=272k,reasoning=medium,fast=false]`, and takes that id back whole.
 // Without them the model was unselectable and, worse, unlistable --
 // `isAgentModelOption` refuses the option, and the list decoders on both the IPC and the Team API
@@ -172,7 +172,7 @@ export function isAgentModelOption(value: unknown): value is AgentModelOption {
   return isDynamicRecord(value) && isAgentProvider(value.provider) && hasAgentModelOptionFields(value);
 }
 
-/** A model that a client reads from a host. Its provider can be one that this OpenBot does not know. */
+/** A model that a client reads from a host. Its provider can be one that this ZollyBot does not know. */
 export type ClientAgentModelOption = Omit<AgentModelOption, "provider"> & { provider: AgentProviderRef };
 
 export function isClientAgentModelOption(value: unknown): value is ClientAgentModelOption {

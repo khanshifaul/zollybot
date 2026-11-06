@@ -1,13 +1,13 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
- * What the account context reaches in main: the OpenBot account session, its devices, and the
+ * What the account context reaches in main: the ZollyBot account session, its devices, and the
  * usage the page rail and the Usage page show.
  */
 export interface AccountPort {
-  agent: Pick<OpenBotDesktopApi["agent"], "getUsage">;
+  agent: Pick<ZollyBotDesktopApi["agent"], "getUsage">;
   auth: Pick<
-    OpenBotDesktopApi["auth"],
+    ZollyBotDesktopApi["auth"],
     | "cancelMobileConnect"
     | "createMobileConnect"
     | "createMobileConnectLink"
@@ -30,7 +30,7 @@ export interface AccountPort {
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function accountPort(): AccountPort {
-  return window.openbot;
+  return window.zollybot;
 }

@@ -1,15 +1,15 @@
 // The /pricing page: hosted servers and the license, as one order form. No JSX here, for the same
 // reason `content-collection.ts` holds none.
 
-import { BILLING_PLANS, type BillingPlanId, billingListPrices } from "@openbot/contracts/billing";
-import type { HostedServerCatalogPlan } from "@openbot/contracts/hosted-servers";
+import { BILLING_PLANS, type BillingPlanId, billingListPrices } from "@zollybot/contracts/billing";
+import type { HostedServerCatalogPlan } from "@zollybot/contracts/hosted-servers";
 import type { PageSocialImage } from "./site-metadata";
 
 export const PRICING_ROUTE = "/pricing";
 
 export const PRICING_SOCIAL_IMAGE: PageSocialImage = {
   path: "/social/pricing.jpg",
-  alt: "Small team. Bright ideas. Three OpenBot agents under a glass dome",
+  alt: "Small team. Bright ideas. Three ZollyBot agents under a glass dome",
 };
 
 /** The plans that no new server can take. Servers that have one keep it. */

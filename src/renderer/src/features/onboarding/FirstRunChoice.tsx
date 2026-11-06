@@ -1,7 +1,7 @@
-import { ProviderLogo, type ProviderLogoVariant } from "@openbot/brand";
-import { Button, ChevronRight, Spinner } from "@openbot/ui";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
+import { ProviderLogo, type ProviderLogoVariant } from "@zollybot/brand";
+import { Button, ChevronRight, Spinner } from "@zollybot/ui";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import { createUniqueId, For, Show } from "solid-js";
 import { AnalyticsConsentRow, ConsentNotice } from "./AnalyticsConsent";
 import type { OnboardingAvatarVariant } from "./onboarding-avatars";

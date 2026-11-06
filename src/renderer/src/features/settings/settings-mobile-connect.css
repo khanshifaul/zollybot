@@ -4,12 +4,12 @@
 .settings-mobile-app-tab {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .settings-mobile-app-tab > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: 0 0 auto;
 }
 
@@ -29,61 +29,61 @@
 .settings-mobile-qr {
   display: grid;
   justify-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-mobile-qr .ui-qr-code {
   overflow: hidden;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 /* A new code settles in, so a change of code reads as a new code. */
 .settings-mobile-qr-code {
-  animation: settings-mobile-qr-in var(--openbot-duration-overlay) var(--openbot-ease-out);
+  animation: settings-mobile-qr-in var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .settings-mobile-qr-slot {
   display: grid;
   place-items: center;
   align-content: center;
-  gap: var(--openbot-space-2);
-  border: 1px dashed var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-md);
+  gap: var(--zollybot-space-2);
+  border: 1px dashed var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .settings-mobile-qr-tag {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   min-height: 24px;
-  padding: 0 var(--openbot-space-2);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  padding: 0 var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
   white-space: nowrap;
 }
 
 .settings-mobile-qr-tag > svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
   flex: 0 0 auto;
 }
 
 .settings-mobile-qr-tag[data-kind="signin"] {
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
 .settings-mobile-qr-tag[data-kind="permanent"] {
-  background: var(--openbot-warning-soft);
-  color: var(--openbot-warning-text);
+  background: var(--zollybot-warning-soft);
+  color: var(--zollybot-warning-text);
 }
 
 .settings-mobile-qr-tag[data-kind="success"] {
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success-text);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success-text);
 }
 
 .settings-mobile-qr-tag-time {
@@ -94,13 +94,13 @@
 .settings-mobile-link-warning {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  color: var(--openbot-warning-text);
+  gap: var(--zollybot-space-1-5);
+  color: var(--zollybot-warning-text);
 }
 
 .settings-mobile-link-warning > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .settings-mobile-connect-qr-stage {
@@ -110,9 +110,9 @@
 
 .settings-mobile-connect-qr-stage .ui-qr-code {
   transition:
-    opacity var(--openbot-duration-normal) ease-out,
-    filter var(--openbot-duration-overlay) ease-out,
-    transform var(--openbot-duration-overlay) var(--openbot-ease-out);
+    opacity var(--zollybot-duration-normal) ease-out,
+    filter var(--zollybot-duration-overlay) ease-out,
+    transform var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .settings-mobile-connect-qr-stage[data-success] .ui-qr-code {
@@ -126,65 +126,65 @@
   inset: 0;
   display: grid;
   place-items: center;
-  color: var(--openbot-success);
-  animation: settings-mobile-connect-success-enter var(--openbot-duration-overlay) var(--openbot-ease-out) both;
+  color: var(--zollybot-success);
+  animation: settings-mobile-connect-success-enter var(--zollybot-duration-overlay) var(--zollybot-ease-out) both;
 }
 
 .settings-mobile-connect-success-mark::before {
   position: absolute;
   width: 84px;
   height: 84px;
-  border: 1px solid var(--openbot-success);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-success-soft);
+  border: 1px solid var(--zollybot-success);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-success-soft);
   content: "";
-  animation: settings-mobile-connect-success-ring 600ms var(--openbot-ease-out) both;
+  animation: settings-mobile-connect-success-ring 600ms var(--zollybot-ease-out) both;
 }
 
 .settings-mobile-connect-success-mark > svg {
   position: relative;
   width: 58px;
   height: 58px;
-  padding: var(--openbot-space-2);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface-raised);
-  filter: drop-shadow(0 6px 16px var(--openbot-shadow-popover-ambient));
-  stroke-width: var(--openbot-icon-stroke);
-  animation: settings-mobile-connect-success-pop 420ms var(--openbot-ease-out) both;
+  padding: var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface-raised);
+  filter: drop-shadow(0 6px 16px var(--zollybot-shadow-popover-ambient));
+  stroke-width: var(--zollybot-icon-stroke);
+  animation: settings-mobile-connect-success-pop 420ms var(--zollybot-ease-out) both;
 }
 
 .settings-mobile-connect-success-mark > svg path {
   stroke-dasharray: 24;
   stroke-dashoffset: 24;
-  animation: settings-mobile-connect-check-draw 360ms var(--openbot-duration-fast) var(--openbot-ease-out) forwards;
+  animation: settings-mobile-connect-check-draw 360ms var(--zollybot-duration-fast) var(--zollybot-ease-out) forwards;
 }
 
 .settings-mobile-phones {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-mobile-phones-empty {
   grid-column: 1 / -1;
   display: grid;
   justify-items: center;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-8) var(--openbot-space-6);
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-8) var(--zollybot-space-6);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
   text-align: center;
 }
 
 .settings-mobile-phones-empty > .ui-button {
-  margin-top: var(--openbot-space-2);
+  margin-top: var(--zollybot-space-2);
 }
 
 .settings-mobile-phones-empty-title,
 .settings-mobile-phone-name {
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .settings-mobile-phones-empty-icon {
@@ -192,28 +192,28 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  margin-bottom: var(--openbot-space-1);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  margin-bottom: var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
 .settings-mobile-phones-empty-icon > svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
 }
 
 .settings-mobile-phone-card {
   display: flex;
   align-items: flex-start;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   min-width: 0;
-  padding: var(--openbot-space-3) var(--openbot-space-4);
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
   /* A phone that signs in while the tab is open fades into the grid. */
-  transition: opacity var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 @starting-style {
@@ -228,45 +228,45 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-secondary);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-secondary);
 }
 
 .settings-mobile-phone-icon[data-active] {
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
 .settings-mobile-phone-icon > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .settings-mobile-phone-copy {
   min-width: 0;
   display: grid;
   flex: 1;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .settings-mobile-phone-via {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1);
-  margin-top: var(--openbot-space-1);
-  color: var(--openbot-text-dim);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-1);
+  margin-top: var(--zollybot-space-1);
+  color: var(--zollybot-text-dim);
+  font-size: var(--zollybot-text-sm);
 }
 
 .settings-mobile-phone-via > svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
 .settings-mobile-link-card-slot {
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 /* No permanent link yet: a dashed card that opens the explanation. */
@@ -274,47 +274,47 @@
   height: auto;
   justify-content: flex-start;
   border-style: dashed;
-  font-weight: var(--openbot-weight-regular);
+  font-weight: var(--zollybot-weight-regular);
   text-align: start;
   white-space: normal;
 }
 
 .settings-mobile-link-card-hint {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .settings-mobile-link-card-actions {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 /* How devices connect: the current route as a chip, and both routes in a popover. */
 .settings-mobile-route-chip.ui-button > svg:last-child {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  color: var(--openbot-text-dim);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  color: var(--zollybot-text-dim);
 }
 
 .settings-mobile-route-popover.ui-popover-menu-surface {
   width: 340px;
   display: grid;
-  gap: var(--openbot-space-1);
-  padding: var(--openbot-space-3);
+  gap: var(--zollybot-space-1);
+  padding: var(--zollybot-space-3);
 }
 
 .settings-mobile-route-popover-title {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .settings-mobile-route-popover-description {
-  margin: 0 0 var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  margin: 0 0 var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 /* The dialogs: one code per screen. */
@@ -323,22 +323,22 @@
   display: grid;
   overflow: hidden;
   outline: 0;
-  background: var(--openbot-bg-sidebar);
+  background: var(--zollybot-bg-sidebar);
 }
 
 .settings-mobile-dialog-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: var(--openbot-space-4) 0;
-  padding-inline: var(--openbot-space-6) var(--openbot-space-4);
+  padding-block: var(--zollybot-space-4) 0;
+  padding-inline: var(--zollybot-space-6) var(--zollybot-space-4);
 }
 
 .settings-mobile-dialog-title {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-xl);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-xl);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .settings-mobile-dialog-body {
@@ -346,8 +346,8 @@
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: var(--openbot-space-4);
-  padding: var(--openbot-space-4) var(--openbot-space-6) var(--openbot-space-6);
+  gap: var(--zollybot-space-4);
+  padding: var(--zollybot-space-4) var(--zollybot-space-6) var(--zollybot-space-6);
   text-align: center;
 }
 
@@ -359,9 +359,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-3) var(--openbot-space-4);
-  border-top: 1px solid var(--openbot-border);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .settings-mobile-dialog-actions {
@@ -369,59 +369,59 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-mobile-choices {
   width: 100%;
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-mobile-choice.ui-button {
   height: auto;
   justify-content: flex-start;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
   text-align: start;
   white-space: normal;
 }
 
 .settings-mobile-choice.ui-button > svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  color: var(--openbot-text-secondary);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  color: var(--zollybot-text-secondary);
 }
 
 .settings-mobile-choice-text {
   display: grid;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .settings-mobile-choice-title {
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .settings-mobile-choice-hint {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .settings-mobile-steps {
   display: grid;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   margin: 0;
-  padding-inline-start: var(--openbot-space-4);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  padding-inline-start: var(--zollybot-space-4);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-align: start;
 }
 
 .settings-mobile-steps > li::marker {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-variant-numeric: tabular-nums;
 }
 
@@ -430,25 +430,25 @@
   max-width: 340px;
   display: grid;
   justify-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-mobile-link-intro > .ui-button,
 .settings-mobile-link-code > .settings-mobile-dialog-actions {
-  margin-top: var(--openbot-space-2);
+  margin-top: var(--zollybot-space-2);
 }
 
 .settings-mobile-link-code > .settings-mobile-qr {
-  margin-bottom: var(--openbot-space-2);
+  margin-bottom: var(--zollybot-space-2);
 }
 
 .settings-mobile-link-warning-title {
   color: inherit;
-  font-weight: var(--openbot-weight-semibold);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .settings-mobile-enter {
-  animation: settings-mobile-enter var(--openbot-duration-slow) var(--openbot-ease-out);
+  animation: settings-mobile-enter var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 @keyframes settings-mobile-enter {
@@ -528,7 +528,7 @@
 /* How devices connect: two cards with a radio dot, as in the sound theme picker. */
 .settings-mobile-route-choice {
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-mobile-route-option {
@@ -540,20 +540,20 @@
   display: flex;
   flex: 1;
   align-items: flex-start;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   min-width: 0;
-  padding: var(--openbot-space-3) var(--openbot-space-4);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
-  box-shadow: inset 0 0 0 1px var(--openbot-border);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
+  box-shadow: inset 0 0 0 1px var(--zollybot-border);
   cursor: pointer;
   transition-property: background-color, box-shadow;
-  transition-duration: var(--openbot-duration-hover), var(--openbot-duration-normal);
-  transition-timing-function: var(--openbot-ease-out);
+  transition-duration: var(--zollybot-duration-hover), var(--zollybot-duration-normal);
+  transition-timing-function: var(--zollybot-ease-out);
 }
 
 .settings-mobile-route-card:hover {
-  background: var(--openbot-bg-control-hover);
+  background: var(--zollybot-bg-control-hover);
 }
 
 .settings-mobile-route-card[data-disabled] {
@@ -562,8 +562,8 @@
 
 .settings-mobile-route-card[data-checked] {
   box-shadow:
-    inset 0 0 0 1.5px var(--openbot-accent),
-    0 1px 3px var(--openbot-shadow-popover-ambient);
+    inset 0 0 0 1.5px var(--zollybot-accent),
+    0 1px 3px var(--zollybot-shadow-popover-ambient);
 }
 
 /* A ring, filled when the route is selected. */
@@ -571,26 +571,26 @@
   display: grid;
   flex: 0 0 auto;
   place-items: center;
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   margin-top: 1px;
-  border-radius: var(--openbot-radius-pill);
-  box-shadow: inset 0 0 0 1.5px var(--openbot-text-muted);
-  transition: box-shadow var(--openbot-duration-normal) var(--openbot-ease-out);
+  border-radius: var(--zollybot-radius-pill);
+  box-shadow: inset 0 0 0 1.5px var(--zollybot-text-muted);
+  transition: box-shadow var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .settings-mobile-route-dot::after {
   width: 8px;
   height: 8px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-accent);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-accent);
   content: "";
   transform: scale(0);
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .settings-mobile-route-card[data-checked] .settings-mobile-route-dot {
-  box-shadow: inset 0 0 0 1.5px var(--openbot-accent);
+  box-shadow: inset 0 0 0 1.5px var(--zollybot-accent);
 }
 
 .settings-mobile-route-card[data-checked] .settings-mobile-route-dot::after {
@@ -598,13 +598,13 @@
 }
 
 .settings-mobile-route-option:has(:focus-visible) .settings-mobile-route-card {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .settings-mobile-route-text {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   min-width: 0;
 }
 
@@ -612,13 +612,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--openbot-space-2);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  gap: var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .settings-mobile-route-hint {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }

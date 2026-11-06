@@ -10,9 +10,9 @@ import {
   chatVisualReplyMessage,
   chatVisualThemeMessage,
   parseChatVisualMessage,
-} from "@openbot/contracts/chat-visual";
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
-import { Button, Maximize2 } from "@openbot/ui";
+} from "@zollybot/contracts/chat-visual";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
+import { Button, Maximize2 } from "@zollybot/ui";
 import { createEffect, createSignal, onSettled, Show, untrack } from "solid-js";
 import { documentColorScheme } from "../../document-color-scheme";
 import { useText } from "../../text";
@@ -22,25 +22,25 @@ import { safeBrowserUrl } from "./RichMessageText";
 
 /** The page variables and the app tokens that give their values. */
 const THEME_TOKENS: ReadonlyArray<readonly [`--${string}`, string]> = [
-  ["--foreground", "--openbot-text-primary"],
-  ["--muted-foreground", "--openbot-text-muted"],
-  ["--muted", "--openbot-bg-surface"],
-  ["--card", "--openbot-bg-surface"],
-  ["--card-foreground", "--openbot-text-primary"],
-  ["--border", "--openbot-border-strong"],
-  ["--accent", "--openbot-accent-text"],
-  ["--destructive", "--openbot-danger-text"],
-  ["--success", "--openbot-success-text"],
+  ["--foreground", "--zollybot-text-primary"],
+  ["--muted-foreground", "--zollybot-text-muted"],
+  ["--muted", "--zollybot-bg-surface"],
+  ["--card", "--zollybot-bg-surface"],
+  ["--card-foreground", "--zollybot-text-primary"],
+  ["--border", "--zollybot-border-strong"],
+  ["--accent", "--zollybot-accent-text"],
+  ["--destructive", "--zollybot-danger-text"],
+  ["--success", "--zollybot-success-text"],
   // The storage hues were checked together for colour-vision separation; the two series hues follow.
-  ["--chart-1", "--openbot-chart-storage-workspaces"],
-  ["--chart-2", "--openbot-chart-storage-files"],
-  ["--chart-3", "--openbot-chart-storage-chats"],
-  ["--chart-4", "--openbot-chart-storage-downloads"],
-  ["--chart-5", "--openbot-chart-series-codex"],
-  ["--chart-6", "--openbot-chart-series-grok"],
-  ["--radius", "--openbot-radius-lg"],
-  ["--font-sans", "--openbot-font-sans"],
-  ["--font-mono", "--openbot-font-mono"],
+  ["--chart-1", "--zollybot-chart-storage-workspaces"],
+  ["--chart-2", "--zollybot-chart-storage-files"],
+  ["--chart-3", "--zollybot-chart-storage-chats"],
+  ["--chart-4", "--zollybot-chart-storage-downloads"],
+  ["--chart-5", "--zollybot-chart-series-codex"],
+  ["--chart-6", "--zollybot-chart-series-grok"],
+  ["--radius", "--zollybot-radius-lg"],
+  ["--font-sans", "--zollybot-font-sans"],
+  ["--font-mono", "--zollybot-font-mono"],
 ];
 
 /** The theme at the place of an element. The page shows the chat through its transparent canvas. */

@@ -1,4 +1,4 @@
-import type { LayoutDirection } from "@openbot/i18n";
+import type { LayoutDirection } from "@zollybot/i18n";
 import { app, type BrowserWindow } from "electron";
 
 /**

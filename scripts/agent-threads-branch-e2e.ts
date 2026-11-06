@@ -11,22 +11,22 @@
 // takes the last user message as its title. The thread menu shows each branch under its source, and a
 // branch whose source was deleted keeps its messages and says so. Each turn is a real provider turn, so
 // the prompts are short. Every thread that it started is deleted at the end.
-// Writes .openbot-build/agent-threads-branch-e2e/report.json and screenshots.
+// Writes .zollybot-build/agent-threads-branch-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { agentProviderDescriptor, isAgentProvider } from "@openbot/contracts/agent-providers";
+import { agentProviderDescriptor, isAgentProvider } from "@zollybot/contracts/agent-providers";
 import type {
   AgentTask,
   AgentTasksSnapshot,
   ConversationMessage,
   ConversationSnapshot,
   QueueSnapshot,
-} from "@openbot/contracts/ipc";
-import { translateFor } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import { translateFor } from "@zollybot/i18n";
 import { argument, connectChannelE2e, LONG_PROMPT, SHORT_PROMPT, waitFor, writeReport } from "./channel-e2e-support";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-threads-branch-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-threads-branch-e2e");
 mkdirSync(OUT, { recursive: true });
 const UI_WAIT_MS = 15_000;
 const SECOND_PROMPT = "Reply with the single word done. Do not use tools.";
@@ -80,15 +80,15 @@ const branchPoints = (title: string) =>
     .filter({ has: page.getByRole("button", { name: english("chat.actions.branch"), exact: true }) });
 
 function listTasks(): Promise<AgentTasksSnapshot> {
-  return page.evaluate((id) => window.openbot.agent.listTasks(id), agentId);
+  return page.evaluate((id) => window.zollybot.agent.listTasks(id), agentId);
 }
 
 function readTask(taskId: string): Promise<ConversationSnapshot> {
-  return page.evaluate((input) => window.openbot.agent.readTask(input), { agentId, taskId });
+  return page.evaluate((input) => window.zollybot.agent.readTask(input), { agentId, taskId });
 }
 
 function listQueue(): Promise<QueueSnapshot> {
-  return page.evaluate((id) => window.openbot.agent.listQueue(id), agentId);
+  return page.evaluate((id) => window.zollybot.agent.listQueue(id), agentId);
 }
 
 function task(taskId: string): Promise<AgentTask | undefined> {
@@ -100,7 +100,7 @@ function waitForTask(label: string, taskId: string, ready: (task: AgentTask | un
 }
 
 function branch(taskId: string | null, messageId: string, requestId: string): Promise<AgentTask> {
-  return page.evaluate((input) => window.openbot.agent.branchTask(input), { agentId, taskId, messageId, requestId });
+  return page.evaluate((input) => window.zollybot.agent.branchTask(input), { agentId, taskId, messageId, requestId });
 }
 
 /** The last finished agent message of each turn, in order: the messages that a branch can start from. */
@@ -154,7 +154,7 @@ async function openThread(title: string): Promise<void> {
 }
 
 const agent = await page.evaluate(async (id) => {
-  const found = (await window.openbot.agent.listAgents()).find((candidate) => candidate.id === id);
+  const found = (await window.zollybot.agent.listAgents()).find((candidate) => candidate.id === id);
   if (!found) throw new Error(`Unknown agent: ${id}`);
   return { name: found.name, provider: found.provider };
 }, agentId);
@@ -172,21 +172,24 @@ try {
 
   // 1. A side thread with two finished turns shows one branch button for each turn.
   const source = await page.evaluate(
-    (input) => window.openbot.agent.startTask({ ...input, clientMessageId: crypto.randomUUID() }),
+    (input) => window.zollybot.agent.startTask({ ...input, clientMessageId: crypto.randomUUID() }),
     { agentId, text: SHORT_PROMPT },
   );
   started.push(source.id);
   await waitForTask("the first turn ends", source.id, (current) => current?.state === "idle");
-  await page.evaluate((input) => window.openbot.agent.renameTask(input), {
+  await page.evaluate((input) => window.zollybot.agent.renameTask(input), {
     agentId,
     taskId: source.id,
     title: sourceTitle,
   });
-  await page.evaluate((input) => window.openbot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }), {
-    agentId,
-    taskId: source.id,
-    text: SECOND_PROMPT,
-  });
+  await page.evaluate(
+    (input) => window.zollybot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }),
+    {
+      agentId,
+      taskId: source.id,
+      text: SECOND_PROMPT,
+    },
+  );
   await waitFor(
     page,
     "the second turn ends",
@@ -280,11 +283,14 @@ try {
 
   // 6. While a turn of the source runs, the button and the menu item are off, and the host refuses.
   await openThread(sourceTitle);
-  await page.evaluate((input) => window.openbot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }), {
-    agentId,
-    taskId: source.id,
-    text: LONG_PROMPT,
-  });
+  await page.evaluate(
+    (input) => window.zollybot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }),
+    {
+      agentId,
+      taskId: source.id,
+      text: LONG_PROMPT,
+    },
+  );
   await waitForTask("the long turn runs", source.id, (current) => current?.state === "running");
   const lastButton = branchButtons(sourceTitle).last();
   const buttonDisabled = await lastButton.isDisabled();
@@ -304,21 +310,24 @@ try {
     (error: unknown) => (error instanceof Error ? error.message : String(error)),
   );
   report.whileRunning = { buttonDisabled, menuItemDisabled, refused: refusal !== "", error: refusal };
-  await page.evaluate((input) => window.openbot.agent.stopTask(input), { agentId, taskId: source.id });
+  await page.evaluate((input) => window.zollybot.agent.stopTask(input), { agentId, taskId: source.id });
   await waitForTask("the long turn stops", source.id, (current) => current?.state === "idle");
   assert.ok(buttonDisabled, "The branch button is off while a turn runs.");
   assert.ok(menuItemDisabled, "Branch from here is off while a turn runs.");
   assert.ok(refusal.includes(english("error.backend.branchSourceBusy")), "The host refuses a running source.");
 
   // 7. A branch of the agent's own chat takes the last user message as its title.
-  await page.evaluate((input) => window.openbot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }), {
-    agentId,
-    text: SHORT_PROMPT,
-  });
+  await page.evaluate(
+    (input) => window.zollybot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }),
+    {
+      agentId,
+      text: SHORT_PROMPT,
+    },
+  );
   const ownChat = await waitFor(
     page,
     "the own chat's turn ends",
-    () => page.evaluate((id) => window.openbot.agent.readConversation(id), agentId),
+    () => page.evaluate((id) => window.zollybot.agent.readConversation(id), agentId),
     (snapshot) => snapshot.activeTurnId === null && snapshot.messages.at(-1)?.author !== "user",
   );
   const ownEnd = turnEnds(ownChat.messages).at(-1);
@@ -335,7 +344,7 @@ try {
   assert.ok(SHORT_PROMPT.startsWith(ownBranch.title.replace(/…$/, "")), "The title is the last user message.");
 
   // 8. A branch keeps its messages when its source is deleted, and the divider says so with no link.
-  await page.evaluate((input) => window.openbot.agent.deleteTask(input), { agentId, taskId: source.id });
+  await page.evaluate((input) => window.zollybot.agent.deleteTask(input), { agentId, taskId: source.id });
   await waitForTask("the source is deleted", source.id, (current) => current === undefined);
   started.splice(started.indexOf(source.id), 1);
   await openThread(branched.title);
@@ -355,12 +364,12 @@ try {
   for (const delivery of (await listQueue().catch(() => null))?.deliveries ?? [])
     if (delivery.turnId && (delivery.status === "starting" || delivery.status === "running"))
       await page
-        .evaluate((input) => window.openbot.agent.interrupt(input), { agentId, turnId: delivery.turnId })
+        .evaluate((input) => window.zollybot.agent.interrupt(input), { agentId, turnId: delivery.turnId })
         .catch(() => undefined);
   for (const taskId of new Set(started)) {
-    await page.evaluate((input) => window.openbot.agent.stopTask(input), { agentId, taskId }).catch(() => undefined);
+    await page.evaluate((input) => window.zollybot.agent.stopTask(input), { agentId, taskId }).catch(() => undefined);
     await waitForTask("the cleanup stop", taskId, (current) => current?.state !== "running").catch(() => undefined);
-    await page.evaluate((input) => window.openbot.agent.deleteTask(input), { agentId, taskId }).catch(() => undefined);
+    await page.evaluate((input) => window.zollybot.agent.deleteTask(input), { agentId, taskId }).catch(() => undefined);
   }
   writeReport("agent-threads-branch-e2e", report);
   await session.close();

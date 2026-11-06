@@ -1,13 +1,13 @@
-import type { AppAppearance } from "@openbot/contracts/app-appearance";
+import type { AppAppearance } from "@zollybot/contracts/app-appearance";
 
 const LIGHT_QUERY = "(prefers-color-scheme: light)";
 
 /**
- * `tokens-light.css` changes the palette when the root element has `data-openbot-color-scheme="light"`.
- * Code that cannot use the tokens in CSS reads the attribute through `@openbot/ui/document-color-scheme`.
+ * `tokens-light.css` changes the palette when the root element has `data-zollybot-color-scheme="light"`.
+ * Code that cannot use the tokens in CSS reads the attribute through `@zollybot/ui/document-color-scheme`.
  */
 function applyColorScheme(scheme: "light" | "dark"): void {
-  document.documentElement.dataset.openbotColorScheme = scheme;
+  document.documentElement.dataset.zollybotColorScheme = scheme;
 }
 
 /**
@@ -28,7 +28,7 @@ export function syncColorScheme(choice: () => AppAppearance) {
     refresh,
     stop() {
       query.removeEventListener("change", refresh);
-      delete document.documentElement.dataset.openbotColorScheme;
+      delete document.documentElement.dataset.zollybotColorScheme;
     },
   };
 }

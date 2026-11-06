@@ -1,4 +1,4 @@
-import type { ProviderAdminDesktopApi, ProviderRuntimeSnapshot, ProviderRuntimeStatus } from "@openbot/contracts/ipc";
+import type { ProviderAdminDesktopApi, ProviderRuntimeSnapshot, ProviderRuntimeStatus } from "@zollybot/contracts/ipc";
 import type { ProviderRuntimeSource } from "./provider-runtime-store";
 
 /** How often a download on the host is read again while it runs. */

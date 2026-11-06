@@ -1,5 +1,5 @@
-import { AppLogo } from "@openbot/brand";
 import { Link } from "@tanstack/solid-router";
+import { AppLogo } from "@zollybot/brand";
 import { For, Show } from "solid-js";
 import { COMPARE_COLLECTION } from "../../lib/compare";
 import { LANDING_COMPARISON_LINKS } from "../../lib/landing-content";
@@ -60,7 +60,7 @@ export function FaqSection() {
           </div>
         </div>
         <nav class="landing-compare-links" aria-labelledby="landing-compare-title">
-          <h3 id="landing-compare-title">Compare OpenBot</h3>
+          <h3 id="landing-compare-title">Compare ZollyBot</h3>
           <ul>
             <For each={LANDING_COMPARISON_LINKS}>
               {(comparison, index) => {

@@ -17,7 +17,7 @@ export function PauseSlider({
   onChangeEnd,
 }: PauseSliderProps) {
   const { theme } = useUniwind();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   // The end of a drag reports no value, so it saves the last value of the drag.
   const latest = useRef(value);
   latest.current = value;

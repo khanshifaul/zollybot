@@ -1,15 +1,15 @@
-import type { AgentEvent, ClientAgentSummary, ServerNotificationLevel } from "@openbot/contracts/ipc";
-import type { AppTranslate } from "@openbot/i18n";
+import type { AgentEvent, ClientAgentSummary, ServerNotificationLevel } from "@zollybot/contracts/ipc";
+import type { AppTranslate } from "@zollybot/i18n";
 import {
   type AgentNotificationChannel,
   notificationForAgentEvent,
   notificationRequestKey,
-} from "@openbot/team-client/agent-notifications";
-import type { ChannelNotificationContent } from "@openbot/team-client/channel-notifications";
+} from "@zollybot/team-client/agent-notifications";
+import type { ChannelNotificationContent } from "@zollybot/team-client/channel-notifications";
 
-const PERMISSION_ASKED_KEY = "openbot.web.notification-permission-asked";
+const PERMISSION_ASKED_KEY = "zollybot.web.notification-permission-asked";
 /** The tab of this browser that has focus. The tab that speaks for a host is often in the background. */
-const FOCUSED_TAB_KEY = "openbot.web.focused-tab";
+const FOCUSED_TAB_KEY = "zollybot.web.focused-tab";
 const TAB_ID = crypto.randomUUID();
 
 /**

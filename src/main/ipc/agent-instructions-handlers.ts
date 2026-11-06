@@ -1,13 +1,13 @@
 // The instruction file at the root of an agent's workspace. On a joined server the host reads and
 // saves it through `agent-instructions-v1`, and the host answers only an owner or admin.
 
-import { parseSaveAgentInstructionsInput } from "@openbot/contracts/ipc";
+import { parseSaveAgentInstructionsInput } from "@zollybot/contracts/ipc";
 import {
   AGENT_INSTRUCTIONS_CAPABILITY,
   AGENT_INSTRUCTIONS_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-instructions-v1";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/agent-instructions-v1";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { sourceText } from "@zollybot/i18n/source";
 import type { Effect } from "effect";
 import { shell } from "electron";
 import { runCauseEffect } from "../../backend/effect-boundary";

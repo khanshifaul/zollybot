@@ -14,16 +14,16 @@ import {
   WORKFLOW_TRIGGER_TYPES,
   type WorkflowRunPage,
   type WorkflowVersion,
-} from "@openbot/contracts/ipc";
-import { accountUsageProviderRows } from "@openbot/ui/features/account/account-usage-view";
-import { Sidebar } from "@openbot/ui/features/sidebar/Sidebar";
-import type { SidebarView } from "@openbot/ui/features/sidebar/sidebar-types";
-import { HelpMenu } from "@openbot/ui/features/updates/HelpMenu";
-import { PageRail, type PageRailPage } from "@openbot/ui/features/window/PageRail";
-import { WorkflowCanvas } from "@openbot/ui/features/workflows/WorkflowCanvas";
-import { WORKFLOW_FEATURES_V1, type WorkflowFeatures } from "@openbot/ui/features/workflows/workflow-model";
-import type { WorkflowPresence } from "@openbot/ui/features/workflows/workflow-presence";
-import type { WorkflowRunView } from "@openbot/ui/features/workflows/workflow-run-view";
+} from "@zollybot/contracts/ipc";
+import { accountUsageProviderRows } from "@zollybot/ui/features/account/account-usage-view";
+import { Sidebar } from "@zollybot/ui/features/sidebar/Sidebar";
+import type { SidebarView } from "@zollybot/ui/features/sidebar/sidebar-types";
+import { HelpMenu } from "@zollybot/ui/features/updates/HelpMenu";
+import { PageRail, type PageRailPage } from "@zollybot/ui/features/window/PageRail";
+import { WorkflowCanvas } from "@zollybot/ui/features/workflows/WorkflowCanvas";
+import { WORKFLOW_FEATURES_V1, type WorkflowFeatures } from "@zollybot/ui/features/workflows/workflow-model";
+import type { WorkflowPresence } from "@zollybot/ui/features/workflows/workflow-presence";
+import type { WorkflowRunView } from "@zollybot/ui/features/workflows/workflow-run-view";
 import { createSignal, Show, untrack } from "solid-js";
 import { fn } from "storybook/test";
 import { defaultSidebarLayout } from "../src/features/sidebar/sidebar-sections";

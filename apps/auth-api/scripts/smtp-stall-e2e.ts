@@ -15,7 +15,7 @@
 // - a sender limit at `DATA`: Cloudflare sends the code, and the analytics show both sends;
 // - a sender limit, and Cloudflare refuses too: the answer stays the SMTP sender limit;
 // - a stall after `354` (unknown), a normal send, and an invalid code: Cloudflare sends nothing.
-// `bun run test:smtp-stall`. Writes .openbot-build/smtp-stall-e2e.json.
+// `bun run test:smtp-stall`. Writes .zollybot-build/smtp-stall-e2e.json.
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { createServer, type Server, type Socket, connect as tcpConnect } from "node:net";
@@ -33,7 +33,7 @@ import {
   sendPrivateEmail,
 } from "../src/server/smtp-email-delivery";
 
-const OUT = resolve(import.meta.dirname, "../../../.openbot-build/smtp-stall-e2e.json");
+const OUT = resolve(import.meta.dirname, "../../../.zollybot-build/smtp-stall-e2e.json");
 const CONFIG = {
   host: "relay.example.com",
   port: 465,
@@ -336,7 +336,7 @@ try {
   assert.deepEqual(fellBack.events, ["email_sent:rate_limited", "email_fallback_sent:accepted"]);
   const [fallbackMessage] = fallbackMessages;
   assert(fallbackMessage);
-  assert.deepEqual(fallbackMessage.from, { name: "OpenBot", email: CONFIG.from });
+  assert.deepEqual(fallbackMessage.from, { name: "ZollyBot", email: CONFIG.from });
   assert.equal(fallbackMessage.to, "user@example.com");
   assert(fallbackMessage.text?.includes("ABCD-EFGH"), "the fallback must carry the sign-in code");
   assert(fallbackMessage.html?.includes("ABCD-EFGH"), "the fallback must carry the sign-in code");

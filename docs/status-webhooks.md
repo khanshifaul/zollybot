@@ -1,7 +1,7 @@
 # Status webhooks
 
 The status page at `status.openbot.run` can send its incidents and service changes to the tools of
-the OpenBot team, such as a Slack channel or an on-call service. These webhooks are for the team
+the ZollyBot team, such as a Slack channel or an on-call service. These webhooks are for the team
 only. The public way to follow the page is its feed, `https://status.openbot.run/feed.xml`.
 
 The `notify` job of the `status-page` workflow sends them. It runs after each run that publishes the
@@ -109,13 +109,13 @@ nobody, even if the incident text contains `@everyone`.
 
 | Header | Value |
 | --- | --- |
-| `x-openbot-event` | The event type. |
-| `x-openbot-delivery-id` | 32 hexadecimal characters. The same for each try of one event to one subscription. |
-| `x-openbot-timestamp` | The send time, in Unix seconds. |
-| `x-openbot-signature` | `sha256=<hex>`, when the subscription has a secret. |
+| `x-zollybot-event` | The event type. |
+| `x-zollybot-delivery-id` | 32 hexadecimal characters. The same for each try of one event to one subscription. |
+| `x-zollybot-timestamp` | The send time, in Unix seconds. |
+| `x-zollybot-signature` | `sha256=<hex>`, when the subscription has a secret. |
 
 The signature is the HMAC-SHA256, with the secret as key, of `<timestamp>.<delivery>.<body>`. This
-is the same format as [OpenBot webhook routines](webhooks.md#headers-and-signature). A receiver must:
+is the same format as [ZollyBot webhook routines](webhooks.md#headers-and-signature). A receiver must:
 
 1. Calculate the signature from the raw body, and compare it in constant time.
 2. Refuse a timestamp that is not within 5 minutes of its clock.
@@ -126,10 +126,10 @@ is the same format as [OpenBot webhook routines](webhooks.md#headers-and-signatu
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 function verify(headers: Headers, body: string, secret: string) {
-  const timestamp = headers.get("x-openbot-timestamp") ?? "";
-  const delivery = headers.get("x-openbot-delivery-id") ?? "";
+  const timestamp = headers.get("x-zollybot-timestamp") ?? "";
+  const delivery = headers.get("x-zollybot-delivery-id") ?? "";
   const expected = `sha256=${createHmac("sha256", secret).update(`${timestamp}.${delivery}.${body}`).digest("hex")}`;
-  const actual = headers.get("x-openbot-signature") ?? "";
+  const actual = headers.get("x-zollybot-signature") ?? "";
   const fresh = Math.abs(Date.now() / 1000 - Number(timestamp)) <= 300;
   return fresh && actual.length === expected.length && timingSafeEqual(Buffer.from(actual), Buffer.from(expected));
 }

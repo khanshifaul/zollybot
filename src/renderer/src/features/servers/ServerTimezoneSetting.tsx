@@ -1,13 +1,13 @@
-import type { HostTimezoneSettings, OpenBotDesktopApi } from "@openbot/contracts/ipc";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle, SearchSelect } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import type { HostTimezoneSettings, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle, SearchSelect } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createSignal, Show, untrack } from "solid-js";
 
 /** The timezone calls of one server's host. The desktop reaches them through main. */
-export type HostTimezoneCalls = Pick<OpenBotDesktopApi["hostAdmin"], "getTimezone" | "setTimezone">;
+export type HostTimezoneCalls = Pick<ZollyBotDesktopApi["hostAdmin"], "getTimezone" | "setTimezone">;
 
 export interface ServerTimezoneOptions {
-  /** The calls of a client with no `window.openbot`, such as the web client. */
+  /** The calls of a client with no `window.zollybot`, such as the web client. */
   calls?: HostTimezoneCalls;
 }
 
@@ -52,7 +52,7 @@ export function ServerTimezoneSetting(
   },
 ) {
   const { t, errorMessage, locale } = useText();
-  const calls = (): HostTimezoneCalls => props.calls ?? window.openbot.hostAdmin;
+  const calls = (): HostTimezoneCalls => props.calls ?? window.zollybot.hostAdmin;
   const [settings, setSettings] = createSignal<HostTimezoneSettings | null>(null);
   const [loadError, setLoadError] = createSignal<string | null>(null);
   /** Bumped for each server, so an answer for an earlier one is dropped. */

@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the sidebar reaches in main: the saved sidebar layout and its changes, the pins that the host
@@ -7,14 +7,14 @@ import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
  */
 export interface SidebarPort {
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     "getSidebarLayout" | "mutateSidebarLayout" | "getSidebarPins" | "setSidebarPins" | "seedSidebarPins"
   >;
-  storage: Pick<OpenBotDesktopApi["storage"], "getDisk" | "getMachineMetrics">;
-  hostAdmin: Pick<OpenBotDesktopApi["hostAdmin"], "getMachineAlerts">;
+  storage: Pick<ZollyBotDesktopApi["storage"], "getDisk" | "getMachineMetrics">;
+  hostAdmin: Pick<ZollyBotDesktopApi["hostAdmin"], "getMachineAlerts">;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function sidebarPort(): SidebarPort {
-  return window.openbot;
+  return window.zollybot;
 }

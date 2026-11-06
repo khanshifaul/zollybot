@@ -1,5 +1,5 @@
-import type { MobileTextKey, MobileTranslate } from "@openbot/i18n/mobile";
 import type { ShjLanguage, ShjToken } from "@speed-highlight/core";
+import type { MobileTextKey, MobileTranslate } from "@zollybot/i18n/mobile";
 
 export interface CodeToken {
   text: string;

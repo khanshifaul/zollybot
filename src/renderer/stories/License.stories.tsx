@@ -1,9 +1,9 @@
-import type { LicenseDesktopApi } from "@openbot/contracts/ipc";
-import { type License, type LicensePlan, type LicenseState, licenseMonthlyAmount } from "@openbot/contracts/license";
-import { BillingPanel } from "@openbot/ui/features/billing/BillingPanel";
-import { createBillingStore } from "@openbot/ui/features/billing/billing-store";
-import { LicenseSection } from "@openbot/ui/features/billing/LicenseSection";
-import { createLicenseStore } from "@openbot/ui/features/billing/license-store";
+import type { LicenseDesktopApi } from "@zollybot/contracts/ipc";
+import { type License, type LicensePlan, type LicenseState, licenseMonthlyAmount } from "@zollybot/contracts/license";
+import { BillingPanel } from "@zollybot/ui/features/billing/BillingPanel";
+import { createBillingStore } from "@zollybot/ui/features/billing/billing-store";
+import { LicenseSection } from "@zollybot/ui/features/billing/LicenseSection";
+import { createLicenseStore } from "@zollybot/ui/features/billing/license-store";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createMockBilling, previewBillingServers } from "../src/preview/mock-billing";
 import { createMockLicense, previewLicenseUsers } from "../src/preview/mock-license";

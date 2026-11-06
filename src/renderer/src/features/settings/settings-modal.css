@@ -1,41 +1,41 @@
 /*
  * Settings modal rules for markup that only the renderer draws: the provider section, the Dynamic
- * Island tab and the voice key row. The shared modal frame and its panels are in `@openbot/ui/features/settings/settings-modal.css`, which `styles.css` imports
+ * Island tab and the voice key row. The shared modal frame and its panels are in `@zollybot/ui/features/settings/settings-modal.css`, which `styles.css` imports
  * immediately before this file.
  */
 
 .settings-provider-section {
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .settings-dynamic-island-size > .ui-slider-field,
 .settings-dynamic-island-preview {
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
 }
 
 /* A server logo in the island server list, at the size of the billing server rows. */
 .settings-dynamic-island-server-mark {
   --server-gradient-logo-size: 32px;
-  --server-gradient-logo-radius: var(--openbot-radius-md);
+  --server-gradient-logo-radius: var(--zollybot-radius-md);
 }
 
 .settings-dynamic-island-server-mark > img {
   width: 32px;
   height: 32px;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .settings-dynamic-island-preview {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .settings-dynamic-island-preview-display {
   min-width: 0;
   display: grid;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   margin: 0;
 }
 
@@ -46,9 +46,9 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-canvas);
-  box-shadow: inset 0 0 0 1px var(--openbot-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-canvas);
+  box-shadow: inset 0 0 0 1px var(--zollybot-border);
 }
 
 .settings-dynamic-island-preview-fit {
@@ -59,21 +59,21 @@
   justify-content: center;
   transform-origin: top center;
   scale: var(--settings-dynamic-island-preview-scale, 1);
-  transition: scale var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: scale var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .settings-dynamic-island-preview-caption {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-align: center;
 }
 
 .settings-voice-key {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  margin-top: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
+  margin-top: var(--zollybot-space-2);
 }
 
 .settings-voice-key > .ui-input {
@@ -90,9 +90,9 @@
 .voice-server-dialog .voice-server-line {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) minmax(0, 2fr) auto;
-  gap: var(--openbot-space-2) var(--openbot-space-3);
+  gap: var(--zollybot-space-2) var(--zollybot-space-3);
   align-items: center;
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
 }
 
 .voice-server-dialog .voice-server-name {

@@ -1,5 +1,5 @@
-import type { AgentTask } from "@openbot/contracts/ipc";
-import { taskTone } from "@openbot/team-client/agent-tasks";
+import type { AgentTask } from "@zollybot/contracts/ipc";
+import { taskTone } from "@zollybot/team-client/agent-tasks";
 import { Typography } from "heroui-native";
 import { useRef, useState } from "react";
 import { Pressable, View } from "react-native";
@@ -52,7 +52,7 @@ export function TaskListRow({
     : t("mobile.server.threads.rowMetaTimeOnly", { status: STATUS_MARK, when });
   const [before = "", after = ""] = line.split(STATUS_MARK);
   const tone = taskTone(task);
-  const [success, danger] = useCSSVariable(["--openbot-success-text", "--openbot-danger-text"]);
+  const [success, danger] = useCSSVariable(["--zollybot-success-text", "--zollybot-danger-text"]);
   // `taskTone` says "attention" for an answer and "danger" for a failure or a stop.
   const mark = tone === "attention" ? String(success) : tone === "danger" ? String(danger) : null;
   const menuItems = menu ? leafActions(menu.actions) : [];

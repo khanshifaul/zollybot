@@ -1,10 +1,10 @@
-import type { ChannelSummary } from "@openbot/contracts/ipc";
-import { AGENT_HIDDEN_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import { SIDEBAR_PINS_CAPABILITY } from "@openbot/contracts/team-protocol/sidebar-pins-v1";
-import { createRemoteConnectionRecovery, type RemoteRecoveryStatus } from "@openbot/team-client/remote-recovery";
-import { markRemoteSync } from "@openbot/team-client/sync-profile";
-import { currentText } from "@openbot/ui/text";
-import type { UserErrorDetails } from "@openbot/user-errors";
+import type { ChannelSummary } from "@zollybot/contracts/ipc";
+import { AGENT_HIDDEN_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import { SIDEBAR_PINS_CAPABILITY } from "@zollybot/contracts/team-protocol/sidebar-pins-v1";
+import { createRemoteConnectionRecovery, type RemoteRecoveryStatus } from "@zollybot/team-client/remote-recovery";
+import { markRemoteSync } from "@zollybot/team-client/sync-profile";
+import { currentText } from "@zollybot/ui/text";
+import type { UserErrorDetails } from "@zollybot/user-errors";
 import {
   createEffect,
   createMemo,

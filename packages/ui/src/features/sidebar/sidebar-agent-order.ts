@@ -4,7 +4,7 @@
  * ⌘1-9 number.
  */
 
-import { SIDEBAR_UNASSIGNED_SECTION_ID, type SidebarLayoutSnapshot } from "@openbot/contracts/ipc";
+import { SIDEBAR_UNASSIGNED_SECTION_ID, type SidebarLayoutSnapshot } from "@zollybot/contracts/ipc";
 import type { SidebarPinnedItem } from "./sidebar-pins";
 
 /**

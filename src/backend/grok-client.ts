@@ -1,7 +1,7 @@
 import type { ClientSideConnection, ContentBlock, InitializeResponse } from "@agentclientprotocol/sdk";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { type DynamicRecord, isNumber } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { type DynamicRecord, isNumber } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { AcpAgentClient, type AcpHistoryPersistence } from "./acp-client";
 import { GROK_ACP_FLAVOR } from "./acp-flavor";
@@ -46,10 +46,10 @@ export class GrokAgentClient extends AcpAgentClient {
         "stdio",
       ],
       // Grok declares `send_feedback` and `workflow` in each request, about 6.7k characters. Feedback
-      // goes to xAI, and a workflow runs a background agent fleet that OpenBot does not show. Without
+      // goes to xAI, and a workflow runs a background agent fleet that ZollyBot does not show. Without
       // workflows Grok declares `update_goal`, about 1k characters. Grok `agent stdio` ignores
       // `--disallowed-tools`, so only these switches remove the tools.
-      env: { GROK_OAUTH2_REFERRER: "openbot", GROK_FEEDBACK_ENABLED: "0", GROK_WORKFLOWS: "0" },
+      env: { GROK_OAUTH2_REFERRER: "zollybot", GROK_FEEDBACK_ENABLED: "0", GROK_WORKFLOWS: "0" },
       ...(agentEnvironment ? { extraEnv: () => ({ ...agentEnvironment() }) } : {}),
       history,
       signInMessage: sourceText("error.provider.grokSignIn"),

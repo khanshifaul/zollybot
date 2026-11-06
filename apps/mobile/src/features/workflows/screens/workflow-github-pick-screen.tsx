@@ -38,7 +38,7 @@ const withValues = (options: readonly string[], values: readonly string[]) => [
 export function WorkflowGitHubPickScreen() {
   const { t } = useText();
   const { theme } = useUniwind();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const params = useLocalSearchParams<{ nodeId: string; field: string }>();
   const field: GitHubPickField = FIELDS.find((name) => name === params.field) ?? "repository";
   const draft = useWorkflowDraft((state) => state.draft);

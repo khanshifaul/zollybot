@@ -1,9 +1,9 @@
-import type { McpSignInAppState, SaveMcpSignInAppInput } from "@openbot/contracts/ipc";
-import { Button, CopyButton, Field, Input, SettingsSection, Text, Trash2 } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import type { McpSignInAppState, SaveMcpSignInAppInput } from "@zollybot/contracts/ipc";
+import { Button, CopyButton, Field, Input, SettingsSection, Text, Trash2 } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore, Show } from "solid-js";
 
-/** The pre-registered OAuth app of a saved http row, for a server that does not register OpenBot by itself. */
+/** The pre-registered OAuth app of a saved http row, for a server that does not register ZollyBot by itself. */
 export interface McpPanelSignInApp {
   load: (mcpServerId: string) => Promise<McpSignInAppState>;
   save: (input: SaveMcpSignInAppInput) => Promise<McpSignInAppState>;

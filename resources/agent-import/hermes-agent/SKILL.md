@@ -1,14 +1,14 @@
 ---
-name: openbot-export
-description: Export the user's Hermes Agent profiles into one .zip file that OpenBot imports, with each profile's persona, memories, skills, and cron jobs. Use when the user asks to export, move, or migrate their Hermes agents to OpenBot.
-example-prompt: Export my agents for OpenBot
+name: zollybot-export
+description: Export the user's Hermes Agent profiles into one .zip file that ZollyBot imports, with each profile's persona, memories, skills, and cron jobs. Use when the user asks to export, move, or migrate their Hermes agents to ZollyBot.
+example-prompt: Export my agents for ZollyBot
 ---
 
-# Export Hermes profiles for OpenBot
+# Export Hermes profiles for ZollyBot
 
-Make one `.zip` file that the user opens in OpenBot at **Server settings → Import → Hermes Agent**.
-OpenBot reads it on the user's computer. Nothing is uploaded. Each Hermes profile becomes one OpenBot
-agent. The format is strict: OpenBot rejects the whole file when the manifest is invalid, so follow
+Make one `.zip` file that the user opens in ZollyBot at **Server settings → Import → Hermes Agent**.
+ZollyBot reads it on the user's computer. Nothing is uploaded. Each Hermes profile becomes one ZollyBot
+agent. The format is strict: ZollyBot rejects the whole file when the manifest is invalid, so follow
 the format below exactly.
 
 ## Workflow
@@ -28,17 +28,17 @@ the format below exactly.
    - `skills/`: each folder with a `SKILL.md`, at `skills/<name>/` or `skills/<category>/<name>/`.
      Skip folders whose name starts with `.`. Skip each skill whose frontmatter `name` is in
      `skills/.bundled_manifest` (one `name:hash` per line): those come with Hermes. Skip this skill
-     (`openbot-export`).
+     (`zollybot-export`).
    - `cron/jobs.json`: `{"jobs": [...]}`. Each job has `name`, `prompt`, `schedule`, `enabled` and
      `state`.
 
    Do not read `.env`, `auth.json`, `state.db`, `sessions/`, `mcp-tokens/` or `vault/`. They hold
-   keys and chat history, which OpenBot does not import from a file.
+   keys and chat history, which ZollyBot does not import from a file.
 
 3. **Ask which profiles.** Show the profiles with their number of memories, skills and cron jobs.
    Ask: "Export all profiles, or only some?" Wait for the answer before you continue.
 
-4. **Map each profile** to one agent in `openbot-import.json` (see Format):
+4. **Map each profile** to one agent in `zollybot-import.json` (see Format):
    - `key`: the profile name, with `_` changed to `-`. The `default` profile has the key `hermes`.
    - `name`: `Hermes` for the `default` profile. For a named profile, its name as words with the
      first letter in capitals: `research-desk` becomes `Research desk`.
@@ -54,31 +54,31 @@ the format below exactly.
 
 5. **Remove secrets.** Do not copy `.env` files, private keys, API keys, tokens, passwords or
    cookies, in files or in text. Replace a secret in a persona or a memory with
-   `<ask the user for …>`. OpenBot rejects the archive if it contains a file named `.env*` or
+   `<ask the user for …>`. ZollyBot rejects the archive if it contains a file named `.env*` or
    `*private*key*`, a nested archive (`.zip`, `.tar`, `.gz`, `.7z`, `.rar`), or a `.git` or
    `node_modules` folder. A skill that has one of these is left out: tell the user.
 
 6. **Build the folder** in a new temporary folder outside the Hermes folder (see Format). Write
-   `openbot-import.json` last.
+   `zollybot-import.json` last.
 
 7. **Check it** with the checklist below. Then zip the folder contents into
-   `~/Downloads/.openbot-export-hermes-<YYYY-MM-DD>.zip.part`, with `openbot-import.json` at the
+   `~/Downloads/.zollybot-export-hermes-<YYYY-MM-DD>.zip.part`, with `zollybot-import.json` at the
    root of the zip. Python works everywhere:
    `python3 -c "import shutil,sys; shutil.make_archive(sys.argv[1], 'zip', sys.argv[2])" <base> <folder>`
    writes `<base>.zip`, so rename it to the `.zip.part` name. When the zip is complete, rename it
-   to `~/Downloads/openbot-export-hermes-<YYYY-MM-DD>.zip`. The rename replaces an older export with
-   the same name in one step, so OpenBot never reads a half-written file. Then delete the
+   to `~/Downloads/zollybot-export-hermes-<YYYY-MM-DD>.zip`. The rename replaces an older export with
+   the same name in one step, so ZollyBot never reads a half-written file. Then delete the
    temporary folder.
 
 8. **Tell the user**, only after the rename: the path, the number of agents, and what you left
    out. MCP servers and keys stay in Hermes: to bring the MCP servers too, the user chooses
-   **Read this computer** in OpenBot instead. Tell them to open OpenBot, go to
+   **Read this computer** in ZollyBot instead. Tell them to open ZollyBot, go to
    **Server settings → Import → Hermes Agent**, and choose the file.
 
 ## Format
 
 ```
-openbot-import.json
+zollybot-import.json
 agents/<key>/skills/<skill>/SKILL.md    one folder for each skill
 agents/<key>/files/SOUL.md              only for a persona longer than 2,000 characters
 ```
@@ -86,11 +86,11 @@ agents/<key>/files/SOUL.md              only for a persona longer than 2,000 cha
 `<key>` is lowercase letters, digits and hyphens, 64 characters or fewer, and does not start or end
 with a hyphen. Each key is unique. All paths for an agent start with `agents/<key>/`.
 
-`openbot-import.json`:
+`zollybot-import.json`:
 
 ```json
 {
-  "format": "openbot-agent-import",
+  "format": "zollybot-agent-import",
   "version": 1,
   "source": { "app": "hermes-agent", "exportedAt": "2026-10-21T10:00:00Z" },
   "agents": [
@@ -128,7 +128,7 @@ Field rules:
 | `skills` | Up to 32 folder paths. Each folder has `SKILL.md` at its root, which starts with YAML frontmatter that has `name` (80 characters or fewer) and `description`. Each skill folder is 10 MB and 200 files or fewer. |
 | `routines` | Up to 64. `name` is 80 characters or fewer: the job's `name`, or the first words of its prompt. `instruction` is the job's `prompt`. `timezone` is the computer's IANA time zone, such as `Europe/Warsaw`. |
 | `memories` | Up to 64 strings, 500 characters or fewer each. |
-| `files` | `agents/<key>/files` or `null`. OpenBot copies it to `imported/` in the agent's workspace. |
+| `files` | `agents/<key>/files` or `null`. ZollyBot copies it to `imported/` in the agent's workspace. |
 
 The whole archive must be 500 MB and 5,000 files or fewer.
 
@@ -136,20 +136,20 @@ The whole archive must be 500 MB and 5,000 files or fewer.
 
 A Hermes job's `schedule` has a `kind`:
 
-| Hermes schedule | OpenBot schedule |
+| Hermes schedule | ZollyBot schedule |
 | --- | --- |
 | `{"kind": "cron", "expr": "0 9 * * 1-5"}` | `{ "kind": "custom", "expression": "0 9 * * 1-5" }` |
 | `{"kind": "interval", "minutes": 30}` | `{ "kind": "interval", "amount": 30, "unit": "minutes" }`. Use `hours` or `days` when the minutes divide evenly. |
 | `{"kind": "once", "run_at": "…"}` | Skip it, and tell the user. |
 
-A schedule cannot run more often than every 3 minutes. OpenBot skips a routine with an invalid
+A schedule cannot run more often than every 3 minutes. ZollyBot skips a routine with an invalid
 schedule and tells the user; the rest of the agent still imports.
 
 ## Checklist
 
-- [ ] `openbot-import.json` is at the root of the zip, not inside a subfolder.
-- [ ] `format` is `openbot-agent-import`, `version` is `1`, and `source.app` is `hermes-agent`.
+- [ ] `zollybot-import.json` is at the root of the zip, not inside a subfolder.
+- [ ] `format` is `zollybot-agent-import`, `version` is `1`, and `source.app` is `hermes-agent`.
 - [ ] Each `key` is unique and 64 characters or fewer, and each path starts with `agents/<key>/`.
-- [ ] Each skill folder has `SKILL.md` with frontmatter, and no skill is `openbot-export`.
+- [ ] Each skill folder has `SKILL.md` with frontmatter, and no skill is `zollybot-export`.
 - [ ] No skill that comes with Hermes is in the export.
 - [ ] No secrets, `.env` files, `auth.json`, keys, nested archives, `.git` or `node_modules`.

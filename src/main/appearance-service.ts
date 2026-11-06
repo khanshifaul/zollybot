@@ -7,8 +7,8 @@ import {
   isAppThemePaletteId,
   type SetAppAppearancePreferenceInput,
   sameThemePalettes,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect, Exit, Result, Scope, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";
@@ -19,7 +19,7 @@ type StoredAppearancePreference = Pick<AppAppearancePreference, "appearance" | "
   /**
    * False until the user picks a theme in Settings: a light, dark or system choice, or a palette.
    * While it is false, `palette` is the palette that shows: the first one, also one that appears after
-   * the start, as the Omarchy installer can write its palette while OpenBot runs. It stays until its
+   * the start, as the Omarchy installer can write its palette while ZollyBot runs. It stays until its
    * file goes, so a new file does not replace it. A change to another field keeps it false.
    */
   themeChosen: boolean;
@@ -68,7 +68,7 @@ const writeAppearancePreference = Effect.fn("AppearancePreference.write")(functi
 });
 
 /**
- * The light, dark or system appearance of OpenBot's own windows, or a theme palette that another
+ * The light, dark or system appearance of ZollyBot's own windows, or a theme palette that another
  * program gives. Main holds it so every window reads one choice, and it tells each window about a
  * change through `subscribe`, a change to a palette file included.
  */

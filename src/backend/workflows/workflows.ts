@@ -20,15 +20,15 @@
  * GitHub run blocks only its own item: an event of an item whose run is open waits in the trigger's
  * history and starts when that run ends, and runs of other items run at the same time. Schedules and
  * webhooks keep one open run per workflow. An event that a step of the same workflow caused, or the
- * next of a long chain of runs that OpenBot's bot caused on one item, starts nothing.
+ * next of a long chain of runs that ZollyBot's bot caused on one item, starts nothing.
  *
  * A restart keeps approvals and agent steps: their state is in the database and in the mailbox. A
  * model step lives in this process only, so the first pass after a restart fails it. A post that
  * did not start is sent then; one that was on its way fails as uncertain.
  */
 
-import { isAgentProvider } from "@openbot/contracts/agent-providers";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { isAgentProvider } from "@zollybot/contracts/agent-providers";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AgentEvent,
   type AgentReasoningEffort,
@@ -60,10 +60,10 @@ import {
   type WorkflowSummary,
   type WorkflowVersion,
   type WorkflowVersionInput,
-} from "@openbot/contracts/ipc";
-import { isOneOf } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Cause, Context, Effect, Exit, Fiber, Layer, ManagedRuntime, Result, Schema, Scope, Semaphore } from "effect";
 import { isNoUpdateAnswer } from "../agent/routine-quiet-runs";
 import type { AgentProvider } from "../agent-client";
@@ -148,9 +148,9 @@ import {
   unsupportedNode,
 } from "./workflow-walk";
 
-const logger = createOpenBotLogger("workflows");
+const logger = createZollyBotLogger("workflows");
 
-/** A chain of runs that OpenBot's bot caused on one item stops after this many in the window. */
+/** A chain of runs that ZollyBot's bot caused on one item stops after this many in the window. */
 const GITHUB_CHAIN_RUNS = 3;
 const GITHUB_CHAIN_WINDOW_MS = 10 * 60_000;
 /** How long a change that a GitHub output made is known as this workflow's own. */
@@ -260,11 +260,11 @@ export interface WorkflowsDependencies {
   runEnded?: (end: WorkflowRunEnd) => void;
   /** The GitHub tables; see `workflow-github-store.ts`. */
   github: WorkflowGitHubStore;
-  /** The slug of the OpenBot GitHub App, whose bot makes the changes of GitHub outputs. */
+  /** The slug of the ZollyBot GitHub App, whose bot makes the changes of GitHub outputs. */
   githubApp(): string | null;
   /** The repositories that the saved GitHub triggers watch, after each change of them. */
   watchGitHub?: (repositories: string[]) => void;
-  /** GitHub as OpenBot's bot; absent where this host has no GitHub connection to give. */
+  /** GitHub as ZollyBot's bot; absent where this host has no GitHub connection to give. */
   githubApi?: WorkflowGitHubApi;
   now?: () => Date;
 }
@@ -287,7 +287,7 @@ export type WorkflowWebhookResult =
   | { kind: "gone" }
   | { kind: "too-large" };
 
-/** One event of the OpenBot GitHub App, as Signal relayed it. */
+/** One event of the ZollyBot GitHub App, as Signal relayed it. */
 interface WorkflowGitHubEventInput {
   /** The `X-GitHub-Event` header. */
   event: string;
@@ -333,7 +333,7 @@ interface WorkflowsShape {
    */
   receiveGitHub(event: WorkflowGitHubEventInput): Effect.Effect<WorkflowGitHubResult, WorkflowFailed>;
   /**
-   * Starts the run of each workflow whose Discord trigger takes a mention of OpenBot. Answers `none`
+   * Starts the run of each workflow whose Discord trigger takes a mention of ZollyBot. Answers `none`
    * when no trigger takes it, and `skipped` when each workflow that takes it is busy or cannot start.
    */
   receiveDiscord(mention: MessagingDiscordMention): Effect.Effect<MessagingMentionResult, WorkflowFailed>;
@@ -370,7 +370,7 @@ interface WorkflowsShape {
   working(): boolean;
 }
 
-class Workflows extends Context.Service<Workflows, WorkflowsShape>()("openbot/backend/Workflows") {
+class Workflows extends Context.Service<Workflows, WorkflowsShape>()("zollybot/backend/Workflows") {
   static layer(dependencies: WorkflowsDependencies) {
     return Layer.effect(
       Workflows,
@@ -1447,7 +1447,7 @@ class Workflows extends Context.Service<Workflows, WorkflowsShape>()("openbot/ba
           }
         };
 
-        /** Whether a chain of runs that OpenBot's bot caused on the item is long enough to stop. */
+        /** Whether a chain of runs that ZollyBot's bot caused on the item is long enough to stop. */
         const chainTooLong = (item: Pick<WaitingGitHubDelivery["item"], "repository" | "number">) =>
           github.botRunsSince(item, new Date(now().getTime() - GITHUB_CHAIN_WINDOW_MS)) >= GITHUB_CHAIN_RUNS;
 
@@ -1550,7 +1550,7 @@ class Workflows extends Context.Service<Workflows, WorkflowsShape>()("openbot/ba
                   yield* skip("filter");
                   continue;
                 }
-                // Only OpenBot's bot makes the changes of GitHub outputs, so only its events can be a step's own.
+                // Only ZollyBot's bot makes the changes of GitHub outputs, so only its events can be a step's own.
                 if (
                   facts.causedByBot &&
                   github.selfCaused(

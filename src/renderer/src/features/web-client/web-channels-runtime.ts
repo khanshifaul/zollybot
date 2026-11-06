@@ -1,6 +1,6 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentEvent, AttachmentSummary, TeamRealtimeEvent } from "@openbot/contracts/ipc";
-import { currentText } from "@openbot/ui/text";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentEvent, AttachmentSummary, TeamRealtimeEvent } from "@zollybot/contracts/ipc";
+import { currentText } from "@zollybot/ui/text";
 import { onCleanup } from "solid-js";
 import type { ChannelsPort } from "../channels/channels-port";
 import { webEventRoutinesApi } from "../conversation/routine-webhooks-api";

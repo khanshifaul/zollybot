@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   DirectConversationPage,
   DirectConversationPageAnchor,
@@ -7,9 +7,9 @@ import type {
   DirectConversationSnapshot,
   DirectMessage,
   DirectThreadSummary,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   databaseRow,
   databaseRows,
@@ -18,10 +18,10 @@ import {
   requiredNumberColumn,
   requiredStringColumn,
 } from "./database/database-rows";
-import type { OpenBotDatabase } from "./openbot-database";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 export class TeamChatStore {
-  constructor(readonly database: OpenBotDatabase) {}
+  constructor(readonly database: ZollyBotDatabase) {}
 
   listThreads(memberId: string): DirectThreadSummary[] {
     const rows = databaseRows(

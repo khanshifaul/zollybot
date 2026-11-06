@@ -1,8 +1,8 @@
-import { normalizeSidebarPinnedItems, type SidebarPinnedItem } from "@openbot/ui/features/sidebar/sidebar-pins";
+import { normalizeSidebarPinnedItems, type SidebarPinnedItem } from "@zollybot/ui/features/sidebar/sidebar-pins";
 import { z } from "zod";
 export type SidebarPinsByServer = Record<string, SidebarPinnedItem[]>;
 
-const SIDEBAR_PINS_STORAGE_KEY = "openbot:sidebar-pins:v1";
+const SIDEBAR_PINS_STORAGE_KEY = "zollybot:sidebar-pins:v1";
 
 type SidebarPinStorage = Pick<Storage, "getItem" | "setItem">;
 
@@ -41,7 +41,7 @@ export function writeSidebarPins(
   }
 }
 
-const SIDEBAR_PINS_PENDING_STORAGE_KEY = "openbot:sidebar-pins-pending:v1";
+const SIDEBAR_PINS_PENDING_STORAGE_KEY = "zollybot:sidebar-pins-pending:v1";
 
 const pendingSchema = z.array(z.string().trim().min(1).nullable().catch(null)).catch([]);
 

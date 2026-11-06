@@ -20,8 +20,8 @@ export const messages = {
   "notification.channelMessage": "A envoyé un message.",
   "notification.usageLimit.title": "Le compte {provider} a atteint sa limite",
   "notification.usageLimit.body": {
-    one: "{count} agent attend. OpenBot réessaiera plus tard.",
-    other: "{count} agents attendent. OpenBot réessaiera plus tard.",
+    one: "{count} agent attend. ZollyBot réessaiera plus tard.",
+    other: "{count} agents attendent. ZollyBot réessaiera plus tard.",
   },
   "notification.usageLimit.bodyResets": {
     one: "{count} agent attend. La limite se réinitialise {reset}.",
@@ -32,7 +32,7 @@ export const messages = {
   "notification.machineAlert.cpu": "{server} : CPU occupé à {percent}",
   "notification.machineAlert.body": "Le seuil d’alerte de {level} est dépassé. Voir Réglages du serveur > Stockage.",
   "notification.test": "Les notifications fonctionnent.",
-  "notification.welcome": "OpenBot vous préviendra ici quand un agent aura besoin de vous.",
+  "notification.welcome": "ZollyBot vous préviendra ici quand un agent aura besoin de vous.",
   // The toast region in each window.
   "notification.toast.region": "Notifications",
   "notification.toast.close": "Fermer la notification",

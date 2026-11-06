@@ -1,11 +1,11 @@
+import type { QueryClient } from "@tanstack/react-query";
 import type {
   AgentEvent,
   AgentTasksSnapshot,
   ConversationMessage,
   ConversationSnapshot,
   TeamRealtimeEvent,
-} from "@openbot/contracts/ipc";
-import type { QueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { type QueryScope, queryKeys } from "./query-keys";
 
 type TaskDelta = Extract<AgentEvent, { type: "agent-task-conversation-delta" }>;

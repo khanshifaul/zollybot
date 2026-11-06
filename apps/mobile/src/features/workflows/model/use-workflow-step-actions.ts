@@ -1,5 +1,5 @@
-import type { WorkflowStep } from "@openbot/contracts/ipc";
 import { useQueryClient } from "@tanstack/react-query";
+import type { WorkflowStep } from "@zollybot/contracts/ipc";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";

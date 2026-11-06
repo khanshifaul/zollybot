@@ -14,11 +14,11 @@ import { supportLog } from "@/features/support/model/support-log";
 import { clearSupportLog, supportLogFileText } from "@/features/support/model/support-log-capture";
 import { useText } from "@/shared/lib/text";
 
-/** The OpenBot Discord community, the same address as the desktop app. Its tickets get the fastest answer. */
+/** The ZollyBot Discord community, the same address as the desktop app. Its tickets get the fastest answer. */
 const DISCORD_URL = "https://discord.openbot.run";
-/** The OpenBot account, the same contact as the website. */
-const SUPPORT_X_HANDLE = "@OpenBot_";
-const SUPPORT_X_URL = "https://x.com/OpenBot_";
+/** The ZollyBot account, the same contact as the website. */
+const SUPPORT_X_HANDLE = "@ZollyBot_";
+const SUPPORT_X_URL = "https://x.com/ZollyBot_";
 const ISSUES_URL = "https://github.com/nightly-labs/openbot/issues/new";
 
 export function SupportSettingsScreen() {
@@ -40,7 +40,7 @@ export function SupportSettingsScreen() {
       return;
     }
     setSaving(true);
-    const file = new File(Paths.cache, `openbot-support-log-${new Date().toISOString().replace(/[:.]/gu, "-")}.txt`);
+    const file = new File(Paths.cache, `zollybot-support-log-${new Date().toISOString().replace(/[:.]/gu, "-")}.txt`);
     try {
       file.writeSync(supportLogFileText());
       await Sharing.shareAsync(file.uri, {

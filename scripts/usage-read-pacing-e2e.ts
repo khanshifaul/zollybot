@@ -5,18 +5,18 @@
 // the last reading and the next read waits 5, 10, 20 and 40 minutes, up to an hour; a read that succeeds
 // ends the wait; a window that had reset before the read does not start a read at each poll and stays on the
 // rail; after a credential change, no view shows the old credential's reading.
-// `bun scripts/usage-read-pacing-e2e.ts`. Writes .openbot-build/usage-read-pacing-e2e/report.json.
+// `bun scripts/usage-read-pacing-e2e.ts`. Writes .zollybot-build/usage-read-pacing-e2e/report.json.
 import assert from "node:assert/strict";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/usage-read-pacing-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-usage-pacing-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/usage-read-pacing-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-usage-pacing-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -26,7 +26,7 @@ const pastFlag = join(root, "past");
 
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 // The service reads the clock through `Date.now`. Moving it is the wait for the next read.
@@ -39,7 +39,7 @@ const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 /** A Codex app-server with the methods that a start and a usage read call. Each reading has a new percent. */
 const FAKE_CODEX = `#!/usr/bin/env node
@@ -146,7 +146,7 @@ function reads(): { pid: number; failed: boolean }[] {
 }
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 const agents = new AgentService({

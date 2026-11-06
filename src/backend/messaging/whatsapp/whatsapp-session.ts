@@ -1,5 +1,5 @@
-import { createOpenBotLogger } from "@openbot/logging";
-import type { WhatsAppAuthStore } from "@openbot/whatsapp/auth-store";
+import { createZollyBotLogger } from "@zollybot/logging";
+import type { WhatsAppAuthStore } from "@zollybot/whatsapp/auth-store";
 import {
   type AnyMessageContent,
   type BaileysEventMap,
@@ -17,13 +17,13 @@ import {
   type UserFacingSocketConfig,
   type WAMessage,
   type WAVersion,
-} from "@openbot/whatsapp/baileys";
+} from "@zollybot/whatsapp/baileys";
 import { Effect } from "effect";
 import { MessagingAdapterError } from "../messaging-types";
 
-const logger = createOpenBotLogger("whatsapp");
+const logger = createZollyBotLogger("whatsapp");
 
-/** The calls OpenBot makes on a Baileys socket. The real socket has this shape; a test passes a fake. */
+/** The calls ZollyBot makes on a Baileys socket. The real socket has this shape; a test passes a fake. */
 export interface WhatsAppSocket {
   ev: { on<T extends keyof BaileysEventMap>(event: T, listener: (arg: BaileysEventMap[T]) => void): void };
   ws: { on(event: "frame", listener: () => void): unknown };
@@ -74,7 +74,7 @@ const WATCHDOG_INTERVAL_MS = 15_000;
 const SEND_DEADLINE_MS = 5 * 60_000;
 /** Posts to one chat keep at least this much time between them, plus up to half of it at random. */
 const CHAT_PACING_MS = 1_000;
-/** How long OpenBot remembers the ids of its own posts, so their echoes are not read as messages. */
+/** How long ZollyBot remembers the ids of its own posts, so their echoes are not read as messages. */
 const ECHO_TTL_MS = 20 * 60_000;
 const ECHO_LIMIT = 5_000;
 const GROUP_CACHE_MS = 5 * 60_000;
@@ -163,7 +163,7 @@ export class WhatsAppSession {
   #state: WhatsAppSessionState = "stopped";
   #started = false;
   /** The browser name that this device shows as. A link by pairing code needs a known browser. */
-  #browserName = "OpenBot";
+  #browserName = "ZollyBot";
   #attempt = 0;
   #restartedOnce = false;
   /** A QR code was shown in this session, so a 408 means that the codes ran out. */
@@ -227,13 +227,13 @@ export class WhatsAppSession {
 
   /**
    * Opens the socket. A link by pairing code shows as Chrome: WhatsApp answered `bad-request` to the code
-   * request with the browser name OpenBot (November 2026), and the phone showed "Couldn't link device".
-   * A QR link keeps the name OpenBot, which WhatsApp accepts there.
+   * request with the browser name ZollyBot (November 2026), and the phone showed "Couldn't link device".
+   * A QR link keeps the name ZollyBot, which WhatsApp accepts there.
    */
   start(options: { codeLink?: boolean } = {}): void {
     if (this.#started) return;
     this.#started = true;
-    this.#browserName = options.codeLink ? "Chrome" : "OpenBot";
+    this.#browserName = options.codeLink ? "Chrome" : "ZollyBot";
     this.#attempt = 0;
     this.#setState("connecting");
     void this.#connect();
@@ -284,7 +284,7 @@ export class WhatsAppSession {
   });
 
   /**
-   * True when the message id is one of OpenBot's own posts. The store keeps them for a day, so after a
+   * True when the message id is one of ZollyBot's own posts. The store keeps them for a day, so after a
    * restart an echo of a post in the owner's own chat is still not read as a new request.
    */
   isOwnPost(messageId: string): boolean {

@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
 import { lstat, mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentSummary,
   AgentTemplateSkill,
@@ -16,7 +16,7 @@ import type {
   SkillSubmission,
   SubmitSkillInput,
   UninstallSkillInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   AGENT_TEMPLATE_LIMITS,
   decodeMarketplaceSkillDetail,
@@ -24,9 +24,9 @@ import {
   isSkillCategory,
   marketplaceQueryParams,
   SKILL_DESCRIPTION_MAX_LENGTH,
-} from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber, isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber, isOneOf, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Cache, Effect, Exit, Result, Schema, Semaphore } from "effect";
 import { parse as parseYaml } from "yaml";
 import type { AgentLifecycleFailed } from "../backend/agent-service";
@@ -328,7 +328,7 @@ export class SkillMarketplaceService {
         } else result.push({ kind: "marketplace", ...(yield* this.publishedReferenceEffect(agent, entry)) });
       }
       for (const skill of yield* listFolderSkills(agent, lockedSlugs(lock)).pipe(toSkillMarketplaceFailure)) {
-        // A managed skill without its ownership marker is still OpenBot's: every install writes its own.
+        // A managed skill without its ownership marker is still ZollyBot's: every install writes its own.
         if (skill.problem || !skill.location || MANAGED_SKILL_SLUGS.has(skill.slug)) continue;
         result.push(yield* embeddedSkill(join(agent.workspacePath, skill.location, "SKILL.md"), skill.name));
       }
@@ -440,7 +440,7 @@ export class SkillMarketplaceService {
       const owned = new Set(Object.values(lock.skills).flatMap(entryFolders));
       for (const folder of folders.keys()) {
         if (owned.has(folder)) continue;
-        // OpenBot writes its own skill to this folder in every workspace, so only an older install can own it.
+        // ZollyBot writes its own skill to this folder in every workspace, so only an older install can own it.
         if (MANAGED_SKILL_SLUGS.has(folder))
           return yield* new SkillMarketplaceFailure({
             cause: new Error(sourceText("error.skill.managedSlug", { slug: folder })),
@@ -658,7 +658,7 @@ function targetDirectories(workspace: string, slug: string): [string, string] {
 }
 
 function disabledDirectory(workspace: string, slug: string): string {
-  return join(workspace, ".openbot", "skills-disabled", slug);
+  return join(workspace, ".zollybot", "skills-disabled", slug);
 }
 
 /**
@@ -782,8 +782,8 @@ const replaceTargets = Effect.fn("SkillMarketplace.replaceTargets")(function* (
     Effect.gen(function* () {
       for (const { target, files } of writes) {
         yield* skillIO(() => mkdir(dirname(target), { recursive: true, mode: 0o700 }));
-        const stage = `${target}.openbot-stage-${randomUUID()}`;
-        const backup = (yield* pathExists(target)) ? `${target}.openbot-backup-${randomUUID()}` : null;
+        const stage = `${target}.zollybot-stage-${randomUUID()}`;
+        const backup = (yield* pathExists(target)) ? `${target}.zollybot-backup-${randomUUID()}` : null;
         yield* writeFiles(stage, files);
         if (backup) yield* skillIO(() => rename(target, backup));
         const moved = yield* Effect.result(skillIO(() => rename(stage, target)));
@@ -918,7 +918,7 @@ function lockedSlugs(lock: SkillsLock): Set<string> {
 }
 
 function lockPath(workspace: string): string {
-  return join(workspace, ".openbot", "skills-lock.json");
+  return join(workspace, ".zollybot", "skills-lock.json");
 }
 const readLock = Effect.fn("SkillMarketplace.readLock")(function* (
   workspace: string,

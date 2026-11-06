@@ -20,8 +20,8 @@ import {
   type WorkflowRunStatus,
   type WorkflowStep,
   type WorkflowStepStatus,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isOneOf } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isOneOf } from "@zollybot/contracts/runtime-values";
 import {
   checkedColumn,
   databaseRow,
@@ -31,8 +31,8 @@ import {
   requiredNumberColumn,
   requiredStringColumn,
 } from "../database/database-rows";
-import type { OpenBotDatabase } from "../openbot-database";
 import { webhookReceiptCutoff } from "../webhook-route-store";
+import type { ZollyBotDatabase } from "../zollybot-database";
 import { workflowTransaction } from "./workflow-transaction";
 
 /** A run as the runtime reads it: the public row and the graph it started from. */
@@ -122,10 +122,10 @@ export interface WorkflowStepEnd {
 }
 
 export class WorkflowRunStore {
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
   readonly #createId: () => string;
 
-  constructor(options: { database: OpenBotDatabase; createId?: () => string }) {
+  constructor(options: { database: ZollyBotDatabase; createId?: () => string }) {
     this.#database = options.database;
     this.#createId = options.createId ?? (() => crypto.randomUUID());
   }

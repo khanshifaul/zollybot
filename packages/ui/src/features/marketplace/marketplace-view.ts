@@ -6,9 +6,9 @@ import {
   type McpServerConfig,
   SKILL_CATEGORIES,
   type SkillCategory,
-} from "@openbot/contracts/ipc";
-import type { MarketplaceListingKind } from "@openbot/contracts/marketplace-links";
-import { errorReference } from "@openbot/user-errors";
+} from "@zollybot/contracts/ipc";
+import type { MarketplaceListingKind } from "@zollybot/contracts/marketplace-links";
+import { errorReference } from "@zollybot/user-errors";
 import { createStore, onCleanup, onSettled, untrack } from "solid-js";
 import type { MarketplaceListing } from "./marketplace-listing";
 import type { MarketplaceApp, MarketplaceModel } from "./marketplace-model";

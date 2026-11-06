@@ -1,4 +1,4 @@
-import type { ConversationReaction } from "@openbot/contracts/ipc";
+import type { ConversationReaction } from "@zollybot/contracts/ipc";
 import { Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
 import Ellipsis from "lucide-react-native/icons/ellipsis";

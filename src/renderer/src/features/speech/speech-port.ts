@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What spoken replies reach in main: the speech model and settings, the synthesis, the finished
@@ -6,7 +6,7 @@ import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
  */
 export interface SpeechPort {
   voice: Pick<
-    OpenBotDesktopApi["voice"],
+    ZollyBotDesktopApi["voice"],
     | "getSpeechSettings"
     | "setSpeechSettings"
     | "getSpeechModelStatus"
@@ -18,10 +18,10 @@ export interface SpeechPort {
     | "getServer"
     | "onServerSettings"
   >;
-  agent: Pick<OpenBotDesktopApi["agent"], "readConversationPage" | "discardDraftAttachment">;
+  agent: Pick<ZollyBotDesktopApi["agent"], "readConversationPage" | "discardDraftAttachment">;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function speechPort(): SpeechPort {
-  return window.openbot;
+  return window.zollybot;
 }

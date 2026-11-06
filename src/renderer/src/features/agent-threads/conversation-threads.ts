@@ -1,11 +1,11 @@
-import type { AgentApproval, AgentContextState, AgentEvent, AgentTask } from "@openbot/contracts/ipc";
-import { isAgentTaskActive, taskApproval } from "@openbot/team-client/agent-tasks";
+import type { AgentApproval, AgentContextState, AgentEvent, AgentTask } from "@zollybot/contracts/ipc";
+import { isAgentTaskActive, taskApproval } from "@zollybot/team-client/agent-tasks";
 import {
   activeThreadId,
   type ThreadListsInput,
   threadLists,
-} from "@openbot/ui/features/conversation/threads/thread-items";
-import { DRAFT_THREAD_ID, MAIN_THREAD_ID } from "@openbot/ui/features/conversation/threads/thread-types";
+} from "@zollybot/ui/features/conversation/threads/thread-items";
+import { DRAFT_THREAD_ID, MAIN_THREAD_ID } from "@zollybot/ui/features/conversation/threads/thread-types";
 import type { AgentTasks } from "../agent-tasks/agent-tasks-state";
 import type {
   BrowserTakeoverRequest,

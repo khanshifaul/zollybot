@@ -1,4 +1,4 @@
-import { type ConversationMessage, isAgentAnswer } from "@openbot/contracts/ipc";
+import { type ConversationMessage, isAgentAnswer } from "@zollybot/contracts/ipc";
 import { isTurnThought, type TurnStepLine, type TurnStepLines } from "@/features/workspace/model/turn-step-lines";
 
 export type TurnThinkingStep =

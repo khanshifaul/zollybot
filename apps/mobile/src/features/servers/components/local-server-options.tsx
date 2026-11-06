@@ -12,7 +12,7 @@ export type LocalServerPathname = "/add-server/local" | "/hosted-server/local";
 
 /**
  * One row for each computer where the owner can make another server (`local-servers-v1`): an online
- * server of the OpenBot desktop app that this account owns. Nothing when there is none.
+ * server of the ZollyBot desktop app that this account owns. Nothing when there is none.
  */
 export function LocalServerOptions({ pathname }: { pathname: LocalServerPathname }) {
   const { t } = useText();

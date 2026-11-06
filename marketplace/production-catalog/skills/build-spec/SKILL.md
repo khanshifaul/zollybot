@@ -14,9 +14,9 @@ description: "Turn a design frame into a spec a developer can build from: compon
 ## Inputs
 
 1. **The frame.** In this order:
-   - An installed Figma plugin. Find it with `tool_search` in the `openbot` tools. Read the frame, its
+   - An installed Figma plugin. Find it with `tool_search` in the `zollybot` tools. Read the frame, its
      components, styles and variables.
-   - A signed-in Figma tab in `openbot_browser`. Call `openbot_browser.list_tabs` first. Read values from the
+   - A signed-in Figma tab in `zollybot_browser`. Call `zollybot_browser.list_tabs` first. Read values from the
      inspect panel.
    - A screenshot or export. Values from an image are estimates. Mark them "est."
    - If no Figma plugin is installed and Figma would help, suggest one with `suggest_marketplace_app`.

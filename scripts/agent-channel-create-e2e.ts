@@ -8,20 +8,20 @@
 // member, an unusable image file, a routine run and a team member. A channel task that this
 // computer's user started creates a channel and changes another one, but not its own channel; a team
 // member's request in the channel is refused. A repeated tool call makes one channel.
-// `bun scripts/agent-channel-create-e2e.ts`. Writes .openbot-build/agent-channel-create-e2e/report.json.
+// `bun scripts/agent-channel-create-e2e.ts`. Writes .zollybot-build/agent-channel-create-e2e/report.json.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { z } from "zod";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-channel-create-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-channel-create-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-channel-create-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-channel-create-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -30,7 +30,7 @@ const fakeLog = join(root, "codex.jsonl");
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
@@ -38,7 +38,7 @@ const { AgentStore } = await import("../src/backend/agent-store");
 const { handleChannelAgentTool } = await import("../src/backend/agent/channel-agent-tools");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 const CALL_MARK = "CHANNEL-CALL";
 const PERSON = { id: "local", name: "Alex" };
@@ -52,7 +52,7 @@ const PNG = Buffer.from(
 
 /**
  * A Codex app-server with the methods that the service calls. A turn whose input has
- * `CHANNEL-CALL <<ARGS{"__tool":"…",…}ARGS>>` calls `openbot.<__tool>` with the rest of that JSON
+ * `CHANNEL-CALL <<ARGS{"__tool":"…",…}ARGS>>` calls `zollybot.<__tool>` with the rest of that JSON
  * through `tool_call`, logs the result, and ends. A channel packet also repeats earlier requests, so
  * the last call in the input is the current assignment. Other turns answer "Done.".
  */
@@ -115,9 +115,9 @@ const answer = (message) => {
           threadId: params.threadId,
           turnId,
           callId: "call-" + turnId,
-          namespace: "openbot",
+          namespace: "zollybot",
           tool: "tool_call",
-          arguments: { name: "openbot." + __tool, arguments: args },
+          arguments: { name: "zollybot." + __tool, arguments: args },
         },
       });
     }
@@ -232,7 +232,7 @@ function pass(name: string, condition: boolean, detail?: string) {
 }
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 const agents = new AgentService({
@@ -605,7 +605,7 @@ try {
     threadId: "retry-thread",
     turnId: "retry-turn",
     callId: "retry-call",
-    namespace: "openbot",
+    namespace: "zollybot",
     tool: "create_channel",
     arguments: { name: "retry", memberAgentIds: [lead.id, writer.id], icon: { name: "star", hue: 55 } },
   };

@@ -1,8 +1,8 @@
-import { type MachineMetric, type MachineMetrics, machineMetricRatio } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { Cpu, HardDrive, MemoryStick } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
+import { type MachineMetric, type MachineMetrics, machineMetricRatio } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Cpu, HardDrive, MemoryStick } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 
 /** The name, icon, use and colour of one machine metric, as Storage and the Usage header show them. */
 

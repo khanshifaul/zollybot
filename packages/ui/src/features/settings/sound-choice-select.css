@@ -6,7 +6,7 @@
 .sound-choice-item {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .sound-choice-item-play {

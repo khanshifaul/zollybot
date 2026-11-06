@@ -4,11 +4,11 @@ import {
   fileReferenceName,
   fileReferenceTone,
   isFileReference,
-} from "@openbot/brand/file-reference";
-import { chatMathStart } from "@openbot/contracts/chat-math";
-import { chatPreviewKind } from "@openbot/contracts/chat-preview";
-import { chatTagReferences } from "@openbot/contracts/chat-tag-references";
-import type { MobileTranslate } from "@openbot/i18n/mobile";
+} from "@zollybot/brand/file-reference";
+import { chatMathStart } from "@zollybot/contracts/chat-math";
+import { chatPreviewKind } from "@zollybot/contracts/chat-preview";
+import { chatTagReferences } from "@zollybot/contracts/chat-tag-references";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import * as Linking from "expo-linking";
 import { useThemeColor } from "heroui-native/hooks";
 import Blocks from "lucide-react-native/icons/blocks";
@@ -206,14 +206,14 @@ function sourceEntries<T>(values: T[], source: (value: T) => string) {
 
 /** The colour family of each file tone, as the desktop `data-file-tone` rules use them. */
 const FILE_TONE_COLORS: Record<FileReferenceTone, [string, string]> = {
-  source: ["--openbot-file-blue", "--openbot-file-blue-soft"],
-  script: ["--openbot-file-yellow", "--openbot-file-yellow-soft"],
-  markup: ["--openbot-file-orange", "--openbot-file-orange-soft"],
-  style: ["--openbot-file-teal", "--openbot-file-teal-soft"],
-  data: ["--openbot-file-green", "--openbot-file-green-soft"],
-  document: ["--openbot-file-red", "--openbot-file-red-soft"],
-  media: ["--openbot-file-pink", "--openbot-file-pink-soft"],
-  default: ["--openbot-file-default", "--openbot-file-default-soft"],
+  source: ["--zollybot-file-blue", "--zollybot-file-blue-soft"],
+  script: ["--zollybot-file-yellow", "--zollybot-file-yellow-soft"],
+  markup: ["--zollybot-file-orange", "--zollybot-file-orange-soft"],
+  style: ["--zollybot-file-teal", "--zollybot-file-teal-soft"],
+  data: ["--zollybot-file-green", "--zollybot-file-green-soft"],
+  document: ["--zollybot-file-red", "--zollybot-file-red-soft"],
+  media: ["--zollybot-file-pink", "--zollybot-file-pink-soft"],
+  default: ["--zollybot-file-default", "--zollybot-file-default-soft"],
 };
 
 /**

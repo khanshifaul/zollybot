@@ -2,8 +2,8 @@ import {
   DEFAULT_MEMORY_REVIEW_INTERVAL,
   isMemoryReviewInterval,
   type MemoryReviewPreference,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect, Result, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";

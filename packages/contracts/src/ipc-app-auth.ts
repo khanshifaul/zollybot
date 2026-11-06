@@ -85,7 +85,7 @@ export interface UpdateStatus {
   idleRestart?: IdleRestart;
 }
 
-/** `relaunch` starts OpenBot again; `update` installs the downloaded update. */
+/** `relaunch` starts ZollyBot again; `update` installs the downloaded update. */
 export const IDLE_RESTART_TARGETS = ["relaunch", "update"] as const;
 export type IdleRestartTarget = (typeof IDLE_RESTART_TARGETS)[number];
 
@@ -153,7 +153,7 @@ export type ProviderRuntimePhase = "not-downloaded" | "downloading" | "finishing
 export interface ProviderRuntimeStatus {
   /**
    * The newer version an update installs, when an older install exists: the latest upstream release
-   * the last check found, or the version this OpenBot release carries, whichever is newer.
+   * the last check found, or the version this ZollyBot release carries, whichever is newer.
    */
   availableVersion?: string | null;
   phase: ProviderRuntimePhase;
@@ -165,7 +165,7 @@ export interface ProviderRuntimeStatus {
 export interface ProviderRuntimeSnapshot {
   revision: number;
   /**
-   * Only the providers whose CLI OpenBot downloads and pins itself. A provider that ships without a
+   * Only the providers whose CLI ZollyBot downloads and pins itself. A provider that ships without a
    * managed runtime is absent from `ManagedProviderId`, so it needs no fake entry here, and every
    * provider that is in the tuple has a real status.
    */
@@ -181,7 +181,7 @@ export interface ProviderRuntimeSnapshot {
 }
 
 /**
- * The status of a provider that OpenBot installs with the provider's own installer: `ready` where
+ * The status of a provider that ZollyBot installs with the provider's own installer: `ready` where
  * its CLI is found, so that a server's row offers Connect. Absent where the CLI is missing and this
  * computer cannot run the installer, and on a host before the installer: the row then shows the
  * install guide, not Download.
@@ -278,7 +278,7 @@ export type CentralAuthSignedOutReason = "keyring_changed";
 export type CentralAuthState =
   | { status: "loading" }
   /**
-   * `keyring_changed`: the Linux keyring did not open the saved sign-in, so OpenBot now keeps its
+   * `keyring_changed`: the Linux keyring did not open the saved sign-in, so ZollyBot now keeps its
    * secrets in its own key file and the user signs in one more time.
    */
   | { status: "signed_out"; reason?: CentralAuthSignedOutReason }
@@ -392,7 +392,7 @@ export type MacPermissionId = "screen-recording" | "accessibility";
 
 /**
  * The Apple apps an MCP server may drive through AppleScript. macOS asks once for each, under
- * Privacy & Security › Automation, and keeps the answer for OpenBot.
+ * Privacy & Security › Automation, and keeps the answer for ZollyBot.
  */
 export const MAC_AUTOMATION_TARGETS = [
   "calendar",
@@ -419,7 +419,7 @@ export interface MacAutomationResult {
 
 /**
  * A program that an agent started and left running after its tool call, such as a dev server that
- * `nohup ... &` started. The system adopted it, so no provider process of OpenBot holds it now.
+ * `nohup ... &` started. The system adopted it, so no provider process of ZollyBot holds it now.
  */
 export interface BackgroundProcess {
   /** The pid and the start time: a pid is reused. Stop takes it. */
@@ -489,7 +489,7 @@ export interface ComputerUseState {
  * macOS grants a permission to an application bundle, and the list in System Settings does not
  * always offer the one that asked. Dragging the bundle in is the way past that, so the window has
  * to show the user the same name and icon the list will show - which in a development build is
- * Electron, not OpenBot. `null` where there is no bundle to drag: every system that is not macOS,
+ * Electron, not ZollyBot. `null` where there is no bundle to drag: every system that is not macOS,
  * and a build that runs from a directory rather than an application.
  */
 export interface ComputerUsePermissionApp {
@@ -515,7 +515,7 @@ export interface ComputerUseHighlightPlacement {
   /** Which application window the agent works in, for the screen reader. Never logged. */
   windowTitle: string;
   /**
-   * Where OpenBot draws the agent cursor, or `null` when it draws none.
+   * Where ZollyBot draws the agent cursor, or `null` when it draws none.
    *
    * The driver draws a cursor of its own, and two cursors for one agent say two places. So this
    * carries a point only while the driver draws nothing, and only while the agent's last action is
@@ -558,7 +558,7 @@ export interface ChatWindowTarget {
 
 /**
  * The messages that the user sent to agents on this computer, from the database. The social toast
- * reads it, so a user who used OpenBot before the toast shipped gets it on time.
+ * reads it, so a user who used ZollyBot before the toast shipped gets it on time.
  */
 export interface SentMessageStats {
   /** When the first message was written, as ISO 8601 text, or null before the first message. */
@@ -574,23 +574,23 @@ export type ExternalDestination =
   | "hermes-install"
   | "feedback"
   | "message"
-  // The release notes, the guides and the Discord community of OpenBot, from the Help menu of the window rail.
+  // The release notes, the guides and the Discord community of ZollyBot, from the Help menu of the window rail.
   // The community card of the sidebar also opens Discord.
   | "changelog"
   | "guides"
   | "discord"
-  // The OpenBot repository, from the toast that asks for a GitHub star.
+  // The ZollyBot repository, from the toast that asks for a GitHub star.
   | "github"
-  // The OpenBot account on X, from the community card of the sidebar and the social toast.
+  // The ZollyBot account on X, from the community card of the sidebar and the social toast.
   | "x"
-  // The OpenBot profiles and community that the social toast asks the user to follow or join.
+  // The ZollyBot profiles and community that the social toast asks the user to follow or join.
   | "threads"
   | "instagram"
   | "tiktok"
   | "facebook"
   | "linkedin"
   | "reddit"
-  // The pages that start a post about OpenBot, from the social toast. Main writes the first post
+  // The pages that start a post about ZollyBot, from the social toast. Main writes the first post
   // in the app language.
   | "x-post"
   | "threads-post"
@@ -599,10 +599,10 @@ export type ExternalDestination =
   | "facebook-post"
   | "instagram-post"
   | "tiktok-post"
-  // The x.ai marketplace listing of the Grok Bot agent that exports agents for OpenBot.
+  // The x.ai marketplace listing of the Grok Bot agent that exports agents for ZollyBot.
   | "grok-bot-export"
   // The email for a hosted server plan that the add server dialog does not have, such as a Mac.
   | "hosted-server-contact"
-  // Not a page: the macOS pane that grants OpenBot screen recording. It is here rather than behind
+  // Not a page: the macOS pane that grants ZollyBot screen recording. It is here rather than behind
   // its own endpoint because the destination is still a fixed address the renderer only names.
   | "mac-screen-recording";

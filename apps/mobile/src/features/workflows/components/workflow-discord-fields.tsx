@@ -3,8 +3,8 @@ import {
   WORKFLOW_DISCORD_TRIGGER_SERVER,
   type WorkflowNode,
   workflowListField,
-} from "@openbot/contracts/ipc";
-import { isOneOf } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
 import { Typography } from "heroui-native";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/settings-content";
 import { DISCORD_ACTION_LABEL, discordAction } from "@/features/workflows/model/workflow-steps";
@@ -31,7 +31,7 @@ function ValueRow({ label, value }: { label: string; value: string }) {
 
 /**
  * The settings of a Discord trigger, read-only. The Discord servers, their channels and their roles
- * are on the computer that runs OpenBot only, so a joined device shows what the trigger keeps.
+ * are on the computer that runs ZollyBot only, so a joined device shows what the trigger keeps.
  */
 export function DiscordTriggerFields({ node }: { node: WorkflowNode }) {
   const { t, format } = useText();

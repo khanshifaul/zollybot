@@ -4,43 +4,43 @@
 // from the root route instead of as an import here.
 
 import { LANDING_FAQ_STRUCTURED_DATA } from "./landing-faq";
-import { OPENBOT_ALTERNATE_DOWNLOAD_LINKS, OPENBOT_DOWNLOAD_LINKS } from "./landing-links";
+import { ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS, ZOLLYBOT_DOWNLOAD_LINKS } from "./landing-links";
 
-export const OPENBOT_SITE_URL = "https://openbot.run/";
-export const OPENBOT_SITE_TITLE = "OpenBot: Run a team of AI agents on your computer";
-export const OPENBOT_SITE_DESCRIPTION =
+export const ZOLLYBOT_SITE_URL = "https://openbot.run/";
+export const ZOLLYBOT_SITE_TITLE = "ZollyBot: Run a team of AI agents on your computer";
+export const ZOLLYBOT_SITE_DESCRIPTION =
   "A free desktop app that runs AI agents as a team on your own computer, with the ChatGPT, Claude, Gemini or Grok plan you already pay for, or your own model.";
-export const OPENBOT_SOCIAL_IMAGE_URL = `${OPENBOT_SITE_URL}openbot-social.png`;
-/** The account `OPENBOT_LINKS.x` opens, which a shared card names. */
-export const OPENBOT_X_HANDLE = "@OpenBot_";
-const OPENBOT_X_URL = "https://x.com/OpenBot_";
-const OPENBOT_REPOSITORY_URL = "https://github.com/nightly-labs/openbot";
-const OPENBOT_PRODUCT_HUNT_URL = "https://www.producthunt.com/products/openbot-3";
-const OPENBOT_LICENSE_URL = "https://polyformproject.org/licenses/noncommercial/1.0.0/";
+export const ZOLLYBOT_SOCIAL_IMAGE_URL = `${ZOLLYBOT_SITE_URL}zollybot-social.png`;
+/** The account `ZOLLYBOT_LINKS.x` opens, which a shared card names. */
+export const ZOLLYBOT_X_HANDLE = "@ZollyBot_";
+const ZOLLYBOT_X_URL = "https://x.com/ZollyBot_";
+const ZOLLYBOT_REPOSITORY_URL = "https://github.com/nightly-labs/openbot";
+const ZOLLYBOT_PRODUCT_HUNT_URL = "https://www.producthunt.com/products/zollybot-3";
+const ZOLLYBOT_LICENSE_URL = "https://polyformproject.org/licenses/noncommercial/1.0.0/";
 // One id for each entity, so that every page describes the same organization,
 // site and app, and an assistant can join what the pages say about each.
-const OPENBOT_ORGANIZATION_ID = `${OPENBOT_SITE_URL}#organization`;
-const OPENBOT_WEBSITE_ID = `${OPENBOT_SITE_URL}#website`;
-const OPENBOT_APPLICATION_ID = `${OPENBOT_SITE_URL}#app`;
+const ZOLLYBOT_ORGANIZATION_ID = `${ZOLLYBOT_SITE_URL}#organization`;
+const ZOLLYBOT_WEBSITE_ID = `${ZOLLYBOT_SITE_URL}#website`;
+const ZOLLYBOT_APPLICATION_ID = `${ZOLLYBOT_SITE_URL}#app`;
 /** Square, as schema.org wants for a publisher logo. */
-export const OPENBOT_LOGO_URL = `${OPENBOT_SITE_URL}icon-512x512.png`;
-export const OPENBOT_SOCIAL_IMAGE_ALT = "Meet OpenBot on a dark grid background";
+export const ZOLLYBOT_LOGO_URL = `${ZOLLYBOT_SITE_URL}icon-512x512.png`;
+export const ZOLLYBOT_SOCIAL_IMAGE_ALT = "Meet ZollyBot on a dark grid background";
 
 /** The Open Graph tags of the site's own social card, which is 1600x900. */
-export const OPENBOT_SOCIAL_IMAGE_META = [
-  { property: "og:image", content: OPENBOT_SOCIAL_IMAGE_URL },
+export const ZOLLYBOT_SOCIAL_IMAGE_META = [
+  { property: "og:image", content: ZOLLYBOT_SOCIAL_IMAGE_URL },
   { property: "og:image:type", content: "image/png" },
   { property: "og:image:width", content: "1600" },
   { property: "og:image:height", content: "900" },
-  { property: "og:image:alt", content: OPENBOT_SOCIAL_IMAGE_ALT },
+  { property: "og:image:alt", content: ZOLLYBOT_SOCIAL_IMAGE_ALT },
 ] as const;
 
 /** The site's card in the shape of `pageSocialImageMeta`, for a page that can have either. */
-export const OPENBOT_SOCIAL_IMAGE_TAGS = {
-  openGraph: OPENBOT_SOCIAL_IMAGE_META,
+export const ZOLLYBOT_SOCIAL_IMAGE_TAGS = {
+  openGraph: ZOLLYBOT_SOCIAL_IMAGE_META,
   twitter: [
-    { name: "twitter:image", content: OPENBOT_SOCIAL_IMAGE_URL },
-    { name: "twitter:image:alt", content: OPENBOT_SOCIAL_IMAGE_ALT },
+    { name: "twitter:image", content: ZOLLYBOT_SOCIAL_IMAGE_URL },
+    { name: "twitter:image:alt", content: ZOLLYBOT_SOCIAL_IMAGE_ALT },
   ],
 } as const;
 
@@ -52,9 +52,9 @@ export interface PageSocialImage {
 }
 
 /** The card of the terms, the privacy policy and the DPA. */
-export const OPENBOT_LEGAL_SOCIAL_IMAGE: PageSocialImage = {
+export const ZOLLYBOT_LEGAL_SOCIAL_IMAGE: PageSocialImage = {
   path: "/social/legal.jpg",
-  alt: "Plain terms. No surprises. OpenBot agents beside a paper map",
+  alt: "Plain terms. No surprises. ZollyBot agents beside a paper map",
 };
 
 /**
@@ -80,7 +80,7 @@ export function pageSocialImageMeta(image: PageSocialImage, siteUrl: string) {
 
 // The hosts production answers on. Both serve the same pages, and those pages go by
 // openbot.run.
-const OPENBOT_PRODUCTION_HOSTS = new Set(["openbot.run", "api.openbot.run"]);
+const ZOLLYBOT_PRODUCTION_HOSTS = new Set(["openbot.run", "api.openbot.run"]);
 
 /**
  * The site that the head tags of a page served at `pageUrl` name. Social sites fetch
@@ -90,26 +90,26 @@ const OPENBOT_PRODUCTION_HOSTS = new Set(["openbot.run", "api.openbot.run"]);
  * `noindex`, so a preview canonical does not compete with production.
  */
 export function siteUrlForPage(pageUrl: URL): string {
-  return OPENBOT_PRODUCTION_HOSTS.has(pageUrl.hostname) ? OPENBOT_SITE_URL : `${pageUrl.origin}/`;
+  return ZOLLYBOT_PRODUCTION_HOSTS.has(pageUrl.hostname) ? ZOLLYBOT_SITE_URL : `${pageUrl.origin}/`;
 }
 
 /** What the app's structured data names and that this file can not import: see the note at the top. */
-export interface OpenBotApplicationFacts {
+export interface ZollyBotApplicationFacts {
   /** The version of the newest release. */
   version: string;
   /** An absolute URL of a picture of the app. */
   screenshot: string;
 }
 
-export function openBotSoftwareApplication(facts: OpenBotApplicationFacts) {
+export function openBotSoftwareApplication(facts: ZollyBotApplicationFacts) {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "@id": OPENBOT_APPLICATION_ID,
-    name: "OpenBot",
-    url: OPENBOT_SITE_URL,
-    image: OPENBOT_SOCIAL_IMAGE_URL,
-    description: OPENBOT_SITE_DESCRIPTION,
+    "@id": ZOLLYBOT_APPLICATION_ID,
+    name: "ZollyBot",
+    url: ZOLLYBOT_SITE_URL,
+    image: ZOLLYBOT_SOCIAL_IMAGE_URL,
+    description: ZOLLYBOT_SITE_DESCRIPTION,
     applicationCategory: "DeveloperApplication",
     applicationSubCategory: "AI agent app",
     operatingSystem: [
@@ -119,12 +119,12 @@ export function openBotSoftwareApplication(facts: OpenBotApplicationFacts) {
     ],
     // The installers themselves: schema.org's `downloadUrl` is the file, not a page about it.
     downloadUrl: [
-      OPENBOT_DOWNLOAD_LINKS.macos,
-      OPENBOT_ALTERNATE_DOWNLOAD_LINKS.macos,
-      OPENBOT_DOWNLOAD_LINKS.windows,
-      OPENBOT_DOWNLOAD_LINKS.linux,
-      OPENBOT_ALTERNATE_DOWNLOAD_LINKS.linux,
-    ].map((path) => new URL(path, OPENBOT_SITE_URL).toString()),
+      ZOLLYBOT_DOWNLOAD_LINKS.macos,
+      ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS.macos,
+      ZOLLYBOT_DOWNLOAD_LINKS.windows,
+      ZOLLYBOT_DOWNLOAD_LINKS.linux,
+      ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS.linux,
+    ].map((path) => new URL(path, ZOLLYBOT_SITE_URL).toString()),
     // What people ask an assistant for. Keep it to what the released app does.
     featureList: [
       "Runs Codex, Claude Code, Gemini (Antigravity), Grok and OpenCode agents",
@@ -143,35 +143,35 @@ export function openBotSoftwareApplication(facts: OpenBotApplicationFacts) {
     },
     softwareVersion: facts.version,
     screenshot: facts.screenshot,
-    license: OPENBOT_LICENSE_URL,
-    publisher: { "@id": OPENBOT_ORGANIZATION_ID },
-    sameAs: [OPENBOT_REPOSITORY_URL, OPENBOT_PRODUCT_HUNT_URL],
+    license: ZOLLYBOT_LICENSE_URL,
+    publisher: { "@id": ZOLLYBOT_ORGANIZATION_ID },
+    sameAs: [ZOLLYBOT_REPOSITORY_URL, ZOLLYBOT_PRODUCT_HUNT_URL],
   } as const;
 }
 
-export type OpenBotSoftwareApplication = ReturnType<typeof openBotSoftwareApplication>;
+export type ZollyBotSoftwareApplication = ReturnType<typeof openBotSoftwareApplication>;
 
 // Search engines read these two for the site name and the logo next to a result.
-const OPENBOT_ORGANIZATION = {
+const ZOLLYBOT_ORGANIZATION = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": OPENBOT_ORGANIZATION_ID,
-  name: "OpenBot",
-  url: OPENBOT_SITE_URL,
-  logo: OPENBOT_LOGO_URL,
-  sameAs: [OPENBOT_REPOSITORY_URL, OPENBOT_X_URL, OPENBOT_PRODUCT_HUNT_URL],
+  "@id": ZOLLYBOT_ORGANIZATION_ID,
+  name: "ZollyBot",
+  url: ZOLLYBOT_SITE_URL,
+  logo: ZOLLYBOT_LOGO_URL,
+  sameAs: [ZOLLYBOT_REPOSITORY_URL, ZOLLYBOT_X_URL, ZOLLYBOT_PRODUCT_HUNT_URL],
 } as const;
 
-const OPENBOT_WEBSITE = {
+const ZOLLYBOT_WEBSITE = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": OPENBOT_WEBSITE_ID,
-  name: "OpenBot",
-  url: OPENBOT_SITE_URL,
-  publisher: { "@id": OPENBOT_ORGANIZATION_ID },
+  "@id": ZOLLYBOT_WEBSITE_ID,
+  name: "ZollyBot",
+  url: ZOLLYBOT_SITE_URL,
+  publisher: { "@id": ZOLLYBOT_ORGANIZATION_ID },
 } as const;
 
-export const OPENBOT_SECURITY_HEADERS = {
+export const ZOLLYBOT_SECURITY_HEADERS = {
   "Permissions-Policy": "camera=(), geolocation=(), microphone=(), payment=(), usb=()",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -192,9 +192,9 @@ export function openBotRootHead(interLatinFont: string) {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: OPENBOT_SITE_TITLE },
-      { name: "description", content: OPENBOT_SITE_DESCRIPTION },
-      { name: "application-name", content: "OpenBot" },
+      { title: ZOLLYBOT_SITE_TITLE },
+      { name: "description", content: ZOLLYBOT_SITE_DESCRIPTION },
+      { name: "application-name", content: "ZollyBot" },
       { name: "color-scheme", content: "dark" },
       { name: "theme-color", content: "#1a1a1a" },
     ],
@@ -215,32 +215,32 @@ export function openBotRootHead(interLatinFont: string) {
 }
 
 /** The home page's own social card. Other pages without a card of their own keep the site's card. */
-const OPENBOT_HOME_SOCIAL_IMAGE: PageSocialImage = {
+const ZOLLYBOT_HOME_SOCIAL_IMAGE: PageSocialImage = {
   path: "/social/home.jpg",
-  alt: "Models come and go. Your team stays. OpenBot agents on a paper planet",
+  alt: "Models come and go. Your team stays. ZollyBot agents on a paper planet",
 };
 
-export function openBotHomeHead(application: OpenBotSoftwareApplication, siteUrl: string) {
-  const image = pageSocialImageMeta(OPENBOT_HOME_SOCIAL_IMAGE, siteUrl);
+export function openBotHomeHead(application: ZollyBotSoftwareApplication, siteUrl: string) {
+  const image = pageSocialImageMeta(ZOLLYBOT_HOME_SOCIAL_IMAGE, siteUrl);
   return {
     meta: [
       { "script:ld+json": application },
-      { "script:ld+json": OPENBOT_ORGANIZATION },
-      { "script:ld+json": OPENBOT_WEBSITE },
+      { "script:ld+json": ZOLLYBOT_ORGANIZATION },
+      { "script:ld+json": ZOLLYBOT_WEBSITE },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "OpenBot" },
+      { property: "og:site_name", content: "ZollyBot" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:url", content: OPENBOT_SITE_URL },
-      { property: "og:title", content: OPENBOT_SITE_TITLE },
-      { property: "og:description", content: OPENBOT_SITE_DESCRIPTION },
+      { property: "og:url", content: ZOLLYBOT_SITE_URL },
+      { property: "og:title", content: ZOLLYBOT_SITE_TITLE },
+      { property: "og:description", content: ZOLLYBOT_SITE_DESCRIPTION },
       ...image.openGraph,
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: OPENBOT_X_HANDLE },
-      { name: "twitter:title", content: OPENBOT_SITE_TITLE },
-      { name: "twitter:description", content: OPENBOT_SITE_DESCRIPTION },
+      { name: "twitter:site", content: ZOLLYBOT_X_HANDLE },
+      { name: "twitter:title", content: ZOLLYBOT_SITE_TITLE },
+      { name: "twitter:description", content: ZOLLYBOT_SITE_DESCRIPTION },
       ...image.twitter,
       { "script:ld+json": LANDING_FAQ_STRUCTURED_DATA },
     ],
-    links: [{ rel: "canonical", href: OPENBOT_SITE_URL }],
+    links: [{ rel: "canonical", href: ZOLLYBOT_SITE_URL }],
   };
 }

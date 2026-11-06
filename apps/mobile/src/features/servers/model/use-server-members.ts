@@ -1,8 +1,8 @@
-import { DEFAULT_TEAM_MEMBER_LIMIT } from "@openbot/contracts/input-limits";
-import { canAdministerServer } from "@openbot/contracts/ipc";
-import type { RemoteTeamInvite } from "@openbot/team-client";
-import { runTeamEffect } from "@openbot/team-client";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { DEFAULT_TEAM_MEMBER_LIMIT } from "@zollybot/contracts/input-limits";
+import { canAdministerServer } from "@zollybot/contracts/ipc";
+import type { RemoteTeamInvite } from "@zollybot/team-client";
+import { runTeamEffect } from "@zollybot/team-client";
 import { useRef } from "react";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import { useMobileWorkspace } from "@/features/workspace/context/mobile-workspace-context";

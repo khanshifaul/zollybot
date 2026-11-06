@@ -1,5 +1,5 @@
-import { avatarHeadColor } from "@openbot/brand/bloub-avatar";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { avatarHeadColor } from "@zollybot/brand/bloub-avatar";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import * as Crypto from "expo-crypto";
 import { router } from "expo-router";
 import type { NativeStackNavigationProp } from "expo-router/native-stack";
@@ -272,7 +272,7 @@ export function OnboardingFlow({
   const draftColor = avatarHeadColor(draft.seed, draft.hue, draft.color);
   // Before there is an agent colour, and for an agent made from scratch in the picker, the theme's
   // action colour (white in dark mode, black in light mode) stands in for it.
-  const action = String(useCSSVariable("--openbot-action") ?? "#f0f0f0");
+  const action = String(useCSSVariable("--zollybot-action") ?? "#f0f0f0");
   const trimmedName = name.trim();
 
   const online = servers.some((server) => server.state === "online");

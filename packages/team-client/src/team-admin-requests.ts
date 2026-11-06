@@ -54,33 +54,33 @@ import {
   type WhatsAppLinkState,
   type WhatsAppOverview,
   type WhatsAppSenderInput,
-} from "@openbot/contracts/ipc";
-import { AGENT_ACCESS_ROUTES } from "@openbot/contracts/team-protocol/agent-access-v1";
-import { AGENT_COLORS_ROUTES } from "@openbot/contracts/team-protocol/agent-colors-v1";
-import { AGENT_FOLDERS_ROUTES } from "@openbot/contracts/team-protocol/agent-folders-v1";
-import { AGENT_HIDDEN_ROUTES } from "@openbot/contracts/team-protocol/agent-hidden-v1";
-import { AGENT_MEMORY_LIMIT_ROUTES } from "@openbot/contracts/team-protocol/agent-memory-limit-v1";
-import { AGENT_NOTIFICATION_LEVELS_ROUTES } from "@openbot/contracts/team-protocol/agent-notification-levels-v1";
-import { AGENT_SESSION_SETTINGS_ROUTES } from "@openbot/contracts/team-protocol/agent-session-settings-v1";
-import { CHAT_COLORS_ROUTES } from "@openbot/contracts/team-protocol/chat-colors-v1";
-import { CUSTOM_AGENTS_ROUTES } from "@openbot/contracts/team-protocol/custom-agents-v1";
-import type { CUSTOM_PROVIDER_HARNESS_ROUTES } from "@openbot/contracts/team-protocol/custom-provider-harness-v1";
-import { DISCORD_ACCESS_ROUTES } from "@openbot/contracts/team-protocol/discord-access-v1";
-import { HOST_KEY_ROTATION_ROUTES } from "@openbot/contracts/team-protocol/host-key-rotation-v1";
-import { HOST_MEMBER_UPDATE_ROUTES } from "@openbot/contracts/team-protocol/host-member-update-v1";
-import { HOST_RELEASE_ROUTES } from "@openbot/contracts/team-protocol/host-release-v1";
-import { HOST_TIMEZONE_ROUTES } from "@openbot/contracts/team-protocol/host-timezone-v1";
-import { LOCAL_SERVERS_ROUTES } from "@openbot/contracts/team-protocol/local-servers-v1";
-import { MEMORY_REVIEW_ROUTES } from "@openbot/contracts/team-protocol/memory-review-v1";
-import { MODEL_VISIBILITY_ROUTES } from "@openbot/contracts/team-protocol/model-visibility-v1";
-import { PROMPT_CACHE_TTL_ROUTES } from "@openbot/contracts/team-protocol/prompt-cache-ttl-v1";
-import { PROVIDER_DEFAULT_ROUTES } from "@openbot/contracts/team-protocol/provider-default-v1";
-import type { PROVIDERS_V5_ROUTES } from "@openbot/contracts/team-protocol/providers-v5";
-import { PROVIDERS_V8_ROUTES } from "@openbot/contracts/team-protocol/providers-v8";
-import { SIDEBAR_PINS_ROUTES } from "@openbot/contracts/team-protocol/sidebar-pins-v1";
-import { WHATSAPP_CONNECTOR_ROUTES } from "@openbot/contracts/team-protocol/whatsapp-connector-v1";
+} from "@zollybot/contracts/ipc";
+import { AGENT_ACCESS_ROUTES } from "@zollybot/contracts/team-protocol/agent-access-v1";
+import { AGENT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/agent-colors-v1";
+import { AGENT_FOLDERS_ROUTES } from "@zollybot/contracts/team-protocol/agent-folders-v1";
+import { AGENT_HIDDEN_ROUTES } from "@zollybot/contracts/team-protocol/agent-hidden-v1";
+import { AGENT_MEMORY_LIMIT_ROUTES } from "@zollybot/contracts/team-protocol/agent-memory-limit-v1";
+import { AGENT_NOTIFICATION_LEVELS_ROUTES } from "@zollybot/contracts/team-protocol/agent-notification-levels-v1";
+import { AGENT_SESSION_SETTINGS_ROUTES } from "@zollybot/contracts/team-protocol/agent-session-settings-v1";
+import { CHAT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/chat-colors-v1";
+import { CUSTOM_AGENTS_ROUTES } from "@zollybot/contracts/team-protocol/custom-agents-v1";
+import type { CUSTOM_PROVIDER_HARNESS_ROUTES } from "@zollybot/contracts/team-protocol/custom-provider-harness-v1";
+import { DISCORD_ACCESS_ROUTES } from "@zollybot/contracts/team-protocol/discord-access-v1";
+import { HOST_KEY_ROTATION_ROUTES } from "@zollybot/contracts/team-protocol/host-key-rotation-v1";
+import { HOST_MEMBER_UPDATE_ROUTES } from "@zollybot/contracts/team-protocol/host-member-update-v1";
+import { HOST_RELEASE_ROUTES } from "@zollybot/contracts/team-protocol/host-release-v1";
+import { HOST_TIMEZONE_ROUTES } from "@zollybot/contracts/team-protocol/host-timezone-v1";
+import { LOCAL_SERVERS_ROUTES } from "@zollybot/contracts/team-protocol/local-servers-v1";
+import { MEMORY_REVIEW_ROUTES } from "@zollybot/contracts/team-protocol/memory-review-v1";
+import { MODEL_VISIBILITY_ROUTES } from "@zollybot/contracts/team-protocol/model-visibility-v1";
+import { PROMPT_CACHE_TTL_ROUTES } from "@zollybot/contracts/team-protocol/prompt-cache-ttl-v1";
+import { PROVIDER_DEFAULT_ROUTES } from "@zollybot/contracts/team-protocol/provider-default-v1";
+import type { PROVIDERS_V5_ROUTES } from "@zollybot/contracts/team-protocol/providers-v5";
+import { PROVIDERS_V8_ROUTES } from "@zollybot/contracts/team-protocol/providers-v8";
+import { SIDEBAR_PINS_ROUTES } from "@zollybot/contracts/team-protocol/sidebar-pins-v1";
+import { WHATSAPP_CONNECTOR_ROUTES } from "@zollybot/contracts/team-protocol/whatsapp-connector-v1";
 // Admin requests to one host: agent settings and skills, shared tables, agent share links, the server name and logo,
-// the server timezone, the browser profiles, the server key, the agent memory limit, the memory review, the prompt cache time, the default provider, the Discord roles that can use OpenBot, the app update, MCP servers, storage, hosted sites and providers.
+// the server timezone, the browser profiles, the server key, the agent memory limit, the memory review, the prompt cache time, the default provider, the Discord roles that can use ZollyBot, the app update, MCP servers, storage, hosted sites and providers.
 //
 // The desktop sends the same routes from the main process. The web client and the mobile app send
 // them through their own transport, so the path, body and decoding of each request are here once.
@@ -90,8 +90,8 @@ import {
   type AgentProviderRef,
   type DownloadableProviderId,
   isAgentProviderRef,
-} from "@openbot/contracts/agent-providers";
-import { parseHostedSiteList } from "@openbot/contracts/hosted-sites";
+} from "@zollybot/contracts/agent-providers";
+import { parseHostedSiteList } from "@zollybot/contracts/hosted-sites";
 import {
   type AccountUsage,
   type AddedAgent,
@@ -241,14 +241,14 @@ import {
   type VaultHostImportResult,
   type VaultSaveInput,
   type VaultState,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   decodeRecord,
   guardedListDecoder,
   nullableString,
   requiredBoolean,
   requiredString,
-} from "@openbot/contracts/ipc-decoding";
+} from "@zollybot/contracts/ipc-decoding";
 import {
   decodeEventActivity,
   decodeEventRoutineRuns,
@@ -270,49 +270,49 @@ import {
   type SetWebhookSecretInput,
   type WebhookSecret,
   type WebhookTestResult,
-} from "@openbot/contracts/ipc-events";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { AGENT_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/agent-admin-v1";
-import { AGENT_INSTALL_ROUTES } from "@openbot/contracts/team-protocol/agent-install-v1";
-import { AGENT_PUBLISH_IMAGE_BYTES, AGENT_PUBLISH_ROUTES } from "@openbot/contracts/team-protocol/agent-publish-v1";
-import { AGENT_UPDATE_ROUTES } from "@openbot/contracts/team-protocol/agent-update-v1";
-import { BITWARDEN_CONNECTOR_ROUTES } from "@openbot/contracts/team-protocol/bitwarden-connector-v1";
-import { BROWSER_PROFILES_ROUTES } from "@openbot/contracts/team-protocol/browser-profiles-v1";
-import { CONNECTORS_ROUTES } from "@openbot/contracts/team-protocol/connectors-v1";
-import { EVENTS_ROUTES } from "@openbot/contracts/team-protocol/events-v1";
-import { HOST_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/host-admin-v1";
-import { HOST_UPDATE_ROUTES } from "@openbot/contracts/team-protocol/host-update-v1";
-import { HOSTED_SITES_ROUTES } from "@openbot/contracts/team-protocol/hosted-sites-v1";
-import { MCP_SIGN_IN_APP_ROUTES } from "@openbot/contracts/team-protocol/mcp-sign-in-app-v1";
-import { MCP_SIGN_IN_ROUTES } from "@openbot/contracts/team-protocol/mcp-sign-in-v1";
-import { MCP_ROUTES } from "@openbot/contracts/team-protocol/mcp-v1";
-import { ONEPASSWORD_CONNECTOR_ROUTES } from "@openbot/contracts/team-protocol/onepassword-connector-v1";
-import { PASSWORD_MANAGERS_ROUTES } from "@openbot/contracts/team-protocol/password-managers-v1";
+} from "@zollybot/contracts/ipc-events";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { AGENT_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/agent-admin-v1";
+import { AGENT_INSTALL_ROUTES } from "@zollybot/contracts/team-protocol/agent-install-v1";
+import { AGENT_PUBLISH_IMAGE_BYTES, AGENT_PUBLISH_ROUTES } from "@zollybot/contracts/team-protocol/agent-publish-v1";
+import { AGENT_UPDATE_ROUTES } from "@zollybot/contracts/team-protocol/agent-update-v1";
+import { BITWARDEN_CONNECTOR_ROUTES } from "@zollybot/contracts/team-protocol/bitwarden-connector-v1";
+import { BROWSER_PROFILES_ROUTES } from "@zollybot/contracts/team-protocol/browser-profiles-v1";
+import { CONNECTORS_ROUTES } from "@zollybot/contracts/team-protocol/connectors-v1";
+import { EVENTS_ROUTES } from "@zollybot/contracts/team-protocol/events-v1";
+import { HOST_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/host-admin-v1";
+import { HOST_UPDATE_ROUTES } from "@zollybot/contracts/team-protocol/host-update-v1";
+import { HOSTED_SITES_ROUTES } from "@zollybot/contracts/team-protocol/hosted-sites-v1";
+import { MCP_SIGN_IN_APP_ROUTES } from "@zollybot/contracts/team-protocol/mcp-sign-in-app-v1";
+import { MCP_SIGN_IN_ROUTES } from "@zollybot/contracts/team-protocol/mcp-sign-in-v1";
+import { MCP_ROUTES } from "@zollybot/contracts/team-protocol/mcp-v1";
+import { ONEPASSWORD_CONNECTOR_ROUTES } from "@zollybot/contracts/team-protocol/onepassword-connector-v1";
+import { PASSWORD_MANAGERS_ROUTES } from "@zollybot/contracts/team-protocol/password-managers-v1";
 import type {
   ProviderAccountRelay,
   ProviderAccountRelayProvider,
-} from "@openbot/contracts/team-protocol/provider-account-relays";
-import { PROVIDER_ACCOUNTS_ROUTES } from "@openbot/contracts/team-protocol/provider-accounts-v1";
-import { PROVIDER_HOST_SIGN_IN_ROUTES } from "@openbot/contracts/team-protocol/provider-host-sign-in-v1";
-import { PROVIDER_SIGN_OUT_ROUTES } from "@openbot/contracts/team-protocol/provider-sign-out-v1";
-import { PROVIDER_USAGE_RESET_ROUTES } from "@openbot/contracts/team-protocol/provider-usage-reset-v1";
-import { PROVIDERS_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/providers-v1";
-import type { PROVIDERS_RUNTIMES_V2_ROUTES } from "@openbot/contracts/team-protocol/providers-v2";
-import { PROVIDERS_SIGN_IN_V3_ROUTES } from "@openbot/contracts/team-protocol/providers-v3";
-import type { PROVIDERS_V4_ROUTES } from "@openbot/contracts/team-protocol/providers-v4";
-import { ROUTINE_RECOVERY_ROUTES } from "@openbot/contracts/team-protocol/routine-recovery-v1";
-import { ROUTINE_RESULTS_ROUTES } from "@openbot/contracts/team-protocol/routine-results-v1";
-import { SERVER_AUDIT_ROUTES } from "@openbot/contracts/team-protocol/server-audit-v1";
-import { SHARED_TABLES_ROUTES } from "@openbot/contracts/team-protocol/shared-tables-v1";
-import { type SIGN_IN_RELAY_PROVIDERS, SIGN_IN_RELAY_ROUTES } from "@openbot/contracts/team-protocol/sign-in-relay-v1";
-import { SKILLS_ADMIN_ROUTES } from "@openbot/contracts/team-protocol/skills-admin-v1";
-import { STORAGE_ROUTES } from "@openbot/contracts/team-protocol/storage-v1";
-import type { TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
-import { VAULT_IMPORT_ROUTES } from "@openbot/contracts/team-protocol/vault-import-v1";
-import { VAULT_ROUTES } from "@openbot/contracts/team-protocol/vault-v1";
-import { VAULT_V2_ROUTES } from "@openbot/contracts/team-protocol/vault-v2";
-import { WEBHOOK_SENDER_SECRET_ROUTES } from "@openbot/contracts/team-protocol/webhook-sender-secret-v1";
-import { WEBHOOK_TESTS_ROUTES } from "@openbot/contracts/team-protocol/webhook-tests-v1";
+} from "@zollybot/contracts/team-protocol/provider-account-relays";
+import { PROVIDER_ACCOUNTS_ROUTES } from "@zollybot/contracts/team-protocol/provider-accounts-v1";
+import { PROVIDER_HOST_SIGN_IN_ROUTES } from "@zollybot/contracts/team-protocol/provider-host-sign-in-v1";
+import { PROVIDER_SIGN_OUT_ROUTES } from "@zollybot/contracts/team-protocol/provider-sign-out-v1";
+import { PROVIDER_USAGE_RESET_ROUTES } from "@zollybot/contracts/team-protocol/provider-usage-reset-v1";
+import { PROVIDERS_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/providers-v1";
+import type { PROVIDERS_RUNTIMES_V2_ROUTES } from "@zollybot/contracts/team-protocol/providers-v2";
+import { PROVIDERS_SIGN_IN_V3_ROUTES } from "@zollybot/contracts/team-protocol/providers-v3";
+import type { PROVIDERS_V4_ROUTES } from "@zollybot/contracts/team-protocol/providers-v4";
+import { ROUTINE_RECOVERY_ROUTES } from "@zollybot/contracts/team-protocol/routine-recovery-v1";
+import { ROUTINE_RESULTS_ROUTES } from "@zollybot/contracts/team-protocol/routine-results-v1";
+import { SERVER_AUDIT_ROUTES } from "@zollybot/contracts/team-protocol/server-audit-v1";
+import { SHARED_TABLES_ROUTES } from "@zollybot/contracts/team-protocol/shared-tables-v1";
+import { type SIGN_IN_RELAY_PROVIDERS, SIGN_IN_RELAY_ROUTES } from "@zollybot/contracts/team-protocol/sign-in-relay-v1";
+import { SKILLS_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/skills-admin-v1";
+import { STORAGE_ROUTES } from "@zollybot/contracts/team-protocol/storage-v1";
+import type { TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
+import { VAULT_IMPORT_ROUTES } from "@zollybot/contracts/team-protocol/vault-import-v1";
+import { VAULT_ROUTES } from "@zollybot/contracts/team-protocol/vault-v1";
+import { VAULT_V2_ROUTES } from "@zollybot/contracts/team-protocol/vault-v2";
+import { WEBHOOK_SENDER_SECRET_ROUTES } from "@zollybot/contracts/team-protocol/webhook-sender-secret-v1";
+import { WEBHOOK_TESTS_ROUTES } from "@zollybot/contracts/team-protocol/webhook-tests-v1";
 import { Effect, Schema } from "effect";
 import { bytesToBase64 } from "./base64";
 import type { TeamApiRequest } from "./team-api-requests";
@@ -1840,7 +1840,7 @@ function decodeDiscordAccess(value: unknown): DiscordAccess {
   return value;
 }
 
-/** Which roles can use OpenBot in one Discord server of the host (`discord-access-v1`). */
+/** Which roles can use ZollyBot in one Discord server of the host (`discord-access-v1`). */
 export function discordAccess(
   request: TeamApiRequest,
   input: HostDiscordAccessInput,

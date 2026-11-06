@@ -1,5 +1,5 @@
-import { OPENBOT_LINKS } from "../../lib/landing-links";
-import { type Comparison, OPENBOT_TEXT } from "./comparison";
+import { ZOLLYBOT_LINKS } from "../../lib/landing-links";
+import { type Comparison, ZOLLYBOT_TEXT } from "./comparison";
 
 // Every statement about Manus here is taken from manus.im, its documentation, help
 // center, Trust Center, terms and privacy policy, and each page used is in `sources`.
@@ -12,8 +12,8 @@ const MANUS_HELP = "https://help.manus.im/en/articles";
 export const MANUS_COMPARISON: Comparison = {
   rival: { name: "Manus", mark: "manus" },
   answer:
-    "Choose OpenBot if you want your agents on your own computer, with the AI plans you already pay for, such as ChatGPT, Claude, Gemini or Grok: the app is free. Choose Manus if you want a general agent that works in its own cloud computer, keeps working with no computer of yours on, and chooses the model for you.",
-  chooseOpenBot: [
+    "Choose ZollyBot if you want your agents on your own computer, with the AI plans you already pay for, such as ChatGPT, Claude, Gemini or Grok: the app is free. Choose Manus if you want a general agent that works in its own cloud computer, keeps working with no computer of yours on, and chooses the model for you.",
+  chooseZollyBot: [
     "You already pay for ChatGPT, Claude, Gemini, Grok, Cursor, Cline or Muse Code, or you run your own model.",
     "Your files and chats must stay on your own computer, not in a cloud in the US or Singapore.",
     "You want a team of coding agents that give work to each other, each with its own job.",
@@ -30,161 +30,161 @@ export const MANUS_COMPARISON: Comparison = {
     {
       icon: "cpu",
       topic: "Models and plans",
-      openbot: OPENBOT_TEXT.models,
+      zollybot: ZOLLYBOT_TEXT.models,
       rival:
         "Manus chooses the model for each task. You choose Manus 2.0 Lite, Manus 2.0 or Manus 2.0 Max. Manus states no way to use your own AI plan, API key or model.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "laptop",
       topic: "Where agents work",
-      openbot: "On the computer that runs OpenBot.",
+      zollybot: "On the computer that runs ZollyBot.",
       rival:
         "In a cloud sandbox that Manus runs, by default. With the desktop app, Manus can also run commands in the folders that you allow on your Mac or Windows PC.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "cloud",
       topic: "When your computer is off",
-      openbot: OPENBOT_TEXT.offline,
+      zollybot: ZOLLYBOT_TEXT.offline,
       rival:
         "Cloud tasks keep working after you close the app, and scheduled tasks run while you are offline. Tasks on your own computer need it on.",
     },
     {
       icon: "phone",
       topic: "Remote access",
-      openbot: OPENBOT_TEXT.remote,
+      zollybot: ZOLLYBOT_TEXT.remote,
       rival:
         "Apps for iPhone and Android and a web app. You can also give tasks in Telegram, WhatsApp Business, LINE, Slack or email. The tasks and their files stay in Manus's cloud.",
     },
     {
       icon: "refresh",
       topic: "Backup models",
-      openbot: OPENBOT_TEXT.backupModels,
+      zollybot: ZOLLYBOT_TEXT.backupModels,
       rival:
         "Manus chooses the model for each task. With Manus Flex, you can use your own API key. Manus states no move to a backup model.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "key",
       topic: "Logins and payments",
-      openbot: OPENBOT_TEXT.logins,
+      zollybot: ZOLLYBOT_TEXT.logins,
       rival:
         "You sign in to sites yourself in Manus's cloud browser, and Manus keeps the session but not your password. You take over the browser for codes and CAPTCHAs. Manus states no password manager or saved cards.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "mic",
       topic: "Voice",
-      openbot: OPENBOT_TEXT.voice,
+      zollybot: ZOLLYBOT_TEXT.voice,
       rival:
         "You can give a voice command in the phone app, and Manus writes out the voice messages that you send in chat apps. Manus states no reading of replies aloud.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "contact",
       topic: "Chat apps",
-      openbot: OPENBOT_TEXT.chatApps,
+      zollybot: ZOLLYBOT_TEXT.chatApps,
       rival: "Slack, Telegram, LINE and email. Cue, its app for personal agents, also connects to iMessage.",
     },
     {
       icon: "users",
       topic: "Teams",
-      openbot: OPENBOT_TEXT.teams,
+      zollybot: ZOLLYBOT_TEXT.teams,
       rival:
         "Wide Research runs many agents in parallel on one task. Up to 50 people can work in one task, and the Team plan pools credits across seats.",
     },
     {
       icon: "lock",
       topic: "Your data",
-      openbot:
+      zollybot:
         "Workspaces, chats and files stay in a database on your computer. The provider you choose gets the requests you send. Product analytics, with no chat content, are on by default and linked to your account when you sign in; you can turn them off.",
       rival:
         "Tasks, files and the commands the agent runs are stored in Manus's cloud, in the US and Singapore. Its terms give Manus a permanent license to use your content, in aggregate, to improve the service.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "tag",
       topic: "Price and account",
-      openbot:
+      zollybot:
         "Free for noncommercial use; commercial use needs a license. Your agents use the plans you already pay for.",
       rival:
         "Free with 300 credits a day. Pro plans from $20 to $200 a month, and the Team plan from $20 a seat. Needs an account, and is for people aged 18 or more.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       icon: "globe",
       topic: "Where you can use it",
-      openbot: OPENBOT_TEXT.regions,
+      zollybot: ZOLLYBOT_TEXT.regions,
       rival:
         "Worldwide, except countries under a US embargo, for people 18 and over. Its data is stored in the US and Singapore. The website is in 17 languages.",
     },
     {
       icon: "devices",
       topic: "Apps",
-      openbot: OPENBOT_TEXT.apps,
+      zollybot: ZOLLYBOT_TEXT.apps,
       rival: "macOS and Windows, apps for iPhone and Android, and the web. A Linux desktop app: not stated by Manus.",
     },
     {
       icon: "code",
       topic: "Source code",
-      openbot: "On GitHub, under the PolyForm Noncommercial License 1.0.0.",
+      zollybot: "On GitHub, under the PolyForm Noncommercial License 1.0.0.",
       rival: "Closed source. Its terms prohibit reverse engineering.",
-      better: "openbot",
+      better: "zollybot",
     },
   ],
   intro:
-    "Manus is a general AI agent from Butterfly Effect, a company in Singapore. Meta acquired Manus in December 2025, and Manus resumed independent operations on 1 September 2026. Both products give you agents that do the work, not only answers. The difference is where the agents run and which model does the thinking. Manus works in its own cloud computer and chooses the model for you. OpenBot runs a team of agents on your own computer, with the AI plans you choose.",
+    "Manus is a general AI agent from Butterfly Effect, a company in Singapore. Meta acquired Manus in December 2025, and Manus resumed independent operations on 1 September 2026. Both products give you agents that do the work, not only answers. The difference is where the agents run and which model does the thinking. Manus works in its own cloud computer and chooses the model for you. ZollyBot runs a team of agents on your own computer, with the AI plans you choose.",
   sections: [
     {
       title: "Models and the plans you pay for",
-      openbot: OPENBOT_TEXT.plansSection,
+      zollybot: ZOLLYBOT_TEXT.plansSection,
       rival:
         "Manus says it is LLM-agnostic: it chooses the right model for each task, so you do not have to. It does not name the models. You choose only between its own tiers: the free plan gets Manus 2.0 Lite in Agent mode, and paid plans also get Manus 2.0 and Manus 2.0 Max. You pay Manus in credits, and a plan that you already pay for at another AI company does not apply.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       title: "Where the work happens",
-      openbot: OPENBOT_TEXT.workSection,
+      zollybot: ZOLLYBOT_TEXT.workSection,
       rival:
         "By default, each Manus task works in a temporary sandbox: a virtual computer with internet access in Manus's cloud. A Cloud Computer that stays on costs $30 or $50 a month more. Cloud tasks and scheduled tasks keep running while you are offline. Since March 2026, the desktop app for macOS and Windows can also let Manus run commands in the folders that you allow on your own computer; those tasks need that computer on.",
-      better: "openbot",
+      better: "zollybot",
     },
     {
       title: "Phones and remote access",
-      openbot: OPENBOT_TEXT.phonesSection,
+      zollybot: ZOLLYBOT_TEXT.phonesSection,
       rival:
         "Manus has apps for iPhone and Android and a web app. You can also give it tasks in Telegram, WhatsApp Business, LINE or Slack, or by email; one messaging app at a time for each workspace. The work itself happens in Manus's cloud, or on your computer when you use the desktop app.",
     },
     {
       title: "How agents work as a team",
-      openbot: OPENBOT_TEXT.teamSection,
+      zollybot: ZOLLYBOT_TEXT.teamSection,
       rival:
         "Manus is one agent that can split a large task: Wide Research starts hundreds of independent agents that work in parallel. Paid plans run up to 20 tasks at the same time. Up to 50 people can work in one task, and only the owner of the task pays the credits. The Team plan pools credits and adds single sign-on; the owner of a team can see all the session data of its members.",
     },
     {
       title: "Data and privacy",
-      openbot:
-        "OpenBot keeps workspaces, conversations, attachments and browser data in a SQLite database on the computer that runs it. OpenBot keeps no other copy. On a hosted OpenBot server, the database is on that server in the EU. An account holds your profile, team memberships, invitations, sign-in sessions, the settings that let devices find each other, and any agent templates that you publish. Product analytics, which never include chat content, are on by default and linked to your account when you sign in; you can turn them off in Settings.",
+      zollybot:
+        "ZollyBot keeps workspaces, conversations, attachments and browser data in a SQLite database on the computer that runs it. ZollyBot keeps no other copy. On a hosted ZollyBot server, the database is on that server in the EU. An account holds your profile, team memberships, invitations, sign-in sessions, the settings that let devices find each other, and any agent templates that you publish. Product analytics, which never include chat content, are on by default and linked to your account when you sign in; you can turn them off in Settings.",
       rival:
         "Manus stores your data in the US and Singapore. Its privacy policy says that it collects the files of each task, the shell commands the agent runs and their output, and the code. Manus says its model providers do not train on your data. For individual plans, it states no training opt-out, and its terms give Manus a permanent license to use your content, in aggregate, to improve the service. The Team plan says Manus does not train models on your data.",
-      better: "openbot",
+      better: "zollybot",
     },
   ],
   faq: [
     {
-      question: "Is OpenBot an alternative to Manus?",
+      question: "Is ZollyBot an alternative to Manus?",
       answer:
-        "Yes, if you want your agents on your own computer. Both give you AI agents that do the work. OpenBot runs a team of agents on your computer with the AI plans you choose. Manus is a general agent that works in a cloud computer that Manus runs, with models that Manus chooses.",
+        "Yes, if you want your agents on your own computer. Both give you AI agents that do the work. ZollyBot runs a team of agents on your computer with the AI plans you choose. Manus is a general agent that works in a cloud computer that Manus runs, with models that Manus chooses.",
     },
     {
-      question: "Why choose OpenBot over Manus?",
+      question: "Why choose ZollyBot over Manus?",
       answer:
-        "Your agents use the AI plans you already pay for, such as ChatGPT, Claude, Gemini or Grok, or your own model. OpenBot keeps your workspaces, chats and files on your own computer, it runs a team of coding agents, and it has desktop apps for macOS, Windows and Linux. The app is free, and its source code is on GitHub. Manus is the better fit when you want an agent with no computer of yours to keep on.",
+        "Your agents use the AI plans you already pay for, such as ChatGPT, Claude, Gemini or Grok, or your own model. ZollyBot keeps your workspaces, chats and files on your own computer, it runs a team of coding agents, and it has desktop apps for macOS, Windows and Linux. The app is free, and its source code is on GitHub. Manus is the better fit when you want an agent with no computer of yours to keep on.",
     },
     {
-      question: "Can I use my ChatGPT, Claude or Gemini subscription with OpenBot?",
-      answer: OPENBOT_TEXT.plansFaq,
+      question: "Can I use my ChatGPT, Claude or Gemini subscription with ZollyBot?",
+      answer: ZOLLYBOT_TEXT.plansFaq,
     },
     {
       question: "Can I use my own AI plan or model with Manus?",
@@ -209,12 +209,12 @@ export const MANUS_COMPARISON: Comparison = {
     {
       question: "Do agents keep working when my laptop is closed?",
       answer:
-        "Yes, with both. Manus works in its cloud, so no computer of yours must stay on. OpenBot agents work on the computer or server that runs OpenBot: keep that computer on, or use a hosted OpenBot server, and connect from your laptop or phone.",
+        "Yes, with both. Manus works in its cloud, so no computer of yours must stay on. ZollyBot agents work on the computer or server that runs ZollyBot: keep that computer on, or use a hosted ZollyBot server, and connect from your laptop or phone.",
     },
     {
-      question: "How much do OpenBot and Manus cost?",
+      question: "How much do ZollyBot and Manus cost?",
       answer:
-        "OpenBot is free for noncommercial use, commercial use needs a separate license, and your agents use the plans you already pay for. Manus is free with 300 credits a day; Pro plans cost $20 to $200 a month and the Team plan starts at $20 a seat. Manus payments are not refundable.",
+        "ZollyBot is free for noncommercial use, commercial use needs a separate license, and your agents use the plans you already pay for. Manus is free with 300 credits a day; Pro plans cost $20 to $200 a month and the Team plan starts at $20 a seat. Manus payments are not refundable.",
     },
   ],
   sources: [
@@ -270,8 +270,8 @@ export const MANUS_COMPARISON: Comparison = {
       label: "Cue messaging apps",
       url: "https://help.manus.im/en/articles/14178640-can-i-connect-multiple-messaging-agents-at-once-in-cue",
     },
-    { label: "OpenBot privacy notes", url: OPENBOT_LINKS.privacy },
-    { label: "OpenBot source code", url: OPENBOT_LINKS.repository },
+    { label: "ZollyBot privacy notes", url: ZOLLYBOT_LINKS.privacy },
+    { label: "ZollyBot source code", url: ZOLLYBOT_LINKS.repository },
   ],
   checkedAt: "2026-10-02",
 };

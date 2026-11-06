@@ -1,8 +1,8 @@
-import { type InviteLinkOptions, parseInviteUrl, selfHostedApiOrigin } from "@openbot/contracts/invite-links";
-import type { AppFormat, MobileTranslate } from "@openbot/i18n/mobile";
-import { runTeamEffect } from "@openbot/team-client";
-import type { RemoteInvitePreview } from "@openbot/team-client/remote-directory";
-import type { UserErrorDetails } from "@openbot/user-errors";
+import { type InviteLinkOptions, parseInviteUrl, selfHostedApiOrigin } from "@zollybot/contracts/invite-links";
+import type { AppFormat, MobileTranslate } from "@zollybot/i18n/mobile";
+import { runTeamEffect } from "@zollybot/team-client";
+import type { RemoteInvitePreview } from "@zollybot/team-client/remote-directory";
+import type { UserErrorDetails } from "@zollybot/user-errors";
 import * as Clipboard from "expo-clipboard";
 import { type Href, router } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
@@ -275,7 +275,7 @@ export function AddServerScreen({
             </Button>
           )}
 
-          {/* Another way to get a server: one more on a computer that runs OpenBot, while no link is typed. */}
+          {/* Another way to get a server: one more on a computer that runs ZollyBot, while no link is typed. */}
           {localServerPathname && !inviteLink.trim() ? <LocalServerOptions pathname={localServerPathname} /> : null}
 
           {underHeader ? null : (

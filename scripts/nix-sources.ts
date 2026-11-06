@@ -26,10 +26,10 @@ const sourcesPath = resolve(root, "nix/sources.json");
 // Linux runs the AppImage. macOS runs the app from the ZIP, which electron-builder also makes for the
 // updater; the DMG would need a mount.
 const assetNames: Record<string, (version: string) => string> = {
-  "x86_64-linux": (version) => `OpenBot-${version}-x86_64.AppImage`,
-  "aarch64-linux": (version) => `OpenBot-${version}-arm64.AppImage`,
-  "x86_64-darwin": (version) => `OpenBot-${version}-x64.zip`,
-  "aarch64-darwin": (version) => `OpenBot-${version}-arm64.zip`,
+  "x86_64-linux": (version) => `ZollyBot-${version}-x86_64.AppImage`,
+  "aarch64-linux": (version) => `ZollyBot-${version}-arm64.AppImage`,
+  "x86_64-darwin": (version) => `ZollyBot-${version}-x64.zip`,
+  "aarch64-darwin": (version) => `ZollyBot-${version}-arm64.zip`,
 };
 
 function parseChecksums(text: string): Map<string, string> {
@@ -66,4 +66,4 @@ for (const [system, assetName] of Object.entries(assetNames)) {
 
 const sources: NixSources = { version, assets };
 await writeFile(sourcesPath, `${JSON.stringify(sources, null, 2)}\n`);
-process.stdout.write(`nix/sources.json names OpenBot ${version}.\n`);
+process.stdout.write(`nix/sources.json names ZollyBot ${version}.\n`);

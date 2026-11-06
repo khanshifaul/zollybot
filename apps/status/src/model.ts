@@ -19,7 +19,7 @@ export const SERVICES: readonly ServiceInfo[] = [
     name: "Connections",
     description: "Phones, browsers and teammates that connect to your computer",
   },
-  { id: "hosted", name: "Hosted servers", description: "Cloud servers that OpenBot runs for you" },
+  { id: "hosted", name: "Hosted servers", description: "Cloud servers that ZollyBot runs for you" },
   { id: "updates", name: "App updates", description: "Desktop update downloads" },
   { id: "marketplace", name: "Marketplace", description: "Agents, skills and plugins" },
 ];

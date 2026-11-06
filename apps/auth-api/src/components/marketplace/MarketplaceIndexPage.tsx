@@ -1,12 +1,12 @@
-import type { MarketplaceAgentSummary, MarketplaceSkillSummary } from "@openbot/contracts/ipc";
-import { SKILL_CATEGORIES, type SkillCategory } from "@openbot/contracts/ipc-skills";
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
-import type { AppTextKey, AppTranslate, TranslatedLocale } from "@openbot/i18n";
-import { CATEGORY_LABELS } from "@openbot/ui/features/marketplace/marketplace-listing";
-import { Search } from "@openbot/ui/icons";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
 import { Link } from "@tanstack/solid-router";
+import type { MarketplaceAgentSummary, MarketplaceSkillSummary } from "@zollybot/contracts/ipc";
+import { SKILL_CATEGORIES, type SkillCategory } from "@zollybot/contracts/ipc-skills";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
+import type { AppTextKey, AppTranslate, TranslatedLocale } from "@zollybot/i18n";
+import { CATEGORY_LABELS } from "@zollybot/ui/features/marketplace/marketplace-listing";
+import { Search } from "@zollybot/ui/icons";
+import { useText } from "@zollybot/ui/text";
 import { createMemo, createSignal, For, onSettled, Show, untrack } from "solid-js";
 import { landingAnalytics } from "../../lib/analytics";
 import {

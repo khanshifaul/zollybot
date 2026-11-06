@@ -1,11 +1,11 @@
-// Installs the Proton Pass CLI (`pass-cli`) into a folder that OpenBot owns. OpenBot runs the binary
+// Installs the Proton Pass CLI (`pass-cli`) into a folder that ZollyBot owns. ZollyBot runs the binary
 // only; it does not include or change its code.
 
 import { createHash, randomBytes } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { chmod, mkdir, rename, rm } from "node:fs/promises";
 import { join } from "node:path";
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { causeHelpers } from "../../backend/effect-boundary";
 import { downloadArchive } from "../onepassword-cli-installer";

@@ -1,7 +1,7 @@
-import { playableMediaKind } from "@openbot/contracts/attachment-files";
-import { CHAT_VISUAL_PAGE_LIMIT, chatVisualFrameHeight, isChatVisualMimeType } from "@openbot/contracts/chat-visual";
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
-import { MOBILE_ATTACHMENT_BYTES } from "@openbot/team-client/remote-peer";
+import { playableMediaKind } from "@zollybot/contracts/attachment-files";
+import { CHAT_VISUAL_PAGE_LIMIT, chatVisualFrameHeight, isChatVisualMimeType } from "@zollybot/contracts/chat-visual";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
+import { MOBILE_ATTACHMENT_BYTES } from "@zollybot/team-client/remote-peer";
 import { requireOptionalNativeModule } from "expo";
 import { File } from "expo-file-system";
 import { Image } from "expo-image";

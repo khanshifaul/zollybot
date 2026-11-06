@@ -9,7 +9,7 @@ import {
   decodeBrowserEgressData,
   encodeBrowserEgressControl,
   encodeBrowserEgressData,
-} from "@openbot/contracts/team-protocol/browser-egress-v1";
+} from "@zollybot/contracts/team-protocol/browser-egress-v1";
 
 // The streams of one `browser-egress-v1` channel, on the host or on the client. A frame that breaks
 // the protocol closes every stream and the channel, never the connection. Targets and bytes are

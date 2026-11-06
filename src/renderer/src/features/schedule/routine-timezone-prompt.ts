@@ -5,10 +5,10 @@ import type {
   RoutineCalendarOwner,
   RoutineCalendarRoutine,
   ServerSummary,
-} from "@openbot/contracts/ipc";
-import { routineOnceInstant } from "@openbot/team-client/routine-schedule";
-import { toast } from "@openbot/ui";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import { routineOnceInstant } from "@zollybot/team-client/routine-schedule";
+import { toast } from "@zollybot/ui";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createMemo, onCleanup, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { desktopEventRoutinesApi, type EventRoutinesApi } from "../conversation/routine-webhooks-api";
@@ -34,14 +34,14 @@ export function desktopRoutineZoneTargets(servers: readonly ServerSummary[]): Ro
     .map((server) => ({
       id: server.id,
       name: server.name,
-      calendar: (input) => window.openbot.agent.routineCalendar(input, server.id),
+      calendar: (input) => window.zollybot.agent.routineCalendar(input, server.id),
       events: desktopEventRoutinesApi(server.id),
-      timezone: serverCanAdminister(server, "host-timezone-v1") ? window.openbot.hostAdmin : undefined,
+      timezone: serverCanAdminister(server, "host-timezone-v1") ? window.zollybot.hostAdmin : undefined,
     }));
 }
 
 const toastId = (serverId: string) => `routine-timezone-move:${serverId}`;
-const storageKey = (serverId: string) => `openbot:routine-timezone-answers:${serverId}`;
+const storageKey = (serverId: string) => `zollybot:routine-timezone-answers:${serverId}`;
 
 function deviceZone(): string {
   return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";

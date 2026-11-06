@@ -8,24 +8,24 @@ import { AIAgentsVsAgenticAI } from "./ai-agents-vs-agentic-ai";
 import { AIWorkspaceVsChat } from "./ai-workspace-vs-chat";
 import { ImportGrokBotAgents } from "./import-grok-bot-agents";
 import { ImportHermesAgents } from "./import-hermes-agents";
-import { InstallOpenBotVPS } from "./install-openbot-vps";
-import { OpenBot101 } from "./openbot-101";
-import { OpenBotHostedServers } from "./openbot-hosted-servers";
-import { OpenBotMarketplace } from "./openbot-marketplace";
+import { InstallZollyBotVPS } from "./install-zollybot-vps";
 import { WhatAreAIAgents } from "./what-are-ai-agents";
-import { WtfIsOpenBot } from "./wtf-is-openbot";
+import { WtfIsZollyBot } from "./wtf-is-zollybot";
+import { ZollyBot101 } from "./zollybot-101";
+import { ZollyBotHostedServers } from "./zollybot-hosted-servers";
+import { ZollyBotMarketplace } from "./zollybot-marketplace";
 
 export const GUIDE_BODIES: Readonly<Record<string, ArticleBody>> = {
   "ai-workspace-vs-chat": AIWorkspaceVsChat,
-  "install-openbot-vps": InstallOpenBotVPS,
+  "install-zollybot-vps": InstallZollyBotVPS,
   "import-hermes-agents": ImportHermesAgents,
   "import-grok-bot-agents": ImportGrokBotAgents,
   "ai-agents-examples": AIAgentsExamples,
   "ai-agents-vs-agentic-ai": AIAgentsVsAgenticAI,
   "agentic-ai-definition": AgenticAIDefinition,
   "what-are-ai-agents": WhatAreAIAgents,
-  "openbot-101": OpenBot101,
-  "openbot-hosted-servers": OpenBotHostedServers,
-  "openbot-marketplace": OpenBotMarketplace,
-  "wtf-is-openbot": WtfIsOpenBot,
+  "zollybot-101": ZollyBot101,
+  "zollybot-hosted-servers": ZollyBotHostedServers,
+  "zollybot-marketplace": ZollyBotMarketplace,
+  "wtf-is-zollybot": WtfIsZollyBot,
 };

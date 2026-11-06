@@ -13,10 +13,10 @@ self-hosted account service with its own keys. See
 
 - Accounts on your service are separate from accounts on `openbot.run`. Each person signs in again.
 - Each desktop and phone that connects to a host must use the same service.
-- Invitations are `openbot://join` links. Copy a link from the app and send it yourself. The app
+- Invitations are `zollybot://join` links. Copy a link from the app and send it yourself. The app
   does not send an invitation by email.
 - The browser client at `openbot.run/app` does not work with your service.
-- Hosted servers, the OpenBot GitHub App, Slack, the OpenBot Telegram bot and the iPhone Live
+- Hosted servers, the ZollyBot GitHub App, Slack, the ZollyBot Telegram bot and the iPhone Live
   Activity relay stay off. Each needs secrets that only we have.
 - The other network connections in [PRIVACY.md](../PRIVACY.md) do not change.
 
@@ -26,7 +26,7 @@ self-hosted account service with its own keys. See
 - A Linux server with Docker Engine, Docker Compose and a static public IPv4 address. See the
   [Signal production requirements](../remote/README.md#production-requirements) for ports and DNS.
 - An SMTP account that accepts TLS on port 465. Sign-in sends a one-time code by email.
-- A clone of the OpenBot release that you run, and [Bun](https://bun.sh).
+- A clone of the ZollyBot release that you run, and [Bun](https://bun.sh).
 
 In the examples, the account service is `api.example.com`, Signal is `signal.example.com` and TURN is
 `turn.example.com`. Use your own names.
@@ -57,10 +57,10 @@ Keep the private JWK secret. With it, a person can open each host that uses your
    bun install --frozen-lockfile
    cd apps/auth-api
    bunx wrangler login
-   bunx wrangler d1 create openbot-auth
-   bunx wrangler r2 bucket create openbot-avatars
-   bunx wrangler r2 bucket create openbot-skills
-   bunx wrangler r2 bucket create openbot-sites
+   bunx wrangler d1 create zollybot-auth
+   bunx wrangler r2 bucket create zollybot-avatars
+   bunx wrangler r2 bucket create zollybot-skills
+   bunx wrangler r2 bucket create zollybot-sites
    ```
 
 2. Edit the top level of `apps/auth-api/wrangler.jsonc`. Do not change the `env` section.
@@ -126,31 +126,31 @@ Do these steps on each computer that hosts or connects.
 
 1. If you signed in to `openbot.run` before, sign out in the app. Otherwise the app sends the old
    session token to your service.
-2. Quit the app. Then start it with the two variables. `OPENBOT_REMOTE_SIGNAL_URL` must be equal to
+2. Quit the app. Then start it with the two variables. `ZOLLYBOT_REMOTE_SIGNAL_URL` must be equal to
    the `REMOTE_SIGNAL_URL` of your Worker.
 
    macOS:
 
    ```sh
-   OPENBOT_AUTH_API_URL=https://api.example.com \
-   OPENBOT_REMOTE_SIGNAL_URL=wss://signal.example.com/v1/signal \
-   /Applications/OpenBot.app/Contents/MacOS/OpenBot
+   ZOLLYBOT_AUTH_API_URL=https://api.example.com \
+   ZOLLYBOT_REMOTE_SIGNAL_URL=wss://signal.example.com/v1/signal \
+   /Applications/ZollyBot.app/Contents/MacOS/ZollyBot
    ```
 
    Linux:
 
    ```sh
-   OPENBOT_AUTH_API_URL=https://api.example.com \
-   OPENBOT_REMOTE_SIGNAL_URL=wss://signal.example.com/v1/signal \
-   ./OpenBot-<version>-x86_64.AppImage
+   ZOLLYBOT_AUTH_API_URL=https://api.example.com \
+   ZOLLYBOT_REMOTE_SIGNAL_URL=wss://signal.example.com/v1/signal \
+   ./ZollyBot-<version>-x86_64.AppImage
    ```
 
    Windows (PowerShell):
 
    ```powershell
-   $env:OPENBOT_AUTH_API_URL = "https://api.example.com"
-   $env:OPENBOT_REMOTE_SIGNAL_URL = "wss://signal.example.com/v1/signal"
-   & "$env:LOCALAPPDATA\Programs\OpenBot\OpenBot.exe"
+   $env:ZOLLYBOT_AUTH_API_URL = "https://api.example.com"
+   $env:ZOLLYBOT_REMOTE_SIGNAL_URL = "wss://signal.example.com/v1/signal"
+   & "$env:LOCALAPPDATA\Programs\ZollyBot\ZollyBot.exe"
    ```
 
    This is the default install folder. If you chose a different folder in the installer, use it.
@@ -163,11 +163,11 @@ Do these steps on each computer that hosts or connects.
 Set the variables each time that you start the app. Without them, the app uses `openbot.run` and
 sends your session token there. To go back to `openbot.run`, sign out first.
 
-The app does not start, and shows an error, if `OPENBOT_REMOTE_SIGNAL_URL` is not a `wss:` URL, has
-a user name or password, or is set without `OPENBOT_AUTH_API_URL`.
+The app does not start, and shows an error, if `ZOLLYBOT_REMOTE_SIGNAL_URL` is not a `wss:` URL, has
+a user name or password, or is set without `ZOLLYBOT_AUTH_API_URL`.
 
 ## Updates
 
-After each OpenBot update, pull the same release, keep your `wrangler.jsonc` changes and deploy the
+After each ZollyBot update, pull the same release, keep your `wrangler.jsonc` changes and deploy the
 Worker again. The deploy applies the new D1 migrations. Then rebuild Signal with the same
 `docker compose` command.

@@ -1,6 +1,6 @@
-import { isAvatarMimeType, isValidAvatarImage } from "@openbot/contracts/avatar-images";
-import { AVATAR_IMAGE_LIMITS } from "@openbot/contracts/input-limits";
-import { isUuidV4 } from "@openbot/contracts/validation";
+import { isAvatarMimeType, isValidAvatarImage } from "@zollybot/contracts/avatar-images";
+import { AVATAR_IMAGE_LIMITS } from "@zollybot/contracts/input-limits";
+import { isUuidV4 } from "@zollybot/contracts/validation";
 import { Effect, Result, Schema } from "effect";
 import { AuthOperationError, type AuthService, AuthServiceError } from "./auth-service";
 import type { AuthUser } from "./types";

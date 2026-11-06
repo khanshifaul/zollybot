@@ -1,8 +1,8 @@
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { redactText, registerSecretValue } from "@openbot/logging";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { redactText, registerSecretValue } from "@zollybot/logging";
 import { Effect, Fiber } from "effect";
 import { cliSpawnTarget } from "./cli";
 import { type ProviderClientOperationError, ProviderSignInError, providerFailure } from "./provider-client-effects";
@@ -30,13 +30,13 @@ function serverReason(error: unknown): string | null {
 }
 
 /**
- * Whether OpenBot, not the Gemini server, opens the Google sign-in page (`openGoogleSignIn`).
+ * Whether ZollyBot, not the Gemini server, opens the Google sign-in page (`openGoogleSignIn`).
  *
  * On Windows, the server with `BROWSER=true` never prints the page (#4521), so a sign-in at this
  * computer lets the server open the page itself. `onHost`: the user is at another device, and the
  * page must not open here.
  */
-export function googleSignInByOpenBot(onHost: boolean): boolean {
+export function googleSignInByZollyBot(onHost: boolean): boolean {
   return onHost || process.platform !== "win32";
 }
 
@@ -71,9 +71,9 @@ export const startAcpAuthentication = Effect.fnUntraced(function* (options: {
    */
   logoutOnly?: boolean;
   /**
-   * Gemini prints its Google page instead of opening it, and OpenBot opens it, so a launch that fails
+   * Gemini prints its Google page instead of opening it, and ZollyBot opens it, so a launch that fails
    * shows an error. When the server opened it itself, a failure showed nothing (#3520). Without it,
-   * the server opens the page itself (`googleSignInByOpenBot`).
+   * the server opens the page itself (`googleSignInByZollyBot`).
    */
   openGoogleSignIn?: (url: string) => Promise<void>;
   /** A temporary folder of its own for the process (`provider-temp.ts`). */
@@ -221,7 +221,7 @@ export const startAcpAuthentication = Effect.fnUntraced(function* (options: {
         params: {
           protocolVersion: 1,
           clientCapabilities: { fs: { readTextFile: false, writeTextFile: false }, terminal: false },
-          clientInfo: { name: "openbot", title: "OpenBot", version: "0.1.0" },
+          clientInfo: { name: "zollybot", title: "ZollyBot", version: "0.1.0" },
         },
       });
       return Effect.sync(() => {

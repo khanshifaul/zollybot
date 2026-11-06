@@ -1,6 +1,6 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import { BROWSER_SECRET_VAULT_CAPABILITY } from "@openbot/contracts/team-protocol/browser-secret-vault-v1";
-import type { BrowserSecretVault } from "@openbot/ui/features/conversation/BrowserSecretCard";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import { BROWSER_SECRET_VAULT_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-secret-vault-v1";
+import type { BrowserSecretVault } from "@zollybot/ui/features/conversation/BrowserSecretCard";
 import { serverRoleCanAdminister, serverSupportsCapability } from "../servers/server-capabilities";
 
 /**

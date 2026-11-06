@@ -10,16 +10,16 @@
 // was sent before it.
 //
 // Run: bun run test:remote-connect-analytics
-// It writes .openbot-build/remote-connect-analytics-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/remote-connect-analytics-e2e/report.json and exits non-zero on a failure.
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
-import { ANALYTICS_GENERATIONS } from "@openbot/telemetry";
+import { createZollyBotLogger } from "@zollybot/logging";
+import { ANALYTICS_GENERATIONS } from "@zollybot/telemetry";
 import { HostAnalytics, type HostOpenPanelClient } from "../src/main/analytics";
 import { REMOTE_CONNECT_PHASES, RemoteConnectTrace } from "../src/main/remote-connect-trace";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const OUT = join(ROOT, ".openbot-build", "remote-connect-analytics-e2e");
+const OUT = join(ROOT, ".zollybot-build", "remote-connect-analytics-e2e");
 const HOST = "host-7f3a-marker";
 const OTHER_HOST = "host-91c2-marker";
 const LAST_HOST = "host-55d0-marker";
@@ -193,7 +193,7 @@ try {
   await mkdir(OUT, { recursive: true });
   await writeFile(join(OUT, "report.json"), `${JSON.stringify({ passed, checks }, null, 2)}\n`);
 }
-const logger = createOpenBotLogger("remote-connect-analytics-e2e");
+const logger = createZollyBotLogger("remote-connect-analytics-e2e");
 for (const item of checks) {
   if (item.passed) logger.info(`ok ${item.name}`);
   else logger.error(`FAIL ${item.name}`);

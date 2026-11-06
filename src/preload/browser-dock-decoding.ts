@@ -6,7 +6,7 @@ import {
   type BrowserDockPresentation,
   isBrowserDockAction,
   isBrowserDockPresentation,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 /** Null hides the overlay. */
 export function decodeBrowserDockPresentation(value: unknown): BrowserDockPresentation | null {

@@ -1,4 +1,4 @@
-import type { MobileTranslate } from "@openbot/i18n/mobile";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import type { Href } from "expo-router";
 import { Typography } from "heroui-native";
 import type { LucideIcon } from "lucide-react-native";
@@ -79,7 +79,7 @@ interface ServerDrawerContentProps {
   onNavigate: (href: Href) => void;
   onLeave: (serverId: string) => Promise<void>;
   onRemove: (serverId: string) => Promise<void>;
-  /** Deletes a server that an OpenBot desktop app runs beside its own server, through that app. */
+  /** Deletes a server that an ZollyBot desktop app runs beside its own server, through that app. */
   onDelete: (serverId: string) => Promise<void>;
   /** See `MobileWorkspaceState.localServerKind`. */
   localServerKind: (serverId: string) => "computer" | "onComputer" | null;
@@ -709,7 +709,7 @@ const DrawerRow = memo(function DrawerRow({
   href: Href;
   onNavigate: (href: Href) => void;
 }) {
-  const [secondary, control] = useCSSVariable(["--openbot-text-secondary", "--openbot-bg-control"]);
+  const [secondary, control] = useCSSVariable(["--zollybot-text-secondary", "--zollybot-bg-control"]);
   return (
     <Pressable
       accessibilityRole="button"

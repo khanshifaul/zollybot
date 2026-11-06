@@ -7,9 +7,9 @@ import type {
   MarketplaceSkillSummary,
   McpServerConfig,
   SkillCategory,
-} from "@openbot/contracts/ipc";
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
-import type { McpConnectFlow } from "@openbot/contracts/mcp-connect-flows";
+} from "@zollybot/contracts/ipc";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
+import type { McpConnectFlow } from "@zollybot/contracts/mcp-connect-flows";
 import type { ConnectorDetail } from "../connectors/ConnectorDetailPanel";
 import type { ConnectorId } from "../connectors/connectors";
 import type {

@@ -1,5 +1,5 @@
-import { Button, Heading, Input, Plus, Search, Text } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import { Button, Heading, Input, Plus, Search, Text } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, For, Match, Show, Switch } from "solid-js";
 import { AgentLibrary, agentFromSource } from "./MarketplaceAgents";
 import { AppRow } from "./MarketplaceCards";

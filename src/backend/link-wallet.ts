@@ -1,5 +1,5 @@
 // The Link account (link.com, by Stripe) as agents see it. The main process implements it; the backend
-// does not know how OpenBot signs in to Link.
+// does not know how ZollyBot signs in to Link.
 
 import { type Effect, Schema } from "effect";
 import type { VaultCardSecret } from "./vault-items";

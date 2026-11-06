@@ -1,8 +1,8 @@
-// Proton Pass as a driver of the password-manager engine. OpenBot runs Proton's own CLI (`pass-cli`)
+// Proton Pass as a driver of the password-manager engine. ZollyBot runs Proton's own CLI (`pass-cli`)
 // as a separate program; it does not include its code.
 //
 // A `browser` connection signs the user in on this host with Proton's web sign-in, in a temporary
-// CLI session. With that session, the host finds or makes the vault "Shared with OpenBot", makes an
+// CLI session. With that session, the host finds or makes the vault "Shared with ZollyBot", makes an
 // agent access key that reads only that vault, and signs the user out again. The host keeps only the
 // agent access key. A `key` connection takes an agent access key that the user made. The browser
 // reads the logins of the vault with the access key; the CLI tells Proton why it reads a login.
@@ -17,10 +17,10 @@ import {
   type PasswordManagerErrorCode,
   type PasswordManagerStatus,
   type PasswordManagerStep,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { isFixedSourceText, sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, registerSecretValue, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { isFixedSourceText, sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
 import { Effect, Exit, Schema, Scope, Semaphore } from "effect";
 import { causeHelpers } from "../../backend/effect-boundary";
 import {
@@ -35,15 +35,15 @@ import type { EncryptedRecordStore } from "./encrypted-record-store";
 import { type ExtraPasswordAnswer, openExtraPasswordPipe } from "./extra-password-pipe";
 import { allowedSignInPage } from "./password-managers-service";
 
-const logger = createOpenBotLogger("proton-pass");
+const logger = createZollyBotLogger("proton-pass");
 const { io } = causeHelpers(PasswordManagerError);
 
-/** The vault that a `browser` connection reads. The user moves the logins that OpenBot may use into it. */
-const PROTON_PASS_SHARED_VAULT = "Shared with OpenBot";
+/** The vault that a `browser` connection reads. The user moves the logins that ZollyBot may use into it. */
+const PROTON_PASS_SHARED_VAULT = "Shared with ZollyBot";
 const PROTON_PASS_SIGN_IN_HOSTS = ["account.proton.me"] as const;
 const TOKEN_VARIABLE = "PROTON_PASS_PERSONAL_ACCESS_TOKEN";
 /** The CLI tells Proton this reason for each login that it reads. */
-const READ_REASON = "OpenBot fills this login in its browser.";
+const READ_REASON = "ZollyBot fills this login in its browser.";
 const AGENT_EXPIRATION = "1y";
 const AGENT_LIFETIME_MS = 365 * 24 * 60 * 60 * 1000;
 const COMMAND_MS = 60_000;
@@ -179,7 +179,7 @@ function vaultNames(output: string): string[] {
   return namesIn(JSON.parse(output));
 }
 
-/** The OpenBot vault first, because a page names the first vault as the one that agents use. */
+/** The ZollyBot vault first, because a page names the first vault as the one that agents use. */
 function sharedVaultFirst(names: readonly string[]): string[] {
   return [...names].sort((a, b) => Number(b === PROTON_PASS_SHARED_VAULT) - Number(a === PROTON_PASS_SHARED_VAULT));
 }
@@ -306,7 +306,7 @@ export interface ProtonPassDriverOptions {
   /** The CLI sessions of this host. Outside every root that an agent can write. */
   dataDirectory: string;
   hostName: string;
-  /** Installs the pinned CLI, or null when OpenBot has no CLI build for this computer. */
+  /** Installs the pinned CLI, or null when ZollyBot has no CLI build for this computer. */
   installCli: ((signal: AbortSignal) => Effect.Effect<string, PasswordManagerError>) | null;
   runCli?: ProtonPassCliRunner;
   now?: () => number;
@@ -597,7 +597,7 @@ export class ProtonPassDriver implements PasswordManagerDriver, PasswordVault {
           if (created.code !== 0) return yield* fail(sourceText("error.connector.protonPassSetupFailed"));
         }
         // A new name each time: another computer with the same host name keeps its own agent.
-        const hostPart = `OpenBot ${this.#options.hostName}`.slice(0, 57);
+        const hostPart = `ZollyBot ${this.#options.hostName}`.slice(0, 57);
         const agentName = `${hostPart} ${randomBytes(3).toString("hex")}`;
         const agent = yield* call([
           "agent",

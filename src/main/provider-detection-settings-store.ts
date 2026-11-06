@@ -8,14 +8,14 @@ import {
   DEFAULT_PROVIDER_DETECTION_SETTINGS,
   isProviderDetectionSettings,
   type ProviderDetectionSettings,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";
 
-export const PROVIDER_DETECTION_SETTINGS_FILE = "openbot-provider-detection-v1.json";
+export const PROVIDER_DETECTION_SETTINGS_FILE = "zollybot-provider-detection-v1.json";
 
 function copy(settings: ProviderDetectionSettings): ProviderDetectionSettings {
   return {

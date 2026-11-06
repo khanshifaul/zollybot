@@ -10,10 +10,10 @@ export const messages = {
   "mobile.server.drawer.leaveFailed": "{name} から退出できませんでした",
   "mobile.server.drawer.removeFailed": "{name} を削除できませんでした",
   "mobile.server.drawer.deleteFailed": "{name} を削除できませんでした",
-  "mobile.server.drawer.actionFailed": "OpenBot はこの操作を完了できませんでした。もう一度お試しください。",
+  "mobile.server.drawer.actionFailed": "ZollyBot はこの操作を完了できませんでした。もう一度お試しください。",
   "mobile.server.drawer.moveUp": "上へ移動",
   "mobile.server.drawer.moveDown": "下へ移動",
-  "mobile.server.drawer.orderHint": "OpenBot は先頭のサーバーで開きます。順序はこのデバイスに保存されます。",
+  "mobile.server.drawer.orderHint": "ZollyBot は先頭のサーバーで開きます。順序はこのデバイスに保存されます。",
   "mobile.server.drawer.title": "サーバー",
   "mobile.server.drawer.serverSettings": "サーバー設定",
   "mobile.server.drawer.serverListHint": "サーバーの一覧を表示または非表示にします",
@@ -26,8 +26,8 @@ export const messages = {
   "mobile.server.drawer.close": "サーバーパネルを閉じる",
   "mobile.server.invite.noExpiry": "{role} · 有効期限なし",
   "mobile.server.invite.expires": "{role} · 有効期限 {date}",
-  "mobile.server.invite.loadFailed": "OpenBot はこの招待を読み込めませんでした。",
-  "mobile.server.invite.joinFailed": "OpenBot はこのサーバーに参加できませんでした。",
+  "mobile.server.invite.loadFailed": "ZollyBot はこの招待を読み込めませんでした。",
+  "mobile.server.invite.joinFailed": "ZollyBot はこのサーバーに参加できませんでした。",
   "mobile.server.invite.checking": "招待を確認しています…",
   "mobile.server.invite.unavailable": "招待を利用できません",
   "mobile.server.invite.verifying": "サーバーの身元を確認しています。",
@@ -71,7 +71,7 @@ export const messages = {
     "{name} が動作するコンピュータ上で、専用のエージェント、チャット、ファイルを持ちます。",
   "mobile.server.local.title": "新しいサーバー",
   "mobile.server.local.description":
-    "サーバーは {name} が動作するコンピュータで動作し、専用のエージェント、チャット、ファイルを持ちます。そのコンピュータで OpenBot が動作している間に利用できます。",
+    "サーバーは {name} が動作するコンピュータで動作し、専用のエージェント、チャット、ファイルを持ちます。そのコンピュータで ZollyBot が動作している間に利用できます。",
   "mobile.server.local.nameLabel": "サーバー名",
   "mobile.server.local.nameTooShort": "{limit} 文字以上にしてください。",
   "mobile.server.local.create": "作成",
@@ -83,22 +83,22 @@ export const messages = {
   "mobile.server.local.createdOn": "{name} は {computer} と同じコンピュータで動作しています。",
   "mobile.server.local.waiting": "{name} がオンラインになるのを待っています…",
   "mobile.server.local.notPublished":
-    "{name} は動作していますが、このスマートフォンからはまだ開けません。{computer} が動作するコンピュータの OpenBot がサインインしていて、オンラインであることを確認してください。",
+    "{name} は動作していますが、このスマートフォンからはまだ開けません。{computer} が動作するコンピュータの ZollyBot がサインインしていて、オンラインであることを確認してください。",
   "mobile.server.local.open": "サーバーを開く",
   "mobile.server.local.ownerOnly": "このコンピュータにサーバーを作成できるのはオーナーだけです。",
-  "mobile.server.local.unsupported": "ここでサーバーを作成するには、このコンピュータの OpenBot を更新してください。",
+  "mobile.server.local.unsupported": "ここでサーバーを作成するには、このコンピュータの ZollyBot を更新してください。",
   "mobile.server.local.deleteOffline":
-    "このサーバーを削除できるのは、そのコンピュータだけです。そのコンピュータで OpenBot を開いてから、もう一度お試しください。",
+    "このサーバーを削除できるのは、そのコンピュータだけです。そのコンピュータで ZollyBot を開いてから、もう一度お試しください。",
   "mobile.server.hosted.intro.title": "エージェントを常に稼働",
   "mobile.server.hosted.intro.description":
-    "クラウドサーバーは、コンピューターの電源が切れていてもエージェントとルーティンを実行します。セットアップと運用は OpenBot が行います。",
+    "クラウドサーバーは、コンピューターの電源が切れていてもエージェントとルーティンを実行します。セットアップと運用は ZollyBot が行います。",
   "mobile.server.hosted.planFacts": "{members} · {storage} · {sites} · {speed}",
   "mobile.server.hosted.computer.title": "コンピューターで",
   "mobile.server.hosted.computer.add": "クラウドサーバーを追加",
   "mobile.server.hosted.computer.addHint":
-    "OpenBot で「設定」→「ホスト型サーバー」を開き、「サーバーを追加」を選択します。",
+    "ZollyBot で「設定」→「ホスト型サーバー」を開き、「サーバーを追加」を選択します。",
   "mobile.server.hosted.computer.change": "プランを変更",
-  "mobile.server.hosted.computer.changeHint": "OpenBot で「設定」→「お支払い」を開きます。",
+  "mobile.server.hosted.computer.changeHint": "ZollyBot で「設定」→「お支払い」を開きます。",
   "mobile.server.hosted.yourServers": "あなたのサーバー",
   "mobile.server.hosted.plans": "プラン",
   "mobile.server.hosted.currentPlan": "ご利用中のプラン",
@@ -115,7 +115,7 @@ export const messages = {
   "mobile.server.hosted.paymentTitle": "支払いを待っています",
   "mobile.server.hosted.paymentDescription": "支払いが確認されると、セットアップが始まります。",
   "mobile.server.hosted.progressTitle": "{name} をセットアップしています",
-  "mobile.server.hosted.progressDescription": "OpenBot が専用のマシンを準備しています。",
+  "mobile.server.hosted.progressDescription": "ZollyBot が専用のマシンを準備しています。",
   "mobile.server.hosted.closeHint":
     "このシートは閉じてもかまいません。セットアップは続き、準備ができるとサーバーが一覧に表示されます。",
   "mobile.server.hosted.readyTitle": "{name} の準備ができました",
@@ -123,21 +123,21 @@ export const messages = {
   "mobile.server.hosted.open": "サーバーを開く",
   "mobile.server.hosted.failedTitle": "サーバーを起動できませんでした",
   "mobile.server.hosted.failedDescription":
-    "もう一度お試しください。再び失敗した場合は、コンピューターの OpenBot の設定でサーバーを削除してください。",
+    "もう一度お試しください。再び失敗した場合は、コンピューターの ZollyBot の設定でサーバーを削除してください。",
   "mobile.server.hosted.retrying": "起動中…",
   "mobile.server.hosted.expiredTitle": "支払いページの有効期限が切れました",
   "mobile.server.hosted.expiredDescription": "サーバーの支払いが完了しなかったため、削除されました。",
   "mobile.server.hosted.step.payment": "支払いを確認",
   "mobile.server.hosted.step.create": "マシンを作成",
-  "mobile.server.hosted.step.start": "OpenBot を起動",
+  "mobile.server.hosted.step.start": "ZollyBot を起動",
   "mobile.server.hosted.step.connect": "アカウントに接続",
   "mobile.server.hosted.detail.payment": "Stripe を待っています",
   "mobile.server.hosted.detail.reserve": "専用のマシンを確保しています",
-  "mobile.server.hosted.detail.copy": "OpenBot をマシンにコピーしています",
+  "mobile.server.hosted.detail.copy": "ZollyBot をマシンにコピーしています",
   "mobile.server.hosted.detail.key": "一度だけ使えるサインインキーを追加しています",
   "mobile.server.hosted.detail.boot": "マシンの電源を入れています",
-  "mobile.server.hosted.detail.app": "OpenBot を起動しています",
-  "mobile.server.hosted.detail.wait": "OpenBot の応答を待っています",
+  "mobile.server.hosted.detail.app": "ZollyBot を起動しています",
+  "mobile.server.hosted.detail.wait": "ZollyBot の応答を待っています",
   "mobile.server.hosted.detail.signIn": "あなたとしてサインインしています",
   "mobile.server.hosted.detail.publish": "サーバーをアカウントに追加しています",
   "mobile.server.hosted.detail.check": "接続を確認しています",
@@ -145,7 +145,7 @@ export const messages = {
   "mobile.server.hosted.stepActive": "進行中",
   "mobile.server.hosted.stepPending": "未開始",
   "mobile.server.hosted.stepFailed": "失敗",
-  "mobile.server.scan.notInvitation": "この QR コードは OpenBot の招待ではありません。",
+  "mobile.server.scan.notInvitation": "この QR コードは ZollyBot の招待ではありません。",
   "mobile.server.scan.title": "招待をスキャン",
   "mobile.server.role.owner": "オーナー",
   "mobile.server.role.admin": "管理者",
@@ -182,7 +182,7 @@ export const messages = {
   "mobile.server.routines.status.paused": "一時停止中",
   "mobile.server.routines.status.failed": "失敗",
   "mobile.server.routines.status.completed": "完了",
-  "mobile.server.threads.unsupported": "このホストはスレッドに対応していません。ホストの OpenBot を更新してください。",
+  "mobile.server.threads.unsupported": "このホストはスレッドに対応していません。ホストの ZollyBot を更新してください。",
   "mobile.server.threads.ask": "何をしてほしいですか？",
   "mobile.server.threads.chooseAgent": "スレッドを始める相手",
   "mobile.server.threads.agentLabel": "{name} とスレッドを始める",
@@ -257,7 +257,7 @@ export const messages = {
   "mobile.server.settings.remove": "サーバーを削除",
   "mobile.server.settings.deleteTitle": "{name} を削除しますか？",
   "mobile.server.settings.deleteBody":
-    "OpenBot はそのコンピュータでサーバーを停止し、エージェント、チャット、ファイルをそのコンピュータのゴミ箱に移動します。サーバーはすべてのデバイスのサーバー一覧から消えます。",
+    "ZollyBot はそのコンピュータでサーバーを停止し、エージェント、チャット、ファイルをそのコンピュータのゴミ箱に移動します。サーバーはすべてのデバイスのサーバー一覧から消えます。",
   "mobile.server.settings.delete": "サーバーを削除",
   "mobile.server.settings.name": "サーバー名",
   "mobile.server.settings.nameLength": "{min}〜{max} 文字で入力してください。",
@@ -269,7 +269,7 @@ export const messages = {
   "mobile.server.settings.identitySaveFailed": "サーバー名とロゴを保存できませんでした。もう一度お試しください。",
   "mobile.server.settings.identityNotAllowed": "サーバー名とロゴを変更できるのはオーナーと管理者だけです。",
   "mobile.server.settings.identityUnsupported":
-    "ここで名前とロゴを変更するには、このサーバーの OpenBot をアップデートしてください。",
+    "ここで名前とロゴを変更するには、このサーバーの ZollyBot をアップデートしてください。",
   "mobile.server.settings.identityOffline": "名前とロゴを変更するには、このサーバーに接続してください。",
   "mobile.server.route.cropLogo": "ロゴを切り抜く",
   "mobile.server.members.remove": "メンバーを削除",
@@ -323,7 +323,7 @@ export const messages = {
   "mobile.server.storage.category.caches": "キャッシュされたサーバーのファイル",
   "mobile.server.storage.category.runtimes": "プロバイダーのランタイム",
   "mobile.server.storage.category.logs": "ログ",
-  "mobile.server.storage.total": "{name} の OpenBot",
+  "mobile.server.storage.total": "{name} の ZollyBot",
   "mobile.server.storage.used": "使用済み",
   "mobile.server.storage.byType": "種類別のストレージ",
   "mobile.server.storage.free": "このディスクの空き容量 {size}",
@@ -345,10 +345,10 @@ export const messages = {
   "mobile.server.storage.clearTitle.caches": "キャッシュされたサーバーのファイルを消去しますか？",
   "mobile.server.storage.clearTitle.logs": "ログを消去しますか？",
   "mobile.server.storage.clearBody.caches":
-    "サーバーのファイルのコピーです。開くと OpenBot がもう一度ダウンロードします。",
+    "サーバーのファイルのコピーです。開くと ZollyBot がもう一度ダウンロードします。",
   "mobile.server.storage.clearBody.logs": "診断ログです。新しいログがすぐに始まります。",
   "mobile.server.storage.clearFailed": "データを消去できませんでした",
-  "mobile.server.storage.clearFailedBody": "OpenBot はサーバー上のこのデータを消去できませんでした。",
+  "mobile.server.storage.clearFailedBody": "ZollyBot はサーバー上のこのデータを消去できませんでした。",
   "mobile.server.storage.noFiles": "このサーバーに保存されているファイルはありません。",
   "mobile.server.route.providers": "プロバイダー",
   "mobile.server.route.provider": "プロバイダー",
@@ -397,7 +397,7 @@ export const messages = {
   "mobile.server.settings.timezoneUnavailable":
     "タイムゾーンを変更するには、オーナーまたは管理者としてこのサーバーに接続してください。",
   "mobile.server.settings.timezoneUnsupported":
-    "ここでタイムゾーンを変更するには、このサーバーの OpenBot を更新してください。",
+    "ここでタイムゾーンを変更するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.settings.keySection": "サーバーキー",
   "mobile.server.settings.keyChanged": "最終変更",
   "mobile.server.settings.keyChange": "キーを変更",
@@ -416,21 +416,21 @@ export const messages = {
   "mobile.server.settings.keyChangeFailed": "サーバーキーを変更できませんでした。もう一度お試しください。",
   "mobile.server.settings.keyOwnerOnly": "サーバーキーを変更できるのはオーナーだけです。",
   "mobile.server.settings.keyUnsupported":
-    "ここでキーを変更するには、このサーバーの OpenBot をアップデートしてください。",
+    "ここでキーを変更するには、このサーバーの ZollyBot をアップデートしてください。",
   "mobile.server.settings.memoryLimit": "エージェントごとのメモリー数",
   "mobile.server.settings.memoryLimitDescription": "このサーバーの各エージェントが保持できるメモリーの数です。",
   "mobile.server.settings.memoryLimitLoadFailed": "このサーバーのメモリー上限を読み込めませんでした。",
   "mobile.server.settings.memoryLimitSaveFailed": "メモリー数の上限を保存できませんでした。もう一度お試しください。",
   "mobile.server.settings.memoryLimitUnsupported":
-    "ここでメモリー数の上限を変更するには、このサーバーの OpenBot を更新してください。",
+    "ここでメモリー数の上限を変更するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.route.browserProfiles": "ブラウザープロファイル",
   "mobile.server.browserProfiles.unavailable":
     "オンラインのサーバーのオーナーまたは管理者だけが、そのブラウザープロファイルを管理できます。",
   "mobile.server.browserProfiles.unsupported":
-    "ここでブラウザープロファイルを管理するには、このサーバーの OpenBot を更新してください。",
+    "ここでブラウザープロファイルを管理するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.browserProfiles.loading": "ブラウザープロファイルを読み込み中…",
-  "mobile.server.browserProfiles.loadFailed": "OpenBot はブラウザープロファイルを読み込めませんでした。",
-  "mobile.server.browserProfiles.saveFailed": "OpenBot はブラウザープロファイルを変更できませんでした。",
+  "mobile.server.browserProfiles.loadFailed": "ZollyBot はブラウザープロファイルを読み込めませんでした。",
+  "mobile.server.browserProfiles.saveFailed": "ZollyBot はブラウザープロファイルを変更できませんでした。",
   "mobile.server.browserProfiles.description":
     "各プロファイルは、サーバーを実行するコンピューターに独自のサインイン、Cookie、サイトデータを保持します。同じプロファイルを使うエージェントはサインインを共有します。",
   "mobile.server.browserProfiles.shared": "共有",
@@ -466,7 +466,8 @@ export const messages = {
   "mobile.server.route.connectors": "コネクター",
   "mobile.server.connectors.unavailable":
     "コネクターを管理するには、オーナーまたは管理者としてこのサーバーに接続してください。",
-  "mobile.server.connectors.unsupported": "ここでコネクターを管理するには、このサーバーの OpenBot を更新してください。",
+  "mobile.server.connectors.unsupported":
+    "ここでコネクターを管理するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.connectors.loading": "コネクターを読み込んでいます…",
   "mobile.server.connectors.localOnly": "デスクトップアプリのみ",
   "mobile.server.connectors.statusConnected": "接続済み",
@@ -490,7 +491,7 @@ export const messages = {
   "mobile.server.connectors.bitwarden.description":
     "{host} のブラウザーのログインを Bitwarden または Vaultwarden から入力します。",
   "mobile.server.connectors.bitwarden.howItWorks":
-    "{host} は自分の Bitwarden CLI でサインインします。保管庫に Shared with OpenBot という名前のフォルダーを作成し、エージェントが使ってよいログインだけを入れてください。ウェブ保管庫で 設定 › セキュリティ › キー を開き、API キーを表示します。",
+    "{host} は自分の Bitwarden CLI でサインインします。保管庫に Shared with ZollyBot という名前のフォルダーを作成し、エージェントが使ってよいログインだけを入れてください。ウェブ保管庫で 設定 › セキュリティ › キー を開き、API キーを表示します。",
   "mobile.server.connectors.bitwarden.serverUrl": "サーバーのアドレス",
   "mobile.server.connectors.bitwarden.serverUrlHint":
     "Bitwarden、または Vaultwarden サーバーのアドレスです。{host} は HTTPS でこのアドレスに接続できる必要があります。",
@@ -504,7 +505,7 @@ export const messages = {
   "mobile.server.connectors.bitwarden.connectingBody":
     "{host} が Bitwarden にサインインしています。最初のサインインには数分かかることがあります。",
   "mobile.server.connectors.bitwarden.folderTitle": "共有フォルダ",
-  "mobile.server.connectors.bitwarden.folderName": "Shared with OpenBot",
+  "mobile.server.connectors.bitwarden.folderName": "Shared with ZollyBot",
   "mobile.server.connectors.bitwarden.folderKind": "Bitwarden のフォルダー",
   "mobile.server.connectors.bitwarden.folderFooter":
     "エージェントにログイン情報でサインインさせるには、Bitwarden でそのログイン情報をこのフォルダに移動してください。やめるには削除してください。",
@@ -515,7 +516,7 @@ export const messages = {
   "mobile.server.connectors.github.title": "GitHub",
   "mobile.server.connectors.github.description":
     "{host} のすべてのエージェントが、GitHub のリポジトリ、Issue、プルリクエスト、gh と git を使えます。",
-  "mobile.server.connectors.github.unavailable": "このサーバーの OpenBot は GitHub を接続できません。",
+  "mobile.server.connectors.github.unavailable": "このサーバーの ZollyBot は GitHub を接続できません。",
   "mobile.server.connectors.github.connect": "GitHub を接続",
   "mobile.server.connectors.github.codeTitle": "このコードを GitHub に入力してください",
   "mobile.server.connectors.github.codeFooter":
@@ -525,12 +526,12 @@ export const messages = {
   "mobile.server.connectors.github.connectedAs": "@{login} として接続済み",
   "mobile.server.connectors.github.chooseRepositories": "リポジトリを選ぶ",
   "mobile.server.connectors.github.repositoriesFooter":
-    "エージェントが使えるのは、OpenBot GitHub App がインストールされたリポジトリだけです。",
+    "エージェントが使えるのは、ZollyBot GitHub App がインストールされたリポジトリだけです。",
   "mobile.server.connectors.github.repositoriesTitle": "リポジトリ",
   "mobile.server.connectors.github.repositoriesLoading": "GitHub からリポジトリを読み込んでいます",
-  "mobile.server.connectors.github.repositoriesFailed": "OpenBot は GitHub からリポジトリを読み込めませんでした。",
+  "mobile.server.connectors.github.repositoriesFailed": "ZollyBot は GitHub からリポジトリを読み込めませんでした。",
   "mobile.server.connectors.github.noRepositories":
-    "OpenBot GitHub App はまだどのリポジトリにもインストールされていません。",
+    "ZollyBot GitHub App はまだどのリポジトリにもインストールされていません。",
   "mobile.server.connectors.github.moreRepositories": { other: "ほか {count} 件のリポジトリ" },
   "mobile.server.connectors.github.private": "非公開",
   "mobile.server.connectors.github.filterLabel": "リポジトリを絞り込む",
@@ -541,12 +542,12 @@ export const messages = {
   "mobile.server.connectors.github.disconnect": "GitHub を切断",
   "mobile.server.connectors.github.disconnectTitle": "GitHub を切断しますか？",
   "mobile.server.connectors.github.disconnectBody":
-    "{host} から @{login} のサインインが削除され、すべてのエージェントが GitHub のツール、gh、git を使えなくなります。その後 GitHub が開き、OpenBot のアクセスを取り消せます。",
+    "{host} から @{login} のサインインが削除され、すべてのエージェントが GitHub のツール、gh、git を使えなくなります。その後 GitHub が開き、ZollyBot のアクセスを取り消せます。",
   "mobile.server.connectors.onePassword.title": "1Password",
   "mobile.server.connectors.onePassword.description":
-    "サービスアカウントを通じて専用の 1Password 保管庫を {host} 上の OpenBot と共有すると、{host} のエージェントがそのブラウザーでサイトにサインインできます。",
+    "サービスアカウントを通じて専用の 1Password 保管庫を {host} 上の ZollyBot と共有すると、{host} のエージェントがそのブラウザーでサイトにサインインできます。",
   "mobile.server.connectors.onePassword.howItWorks":
-    "1Password.com で、OpenBot と共有する保管庫だけを読み取れるサービスアカウントを作成し、そのトークンをここに貼り付けてください。{host} がトークンを確認して保存します。このスマートフォンには保存されません。エージェントがパスワードを見ることはありません。",
+    "1Password.com で、ZollyBot と共有する保管庫だけを読み取れるサービスアカウントを作成し、そのトークンをここに貼り付けてください。{host} がトークンを確認して保存します。このスマートフォンには保存されません。エージェントがパスワードを見ることはありません。",
   "mobile.server.connectors.onePassword.token": "サービスアカウントのトークン",
   "mobile.server.connectors.onePassword.tokenPlaceholder": "ops_…",
   "mobile.server.connectors.onePassword.connect": "1Password を接続",
@@ -563,9 +564,9 @@ export const messages = {
     "{host} はトークンを削除します。保管庫とサービスアカウントは 1Password に残ります。不要になった場合は 1Password で削除してください。",
   "mobile.server.connectors.protonPass.title": "Proton Pass",
   "mobile.server.connectors.protonPass.description":
-    "Proton Pass の保管庫を 1 つ {host} の OpenBot と共有すると、{host} のエージェントがそのブラウザでサイトにサインインできます。",
+    "Proton Pass の保管庫を 1 つ {host} の ZollyBot と共有すると、{host} のエージェントがそのブラウザでサイトにサインインできます。",
   "mobile.server.connectors.protonPass.keyHelp":
-    "Proton Pass で、OpenBot と共有する保管庫だけを読み取れるアクセスキーを作成し、ここに貼り付けてください。キーは {host} が保持し、この電話には保存されません。",
+    "Proton Pass で、ZollyBot と共有する保管庫だけを読み取れるアクセスキーを作成し、ここに貼り付けてください。キーは {host} が保持し、この電話には保存されません。",
   "mobile.server.connectors.protonPass.keyPlaceholder": "pst_…",
   "mobile.server.connectors.passwordManager.unavailable": "{name} はこのサーバーでは利用できません。",
   "mobile.server.connectors.passwordManager.howItWorks":
@@ -607,25 +608,25 @@ export const messages = {
     "{host} はアクセスキーを削除します。保管庫とそのログインは {name} アカウントに残ります。",
   "mobile.server.connectors.slack.title": "Slack",
   "mobile.server.connectors.slack.description":
-    "Slack で @OpenBot をメンションするか、ダイレクトメッセージを送ります。Slack Orchestrator が適切なエージェントに依頼して回答します。",
+    "Slack で @ZollyBot をメンションするか、ダイレクトメッセージを送ります。Slack Orchestrator が適切なエージェントに依頼して回答します。",
   "mobile.server.connectors.slack.attention": { other: "{count} 件のワークスペースに対応が必要です" },
   "mobile.server.connectors.slack.connect": "Slack を接続",
   "mobile.server.connectors.slack.connectFooter":
-    "ブラウザーで Slack が開きます。右上でワークスペースを選び、「許可する」を押します。OpenBot は OpenBot という名前のアプリを 1 つインストールし、そのアプリはすべての公開チャンネルに参加します。",
+    "ブラウザーで Slack が開きます。右上でワークスペースを選び、「許可する」を押します。ZollyBot は ZollyBot という名前のアプリを 1 つインストールし、そのアプリはすべての公開チャンネルに参加します。",
   "mobile.server.connectors.slack.add": "ワークスペースを追加",
   "mobile.server.connectors.slack.limit": { other: "接続できるワークスペースは最大 {count} 件です。" },
   "mobile.server.connectors.slack.workspaceTitle": "ワークスペース",
   "mobile.server.connectors.slack.workspaceDescription":
-    "@OpenBot をメンションするか、ダイレクトメッセージを送ります。",
+    "@ZollyBot をメンションするか、ダイレクトメッセージを送ります。",
   "mobile.server.connectors.slack.missingScopes":
-    "OpenBot には Slack で次の権限がありません: {scopes}。ワークスペースを切断してから、もう一度接続してください。",
+    "ZollyBot には Slack で次の権限がありません: {scopes}。ワークスペースを切断してから、もう一度接続してください。",
   "mobile.server.connectors.slack.retryAt": "Slack から待機するよう求められました。{time} に再試行します。",
   "mobile.server.connectors.slack.helpInvalidToken":
-    "Slack はこのワークスペースで OpenBot を受け付けなくなりました。アンインストールされた可能性があります。ワークスペースをもう一度接続してください。",
+    "Slack はこのワークスペースで ZollyBot を受け付けなくなりました。アンインストールされた可能性があります。ワークスペースをもう一度接続してください。",
   "mobile.server.connectors.slack.helpSecretStorage":
-    "OpenBot は {host} に保存されたトークンを読み取れません。ワークスペースを切断してから、もう一度接続してください。",
+    "ZollyBot は {host} に保存されたトークンを読み取れません。ワークスペースを切断してから、もう一度接続してください。",
   "mobile.server.connectors.slack.helpRelay":
-    "{host} の OpenBot は Slack のイベントを受信できません。{host} でサインインし、サーバー設定でサーバーに名前を付けて、OpenBot を開いたままにしてください。",
+    "{host} の ZollyBot は Slack のイベントを受信できません。{host} でサインインし、サーバー設定でサーバーに名前を付けて、ZollyBot を開いたままにしてください。",
   "mobile.server.connectors.slack.orchestratorTitle": "Slack Orchestrator",
   "mobile.server.connectors.slack.orchestratorDescription":
     "このエージェントは Slack からのすべてのリクエストを受け取ります。短いものには自分で回答し、その他の作業は適切なエージェントに任せて、回答をスレッドに投稿します。",
@@ -633,56 +634,56 @@ export const messages = {
     "Slack Orchestrator を追加してください。追加しないと、Slack に回答が届きません。",
   "mobile.server.connectors.slack.addAgent": "Slack Orchestrator を追加",
   "mobile.server.connectors.slack.note":
-    "OpenBot はすべての公開チャンネルと新しいチャンネルに自動で参加します。非公開チャンネルには招待してください: /invite @OpenBot",
+    "ZollyBot はすべての公開チャンネルと新しいチャンネルに自動で参加します。非公開チャンネルには招待してください: /invite @ZollyBot",
   "mobile.server.connectors.slack.disconnectTitle": "{workspace} を切断しますか？",
   "mobile.server.connectors.slack.disconnectBody":
-    "OpenBot は {workspace} での回答を停止し、Slack のトークンを {host} から削除します。",
-  "mobile.server.connectors.slack.disconnectKept": "会話と Slack Orchestrator は OpenBot に残ります。",
-  "mobile.server.connectors.slack.disconnectDeleted": "Slack Orchestrator とその会話は OpenBot から削除されます。",
+    "ZollyBot は {workspace} での回答を停止し、Slack のトークンを {host} から削除します。",
+  "mobile.server.connectors.slack.disconnectKept": "会話と Slack Orchestrator は ZollyBot に残ります。",
+  "mobile.server.connectors.slack.disconnectDeleted": "Slack Orchestrator とその会話は ZollyBot から削除されます。",
   "mobile.server.connectors.slack.agentPromptTitle": "Slack Orchestrator を追加しますか？",
   "mobile.server.connectors.slack.agentPromptBody":
-    "この新しいエージェントは、{workspace} で @OpenBot に送られたすべてのメッセージに回答します。",
+    "この新しいエージェントは、{workspace} で @ZollyBot に送られたすべてのメッセージに回答します。",
   "mobile.server.connectors.slack.installFailed": "Slack でインストールが完了しませんでした。もう一度お試しください。",
   "mobile.server.connectors.discord.title": "Discord",
   "mobile.server.connectors.discord.description":
-    "Discord サーバーのチャンネルで @OpenBot をメンションします。Discord Orchestrator が適切なエージェントに依頼して回答します。",
+    "Discord サーバーのチャンネルで @ZollyBot をメンションします。Discord Orchestrator が適切なエージェントに依頼して回答します。",
   "mobile.server.connectors.discord.attention": { other: "{count} 件の Discord サーバーに対応が必要です" },
   "mobile.server.connectors.discord.connect": "Discord を接続",
   "mobile.server.connectors.discord.connectFooter":
-    "ブラウザーで Discord が開きます。Discord サーバーを選び、「認証」を押します。OpenBot は OpenBot という名前のボットを 1 つ追加します。",
+    "ブラウザーで Discord が開きます。Discord サーバーを選び、「認証」を押します。ZollyBot は ZollyBot という名前のボットを 1 つ追加します。",
   "mobile.server.connectors.discord.add": "Discord サーバーを追加",
   "mobile.server.connectors.discord.limit": { other: "接続できる Discord サーバーは最大 {count} 件です。" },
   "mobile.server.connectors.discord.workspaceTitle": "Discord サーバー",
   "mobile.server.connectors.discord.workspaceDescription":
-    "チャンネルで @OpenBot をメンションします。続けるには OpenBot に返信します。",
+    "チャンネルで @ZollyBot をメンションします。続けるには ZollyBot に返信します。",
   "mobile.server.connectors.discord.missingScopes":
-    "OpenBot には Discord で次の権限がありません: {scopes}。Discord サーバーを切断してから、もう一度接続してください。",
+    "ZollyBot には Discord で次の権限がありません: {scopes}。Discord サーバーを切断してから、もう一度接続してください。",
   "mobile.server.connectors.discord.retryAt": "Discord から待機するよう求められました。{time} に再試行します。",
   "mobile.server.connectors.discord.helpInvalidToken":
-    "Discord はこの Discord サーバーで OpenBot を受け付けなくなりました。削除された可能性があります。Discord サーバーをもう一度接続してください。",
+    "Discord はこの Discord サーバーで ZollyBot を受け付けなくなりました。削除された可能性があります。Discord サーバーをもう一度接続してください。",
   "mobile.server.connectors.discord.helpSecretStorage":
-    "OpenBot は {host} に保存されたトークンを読み取れません。Discord サーバーを切断してから、もう一度接続してください。",
+    "ZollyBot は {host} に保存されたトークンを読み取れません。Discord サーバーを切断してから、もう一度接続してください。",
   "mobile.server.connectors.discord.helpRelay":
-    "{host} の OpenBot は Discord のイベントを受信できません。{host} でサインインし、サーバー設定でサーバーに名前を付けて、OpenBot を開いたままにしてください。",
+    "{host} の ZollyBot は Discord のイベントを受信できません。{host} でサインインし、サーバー設定でサーバーに名前を付けて、ZollyBot を開いたままにしてください。",
   "mobile.server.connectors.discord.orchestratorTitle": "Discord Orchestrator",
   "mobile.server.connectors.discord.orchestratorDescription":
     "このエージェントは Discord からのすべてのリクエストを受け取ります。短いものには自分で回答し、その他の作業は適切なエージェントに任せて、チャンネルで回答を返信します。",
   "mobile.server.connectors.discord.orchestratorNone":
     "Discord Orchestrator を追加してください。追加しないと、Discord に回答が届きません。",
   "mobile.server.connectors.discord.addAgent": "Discord Orchestrator を追加",
-  "mobile.server.connectors.discord.note": "OpenBot には、そのロールが閲覧できるチャンネルが見えます。",
+  "mobile.server.connectors.discord.note": "ZollyBot には、そのロールが閲覧できるチャンネルが見えます。",
   "mobile.server.connectors.discord.disconnectTitle": "{workspace} を切断しますか？",
   "mobile.server.connectors.discord.disconnectBody":
-    "OpenBot は {workspace} での回答を停止し、Discord の接続を {host} から削除します。",
-  "mobile.server.connectors.discord.disconnectKept": "会話と Discord Orchestrator は OpenBot に残ります。",
-  "mobile.server.connectors.discord.disconnectDeleted": "Discord Orchestrator とその会話は OpenBot から削除されます。",
+    "ZollyBot は {workspace} での回答を停止し、Discord の接続を {host} から削除します。",
+  "mobile.server.connectors.discord.disconnectKept": "会話と Discord Orchestrator は ZollyBot に残ります。",
+  "mobile.server.connectors.discord.disconnectDeleted": "Discord Orchestrator とその会話は ZollyBot から削除されます。",
   "mobile.server.connectors.discord.agentPromptTitle": "Discord Orchestrator を追加しますか？",
   "mobile.server.connectors.discord.agentPromptBody":
-    "この新しいエージェントは、{workspace} で @OpenBot に送られたすべてのメッセージに回答します。",
+    "この新しいエージェントは、{workspace} で @ZollyBot に送られたすべてのメッセージに回答します。",
   "mobile.server.connectors.discord.installFailed": "Discord で認証が完了しませんでした。もう一度お試しください。",
   "mobile.server.connectors.telegram.title": "Telegram",
   "mobile.server.connectors.telegram.description":
-    "OpenBot ボットを Telegram グループに追加するか、ボットとのダイレクトチャットを開きます。Telegram Orchestrator が適切なエージェントに依頼して回答します。",
+    "ZollyBot ボットを Telegram グループに追加するか、ボットとのダイレクトチャットを開きます。Telegram Orchestrator が適切なエージェントに依頼して回答します。",
   "mobile.server.connectors.telegram.attention": { other: "{count} 件のチャットに対応が必要です" },
   "mobile.server.connectors.telegram.groupTitle": "グループ",
   "mobile.server.connectors.telegram.directTitle": "ダイレクトチャット",
@@ -690,11 +691,11 @@ export const messages = {
   "mobile.server.connectors.telegram.directDescription":
     "このチャットのすべてのメッセージが Telegram Orchestrator に届きます。",
   "mobile.server.connectors.telegram.helpRemoved":
-    "OpenBot ボットはこのチャットにいません。チャットを切断してから、ボットをもう一度追加してください。",
+    "ZollyBot ボットはこのチャットにいません。チャットを切断してから、ボットをもう一度追加してください。",
   "mobile.server.connectors.telegram.helpRelay":
-    "{host} の OpenBot は Telegram のメッセージを受信できません。{host} でサインインし、サーバー設定でサーバーに名前を付けて、OpenBot を開いたままにしてください。",
+    "{host} の ZollyBot は Telegram のメッセージを受信できません。{host} でサインインし、サーバー設定でサーバーに名前を付けて、ZollyBot を開いたままにしてください。",
   "mobile.server.connectors.telegram.helpError":
-    "OpenBot はこのチャットに接続できません。再接続するか、チャットを切断してください。",
+    "ZollyBot はこのチャットに接続できません。再接続するか、チャットを切断してください。",
   "mobile.server.connectors.telegram.retryAt": "Telegram から待機するよう求められました。{time} に再試行します。",
   "mobile.server.connectors.telegram.linkTitle": "チャットをリンク",
   "mobile.server.connectors.telegram.linkAnother": "別のチャットをリンク",
@@ -705,16 +706,16 @@ export const messages = {
   "mobile.server.connectors.telegram.openDirectChat": "ダイレクトチャットを開く",
   "mobile.server.connectors.telegram.orchestratorTitle": "Telegram Orchestrator",
   "mobile.server.connectors.telegram.orchestratorDescription":
-    "このエージェントは、すべての Telegram チャットから OpenBot 宛てのメッセージを受け取ります。短いものには自分で回答し、その他の作業は適切なエージェントに任せて、回答をチャットに投稿します。",
+    "このエージェントは、すべての Telegram チャットから ZollyBot 宛てのメッセージを受け取ります。短いものには自分で回答し、その他の作業は適切なエージェントに任せて、回答をチャットに投稿します。",
   "mobile.server.connectors.telegram.orchestratorNone":
     "Telegram Orchestrator を追加してください。追加しないと、Telegram に回答が届きません。",
   "mobile.server.connectors.telegram.addAgent": "Telegram Orchestrator を追加",
   "mobile.server.connectors.telegram.disconnectTitle": "{chat} を切断しますか？",
   "mobile.server.connectors.telegram.disconnectBody":
-    "OpenBot ボットは {chat} から退出し、OpenBot はそこでの回答を停止します。",
-  "mobile.server.connectors.telegram.disconnectKept": "会話と Telegram Orchestrator は OpenBot に残ります。",
+    "ZollyBot ボットは {chat} から退出し、ZollyBot はそこでの回答を停止します。",
+  "mobile.server.connectors.telegram.disconnectKept": "会話と Telegram Orchestrator は ZollyBot に残ります。",
   "mobile.server.connectors.telegram.disconnectDeleted":
-    "これが最後のチャットのため、Telegram Orchestrator とその会話は OpenBot から削除されます。",
+    "これが最後のチャットのため、Telegram Orchestrator とその会話は ZollyBot から削除されます。",
   "mobile.server.connectors.whatsapp.title": "WhatsApp",
   "mobile.server.connectors.whatsapp.description":
     "WhatsApp の番号をこのサーバーにリンクします。WhatsApp Orchestrator が適切なエージェントに依頼して回答します。",
@@ -724,21 +725,21 @@ export const messages = {
   "mobile.server.connectors.whatsapp.numbersTitle": "番号",
   "mobile.server.connectors.whatsapp.linkNumber": "番号をリンク",
   "mobile.server.connectors.whatsapp.ownNumberNote":
-    "あなたの「自分にメッセージ」チャットと、許可した人が OpenBot に連絡できます。",
+    "あなたの「自分にメッセージ」チャットと、許可した人が ZollyBot に連絡できます。",
   "mobile.server.connectors.whatsapp.dedicatedNote":
-    "許可した人が OpenBot に連絡できます。ほかの人には、あなたに伝えるためのコードが届きます。",
+    "許可した人が ZollyBot に連絡できます。ほかの人には、あなたに伝えるためのコードが届きます。",
   "mobile.server.connectors.whatsapp.helpLoggedOut":
     "WhatsApp がこのサーバーをリンク済みデバイスから削除しました。番号をもう一度リンクしてください。",
   "mobile.server.connectors.whatsapp.helpError":
-    "OpenBot はこの番号で WhatsApp に接続できません。再接続するか、番号を切断してください。",
+    "ZollyBot はこの番号で WhatsApp に接続できません。再接続するか、番号を切断してください。",
   "mobile.server.connectors.whatsapp.retryAt": "WhatsApp から待機するよう求められました。{time} に再試行します。",
   "mobile.server.connectors.whatsapp.linkAgain": "再リンク",
   "mobile.server.connectors.whatsapp.ownNumber": "個人の番号",
   "mobile.server.connectors.whatsapp.ownNumberDescription":
-    "あなたの「自分にメッセージ」チャットと、許可した人だけが書き込めます。OpenBot 専用の番号ではオフにしてください。",
+    "あなたの「自分にメッセージ」チャットと、許可した人だけが書き込めます。ZollyBot 専用の番号ではオフにしてください。",
   "mobile.server.connectors.whatsapp.orchestratorTitle": "WhatsApp Orchestrator",
   "mobile.server.connectors.whatsapp.orchestratorDescription":
-    "このエージェントは、リンクしたすべての番号から OpenBot 宛てのメッセージを受け取ります。短いものには自分で回答し、その他の作業は適切なエージェントに任せて、WhatsApp で回答します。",
+    "このエージェントは、リンクしたすべての番号から ZollyBot 宛てのメッセージを受け取ります。短いものには自分で回答し、その他の作業は適切なエージェントに任せて、WhatsApp で回答します。",
   "mobile.server.connectors.whatsapp.orchestratorNone":
     "WhatsApp Orchestrator を追加してください。追加しないと、WhatsApp に回答が届きません。",
   "mobile.server.connectors.whatsapp.addAgent": "WhatsApp Orchestrator を追加",
@@ -748,12 +749,12 @@ export const messages = {
   "mobile.server.connectors.whatsapp.linkDescription":
     "番号を選んでから、スマートフォンの WhatsApp でこのサーバーをリンクします。",
   "mobile.server.connectors.whatsapp.codeOnly":
-    "スマートフォンではペアリングコードでリンクします。QR コードを読み取るには、コンピューターの OpenBot を使用してください。",
+    "スマートフォンではペアリングコードでリンクします。QR コードを読み取るには、コンピューターの ZollyBot を使用してください。",
   "mobile.server.connectors.whatsapp.kindLabel": "番号",
   "mobile.server.connectors.whatsapp.kindPersonal": "自分の個人番号",
   "mobile.server.connectors.whatsapp.kindPersonalDescription":
-    "OpenBot は、あなたの「自分にメッセージ」チャットと、許可した人にだけ回答します。",
-  "mobile.server.connectors.whatsapp.kindDedicated": "OpenBot 専用の番号",
+    "ZollyBot は、あなたの「自分にメッセージ」チャットと、許可した人にだけ回答します。",
+  "mobile.server.connectors.whatsapp.kindDedicated": "ZollyBot 専用の番号",
   "mobile.server.connectors.whatsapp.kindDedicatedDescription":
     "知らない人には、あなたに伝えるためのコードが届きます。ここでその人を承認します。",
   "mobile.server.connectors.whatsapp.phoneLabel": "電話番号",
@@ -775,19 +776,19 @@ export const messages = {
   "mobile.server.connectors.whatsapp.failedBusy":
     "別のリンクを実行中です。終わるのを待ってから、もう一度お試しください。",
   "mobile.server.connectors.whatsapp.failedUnavailable":
-    "OpenBot は WhatsApp に接続できません。インターネット接続を確認してください。",
+    "ZollyBot は WhatsApp に接続できません。インターネット接続を確認してください。",
   "mobile.server.connectors.whatsapp.tryAgain": "もう一度試す",
   "mobile.server.connectors.whatsapp.agentStepDescription":
-    "この新しいエージェントは、{number} と、あとでリンクする各番号で、OpenBot 宛てのメッセージに回答します。",
-  "mobile.server.connectors.whatsapp.doneTitle": "OpenBot が {number} にリンクされました",
+    "この新しいエージェントは、{number} と、あとでリンクする各番号で、ZollyBot 宛てのメッセージに回答します。",
+  "mobile.server.connectors.whatsapp.doneTitle": "ZollyBot が {number} にリンクされました",
   "mobile.server.connectors.whatsapp.done": "完了",
   "mobile.server.connectors.whatsapp.disconnectTitle": "{number} を切断しますか？",
   "mobile.server.connectors.whatsapp.disconnectBody":
-    "OpenBot は {number} の WhatsApp からログアウトします。OpenBot がオフだった場合は、WhatsApp の「リンク済みデバイス」からもデバイスを削除してください。",
+    "ZollyBot は {number} の WhatsApp からログアウトします。ZollyBot がオフだった場合は、WhatsApp の「リンク済みデバイス」からもデバイスを削除してください。",
   "mobile.server.connectors.whatsapp.disconnectEffect": "{number} からあなたのエージェントに連絡できなくなります。",
-  "mobile.server.connectors.whatsapp.removeEffectKept": "会話と WhatsApp Orchestrator は OpenBot に残ります。",
+  "mobile.server.connectors.whatsapp.removeEffectKept": "会話と WhatsApp Orchestrator は ZollyBot に残ります。",
   "mobile.server.connectors.whatsapp.removeEffectDeleted":
-    "これが最後の番号のため、WhatsApp Orchestrator とその会話は OpenBot から削除されます。",
+    "これが最後の番号のため、WhatsApp Orchestrator とその会話は ZollyBot から削除されます。",
   "mobile.server.connectors.whatsapp.keep": "リンクを維持",
   "mobile.server.connectors.whatsapp.sendersTitle": "{number} に書き込める人",
   "mobile.server.connectors.whatsapp.sendersDescription":
@@ -809,7 +810,7 @@ export const messages = {
   "mobile.server.connectors.whatsapp.groupDescription": "このグループのメンバーは、エージェントに作業を依頼できます。",
   "mobile.server.connectors.whatsapp.groupSearch": "グループを検索",
   "mobile.server.connectors.whatsapp.groupsLoading": "グループを読み込んでいます…",
-  "mobile.server.connectors.whatsapp.groupsLoadFailed": "OpenBot はグループを読み込めませんでした",
+  "mobile.server.connectors.whatsapp.groupsLoadFailed": "ZollyBot はグループを読み込めませんでした",
   "mobile.server.connectors.whatsapp.groupsEmpty": "この番号はどのグループにも参加していません。",
   "mobile.server.connectors.whatsapp.groupsNoMatch": "この名前のグループはありません。",
   "mobile.server.connectors.whatsapp.groupAdded": "追加済み",
@@ -834,10 +835,10 @@ export const messages = {
   "mobile.server.providers.unavailable":
     "プロバイダーを管理するには、オーナーまたは管理者としてこのサーバーに接続してください。",
   "mobile.server.providers.unsupported":
-    "ここでプロバイダーを管理するには、このサーバーの OpenBot を更新してください。",
+    "ここでプロバイダーを管理するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.providers.signInUnsupported":
     "このサーバーでは、スマートフォンからこのプロバイダーにサインインできません。",
-  "mobile.server.providers.actionFailed": "OpenBot はこの操作を完了できませんでした。もう一度お試しください。",
+  "mobile.server.providers.actionFailed": "ZollyBot はこの操作を完了できませんでした。もう一度お試しください。",
   "mobile.server.providers.openFailed": "サインインページを開けませんでした。",
   "mobile.server.providers.copyFailed": "コードをコピーできませんでした。",
   "mobile.server.providers.onHost": "このプロバイダーは、このサーバーのコンピューターで動作します。",
@@ -847,10 +848,10 @@ export const messages = {
   "mobile.server.providers.connect": "接続",
   "mobile.server.providers.reconnect": "再接続",
   "mobile.server.providers.connectHint":
-    "サーバーがサインインを開始します。続いて OpenBot が手順を表示するので、このスマートフォンで完了してください。",
+    "サーバーがサインインを開始します。続いて ZollyBot が手順を表示するので、このスマートフォンで完了してください。",
   "mobile.server.providers.relayHint":
-    "OpenBot がこのスマートフォンでプロバイダーのサインインページを開きます。何かをコピーして戻す必要がある場合は、先に手順を表示します。",
-  "mobile.server.providers.connectOnComputer": "コンピューターの OpenBot でこのプロバイダーを接続してください。",
+    "ZollyBot がこのスマートフォンでプロバイダーのサインインページを開きます。何かをコピーして戻す必要がある場合は、先に手順を表示します。",
+  "mobile.server.providers.connectOnComputer": "コンピューターの ZollyBot でこのプロバイダーを接続してください。",
   "mobile.server.providers.signInTo": "{name} にサインイン",
   "mobile.server.providers.starting": "サーバーでサインインを開始しています…",
   "mobile.server.providers.openPage": "サインインページを開く",
@@ -861,15 +862,15 @@ export const messages = {
     "パソコンの ChatGPT でセキュリティ設定を開き、Codex のデバイスコードによるサインインをオンにします。仕事用アカウントでは、ワークスペースの管理者がオンにします。",
   "mobile.server.providers.codeStepCopy": "コードをコピーします。",
   "mobile.server.providers.codeStepEnter": "サインインページを開き、コードを入力します。",
-  "mobile.server.providers.codeStepReturn": "OpenBot に戻ります。サインインは自動で完了します。",
+  "mobile.server.providers.codeStepReturn": "ZollyBot に戻ります。サインインは自動で完了します。",
   "mobile.server.providers.pasteStepSignIn": "サインインページを開いてサインインします。",
   "mobile.server.providers.pasteStepCopy": "ページに表示されたコードをコピーします。",
-  "mobile.server.providers.pasteStepReturn": "OpenBot に戻り、下にコードを貼り付けます。",
+  "mobile.server.providers.pasteStepReturn": "ZollyBot に戻り、下にコードを貼り付けます。",
   "mobile.server.providers.relayStepSignIn": "サインインページを開いてサインインします。",
   "mobile.server.providers.relayStepBlank": "最後のページは読み込まれません。これは正常です。",
   "mobile.server.providers.relayStepCopy": "アドレスバーをタップし、アドレス全体をコピーします。",
-  "mobile.server.providers.relayStepReturn": "OpenBot に戻り、下にアドレスを貼り付けます。",
-  "mobile.server.providers.linkHint": "ページでサインインしてください。OpenBot が自動で続行します。",
+  "mobile.server.providers.relayStepReturn": "ZollyBot に戻り、下にアドレスを貼り付けます。",
+  "mobile.server.providers.linkHint": "ページでサインインしてください。ZollyBot が自動で続行します。",
   "mobile.server.providers.relayWaiting": "サーバーからのサインインページを待っています…",
   "mobile.server.providers.code": "ページのコード",
   "mobile.server.providers.codePlaceholder": "ここにコードを貼り付け",
@@ -922,7 +923,7 @@ export const messages = {
   "mobile.server.providers.status.checking": "確認中",
   "mobile.server.settings.mcp": "MCP サーバー",
   "mobile.server.settings.mcpCount": { other: "{count} 台" },
-  "mobile.server.mcp.unsupported": "ここで MCP サーバーを管理するには、このサーバーの OpenBot を更新してください。",
+  "mobile.server.mcp.unsupported": "ここで MCP サーバーを管理するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.mcp.unavailable":
     "MCP サーバーを管理するには、オーナーまたは管理者としてこのサーバーに接続してください。",
   "mobile.server.mcp.description":
@@ -941,7 +942,7 @@ export const messages = {
   "mobile.server.mcp.addConfirm": "追加",
   "mobile.server.mcp.name": "名前",
   "mobile.server.mcp.namePlaceholder": "MCP サーバー名",
-  "mobile.server.mcp.nameReserved": "名前 {name} は OpenBot がすでに使っています。",
+  "mobile.server.mcp.nameReserved": "名前 {name} は ZollyBot がすでに使っています。",
   "mobile.server.mcp.transport": "トランスポート",
   "mobile.server.mcp.stdio": "コマンド (STDIO)",
   "mobile.server.mcp.http": "URL (HTTP)",
@@ -952,12 +953,12 @@ export const messages = {
   "mobile.server.mcp.command": "コマンド",
   "mobile.server.mcp.commandHint": "プログラムだけを入力します。続く語は引数に入力してください。",
   "mobile.server.mcp.arguments": "引数",
-  "mobile.server.mcp.argumentsHint": "OpenBot は各引数を 1 つの語としてプログラムに渡します。",
+  "mobile.server.mcp.argumentsHint": "ZollyBot は各引数を 1 つの語としてプログラムに渡します。",
   "mobile.server.mcp.addArgument": "引数を追加",
   "mobile.server.mcp.argument": "引数 {position}",
   "mobile.server.mcp.removeArgument": "引数 {position} を削除",
   "mobile.server.mcp.environment": "環境変数",
-  "mobile.server.mcp.environmentHint": "OpenBot は MCP サーバーの起動時にこれらの変数を渡します。",
+  "mobile.server.mcp.environmentHint": "ZollyBot は MCP サーバーの起動時にこれらの変数を渡します。",
   "mobile.server.mcp.addVariable": "変数を追加",
   "mobile.server.mcp.variableKey": "変数 {position} の名前",
   "mobile.server.mcp.variableValue": "変数 {position} の値",
@@ -972,7 +973,7 @@ export const messages = {
   "mobile.server.mcp.url": "サーバー URL",
   "mobile.server.mcp.urlInvalid": "http または https のアドレスを入力してください。",
   "mobile.server.mcp.headers": "ヘッダー",
-  "mobile.server.mcp.headersHint": "OpenBot はリクエストごとにこれらのヘッダーを送信します。",
+  "mobile.server.mcp.headersHint": "ZollyBot はリクエストごとにこれらのヘッダーを送信します。",
   "mobile.server.mcp.addHeader": "ヘッダーを追加",
   "mobile.server.mcp.headerName": "ヘッダー {position} の名前",
   "mobile.server.mcp.headerValue": "ヘッダー {position} の値",
@@ -988,7 +989,7 @@ export const messages = {
   "mobile.server.mcp.testFailed": "MCP サーバーが応答しませんでした。",
   "mobile.server.mcp.connected": { other: "接続済み · ツール {count} 個" },
   "mobile.server.mcp.signInOnComputer":
-    "この MCP サーバーはサインインを求めています。コンピューターの OpenBot からサインインして、もう一度テストしてください。",
+    "この MCP サーバーはサインインを求めています。コンピューターの ZollyBot からサインインして、もう一度テストしてください。",
   "mobile.server.mcp.signedInDescription": "{server} はこの MCP サーバーにサインインしています。",
   "mobile.server.mcp.signOut": "サインアウト",
   "mobile.server.mcp.saveFailed": "変更を保存できませんでした。もう一度お試しください。",
@@ -1018,8 +1019,8 @@ export const messages = {
   "mobile.server.settings.updates": "アップデート",
   "mobile.server.settings.updateAvailable": "アップデートあり",
   "mobile.server.route.updates": "アップデート",
-  "mobile.server.update.hostTitle": "{name} の OpenBot",
-  "mobile.server.update.version": "OpenBot {version}",
+  "mobile.server.update.hostTitle": "{name} の ZollyBot",
+  "mobile.server.update.version": "ZollyBot {version}",
   "mobile.server.update.status.idle": "アップデートを確認して最新のリリースを見つけます。",
   "mobile.server.update.status.checking": "アップデートを確認しています…",
   "mobile.server.update.status.available": "{version} を利用できます。",
@@ -1027,29 +1028,29 @@ export const messages = {
   "mobile.server.update.status.downloadingUnknown": "{version} をダウンロードしています…",
   "mobile.server.update.status.ready": "{version} をダウンロードしました。",
   "mobile.server.update.status.installing": "{name} はアップデートをインストールするため再起動しています。",
-  "mobile.server.update.status.upToDate": "{name} の OpenBot は最新です。",
+  "mobile.server.update.status.upToDate": "{name} の ZollyBot は最新です。",
   "mobile.server.update.status.checkFailed": "{name} はアップデートを確認できませんでした。もう一度お試しください。",
   "mobile.server.update.status.downloadFailed":
     "{name} はアップデートをダウンロードできませんでした。もう一度お試しください。",
   "mobile.server.update.status.installFailed":
-    "{name} はアップデートをインストールできませんでした。そのコンピューターで他のユーザーが OpenBot を実行していないことを確認してから、もう一度お試しください。",
+    "{name} はアップデートをインストールできませんでした。そのコンピューターで他のユーザーが ZollyBot を実行していないことを確認してから、もう一度お試しください。",
   "mobile.server.update.releaseCheckFailed":
     "{name} はリリースフィードを読み取れませんでした。ホストのネットワーク接続を確認してから、もう一度お試しください。",
   "mobile.server.update.releaseUnavailable":
     "このビルドではリリースを確認できません。互換性のあるリリースを確認するよう、ホストの管理者に依頼してください。",
   "mobile.server.update.externalTitle": "インストールはホストが管理します",
   "mobile.server.update.path.hostManager":
-    "OpenBot Host Manager は、すべてのユーザーがアイドル状態のときにアップデートをインストールします。アップデートが始まらない場合は、Host Manager の状態を確認するようホストの管理者に依頼してください。",
+    "ZollyBot Host Manager は、すべてのユーザーがアイドル状態のときにアップデートをインストールします。アップデートが始まらない場合は、Host Manager の状態を確認するようホストの管理者に依頼してください。",
   "mobile.server.update.path.hosted":
     "ホスティングサービスはバックグラウンドでアップデートをダウンロードします。ダウンロードしたアップデートは、次にサーバーが起動したときに適用されます。サーバーを停止して再開する前に、実行中の作業が終わるのを待ってください。古いバージョンのままの場合は、ホストの管理者に連絡してください。",
   "mobile.server.update.path.system":
-    "ホストで sudo openbot update を実行して、最新のリリースをインストールしてください。このコマンドは OpenBot を停止します。先に実行中の作業が終わるのを待ってください。自動ダウンロードされたアップデートは次回の起動時にインストールされます。",
+    "ホストで sudo zollybot update を実行して、最新のリリースをインストールしてください。このコマンドは ZollyBot を停止します。先に実行中の作業が終わるのを待ってください。自動ダウンロードされたアップデートは次回の起動時にインストールされます。",
   "mobile.server.update.path.container":
-    "Docker ホストで新しい OpenBot イメージを pull し、同じデータボリュームでコンテナーを再作成してください。先に実行中の作業が終わるのを待ってください。データを保持するため、既存のボリュームはそのまま残してください。",
+    "Docker ホストで新しい ZollyBot イメージを pull し、同じデータボリュームでコンテナーを再作成してください。先に実行中の作業が終わるのを待ってください。データを保持するため、既存のボリュームはそのまま残してください。",
   "mobile.server.update.path.manual":
-    "このインストールは自分自身を置き換えられません。github.com/nightly-labs/openbot/releases から互換性のあるリリースをインストールするよう、ホストの管理者に依頼してください。既存の OpenBot のデータは残してください。",
+    "このインストールは自分自身を置き換えられません。github.com/nightly-labs/openbot/releases から互換性のあるリリースをインストールするよう、ホストの管理者に依頼してください。既存の ZollyBot のデータは残してください。",
   "mobile.server.update.path.unavailable":
-    "これは開発ビルドです。アップデートを確認するには、インストール済みの OpenBot リリースを使用してください。",
+    "これは開発ビルドです。アップデートを確認するには、インストール済みの ZollyBot リリースを使用してください。",
   "mobile.server.update.check": "アップデートを確認",
   "mobile.server.update.start": "アイドル時にアップデート",
   "mobile.server.update.restartNow": "今すぐ再起動",
@@ -1060,27 +1061,27 @@ export const messages = {
   "mobile.server.update.automatic": "{name} はアップデートを自動的にインストールします。",
   "mobile.server.update.autoDownloadTitle": "アップデートを自動的にダウンロードする",
   "mobile.server.update.autoDownloadDescription":
-    "{name} は OpenBot の新しいバージョンが公開されるたびにダウンロードします。",
+    "{name} は ZollyBot の新しいバージョンが公開されるたびにダウンロードします。",
   "mobile.server.update.autoInstallTitle": "アップデートを自動的にインストールする",
   "mobile.server.update.autoInstallDescription":
     "{name} は、エージェントがアイドル状態になると、ダウンロードしたアップデートを適用して再起動します。メンバーの接続は短時間切れ、自動的に再接続されます。",
   "mobile.server.update.waitingFor": "{reasons} を待っています。",
   "mobile.server.update.disabledTitle": "リモートアップデートはオフです",
   "mobile.server.update.disabledDescription":
-    "{name} のユーザーが、サーバーメンバーからのアップデートをオフにしました。OpenBot をアップデートするか、設定をオンにするよう依頼してください。",
+    "{name} のユーザーが、サーバーメンバーからのアップデートをオフにしました。ZollyBot をアップデートするか、設定をオンにするよう依頼してください。",
   "mobile.server.update.managedTitle": "アップデートは Host Manager が管理しています",
   "mobile.server.update.managedDescription":
-    "OpenBot Host Manager が {name} をアップデートします。ホストの管理者に連絡してください。",
+    "ZollyBot Host Manager が {name} をアップデートします。ホストの管理者に連絡してください。",
   "mobile.server.update.unsupportedTitle": "{name} は自身をアップデートできません",
   "mobile.server.update.unsupportedDescription":
-    "この OpenBot ビルドにはアップデーターがありません。{name} に新しいバージョンをインストールしてください。",
+    "この ZollyBot ビルドにはアップデーターがありません。{name} に新しいバージョンをインストールしてください。",
   "mobile.server.update.restarting": "再起動中…",
   "mobile.server.update.loadFailed": "{name} のアップデート状態を読み込めませんでした。",
-  "mobile.server.update.dialog.offerTitle": "{name} を OpenBot {version} にアップデート",
+  "mobile.server.update.dialog.offerTitle": "{name} を ZollyBot {version} にアップデート",
   "mobile.server.update.dialog.offerDescription":
-    "{name} は OpenBot {current} を使用しています。まずアップデートをダウンロードしてから再起動します。",
+    "{name} は ZollyBot {current} を使用しています。まずアップデートをダウンロードしてから再起動します。",
   "mobile.server.update.dialog.offerReadyDescription":
-    "{name} は OpenBot {current} を使用しています。アップデートはダウンロード済みです。{name} はインストールのため再起動します。",
+    "{name} は ZollyBot {current} を使用しています。アップデートはダウンロード済みです。{name} はインストールのため再起動します。",
   "mobile.server.update.dialog.waitIdleDescription":
     "再起動は、エージェントのターンとルーティンの実行が終わるまで待機します。",
   "mobile.server.update.dialog.updateNow": "今すぐアップデート",
@@ -1096,10 +1097,10 @@ export const messages = {
   "mobile.server.update.reason.fileTransfer": "ファイル転送",
   "mobile.server.update.reason.browserControl": "エージェントによるブラウザー操作",
   "mobile.server.update.reason.updateOperation": "別のアップデート手順",
-  "mobile.server.update.reason.initialization": "OpenBot の起動",
+  "mobile.server.update.reason.initialization": "ZollyBot の起動",
   "mobile.server.update.reason.other": "その他の作業",
   "mobile.server.update.actionFailed": "サーバーの操作に失敗しました。",
-  "mobile.server.update.unavailable": "OpenBot のアップデートを確認するには、このサーバーに接続してください。",
+  "mobile.server.update.unavailable": "ZollyBot のアップデートを確認するには、このサーバーに接続してください。",
   "mobile.server.update.loading": "アップデートを読み込み中…",
   "mobile.server.route.sites": "サイト",
   "mobile.server.settings.sites": "サイト",
@@ -1118,13 +1119,13 @@ export const messages = {
   "mobile.server.sites.deleteDescription": "このアドレスはすぐに 410 Gone を返すようになります。",
   "mobile.server.sites.deleteFailed": "サイトを削除できませんでした。",
   "mobile.server.sites.openFailed": "サイトを開けませんでした。",
-  "mobile.server.sites.unsupported": "ここでサイトを表示するには、このサーバーの OpenBot を更新してください。",
+  "mobile.server.sites.unsupported": "ここでサイトを表示するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.sites.offline": "このサーバーに接続するとサイトが表示されます。",
   "mobile.server.route.roles": "ロール",
   "mobile.server.route.role": "ロール",
   "mobile.server.roles.description":
     "メンバーが使えるエージェントを選びます。オーナーと管理者はすべてのエージェントを使えます。",
-  "mobile.server.roles.unsupported": "ロールを管理するには、このサーバーの OpenBot を更新してください。",
+  "mobile.server.roles.unsupported": "ロールを管理するには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.roles.unavailable": "ロールを管理できるのは、オンラインのサーバーのオーナーまたは管理者だけです。",
   "mobile.server.roles.loading": "ロールを読み込み中…",
   "mobile.server.roles.loadFailed": "このサーバーのロールを読み込めませんでした。",
@@ -1160,7 +1161,7 @@ export const messages = {
   "mobile.server.route.audit": "監査ログ",
   "mobile.server.audit.description":
     "このサーバーのメンバー、ロール、エージェントアクセスの変更を新しい順に表示します。ホストは最新の500件を保持します。",
-  "mobile.server.audit.unsupported": "監査ログを見るには、このサーバーの OpenBot を更新してください。",
+  "mobile.server.audit.unsupported": "監査ログを見るには、このサーバーの ZollyBot を更新してください。",
   "mobile.server.audit.unavailable": "監査ログを見られるのは、オンラインのサーバーのオーナーか管理者だけです。",
   "mobile.server.audit.loading": "変更を読み込み中…",
   "mobile.server.audit.loadFailed": "このサーバーの監査ログを読み込めませんでした。",
@@ -1189,7 +1190,7 @@ export const messages = {
   "mobile.server.settings.importAgents": "エージェントをインポート",
   "mobile.server.route.import": "エージェントをインポート",
   "mobile.server.import.unsupported":
-    "ここでエージェントをインポートするには、このサーバーの OpenBot をアップデートしてください。",
+    "ここでエージェントをインポートするには、このサーバーの ZollyBot をアップデートしてください。",
   "mobile.server.import.unavailable": "エージェントをインポートするには、このサーバーに接続してください。",
   "mobile.server.import.count.agent": { other: "{count} 個のエージェント" },
   "mobile.server.import.count.channel": { other: "{count} 個のチャンネル" },
@@ -1199,11 +1200,11 @@ export const messages = {
   "mobile.server.import.count.file": { other: "{count} 個のファイル" },
   "mobile.server.import.sourceTitle": "エージェントは今どこにありますか？",
   "mobile.server.import.sourceLede":
-    "OpenBot がこのサーバーにコピーします。何かが変わる前に、すべての項目を確認できます。",
+    "ZollyBot がこのサーバーにコピーします。何かが変わる前に、すべての項目を確認できます。",
   "mobile.server.import.hermesNote": "Hermes から .zip ファイルをエクスポートします。",
   "mobile.server.import.grokNote":
     "クラウドにあります。そこにあるエクスポート用エージェントが .zip ファイルを作成します。",
-  "mobile.server.import.transfer": "別の OpenBot サーバー",
+  "mobile.server.import.transfer": "別の ZollyBot サーバー",
   "mobile.server.import.transferNote": "エージェントと設定をまとめて移動するには「移行」を使います。",
   "mobile.server.import.grokLede":
     "Grok Bot のエクスポート用エージェントが、名前、指示、アバター、スキル、ルーティン、メモリー、含めるファイルを 1 つの .zip ファイルにまとめます。",
@@ -1268,7 +1269,7 @@ export const messages = {
   "mobile.server.route.transfer": "移行",
   "mobile.server.route.transferExport": "エクスポート",
   "mobile.server.route.transferImport": "インポート",
-  "mobile.server.transfer.unsupported": "ここで移行するには、このサーバーの OpenBot をアップデートしてください。",
+  "mobile.server.transfer.unsupported": "ここで移行するには、このサーバーの ZollyBot をアップデートしてください。",
   "mobile.server.transfer.unavailable": "移行するには、オーナーまたは管理者としてこのサーバーに接続してください。",
   "mobile.server.transfer.title": "このサーバーを別のコンピューターに移動",
   "mobile.server.transfer.lede":
@@ -1312,8 +1313,8 @@ export const messages = {
   "mobile.server.transfer.reading": "ファイルを読み込んでいます…",
   "mobile.server.transfer.sending": "ファイルを送信しています… {percent}%",
   "mobile.server.transfer.openFailed": "ファイルを開けませんでした。",
-  "mobile.server.transfer.source": "OpenBot {version} · {date} にエクスポート",
-  "mobile.server.transfer.sourceNoDate": "OpenBot {version}",
+  "mobile.server.transfer.source": "ZollyBot {version} · {date} にエクスポート",
+  "mobile.server.transfer.sourceNoDate": "ZollyBot {version}",
   "mobile.server.transfer.importWarnings": "インポートを始める前に",
   "mobile.server.transfer.importAgents": "ファイル内のエージェント",
   "mobile.server.transfer.nameExists": "名前が重複",

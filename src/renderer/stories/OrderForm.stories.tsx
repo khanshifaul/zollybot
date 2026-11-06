@@ -1,6 +1,6 @@
-import { Button } from "@openbot/ui";
-import { OrderForm, type OrderFormOrder } from "@openbot/ui/features/billing/OrderForm";
-import { useText } from "@openbot/ui/text";
+import { Button } from "@zollybot/ui";
+import { OrderForm, type OrderFormOrder } from "@zollybot/ui/features/billing/OrderForm";
+import { useText } from "@zollybot/ui/text";
 import type { Accessor } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { MOCK_HOSTED_SERVER_CATALOG } from "../src/preview/mock-hosted-servers";

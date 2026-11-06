@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   CONVERSATION_MEMORY_CHANGES_ITEM_TYPE,
   CONVERSATION_PLAN_ITEM_TYPE,
@@ -9,8 +9,8 @@ import {
   type ConversationTraceStep,
   type ConversationTraceStepKind,
   type ConversationTurnTrace,
-} from "@openbot/contracts/ipc";
-import { redactText } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { redactText } from "@zollybot/logging";
 
 interface RunningTrace {
   startedAt: string;

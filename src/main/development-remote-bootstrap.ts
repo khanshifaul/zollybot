@@ -1,6 +1,6 @@
 import { Effect, Result } from "effect";
 /**
- * Everything `OPENBOT_DEV_REMOTE_ROLE` adds to startup: signing a throwaway account in against the
+ * Everything `ZOLLYBOT_DEV_REMOTE_ROLE` adds to startup: signing a throwaway account in against the
  * local account API, configuring the dev host, and handing the client the connection the host wrote
  * to a file in the dev runtime directory. None of it runs in a packaged build - `developmentRemoteRole`
  * is null unless the app is unpackaged and the variable is set to `host` or `client`.
@@ -11,7 +11,7 @@ import { Effect, Result } from "effect";
  * polls for thirty seconds and then throws, deliberately: a dev client with no remote server is a
  * failure worth seeing at startup rather than an empty window.
  *
- * `OPENBOT_DEV_CLIENT_TRANSPORT=webrtc` signs the client in as the host's owner instead. The account
+ * `ZOLLYBOT_DEV_CLIENT_TRANSPORT=webrtc` signs the client in as the host's owner instead. The account
  * directory then lists the host as a second device of that account, so the client reaches it over
  * Signal and WebRTC, as a user does, and the HTTP connection file is not read.
  */
@@ -30,8 +30,8 @@ import type { TeamStore } from "./team-store";
 export type DevelopmentRemoteRole = "host" | "client";
 export type DevelopmentClientTransport = "http" | "webrtc";
 
-const DEVELOPMENT_HOST_EMAIL = "openbot-dev-host@example.com";
-const DEVELOPMENT_CLIENT_EMAIL = "openbot-dev-client@example.com";
+const DEVELOPMENT_HOST_EMAIL = "zollybot-dev-host@example.com";
+const DEVELOPMENT_CLIENT_EMAIL = "zollybot-dev-client@example.com";
 
 export function readDevelopmentClientTransport(value: string | undefined): DevelopmentClientTransport {
   return value === "webrtc" ? "webrtc" : "http";
@@ -76,7 +76,7 @@ export const applyDevelopmentRemoteAccount = Effect.fn("DevelopmentRemote.applyA
   const user = yield* ensureDevelopmentAccount(centralAuth, email);
   yield* teamStore.activateAccount(user);
   if (role === "host" && !teamStore.configured) {
-    yield* teamStore.configureWithAccount("OpenBot Local Dev Host", user);
+    yield* teamStore.configureWithAccount("ZollyBot Local Dev Host", user);
   }
   if (role === "client" && !setupCompleted) {
     yield* writeSetupState(setupFile, { preferredProvider: "codex", preferredModel: null }).pipe(toRemoteWorkflowError);

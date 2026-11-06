@@ -8,7 +8,7 @@ import {
   STATE_BY_ID,
   type StateId,
 } from "@norbert_bodziony/bloub";
-import type { AvatarMood } from "@openbot/brand/bloub-avatar-motion";
+import type { AvatarMood } from "@zollybot/brand/bloub-avatar-motion";
 
 /*
  * The felt plush of `@norbert_bodziony/bloub/plush` 0.6.3 (MIT), for the phone. That entry renders

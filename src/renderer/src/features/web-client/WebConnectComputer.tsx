@@ -1,6 +1,16 @@
-import { AppLogo } from "@openbot/brand";
-import { Button, buttonVariants, Download, ErrorReference, Heading, Link2, RefreshCw, Server, Text } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import { AppLogo } from "@zollybot/brand";
+import {
+  Button,
+  buttonVariants,
+  Download,
+  ErrorReference,
+  Heading,
+  Link2,
+  RefreshCw,
+  Server,
+  Text,
+} from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 
 /** The first screen of the web client when the account has no computer to connect to. */

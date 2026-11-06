@@ -1,6 +1,7 @@
 import type { ExpressionId } from "@norbert_bodziony/bloub";
-import { agentProviderDescriptor, agentProviderName, foreignProvider } from "@openbot/contracts/agent-providers";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import type { JSX } from "@solidjs/web";
+import { agentProviderDescriptor, agentProviderName, foreignProvider } from "@zollybot/contracts/agent-providers";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   AGENT_TASK_LIMIT_DEFAULT,
   AGENT_TASK_LIMIT_MAX,
@@ -37,8 +38,8 @@ import {
   type UpdateAgentAdminSettingsInput,
   type UpdateAgentInput,
   widensAgentPermission,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   ArrowLeftRight,
   Bell,
@@ -62,8 +63,8 @@ import {
   SlidingTabs,
   Switch,
   Text,
-} from "@openbot/ui";
-import { normalizeAvatarFile } from "@openbot/ui/avatar-image";
+} from "@zollybot/ui";
+import { normalizeAvatarFile } from "@zollybot/ui/avatar-image";
 import {
   AVATAR_COLOR_CHOICES,
   AVATAR_EXPRESSIONS,
@@ -78,10 +79,10 @@ import {
   isAvatarColorChoice,
   SUPPORTED_AVATAR_SILHOUETTES,
   type SupportedAvatarSilhouetteId,
-} from "@openbot/ui/bloub-avatar";
-import { ProviderModelPicker } from "@openbot/ui/components/ProviderModelPicker";
-import { findModelOption } from "@openbot/ui/components/provider-accounts";
-import { ResizableTextarea } from "@openbot/ui/components/ResizableTextarea";
+} from "@zollybot/ui/bloub-avatar";
+import { ProviderModelPicker } from "@zollybot/ui/components/ProviderModelPicker";
+import { findModelOption } from "@zollybot/ui/components/provider-accounts";
+import { ResizableTextarea } from "@zollybot/ui/components/ResizableTextarea";
 import {
   SettingsField,
   SettingsLinkGroup,
@@ -89,17 +90,16 @@ import {
   SettingsPanel,
   SettingsPanelContent,
   SettingsPanelHeader,
-} from "@openbot/ui/components/SettingsPanel";
-import type { AgentProfile } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { InstructionsLimit, instructionsTooLong } from "@openbot/ui/features/agents/InstructionsLimit";
+} from "@zollybot/ui/components/SettingsPanel";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { InstructionsLimit, instructionsTooLong } from "@zollybot/ui/features/agents/InstructionsLimit";
 import {
   type BrowserProfileChoice,
   BrowserProfileSelect,
   type BrowserProfileSelectProfile,
-} from "@openbot/ui/features/browser/BrowserProfileSelect";
-import { errorReference } from "@openbot/user-errors";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/browser/BrowserProfileSelect";
+import { errorReference } from "@zollybot/user-errors";
 import {
   createEffect,
   createMemo,

@@ -1,11 +1,11 @@
 # Glossary
 
-The product terms OpenBot uses, and the identifiers each one owns. Read this when naming a new type,
+The product terms ZollyBot uses, and the identifiers each one owns. Read this when naming a new type,
 table, IPC channel or product string, or when a term in the code disagrees with the term in the UI.
 [AGENTS.md](../AGENTS.md#terms) carries the two naming rules that are decisions rather than lookup.
 
 - **agent**: the product object (`AgentStore`, `AgentSummary`, `agent-${uuid}`,
-  `~/OpenBot/Agents/<id>`, `projection_agents`), a coding agent, or a marketplace agent
+  `~/ZollyBot/Agents/<id>`, `projection_agents`), a coding agent, or a marketplace agent
   (`ipc-marketplace-agents.ts`). **teammate** is prompt and marketing text, never a type.
   Human members use `TeamMemberSummary`.
 - **agent template**: a public, link-only copy of one agent's instructions, skills and routines
@@ -14,12 +14,12 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   no listing.
 - **browser profile**: a named, persistent browser session on the computer that runs the agents
   (`browser_profiles`, `BrowserProfileSummary`, `AgentBrowserProfile`, `agent:admin:*-browser-profile*`,
-  `persist:openbot-browser-profile-<id>`). The built-in choices "Shared" and "Only this agent" (shown
+  `persist:zollybot-browser-profile-<id>`). The built-in choices "Shared" and "Only this agent" (shown
   only to an agent that already uses it) are also profiles in the UI, but they have no row. It is not an **agent profile** (`AgentProfile`, the
   display data of an agent) or the account profile (`v1/me/profile`).
 - **bot**: do not use for new product code. Keep released names: Team API v1-v3
   `bot`/`botId`/`bots-changed` (`current-agent-keys.ts` translates), `bots.json`, `mailbox.json`,
-  `legacy-import:bots:v1`, and readable `~/OpenBot/Bots` path prefixes. Accept `bot-<uuid>` IDs from
+  `legacy-import:bots:v1`, and readable `~/ZollyBot/Bots` path prefixes. Accept `bot-<uuid>` IDs from
   databases that did not run migration v13. `"first-bot"` is an avatar seed; `BloubBot` and the
   lucide `Bot` icon are library names.
 - **channel**: the shared multi-agent chat (`ChannelStore`, `ChannelSummary`, `projection_channels`,
@@ -27,8 +27,8 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   (`SidebarPinnedGroup`, `create_section`), an IPC endpoint group (`IpcEndpointGroup`,
   `define-ipc-group.ts`), or an ARIA `role="group"`. An IPC **channel** is the wire name of an
   endpoint in `IPC_ENDPOINTS` (`ipc-endpoints.ts`); the product contract is `ipc-chat-channels.ts`.
-- **connector**: a built-in sign-in to an outside service that OpenBot turns into agent tools, one
-  for each OpenBot computer (`GitHubConnectorService`, `github-connector:*`,
+- **connector**: a built-in sign-in to an outside service that ZollyBot turns into agent tools, one
+  for each ZollyBot computer (`GitHubConnectorService`, `github-connector:*`,
   `GITHUB_CONNECTOR_MCP_SERVER_ID`). A user-added MCP server or a marketplace plugin is not a
   connector.
 - **messaging connection**: one workspace of an external chat platform (a Slack workspace, a Discord
@@ -52,7 +52,7 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   copy of another thread through one finished turn (`AgentTaskBranch`, `branch_*` columns). It is
   not a git branch.
 - **role**: a custom role of a server that sets which agents its members can use, and at which
-  level (`AgentAccessRole`, `agent-access-v1`, `openbot-agent-access-v1.json`). The **Everyone** role
+  level (`AgentAccessRole`, `agent-access-v1`, `zollybot-agent-access-v1.json`). The **Everyone** role
   applies to every member. It is not the team role (`TeamRole`: owner, admin, member), which the UI
   calls the server role. **agent access** in the agent settings is the agent's own runtime access;
   the `agent-access-v1` levels are the access of members to agents.
@@ -75,7 +75,7 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   (`workflow_versions`). A **workflow webhook trigger** is a trigger node with a webhook route of
   the `workflow` owner kind (`workflow_trigger_webhooks`).
 - **shared table**: a table an agent created in the one file every agent shares
-  (`~/OpenBot/Shared/Data/agent-data.db`, `SharedTable`, `AgentTables`). `openbot.db` is the
+  (`~/ZollyBot/Shared/Data/agent-data.db`, `SharedTable`, `AgentTables`). `zollybot.db` is the
   application's database and holds none of these. **owner**: the agent whose id
-  `openbot_metadata` records for a table, and the only agent that can drop or alter it; every other
+  `zollybot_metadata` records for a table, and the only agent that can drop or alter it; every other
   agent can still read and write its rows, and the user can delete any table in agent settings.

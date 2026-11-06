@@ -13,7 +13,7 @@ description: "Track a recurring operations list (shipments, facilities issues, k
 
 ## Inputs
 
-1. **Tracked items.** First check the signed-in tabs with `openbot_browser.list_tabs`: a spreadsheet, a ticket
+1. **Tracked items.** First check the signed-in tabs with `zollybot_browser.list_tabs`: a spreadsheet, a ticket
    page or a shared list that the user names. An installed plugin such as Airtable, Notion or Trello also works;
    find it with `tool_search`. Else ask the user to paste the list or upload a spreadsheet export.
 2. **Item types.** Use the types the user names. Defaults: `shipment`, `issue`, `date`.
@@ -21,8 +21,8 @@ description: "Track a recurring operations list (shipments, facilities issues, k
 
 ## Shared table
 
-Keep items in the shared data table `ops_items` with `openbot.execute_data` and read them with
-`openbot.query_data`. Call `openbot.list_tables` first and reuse the table if it exists.
+Keep items in the shared data table `ops_items` with `zollybot.execute_data` and read them with
+`zollybot.query_data`. Call `zollybot.list_tables` first and reuse the table if it exists.
 
 Columns: item, type, owner, status (`open`, `waiting`, `done`), due date, source (tab, file, or "chat"),
 notes, first seen, last changed. The natural key is item plus type: make it `UNIQUE` and write with an

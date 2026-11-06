@@ -13,9 +13,9 @@ import {
   shapes,
   widgetURL,
 } from "@expo/ui/swift-ui/modifiers";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import type { AgentLiveActivityProps } from "@openbot/team-client/live-activity-props";
 import { FilterMode, ImageFormat, MipmapMode, Skia } from "@shopify/react-native-skia";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import type { AgentLiveActivityProps } from "@zollybot/team-client/live-activity-props";
 import { Directory, File, Paths } from "expo-file-system";
 import {
   LiveActivity,

@@ -1,7 +1,7 @@
 // The WhatsApp numbers of the joined server in the browser client (`whatsapp-connector-v1`). The
 // host's session gets the QR code or the pairing code, and this tab shows it.
 
-import { runTeamEffect } from "@openbot/team-client";
+import { runTeamEffect } from "@zollybot/team-client";
 import {
   type TeamAdminRequestError,
   whatsappConnectorAddOrchestrator,
@@ -17,8 +17,8 @@ import {
   whatsappConnectorSetEnabled,
   whatsappConnectorSetOwnNumber,
   whatsappConnectorStartLink,
-} from "@openbot/team-client/team-admin-requests";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
+} from "@zollybot/team-client/team-admin-requests";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
 import { Effect } from "effect";
 import type { HostWhatsAppApi } from "../connectors/whatsapp-connector";
 

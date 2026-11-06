@@ -1,7 +1,7 @@
 :where(.ui-text, .ui-heading) {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
 }
 
 .ui-server-gradient-logo {
@@ -10,84 +10,84 @@
   display: block;
   flex: 0 0 auto;
   overflow: hidden;
-  border-radius: var(--server-gradient-logo-radius, var(--openbot-radius-lg));
+  border-radius: var(--server-gradient-logo-radius, var(--zollybot-radius-lg));
   background-color: var(--server-gradient-base);
   background-image: var(--server-gradient-layers);
   background-repeat: no-repeat;
-  outline: 1px solid var(--openbot-image-outline);
+  outline: 1px solid var(--zollybot-image-outline);
   outline-offset: -1px;
 }
 
 :where(.ui-text)[data-tone="secondary"],
 :where(.ui-heading)[data-tone="secondary"] {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 :where(.ui-text)[data-tone="muted"],
 :where(.ui-heading)[data-tone="muted"] {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 :where(.ui-text, .ui-heading)[data-tone="danger"] {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 :where(.ui-text, .ui-heading)[data-tone="success"] {
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 :where(.ui-text, .ui-heading)[data-tone="warning"] {
-  color: var(--openbot-warning);
+  color: var(--zollybot-warning);
 }
 
 :where(.ui-text)[data-variant="caption"] {
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
-  line-height: var(--openbot-leading-sm);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
+  line-height: var(--zollybot-leading-sm);
 }
 
 :where(.ui-text)[data-variant="label-sm"] {
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-sm);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-sm);
 }
 
 :where(.ui-text)[data-variant="label"] {
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
 }
 
 :where(.ui-text)[data-variant="body-sm"] {
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-regular);
-  line-height: var(--openbot-leading-md);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-regular);
+  line-height: var(--zollybot-leading-md);
 }
 
 :where(.ui-text)[data-variant="body"] {
-  font-size: var(--openbot-text-lg);
-  font-weight: var(--openbot-weight-regular);
-  line-height: var(--openbot-leading-lg);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-regular);
+  line-height: var(--zollybot-leading-lg);
 }
 
 :where(.ui-heading)[data-size="sm"] {
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 :where(.ui-heading)[data-size="md"] {
-  font-size: var(--openbot-text-xl);
-  line-height: var(--openbot-leading-xl);
+  font-size: var(--zollybot-text-xl);
+  line-height: var(--zollybot-leading-xl);
 }
 
 :where(.ui-heading)[data-size="lg"] {
-  font-size: var(--openbot-text-2xl);
-  line-height: var(--openbot-leading-2xl);
+  font-size: var(--zollybot-text-2xl);
+  line-height: var(--zollybot-leading-2xl);
 }
 
 :where(.ui-heading) {
-  font-weight: var(--openbot-weight-semibold);
-  letter-spacing: var(--openbot-tracking-tight);
+  font-weight: var(--zollybot-weight-semibold);
+  letter-spacing: var(--zollybot-tracking-tight);
 }
 
 .ui-text-truncate {
@@ -103,130 +103,130 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   border: 1px solid transparent;
-  border-radius: var(--openbot-radius-md);
-  padding: 0 var(--openbot-space-4);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  border-radius: var(--zollybot-radius-md);
+  padding: 0 var(--zollybot-space-4);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
   line-height: 1;
   text-decoration: none;
   user-select: none;
   white-space: nowrap;
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    border-color var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease,
-    box-shadow var(--openbot-duration-hover) ease,
-    opacity var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    border-color var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease,
+    box-shadow var(--zollybot-duration-hover) ease,
+    opacity var(--zollybot-duration-hover) ease;
 }
 
 .ui-button {
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-lg);
-  font-weight: var(--openbot-weight-medium);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 :where(.ui-button-size-xs) {
-  height: var(--openbot-control-xs);
-  padding-inline: var(--openbot-space-2);
-  font-size: var(--openbot-text-sm);
+  height: var(--zollybot-control-xs);
+  padding-inline: var(--zollybot-space-2);
+  font-size: var(--zollybot-text-sm);
 }
 
 :where(.ui-button-size-sm) {
-  height: var(--openbot-control-md);
-  padding-inline: var(--openbot-space-3);
-  font-size: var(--openbot-text-sm);
+  height: var(--zollybot-control-md);
+  padding-inline: var(--zollybot-space-3);
+  font-size: var(--zollybot-text-sm);
 }
 
 :where(.ui-button-size-default) {
-  height: var(--openbot-control-lg);
+  height: var(--zollybot-control-lg);
 }
 
 :where(.ui-button-size-lg) {
-  height: var(--openbot-control-xl);
-  padding-inline: var(--openbot-space-6);
+  height: var(--zollybot-control-xl);
+  padding-inline: var(--zollybot-space-6);
 }
 
 /* A Lucide icon keeps width="24" when the caller sets no size, which is too large next to button
    text. These rules have no specificity, so a size prop or a feature rule still wins. */
 :where(.ui-button > svg[width="24"]) {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 :where(.ui-button-size-xs > svg[width="24"], .ui-button-size-sm > svg[width="24"]) {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 :where(.ui-button-variant-default) {
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 
 :where(.ui-button-variant-outline) {
-  border-color: var(--openbot-border);
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-secondary);
+  border-color: var(--zollybot-border);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-secondary);
 }
 
 :where(.ui-button-variant-secondary) {
-  background: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
 }
 
 :where(.ui-button-variant-ghost) {
   background: transparent;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 :where(.ui-button-variant-destructive) {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger);
 }
 
 :where(.ui-button-variant-destructive-ghost) {
   background: transparent;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 :where(.ui-button-variant-link) {
   height: auto;
-  border-radius: var(--openbot-radius-xs);
+  border-radius: var(--zollybot-radius-xs);
   background: transparent;
   padding: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-underline-offset: 4px;
 }
 
 @media (hover: hover) and (pointer: fine) and (min-width: 601px) {
   :where(.ui-button-variant-default):hover:not(:disabled):not([data-disabled]) {
-    background: color-mix(in srgb, var(--openbot-surface-light) 82%, transparent);
+    background: color-mix(in srgb, var(--zollybot-surface-light) 82%, transparent);
   }
 
   :where(.ui-button-variant-outline):hover:not(:disabled):not([data-disabled]),
   :where(.ui-button-variant-ghost):hover:not(:disabled):not([data-disabled]) {
-    background: var(--openbot-bg-control-hover);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-bg-control-hover);
+    color: var(--zollybot-text-primary);
   }
 
   :where(.ui-button-variant-secondary):hover:not(:disabled):not([data-disabled]) {
-    background: var(--openbot-bg-control-active);
+    background: var(--zollybot-bg-control-active);
   }
 
   :where(.ui-button-variant-destructive):hover:not(:disabled):not([data-disabled]) {
-    background: var(--openbot-danger-soft-hover);
-    color: var(--openbot-danger);
+    background: var(--zollybot-danger-soft-hover);
+    color: var(--zollybot-danger);
   }
 
   :where(.ui-button-variant-destructive-ghost):hover:not(:disabled):not([data-disabled]) {
-    background: var(--openbot-danger-soft);
-    color: var(--openbot-danger);
+    background: var(--zollybot-danger-soft);
+    color: var(--zollybot-danger);
   }
 
   :where(.ui-button-variant-link):hover:not(:disabled):not([data-disabled]) {
@@ -235,22 +235,22 @@
 }
 
 :where(.ui-button-variant-outline, .ui-button-variant-secondary, .ui-button-variant-ghost)[aria-expanded="true"] {
-  background: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
 }
 
 :where(.ui-button):focus-visible {
   outline: 0;
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 :where(.ui-button-variant-destructive):focus-visible {
-  border-color: var(--openbot-danger-focus);
+  border-color: var(--zollybot-danger-focus);
 }
 
 :where(.ui-button)[aria-invalid="true"] {
-  border-color: var(--openbot-danger-border);
-  box-shadow: 0 0 0 3px var(--openbot-danger-focus);
+  border-color: var(--zollybot-danger-border);
+  box-shadow: 0 0 0 3px var(--zollybot-danger-focus);
 }
 
 :where(.ui-button):disabled,
@@ -269,39 +269,39 @@
 }
 
 :where(.ui-button-size-icon-xs) {
-  width: var(--openbot-control-xs);
-  height: var(--openbot-control-xs);
+  width: var(--zollybot-control-xs);
+  height: var(--zollybot-control-xs);
   padding: 0;
 }
 
 :where(.ui-button-size-icon-sm) {
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
   padding: 0;
 }
 
 :where(.ui-button-size-icon) {
-  width: var(--openbot-control-lg);
-  height: var(--openbot-control-lg);
+  width: var(--zollybot-control-lg);
+  height: var(--zollybot-control-lg);
   padding: 0;
 }
 
 :where(.ui-button-size-icon-lg) {
-  width: var(--openbot-control-xl);
-  height: var(--openbot-control-xl);
+  width: var(--zollybot-control-xl);
+  height: var(--zollybot-control-xl);
   padding: 0;
 }
 
 :where(.ui-icon-button) svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 :where(.ui-button-size-icon-xs) svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .ui-removable-image {
@@ -313,17 +313,17 @@
   z-index: 1;
   top: -8px;
   inset-inline-end: -8px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: color-mix(in srgb, var(--openbot-bg-surface-raised) 72%, transparent);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: color-mix(in srgb, var(--zollybot-bg-surface-raised) 72%, transparent);
   backdrop-filter: blur(8px) saturate(1.1);
   -webkit-backdrop-filter: blur(8px) saturate(1.1);
   opacity: 0;
   scale: 0.9;
   transition:
-    opacity var(--openbot-duration-hover) ease,
-    scale var(--openbot-duration-hover) ease,
-    background-color var(--openbot-duration-hover) ease;
+    opacity var(--zollybot-duration-hover) ease,
+    scale var(--zollybot-duration-hover) ease,
+    background-color var(--zollybot-duration-hover) ease;
 }
 
 .ui-removable-image:hover > .ui-image-remove-button,
@@ -348,17 +348,17 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   border: 1px solid transparent;
-  border-radius: var(--openbot-radius-pill);
-  padding: var(--openbot-space-0-5) var(--openbot-space-2);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-sm);
+  border-radius: var(--zollybot-radius-pill);
+  padding: var(--zollybot-space-0-5) var(--zollybot-space-2);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-sm);
   transition:
-    border-color var(--openbot-duration-fast) var(--openbot-ease-out),
-    background-color var(--openbot-duration-fast) var(--openbot-ease-out),
-    color var(--openbot-duration-fast) var(--openbot-ease-out);
+    border-color var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    background-color var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    color var(--zollybot-duration-fast) var(--zollybot-ease-out);
   white-space: nowrap;
 }
 
@@ -376,132 +376,132 @@
 }
 
 :where(.z-badge):has(> [data-icon="inline-start"]) {
-  padding-inline-start: var(--openbot-space-1-5);
+  padding-inline-start: var(--zollybot-space-1-5);
 }
 
 :where(.z-badge):has(> [data-icon="inline-end"]) {
-  padding-inline-end: var(--openbot-space-1-5);
+  padding-inline-end: var(--zollybot-space-1-5);
 }
 
 :where(.z-badge-variant-default) {
-  background: var(--openbot-accent);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-accent);
+  color: var(--zollybot-text-primary);
 }
 
 :where(.z-badge-variant-secondary) {
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-secondary);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-secondary);
 }
 
 :where(.z-badge-variant-outline) {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 :where(.z-badge-variant-ghost) {
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 :where(.z-badge-variant-link) {
   background: transparent;
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
 :where(.z-badge-variant-primary-light) {
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
 :where(.z-badge-variant-success-light) {
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success);
 }
 
 :where(.z-badge-variant-warning-light) {
-  background: var(--openbot-warning-soft);
-  color: var(--openbot-warning);
+  background: var(--zollybot-warning-soft);
+  color: var(--zollybot-warning);
 }
 
 :where(.z-badge-variant-destructive),
 :where(.z-badge-variant-destructive-light) {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger);
 }
 
-/* The design's "New" chip. Not a --openbot-success or --openbot-accent variant: an
+/* The design's "New" chip. Not a --zollybot-success or --zollybot-accent variant: an
  * announcement that something is newly available is neither a report that something
  * succeeded nor an action the user can take. The heavier weight and the open tracking
  * are part of the look, which is why this variant sets them and the others do not. */
 :where(.z-badge-variant-new) {
-  background: var(--openbot-badge-new-soft);
-  color: var(--openbot-badge-new);
-  font-weight: var(--openbot-weight-semibold);
+  background: var(--zollybot-badge-new-soft);
+  color: var(--zollybot-badge-new);
+  font-weight: var(--zollybot-weight-semibold);
   letter-spacing: 0.01em;
 }
 
 :where(.z-badge-variant-info-light) {
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
 :where(.z-badge-variant-primary-outline) {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
 }
 
 :where(.z-badge-variant-success-outline) {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 :where(.z-badge-variant-warning-outline) {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-warning);
+  color: var(--zollybot-warning);
 }
 
 :where(.z-badge-variant-destructive-outline) {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 :where(.z-badge-variant-info-outline) {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
 }
 
 /* Every Lucide icon takes the shared line. Without this rule, an icon outside a `.ui-button` and without a
  * feature rule keeps the Lucide line of 2 and looks heavier than the icons beside it. The rule has no
  * specificity, so a feature rule that sets a different line still wins. */
 :where(svg.lucide) {
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 /* The hand-drawn SVGs, which are on a 20-unit viewBox where lucide's is 24. Feeding them
- * --openbot-icon-stroke raw would paint them 20% heavier than every lucide icon beside
+ * --zollybot-icon-stroke raw would paint them 20% heavier than every lucide icon beside
  * them, so it is scaled to the smaller grid instead. These carried 1.35 to 1.6 by hand
  * before, i.e. 1.08 to 1.43 device px against lucide's 1.0. */
 :where(.ui-glyph-20) {
-  stroke-width: calc(var(--openbot-icon-stroke) * 20 / 24);
+  stroke-width: calc(var(--zollybot-icon-stroke) * 20 / 24);
 }
 
 :where(.ui-glyph-16) {
-  stroke-width: calc(var(--openbot-icon-stroke) * 16 / 24);
+  stroke-width: calc(var(--zollybot-icon-stroke) * 16 / 24);
 }
 
 :where(.ui-checkbox) {
   position: relative;
   display: inline-flex;
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
 }
 
@@ -521,27 +521,27 @@
   height: 100%;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-xs);
-  background: var(--openbot-bg-control);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-xs);
+  background: var(--zollybot-bg-control);
   color: transparent;
 }
 
 .ui-checkbox-input:checked + .ui-checkbox-visual {
-  border-color: var(--openbot-accent);
-  background: var(--openbot-accent);
-  color: var(--openbot-text-primary);
+  border-color: var(--zollybot-accent);
+  background: var(--zollybot-accent);
+  color: var(--zollybot-text-primary);
 }
 
 .ui-checkbox-input:focus-visible + .ui-checkbox-visual {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
 .ui-checkbox-visual svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  /* Heavier than --openbot-icon-stroke deliberately: a tick is a state indicator, and the
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  /* Heavier than --zollybot-icon-stroke deliberately: a tick is a state indicator, and the
    * shared weight paints 0.75 device px inside this 12px box. */
   stroke-width: 2.5;
 }
@@ -549,49 +549,49 @@
 :where(.ui-input, .ui-textarea, .ui-native-select) {
   width: 100%;
   min-width: 0;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-md);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
   outline: 0;
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    border-color var(--openbot-duration-hover) ease,
-    box-shadow var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    border-color var(--zollybot-duration-hover) ease,
+    box-shadow var(--zollybot-duration-hover) ease;
 }
 
 :where(.ui-input, .ui-native-select)[data-size="sm"] {
-  height: var(--openbot-control-sm);
-  padding-inline: var(--openbot-space-2);
+  height: var(--zollybot-control-sm);
+  padding-inline: var(--zollybot-space-2);
 }
 
 :where(.ui-input, .ui-native-select)[data-size="md"] {
-  height: var(--openbot-control-md);
-  padding-inline: var(--openbot-space-3);
+  height: var(--zollybot-control-md);
+  padding-inline: var(--zollybot-space-3);
 }
 
 :where(.ui-input, .ui-native-select)[data-size="lg"] {
-  height: var(--openbot-control-lg);
-  padding-inline: var(--openbot-space-3);
+  height: var(--zollybot-control-lg);
+  padding-inline: var(--zollybot-space-3);
 }
 
 :where(.ui-textarea) {
   min-height: 76px;
   resize: vertical;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
 }
 
 :where(.ui-textarea)::-webkit-resizer {
-  background-color: var(--openbot-bg-control);
+  background-color: var(--zollybot-bg-control);
   background-image: linear-gradient(
     135deg,
     transparent 46%,
-    var(--openbot-text-muted) 46% 50%,
+    var(--zollybot-text-muted) 46% 50%,
     transparent 50% 62%,
-    var(--openbot-text-muted) 62% 66%,
+    var(--zollybot-text-muted) 62% 66%,
     transparent 66%
   );
   background-repeat: no-repeat;
@@ -606,7 +606,7 @@
 
 /* The grip sits inside the bottom-right corner. It changes only the height. */
 .ui-textarea-resizer {
-  --ui-textarea-grip: var(--openbot-text-dim);
+  --ui-textarea-grip: var(--zollybot-text-dim);
 
   position: absolute;
   inset-inline-end: 1px;
@@ -615,7 +615,7 @@
   height: 20px;
   margin: 0;
   border: 0;
-  border-end-end-radius: var(--openbot-radius-md);
+  border-end-end-radius: var(--zollybot-radius-md);
   padding: 0;
   background-image: linear-gradient(
     135deg,
@@ -636,7 +636,7 @@
 .ui-textarea-resizer:hover,
 .ui-textarea-resizer:focus-visible,
 .ui-textarea-resizer[data-active] {
-  --ui-textarea-grip: var(--openbot-text-primary);
+  --ui-textarea-grip: var(--zollybot-text-primary);
 }
 
 .ui-textarea-resizer:focus-visible {
@@ -654,16 +654,16 @@ html.ui-textarea-resizing {
 }
 
 :where(.ui-input, .ui-textarea)::placeholder {
-  color: var(--openbot-text-placeholder);
+  color: var(--zollybot-text-placeholder);
 }
 
 /* A focused field gets a neutral border and no ring. */
 :where(.ui-input, .ui-textarea, .ui-native-select):focus-visible {
-  border-color: var(--openbot-border-focus);
+  border-color: var(--zollybot-border-focus);
 }
 
 :where(.ui-input, .ui-textarea, .ui-native-select)[aria-invalid="true"] {
-  border-color: var(--openbot-danger);
+  border-color: var(--zollybot-danger);
 }
 
 :where(.ui-input, .ui-textarea, .ui-native-select):disabled {
@@ -682,42 +682,42 @@ html.ui-textarea-resizing {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   cursor: pointer;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-md);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
   outline: 0;
   background: transparent;
-  padding-block: var(--openbot-space-2);
-  padding-inline: 10px var(--openbot-space-2);
-  box-shadow: 0 1px 2px var(--openbot-shadow-popover-ambient);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  padding-block: var(--zollybot-space-2);
+  padding-inline: 10px var(--zollybot-space-2);
+  box-shadow: 0 1px 2px var(--zollybot-shadow-popover-ambient);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
   text-align: start;
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    border-color var(--openbot-duration-hover) ease,
-    box-shadow var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    border-color var(--zollybot-duration-hover) ease,
+    box-shadow var(--zollybot-duration-hover) ease;
 }
 
 .ui-select-trigger[data-size="sm"] {
-  height: var(--openbot-control-md);
-  font-size: var(--openbot-text-sm);
+  height: var(--zollybot-control-md);
+  font-size: var(--zollybot-text-sm);
 }
 
 .ui-select-trigger[data-size="md"] {
-  height: var(--openbot-control-lg);
+  height: var(--zollybot-control-lg);
 }
 
 .ui-select-trigger[data-expanded] {
-  border-color: var(--openbot-border-strong);
-  background: var(--openbot-hover);
+  border-color: var(--zollybot-border-strong);
+  background: var(--zollybot-hover);
 }
 
 .ui-select .ui-select-trigger:focus-visible {
-  border-color: var(--openbot-border-focus);
+  border-color: var(--zollybot-border-focus);
   outline: 0;
 }
 
@@ -727,13 +727,13 @@ html.ui-textarea-resizing {
 }
 
 .ui-select-trigger[aria-invalid="true"] {
-  border-color: var(--openbot-danger);
-  box-shadow: 0 0 0 3px var(--openbot-danger-soft);
+  border-color: var(--zollybot-danger);
+  box-shadow: 0 0 0 3px var(--zollybot-danger-soft);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .ui-select-trigger:hover:not([data-disabled]) {
-    background: var(--openbot-hover);
+    background: var(--zollybot-hover);
   }
 }
 
@@ -745,13 +745,13 @@ html.ui-textarea-resizing {
 }
 
 .ui-select-trigger-icon {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .ui-select-trigger-icon svg {
@@ -760,25 +760,25 @@ html.ui-textarea-resizing {
 }
 
 .ui-select-content {
-  z-index: var(--openbot-layer-popover);
+  z-index: var(--zollybot-layer-popover);
   max-height: 320px;
   min-width: 144px;
   overflow: hidden auto;
   border: 0;
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-surface-raised);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface-raised);
   box-shadow:
-    0 4px 6px -1px var(--openbot-shadow-popover-ambient),
-    0 2px 4px -2px var(--openbot-shadow-popover-ambient),
-    0 0 0 1px var(--openbot-border-strong);
-  color: var(--openbot-text-primary);
+    0 4px 6px -1px var(--zollybot-shadow-popover-ambient),
+    0 2px 4px -2px var(--zollybot-shadow-popover-ambient),
+    0 0 0 1px var(--zollybot-border-strong);
+  color: var(--zollybot-text-primary);
   transform-origin: var(--kb-select-content-transform-origin);
-  animation: ui-select-content-in var(--openbot-duration-dialog) var(--openbot-ease-out) both;
+  animation: ui-select-content-in var(--zollybot-duration-dialog) var(--zollybot-ease-out) both;
 }
 
 .ui-select-listbox {
   margin: 0;
-  padding: var(--openbot-space-1);
+  padding: var(--zollybot-space-1);
   outline: 0;
 }
 
@@ -794,24 +794,24 @@ html.ui-textarea-resizing {
 .ui-search-select-search {
   position: relative;
   flex: 0 0 auto;
-  border-bottom: 1px solid var(--openbot-border);
-  padding: var(--openbot-space-1);
+  border-bottom: 1px solid var(--zollybot-border);
+  padding: var(--zollybot-space-1);
 }
 
 .ui-search-select-search > svg {
   position: absolute;
   top: 50%;
-  inset-inline-start: var(--openbot-space-3);
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  color: var(--openbot-text-muted);
+  inset-inline-start: var(--zollybot-space-3);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  color: var(--zollybot-text-muted);
   transform: translateY(-50%);
   pointer-events: none;
 }
 
 .ui-search-select-input {
   width: 100%;
-  padding-inline-start: var(--openbot-space-8);
+  padding-inline-start: var(--zollybot-space-8);
 }
 
 .ui-search-select-root {
@@ -829,15 +829,15 @@ html.ui-textarea-resizing {
 
 .ui-search-select-empty {
   margin: 0;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-select-footer {
-  border-top: 1px solid var(--openbot-border);
-  padding: var(--openbot-space-1);
+  border-top: 1px solid var(--zollybot-border);
+  padding: var(--zollybot-space-1);
 }
 
 .ui-select-item {
@@ -846,30 +846,30 @@ html.ui-textarea-resizing {
   align-items: center;
   cursor: default;
   user-select: none;
-  border-radius: var(--openbot-radius-sm);
+  border-radius: var(--zollybot-radius-sm);
   outline: 0;
-  padding-block: var(--openbot-space-1-5);
-  padding-inline: var(--openbot-space-2) var(--openbot-space-8);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  padding-block: var(--zollybot-space-1-5);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-8);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease;
 }
 
 .ui-select-item[data-highlighted] {
-  background: var(--openbot-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-hover);
+  color: var(--zollybot-text-primary);
 }
 
 .ui-select-item[data-selected] {
   background: transparent;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .ui-select-item[data-selected][data-highlighted] {
-  background: var(--openbot-hover);
+  background: var(--zollybot-hover);
 }
 
 .ui-select-item[data-disabled] {
@@ -885,9 +885,9 @@ html.ui-textarea-resizing {
 
 .ui-select-item-indicator {
   position: absolute;
-  inset-inline-end: var(--openbot-space-2);
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  inset-inline-end: var(--zollybot-space-2);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -929,86 +929,90 @@ html.ui-textarea-resizing {
 
 .ui-field {
   display: grid;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .ui-label {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-field-required,
 .ui-field-error {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .ui-field-required {
-  margin-inline-start: var(--openbot-space-0-5);
+  margin-inline-start: var(--zollybot-space-0-5);
 }
 
 .ui-field-description,
 .ui-field-error {
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-field-description {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .ui-field-limit {
   display: grid;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .ui-switch {
-  --ui-switch-thumb-size: var(--openbot-switch-thumb);
-  --ui-switch-inset: var(--openbot-switch-inset);
-  --ui-switch-travel: calc(var(--openbot-switch-width) - var(--ui-switch-thumb-size) - (var(--ui-switch-inset) * 2));
+  --ui-switch-thumb-size: var(--zollybot-switch-thumb);
+  --ui-switch-inset: var(--zollybot-switch-inset);
+  --ui-switch-travel: calc(var(--zollybot-switch-width) - var(--ui-switch-thumb-size) - (var(--ui-switch-inset) * 2));
   position: relative;
   z-index: 0;
-  width: var(--openbot-switch-width);
-  height: var(--openbot-switch-height);
+  width: var(--zollybot-switch-width);
+  height: var(--zollybot-switch-height);
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
   border: 0;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   outline: none;
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
   box-shadow:
-    inset 0 0 0 1px var(--openbot-border-strong),
-    0 1px 2px var(--openbot-shadow-ring);
+    inset 0 0 0 1px var(--zollybot-border-strong),
+    0 1px 2px var(--zollybot-shadow-ring);
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    box-shadow var(--openbot-duration-hover) ease,
-    opacity var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    box-shadow var(--zollybot-duration-hover) ease,
+    opacity var(--zollybot-duration-hover) ease;
 }
 
 .ui-switch[data-size="sm"] {
-  --ui-switch-thumb-size: var(--openbot-switch-sm-thumb);
-  --ui-switch-inset: var(--openbot-switch-sm-inset);
-  --ui-switch-travel: calc(var(--openbot-switch-sm-width) - var(--ui-switch-thumb-size) - (var(--ui-switch-inset) * 2));
-  width: var(--openbot-switch-sm-width);
-  height: var(--openbot-switch-sm-height);
+  --ui-switch-thumb-size: var(--zollybot-switch-sm-thumb);
+  --ui-switch-inset: var(--zollybot-switch-sm-inset);
+  --ui-switch-travel: calc(
+    var(--zollybot-switch-sm-width) -
+    var(--ui-switch-thumb-size) -
+    (var(--ui-switch-inset) * 2)
+  );
+  width: var(--zollybot-switch-sm-width);
+  height: var(--zollybot-switch-sm-height);
 }
 
 .ui-switch[data-checked] {
-  background: var(--openbot-surface-light);
+  background: var(--zollybot-surface-light);
 }
 
 .ui-switch[data-invalid] {
-  box-shadow: 0 0 0 3px var(--openbot-danger-focus);
+  box-shadow: 0 0 0 3px var(--zollybot-danger-focus);
 }
 
 .ui-switch:not([data-pointer-focus]):has(.ui-switch-input:focus-visible) {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .ui-switch[data-invalid]:not([data-pointer-focus]):has(.ui-switch-input:focus-visible) {
-  box-shadow: 0 0 0 3px var(--openbot-danger-focus);
+  box-shadow: 0 0 0 3px var(--zollybot-danger-focus);
 }
 
 .ui-switch-field {
@@ -1016,27 +1020,27 @@ html.ui-textarea-resizing {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .ui-switch-copy {
   min-width: 0;
   display: grid;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .ui-switch-label {
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
   cursor: pointer;
 }
 
 .ui-switch-description {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-switch-input {
@@ -1070,9 +1074,9 @@ html.ui-textarea-resizing {
   width: var(--ui-switch-thumb-size);
   height: var(--ui-switch-thumb-size);
   display: block;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-text-primary);
-  box-shadow: 0 1px 2px var(--openbot-shadow-ring);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-text-primary);
+  box-shadow: 0 1px 2px var(--zollybot-shadow-ring);
   transform: translate3d(
       calc(var(--ui-switch-inset) + (var(--ui-switch-position, 0) * var(--ui-switch-travel))),
       -50%,
@@ -1081,52 +1085,52 @@ html.ui-textarea-resizing {
     scale(var(--ui-switch-scale-x, 1), var(--ui-switch-scale-y, 1));
   transform-origin: center;
   will-change: transform;
-  transition: background-color var(--openbot-duration-fast) var(--openbot-ease-out);
+  transition: background-color var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .ui-switch-thumb[data-checked] {
-  background: var(--openbot-text-on-light);
+  background: var(--zollybot-text-on-light);
 }
 
 .ui-slider-field {
   width: 100%;
   display: grid;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .ui-slider-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .ui-slider-label {
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
 }
 
 .ui-slider-value {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-slider-description {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-slider-track {
   position: relative;
   height: 4px;
-  margin-block: var(--openbot-space-2);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-border-strong);
+  margin-block: var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-border-strong);
   cursor: pointer;
 }
 
@@ -1143,25 +1147,25 @@ html.ui-textarea-resizing {
   position: absolute;
   height: 100%;
   border-radius: inherit;
-  background: var(--openbot-text-secondary);
+  background: var(--zollybot-text-secondary);
 }
 
 /* Kobalte owns the inline `transform` that centres the thumb on its value, so the vertical centring
    uses `top` instead. */
 .ui-slider-thumb {
-  top: calc(50% - (var(--openbot-switch-thumb) / 2));
-  width: var(--openbot-switch-thumb);
-  height: var(--openbot-switch-thumb);
+  top: calc(50% - (var(--zollybot-switch-thumb) / 2));
+  width: var(--zollybot-switch-thumb);
+  height: var(--zollybot-switch-thumb);
   display: block;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   outline: none;
-  background: var(--openbot-text-primary);
-  box-shadow: 0 1px 2px var(--openbot-shadow-ring);
+  background: var(--zollybot-text-primary);
+  box-shadow: 0 1px 2px var(--zollybot-shadow-ring);
   cursor: grab;
 }
 
 .ui-slider-thumb:focus-visible {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .ui-slider-thumb[data-dragging] {
@@ -1195,9 +1199,9 @@ html.ui-textarea-resizing {
   bottom: 0;
   width: 2px;
   display: block;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   outline: none;
-  background: var(--openbot-text-primary);
+  background: var(--zollybot-text-primary);
   opacity: 0;
 }
 
@@ -1208,7 +1212,7 @@ html.ui-textarea-resizing {
 }
 
 .ui-seek-slider-thumb:focus-visible {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .ui-slider-field[data-disabled] {
@@ -1229,48 +1233,48 @@ html.ui-textarea-resizing {
 }
 
 .ui-card {
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-card);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-card);
+  background: var(--zollybot-bg-surface);
 }
 
 .ui-item-group {
   display: grid;
   overflow: hidden;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-card);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-card);
+  background: var(--zollybot-bg-surface);
 }
 
 .ui-item-group[data-surface="subtle"] {
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
 }
 
 .ui-item-group > :not(:first-child) {
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .ui-item {
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-3);
-  padding-inline: var(--openbot-space-4);
+  gap: var(--zollybot-space-3);
+  padding-inline: var(--zollybot-space-4);
 }
 
 .ui-item[data-size="compact"] {
   min-height: 52px;
-  padding-block: var(--openbot-space-2);
+  padding-block: var(--zollybot-space-2);
 }
 
 .ui-item[data-size="default"] {
   min-height: 64px;
-  padding-block: var(--openbot-space-3);
+  padding-block: var(--zollybot-space-3);
 }
 
 .ui-item[data-size="spacious"] {
   min-height: 72px;
-  padding-block: var(--openbot-space-4);
+  padding-block: var(--zollybot-space-4);
 }
 
 .ui-item-media,
@@ -1281,31 +1285,31 @@ html.ui-textarea-resizing {
 }
 
 .ui-item-media {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* An icon in the media slot stands beside a title and a description, so it is a large icon with the line of
  * the large icons. The selector is weak, so a feature can set a different size and line. */
 :where(.ui-item-media) > svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .ui-item-content {
   min-width: 0;
   display: grid;
   flex: 1 1 auto;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .ui-item-title {
   min-width: 0;
   overflow: hidden;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1313,16 +1317,16 @@ html.ui-textarea-resizing {
 .ui-item-description {
   min-width: 0;
   overflow: hidden;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .ui-item-actions {
   justify-content: flex-end;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-item.ui-dynamic-island-identity {
@@ -1332,7 +1336,7 @@ html.ui-textarea-resizing {
   display: grid;
   grid-template-columns: 35px minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   padding: 0;
 }
 
@@ -1357,10 +1361,10 @@ html.ui-textarea-resizing {
 .ui-dynamic-island-identity-title {
   display: flex;
   align-items: baseline;
-  gap: var(--openbot-space-1);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-sm);
+  gap: var(--zollybot-space-1);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-dynamic-island-identity-name {
@@ -1368,23 +1372,23 @@ html.ui-textarea-resizing {
   max-width: 26ch;
   overflow: hidden;
   flex: 0 1 auto;
-  color: var(--openbot-island-identity-name);
+  color: var(--zollybot-island-identity-name);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .ui-dynamic-island-identity-status {
   flex: 0 0 auto;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .ui-dynamic-island-identity-description {
   display: -webkit-box;
   overflow: hidden;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
+  line-height: var(--zollybot-leading-sm);
   overflow-wrap: anywhere;
   text-wrap: pretty;
   white-space: normal;
@@ -1395,25 +1399,25 @@ html.ui-textarea-resizing {
 .ui-dynamic-island-identity-trailing {
   align-self: start;
   padding-top: 2px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
   white-space: nowrap;
 }
 
 .ui-questionnaire {
   min-width: 0;
   display: grid;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .ui-questionnaire-progress {
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-questionnaire-item {
@@ -1426,12 +1430,12 @@ html.ui-textarea-resizing {
 .ui-questionnaire-title {
   width: 100%;
   padding: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .ui-questionnaire-description {
   margin: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .ui-questionnaire-choices {
@@ -1464,15 +1468,15 @@ html.ui-textarea-resizing {
 }
 
 .ui-questionnaire-choice:focus-within {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: -2px;
 }
 
 .ui-questionnaire-error {
   margin: 0;
-  color: var(--openbot-danger);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-danger);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .ui-questionnaire-actions {
@@ -1480,12 +1484,12 @@ html.ui-textarea-resizing {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-settings-section {
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-settings-section-header {
@@ -1493,18 +1497,18 @@ html.ui-textarea-resizing {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--openbot-space-3);
-  padding-inline: var(--openbot-space-1);
+  gap: var(--zollybot-space-3);
+  padding-inline: var(--zollybot-space-1);
 }
 
 .ui-settings-section-copy {
   min-width: 0;
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .ui-settings-section-heading {
-  font-weight: var(--openbot-weight-regular);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .ui-settings-section-description {
@@ -1516,7 +1520,7 @@ html.ui-textarea-resizing {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-qr-code {
@@ -1524,8 +1528,8 @@ html.ui-textarea-resizing {
   flex: 0 0 auto;
   place-items: center;
   overflow: hidden;
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-qr-background);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-qr-background);
 }
 
 .ui-qr-code > * {
@@ -1543,8 +1547,8 @@ html.ui-textarea-resizing {
 .ui-qr-code-mark {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1);
-  color: var(--openbot-paper-text);
+  gap: var(--zollybot-space-1);
+  color: var(--zollybot-paper-text);
   visibility: hidden;
 }
 
@@ -1557,35 +1561,35 @@ html.ui-textarea-resizing {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--openbot-space-3);
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
-  padding: var(--openbot-space-3) var(--openbot-space-4);
-  color: var(--openbot-text-muted);
+  gap: var(--zollybot-space-3);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
+  color: var(--zollybot-text-muted);
 }
 
 .ui-alert[data-tone="success"] {
-  border-color: var(--openbot-success-soft);
-  background: var(--openbot-success-wash);
-  color: var(--openbot-success);
+  border-color: var(--zollybot-success-soft);
+  background: var(--zollybot-success-wash);
+  color: var(--zollybot-success);
 }
 
 .ui-alert[data-tone="warning"] {
-  border-color: var(--openbot-warning-soft);
-  background: var(--openbot-warning-soft);
-  color: var(--openbot-warning);
+  border-color: var(--zollybot-warning-soft);
+  background: var(--zollybot-warning-soft);
+  color: var(--zollybot-warning);
 }
 
 .ui-alert[data-tone="danger"] {
-  border-color: var(--openbot-danger-soft);
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger);
+  border-color: var(--zollybot-danger-soft);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger);
 }
 
 .ui-alert-icon {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
@@ -1600,34 +1604,34 @@ html.ui-textarea-resizing {
 .ui-alert-content {
   min-width: 0;
   display: grid;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .ui-alert-title {
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
 }
 
 .ui-alert-description {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 /* A toned alert puts a wash over whatever is behind it, which lifts the background towards the
    muted text colour and leaves this line under 4.5:1 on a panel. The tone carries the meaning;
    the description only has to be readable. */
 .ui-alert[data-tone] .ui-alert-description {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .ui-alert-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-progress {
@@ -1638,8 +1642,8 @@ html.ui-textarea-resizing {
   width: 100%;
   height: 3px;
   overflow: hidden;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-border-strong);
 }
 
 /* Kobalte reports the value as a custom property and leaves the width to us, so a fill without this
@@ -1648,15 +1652,15 @@ html.ui-textarea-resizing {
   width: var(--kb-progress-fill-width, 0%);
   height: 100%;
   border-radius: inherit;
-  background: var(--openbot-text-secondary);
-  transition: width var(--openbot-duration-normal) var(--openbot-ease-out);
+  background: var(--zollybot-text-secondary);
+  transition: width var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 /* An operation with no measurable end reports that it is still running, rather than sitting at a
    number. Kobalte publishes no width for one, so the fill is a short bar that travels the track. */
 .ui-progress-fill[data-indeterminate] {
   width: 35%;
-  animation: ui-progress-travel 1.4s var(--openbot-ease-in-out) infinite;
+  animation: ui-progress-travel 1.4s var(--zollybot-ease-in-out) infinite;
   transition: none;
 }
 
@@ -1685,7 +1689,7 @@ html.ui-textarea-resizing {
 }
 
 .ui-radial-progress {
-  --ui-radial-progress-color: var(--openbot-accent);
+  --ui-radial-progress-color: var(--zollybot-accent);
 
   position: relative;
   display: grid;
@@ -1696,11 +1700,11 @@ html.ui-textarea-resizing {
 }
 
 .ui-radial-progress[data-tone="warning"] {
-  --ui-radial-progress-color: var(--openbot-warning);
+  --ui-radial-progress-color: var(--zollybot-warning);
 }
 
 .ui-radial-progress[data-tone="danger"] {
-  --ui-radial-progress-color: var(--openbot-danger);
+  --ui-radial-progress-color: var(--zollybot-danger);
 }
 
 .ui-radial-progress-chart {
@@ -1716,15 +1720,15 @@ html.ui-textarea-resizing {
 }
 
 .ui-radial-progress-track {
-  stroke: var(--openbot-border-strong);
+  stroke: var(--zollybot-border-strong);
 }
 
 .ui-radial-progress-indicator {
   stroke: currentcolor;
   stroke-linecap: butt;
   transition:
-    stroke-dasharray var(--openbot-duration-normal) var(--openbot-ease-out),
-    stroke-dashoffset var(--openbot-duration-normal) var(--openbot-ease-out);
+    stroke-dasharray var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    stroke-dashoffset var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .ui-radial-progress-indicator[data-linecap="round"] {
@@ -1736,20 +1740,20 @@ html.ui-textarea-resizing {
   z-index: 1;
   display: grid;
   place-items: center;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* Both themes: Sonner sets its own colors under `[data-sonner-theme]`, so this keeps the same weight. */
 .ui-toaster[data-sonner-toaster][data-sonner-theme] {
-  z-index: var(--openbot-layer-toast);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  --normal-bg: var(--openbot-bg-surface-raised);
-  --normal-bg-hover: var(--openbot-bg-control-hover);
-  --normal-border: var(--openbot-border);
-  --normal-border-hover: var(--openbot-border-focus);
-  --normal-text: var(--openbot-text-primary);
-  --border-radius: var(--openbot-radius-lg);
+  z-index: var(--zollybot-layer-toast);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  --normal-bg: var(--zollybot-bg-surface-raised);
+  --normal-bg-hover: var(--zollybot-bg-control-hover);
+  --normal-border: var(--zollybot-border);
+  --normal-border-hover: var(--zollybot-border-focus);
+  --normal-text: var(--zollybot-text-primary);
+  --border-radius: var(--zollybot-radius-lg);
 }
 
 /* Three columns and two rows: the mark, the words, and an action row under them. Sonner lays the
@@ -1760,31 +1764,31 @@ html.ui-textarea-resizing {
    icon renders no `[data-icon]` element at all. */
 .ui-toaster [data-sonner-toast][data-styled="true"] {
   --ui-toast-tone: transparent;
-  --ui-toast-motion-duration: var(--openbot-duration-toast-enter);
+  --ui-toast-motion-duration: var(--zollybot-duration-toast-enter);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: start;
   column-gap: 0;
-  row-gap: var(--openbot-space-2);
-  min-height: var(--openbot-control-xl);
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  row-gap: var(--zollybot-space-2);
+  min-height: var(--zollybot-control-xl);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
   border-color: transparent;
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface-raised);
-  box-shadow: 0 0 0 1px var(--openbot-border);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
+  box-shadow: 0 0 0 1px var(--zollybot-border);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
   transition:
-    transform var(--ui-toast-motion-duration) var(--openbot-ease-out),
-    opacity var(--ui-toast-motion-duration) var(--openbot-ease-out),
-    height var(--ui-toast-motion-duration) var(--openbot-ease-out),
-    box-shadow var(--openbot-duration-normal) ease;
+    transform var(--ui-toast-motion-duration) var(--zollybot-ease-out),
+    opacity var(--ui-toast-motion-duration) var(--zollybot-ease-out),
+    height var(--ui-toast-motion-duration) var(--zollybot-ease-out),
+    box-shadow var(--zollybot-duration-normal) ease;
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"][data-removed="true"] {
-  --ui-toast-motion-duration: var(--openbot-duration-toast-exit);
+  --ui-toast-motion-duration: var(--zollybot-duration-toast-exit);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-content] {
@@ -1809,56 +1813,56 @@ html.ui-textarea-resizing {
    even while the control itself is hidden. */
 .ui-toaster.ui-toaster-closeable [data-sonner-toast][data-styled="true"] [data-content],
 .ui-toaster [data-sonner-toast][data-styled="true"]:has([data-close-button]) [data-content] {
-  padding-inline-end: var(--openbot-space-6);
+  padding-inline-end: var(--zollybot-space-6);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-title] {
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-description] {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-wrap: pretty;
 }
 
 .ui-error-reference {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1);
-  margin-top: var(--openbot-space-0-5);
-  color: var(--openbot-text-muted);
+  gap: var(--zollybot-space-1);
+  margin-top: var(--zollybot-space-0-5);
+  color: var(--zollybot-text-muted);
 }
 
 .ui-error-reference-code {
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-xs);
-  line-height: var(--openbot-leading-sm);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-xs);
+  line-height: var(--zollybot-leading-sm);
   user-select: text;
   overflow-wrap: anywhere;
 }
 
 .ui-toaster [data-sonner-toast][data-type="success"] {
-  --ui-toast-tone: var(--openbot-success);
+  --ui-toast-tone: var(--zollybot-success);
 }
 
 .ui-toaster [data-sonner-toast][data-type="info"] {
-  --ui-toast-tone: var(--openbot-accent-text);
+  --ui-toast-tone: var(--zollybot-accent-text);
 }
 
 .ui-toaster [data-sonner-toast][data-type="warning"] {
-  --ui-toast-tone: var(--openbot-warning);
+  --ui-toast-tone: var(--zollybot-warning);
 }
 
 .ui-toaster [data-sonner-toast][data-type="error"] {
-  --ui-toast-tone: var(--openbot-danger);
+  --ui-toast-tone: var(--zollybot-danger);
 }
 
 .ui-toaster [data-sonner-toast][data-type="loading"] {
-  --ui-toast-tone: var(--openbot-text-muted);
+  --ui-toast-tone: var(--zollybot-text-muted);
 }
 
 .ui-toaster [data-sonner-toast][data-type="success"] [data-icon],
@@ -1871,18 +1875,18 @@ html.ui-textarea-resizing {
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-icon] {
   grid-area: 1 / 1;
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   /* The column gap is zero so that a toast with no icon starts its text at the padding edge. The
      space between the mark and the words is this margin instead. */
   margin-block: 1px 0;
-  margin-inline: 0 var(--openbot-space-3);
+  margin-inline: 0 var(--zollybot-space-3);
 }
 
 .ui-toast-icon {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .ui-toast-loading-icon {
@@ -1890,66 +1894,66 @@ html.ui-textarea-resizing {
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-button] {
-  height: var(--openbot-control-md);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-control-hover);
-  box-shadow: inset 0 0 0 1px var(--openbot-border);
-  padding-inline: var(--openbot-space-3);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  height: var(--zollybot-control-md);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-control-hover);
+  box-shadow: inset 0 0 0 1px var(--zollybot-border);
+  padding-inline: var(--zollybot-space-3);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease,
-    transform var(--openbot-duration-normal) var(--openbot-ease-out);
+    background-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease,
+    transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-cancel] {
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-button]:focus-visible,
 .ui-toaster [data-sonner-toast]:focus-visible {
   outline: 0;
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-close-button]:focus-visible {
   outline: 0;
   box-shadow:
-    inset 0 0 0 1px var(--openbot-border-strong),
-    0 0 0 2px var(--openbot-border-strong);
+    inset 0 0 0 1px var(--zollybot-border-strong),
+    0 0 0 2px var(--zollybot-border-strong);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-close-button] {
-  top: var(--openbot-space-1);
-  inset-inline-end: var(--openbot-space-1);
+  top: var(--zollybot-space-1);
+  inset-inline-end: var(--zollybot-space-1);
   inset-inline-start: auto;
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
   border: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   background: transparent;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   pointer-events: auto;
   opacity: 1;
   transform: scale(1);
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    box-shadow var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease,
-    opacity var(--openbot-duration-normal) ease,
-    transform var(--openbot-duration-normal) var(--openbot-ease-out);
+    background-color var(--zollybot-duration-normal) ease,
+    box-shadow var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease,
+    opacity var(--zollybot-duration-normal) ease,
+    transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .ui-toaster [data-sonner-toast][data-styled="true"] [data-close-button]::after {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--openbot-control-xl);
-  height: var(--openbot-control-xl);
+  width: var(--zollybot-control-xl);
+  height: var(--zollybot-control-xl);
   content: "";
   transform: translate(-50%, -50%);
 }
@@ -1968,12 +1972,12 @@ html.ui-textarea-resizing {
   }
 
   .ui-toaster [data-sonner-toast][data-styled="true"] [data-button]:hover {
-    background: var(--openbot-bg-control-active);
+    background: var(--zollybot-bg-control-active);
   }
 
   .ui-toaster [data-sonner-toast][data-styled="true"] [data-close-button]:hover:not(:focus-visible) {
-    background: var(--openbot-danger-soft);
-    color: var(--openbot-danger);
+    background: var(--zollybot-danger-soft);
+    color: var(--zollybot-danger);
   }
 }
 
@@ -1996,34 +2000,34 @@ html.ui-textarea-resizing {
 .ui-separator[data-orientation="horizontal"] {
   width: 100%;
   height: 1px;
-  background: var(--openbot-border);
+  background: var(--zollybot-border);
 }
 
 .ui-separator[data-orientation="vertical"] {
   width: 1px;
   height: 100%;
-  background: var(--openbot-border);
+  background: var(--zollybot-border);
 }
 
 .ui-spinner {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   display: inline-block;
   flex: 0 0 auto;
-  border: 1.5px solid var(--openbot-border-strong);
+  border: 1.5px solid var(--zollybot-border-strong);
   border-top-color: currentColor;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   animation: ui-spin 720ms linear infinite;
 }
 
 .ui-spinner[data-size="sm"] {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
 .ui-spinner[data-size="lg"] {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
 }
 
 @keyframes ui-spin {
@@ -2087,7 +2091,7 @@ html.ui-textarea-resizing {
 
 .ui-plush-eye {
   transform-origin: 35.6% 48.1%;
-  transition: scale var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: scale var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .ui-plush-eye[data-side="right"] {
@@ -2131,15 +2135,15 @@ html.ui-textarea-resizing {
   }
 
   .ui-plush-mascot[data-face="wink"] .ui-plush-eye[data-side="left"] {
-    animation: ui-plush-wink 600ms var(--openbot-ease-out);
+    animation: ui-plush-wink 600ms var(--zollybot-ease-out);
   }
 
   .ui-plush-mascot[data-face="happy"] .ui-plush-eye {
-    animation: ui-plush-squint 220ms var(--openbot-ease-out) forwards;
+    animation: ui-plush-squint 220ms var(--zollybot-ease-out) forwards;
   }
 
   .ui-plush-loader > .ui-plush-mascot {
-    animation: ui-plush-pop-in 520ms var(--openbot-ease-out) both;
+    animation: ui-plush-pop-in 520ms var(--zollybot-ease-out) both;
   }
 
   .ui-plush-loader .ui-plush-eyes {
@@ -2148,7 +2152,7 @@ html.ui-textarea-resizing {
 
   .ui-plush-ball {
     animation:
-      ui-plush-pop-in 360ms var(--openbot-ease-out) 300ms backwards,
+      ui-plush-pop-in 360ms var(--zollybot-ease-out) 300ms backwards,
       ui-plush-ball-bounce 1.2s ease-in-out 700ms infinite;
   }
 
@@ -2258,9 +2262,9 @@ html.ui-textarea-resizing {
 }
 
 .ui-skeleton {
-  min-height: var(--openbot-leading-md);
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-bg-control-hover);
+  min-height: var(--zollybot-leading-md);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-bg-control-hover);
   animation: ui-skeleton-pulse 1.2s ease-in-out infinite;
 }
 
@@ -2302,13 +2306,13 @@ html.ui-textarea-resizing {
   height: 20px;
   display: inline-grid;
   place-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-xs);
-  background: var(--openbot-bg-control);
-  padding-inline: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-xs);
+  background: var(--zollybot-bg-control);
+  padding-inline: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
   line-height: 1;
   /* A shortcut such as "⌘F" keeps its key order in a right-to-left page. */
   direction: ltr;
@@ -2317,25 +2321,25 @@ html.ui-textarea-resizing {
 
 .ui-tooltip {
   position: relative;
-  z-index: var(--openbot-layer-tooltip);
+  z-index: var(--zollybot-layer-tooltip);
   border: 0;
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-bg-canvas);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-bg-canvas);
   box-shadow:
-    0 0 0 1px var(--openbot-border-strong),
-    var(--openbot-shadow-raised);
-  padding: var(--openbot-space-1-5) var(--openbot-space-2);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-sm);
+    0 0 0 1px var(--zollybot-border-strong),
+    var(--zollybot-shadow-raised);
+  padding: var(--zollybot-space-1-5) var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-sm);
   opacity: 1;
   pointer-events: none;
   transform: translateY(0) scale(1);
   transform-origin: bottom center;
   transition:
-    opacity var(--openbot-duration-fast) ease,
-    transform var(--openbot-duration-fast) var(--openbot-ease-out);
+    opacity var(--zollybot-duration-fast) ease,
+    transform var(--zollybot-duration-fast) var(--zollybot-ease-out);
 
   @starting-style {
     opacity: 0;
@@ -2349,8 +2353,8 @@ html.ui-textarea-resizing {
   left: 50%;
   width: 8px;
   height: 8px;
-  background: var(--openbot-bg-canvas);
-  box-shadow: 1px 1px 0 var(--openbot-border-strong);
+  background: var(--zollybot-bg-canvas);
+  box-shadow: 1px 1px 0 var(--zollybot-border-strong);
   content: "";
   transform: translateX(-50%) rotate(45deg);
 }
@@ -2364,7 +2368,7 @@ html.ui-textarea-resizing {
 .ui-tooltip[data-placement="bottom"]::after {
   top: -4px;
   bottom: auto;
-  box-shadow: -1px -1px 0 var(--openbot-border-strong);
+  box-shadow: -1px -1px 0 var(--zollybot-border-strong);
 }
 
 .ui-tooltip:is([data-placement="left"], [data-placement="right"])::after {
@@ -2379,7 +2383,7 @@ html.ui-textarea-resizing {
 .ui-tooltip[data-placement="left"]::after {
   right: -4px;
   left: auto;
-  box-shadow: 1px -1px 0 var(--openbot-border-strong);
+  box-shadow: 1px -1px 0 var(--zollybot-border-strong);
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -2389,7 +2393,7 @@ html.ui-textarea-resizing {
 
 .ui-tooltip[data-placement="right"]::after {
   left: -4px;
-  box-shadow: -1px 1px 0 var(--openbot-border-strong);
+  box-shadow: -1px 1px 0 var(--zollybot-border-strong);
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -2419,9 +2423,9 @@ html.ui-textarea-resizing {
  * attribute. There a backdrop blur repaints all that is under it on each frame: an open dialog
  * dropped frames of more than 100 ms. So no surface blurs its backdrop. The rule wins over each
  * blur, `-webkit-backdrop-filter` included, because that name is an alias in Chromium. */
-:root[data-openbot-software-rendering] *,
-:root[data-openbot-software-rendering] *::before,
-:root[data-openbot-software-rendering] *::after {
+:root[data-zollybot-software-rendering] *,
+:root[data-zollybot-software-rendering] *::before,
+:root[data-zollybot-software-rendering] *::after {
   backdrop-filter: none !important;
 }
 /* The one dialog overlay. Each Dialog.Overlay and AlertDialog.Overlay has this class. It covers the
@@ -2430,14 +2434,14 @@ html.ui-textarea-resizing {
 .ui-dialog-overlay {
   position: fixed;
   inset: 0;
-  z-index: var(--openbot-layer-dialog);
+  z-index: var(--zollybot-layer-dialog);
   display: grid;
   place-items: center;
-  padding: var(--openbot-space-6);
-  background: var(--openbot-dialog-overlay);
+  padding: var(--zollybot-space-6);
+  background: var(--zollybot-dialog-overlay);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  animation: ui-dialog-overlay-in var(--openbot-duration-overlay) var(--openbot-ease-out);
+  animation: ui-dialog-overlay-in var(--zollybot-duration-overlay) var(--zollybot-ease-out);
   /* The window swallows mouse events over a `-webkit-app-region: drag` area, such as the server rail
    * and the window headers, and hands them to the window manager instead. A click there while a
    * dialog was open started a window drag and never reached this overlay, so that side of the window
@@ -2447,8 +2451,8 @@ html.ui-textarea-resizing {
 
 .ui-dialog-content {
   border: 0;
-  border-radius: var(--openbot-radius-card);
-  box-shadow: 0 0 0 1px var(--openbot-dialog-ring);
+  border-radius: var(--zollybot-radius-card);
+  box-shadow: 0 0 0 1px var(--zollybot-dialog-ring);
 }
 
 .ui-dialog-content[data-dialog-surface="unstyled"] {
@@ -2473,26 +2477,26 @@ html.ui-textarea-resizing {
 /* The standard confirmation: the icon beside a left-aligned title and description, and the actions
  * on a footer below a divider. The surface has a thin border and no shadow.
  * A confirmation always answers the surface that opened it, so it takes the top nested dialog step:
- * it also opens over the marketplace and skills modals on `--openbot-layer-dialog-host`. */
+ * it also opens over the marketplace and skills modals on `--zollybot-layer-dialog-host`. */
 .ui-confirm-dialog-overlay {
-  z-index: calc(var(--openbot-layer-dialog-host) + 2);
+  z-index: calc(var(--zollybot-layer-dialog-host) + 2);
 }
 
 .ui-dialog-content.ui-confirm-dialog {
-  --agent-avatar-outline: var(--openbot-bg-sidebar);
+  --agent-avatar-outline: var(--zollybot-bg-sidebar);
 
   width: min(460px, 100%);
-  max-height: calc(100dvh - 2 * var(--openbot-space-6));
+  max-height: calc(100dvh - 2 * var(--zollybot-space-6));
   display: flex;
   flex-direction: column;
   overflow: hidden;
   outline: 0;
-  border-radius: var(--openbot-radius-xl);
-  background: var(--openbot-bg-sidebar);
-  color: var(--openbot-text-primary);
-  border: 1px solid var(--openbot-dialog-ring);
+  border-radius: var(--zollybot-radius-xl);
+  background: var(--zollybot-bg-sidebar);
+  color: var(--zollybot-text-primary);
+  border: 1px solid var(--zollybot-dialog-ring);
   box-shadow: none;
-  animation: ui-confirm-dialog-in var(--openbot-duration-slow) var(--openbot-ease-out);
+  animation: ui-confirm-dialog-in var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .ui-confirm-dialog-main {
@@ -2500,30 +2504,30 @@ html.ui-textarea-resizing {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: var(--openbot-space-4);
+  gap: var(--zollybot-space-4);
   overflow-y: auto;
-  padding: var(--openbot-space-6);
+  padding: var(--zollybot-space-6);
 }
 
 .ui-confirm-dialog-icon {
-  width: var(--openbot-control-xl);
-  height: var(--openbot-control-xl);
+  width: var(--zollybot-control-xl);
+  height: var(--zollybot-control-xl);
   display: grid;
   place-items: center;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-secondary);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-secondary);
 }
 
 .ui-confirm-dialog-icon svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .ui-confirm-dialog[data-tone="destructive"] .ui-confirm-dialog-icon {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger-text);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger-text);
 }
 
 .ui-confirm-dialog-media {
@@ -2535,43 +2539,43 @@ html.ui-textarea-resizing {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-2);
-  padding-top: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-2);
+  padding-top: var(--zollybot-space-1-5);
 }
 
 .ui-confirm-dialog-title {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-xl);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-xl);
-  letter-spacing: var(--openbot-tracking-tight);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-xl);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-xl);
+  letter-spacing: var(--zollybot-tracking-tight);
   overflow-wrap: anywhere;
 }
 
 .ui-confirm-dialog-description {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .ui-confirm-dialog-body {
-  margin-top: var(--openbot-space-1);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  margin-top: var(--zollybot-space-1);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 
 .ui-confirm-dialog-body :where(ul, ol) {
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   margin: 0;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
-  padding-block: var(--openbot-space-3);
-  padding-inline: var(--openbot-space-8) var(--openbot-space-4);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
+  padding-block: var(--zollybot-space-3);
+  padding-inline: var(--zollybot-space-8) var(--zollybot-space-4);
   list-style: disc;
 }
 
@@ -2580,42 +2584,42 @@ html.ui-textarea-resizing {
 }
 
 .ui-confirm-dialog-body :where(li)::marker {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .ui-confirm-dialog-error.ui-alert {
-  margin-top: var(--openbot-space-1);
-  padding: var(--openbot-space-2) var(--openbot-space-3);
+  margin-top: var(--zollybot-space-1);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
 }
 
 .ui-confirm-dialog-error .ui-alert-icon {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .ui-confirm-dialog-actions {
   display: flex;
   flex: 0 0 auto;
   justify-content: flex-end;
-  gap: var(--openbot-space-2);
-  border-top: 1px solid var(--openbot-dialog-ring);
-  padding: var(--openbot-space-4) var(--openbot-space-6);
+  gap: var(--zollybot-space-2);
+  border-top: 1px solid var(--zollybot-dialog-ring);
+  padding: var(--zollybot-space-4) var(--zollybot-space-6);
 }
 
 .ui-confirm-dialog-actions .ui-button svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 /* Status text on a tinted fill reads the text step of its colour: the solid danger step measures
  * 3.7:1 on its own soft fill, under the 4.5:1 a label needs. */
 .ui-confirm-dialog-confirm.ui-button-variant-destructive {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .ui-confirm-dialog-confirm.ui-button-variant-destructive:hover:not(:disabled):not([data-disabled]) {
-    color: var(--openbot-danger-text);
+    color: var(--zollybot-danger-text);
   }
 }
 
@@ -2638,19 +2642,19 @@ html.ui-textarea-resizing {
 
 @media (max-width: 560px) {
   .ui-confirm-dialog-overlay {
-    padding: var(--openbot-space-3);
+    padding: var(--zollybot-space-3);
   }
 
   .ui-dialog-content.ui-confirm-dialog {
-    max-height: calc(100dvh - 2 * var(--openbot-space-3));
+    max-height: calc(100dvh - 2 * var(--zollybot-space-3));
   }
 
   .ui-confirm-dialog-main {
-    padding: var(--openbot-space-4);
+    padding: var(--zollybot-space-4);
   }
 
   .ui-confirm-dialog-actions {
-    padding: var(--openbot-space-3) var(--openbot-space-4);
+    padding: var(--zollybot-space-3) var(--zollybot-space-4);
   }
 }
 
@@ -2667,7 +2671,7 @@ html.ui-textarea-resizing {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-bubble {
@@ -2678,8 +2682,8 @@ html.ui-textarea-resizing {
   max-width: min(80%, 720px);
   flex-direction: column;
   align-self: flex-start;
-  gap: var(--openbot-space-1);
-  color: var(--openbot-text-primary);
+  gap: var(--zollybot-space-1);
+  color: var(--zollybot-text-primary);
 }
 
 .ui-bubble[data-align="end"] {
@@ -2692,15 +2696,15 @@ html.ui-textarea-resizing {
   min-width: 0;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: var(--openbot-radius-bubble);
+  border-radius: var(--zollybot-radius-bubble);
   padding: 8px 12px;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
   line-height: 1.625;
   overflow-wrap: anywhere;
   transition:
-    border-color var(--openbot-duration-hover) ease,
-    background var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease;
+    border-color var(--zollybot-duration-hover) ease,
+    background var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease;
 }
 
 button.ui-bubble-content,
@@ -2710,7 +2714,7 @@ a.ui-bubble-content {
   color: inherit;
   font: inherit;
   text-align: start;
-  transition: color var(--openbot-duration-hover) ease;
+  transition: color var(--zollybot-duration-hover) ease;
 }
 
 button.ui-bubble-content {
@@ -2718,37 +2722,37 @@ button.ui-bubble-content {
 }
 
 .ui-bubble-variant-default {
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .ui-bubble-variant-default > .ui-bubble-content {
-  background: var(--openbot-surface-light);
+  background: var(--zollybot-surface-light);
 }
 
 .ui-bubble-variant-default .message-reply-context {
-  border-inline-start-color: var(--openbot-text-muted-on-light);
-  color: var(--openbot-text-on-light);
+  border-inline-start-color: var(--zollybot-text-muted-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .ui-bubble-variant-secondary > .ui-bubble-content {
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
 }
 
 .ui-bubble-variant-muted > .ui-bubble-content {
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 .ui-bubble-variant-tinted {
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
 }
 
 .ui-bubble-variant-tinted > .ui-bubble-content {
-  border-color: var(--openbot-accent-strong);
-  background: var(--openbot-accent-soft);
+  border-color: var(--zollybot-accent-strong);
+  background: var(--zollybot-accent-soft);
 }
 
 .ui-bubble-variant-outline > .ui-bubble-content {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
 }
 
@@ -2767,12 +2771,12 @@ button.ui-bubble-content {
 }
 
 .ui-bubble-variant-destructive {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .ui-bubble-variant-destructive > .ui-bubble-content {
-  border-color: var(--openbot-danger-border);
-  background: var(--openbot-danger-soft);
+  border-color: var(--zollybot-danger-border);
+  background: var(--zollybot-danger-soft);
 }
 
 .ui-bubble-reactions {
@@ -2783,19 +2787,19 @@ button.ui-bubble-content {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   border: 0;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   padding: 2px 6px;
-  box-shadow: 0 0 0 3px var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  box-shadow: 0 0 0 3px var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
   white-space: nowrap;
   transition:
-    background var(--openbot-duration-hover) ease,
-    box-shadow var(--openbot-duration-hover) ease;
+    background var(--zollybot-duration-hover) ease,
+    box-shadow var(--zollybot-duration-hover) ease;
 }
 
 .ui-bubble-reactions:has(button) {
@@ -2813,15 +2817,15 @@ button.ui-bubble-content {
 }
 
 .ui-bubble-reactions-align-start {
-  inset-inline-start: var(--openbot-space-3);
+  inset-inline-start: var(--zollybot-space-3);
 }
 
 .ui-bubble-reactions-align-end {
-  inset-inline-end: var(--openbot-space-3);
+  inset-inline-end: var(--zollybot-space-3);
 }
 
 .ui-bubble-reaction-overflow {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
 }
 
@@ -2849,7 +2853,7 @@ button.ui-bubble-content {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .ui-message {
@@ -2858,7 +2862,7 @@ button.ui-bubble-content {
   width: 100%;
   min-width: 0;
   align-items: flex-end;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .ui-message[data-align="end"] {
@@ -2873,12 +2877,12 @@ button.ui-bubble-content {
   place-items: center;
   align-self: flex-end;
   overflow: hidden;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-semibold);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .ui-message-content {
@@ -2888,7 +2892,7 @@ button.ui-bubble-content {
   max-width: 720px;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   overflow-wrap: anywhere;
 }
 
@@ -2902,10 +2906,10 @@ button.ui-bubble-content {
   max-width: 100%;
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding: 0 var(--openbot-space-1);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-2);
+  padding: 0 var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 16px;
 }
 

@@ -2,8 +2,8 @@ import { Effect } from "effect";
 // App identity, first-run setup, the analytics preference, external links and the data and
 // diagnostics exports.
 
-import { HOSTED_SERVER_CONTACT_URL } from "@openbot/contracts/hosted-servers";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { HOSTED_SERVER_CONTACT_URL } from "@zollybot/contracts/hosted-servers";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AnalyticsPreference,
   type AppInfo,
@@ -14,9 +14,9 @@ import {
   type ExternalLinkBrowser,
   externalLinkAppName,
   GROK_BOT_EXPORT_URL,
-} from "@openbot/contracts/ipc";
-import type { AppTranslate } from "@openbot/i18n";
-import { analyticsOnByDefault } from "@openbot/telemetry";
+} from "@zollybot/contracts/ipc";
+import type { AppTranslate } from "@zollybot/i18n";
+import { analyticsOnByDefault } from "@zollybot/telemetry";
 import { app, type BrowserWindow, dialog, type OpenDialogOptions, type WebContents } from "electron";
 import { version as developmentVersion } from "../../../package.json";
 import type { AgentService } from "../../backend/agent-service";
@@ -34,7 +34,7 @@ import type { InterfaceSizeService } from "../interface-size-service";
 import type { LanguageService } from "../language-service";
 import type { LogoColorService } from "../logo-color-service";
 import { MAC_PERMISSION_URLS } from "../mac-permission-urls";
-import { exportDiagnostics, exportOpenBotData } from "../maintenance-service";
+import { exportDiagnostics, exportZollyBotData } from "../maintenance-service";
 import { isTailscaleConnected } from "../private-network-detection";
 import type { RemoteNetworkRoutePreferenceStore } from "../remote-network-route-preference-store";
 import type { RemoteSessionCache } from "../remote-session-cache";
@@ -60,7 +60,7 @@ import {
 } from "./app-inputs";
 import { stringPayload } from "./validation";
 
-const OPENBOT_SITE = "https://openbot.run";
+const ZOLLYBOT_SITE = "https://openbot.run";
 
 /** The first post that the social toast offers, encoded for a query string. */
 function draftPost(translate: AppTranslate): string {
@@ -84,28 +84,28 @@ const EXTERNAL_DESTINATIONS: Record<ExternalDestination, string | ((translate: A
   "opencode-auth": "https://opencode.ai/auth",
   "claude-install": "https://code.claude.com/docs",
   "hermes-install": "https://hermes-agent.nousresearch.com/docs/getting-started/installation",
-  feedback: "https://x.com/intent/post?text=Feedback%20for%20OpenBot%20%40norbertbodziony%3A%20",
+  feedback: "https://x.com/intent/post?text=Feedback%20for%20ZollyBot%20%40norbertbodziony%3A%20",
   message: "https://x.com/norbertbodziony",
   changelog: "https://openbot.run/changelog",
   guides: "https://openbot.run/guides",
   // A Redirect Rule in the openbot.run Cloudflare zone sends this to the current Discord invite.
   discord: "https://discord.openbot.run",
   github: "https://github.com/nightly-labs/openbot",
-  x: "https://x.com/OpenBot_",
+  x: "https://x.com/ZollyBot_",
   threads: "https://www.threads.com/@openbot.run",
   instagram: "https://www.instagram.com/openbot.run/",
   tiktok: "https://www.tiktok.com/@openbot.run",
   facebook: "https://www.facebook.com/profile.php?id=61595425259628",
-  linkedin: "https://www.linkedin.com/company/openbot-si/",
-  reddit: "https://www.reddit.com/r/OpenBot_/",
+  linkedin: "https://www.linkedin.com/company/zollybot-si/",
+  reddit: "https://www.reddit.com/r/ZollyBot_/",
   // A post page that takes text opens with the first post in the app language. LinkedIn and Facebook
   // take only a link; Instagram and TikTok take nothing, so the renderer copies the post first.
   "x-post": (translate) => `https://x.com/intent/post?text=${draftPost(translate)}`,
   "threads-post": (translate) => `https://www.threads.com/intent/post?text=${draftPost(translate)}`,
-  "linkedin-post": `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(OPENBOT_SITE)}`,
+  "linkedin-post": `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(ZOLLYBOT_SITE)}`,
   "reddit-post": (translate) =>
-    `https://www.reddit.com/r/OpenBot_/submit?type=TEXT&title=${encodeURIComponent(translate("app.socialFollow.redditTitle"))}&text=${draftPost(translate)}`,
-  "facebook-post": `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(OPENBOT_SITE)}`,
+    `https://www.reddit.com/r/ZollyBot_/submit?type=TEXT&title=${encodeURIComponent(translate("app.socialFollow.redditTitle"))}&text=${draftPost(translate)}`,
+  "facebook-post": `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ZOLLYBOT_SITE)}`,
   "instagram-post": "https://www.instagram.com/",
   "tiktok-post": "https://www.tiktok.com/upload",
   "grok-bot-export": GROK_BOT_EXPORT_URL,
@@ -342,7 +342,7 @@ export function appIpcHandlers({
     maintenance: {
       exportData: handler(() =>
         runCauseEffect(
-          exportOpenBotData({ service, mailbox, parentWindow: getMainWindow(), translate: language.translate }),
+          exportZollyBotData({ service, mailbox, parentWindow: getMainWindow(), translate: language.translate }),
         ),
       ),
       exportDiagnostics: handler(() =>

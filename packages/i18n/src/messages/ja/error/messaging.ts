@@ -5,19 +5,19 @@ export const messages = {
   "error.messaging.notConnected": "この Slack ワークスペースは接続されていません。",
   "error.messaging.unsupported": "このコンピューターは Slack に接続できません。",
   "error.messaging.relayUnavailable":
-    "OpenBot はこのコンピューターで Slack のイベントを受信できません。サインインし、このコンピューターに名前を付けてから、もう一度お試しください。",
+    "ZollyBot はこのコンピューターで Slack のイベントを受信できません。サインインし、このコンピューターに名前を付けてから、もう一度お試しください。",
   "error.messaging.discordNotConnected": "この Discord サーバーは接続されていません。",
   "error.messaging.discordUnsupported": "このコンピューターは Discord に接続できません。",
   "error.messaging.discordRelayUnavailable":
-    "OpenBot はこのコンピューターで Discord のイベントを受信できません。サインインし、このコンピューターに名前を付けてから、もう一度お試しください。",
+    "ZollyBot はこのコンピューターで Discord のイベントを受信できません。サインインし、このコンピューターに名前を付けてから、もう一度お試しください。",
   "error.messaging.discordRolesUnsupported":
-    "OpenBot はまだ Discord のロールを一覧にできません。後でもう一度お試しください。",
+    "ZollyBot はまだ Discord のロールを一覧にできません。後でもう一度お試しください。",
   "error.messaging.telegramNotConnected": "この Telegram チャットは接続されていません。",
   "error.messaging.telegramUnsupported": "このコンピューターは Telegram に接続できません。",
   "error.messaging.telegramRelayUnavailable":
-    "OpenBot はこのコンピューターから Telegram に接続できません。サインインし、このコンピューターに名前を付けてから、もう一度お試しください。",
+    "ZollyBot はこのコンピューターから Telegram に接続できません。サインインし、このコンピューターに名前を付けてから、もう一度お試しください。",
   "error.messaging.telegramServiceUnavailable":
-    "OpenBot は現在 Telegram に接続できません。しばらくしてからもう一度お試しください。",
+    "ZollyBot は現在 Telegram に接続できません。しばらくしてからもう一度お試しください。",
   "error.messaging.whatsappNotConnected": "この WhatsApp 番号は接続されていません。",
   "error.messaging.whatsappUnsupported": "このコンピューターは WhatsApp に接続できません。",
   "error.messaging.whatsappTooManySenders": "1 つの WhatsApp 番号で許可できる連絡先とグループは最大 200 件です。",

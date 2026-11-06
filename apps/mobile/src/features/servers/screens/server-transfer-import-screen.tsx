@@ -1,7 +1,7 @@
-import { agentProviderName } from "@openbot/contracts/agent-providers";
-import type { InstanceTransferPreview, RemoteInstanceTransferResult } from "@openbot/contracts/ipc";
-import { INSTANCE_TRANSFER_REMOTE_BYTES } from "@openbot/contracts/team-protocol/instance-transfer-v1";
-import { sourceText } from "@openbot/i18n/source";
+import { agentProviderName } from "@zollybot/contracts/agent-providers";
+import type { InstanceTransferPreview, RemoteInstanceTransferResult } from "@zollybot/contracts/ipc";
+import { INSTANCE_TRANSFER_REMOTE_BYTES } from "@zollybot/contracts/team-protocol/instance-transfer-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { useEffect, useRef, useState } from "react";

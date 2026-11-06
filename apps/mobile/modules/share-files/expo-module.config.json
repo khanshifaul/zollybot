@@ -4,6 +4,6 @@
     "modules": ["ShareFilesModule"]
   },
   "android": {
-    "modules": ["run.openbot.sharefiles.ShareFilesModule"]
+    "modules": ["run.zollybot.sharefiles.ShareFilesModule"]
   }
 }

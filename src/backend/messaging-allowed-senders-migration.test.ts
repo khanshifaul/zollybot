@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves the table
 // or its marker; a newer or incomplete history is accepted; a sender can point to no connection, or
@@ -23,7 +23,7 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
@@ -90,7 +90,7 @@ describe("messaging allowed senders migration", () => {
       if (version < 50) migrateUpTo(db, 50);
       if (version < 25) seedConnection(db);
       const before = contents(db);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(contents(db)).toEqual({
         ...before,
         projection_messaging_allowed_senders: [],
@@ -109,13 +109,13 @@ describe("messaging allowed senders migration", () => {
     const before = contents(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=51
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 51 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 51 failed");
     expect(contents(db)).toEqual(before);
     expect(senderTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=51").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(contents(db)).toEqual({
       ...before,
       projection_messaging_allowed_senders: [],
@@ -132,9 +132,9 @@ describe("messaging allowed senders migration", () => {
     seed(db, 50);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
     expect(senderTables(db)).toEqual([]);
   });
@@ -142,7 +142,7 @@ describe("messaging allowed senders migration", () => {
   it("refuses a sender of no connection or of another kind, and keeps a connection that has senders", () => {
     const db = databaseAt(50);
     seed(db, 50);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     const insert = db.prepare(`INSERT INTO projection_messaging_allowed_senders
       (connection_id, sender_id, kind, name, created_at) VALUES (?, '48600100200', ?, 'Ana', '2026-01-04')`);
     expect(() => insert.run("connection-unknown", "contact")).toThrow("FOREIGN KEY constraint failed");

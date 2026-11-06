@@ -1,5 +1,5 @@
-import type { HostGitHubConnectorStatus } from "@openbot/contracts/ipc";
 import type { UseQueryResult } from "@tanstack/react-query";
+import type { HostGitHubConnectorStatus } from "@zollybot/contracts/ipc";
 import * as Clipboard from "expo-clipboard";
 import { router } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";

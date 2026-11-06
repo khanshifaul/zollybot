@@ -1,3 +1,4 @@
+import { replaceEqualDeep } from "@tanstack/react-query";
 import {
   CHANNEL_CHATS_CAPABILITY,
   CHANNEL_DELETE_CAPABILITY,
@@ -14,13 +15,12 @@ import {
   isAttachmentSummary,
   type RespondToPromptInput,
   type UpdateChannelRoutineInput,
-} from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { CHANNEL_ROUTES } from "@openbot/contracts/team-protocol/channels-v1";
-import { decodeTeamProtocolV2Json, type TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
-import { sourceText } from "@openbot/i18n/source";
-import type { RemoteFileUpload } from "@openbot/team-client/remote-peer";
-import { replaceEqualDeep } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { CHANNEL_ROUTES } from "@zollybot/contracts/team-protocol/channels-v1";
+import { decodeTeamProtocolV2Json, type TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
+import { sourceText } from "@zollybot/i18n/source";
+import type { RemoteFileUpload } from "@zollybot/team-client/remote-peer";
 import { answeredPromptResolution } from "../../chat/model/question-prompt";
 
 export type ChannelRequest = <T>(

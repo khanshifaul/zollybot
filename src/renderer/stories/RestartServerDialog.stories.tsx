@@ -1,6 +1,6 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import { Button, Toaster } from "@openbot/ui";
-import { RestartServerDialog } from "@openbot/ui/features/servers/RestartServerDialog";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import { Button, Toaster } from "@zollybot/ui";
+import { RestartServerDialog } from "@zollybot/ui/features/servers/RestartServerDialog";
 import { createSignal, onCleanup } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 

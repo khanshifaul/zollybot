@@ -1,7 +1,7 @@
-import { decodeHostVaultSecret, decodeHostVaultState, type VaultSaveInput } from "@openbot/contracts/ipc";
-import { VAULT_ROUTES } from "@openbot/contracts/team-protocol/vault-v1";
-import { VAULT_V2_ROUTES } from "@openbot/contracts/team-protocol/vault-v2";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
+import { decodeHostVaultSecret, decodeHostVaultState, type VaultSaveInput } from "@zollybot/contracts/ipc";
+import { VAULT_ROUTES } from "@zollybot/contracts/team-protocol/vault-v1";
+import { VAULT_V2_ROUTES } from "@zollybot/contracts/team-protocol/vault-v2";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
 import { remoteVaultCalls, type VaultCalls } from "../vault/vault-port";
 import type { WebWorkspace } from "./web-client-context";
 

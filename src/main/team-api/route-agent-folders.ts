@@ -1,7 +1,7 @@
-import { parseAddAgentFolderInput, parseAgentFolderInput, parseBrowseAgentFoldersInput } from "@openbot/contracts/ipc";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
-import { AGENT_FOLDERS_CAPABILITY, AGENT_FOLDERS_ROUTES } from "@openbot/contracts/team-protocol/agent-folders-v1";
-import { sourceText } from "@openbot/i18n/source";
+import { parseAddAgentFolderInput, parseAgentFolderInput, parseBrowseAgentFoldersInput } from "@zollybot/contracts/ipc";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
+import { AGENT_FOLDERS_CAPABILITY, AGENT_FOLDERS_ROUTES } from "@zollybot/contracts/team-protocol/agent-folders-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import type { TeamApiAdmin } from "./dependencies";
 import { HttpError } from "./http-error";
 import type { RouteOutcome, TeamApiRequestContext } from "./request-context";

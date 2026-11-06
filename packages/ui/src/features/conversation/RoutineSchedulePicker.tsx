@@ -1,6 +1,6 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { AlarmClock, Input } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { AlarmClock, Input } from "@zollybot/ui";
 import { createEffect, Match, onSettled, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { RoutineChipSelect } from "./RoutineChipSelect";

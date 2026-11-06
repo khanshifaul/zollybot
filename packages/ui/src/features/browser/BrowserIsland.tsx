@@ -1,13 +1,13 @@
-import type { BrowserDockIsland, LocalBrowserSecretResponse } from "@openbot/contracts/ipc";
-import { Button, LoaderCircle, MousePointer2, X } from "@openbot/ui";
-import { QuestionPromptBubble } from "@openbot/ui/components/QuestionPromptBubble";
-import type { ComposerAgent } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { BrowserSecretCard, type BrowserSecretVault } from "@openbot/ui/features/conversation/BrowserSecretCard";
-import { ApprovalCard } from "@openbot/ui/features/conversation/ConversationPrompts";
-import { RichMessageText } from "@openbot/ui/features/conversation/RichMessageText";
-import type { SendShortcut } from "@openbot/ui/features/conversation/send-shortcut";
-import { useText } from "@openbot/ui/text";
+import type { BrowserDockIsland, LocalBrowserSecretResponse } from "@zollybot/contracts/ipc";
+import { Button, LoaderCircle, MousePointer2, X } from "@zollybot/ui";
+import { QuestionPromptBubble } from "@zollybot/ui/components/QuestionPromptBubble";
+import type { ComposerAgent } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { BrowserSecretCard, type BrowserSecretVault } from "@zollybot/ui/features/conversation/BrowserSecretCard";
+import { ApprovalCard } from "@zollybot/ui/features/conversation/ConversationPrompts";
+import { RichMessageText } from "@zollybot/ui/features/conversation/RichMessageText";
+import type { SendShortcut } from "@zollybot/ui/features/conversation/send-shortcut";
+import { useText } from "@zollybot/ui/text";
 import { Match, Show, Switch } from "solid-js";
 
 /**

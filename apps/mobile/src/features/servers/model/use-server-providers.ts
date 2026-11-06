@@ -1,10 +1,10 @@
+import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   AgentStatus,
   CustomAgentSummary,
   CustomProviderSummary,
   ProviderRuntimeSnapshot,
-} from "@openbot/contracts/ipc";
-import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { useCallback, useMemo, useRef } from "react";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import { type ProviderAdmin, providerRows } from "@/features/servers/model/provider-admin";

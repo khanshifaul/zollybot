@@ -1,11 +1,11 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AvatarColor,
   type AvatarHue,
   type ChannelDraft,
   type ChannelSummary,
   isChannelDraft,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import * as Crypto from "expo-crypto";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
@@ -56,7 +56,7 @@ const MemberChoice = memo(function MemberChoice({
   disabled: boolean;
   onToggle: (id: string) => void;
 }) {
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -138,7 +138,7 @@ function ChannelForm({
   const canManage = useMobileWorkspaceSelector(
     (current) => current.servers.find((server) => server.id === serverId)?.role !== "member",
   );
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const [edits, setEdits] = useState<Partial<ChannelDraft>>({});
   const [saving, setSaving] = useState(false);
   const [finished, setFinished] = useState(false);

@@ -36,12 +36,12 @@ So zollybot is two things:
 ```
 
 
-## What the OpenBot clone changes
+## What the ZollyBot clone changes
 
-Cloned 2026-11-06 to `~/Projects/lab/openbot` (shallow, 211 MB). Its real
+Cloned 2026-11-06 to `~/Projects/lab/zollybot` (shallow, 211 MB). Its real
 structure changes the build plan: the five platforms already exist.
 
-| OpenBot part | Stack | What zollybot reuses |
+| ZollyBot part | Stack | What zollybot reuses |
 |---|---|---|
 | desktop app (repo root) | Electron + SolidJS | the desktop shell and renderer |
 | `src/backend` | agent runtime, provider adapters, event storage, queues, browser host | the runtime and queue substrate |
@@ -50,23 +50,23 @@ structure changes the build plan: the five platforms already exist.
 | `packages/contracts` | boundary types, limits, validation | the protocol to extend |
 | `remote/api` | Bun service: WebRTC SDP/ICE, TURN, relays | remote join transport |
 
-So the earlier Tauri + React proposal is dropped. zollybot is a **fork of OpenBot
+So the earlier Tauri + React proposal is dropped. zollybot is a **fork of ZollyBot
 with a zolly integration layer**:
 
 1. `src/backend/zolly/` — a new adapter that discovers offices (repos with
    `.agents/`), invokes the unchanged `zolly` CLI, and maps zolly's queue
-   contract and gates onto OpenBot's event/queue model.
+   contract and gates onto ZollyBot's event/queue model.
 2. `packages/contracts` — a `zolly-office-v1` capability: list offices, queue,
    gate, approve, recall. Same pattern as the existing `storage-v1` capability.
 3. Renderer — an Offices screen, a queue board and a gate card; agents stay the
-   existing OpenBot agents, but a task can be bound to an office.
+   existing ZollyBot agents, but a task can be bound to an office.
 4. Mobile — reuses the same capability over the existing team protocol; no new
    mobile app.
 
 This removes the UI, mobile and remote-transport work from the critical path:
 zollybot is then an integration and a governance layer, not a new product shell.
 
-**Deliberate difference from OpenBot:** OpenBot's agents run
+**Deliberate difference from ZollyBot:** ZollyBot's agents run
 `danger-full-access` with approvals off. zollybot keeps zolly's gates in the
 backend path, so a task bound to an office cannot merge without the reviewer
 step, whatever the client asks for.
@@ -142,7 +142,7 @@ zollybot/
 
 ### Gates replace danger-full-access
 
-OpenBot ships agents with `danger-full-access` and `approvalPolicy: never`.
+ZollyBot ships agents with `danger-full-access` and `approvalPolicy: never`.
 zollybot binds **office tasks** to zolly's gate engine instead:
 
 - The task state machine is zolly's: `queued → dispatched → blocked (gate) →
@@ -155,7 +155,7 @@ zollybot binds **office tasks** to zolly's gate engine instead:
   refuses.
 - Merge is a backend action behind the reviewer role. No renderer IPC exposes a
   direct merge.
-- A task that is not bound to an office may use OpenBot's normal runtime; a task
+- A task that is not bound to an office may use ZollyBot's normal runtime; a task
   that is bound to one does not get `danger-full-access`.
 
 ### Memory stays zolly's

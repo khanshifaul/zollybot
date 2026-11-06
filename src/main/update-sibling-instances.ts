@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Schema } from "effect";
 
 /** The process scan failed. The cause is the message the install refusal shows. */
@@ -8,11 +8,11 @@ export class SiblingScanFailed extends Schema.TaggedError<SiblingScanFailed>()("
 }) {}
 
 /**
- * Another OpenBot process running from the same application bundle. On a Mac shared by several
+ * Another ZollyBot process running from the same application bundle. On a Mac shared by several
  * macOS users this is how one tenant finds the others: the bundle is shared, the network
  * namespace is shared, and replacing the bundle under a live session breaks it.
  */
-export interface OpenBotSiblingInstance {
+export interface ZollyBotSiblingInstance {
   pid: number;
   uid: number;
 }
@@ -37,9 +37,9 @@ interface SiblingScanInput {
  * with `--type=` arguments, so a scan there always finds this session's own children. An AppImage
  * also mounts at a new path for each launch, so no other session can share the executable path.
  */
-export function listSiblingOpenBotInstances(
+export function listSiblingZollyBotInstances(
   input: SiblingScanInput,
-): Effect.Effect<OpenBotSiblingInstance[], SiblingScanFailed> {
+): Effect.Effect<ZollyBotSiblingInstance[], SiblingScanFailed> {
   return Effect.suspend(() => {
     const platform = input.platform ?? process.platform;
     if (platform !== "darwin") return Effect.succeed([]);
@@ -52,8 +52,8 @@ export function listSiblingOpenBotInstances(
 function parseSiblingInstances(
   output: string,
   input: Pick<SiblingScanInput, "executablePath" | "currentPid" | "excludedPids">,
-): OpenBotSiblingInstance[] {
-  const siblings: OpenBotSiblingInstance[] = [];
+): ZollyBotSiblingInstance[] {
+  const siblings: ZollyBotSiblingInstance[] = [];
   const excluded = input.excludedPids?.() ?? new Set<number>();
   if (!input.executablePath.trim()) return siblings;
   for (const line of output.split("\n")) {

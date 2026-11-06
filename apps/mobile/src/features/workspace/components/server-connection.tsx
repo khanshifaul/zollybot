@@ -1,5 +1,5 @@
-import type { AgentEvent, TeamRealtimeEvent } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import type { AgentEvent, TeamRealtimeEvent } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   createRemoteConnectionRecovery,
   type RemoteConnectionFailure,
@@ -7,9 +7,9 @@ import {
   type RemoteRecoveryStatus,
   type RemoteTeamDirectoryClient,
   remoteConnectionFailureDetails,
-} from "@openbot/team-client";
-import { REMOTE_PEER_LOST_AFTER_MS, type RemoteTeamConnectionUpdate } from "@openbot/team-client/remote-peer";
-import { errorReference } from "@openbot/user-errors/reference";
+} from "@zollybot/team-client";
+import { REMOTE_PEER_LOST_AFTER_MS, type RemoteTeamConnectionUpdate } from "@zollybot/team-client/remote-peer";
+import { errorReference } from "@zollybot/user-errors/reference";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { MobileConnectionAnalytics } from "@/features/analytics/connection";
 import { mobileAnalytics } from "@/features/analytics/mobile-analytics";

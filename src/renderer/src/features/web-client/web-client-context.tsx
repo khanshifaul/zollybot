@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentApproval,
   AgentColorEntry,
@@ -27,30 +27,30 @@ import type {
   SidebarLayoutSnapshot,
   TeamPresenceSnapshot,
   TeamRealtimeEvent,
-} from "@openbot/contracts/ipc";
-import { canAdministerServer } from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
+import { canAdministerServer } from "@zollybot/contracts/ipc";
 import {
   AGENT_COLORS_CAPABILITY,
   AGENT_HIDDEN_CAPABILITY,
   CHAT_COLORS_CAPABILITY,
-} from "@openbot/contracts/team-protocol/current";
-import { FOCUS_USE_CAPABILITY } from "@openbot/contracts/team-protocol/focus-use-v1";
-import { MESSAGE_DELETE_CAPABILITY } from "@openbot/contracts/team-protocol/message-delete-v1";
-import { SIDEBAR_PINS_CAPABILITY } from "@openbot/contracts/team-protocol/sidebar-pins-v1";
-import { cleanAgentMessageText } from "@openbot/team-client/agent-message-text";
-import { createFocusUsePing } from "@openbot/team-client/focus-use";
-import { WAKE_RECONNECT_DELAY_MS } from "@openbot/team-client/hosted-server-wake";
-import type { RemoteTeamHost } from "@openbot/team-client/remote-directory";
+} from "@zollybot/contracts/team-protocol/current";
+import { FOCUS_USE_CAPABILITY } from "@zollybot/contracts/team-protocol/focus-use-v1";
+import { MESSAGE_DELETE_CAPABILITY } from "@zollybot/contracts/team-protocol/message-delete-v1";
+import { SIDEBAR_PINS_CAPABILITY } from "@zollybot/contracts/team-protocol/sidebar-pins-v1";
+import { cleanAgentMessageText } from "@zollybot/team-client/agent-message-text";
+import { createFocusUsePing } from "@zollybot/team-client/focus-use";
+import { WAKE_RECONNECT_DELAY_MS } from "@zollybot/team-client/hosted-server-wake";
+import type { RemoteTeamHost } from "@zollybot/team-client/remote-directory";
 import {
   createRemoteConnectionRecovery,
   isSafeConnectionError,
   type RemoteRecoveryStatus,
-} from "@openbot/team-client/remote-recovery";
-import { reconcilePendingRequests } from "@openbot/team-client/runtime-attention";
-import { markRemoteSync } from "@openbot/team-client/sync-profile";
-import { duplicateSection as duplicateSectionWith } from "@openbot/ui/features/sidebar/duplicate-section";
-import { currentText } from "@openbot/ui/text";
-import { errorReference, type UserErrorDetails } from "@openbot/user-errors";
+} from "@zollybot/team-client/remote-recovery";
+import { reconcilePendingRequests } from "@zollybot/team-client/runtime-attention";
+import { markRemoteSync } from "@zollybot/team-client/sync-profile";
+import { duplicateSection as duplicateSectionWith } from "@zollybot/ui/features/sidebar/duplicate-section";
+import { currentText } from "@zollybot/ui/text";
+import { errorReference, type UserErrorDetails } from "@zollybot/user-errors";
 import { createEffect, createMemo, createSignal, createStore, onSettled } from "solid-js";
 import { toAgentProfile } from "../../app-message-projection";
 import { mergeConversationPage, missingReplyOriginals } from "../conversation/conversation-merge";
@@ -707,7 +707,7 @@ export function createWebWorkspace(
   );
   const [serverOrder, setServerOrder] = createSignal(readWebServerOrder(props.accountId));
   const orderedHosts = createMemo(() => orderWebHosts(state.hosts, serverOrder()));
-  // The host sends an `openbot-avatar:` URL, which only the desktop app can open. The image comes
+  // The host sends an `zollybot-avatar:` URL, which only the desktop app can open. The image comes
   // through the host connection; until then, the agent keeps the host URL and its generated avatar.
   const [avatars, setAvatars] = createSignal<ReadonlyMap<string, { source: string; url: string }>>(new Map());
   const avatarLoads = new Set<string>();
@@ -746,7 +746,7 @@ export function createWebWorkspace(
       sources:
         state.status === "online"
           ? state.agents.flatMap((agent) =>
-              agent.avatarUrl?.startsWith("openbot-avatar:") ? [{ id: agent.id, source: agent.avatarUrl }] : [],
+              agent.avatarUrl?.startsWith("zollybot-avatar:") ? [{ id: agent.id, source: agent.avatarUrl }] : [],
             )
           : [],
     }),

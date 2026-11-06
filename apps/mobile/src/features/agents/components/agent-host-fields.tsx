@@ -1,3 +1,4 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AGENT_TASK_LIMIT_DEFAULT,
   AGENT_TASK_LIMIT_MAX,
@@ -12,9 +13,8 @@ import {
   canAdministerServer,
   type UpdateAgentFastModeInput,
   type UpdateAgentHostSettingsInput,
-} from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { Typography } from "heroui-native";
 import { useRef, useState } from "react";
 import { useUniwind } from "uniwind";

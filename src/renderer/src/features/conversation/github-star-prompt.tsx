@@ -1,9 +1,9 @@
-import { toast } from "@openbot/ui";
-import { GitHubStarToast } from "@openbot/ui/features/github-star/GitHubStarToast";
+import { toast } from "@zollybot/ui";
+import { GitHubStarToast } from "@zollybot/ui/features/github-star/GitHubStarToast";
 import { createSignal } from "solid-js";
 import { appPort } from "../../app-port";
 
-const STORAGE_KEY = "openbot:github-star-prompt";
+const STORAGE_KEY = "zollybot:github-star-prompt";
 const PROMPTED = "shown";
 const SENDS_BEFORE_PROMPT = 3;
 const TOAST_ID = "github-star-prompt";

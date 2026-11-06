@@ -1,4 +1,4 @@
-import type { AgentBrowserProfile } from "@openbot/contracts/ipc";
+import type { AgentBrowserProfile } from "@zollybot/contracts/ipc";
 import { useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import Check from "lucide-react-native/icons/check";
@@ -23,7 +23,7 @@ import { useText } from "@/shared/lib/text";
  */
 export function ServerBrowserProfileAgentsScreen() {
   const { t, errorMessage } = useText();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const { serverId, profileId } = useLocalSearchParams<{ serverId: string; profileId: string }>();
   const profiles = useServerBrowserProfiles(serverId);
   // The selector returns the stored list, so the page does not render again for a new copy.

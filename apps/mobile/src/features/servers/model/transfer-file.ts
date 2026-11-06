@@ -1,5 +1,5 @@
-import { sourceText } from "@openbot/i18n/source";
-import type { RemoteFileUpload } from "@openbot/team-client/remote-peer";
+import { sourceText } from "@zollybot/i18n/source";
+import type { RemoteFileUpload } from "@zollybot/team-client/remote-peer";
 import * as DocumentPicker from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
@@ -37,7 +37,7 @@ export async function pickZipUpload(maxBytes: number, tooLarge: string): Promise
  * again. The file holds memories and workspace files, so the caller releases it when the screen closes.
  */
 export function keepTransferFile(download: RemoteFileUpload): { uri: string; release: () => void } {
-  const file = new File(Paths.cache, `${Date.now()}-openbot-transfer.zip`);
+  const file = new File(Paths.cache, `${Date.now()}-zollybot-transfer.zip`);
   file.writeSync(download.base64, { encoding: "base64" });
   return {
     uri: file.uri,

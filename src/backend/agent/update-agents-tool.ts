@@ -1,20 +1,20 @@
-import { type AgentSummary, agentComputerUseEnabled, workspaceAccessEnforced } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+import { type AgentSummary, agentComputerUseEnabled, workspaceAccessEnforced } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect } from "effect";
 import type { DynamicToolCallParams } from "../protocol";
 import { requestedRuntime, requestedToolModel } from "./model-tools";
-import type { OpenBotToolRouterHooks } from "./openbot-tool-router";
 import {
   profileToolErrorMessage,
   restrictionInput,
   updateAgentsToolSchema,
   widensAgentSettings,
 } from "./profile-tools";
-import { type OpenBotToolResponse, openBotToolResult } from "./routine-tools";
+import { openBotToolResult, type ZollyBotToolResponse } from "./routine-tools";
 import { ToolOperationFailed, toolStep } from "./tool-operation";
+import type { ZollyBotToolRouterHooks } from "./zollybot-tool-router";
 
-const logger = createOpenBotLogger("update-agents-tool");
+const logger = createZollyBotLogger("update-agents-tool");
 
 /** The settings of one changed agent. Instructions are left out, so a result for many agents stays small. */
 function agentSettings(agent: AgentSummary) {
@@ -44,8 +44,8 @@ export const handleUpdateAgentsTool = Effect.fn("UpdateAgentsTool.handle")(
   function* (
     params: DynamicToolCallParams,
     senderAgentId: string,
-    hooks: Pick<OpenBotToolRouterHooks, "listAgents" | "listModels" | "updateAgent" | "redactMcp">,
-  ): Effect.fn.Return<OpenBotToolResponse, ToolOperationFailed> {
+    hooks: Pick<ZollyBotToolRouterHooks, "listAgents" | "listModels" | "updateAgent" | "redactMcp">,
+  ): Effect.fn.Return<ZollyBotToolResponse, ToolOperationFailed> {
     const { agentIds, provider, model, reasoningEffort, access, computerUse, notifications } =
       updateAgentsToolSchema.parse(params.arguments, { reportInput: true });
     const runtimeRequest = { provider, model, reasoningEffort };

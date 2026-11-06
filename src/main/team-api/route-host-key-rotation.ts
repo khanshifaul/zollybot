@@ -1,8 +1,8 @@
 import {
   HOST_KEY_ROTATION_CAPABILITY,
   HOST_KEY_ROTATION_ROUTES,
-} from "@openbot/contracts/team-protocol/host-key-rotation-v1";
-import { isFixedSourceText, sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/host-key-rotation-v1";
+import { isFixedSourceText, sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAdmin } from "./dependencies";
 import { HttpError } from "./http-error";

@@ -1,6 +1,6 @@
-import { IconButton, Pencil, RotateCcw, TriangleAlert, X } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
+import { IconButton, Pencil, RotateCcw, TriangleAlert, X } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 
 export interface PendingSendStatusProps {

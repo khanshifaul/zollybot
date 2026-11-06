@@ -19,9 +19,9 @@
  * stays out of the store until a connection with it worked.
  */
 
-import type { McpServerConfig, McpTestResult } from "@openbot/contracts/ipc";
-import { Alert, AlertContent, AlertDescription, AlertIcon, AlertTitle, Button, OctagonX, Puzzle } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { McpServerConfig, McpTestResult } from "@zollybot/contracts/ipc";
+import { Alert, AlertContent, AlertDescription, AlertIcon, AlertTitle, Button, OctagonX, Puzzle } from "@zollybot/ui";
 import { createSignal, createStore, Show } from "solid-js";
 import { useText } from "../../text";
 import { WizardDialog } from "./IntegrationLayout";

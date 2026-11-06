@@ -1,3 +1,4 @@
+import { OpenPanel, OpenPanelBase, type OpenPanelOptions, type TrackProperties } from "@openpanel/web";
 import {
   type FIRST_TOUCH_CAMPAIGN_FIELDS,
   FIRST_TOUCH_CAMPAIGN_VALUE,
@@ -6,9 +7,8 @@ import {
   type FirstTouchSourcePlatform,
   firstTouchDay,
   rememberFirstTouch,
-} from "@openbot/contracts/first-touch";
-import { isBoolean, isOneOf } from "@openbot/contracts/runtime-values";
-import { OpenPanel, OpenPanelBase, type OpenPanelOptions, type TrackProperties } from "@openpanel/web";
+} from "@zollybot/contracts/first-touch";
+import { isBoolean, isOneOf } from "@zollybot/contracts/runtime-values";
 import { BRAND_ROUTE } from "./brand-page";
 import { CLA_ROUTE } from "./cla";
 import { COMMERCIAL_LICENSE_ROUTE } from "./commercial-license";
@@ -18,10 +18,10 @@ import { type CollectionId, type ContentCollection, findArticle } from "./conten
 import { DOWNLOAD_PLATFORM_ORDER, type DownloadPlatform } from "./download-platforms";
 import { DPA_ROUTE } from "./dpa";
 import {
-  OPENBOT_ALTERNATE_DOWNLOAD_LINKS,
-  OPENBOT_DOWNLOAD_LINKS,
-  OPENBOT_DOWNLOAD_PAGE_LINKS,
-  OPENBOT_LINKS,
+  ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS,
+  ZOLLYBOT_DOWNLOAD_LINKS,
+  ZOLLYBOT_DOWNLOAD_PAGE_LINKS,
+  ZOLLYBOT_LINKS,
 } from "./landing-links";
 import { MARKETPLACE_TAB_ROUTES } from "./marketplace-routes";
 import { MOBILE_APPS } from "./mobile-apps";
@@ -124,7 +124,7 @@ type LandingDestination =
   | "claude";
 
 type CollectionIndexRoute = ContentCollection["indexRoute"];
-type DownloadPagePath = (typeof OPENBOT_DOWNLOAD_PAGE_LINKS)[keyof typeof OPENBOT_DOWNLOAD_PAGE_LINKS];
+type DownloadPagePath = (typeof ZOLLYBOT_DOWNLOAD_PAGE_LINKS)[keyof typeof ZOLLYBOT_DOWNLOAD_PAGE_LINKS];
 type MarketplaceTabPath = (typeof MARKETPLACE_TAB_ROUTES)[keyof typeof MARKETPLACE_TAB_ROUTES];
 /**
  * The screens a report may name. Article paths carry the slug so one article can be told from
@@ -160,7 +160,7 @@ const FIXED_SCREEN_PATHS = [
   COMMERCIAL_LICENSE_ROUTE,
   DPA_ROUTE,
   CLA_ROUTE,
-  ...Object.values(OPENBOT_DOWNLOAD_PAGE_LINKS),
+  ...Object.values(ZOLLYBOT_DOWNLOAD_PAGE_LINKS),
   ...Object.values(MARKETPLACE_TAB_ROUTES),
   "/news",
   "/guides",
@@ -222,38 +222,38 @@ function createOpenPanelClient(options: OpenPanelOptions): OpenPanelClient {
 
 /** The download routes of each platform, reversed so a click can name the platform it asked for. */
 const DOWNLOAD_PLATFORMS_BY_HREF = new Map<string, LandingDownloadPlatform>([
-  [OPENBOT_DOWNLOAD_LINKS.macos, "macos"],
-  [OPENBOT_DOWNLOAD_LINKS.windows, "windows"],
-  [OPENBOT_DOWNLOAD_LINKS.linux, "linux"],
-  [OPENBOT_ALTERNATE_DOWNLOAD_LINKS.macos, "macos"],
-  [OPENBOT_ALTERNATE_DOWNLOAD_LINKS.linux, "linux"],
+  [ZOLLYBOT_DOWNLOAD_LINKS.macos, "macos"],
+  [ZOLLYBOT_DOWNLOAD_LINKS.windows, "windows"],
+  [ZOLLYBOT_DOWNLOAD_LINKS.linux, "linux"],
+  [ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS.macos, "macos"],
+  [ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS.linux, "linux"],
   [MOBILE_APPS.ios.href, "ios"],
   [MOBILE_APPS.android.href, "android"],
 ]);
 
 const LINK_DESTINATIONS = new Map<string, LandingDestination>([
-  [OPENBOT_LINKS.download, "download_section"],
-  ...Object.values(OPENBOT_DOWNLOAD_PAGE_LINKS).map((path) => [path, "download_page"] as const),
-  [OPENBOT_LINKS.news, "news"],
-  [OPENBOT_LINKS.guides, "guides"],
-  [OPENBOT_LINKS.contact, "contact"],
+  [ZOLLYBOT_LINKS.download, "download_section"],
+  ...Object.values(ZOLLYBOT_DOWNLOAD_PAGE_LINKS).map((path) => [path, "download_page"] as const),
+  [ZOLLYBOT_LINKS.news, "news"],
+  [ZOLLYBOT_LINKS.guides, "guides"],
+  [ZOLLYBOT_LINKS.contact, "contact"],
   [TEAMS_ROUTE, "teams"],
   [PRICING_ROUTE, "pricing"],
-  [OPENBOT_LINKS.x, "x"],
-  [OPENBOT_LINKS.discord, "discord"],
-  [OPENBOT_LINKS.repository, "repository"],
-  [OPENBOT_LINKS.releases, "releases"],
+  [ZOLLYBOT_LINKS.x, "x"],
+  [ZOLLYBOT_LINKS.discord, "discord"],
+  [ZOLLYBOT_LINKS.repository, "repository"],
+  [ZOLLYBOT_LINKS.releases, "releases"],
   // The same destination on this site: the release notes, reported under the name they had.
-  [OPENBOT_LINKS.changelog, "releases"],
-  [OPENBOT_LINKS.license, "license"],
-  [OPENBOT_LINKS.privacy, "privacy"],
+  [ZOLLYBOT_LINKS.changelog, "releases"],
+  [ZOLLYBOT_LINKS.license, "license"],
+  [ZOLLYBOT_LINKS.privacy, "privacy"],
   [PRIVACY_POLICY_ROUTE, "privacy"],
-  [OPENBOT_LINKS.documentation, "documentation"],
-  [OPENBOT_LINKS.troubleshooting, "troubleshooting"],
-  [OPENBOT_LINKS.architecture, "architecture"],
-  [OPENBOT_LINKS.contributing, "contributing"],
-  [OPENBOT_LINKS.codex, "codex"],
-  [OPENBOT_LINKS.claude, "claude"],
+  [ZOLLYBOT_LINKS.documentation, "documentation"],
+  [ZOLLYBOT_LINKS.troubleshooting, "troubleshooting"],
+  [ZOLLYBOT_LINKS.architecture, "architecture"],
+  [ZOLLYBOT_LINKS.contributing, "contributing"],
+  [ZOLLYBOT_LINKS.codex, "codex"],
+  [ZOLLYBOT_LINKS.claude, "claude"],
 ]);
 
 const EVENT_PROPERTY_ALLOWLIST = {
@@ -345,12 +345,12 @@ class LandingAnalytics {
     const handleClick = (event: MouseEvent) => {
       const target = event.target;
       const link = target instanceof Element ? target.closest<HTMLAnchorElement>("a[href]") : null;
-      if (link?.getAttribute("href")?.startsWith("openbot://")) {
+      if (link?.getAttribute("href")?.startsWith("zollybot://")) {
         this.#track("join_page_action", { action: "open_app" });
         return;
       }
       const href = link?.getAttribute("href");
-      const platform = DOWNLOAD_PLATFORM_ORDER.find((id) => OPENBOT_DOWNLOAD_LINKS[id] === href);
+      const platform = DOWNLOAD_PLATFORM_ORDER.find((id) => ZOLLYBOT_DOWNLOAD_LINKS[id] === href);
       if (platform) this.#track("join_page_action", { action: "download", platform });
     };
     return this.#replaceClickListener(document, handleClick, "/join");

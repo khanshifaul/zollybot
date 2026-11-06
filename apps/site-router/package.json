@@ -1,10 +1,10 @@
 {
-  "name": "@openbot/site-router",
+  "name": "@zollybot/site-router",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "dependencies": {
-    "@openbot/contracts": "workspace:*",
+    "@zollybot/contracts": "workspace:*",
     "effect": "catalog:"
   },
   "scripts": {

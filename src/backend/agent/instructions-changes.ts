@@ -1,17 +1,17 @@
 // What an agent changed in its instruction file during its turns. The chat shows a line after the
 // turn, and the user can undo the change from it.
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   AGENT_INSTRUCTIONS_CHANGE_ITEM_TYPE,
   type AgentInstructionsChange,
   type ConversationMessage,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { readAgentInstructionsFile } from "./workspace-instructions";
 
-/** The file text that OpenBot last saw while turns of the agent ran, and those turns. */
+/** The file text that ZollyBot last saw while turns of the agent ran, and those turns. */
 interface Baseline {
   /** Null when the file could not be read. */
   text: string | null;
@@ -54,7 +54,7 @@ export class InstructionsChanges {
     baseline.text ??= text;
   });
 
-  /** The change since the text that OpenBot last saw, or null when there is none or the agent is gone. */
+  /** The change since the text that ZollyBot last saw, or null when there is none or the agent is gone. */
   readonly finishTurn = Effect.fn("InstructionsChanges.finishTurn")(function* (
     this: InstructionsChanges,
     agentId: string,

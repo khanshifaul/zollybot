@@ -5,8 +5,8 @@
  * and the dark theme. Yellow is lighter, because a yellow at that lightness is mustard.
  */
 
-import { type AvatarColor, isAvatarColor } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import { type AvatarColor, isAvatarColor } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import { createMemo } from "solid-js";
 import { AVATAR_COLOR_CHOICES } from "../../bloub-avatar";
 import { ColorPicker } from "../../color-picker";

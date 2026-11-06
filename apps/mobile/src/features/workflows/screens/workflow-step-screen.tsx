@@ -1,6 +1,6 @@
-import { type AgentReasoningEffort, canAdministerServer, type WorkflowNode } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
 import { useQuery } from "@tanstack/react-query";
+import { type AgentReasoningEffort, canAdministerServer, type WorkflowNode } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import Check from "lucide-react-native/icons/check";
@@ -93,7 +93,7 @@ function TextField({
 /** The agents of the server, one of which does an agent step. */
 function AgentChoice({ node, agents }: { node: WorkflowNode; agents: readonly MobileAgent[] }) {
   const { t } = useText();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const setFields = useWorkflowDraft((state) => state.setFields);
   const selected = text(node, "agentId");
   return (
@@ -220,12 +220,12 @@ const TARGET_DEFAULTS = {
 
 /**
  * Where an output sends its result. The phone does not choose a messaging place or a Discord server:
- * only the computer that runs OpenBot has them. An owner or admin adds a GitHub output on a host that runs
+ * only the computer that runs ZollyBot has them. An owner or admin adds a GitHub output on a host that runs
  * it, and a Telegram or Slack output on a host that has a linked chat or workspace, as on desktop.
  */
 function OutputChoice({ node, draft }: { node: WorkflowNode; draft: WorkflowDraft }) {
   const { t } = useText();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const setFields = useWorkflowDraft((state) => state.setFields);
   const admin = useMobileWorkspaceSelector((current) =>
     canAdministerServer(current.servers.find((server) => server.id === draft.serverId)?.role),

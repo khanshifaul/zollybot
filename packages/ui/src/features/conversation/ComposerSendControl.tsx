@@ -1,5 +1,5 @@
-import { ArrowUp, Button, LoaderCircle } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import { ArrowUp, Button, LoaderCircle } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 import { StopIcon } from "./ConversationIcons";
 

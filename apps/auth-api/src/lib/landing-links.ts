@@ -1,20 +1,20 @@
 export const EXTERNAL_LINK_REL = "noopener noreferrer";
 
 /** The installer each platform's download button starts: Apple silicon on macOS, x64 elsewhere. */
-export const OPENBOT_DOWNLOAD_LINKS = {
+export const ZOLLYBOT_DOWNLOAD_LINKS = {
   macos: "/download/macos/latest",
   windows: "/download/windows/latest",
   linux: "/download/linux/latest",
 } as const;
 
 /** The other installer of a platform that ships two architectures. Windows ships x64 only. */
-export const OPENBOT_ALTERNATE_DOWNLOAD_LINKS = {
+export const ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS = {
   macos: "/download/macos/latest?arch=x64",
   linux: "/download/linux/latest?arch=arm64",
 } as const;
 
 /** The pages that describe each installer: requirements, install steps and known limits. */
-export const OPENBOT_DOWNLOAD_PAGE_LINKS = {
+export const ZOLLYBOT_DOWNLOAD_PAGE_LINKS = {
   hub: "/download",
   macos: "/download/macos",
   windows: "/download/windows",
@@ -23,10 +23,10 @@ export const OPENBOT_DOWNLOAD_PAGE_LINKS = {
   android: "/download/android",
 } as const;
 
-export const OPENBOT_LINKS = {
+export const ZOLLYBOT_LINKS = {
   /** The contact form page. */
   contact: "/contact",
-  x: "https://x.com/OpenBot_",
+  x: "https://x.com/ZollyBot_",
   /** A Redirect Rule in the openbot.run Cloudflare zone sends this to the current Discord invite. */
   discord: "https://discord.openbot.run",
   download: "#download",
@@ -108,8 +108,8 @@ export const FOOTER_COLUMNS: readonly FooterColumn[] = [
       { label: "Pricing", external: false, to: "/pricing" },
       { label: "Contact", external: false, to: "/contact" },
       { label: "Brand", external: false, to: "/brand" },
-      { label: "Source code", external: true, href: OPENBOT_LINKS.repository },
-      { label: "License", external: true, href: OPENBOT_LINKS.license },
+      { label: "Source code", external: true, href: ZOLLYBOT_LINKS.repository },
+      { label: "License", external: true, href: ZOLLYBOT_LINKS.license },
       { label: "Privacy policy", external: false, to: "/privacy-policy" },
       { label: "Terms", external: false, to: "/terms" },
       { label: "Commercial license", external: false, to: "/commercial-license" },
@@ -120,15 +120,15 @@ export const FOOTER_COLUMNS: readonly FooterColumn[] = [
   {
     title: "Resources",
     links: [
-      { label: "Documentation", external: true, href: OPENBOT_LINKS.documentation },
-      { label: "Troubleshooting", external: true, href: OPENBOT_LINKS.troubleshooting },
-      { label: "Status", external: true, href: OPENBOT_LINKS.status },
-      { label: "Self-hosted server", external: true, href: OPENBOT_LINKS.selfHostedServer },
-      { label: "Architecture", external: true, href: OPENBOT_LINKS.architecture },
-      { label: "Contributing", external: true, href: OPENBOT_LINKS.contributing },
-      { label: "Codex", external: true, href: OPENBOT_LINKS.codex },
-      { label: "Claude Code", external: true, href: OPENBOT_LINKS.claude },
-      { label: "Discord", external: true, href: OPENBOT_LINKS.discord },
+      { label: "Documentation", external: true, href: ZOLLYBOT_LINKS.documentation },
+      { label: "Troubleshooting", external: true, href: ZOLLYBOT_LINKS.troubleshooting },
+      { label: "Status", external: true, href: ZOLLYBOT_LINKS.status },
+      { label: "Self-hosted server", external: true, href: ZOLLYBOT_LINKS.selfHostedServer },
+      { label: "Architecture", external: true, href: ZOLLYBOT_LINKS.architecture },
+      { label: "Contributing", external: true, href: ZOLLYBOT_LINKS.contributing },
+      { label: "Codex", external: true, href: ZOLLYBOT_LINKS.codex },
+      { label: "Claude Code", external: true, href: ZOLLYBOT_LINKS.claude },
+      { label: "Discord", external: true, href: ZOLLYBOT_LINKS.discord },
     ],
   },
   {
@@ -148,17 +148,17 @@ export const FOOTER_COLUMNS: readonly FooterColumn[] = [
   {
     title: "Compare",
     links: [
-      { label: "OpenBot vs Grok Bot", external: false, to: "/compare/$slug", slug: "grok-bot" },
-      { label: "OpenBot vs Hermes Agent", external: false, to: "/compare/$slug", slug: "hermes-agent" },
-      { label: "OpenBot vs Muse", external: false, to: "/compare/$slug", slug: "muse" },
-      { label: "OpenBot vs OpenClaw", external: false, to: "/compare/$slug", slug: "openclaw" },
-      { label: "OpenBot vs Claude Cowork", external: false, to: "/compare/$slug", slug: "claude-cowork" },
-      { label: "OpenBot vs ChatGPT dots", external: false, to: "/compare/$slug", slug: "chatgpt-dots" },
-      { label: "OpenBot vs Manus", external: false, to: "/compare/$slug", slug: "manus" },
-      { label: "OpenBot vs Devin", external: false, to: "/compare/$slug", slug: "devin" },
-      { label: "OpenBot vs Paperclip", external: false, to: "/compare/$slug", slug: "paperclip" },
-      { label: "OpenBot vs Viktor", external: false, to: "/compare/$slug", slug: "viktor" },
-      { label: "OpenBot vs Instinct", external: false, to: "/compare/$slug", slug: "instinct" },
+      { label: "ZollyBot vs Grok Bot", external: false, to: "/compare/$slug", slug: "grok-bot" },
+      { label: "ZollyBot vs Hermes Agent", external: false, to: "/compare/$slug", slug: "hermes-agent" },
+      { label: "ZollyBot vs Muse", external: false, to: "/compare/$slug", slug: "muse" },
+      { label: "ZollyBot vs OpenClaw", external: false, to: "/compare/$slug", slug: "openclaw" },
+      { label: "ZollyBot vs Claude Cowork", external: false, to: "/compare/$slug", slug: "claude-cowork" },
+      { label: "ZollyBot vs ChatGPT dots", external: false, to: "/compare/$slug", slug: "chatgpt-dots" },
+      { label: "ZollyBot vs Manus", external: false, to: "/compare/$slug", slug: "manus" },
+      { label: "ZollyBot vs Devin", external: false, to: "/compare/$slug", slug: "devin" },
+      { label: "ZollyBot vs Paperclip", external: false, to: "/compare/$slug", slug: "paperclip" },
+      { label: "ZollyBot vs Viktor", external: false, to: "/compare/$slug", slug: "viktor" },
+      { label: "ZollyBot vs Instinct", external: false, to: "/compare/$slug", slug: "instinct" },
       { label: "Best AI agent apps", external: false, to: "/compare/$slug", slug: "best-ai-agent-apps" },
       { label: "All comparisons", external: false, to: "/compare" },
     ],

@@ -5,14 +5,14 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { once } from "node:events";
 import { createServer, type Server as HttpServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, registerSecretValue, toLogValue } from "@openbot/logging";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
 import { Effect, Semaphore } from "effect";
 import { runCauseEffect } from "./effect-boundary";
 import { McpOperationError, mcpCall, mcpSync } from "./mcp-effects";
 
-const logger = createOpenBotLogger("mcp-oauth-proxy");
+const logger = createZollyBotLogger("mcp-oauth-proxy");
 
 /** The same limit as the GitHub proxy. The body is kept whole, so a refused request can be sent again. */
 const MAX_BODY_BYTES = 4 * 1024 * 1024;
@@ -25,7 +25,7 @@ const MAX_REDIRECTS = 3;
 const SIGN_IN_NEEDED_CODE = -32001;
 /** An `initialize` request is small. A larger body goes through as it is. */
 const MAX_INITIALIZE_BYTES = 64 * 1024;
-/** The longest agent name in the client title, so that a server does not cut "(OpenBot)" off. */
+/** The longest agent name in the client title, so that a server does not cut "(ZollyBot)" off. */
 const MAX_AGENT_NAME_LENGTH = 80;
 
 /** The headers of the Streamable HTTP transport. Every other header of the provider stays here. */
@@ -67,7 +67,7 @@ export interface McpOAuthProxyOptions {
   client?: McpOAuthProxyClient;
 }
 
-/** The client that a server sees: OpenBot, and the agent of the route when it has one. */
+/** The client that a server sees: ZollyBot, and the agent of the route when it has one. */
 interface McpOAuthProxyClient {
   version: string;
   /** The current name of the agent whose key is `agentKey`, or `null` when no agent has it now. */
@@ -84,7 +84,7 @@ export interface McpOAuthProxyRoute {
  * A loopback pass-through for the Streamable HTTP transport.
  *
  * Bytes go through unchanged, event streams included, because the provider and the server speak
- * MCP to each other. This class changes the credential, and it names OpenBot and the agent as the
+ * MCP to each other. This class changes the credential, and it names ZollyBot and the agent as the
  * client: the `clientInfo` of `initialize` and the `User-Agent`. Each route has its own bearer, made
  * from the secret, so a bearer that one row's provider holds opens no other route. An agent route
  * adds the agent key to the path and to the bearer; the route without one stays valid for the
@@ -268,7 +268,7 @@ export class McpOAuthProxy {
     body: Buffer | null,
     controller: AbortController,
   ): Effect.fn.Return<Response | null, McpOperationError> {
-    const userAgent = this.#options.client ? `OpenBot/${this.#options.client.version}` : null;
+    const userAgent = this.#options.client ? `ZollyBot/${this.#options.client.version}` : null;
     const first = yield* send(target, target.token, request, method, body, controller, userAgent);
     if (first.status !== 401) return first;
     yield* discard(first);
@@ -304,7 +304,7 @@ interface ClientInfo {
 }
 
 /**
- * OpenBot as the MCP client. The name is fixed, so a server can know OpenBot; the title names the
+ * ZollyBot as the MCP client. The name is fixed, so a server can know ZollyBot; the title names the
  * agent, read at each `initialize`, so a rename shows in the next session.
  */
 function clientInfo(client: McpOAuthProxyClient, agentKey: string | null): ClientInfo {
@@ -318,15 +318,15 @@ function clientInfo(client: McpOAuthProxyClient, agentKey: string | null): Clien
         .trim()
     : null;
   return {
-    name: "openbot",
-    title: name ? `${name} (OpenBot)` : "OpenBot",
+    name: "zollybot",
+    title: name ? `${name} (ZollyBot)` : "ZollyBot",
     version: client.version,
     websiteUrl: "https://openbot.run",
   };
 }
 
 /**
- * The body with OpenBot as the `clientInfo` when it is an `initialize` request. Any other body is
+ * The body with ZollyBot as the `clientInfo` when it is an `initialize` request. Any other body is
  * returned as it is. MCP does not let `initialize` be part of a batch, so a batch is not read.
  */
 function withClientInfo(
@@ -483,7 +483,7 @@ async function pipeBody(body: ReadableStream<Uint8Array>, response: ServerRespon
 }
 
 /**
- * The answer when OpenBot holds no usable sign-in for the route: a JSON-RPC error for each request
+ * The answer when ZollyBot holds no usable sign-in for the route: a JSON-RPC error for each request
  * in the body, so the agent reads why the tool is not there and the provider does not sign in by
  * itself. A body with notifications only is accepted, as a server would.
  */

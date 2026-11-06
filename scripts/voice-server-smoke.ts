@@ -15,24 +15,24 @@
 // `--allow-mutations`, because it changes the voice settings.
 //
 // Run: bun scripts/voice-server-smoke.ts --allow-mutations
-// It writes .openbot-build/voice-server-smoke/report.json and screenshots, and exits non-zero on a failure.
+// It writes .zollybot-build/voice-server-smoke/report.json and screenshots, and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { OpenBotDesktopApi, VoiceServerSettings } from "@openbot/contracts/ipc";
-import { translateFor } from "@openbot/i18n";
-import { createOpenBotLogger } from "@openbot/logging";
+import type { VoiceServerSettings, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { translateFor } from "@zollybot/i18n";
+import { createZollyBotLogger } from "@zollybot/logging";
 import type { Page } from "playwright-core";
 import { assertMutationAllowed, connectToDevApp } from "./dev-automation/cdp-client";
 import { readDevInstanceRecords } from "./dev-automation/instance-registry";
 
 declare global {
   interface Window {
-    openbot: OpenBotDesktopApi;
+    zollybot: ZollyBotDesktopApi;
   }
 }
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/voice-server-smoke");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/voice-server-smoke");
 const t = translateFor("en");
 const KEY = "smoke-voice-key-7f3a";
 const TRANSCRIPTION_MODEL = "Systran/faster-whisper-small";
@@ -76,7 +76,7 @@ assertMutationAllowed({
   instanceNamed: true,
   target: instance.instanceId,
 });
-const logger = createOpenBotLogger("voice-server-smoke");
+const logger = createZollyBotLogger("voice-server-smoke");
 
 /** A WAV file of 16-bit mono samples. */
 function wav(samples: Int16Array, sampleRate: number): Uint8Array<ArrayBuffer> {
@@ -156,7 +156,7 @@ const check = (name: string, passed: boolean, detail: unknown = null) => {
   logger.info(`${passed ? "Passed" : "Failed"}: ${name}.`);
 };
 const lastRequest = (path: string) => requests.findLast((entry) => entry.path === path);
-const server = (page: Page) => page.evaluate(() => window.openbot.voice.getServer());
+const server = (page: Page) => page.evaluate(() => window.zollybot.voice.getServer());
 
 async function waitFor<T>(read: () => Promise<T>, done: (value: T) => boolean, timeoutMs = 15_000): Promise<T> {
   const deadline = Date.now() + timeoutMs;
@@ -287,9 +287,9 @@ try {
   await page.getByRole("tabpanel").screenshot({ path: resolve(OUT, "voice-tab.png") });
 
   // 3. Main.
-  const prepared = await page.evaluate(() => window.openbot.voice.prepareModel());
+  const prepared = await page.evaluate(() => window.zollybot.voice.prepareModel());
   check("the dictation model is ready at once", prepared.phase === "ready", prepared);
-  const probe = await page.evaluate((target) => window.openbot.voice.probeServer(target), {
+  const probe = await page.evaluate((target) => window.zollybot.voice.probeServer(target), {
     address,
     apiKey: null,
   });
@@ -297,7 +297,7 @@ try {
   check("a test result does not hold the key", !JSON.stringify(probe).includes(KEY));
   const recording = Array.from(wav(tone(8_000, 16_000), 16_000));
   const transcript = await page.evaluate(
-    (audio) => window.openbot.voice.transcribe({ audio: new Uint8Array(audio) }),
+    (audio) => window.zollybot.voice.transcribe({ audio: new Uint8Array(audio) }),
     recording,
   );
   const transcription = lastRequest("/v1/audio/transcriptions");
@@ -310,7 +310,7 @@ try {
     transcription,
   );
   const speech = await page.evaluate(async () => {
-    const audio = await window.openbot.voice.speak({ text: "Hello from the voice server.", language: "en" });
+    const audio = await window.zollybot.voice.speak({ text: "Hello from the voice server.", language: "en" });
     return { sampleRate: audio.sampleRate, bytes: audio.pcm.byteLength };
   });
   const speechRequest = lastRequest("/v1/audio/speech");
@@ -417,7 +417,7 @@ try {
     .getByRole("button", { name: useLabel });
   if (afterEdit && (await use.count()) > 0) {
     // Server dictation on again, so that Use has something to turn off.
-    await page.evaluate((current) => window.openbot.voice.setServer({ server: { ...current, apiKey: null } }), {
+    await page.evaluate((current) => window.zollybot.voice.setServer({ server: { ...current, apiKey: null } }), {
       address: afterEdit.address,
       routes: { ...afterEdit.routes, dictation: true },
     });
@@ -448,7 +448,7 @@ try {
   const open = page.getByRole("dialog").getByRole("button", { name: t("common.close"), exact: true });
   if (await open.isVisible().catch(() => false)) await open.click().catch(() => undefined);
   if (saved !== null)
-    await page.evaluate(() => window.openbot.voice.setServer({ server: null })).catch(() => undefined);
+    await page.evaluate(() => window.zollybot.voice.setServer({ server: null })).catch(() => undefined);
   await session.close();
   await fake.stop(true);
 }

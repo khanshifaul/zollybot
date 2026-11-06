@@ -18,7 +18,7 @@ export const messages = {
   "plugin.uninstallDialog.confirm": "فصل",
   "plugin.uninstallDialog.appsLabel": "التطبيقات التي ستتم إزالتها، {number}",
   "plugin.uninstallDialog.appsTitle": "التطبيقات التي تمت إزالتها من هذا المضيف",
-  "plugin.uninstallDialog.appsNote": "تتوقف أدواتها عن الإتاحة، وينسى OpenBot أي تسجيل دخول احتفظ به لها.",
+  "plugin.uninstallDialog.appsNote": "تتوقف أدواتها عن الإتاحة، وينسى ZollyBot أي تسجيل دخول احتفظ به لها.",
   "plugin.uninstallDialog.skillsLabel": "المهارات التي ستتم إزالتها، {number}",
   "plugin.uninstallDialog.skillsTitle": "المهارات التي تمت إزالتها من {agentName}",
 } as const satisfies PartialTranslation<typeof source>;

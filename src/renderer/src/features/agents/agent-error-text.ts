@@ -1,5 +1,5 @@
-import { agentProviderName, isAgentProvider } from "@openbot/contracts/ipc";
-import { currentText } from "@openbot/ui/text";
+import { agentProviderName, isAgentProvider } from "@zollybot/contracts/ipc";
+import { currentText } from "@zollybot/ui/text";
 
 /** A provider quotes what it was given, so an error can carry a whole request body back. */
 const ERROR_DESCRIPTION_LIMIT = 300;

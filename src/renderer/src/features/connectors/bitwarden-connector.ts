@@ -1,5 +1,5 @@
-import { type BitwardenConnectorStatus, DISCONNECTED_BITWARDEN_CONNECTOR } from "@openbot/contracts/ipc";
-import { currentText } from "@openbot/ui/text";
+import { type BitwardenConnectorStatus, DISCONNECTED_BITWARDEN_CONNECTOR } from "@zollybot/contracts/ipc";
+import { currentText } from "@zollybot/ui/text";
 import { createSignal, onCleanup, onSettled } from "solid-js";
 import { type BitwardenConnectorPort, bitwardenConnectorPort } from "./bitwarden-connector-port";
 import {

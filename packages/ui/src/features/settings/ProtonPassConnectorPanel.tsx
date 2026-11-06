@@ -1,4 +1,4 @@
-import type { PasswordManagerStatus } from "@openbot/contracts/ipc";
+import type { PasswordManagerStatus } from "@zollybot/contracts/ipc";
 import {
   Alert,
   AlertActions,
@@ -24,7 +24,7 @@ import {
   PlushLoader,
   SettingsSection,
   TriangleAlert,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { ProtonPassMark } from "./brand-marks";
@@ -122,7 +122,7 @@ export function protonPassStatus(props: Pick<ProtonPassConnectorPanelProps, "sta
 }
 
 /**
- * The Proton Pass page of one OpenBot computer or joined server. The host runs the Proton sign-in,
+ * The Proton Pass page of one ZollyBot computer or joined server. The host runs the Proton sign-in,
  * and this computer opens the sign-in page in the browser. Then the host makes the shared vault and a
  * read-only access key for it, and keeps only that key.
  *

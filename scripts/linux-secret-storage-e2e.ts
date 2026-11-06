@@ -1,12 +1,12 @@
 // Runs the real Electron with the secret storage of `src/main/secret-storage-cipher.ts` and checks
 // that a secret lives through a restart when the Linux keyring loses its key:
-// 1. With no keyring, OpenBot makes its own 0600 key file, and the secret opens after a restart.
+// 1. With no keyring, ZollyBot makes its own 0600 key file, and the secret opens after a restart.
 // 2. With a keyring that keeps its key, `safeStorage` keeps the secret and no key file is made.
 // 3. When the next start has a new keyring (one that keeps its items only in memory, or a locked
-//    one that Chromium replaces), the old secret does not open. OpenBot then makes the key file, and
+//    one that Chromium replaces), the old secret does not open. ZollyBot then makes the key file, and
 //    a secret that it writes after that opens after the next restart with yet another keyring.
 // 4. A hosted server (boat): an older release kept the secret in an unlocked login keyring, as
-//    `scripts/hosting/openbot-hosted-server` starts it. The upgrade keeps the keyring and makes no key
+//    `scripts/hosting/zollybot-hosted-server` starts it. The upgrade keeps the keyring and makes no key
 //    file. One start without the keyring (a direct launch) makes the key file; after it, the secret of
 //    the keyring still opens, and new secrets use the key file.
 // No start makes the key file before `ready`, when `safeStorage` has no key yet.
@@ -15,7 +15,7 @@
 //
 // Run on Linux with a display (xvfb-run): bun scripts/linux-secret-storage-e2e.ts
 // `ELECTRON_OVERRIDE_DIST_PATH`, as the `electron` package reads it, names another Electron folder.
-// It writes .openbot-build/linux-secret-storage-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/linux-secret-storage-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { spawn, spawnSync } from "node:child_process";
 import { closeSync, existsSync, openSync, readFileSync } from "node:fs";
@@ -23,11 +23,11 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { withoutElectronRuntimeFlags } from "./electron-spawn-env";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const OUT = join(ROOT, ".openbot-build", "linux-secret-storage-e2e");
+const OUT = join(ROOT, ".zollybot-build", "linux-secret-storage-e2e");
 const READY_TIMEOUT_MS = 30_000;
 const electronPath = process.env.ELECTRON_OVERRIDE_DIST_PATH
   ? join(process.env.ELECTRON_OVERRIDE_DIST_PATH, "electron")
@@ -38,7 +38,7 @@ const electronPath = process.env.ELECTRON_OVERRIDE_DIST_PATH
       "dist",
       readFileSync(join(ROOT, "node_modules", "electron", "path.txt"), "utf8").trim(),
     );
-// A login keyring that the daemon unlocks with no person, as `scripts/hosting/openbot-hosted-server`
+// A login keyring that the daemon unlocks with no person, as `scripts/hosting/zollybot-hosted-server`
 // makes it. `$1` is the keyring folder; the rest is the Electron command.
 const KEYRING_SESSION = [
   'export XDG_DATA_HOME="$1"; shift',
@@ -88,7 +88,7 @@ const hasKeyring =
   spawnSync("sh", ["-c", "command -v dbus-run-session && command -v gnome-keyring-daemon"]).status === 0;
 
 await mkdir(OUT, { recursive: true });
-const root = await mkdtemp(join(tmpdir(), "openbot-linux-secret-storage-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-linux-secret-storage-"));
 const bundle = join(root, "linux-secret-storage-electron.mjs");
 const results: Record<string, StepResult[]> = {};
 const skipped: string[] = [];
@@ -199,7 +199,7 @@ async function launch(step: Step, userData: string, blob: string): Promise<StepR
   const base = withoutElectronRuntimeFlags(process.env);
   // No session bus unless the step has a keyring: the test must not reach a keyring of the computer
   // that runs it. An unset address is not enough, because GLib then finds $XDG_RUNTIME_DIR/bus.
-  base.DBUS_SESSION_BUS_ADDRESS = "unix:path=/nonexistent/openbot-e2e-bus";
+  base.DBUS_SESSION_BUS_ADDRESS = "unix:path=/nonexistent/zollybot-e2e-bus";
   delete base.GNOME_KEYRING_CONTROL;
   base.XDG_CURRENT_DESKTOP = "XFCE";
   const readyFile = join(root, `ready-${index}.json`);

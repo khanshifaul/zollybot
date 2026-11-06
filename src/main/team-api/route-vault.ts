@@ -1,17 +1,17 @@
-import type { VaultState } from "@openbot/contracts/ipc";
+import type { VaultState } from "@zollybot/contracts/ipc";
 import {
   VAULT_CAPABILITY,
   VAULT_ROUTES,
   VAULT_WIRE_ITEM_LIMIT,
   VAULT_WIRE_NAME_LIMIT,
-} from "@openbot/contracts/team-protocol/vault-v1";
+} from "@zollybot/contracts/team-protocol/vault-v1";
 import {
   VAULT_V2_CAPABILITY,
   VAULT_V2_ROUTES,
   VAULT_V2_WIRE_ITEM_LIMIT,
   VAULT_V2_WIRE_NAME_LIMIT,
-} from "@openbot/contracts/team-protocol/vault-v2";
-import { isFixedSourceText, sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/vault-v2";
+import { isFixedSourceText, sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import { decodeVaultSaveInput, decodeVaultSecretRequest } from "../vault-inputs";
 import type { TeamApiVault } from "./dependencies";

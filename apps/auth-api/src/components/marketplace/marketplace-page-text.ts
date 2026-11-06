@@ -1,4 +1,4 @@
-import type { AppTranslate } from "@openbot/i18n";
+import type { AppTranslate } from "@zollybot/i18n";
 import type { MarketplaceAgentView, MarketplaceSkillView } from "../../lib/marketplace";
 import type { MarketplaceTab } from "../../lib/marketplace-routes";
 

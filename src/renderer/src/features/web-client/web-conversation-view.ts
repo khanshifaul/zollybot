@@ -6,8 +6,8 @@ import {
   type ConversationSnapshot,
   type RespondToApprovalInput,
   type RespondToPromptInput,
-} from "@openbot/contracts/ipc";
-import type { AgentMessage } from "@openbot/ui/data";
+} from "@zollybot/contracts/ipc";
+import type { AgentMessage } from "@zollybot/ui/data";
 import { createEffect, createMemo, createProjection, createSignal, mapArray } from "solid-js";
 import { toAgentMessage, toAgentMessages } from "../../app-message-projection";
 import type { createRemoteAgentAdmin } from "../agents/remote-agent-admin";
@@ -17,7 +17,7 @@ import type { WebWorkspace } from "./web-client-context";
 
 type PromptEvent = Extract<AgentEvent, { type: "prompt" }>;
 
-/** The host names attachment previews with the desktop `openbot-attachment:` scheme, which a browser cannot load. */
+/** The host names attachment previews with the desktop `zollybot-attachment:` scheme, which a browser cannot load. */
 function withoutPreviewUrls(message: AgentMessage): AgentMessage {
   if (!message.attachments) return message;
   return { ...message, attachments: message.attachments.map((attachment) => ({ ...attachment, previewUrl: null })) };

@@ -1,6 +1,6 @@
 NVIDIA Parakeet Unified EN 0.6B
 
-OpenBot downloads this speech recognition model when you select it for dictation. The model is not
+ZollyBot downloads this speech recognition model when you select it for dictation. The model is not
 part of the application package.
 
 Licensed by NVIDIA Corporation under the NVIDIA Open Model License
@@ -15,7 +15,7 @@ Use must also follow the NVIDIA Trustworthy AI terms:
 https://www.nvidia.com/en-us/agreements/trustworthy-ai/terms/
 
 Changes: the offline mode of the model was exported to ONNX and quantized to int8 for sherpa-onnx
-by the sherpa-onnx project. OpenBot uses that converted model without further changes:
+by the sherpa-onnx project. ZollyBot uses that converted model without further changes:
 https://huggingface.co/csukuangfj2/sherpa-onnx-nemo-parakeet-unified-en-0.6b-int8-non-streaming
 (revision 8c3a10fb13408c7a7054f6898958bf1c64a8d6c7)
 

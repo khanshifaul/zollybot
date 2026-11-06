@@ -1,6 +1,6 @@
-import type { AgentTask, AgentTasksSnapshot } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
 import { useQueryClient } from "@tanstack/react-query";
+import type { AgentTask, AgentTasksSnapshot } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { router } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Alert } from "react-native";

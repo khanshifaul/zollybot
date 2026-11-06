@@ -1,5 +1,5 @@
 {
-  "name": "@openbot/status",
+  "name": "@zollybot/status",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@fontsource-variable/inter": "catalog:",
-    "@openbot/brand": "workspace:*",
-    "@openbot/logging": "workspace:*",
+    "@zollybot/brand": "workspace:*",
+    "@zollybot/logging": "workspace:*",
     "@solidjs/web": "catalog:",
     "effect": "catalog:",
     "lucide-solid": "catalog:",

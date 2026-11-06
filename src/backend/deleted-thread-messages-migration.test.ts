@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves the table
 // or its marker; a newer or incomplete history is accepted; a deleted id can point to no thread, be
@@ -22,7 +22,7 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
@@ -95,7 +95,7 @@ describe("deleted thread messages migration", () => {
       if (version < 54) migrateUpTo(db, 54);
       const before = contents(db);
       expect(before.projection_thread_messages).toHaveLength(2);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(contents(db)).toEqual({ ...before, ...LATER_TABLES });
       expectHealthy(db);
     },
@@ -107,13 +107,13 @@ describe("deleted thread messages migration", () => {
     const before = contents(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=55
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 55 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 55 failed");
     expect(contents(db)).toEqual(before);
     expect(deletedTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=55").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(contents(db)).toEqual({ ...before, ...LATER_TABLES });
     expectHealthy(db);
   });
@@ -123,9 +123,9 @@ describe("deleted thread messages migration", () => {
     seed(db);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
     expect(deletedTables(db)).toEqual([]);
   });
@@ -133,7 +133,7 @@ describe("deleted thread messages migration", () => {
   it("refuses an id of no thread, an empty id or a second record, and goes with its thread", () => {
     const db = databaseAt(54);
     seed(db);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     const insert = db.prepare(`INSERT INTO projection_deleted_thread_messages (thread_id, message_id, deleted_at)
       VALUES (?, ?, '2026-01-02')`);
     expect(() => insert.run("thread-unknown", "message-1")).toThrow("FOREIGN KEY constraint failed");

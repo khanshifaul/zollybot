@@ -1,9 +1,9 @@
+import type { JSX } from "@solidjs/web";
 import {
   ComposerSignInNotice,
   ComposerUpdateNotice,
   ComposerUsageLimitNotice,
-} from "@openbot/ui/features/conversation/ComposerNotice";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/conversation/ComposerNotice";
 import { createSignal, Show } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

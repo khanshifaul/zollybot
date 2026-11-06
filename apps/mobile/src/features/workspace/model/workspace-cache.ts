@@ -7,9 +7,9 @@ import {
   decodeChannelSummaries,
   isAvatarColor,
   type SidebarLayoutSnapshot,
-} from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import type { RemoteTeamHost } from "@openbot/team-client";
+} from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import type { RemoteTeamHost } from "@zollybot/team-client";
 import * as Crypto from "expo-crypto";
 import * as FileSystem from "expo-file-system/legacy";
 import * as LockedKeychain from "@/shared/lib/locked-keychain";
@@ -56,7 +56,7 @@ export interface WorkspaceCache {
 
 const FORMAT = 1;
 const ROOT = "workspace-cache-v1/";
-const KEY_NAME = "openbot.mobile.workspace-cache-key.v1";
+const KEY_NAME = "zollybot.mobile.workspace-cache-key.v1";
 /** `segment` never makes a `~`, so no server file has this name. */
 const HOSTS_NAME = "~hosts";
 /**

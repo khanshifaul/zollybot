@@ -1,4 +1,4 @@
-import type { BrowserViewContextMenu, BrowserViewInput } from "@openbot/contracts/team-protocol/browser-view-v1";
+import type { BrowserViewContextMenu, BrowserViewInput } from "@zollybot/contracts/team-protocol/browser-view-v1";
 import * as Clipboard from "expo-clipboard";
 import { GlassView } from "expo-glass-effect";
 import { router, Stack, useLocalSearchParams } from "expo-router";

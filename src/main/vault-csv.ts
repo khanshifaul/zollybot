@@ -2,7 +2,7 @@
 // Bitwarden, LastPass and Proton Pass all write a header row that names the address, user name and password
 // columns.
 
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 
 export interface CsvLogin {
   website: string;

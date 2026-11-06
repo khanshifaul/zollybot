@@ -1,4 +1,5 @@
-import type { AppTextKey } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   AudioLines,
   Button,
@@ -14,15 +15,14 @@ import {
   Tabs,
   Workflow,
   X,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import {
   AttachmentReferenceVisual,
   attachmentReferenceTone,
-} from "@openbot/ui/features/conversation/AttachmentReference";
-import { ComputerIcon } from "@openbot/ui/features/conversation/ConversationIcons";
-import type { ThreadItem } from "@openbot/ui/features/conversation/threads/thread-types";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/conversation/AttachmentReference";
+import { ComputerIcon } from "@zollybot/ui/features/conversation/ConversationIcons";
+import type { ThreadItem } from "@zollybot/ui/features/conversation/threads/thread-types";
+import { useText } from "@zollybot/ui/text";
 import { For, flush, onSettled, Show } from "solid-js";
 import { ThreadStatusText, ThreadTabIcon, threadAttention } from "./threads/ThreadStatusMark";
 import { ThreadTabGhost } from "./threads/ThreadTabGhost";

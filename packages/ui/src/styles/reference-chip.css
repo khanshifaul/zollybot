@@ -5,21 +5,21 @@
   box-sizing: border-box;
   min-width: 0;
   max-width: 100%;
-  height: var(--openbot-space-6);
+  height: var(--zollybot-space-6);
   align-items: center;
   justify-content: flex-start;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   margin: 0;
   overflow: hidden;
   border: 0;
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-border);
-  padding-block: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-1) var(--openbot-space-1-5);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-border);
+  padding-block: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-1) var(--zollybot-space-1-5);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
   font-weight: 500;
-  line-height: var(--openbot-space-4);
+  line-height: var(--zollybot-space-4);
   vertical-align: middle;
   white-space: nowrap;
   text-decoration: none;
@@ -29,8 +29,8 @@
 .reference-chip[data-kind="mcp"],
 .reference-chip[data-kind="plugin"],
 .reference-chip[data-kind="skill"] {
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
 /* A page title can be long: a tab and a thread stop at a width, and the title shows all of it. */
@@ -46,18 +46,18 @@
 
 .reference-chip[data-kind="agent"]:hover,
 button.reference-chip:is([data-kind="quote"], [data-kind="tab"], [data-kind="thread"]):hover {
-  background: var(--openbot-border-strong);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-border-strong);
+  color: var(--zollybot-text-primary);
 }
 
 .reference-chip .reference-chip-icon {
   display: inline-grid;
-  width: var(--openbot-space-4);
-  height: var(--openbot-space-4);
-  flex: 0 0 var(--openbot-space-4);
+  width: var(--zollybot-space-4);
+  height: var(--zollybot-space-4);
+  flex: 0 0 var(--zollybot-space-4);
   place-items: center;
   overflow: hidden;
-  border-radius: var(--openbot-radius-xs);
+  border-radius: var(--zollybot-radius-xs);
   color: inherit;
 }
 
@@ -71,9 +71,9 @@ button.reference-chip:is([data-kind="quote"], [data-kind="tab"], [data-kind="thr
 /* In the text, a line icon has the size and stroke of a file chip's page icon. Agent faces and logos
    keep the full box. */
 :is(.message-reference-chip, .composer-mention-token) .reference-chip-icon > svg.lucide {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .reference-chip-name {

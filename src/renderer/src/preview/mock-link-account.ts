@@ -1,4 +1,4 @@
-import { DISCONNECTED_LINK_ACCOUNT, type LinkAccountDesktopApi, type LinkAccountStatus } from "@openbot/contracts/ipc";
+import { DISCONNECTED_LINK_ACCOUNT, type LinkAccountDesktopApi, type LinkAccountStatus } from "@zollybot/contracts/ipc";
 
 /** How long the mock waits for the user to approve the sign-in on link.com. */
 const MOCK_SIGN_IN_MS = 4_000;

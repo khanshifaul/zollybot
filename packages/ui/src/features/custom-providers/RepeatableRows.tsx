@@ -1,5 +1,5 @@
-import { Button, IconButton, Input, Plus, Text, Trash2 } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Button, IconButton, Input, Plus, Text, Trash2 } from "@zollybot/ui";
 import { For, Show } from "solid-js";
 
 /**

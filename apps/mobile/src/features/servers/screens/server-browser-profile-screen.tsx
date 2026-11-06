@@ -1,10 +1,10 @@
-import { AVATAR_HUE_CHOICES, avatarHueSwatch } from "@openbot/brand/bloub-avatar";
+import { AVATAR_HUE_CHOICES, avatarHueSwatch } from "@zollybot/brand/bloub-avatar";
 import {
   type AvatarHue,
   BROWSER_PROFILE_NAME_MAX,
   type BrowserProfileSummary,
   nextBrowserProfileHue,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Button, Typography } from "heroui-native";
@@ -49,7 +49,7 @@ export function ServerBrowserProfileScreen() {
   const profiles = useServerBrowserProfiles(serverId);
   const assignment = useAgentBrowserProfile(serverId, assignTo || undefined);
   const usage = useBrowserProfileUsage();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   // The selector returns the stored list, so the page does not render again for a new copy.
   const allAgents = useMobileWorkspaceSelector((workspace) => workspace.agents);
   const agents = useMemo(() => allAgents.filter((agent) => agent.serverId === serverId), [allAgents, serverId]);

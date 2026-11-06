@@ -1,11 +1,11 @@
-import type { ServerNotificationLevel } from "@openbot/contracts/ipc";
-import { Heading, SettingsSection, Toaster } from "@openbot/ui";
+import type { ServerNotificationLevel } from "@zollybot/contracts/ipc";
+import { Heading, SettingsSection, Toaster } from "@zollybot/ui";
 import {
   NotificationMatrix,
   type NotificationMatrixAgent,
   type NotificationMatrixServer,
   NotificationScopeTitle,
-} from "@openbot/ui/features/settings/NotificationMatrix";
+} from "@zollybot/ui/features/settings/NotificationMatrix";
 import { createStore } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -63,7 +63,7 @@ const ACME: NotificationMatrixServer = {
     ],
   },
 };
-/** A joined server on an older OpenBot, and one that is offline. */
+/** A joined server on an older ZollyBot, and one that is offline. */
 const LAB: NotificationMatrixServer = {
   id: "lab",
   name: "Old lab server",
@@ -86,7 +86,7 @@ const RESEARCH: NotificationMatrixServer = {
   deviceOnly: false,
   agents: { status: "loading" },
 };
-/** This computer, a joined server, a joined server on an older OpenBot, and one that is offline. */
+/** This computer, a joined server, a joined server on an older ZollyBot, and one that is offline. */
 const SERVERS = [LOCAL, ACME, LAB, RESEARCH];
 
 /** The matrix with the state that a host keeps, so each choice shows as it does in the app. */
@@ -156,7 +156,7 @@ export const Default: Story = {
   render: () => <MatrixStory servers={SERVERS} />,
 };
 
-/** The web client: a server on an older OpenBot keeps its level in this browser only. */
+/** The web client: a server on an older ZollyBot keeps its level in this browser only. */
 export const WebClient: Story = {
   render: () => <MatrixStory servers={SERVERS} device="browser" />,
 };

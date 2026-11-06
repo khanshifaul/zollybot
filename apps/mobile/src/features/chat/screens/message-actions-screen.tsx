@@ -1,4 +1,4 @@
-import { MESSAGE_REACTIONS, MORE_MESSAGE_REACTIONS, nextSpeechSpeed } from "@openbot/contracts/ipc";
+import { MESSAGE_REACTIONS, MORE_MESSAGE_REACTIONS, nextSpeechSpeed } from "@zollybot/contracts/ipc";
 import { router } from "expo-router";
 import { Button, Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
@@ -54,7 +54,7 @@ export function MessageActionsScreen() {
   const { t, format } = useText();
   const request = useMessageActionsRequest();
   const [foreground, muted] = useThemeColor(["foreground", "muted"]);
-  const danger = String(useCSSVariable("--openbot-danger-text"));
+  const danger = String(useCSSVariable("--zollybot-danger-text"));
   const [moreEmoji, setMoreEmoji] = useState(false);
   const reading = useReadingAloud(request?.readAloudId ?? "");
   const speed = useVoiceSettings((state) => state.speed);

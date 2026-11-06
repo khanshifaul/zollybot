@@ -1,6 +1,6 @@
 /**
  * What workflows need from GitHub, as the main process gives it: the changes of GitHub outputs, made as
- * OpenBot's bot, the labels and people of a repository, and its newest events for "Run with last event".
+ * ZollyBot's bot, the labels and people of a repository, and its newest events for "Run with last event".
  * The backend keeps the rules (which item, which change, the loop guard); the adapter keeps the tokens.
  */
 
@@ -9,8 +9,8 @@ import type {
   WorkflowGitHubCloseReason,
   WorkflowGitHubEvent,
   WorkflowGitHubRepositoryOptions,
-} from "@openbot/contracts/ipc";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
 import type { Effect } from "effect";
 
 /** GitHub refuses a longer comment, review or issue text. */

@@ -1,5 +1,5 @@
-import { attachmentMimeTypeForName, playableMediaKind } from "@openbot/contracts/attachment-files";
-import { type AttachmentSummary, canPreviewAttachment } from "@openbot/contracts/ipc";
+import { attachmentMimeTypeForName, playableMediaKind } from "@zollybot/contracts/attachment-files";
+import { type AttachmentSummary, canPreviewAttachment } from "@zollybot/contracts/ipc";
 import {
   AudioLines,
   Button,
@@ -12,7 +12,7 @@ import {
   RadialProgress,
   RefreshCw,
   Square,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createSignal, For, Match, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { attachmentReferenceTone } from "./AttachmentReference";

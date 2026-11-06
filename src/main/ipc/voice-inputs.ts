@@ -24,9 +24,9 @@ import {
   type VoiceStream,
   type VoiceStreamAudio,
   type VoiceTranscriptionInput,
-} from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { parseBaseUrl } from "./custom-provider-inputs";
 import { isObject } from "./validation";
 

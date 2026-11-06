@@ -14,7 +14,7 @@ import type { VoiceSpeechFailure, VoiceSpeechRequest, VoiceSpeechResponse } from
 
 /**
  * More denoising steps sound cleaner and take longer; 8 still reads about five times real time.
- * The same value as `SUPERTONIC_DENOISING_STEPS` in `@openbot/contracts/speech-models`, which the
+ * The same value as `SUPERTONIC_DENOISING_STEPS` in `@zollybot/contracts/speech-models`, which the
  * phone uses. This host imports only `node:*` at runtime, so the number is repeated here.
  */
 const DENOISING_STEPS = 8;
@@ -23,7 +23,7 @@ const MAXIMUM_THREADS = 64;
 /** A settings file is a plain name in the runtime directory; empty is the default settings. */
 const SESSION_CONFIG_PATTERN = /^(?:[a-z0-9-]+\.cfg)?$/u;
 
-/** The part of the sherpa-onnx offline TTS configuration that OpenBot sets. */
+/** The part of the sherpa-onnx offline TTS configuration that ZollyBot sets. */
 interface TtsConfig {
   model: {
     supertonic: {

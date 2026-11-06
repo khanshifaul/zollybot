@@ -1,4 +1,4 @@
-import type { GitHubDeliveryStatus } from "@openbot/contracts/signal-protocol/github-route";
+import type { GitHubDeliveryStatus } from "@zollybot/contracts/signal-protocol/github-route";
 import { Effect, Result } from "effect";
 import type { WorkflowsHandle } from "../backend/workflows/workflows";
 import type { CentralAuthOperationError } from "./central-auth-effects";

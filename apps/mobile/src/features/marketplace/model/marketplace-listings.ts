@@ -5,8 +5,8 @@ import {
   type McpServerConfig,
   SKILL_CATEGORIES,
   type SkillCategory,
-} from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+} from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import type { MobileConnectorId } from "@/features/servers/model/connectors";
 import type { ConnectorRow } from "@/features/servers/model/use-connector-rows";
 import { catalogImageUrl, pluginIconUrl } from "../api/marketplace-catalog";

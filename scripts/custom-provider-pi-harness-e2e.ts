@@ -5,7 +5,7 @@
 // key and the header value must not reach the extension file or an error message. A saved output
 // limit must reach the request as the model's budget (#4234). A model with saved efforts must list
 // exactly those efforts and send the effort of the turn; a model with none must not reason (#4154).
-// `PI_CLI=<pi> bun run test:custom-provider-pi`. Writes .openbot-build/custom-provider-pi-harness/report.json.
+// `PI_CLI=<pi> bun run test:custom-provider-pi`. Writes .zollybot-build/custom-provider-pi-harness/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
@@ -24,7 +24,7 @@ import { getArray, getRecord, getString, isRecord } from "../src/backend/protoco
 import { requireProviderDriver } from "../src/backend/provider-drivers";
 import { runTurn, startThread, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/custom-provider-pi-harness");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/custom-provider-pi-harness");
 const REPLY = "pong from the fake endpoint";
 const KEY = "!sk-e2e-$HOME-literal";
 const HEADER_VALUE = "team-$PATH";
@@ -48,7 +48,7 @@ interface Report {
   passed: boolean;
   piVersion?: string;
   models?: string[];
-  /** The efforts that OpenBot listed for each model. */
+  /** The efforts that ZollyBot listed for each model. */
   efforts?: Record<string, string[]>;
   requests: Request[];
   reply?: string;
@@ -60,7 +60,7 @@ interface Report {
 }
 
 const report: Report = { passed: false, requests: [] };
-const root = await mkdtemp(join(tmpdir(), "openbot-custom-pi-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-custom-pi-e2e-"));
 const clients: AgentClient[] = [];
 
 function header(request: IncomingMessage, name: string): string | null {
@@ -97,7 +97,7 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
     const authorization = header(request, "authorization");
     report.requests.push({ path: request.url ?? "", authorization, header: header(request, "x-e2e"), ...sent });
     if (model === FAILING_MODEL) {
-      // A server that names the key it refused. Pi passes the body on, so OpenBot must redact it.
+      // A server that names the key it refused. Pi passes the body on, so ZollyBot must redact it.
       response.writeHead(401, { "content-type": "application/json" });
       response.end(JSON.stringify({ error: { message: `Key refused: ${authorization}`, type: "invalid_key" } }));
       return;
@@ -117,7 +117,7 @@ async function extensionFiles(directory: string): Promise<{ names: string[]; tex
   const names: string[] = [];
   let text = "";
   for (const folder of await readdir(directory).catch(() => [])) {
-    if (!folder.startsWith("openbot-pi-")) continue;
+    if (!folder.startsWith("zollybot-pi-")) continue;
     for (const name of await readdir(join(directory, folder))) {
       names.push(`${folder}/${name}`);
       text += await readFile(join(directory, folder, name), "utf8");
@@ -248,7 +248,7 @@ try {
   });
   const refused = messages.filter((message) => message.includes("Key refused"));
   report.failure = { error: failure.error, status: failure.status, messages: refused };
-  assert.ok(refused.length > 0, "The refusal must reach OpenBot.");
+  assert.ok(refused.length > 0, "The refusal must reach ZollyBot.");
   assert.ok(
     report.requests.some((request) => request.model === FAILING_MODEL),
     "The endpoint got no request for the failing model.",

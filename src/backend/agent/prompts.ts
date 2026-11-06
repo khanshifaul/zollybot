@@ -1,17 +1,17 @@
 import { randomUUID } from "node:crypto";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentApprovalPermissions,
   AgentPromptQuestion,
   AgentPromptResolution,
   RespondToBrowserTakeoverInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   COMPUTER_USE_MCP_SERVER_NAME,
   MCP_ELICITATION_DECISION_QUESTION_ID,
   vaultExpiryText,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import {
   normalizeUiBlockSpec,
   UI_VAULT_REQUEST_FIELDS,
@@ -20,8 +20,8 @@ import {
   type UiBlockSpec,
   type UiFormField,
   type UiVaultRequestField,
-} from "@openbot/contracts/ui-blocks";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ui-blocks";
+import { sourceText } from "@zollybot/i18n/source";
 import type { SavedApiKey } from "../agent-api-keys";
 import type { BrowserToolArguments } from "../browser-tools";
 import { type DynamicToolResult, getArray, getRecord, getString, isRecord } from "../protocol";
@@ -472,7 +472,7 @@ export function vaultRequestFormSpec(args: VaultRequestArguments): UiBlockSpec |
   });
   return (
     normalizeUiBlockSpec({ type: "form", title: args.title, fields, submit: sourceText("status.agent.vaultSave") }) ??
-    "OpenBot could not show this form. Use a shorter title or shorter values and retry."
+    "ZollyBot could not show this form. Use a shorter title or shorter values and retry."
   );
 }
 
@@ -527,7 +527,7 @@ export function browserUserControlResult(): DynamicToolResult {
 }
 
 export function browserTakeoverError(
-  message = "OpenBot could not create a browser takeover request.",
+  message = "ZollyBot could not create a browser takeover request.",
 ): DynamicToolResult {
   return {
     success: false,

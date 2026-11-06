@@ -22,13 +22,13 @@ Status: base imported, integration not started.
 ## Base
 
 The desktop shell, runtime adapters, queue substrate and mobile client come from
-**OpenBot 0.62.0** (upstream commit `9539f15`, 2026-11-06). Its original README,
+**ZollyBot 0.62.0** (upstream commit `9539f15`, 2026-11-06). Its original README,
 build and contributor docs are kept in `README.upstream.md` and `docs/`.
 
 ## Design
 
 - [docs/architecture.md](docs/architecture.md) — how zollybot works, the
-  platform split, the OpenBot reuse map, and the gate and memory invariants.
+  platform split, the ZollyBot reuse map, and the gate and memory invariants.
 
 ## Next
 

@@ -10,35 +10,35 @@ export function ImportHermesAgents() {
   return (
     <>
       <p>
-        You can move your Hermes Agent setup into OpenBot without rebuilding every agent from scratch. Each Hermes
-        profile becomes an OpenBot agent, with its own instructions, saved memories and custom skills where available.
+        You can move your Hermes Agent setup into ZollyBot without rebuilding every agent from scratch. Each Hermes
+        profile becomes an ZollyBot agent, with its own instructions, saved memories and custom skills where available.
       </p>
 
       <p>
-        OpenBot shows you what it found before you import. You choose the profiles to bring over, check which items will
-        move and allow any optional items you want to include. Your original Hermes profiles stay where they are.
+        ZollyBot shows you what it found before you import. You choose the profiles to bring over, check which items
+        will move and allow any optional items you want to include. Your original Hermes profiles stay where they are.
       </p>
 
       <h2>Before you start</h2>
 
       <p>
-        Update OpenBot and decide where your imported agents should live. For the folder method below, use the OpenBot
+        Update ZollyBot and decide where your imported agents should live. For the folder method below, use the ZollyBot
         desktop app on the same computer as Hermes and select that computer as your destination.
       </p>
 
       <p>
-        If Hermes is on another computer, or you use OpenBot in the browser or on a joined server, use the ZIP export
+        If Hermes is on another computer, or you use ZollyBot in the browser or on a joined server, use the ZIP export
         method later in this guide.
       </p>
 
-      <h2>1. Open Import in OpenBot</h2>
+      <h2>1. Open Import in ZollyBot</h2>
 
       <p>
         Open <strong>Server settings → Import</strong>, then choose <strong>Hermes Agent</strong>.
       </p>
       <ArticleImage
         src={importSource}
-        alt="OpenBot Import settings with Hermes Agent, Grok Bot and another OpenBot computer as source options."
+        alt="ZollyBot Import settings with Hermes Agent, Grok Bot and another ZollyBot computer as source options."
         width={1184}
         height={737}
         caption="Choose Hermes Agent in the Import settings."
@@ -51,7 +51,7 @@ export function ImportHermesAgents() {
       <table>
         <thead>
           <tr>
-            <th>Option in OpenBot</th>
+            <th>Option in ZollyBot</th>
             <th>When to use it</th>
           </tr>
         </thead>
@@ -60,13 +60,13 @@ export function ImportHermesAgents() {
             <td>
               <strong>Read this computer</strong>
             </td>
-            <td>Hermes is on the same computer as the OpenBot desktop app. No ZIP is needed.</td>
+            <td>Hermes is on the same computer as the ZollyBot desktop app. No ZIP is needed.</td>
           </tr>
           <tr>
             <td>
               <strong>Install with a command</strong>
             </td>
-            <td>Add the export skill in Hermes with one command, then import its ZIP into OpenBot.</td>
+            <td>Add the export skill in Hermes with one command, then import its ZIP into ZollyBot.</td>
           </tr>
           <tr>
             <td>
@@ -79,13 +79,13 @@ export function ImportHermesAgents() {
 
       <p>
         For the two ZIP options, prepare the export on the computer where Hermes runs. You can then import it through
-        the OpenBot desktop app, the browser or a joined server.
+        the ZollyBot desktop app, the browser or a joined server.
       </p>
 
       <h3>Option 1: Read this computer</h3>
 
       <p>
-        Select <strong>Read the Hermes folder</strong>. OpenBot reads the profiles it finds without changing the Hermes
+        Select <strong>Read the Hermes folder</strong>. ZollyBot reads the profiles it finds without changing the Hermes
         folder.
       </p>
       <ArticleImage
@@ -97,20 +97,20 @@ export function ImportHermesAgents() {
       />
 
       <p>
-        The usual folder is <code>~/.hermes</code>. If OpenBot cannot find your profiles, use{" "}
+        The usual folder is <code>~/.hermes</code>. If ZollyBot cannot find your profiles, use{" "}
         <strong>Choose the Hermes folder</strong> and select the folder your installation uses. On the profile preview,{" "}
         <strong>Choose another folder</strong> lets you change it.
       </p>
 
-      <p>You do not need to make a ZIP for this method. OpenBot takes you straight to the profiles it found.</p>
+      <p>You do not need to make a ZIP for this method. ZollyBot takes you straight to the profiles it found.</p>
 
       <p>Once the folder has been read, continue to step 3 to review the profiles.</p>
 
       <h3>Option 2: Install with a command</h3>
 
       <p>
-        This option adds the OpenBot export skill to Hermes. It is useful when Hermes runs on another computer, or when
-        you want to import through the browser or into a joined OpenBot server.
+        This option adds the ZollyBot export skill to Hermes. It is useful when Hermes runs on another computer, or when
+        you want to import through the browser or into a joined ZollyBot server.
       </p>
 
       <p>
@@ -140,7 +140,7 @@ export function ImportHermesAgents() {
       <h3>Option 3: Set it up yourself</h3>
 
       <p>
-        Use this option if you prefer to add the export skill as a file. On the Hermes Agent import page in OpenBot,
+        Use this option if you prefer to add the export skill as a file. On the Hermes Agent import page in ZollyBot,
         choose <strong>Set it up yourself</strong>.
       </p>
       <ArticleImage
@@ -157,9 +157,9 @@ export function ImportHermesAgents() {
       </p>
 
       <p>
-        Save it at <code>~/.hermes/skills/openbot-export/SKILL.md</code>. If your Hermes installation uses a different
-        home folder, put it in that folder under <code>skills/openbot-export/SKILL.md</code>. Create the{" "}
-        <code>openbot-export</code> folder if needed.
+        Save it at <code>~/.hermes/skills/zollybot-export/SKILL.md</code>. If your Hermes installation uses a different
+        home folder, put it in that folder under <code>skills/zollybot-export/SKILL.md</code>. Create the{" "}
+        <code>zollybot-export</code> folder if needed.
       </p>
 
       <p>
@@ -175,12 +175,12 @@ export function ImportHermesAgents() {
       </p>
 
       <pre>
-        <code>/openbot-export</code>
+        <code>/zollybot-export</code>
       </pre>
 
       <p>
         Choose the profiles you want to export and wait for the completed ZIP in Downloads. Its name will look like{" "}
-        <code>openbot-export-hermes-2026-10-28.zip</code>.
+        <code>zollybot-export-hermes-2026-10-28.zip</code>.
       </p>
 
       <p>
@@ -190,21 +190,21 @@ export function ImportHermesAgents() {
       </p>
 
       <p>
-        Return to OpenBot, select <strong>Choose export file</strong>, and choose the completed ZIP without unzipping
-        it. OpenBot opens a preview. Continue to step 3 to review it before importing.
+        Return to ZollyBot, select <strong>Choose export file</strong>, and choose the completed ZIP without unzipping
+        it. ZollyBot opens a preview. Continue to step 3 to review it before importing.
       </p>
 
       <h2>3. Review what will move</h2>
 
       <p>
-        You can review the import before OpenBot adds the agents. The preview depends on whether you read the Hermes
+        You can review the import before ZollyBot adds the agents. The preview depends on whether you read the Hermes
         folder or selected a ZIP.
       </p>
 
       <h3>If you read the Hermes folder</h3>
 
       <p>
-        Use the checkbox beside each profile to choose which agents you want in OpenBot. You can start with one profile
+        Use the checkbox beside each profile to choose which agents you want in ZollyBot. You can start with one profile
         and bring over the others later. The default profile appears as <strong>Hermes</strong>; named profiles appear
         separately.
       </p>
@@ -241,13 +241,13 @@ export function ImportHermesAgents() {
       />
 
       <p>
-        If a profile has saved memories, OpenBot can bring over entries from <code>MEMORY.md</code> and{" "}
+        If a profile has saved memories, ZollyBot can bring over entries from <code>MEMORY.md</code> and{" "}
         <code>USER.md</code>. Custom skills can come too; skills bundled with Hermes are left out. If the profile only
-        has Hermes's starting persona text, the new agent keeps OpenBot's starting instructions.
+        has Hermes's starting persona text, the new agent keeps ZollyBot's starting instructions.
       </p>
 
       <p>
-        Supported scheduled jobs become OpenBot routines. Check their schedules and enabled state before importing:
+        Supported scheduled jobs become ZollyBot routines. Check their schedules and enabled state before importing:
         enabled routines can remain enabled. Jobs that only run a script and unsupported schedules are left out with a
         reason.
       </p>
@@ -266,7 +266,7 @@ export function ImportHermesAgents() {
       </p>
 
       <p>
-        A ZIP import creates separate agents. If a name already exists, OpenBot asks you to confirm the duplicate when
+        A ZIP import creates separate agents. If a name already exists, ZollyBot asks you to confirm the duplicate when
         you start the import. It does not offer the folder method's linked-profile update.
       </p>
 
@@ -278,7 +278,7 @@ export function ImportHermesAgents() {
       </p>
 
       <p>
-        When the process finishes, OpenBot shows <strong>Import finished</strong> and lists the imported agents. Read
+        When the process finishes, ZollyBot shows <strong>Import finished</strong> and lists the imported agents. Read
         any warnings or <strong>Not imported</strong> results, then open an agent from the list or select{" "}
         <strong>Done</strong>.
       </p>
@@ -287,12 +287,12 @@ export function ImportHermesAgents() {
         alt="Hermes Agent import result showing Import finished, 1 agent imported, the Hermes agent and a Done button."
         width={1504}
         height={669}
-        caption="The result screen lists the agents imported into OpenBot."
+        caption="The result screen lists the agents imported into ZollyBot."
       />
 
       <p>
-        If you read the same Hermes folder again later, OpenBot recognizes profiles it imported before.{" "}
-        <strong>Update it</strong> updates the linked agent while keeping its OpenBot chats. <strong>Leave it</strong>{" "}
+        If you read the same Hermes folder again later, ZollyBot recognizes profiles it imported before.{" "}
+        <strong>Update it</strong> updates the linked agent while keeping its ZollyBot chats. <strong>Leave it</strong>{" "}
         keeps that agent as it is.
       </p>
 
@@ -300,7 +300,7 @@ export function ImportHermesAgents() {
 
       <p>
         Open the imported agent and check its instructions, memories, skills and routines. Choose the provider and model
-        you want it to use in OpenBot, then complete any sign-in it needs.
+        you want it to use in ZollyBot, then complete any sign-in it needs.
       </p>
 
       <p>
@@ -309,9 +309,9 @@ export function ImportHermesAgents() {
       </p>
 
       <p>
-        If you allowed MCP settings, check them in OpenBot's MCP settings, supply any required values and enable the
+        If you allowed MCP settings, check them in ZollyBot's MCP settings, supply any required values and enable the
         connection when ready. Messaging connections and Hermes terminal backends also need to be set up for the way you
-        work in OpenBot.
+        work in ZollyBot.
       </p>
 
       <p>
@@ -331,13 +331,13 @@ export function ImportHermesAgents() {
       <h2>What stays in Hermes?</h2>
 
       <p>
-        Full chat history stays in Hermes. OpenBot brings over saved memory entries, subject to its memory limits. Read
+        Full chat history stays in Hermes. ZollyBot brings over saved memory entries, subject to its memory limits. Read
         any warnings to see what could not be included.
       </p>
 
       <p>
-        Credential files and login sessions are not transferred. Reconnect providers and services in OpenBot. Also check
-        any sensitive information you may have written into your own instructions or memories.
+        Credential files and login sessions are not transferred. Reconnect providers and services in ZollyBot. Also
+        check any sensitive information you may have written into your own instructions or memories.
       </p>
 
       <p>

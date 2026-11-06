@@ -56,8 +56,8 @@ export const messages = {
   "browser.pip.reattach": "Tarayıcıyı sağ kenar çubuğuna yeniden ekle",
   "browser.pip.reattachTitle": "Tarayıcıyı yeniden ekle",
   "browser.pip.close": "Tarayıcı açılır penceresini kapat",
-  "browser.pip.reattachFailed": "OpenBot tarayıcıyı kenar çubuğuna geri ekleyemedi.",
-  "browser.pip.closeFailed": "OpenBot tarayıcı açılır penceresini kapatamadı.",
+  "browser.pip.reattachFailed": "ZollyBot tarayıcıyı kenar çubuğuna geri ekleyemedi.",
+  "browser.pip.closeFailed": "ZollyBot tarayıcı açılır penceresini kapatamadı.",
   "browser.popupBlocked.title": "Açılır pencere engellendi",
   "browser.popupBlocked.dismiss": "Açılır pencere mesajını kapat",
   "browser.liveView.label": "Sunucudaki sayfanın canlı görünümü",
@@ -130,21 +130,21 @@ export const messages = {
   "browser.signIn.local": "Bu bilgisayarda oturum aç",
   "browser.signIn.title": "{site} sitesinde oturum aç",
   "browser.signIn.description":
-    "Bazı siteler bir sunucudan oturum açmayı reddeder. Bu bilgisayarda oturum açın; OpenBot {site} oturumunu {server} sunucusuna gönderir. {server} üzerindeki tüm ajanlar ve üyeler bunu tarayıcıda kullanabilir.",
+    "Bazı siteler bir sunucudan oturum açmayı reddeder. Bu bilgisayarda oturum açın; ZollyBot {site} oturumunu {server} sunucusuna gönderir. {server} üzerindeki tüm ajanlar ve üyeler bunu tarayıcıda kullanabilir.",
   "browser.signIn.windowOpen":
-    "Açılan pencerede oturum açın. Oturum açma tamamlanınca OpenBot onu gönderir. Pencere açık kalırsa Bitti'yi seçin.",
+    "Açılan pencerede oturum açın. Oturum açma tamamlanınca ZollyBot onu gönderir. Pencere açık kalırsa Bitti'yi seçin.",
   "browser.signIn.windowClosed":
     "Oturum açma penceresi kapalı. Oturumu göndermek için Bitti'yi seçin veya pencereyi yeniden açın.",
   "browser.signIn.reopen": "Oturum açma penceresini aç",
   "browser.signIn.sending": "{server} sunucusuna gönderiliyor…",
   "browser.signIn.sent": "{server} üzerinde {site} oturumu açıldı",
-  "browser.signIn.notFound": "OpenBot {site} için oturum bulamadı. Pencerede oturum açın, sonra Bitti'yi seçin.",
+  "browser.signIn.notFound": "ZollyBot {site} için oturum bulamadı. Pencerede oturum açın, sonra Bitti'yi seçin.",
   "browser.signIn.stillSignedOut":
     "{server} hâlâ {site} için bir oturum açma sayfası gösteriyor. Oturum açmayı pencerede tamamlayın.",
-  "browser.signIn.failed": "OpenBot oturumu gönderemedi.",
+  "browser.signIn.failed": "ZollyBot oturumu gönderemedi.",
   "browser.profiles.title": "Tarayıcı profilleri",
   "browser.profiles.subtitle":
-    "Her profil kendi oturum açma bilgilerini, çerezlerini ve site verilerini OpenBot'u çalıştıran bilgisayarda tutar.",
+    "Her profil kendi oturum açma bilgilerini, çerezlerini ve site verilerini ZollyBot'u çalıştıran bilgisayarda tutar.",
   "browser.profiles.label": "Tarayıcı profilleri",
   "browser.profiles.newName": "Profil adı",
   "browser.profiles.create": "Ekle",
@@ -163,8 +163,8 @@ export const messages = {
   "browser.profiles.deleteDescription":
     "Bu işlem profilin oturum açma bilgilerini, çerezlerini ve site verilerini siler. Açık sekmeleri kapanır.",
   "browser.profiles.deleteAgents": "Bu ajanlar paylaşılan profile geçer: {agents}.",
-  "browser.profiles.failed": "OpenBot tarayıcı profillerini değiştiremedi.",
-  "browser.profiles.loadFailed": "OpenBot tarayıcı profillerini yükleyemedi.",
+  "browser.profiles.failed": "ZollyBot tarayıcı profillerini değiştiremedi.",
+  "browser.profiles.loadFailed": "ZollyBot tarayıcı profillerini yükleyemedi.",
   "browser.profiles.tabLabel": "Profil: {name}",
   "browser.profiles.tabLabelProxy": "Profil: {name} · Proxy: {proxy}",
   "browser.profiles.agentTabLabel": "Ajanın kendi profili",
@@ -179,7 +179,7 @@ export const messages = {
   "browser.proxies.addTitle": "Proxy ekle",
   "browser.proxies.editTitle": "{name} proxy'sini düzenle",
   "browser.proxies.dialogDescription":
-    "socks5, http veya https kullanın. Kullanıcı adı ve parola her türde isteğe bağlıdır. Parola, OpenBot'u çalıştıran bilgisayarda şifreli olarak kalır.",
+    "socks5, http veya https kullanın. Kullanıcı adı ve parola her türde isteğe bağlıdır. Parola, ZollyBot'u çalıştıran bilgisayarda şifreli olarak kalır.",
   "browser.proxies.address": "Adres",
   "browser.proxies.addressPlaceholder": "socks5://user:password@host:1080",
   "browser.proxies.deleteUsed": {
@@ -189,7 +189,7 @@ export const messages = {
   "browser.proxies.deleteUnused": "Bu proxy'yi kullanan profil yok.",
   "browser.proxies.failing": "{name} yanıt vermiyor",
   "browser.proxies.signInRefused": "{name} oturum açmayı reddetti",
-  "browser.proxies.unsupported": "Bu sunucu proxy kullanamaz. Sunucudaki OpenBot'u güncelleyin.",
+  "browser.proxies.unsupported": "Bu sunucu proxy kullanamaz. Sunucudaki ZollyBot'u güncelleyin.",
   "browser.proxies.yourComputer": "Bilgisayarınız",
   "browser.proxies.memberComputer": "{name} üyesinin bilgisayarı",
   "browser.proxies.unknownComputer": "Bir üyenin bilgisayarı",
@@ -200,7 +200,7 @@ export const messages = {
   "browser.proxies.offlineBadge": "{name} çevrim dışı",
   "browser.proxies.shareTitle": "Bu bilgisayarın bağlantısı paylaşılsın mı?",
   "browser.proxies.shareDescription":
-    "Bilgisayarınızı kullanan profiller, herkese açık siteleri bu bilgisayarın internet bağlantısı üzerinden açar. Bu yalnızca OpenBot burada açıkken çalışır. Sunucu, yerel ağınızdaki adresleri açamaz.",
+    "Bilgisayarınızı kullanan profiller, herkese açık siteleri bu bilgisayarın internet bağlantısı üzerinden açar. Bu yalnızca ZollyBot burada açıkken çalışır. Sunucu, yerel ağınızdaki adresleri açamaz.",
   "browser.proxies.share": "Paylaş",
   "browser.proxies.stopSharing": "Paylaşmayı durdur",
   "browser.proxies.closesTabs": {

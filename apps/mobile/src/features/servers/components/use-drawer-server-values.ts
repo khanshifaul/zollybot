@@ -1,6 +1,6 @@
-import { isAgentTaskOpen } from "@openbot/team-client/agent-tasks";
-import { addCalendarDays, calendarDayOf } from "@openbot/team-client/routine-calendar-dates";
 import { useQuery } from "@tanstack/react-query";
+import { isAgentTaskOpen } from "@zollybot/team-client/agent-tasks";
+import { addCalendarDays, calendarDayOf } from "@zollybot/team-client/routine-calendar-dates";
 import { useEffect, useMemo } from "react";
 import { lastUsageDays } from "@/features/agents/components/usage-range-picker";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";

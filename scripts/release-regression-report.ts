@@ -2,13 +2,13 @@ import { createHmac } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { redactText } from "@openbot/logging";
+import { redactText } from "@zollybot/logging";
 import { type Connection, connectClickHouse, credentials, type QueryResult, runQuery } from "./openpanel-sql";
 import { readScriptArguments } from "./script-arguments";
 
 // Compares the newest desktop release with the release before it, from production analytics in the
 // OpenPanel ClickHouse (read-only user, see scripts/openpanel-sql.ts). It writes the full report to
-// .openbot-build/release-regression/report.json and, with --discord, sends the table to the webhook
+// .zollybot-build/release-regression/report.json and, with --discord, sends the table to the webhook
 // in RELEASE_REGRESSION_WEBHOOK_URL as colored embeds. The GitHub workflow release-regression.yml runs it with --quiet:
 // the repository is public, so its log must show no numbers, counts or error details. Those go only
 // to the private Discord channel. With --state, the workflow sends only when a status changed, on
@@ -41,7 +41,7 @@ const WATCH_LIMIT = 0.1;
 const RED_Z = 3.09;
 const YELLOW_Z = 1.645;
 /**
- * Causes that the user, the provider account or the network decide, not OpenBot. The names are the
+ * Causes that the user, the provider account or the network decide, not ZollyBot. The names are the
  * cause_code values of system_turn_completed.
  */
 const OUTSIDE_CAUSES = [
@@ -369,7 +369,7 @@ function failureRows(result: QueryResult, versions: { previous: string; next: st
   ];
   if (sendsCause(result, versions.previous) && sendsCause(result, versions.next)) {
     specs.push({
-      metric: "failed turns, OpenBot causes",
+      metric: "failed turns, ZollyBot causes",
       column: "own_failed_share",
       unit: "share",
       floor: 0.02,
@@ -554,10 +554,10 @@ function sections(report: Report): Embed[] {
   add(
     "Failed turns",
     failures.map((row) =>
-      statusLine(row, `${group(row)}${row.metric === "failed turns" ? "" : " OpenBot causes only"}`),
+      statusLine(row, `${group(row)}${row.metric === "failed turns" ? "" : " ZollyBot causes only"}`),
     ),
     failures,
-    `Providers with ${MIN_TURNS_FOR_SHARE} turns or more in both releases. OpenBot causes leave out limits, sign-in, network and provider outages.`,
+    `Providers with ${MIN_TURNS_FOR_SHARE} turns or more in both releases. ZollyBot causes leave out limits, sign-in, network and provider outages.`,
   );
   if (report.risenErrorCodes !== null) {
     const errors = of("errors");
@@ -751,7 +751,7 @@ async function buildReport(connection: Connection): Promise<Report | null> {
 
 function buildDirectory(): string {
   const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
-  return join(projectRoot, ".openbot-build", "release-regression");
+  return join(projectRoot, ".zollybot-build", "release-regression");
 }
 
 async function writeReport(report: Report): Promise<string> {

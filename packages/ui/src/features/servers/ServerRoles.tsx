@@ -1,11 +1,12 @@
+import type { JSX } from "@solidjs/web";
 import {
   AGENT_ACCESS_LEVELS,
   AGENT_ACCESS_ROLE_NAME_LIMIT,
   type AgentAccessLevel,
   type AgentAccessLevels,
   type AgentAccessRole,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   buttonVariants,
@@ -31,8 +32,7 @@ import {
   ShieldCheck,
   Text,
   UsersRound,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createSignal, For, Show } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { useText } from "../../text";

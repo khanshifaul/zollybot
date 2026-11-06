@@ -3,8 +3,8 @@ import type { messages as source } from "../../en/error/import";
 
 export const messages = {
   "error.import.manifestNotJson": "{manifest} ليس JSON صالحًا.",
-  "error.import.notAgentExport": "{manifest} ليس تصديرًا لوكيل OpenBot.",
-  "error.import.newerExportSkill": "أُنشئ هذا التصدير بمهارة تصدير أحدث. حدّث OpenBot وحاول مرة أخرى.",
+  "error.import.notAgentExport": "{manifest} ليس تصديرًا لوكيل ZollyBot.",
+  "error.import.newerExportSkill": "أُنشئ هذا التصدير بمهارة تصدير أحدث. حدّث ZollyBot وحاول مرة أخرى.",
   "error.import.noAgents": "لا يحتوي التصدير على وكلاء.",
   "error.import.tooManyAgents": "يحتوي التصدير على أكثر من {limit} وكيل.",
   "error.import.tooManyChannels": "يحتوي التصدير على أكثر من {limit} قناة.",
@@ -48,11 +48,11 @@ export const messages = {
   "error.import.hermesSkillCodeAdded":
     "تحتوي على شيفرة لم تكن فيها عند قراءة ملفات التعريف. اقرأها مرة أخرى للسماح بها.",
   "error.import.hermesLinkNotSaved":
-    "{name}: تعذّر على OpenBot حفظ الوكيل الذي جاء من ملف التعريف هذا، لذا يضيفه الاستيراد التالي كوكيل جديد.",
+    "{name}: تعذّر على ZollyBot حفظ الوكيل الذي جاء من ملف التعريف هذا، لذا يضيفه الاستيراد التالي كوكيل جديد.",
   "error.import.transferRemoteTooLarge":
     "يجب أن يكون حجم ملف النقل لخادم منضم إليه أقل من 100 MB. أوقف ملفات مساحة العمل، أو صدّر عددًا أقل من الوكلاء.",
-  "error.import.transferNotFile": "هذا الملف ليس ملف نقل OpenBot.",
-  "error.import.transferNewer": "أنشأ إصدار أحدث من OpenBot هذا الملف. حدّث OpenBot وحاول مرة أخرى.",
+  "error.import.transferNotFile": "هذا الملف ليس ملف نقل ZollyBot.",
+  "error.import.transferNewer": "أنشأ إصدار أحدث من ZollyBot هذا الملف. حدّث ZollyBot وحاول مرة أخرى.",
   "error.import.transferEmpty": "لا يحتوي الملف على وكلاء ولا إعدادات.",
   "error.import.transferTooLarge":
     "يجب أن يكون ملف النقل أقل من 2 GB وأقل من 50,000 ملف. أوقف ملفات مساحة العمل، أو صدّر عددًا أقل من الوكلاء.",

@@ -7,7 +7,7 @@ import {
   bloubAvatarProfile,
   SUPPORTED_AVATAR_SILHOUETTES,
   type SupportedAvatarSilhouetteId,
-} from "@openbot/brand/bloub-avatar";
+} from "@zollybot/brand/bloub-avatar";
 
 interface AvatarCandidates {
   namespace: string;

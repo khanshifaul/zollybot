@@ -1,20 +1,20 @@
+import type { JSX } from "@solidjs/web";
 import {
   type BackgroundProcess,
   type ClientAgentSummary,
   LOCAL_SERVER_ID,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import type { GeneralSettingsValue } from "@openbot/ui/features/settings/app-settings";
-import { BackgroundProcessesSection } from "@openbot/ui/features/settings/BackgroundProcessesSection";
+} from "@zollybot/contracts/ipc";
+import type { GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
+import { BackgroundProcessesSection } from "@zollybot/ui/features/settings/BackgroundProcessesSection";
 import {
   type AgentDefaultChoice,
   type AgentDefaultSetting,
   type AgentDefaultsAgent,
   agentDefaultSettingTitle,
   SettingsAgentsTab,
-} from "@openbot/ui/features/settings/SettingsAgentsTab";
-import { currentText, useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/settings/SettingsAgentsTab";
+import { currentText, useText } from "@zollybot/ui/text";
 import { createEffect, createStore, Show } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { settingsPort } from "./settings-port";

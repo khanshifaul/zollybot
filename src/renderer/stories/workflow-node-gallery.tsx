@@ -3,6 +3,7 @@
  * selection, and Delete in a node toolbar removes the node. Ports connect here too.
  */
 
+import type { JSX } from "@solidjs/web";
 import {
   BoardProvider,
   createBoard,
@@ -10,10 +11,9 @@ import {
   type WfnFields,
   type WfnResult,
   type WfnRunStatus,
-} from "@openbot/ui/features/workflows/workflow-board";
-import type { WorkflowGitHubCanvas } from "@openbot/ui/features/workflows/workflow-github";
-import type { WorkflowCatalogs } from "@openbot/ui/features/workflows/workflow-model";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/workflows/workflow-board";
+import type { WorkflowGitHubCanvas } from "@zollybot/ui/features/workflows/workflow-github";
+import type { WorkflowCatalogs } from "@zollybot/ui/features/workflows/workflow-model";
 import { createStore, onCleanup, untrack } from "solid-js";
 import { STEP_ANSWER, STORY_CATALOGS, STORY_IMAGES, STORY_SEED } from "./workflow-story-data";
 

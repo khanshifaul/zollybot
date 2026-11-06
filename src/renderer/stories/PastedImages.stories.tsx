@@ -2,23 +2,23 @@ import {
   attachmentReferenceIds,
   removeAttachmentReferences,
   serializeAttachmentReference,
-} from "@openbot/contracts/attachment-references";
-import type { DraftAttachment } from "@openbot/contracts/ipc";
-import type { AgentMessage } from "@openbot/ui/data";
-import { ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
+} from "@zollybot/contracts/attachment-references";
+import type { DraftAttachment } from "@zollybot/contracts/ipc";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
 import {
   ComposerAttachmentRow,
   type ComposerPendingImage,
   type ComposerUploadFile,
-} from "@openbot/ui/features/conversation/ComposerAttachmentRow";
-import { ComposerEditor } from "@openbot/ui/features/conversation/ComposerEditor";
+} from "@zollybot/ui/features/conversation/ComposerAttachmentRow";
+import { ComposerEditor } from "@zollybot/ui/features/conversation/ComposerEditor";
 import { createSignal } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import desktopScreenshot from "./assets/remote-desktop-mac-mock.png";
 import { STORY_AGENTS } from "./fixtures";
 
-const logo = new URL("../src/assets/openbot-logo-production.png", import.meta.url).href;
+const logo = new URL("../src/assets/zollybot-logo-production.png", import.meta.url).href;
 
 function image(id: string, previewUrl: string, name = "image.png"): DraftAttachment {
   return { id, name, size: 151_552, kind: "image", mimeType: "image/png", previewKind: "image", previewUrl };
@@ -57,7 +57,7 @@ const startingPhoto: ComposerUploadFile = {
 };
 const failedArchive: ComposerUploadFile = {
   ...uploadingArchive,
-  error: "The connection to OpenBot team closed.",
+  error: "The connection to ZollyBot team closed.",
 };
 
 /** The text with a file token, as a paste puts it at the cursor. */

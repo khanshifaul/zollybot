@@ -3,7 +3,7 @@
 
 .provider-settings-stack {
   display: grid;
-  gap: var(--openbot-space-6);
+  gap: var(--zollybot-space-6);
 }
 
 /* The select value is a block; the logo and the name center in it. */
@@ -15,7 +15,7 @@
 .provider-settings-select-option {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .provider-settings-logo-off {
@@ -23,11 +23,11 @@
 }
 
 .provider-settings-stack .ui-item-description.provider-settings-warning {
-  color: var(--openbot-warning-text);
+  color: var(--zollybot-warning-text);
 }
 
 .provider-settings-stack .ui-item-description.provider-settings-error {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 /* An account with two lines of text keeps its buttons on the title line. */
@@ -36,7 +36,7 @@
 }
 
 .provider-settings-account .ui-item-content {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .provider-settings-account .provider-picker-account-rename {
@@ -47,14 +47,14 @@
 .provider-settings-usage-badge {
   cursor: pointer;
   font: inherit;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-sm);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .provider-settings-usage-badge:focus-visible {
-  outline: 2px solid var(--openbot-focus-ring);
+  outline: 2px solid var(--zollybot-focus-ring);
   outline-offset: 2px;
 }
 
@@ -73,27 +73,27 @@
   display: flex;
   flex-direction: column;
   margin: 0;
-  padding: var(--openbot-space-1) 0;
+  padding: var(--zollybot-space-1) 0;
   list-style: none;
 }
 
 .provider-settings-models-row {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   min-height: 32px;
-  padding: 0 var(--openbot-space-3);
+  padding: 0 var(--zollybot-space-3);
 }
 
 .provider-settings-models-row:hover {
-  background: var(--openbot-bg-control-hover);
+  background: var(--zollybot-bg-control-hover);
 }
 
 .provider-settings-models-name {
   display: flex;
   flex: 1;
   align-items: baseline;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   min-width: 0;
 }
 
@@ -110,14 +110,14 @@
 
 .provider-settings-models-id {
   min-width: 0;
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
 }
 
 .provider-settings-models-empty {
   display: block;
-  padding: var(--openbot-space-3);
+  padding: var(--zollybot-space-3);
 }
 
 .provider-settings-models-error {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }

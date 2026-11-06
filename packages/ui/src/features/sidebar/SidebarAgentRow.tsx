@@ -8,8 +8,8 @@
  * and shows when the user hid it in place of the last message.
  */
 
-import { AppWindow, Badge, buttonVariants, Clock3, ContextMenu, Lock } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { AppWindow, Badge, buttonVariants, Clock3, ContextMenu, Lock } from "@zollybot/ui";
 import { createSignal, Show } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { useText } from "../../text";

@@ -7,59 +7,59 @@
 .github-star-toast {
   position: relative;
   display: grid;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-4);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface-raised);
-  box-shadow: 0 0 0 1px var(--openbot-border);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
+  box-shadow: 0 0 0 1px var(--zollybot-border);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 
 /* The buttons sit nearer the corner. The thank-you state has no buttons and keeps even padding. */
 .github-star-toast:has(.github-star-toast-actions) {
-  padding-inline-end: var(--openbot-space-3);
-  padding-bottom: var(--openbot-space-3);
+  padding-inline-end: var(--zollybot-space-3);
+  padding-bottom: var(--zollybot-space-3);
 }
 
 .github-star-toast-close {
   position: absolute;
-  top: var(--openbot-space-2);
-  inset-inline-end: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
+  top: var(--zollybot-space-2);
+  inset-inline-end: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
 }
 
 /* The end padding keeps the title clear of the close button. */
 .github-star-toast-head {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding-inline-end: var(--openbot-space-6);
+  gap: var(--zollybot-space-2);
+  padding-inline-end: var(--zollybot-space-6);
 }
 
 .github-star-toast-head > strong {
-  font-weight: var(--openbot-weight-semibold);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .github-star-toast-mark {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
   flex: none;
 }
 
 /* A full star fill with a darker edge, so the star also reads on the light main button. */
 .github-star-toast-star {
-  color: var(--openbot-star-edge);
-  fill: var(--openbot-star);
+  color: var(--zollybot-star-edge);
+  fill: var(--zollybot-star);
 }
 
 .github-star-toast-body {
   margin: 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-wrap: pretty;
 }
 
@@ -68,6 +68,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: var(--openbot-space-1-5);
-  margin-top: var(--openbot-space-1);
+  gap: var(--zollybot-space-1-5);
+  margin-top: var(--zollybot-space-1);
 }

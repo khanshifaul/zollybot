@@ -1,6 +1,6 @@
-import type { AgentMessage } from "@openbot/ui/data";
-import { preferredMessageScrollBehavior } from "@openbot/ui/features/conversation/MessageNavigation";
 import type { VirtualItem } from "@tanstack/virtual-core";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { preferredMessageScrollBehavior } from "@zollybot/ui/features/conversation/MessageNavigation";
 import { createEffect, createSignal } from "solid-js";
 import type { ConversationProps } from "../conversation-types";
 

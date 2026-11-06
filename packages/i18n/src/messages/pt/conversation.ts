@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "Buscar no OpenBot",
+  "conversation.globalSearch.title": "Buscar no ZollyBot",
   "conversation.globalSearch.filter": "Filtrar resultados",
   "conversation.globalSearch.tab.all": "Tudo",
   "conversation.globalSearch.tab.messages": "Mensagens",
@@ -93,7 +93,7 @@ export const messages = {
   "conversation.threads.error.start": "Não foi possível iniciar o tópico.",
   "conversation.threads.error.branch": "Não foi possível ramificar o chat.",
   "conversation.threads.error.send": "Não foi possível enviar a mensagem para o tópico.",
-  "conversation.threads.error.files": "Este servidor não aceita arquivos em tópicos. Atualize o OpenBot nele.",
+  "conversation.threads.error.files": "Este servidor não aceita arquivos em tópicos. Atualize o ZollyBot nele.",
   "conversation.threads.error.stop": "Não foi possível interromper o tópico.",
   "conversation.threads.error.archive": "Não foi possível arquivar o tópico.",
   "conversation.threads.error.restore": "Não foi possível restaurar o tópico.",

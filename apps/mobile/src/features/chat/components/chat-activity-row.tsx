@@ -1,4 +1,4 @@
-import type { AvatarMood } from "@openbot/brand/bloub-avatar-motion";
+import type { AvatarMood } from "@zollybot/brand/bloub-avatar-motion";
 import ChevronRight from "lucide-react-native/icons/chevron-right";
 import { useState } from "react";
 import { type ColorValue, Pressable, View } from "react-native";

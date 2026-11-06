@@ -1,15 +1,15 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-notification-levels-v1";
-import { BROWSER_PROFILES_CAPABILITY } from "@openbot/contracts/team-protocol/browser-profiles-v1";
-import { classifyFailure } from "@openbot/telemetry";
-import { SETTINGS_PANEL_DEFAULT, SETTINGS_PANEL_MAX } from "@openbot/ui/components/SettingsPanel";
-import { BROWSER_NEW_TAB_URL } from "@openbot/ui/features/browser/browser-suggestions";
-import { SidePanelHeader, SidePanelLauncher, type SidePanelPane } from "@openbot/ui/features/conversation/SidePanel";
-import { SideQuestionPanel } from "@openbot/ui/features/conversation/SideQuestionPanel";
-import { SubagentPanel } from "@openbot/ui/features/conversation/Subagents";
-import { VoicePanel } from "@openbot/ui/features/conversation/VoicePanel";
-import { McpSignInRelayDialog } from "@openbot/ui/features/settings/McpSignInPage";
-import { useText } from "@openbot/ui/text";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-notification-levels-v1";
+import { BROWSER_PROFILES_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-profiles-v1";
+import { classifyFailure } from "@zollybot/telemetry";
+import { SETTINGS_PANEL_DEFAULT, SETTINGS_PANEL_MAX } from "@zollybot/ui/components/SettingsPanel";
+import { BROWSER_NEW_TAB_URL } from "@zollybot/ui/features/browser/browser-suggestions";
+import { SidePanelHeader, SidePanelLauncher, type SidePanelPane } from "@zollybot/ui/features/conversation/SidePanel";
+import { SideQuestionPanel } from "@zollybot/ui/features/conversation/SideQuestionPanel";
+import { SubagentPanel } from "@zollybot/ui/features/conversation/Subagents";
+import { VoicePanel } from "@zollybot/ui/features/conversation/VoicePanel";
+import { McpSignInRelayDialog } from "@zollybot/ui/features/settings/McpSignInPage";
+import { useText } from "@zollybot/ui/text";
 import { actionToast } from "../../action-toast";
 import { type AgentTemplatePublishCalls, agentTemplatesPort } from "../agent-templates/agent-templates-port";
 import { createPublishAgent } from "../agent-templates/PublishAgent";
@@ -36,8 +36,8 @@ const BROWSER_PANEL_MAX = 1600;
 const CONVERSATION_PANEL_MIN = 96;
 const loadAgentSettingsPanel = () => import("./AgentSettingsPanel");
 
-import { type HostFolderPick, HostFolderPicker } from "@openbot/ui/features/conversation/HostFolderPicker";
 import { Portal } from "@solidjs/web";
+import { type HostFolderPick, HostFolderPicker } from "@zollybot/ui/features/conversation/HostFolderPicker";
 import { createEffect, createMemo, createSignal, Loading, lazy, onSettled, Show, untrack } from "solid-js";
 import {
   agentFolderCalls,

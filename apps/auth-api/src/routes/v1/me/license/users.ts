@@ -1,5 +1,5 @@
-import { parseLicenseUsersRequest } from "@openbot/contracts/license";
 import { createFileRoute } from "@tanstack/solid-router";
+import { parseLicenseUsersRequest } from "@zollybot/contracts/license";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../../server/effect-runtime";
 import { readJsonObject } from "../../../../server/json-body";

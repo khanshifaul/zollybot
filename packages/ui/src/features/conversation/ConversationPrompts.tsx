@@ -1,12 +1,12 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentApproval,
   BrowserPreview,
   BrowserTab,
   BrowserTakeoverRequest,
   LocalBrowserSecretResponse,
-} from "@openbot/contracts/ipc";
-import { classifyFailure } from "@openbot/telemetry";
+} from "@zollybot/contracts/ipc";
+import { classifyFailure } from "@zollybot/telemetry";
 import {
   Badge,
   Button,
@@ -19,11 +19,11 @@ import {
   RadioGroup,
   toast,
   X,
-} from "@openbot/ui";
-import { StandingApprovalConfirmation } from "@openbot/ui/components/StandingApprovalConfirmation";
-import { BrowserSecretCard, type BrowserSecretVault } from "@openbot/ui/features/conversation/BrowserSecretCard";
-import { BrowserTakeoverPreview } from "@openbot/ui/features/conversation/BrowserTakeoverPreview";
-import { type TextValue, useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { StandingApprovalConfirmation } from "@zollybot/ui/components/StandingApprovalConfirmation";
+import { BrowserSecretCard, type BrowserSecretVault } from "@zollybot/ui/features/conversation/BrowserSecretCard";
+import { BrowserTakeoverPreview } from "@zollybot/ui/features/conversation/BrowserTakeoverPreview";
+import { type TextValue, useText } from "@zollybot/ui/text";
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { isSendShortcutKey, type SendShortcut, sendShortcutAriaKey } from "./send-shortcut";
 

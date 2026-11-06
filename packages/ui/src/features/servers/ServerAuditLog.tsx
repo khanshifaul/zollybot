@@ -1,11 +1,12 @@
+import type { JSX } from "@solidjs/web";
 import type {
   AgentAccessLevel,
   ServerAuditChange,
   ServerAuditEntry,
   ServerAuditMemberRole,
   ServerAuditName,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   ArrowRight,
   Crown,
@@ -31,8 +32,7 @@ import {
   Text,
   Trash2,
   UserRoundPlus,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { useText } from "../../text";
 import { AgentAvatar } from "../agents/AgentAvatar";

@@ -1,6 +1,6 @@
-import type { UiBlockStatus } from "@openbot/contracts/ui-blocks";
-import { Badge, Button, CircleCheck, Clock3, LoaderCircle, X } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { UiBlockStatus } from "@zollybot/contracts/ui-blocks";
+import { Badge, Button, CircleCheck, Clock3, LoaderCircle, X } from "@zollybot/ui";
 import { createUniqueId, Match, Show, Switch } from "solid-js";
 import { useText } from "../../../text";
 

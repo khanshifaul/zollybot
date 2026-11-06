@@ -1,4 +1,4 @@
-import { SUPERTONIC_MODEL_DIRECTORY, SUPERTONIC_MODEL_FILES } from "@openbot/contracts/speech-models";
+import { SUPERTONIC_MODEL_DIRECTORY, SUPERTONIC_MODEL_FILES } from "@zollybot/contracts/speech-models";
 import { createModelDownload } from "./model-download";
 import { speechNative } from "./speech-native";
 

@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 import type { CompanySignInCalls } from "./features/servers/ServerCompanySignInSection";
 
 /**
@@ -6,46 +6,46 @@ import type { CompanySignInCalls } from "./features/servers/ServerCompanySignInS
  * (`openUrl`, `openExternal`) that several domains share.
  */
 export interface AppPort {
-  getAppInfo: OpenBotDesktopApi["getAppInfo"];
-  getAppAppearancePreference: OpenBotDesktopApi["getAppAppearancePreference"];
-  getAppInterfaceSizePreference: OpenBotDesktopApi["getAppInterfaceSizePreference"];
-  getAppLanguagePreference: OpenBotDesktopApi["getAppLanguagePreference"];
-  getAppLogoColorPreference: OpenBotDesktopApi["getAppLogoColorPreference"];
-  onAppAppearancePreference: OpenBotDesktopApi["onAppAppearancePreference"];
-  onAppInterfaceSizePreference: OpenBotDesktopApi["onAppInterfaceSizePreference"];
-  onAppLanguagePreference: OpenBotDesktopApi["onAppLanguagePreference"];
-  onAppLogoColorPreference: OpenBotDesktopApi["onAppLogoColorPreference"];
-  openExternal: OpenBotDesktopApi["openExternal"];
-  getSentMessageStats: OpenBotDesktopApi["getSentMessageStats"];
-  reportRendererTiming: OpenBotDesktopApi["reportRendererTiming"];
-  openUrl: OpenBotDesktopApi["openUrl"];
-  openChatWindow: OpenBotDesktopApi["openChatWindow"];
-  getChatWindows: OpenBotDesktopApi["getChatWindows"];
-  onChatWindows: OpenBotDesktopApi["onChatWindows"];
-  onQuitShortcutHint: OpenBotDesktopApi["onQuitShortcutHint"];
-  setAppAppearancePreference: OpenBotDesktopApi["setAppAppearancePreference"];
-  setAppInterfaceSizePreference: OpenBotDesktopApi["setAppInterfaceSizePreference"];
-  setAppLanguagePreference: OpenBotDesktopApi["setAppLanguagePreference"];
-  setAppLogoColorPreference: OpenBotDesktopApi["setAppLogoColorPreference"];
+  getAppInfo: ZollyBotDesktopApi["getAppInfo"];
+  getAppAppearancePreference: ZollyBotDesktopApi["getAppAppearancePreference"];
+  getAppInterfaceSizePreference: ZollyBotDesktopApi["getAppInterfaceSizePreference"];
+  getAppLanguagePreference: ZollyBotDesktopApi["getAppLanguagePreference"];
+  getAppLogoColorPreference: ZollyBotDesktopApi["getAppLogoColorPreference"];
+  onAppAppearancePreference: ZollyBotDesktopApi["onAppAppearancePreference"];
+  onAppInterfaceSizePreference: ZollyBotDesktopApi["onAppInterfaceSizePreference"];
+  onAppLanguagePreference: ZollyBotDesktopApi["onAppLanguagePreference"];
+  onAppLogoColorPreference: ZollyBotDesktopApi["onAppLogoColorPreference"];
+  openExternal: ZollyBotDesktopApi["openExternal"];
+  getSentMessageStats: ZollyBotDesktopApi["getSentMessageStats"];
+  reportRendererTiming: ZollyBotDesktopApi["reportRendererTiming"];
+  openUrl: ZollyBotDesktopApi["openUrl"];
+  openChatWindow: ZollyBotDesktopApi["openChatWindow"];
+  getChatWindows: ZollyBotDesktopApi["getChatWindows"];
+  onChatWindows: ZollyBotDesktopApi["onChatWindows"];
+  onQuitShortcutHint: ZollyBotDesktopApi["onQuitShortcutHint"];
+  setAppAppearancePreference: ZollyBotDesktopApi["setAppAppearancePreference"];
+  setAppInterfaceSizePreference: ZollyBotDesktopApi["setAppInterfaceSizePreference"];
+  setAppLanguagePreference: ZollyBotDesktopApi["setAppLanguagePreference"];
+  setAppLogoColorPreference: ZollyBotDesktopApi["setAppLogoColorPreference"];
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     "readConversationPage" | "searchConversationMessages" | "searchConversationFiles" | "listRoutines" | "listAgents"
   >;
-  agentTemplates: Pick<OpenBotDesktopApi["agentTemplates"], "onOpenLink" | "takePendingLink">;
-  acpRegistry: OpenBotDesktopApi["acpRegistry"];
-  hostedSites: OpenBotDesktopApi["hostedSites"];
-  billing: OpenBotDesktopApi["billing"];
-  license: OpenBotDesktopApi["license"];
+  agentTemplates: Pick<ZollyBotDesktopApi["agentTemplates"], "onOpenLink" | "takePendingLink">;
+  acpRegistry: ZollyBotDesktopApi["acpRegistry"];
+  hostedSites: ZollyBotDesktopApi["hostedSites"];
+  billing: ZollyBotDesktopApi["billing"];
+  license: ZollyBotDesktopApi["license"];
   auth: CompanySignInCalls;
-  hostedServers: OpenBotDesktopApi["hostedServers"];
-  routineFeed: OpenBotDesktopApi["routineFeed"];
-  events: OpenBotDesktopApi["events"];
-  plugins: Pick<OpenBotDesktopApi["plugins"], "onOpenListing" | "takePendingListing">;
-  marketplace: Pick<OpenBotDesktopApi["marketplace"], "onOpenListing" | "takePendingListing">;
-  servers: Pick<OpenBotDesktopApi["servers"], "onInvite" | "takePendingInvite">;
+  hostedServers: ZollyBotDesktopApi["hostedServers"];
+  routineFeed: ZollyBotDesktopApi["routineFeed"];
+  events: ZollyBotDesktopApi["events"];
+  plugins: Pick<ZollyBotDesktopApi["plugins"], "onOpenListing" | "takePendingListing">;
+  marketplace: Pick<ZollyBotDesktopApi["marketplace"], "onOpenListing" | "takePendingListing">;
+  servers: Pick<ZollyBotDesktopApi["servers"], "onInvite" | "takePendingInvite">;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function appPort(): AppPort {
-  return window.openbot;
+  return window.zollybot;
 }

@@ -21,11 +21,11 @@ final class ShareKeychainException: GenericException<OSStatus> {
 /// extension share the access group, the item opens after the first unlock, and it stays on this
 /// device. `plugins/with-share-target.js` names the group in both Info.plist files.
 enum ShareKeychain {
-  static let service = "openbot.share-extension"
+  static let service = "zollybot.share-extension"
   static let account = "session"
 
   static var accessGroup: String? {
-    Bundle.main.object(forInfoDictionaryKey: "OpenBotShareKeychainGroup") as? String
+    Bundle.main.object(forInfoDictionaryKey: "ZollyBotShareKeychainGroup") as? String
   }
 
   static func write(_ value: String?) throws {
@@ -52,7 +52,7 @@ enum ShareKeychain {
 
 public class ShareExtensionModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("OpenBotShareExtension")
+    Name("ZollyBotShareExtension")
 
     /// Saves the session for the share extension, or removes it with null.
     AsyncFunction("setSession") { (value: String?) throws in

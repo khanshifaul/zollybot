@@ -5,19 +5,19 @@ export const messages = {
   "error.messaging.notConnected": "Este espacio de trabajo de Slack no está conectado.",
   "error.messaging.unsupported": "Este equipo no puede conectarse a Slack.",
   "error.messaging.relayUnavailable":
-    "OpenBot no puede recibir eventos de Slack en este equipo. Inicia sesión, ponle un nombre a este equipo e inténtalo de nuevo.",
+    "ZollyBot no puede recibir eventos de Slack en este equipo. Inicia sesión, ponle un nombre a este equipo e inténtalo de nuevo.",
   "error.messaging.discordNotConnected": "Este servidor de Discord no está conectado.",
   "error.messaging.discordUnsupported": "Este equipo no puede conectarse a Discord.",
   "error.messaging.discordRelayUnavailable":
-    "OpenBot no puede recibir eventos de Discord en este equipo. Inicia sesión, ponle un nombre a este equipo e inténtalo de nuevo.",
+    "ZollyBot no puede recibir eventos de Discord en este equipo. Inicia sesión, ponle un nombre a este equipo e inténtalo de nuevo.",
   "error.messaging.discordRolesUnsupported":
-    "OpenBot todavía no puede mostrar los roles de Discord. Inténtalo más tarde.",
+    "ZollyBot todavía no puede mostrar los roles de Discord. Inténtalo más tarde.",
   "error.messaging.telegramNotConnected": "Este chat de Telegram no está conectado.",
   "error.messaging.telegramUnsupported": "Este equipo no puede conectarse a Telegram.",
   "error.messaging.telegramRelayUnavailable":
-    "OpenBot no puede acceder a Telegram en este equipo. Inicia sesión, ponle un nombre a este equipo e inténtalo de nuevo.",
+    "ZollyBot no puede acceder a Telegram en este equipo. Inicia sesión, ponle un nombre a este equipo e inténtalo de nuevo.",
   "error.messaging.telegramServiceUnavailable":
-    "OpenBot no puede conectar Telegram ahora. Inténtalo de nuevo más tarde.",
+    "ZollyBot no puede conectar Telegram ahora. Inténtalo de nuevo más tarde.",
   "error.messaging.whatsappNotConnected": "Este número de WhatsApp no está conectado.",
   "error.messaging.whatsappUnsupported": "Este equipo no puede conectarse a WhatsApp.",
   "error.messaging.whatsappTooManySenders": "Un número de WhatsApp puede permitir hasta 200 contactos y grupos.",

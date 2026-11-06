@@ -6,10 +6,10 @@ import {
   type ProviderCodeLoginStart,
   type ProviderHostSignInStatus,
   type ProviderRelaySignInStatus,
-} from "@openbot/contracts/ipc";
-import type { ProviderCodeLoginState } from "@openbot/ui/components/ProviderCodeLoginDialog";
-import type { BrowserViewRuntime } from "@openbot/ui/features/browser/BrowserLiveView";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import type { ProviderCodeLoginState } from "@zollybot/ui/components/ProviderCodeLoginDialog";
+import type { BrowserViewRuntime } from "@zollybot/ui/features/browser/BrowserLiveView";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createSignal, flush, onCleanup } from "solid-js";
 import { actionToast } from "../../action-toast";
 import type {
@@ -107,7 +107,7 @@ export interface ProviderConnectionOptions {
    */
   connectInMainlandChina?: (provider: AgentProviderId) => Promise<void>;
   openVerificationUrl: (url: string) => void;
-  /** Opens the page that downloads the OpenBot app, for a provider that only the app can sign in. */
+  /** Opens the page that downloads the ZollyBot app, for a provider that only the app can sign in. */
   openAppDownload?: () => void;
   /**
    * A connect attempt, for analytics: begun when a sign-in starts, failed through the function it

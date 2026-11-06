@@ -2,26 +2,26 @@
 // Instructions page. The folders and the Instructions page also work for a joined server's agent,
 // through `agent-folders-v1` and `agent-instructions-v1`.
 
-import { agentFolderParent } from "@openbot/contracts/ipc";
-import type { AgentFolderCalls } from "@openbot/ui/features/conversation/AgentFolders";
+import { agentFolderParent } from "@zollybot/contracts/ipc";
+import type { AgentFolderCalls } from "@zollybot/ui/features/conversation/AgentFolders";
 import type {
   AgentInstructionsCalls,
   AgentInstructionsFileCalls,
-} from "@openbot/ui/features/conversation/AgentInstructionsView";
-import type { HostFolderPickMode } from "@openbot/ui/features/conversation/HostFolderPicker";
+} from "@zollybot/ui/features/conversation/AgentInstructionsView";
+import type { HostFolderPickMode } from "@zollybot/ui/features/conversation/HostFolderPicker";
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function agentFolderCalls(): AgentFolderCalls {
   return {
-    list: (agentId) => window.openbot.agent.listAgentFolders(agentId),
+    list: (agentId) => window.zollybot.agent.listAgentFolders(agentId),
     choose: (agentId, replace) =>
-      window.openbot.agent.chooseAgentFolder(replace === undefined ? { agentId } : { agentId, replace }),
-    add: (agentId, path) => window.openbot.agent.addAgentFolder({ agentId, path }),
-    remove: (agentId, path) => window.openbot.agent.removeAgentFolder({ agentId, path }),
-    drop: (agentId, folder) => window.openbot.agent.addDroppedAgentFolder(agentId, folder),
-    exclude: (agentId) => window.openbot.agent.chooseAgentExclusion(agentId),
-    addExclusion: (agentId, path) => window.openbot.agent.addAgentExclusion({ agentId, path }),
-    include: (agentId, path) => window.openbot.agent.removeAgentExclusion({ agentId, path }),
+      window.zollybot.agent.chooseAgentFolder(replace === undefined ? { agentId } : { agentId, replace }),
+    add: (agentId, path) => window.zollybot.agent.addAgentFolder({ agentId, path }),
+    remove: (agentId, path) => window.zollybot.agent.removeAgentFolder({ agentId, path }),
+    drop: (agentId, folder) => window.zollybot.agent.addDroppedAgentFolder(agentId, folder),
+    exclude: (agentId) => window.zollybot.agent.chooseAgentExclusion(agentId),
+    addExclusion: (agentId, path) => window.zollybot.agent.addAgentExclusion({ agentId, path }),
+    include: (agentId, path) => window.zollybot.agent.removeAgentExclusion({ agentId, path }),
   };
 }
 
@@ -37,7 +37,7 @@ export type HostFolderPickFn = (
  * lists the folders of the host. A folder dropped from this computer is not on the host: no `drop`.
  */
 export function remoteAgentFolderCalls(serverId: string, pick: HostFolderPickFn): AgentFolderCalls {
-  const agent = () => window.openbot.agent;
+  const agent = () => window.zollybot.agent;
   const list = (agentId: string) => agent().listAgentFolders(agentId, serverId);
   return {
     list,
@@ -69,7 +69,7 @@ export function remoteAgentFolderCalls(serverId: string, pick: HostFolderPickFn)
 
 /** The folders in one folder of a joined server's computer, for the host folder browser. */
 export function browseHostFolders(serverId: string, agentId: string, path: string | null) {
-  return window.openbot.agent.browseAgentFolders({ agentId, path }, serverId);
+  return window.zollybot.agent.browseAgentFolders({ agentId, path }, serverId);
 }
 
 type InstructionsWatcher = Parameters<AgentInstructionsFileCalls["watch"]>[0];
@@ -97,9 +97,9 @@ function watchersOf(serverKey: string): Set<InstructionsWatcher> {
 export function agentInstructionsCalls(serverId?: string): Omit<AgentInstructionsCalls, "openLink"> {
   const watchers = watchersOf(serverId ?? "");
   return {
-    read: (agentId) => window.openbot.agent.readAgentInstructions(agentId, serverId),
+    read: (agentId) => window.zollybot.agent.readAgentInstructions(agentId, serverId),
     save: async (agentId, text, expected) => {
-      const file = await window.openbot.agent.saveAgentInstructions({ agentId, text, expected }, serverId);
+      const file = await window.zollybot.agent.saveAgentInstructions({ agentId, text, expected }, serverId);
       for (const watcher of watchers) watcher(agentId, file);
       return file;
     },
@@ -107,6 +107,6 @@ export function agentInstructionsCalls(serverId?: string): Omit<AgentInstruction
       watchers.add(watcher);
       return () => watchers.delete(watcher);
     },
-    reveal: serverId === undefined ? (agentId) => window.openbot.agent.revealAgentInstructions(agentId) : undefined,
+    reveal: serverId === undefined ? (agentId) => window.zollybot.agent.revealAgentInstructions(agentId) : undefined,
   };
 }

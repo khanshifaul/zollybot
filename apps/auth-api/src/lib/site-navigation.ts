@@ -11,7 +11,7 @@ import { BRAND_ROUTE } from "./brand-page";
 import { CHANGELOG_ROUTE } from "./changelog";
 import { HEADER_COLLECTIONS } from "./content";
 import type { CollectionArticle, ContentCollection } from "./content-collection";
-import { OPENBOT_LINKS } from "./landing-links";
+import { ZOLLYBOT_LINKS } from "./landing-links";
 import { MARKETPLACE_APPS_ROUTE } from "./marketplace-routes";
 import { SITE_PLUGINS, type SitePlugin } from "./plugins";
 import { PRICING_ROUTE } from "./pricing-page";
@@ -52,7 +52,7 @@ export interface PluginNavigationSection {
 export type ResourceLink = {
   label: string;
   description: string;
-  /** "logo" draws the OpenBot mark. */
+  /** "logo" draws the ZollyBot mark. */
   icon: LandingIconName | "logo";
 } & ({ to: typeof CHANGELOG_ROUTE | typeof BRAND_ROUTE | "/download" } | { href: string });
 
@@ -71,8 +71,8 @@ export type SiteNavigationSection = ArticleNavigationSection | PluginNavigationS
 
 const COLLECTION_COPY: Record<HeaderCollectionId, { summary: string; indexLabel: string }> = {
   news: { summary: "What shipped, and why it matters.", indexLabel: "All news" },
-  guides: { summary: "Learn OpenBot one step at a time.", indexLabel: "All guides" },
-  compare: { summary: "How OpenBot differs from other agent apps.", indexLabel: "All comparisons" },
+  guides: { summary: "Learn ZollyBot one step at a time.", indexLabel: "All guides" },
+  compare: { summary: "How ZollyBot differs from other agent apps.", indexLabel: "All comparisons" },
 };
 
 export const SITE_NAVIGATION_SECTIONS: readonly SiteNavigationSection[] = [
@@ -105,20 +105,20 @@ export const SITE_NAVIGATION_SECTIONS: readonly SiteNavigationSection[] = [
     kind: "resources",
     id: "resources",
     label: "Resources",
-    summary: "The source code of OpenBot is open.",
-    footer: { label: "Source code", href: OPENBOT_LINKS.repository },
+    summary: "The source code of ZollyBot is open.",
+    footer: { label: "Source code", href: ZOLLYBOT_LINKS.repository },
     links: [
       { label: "Download", description: "macOS, Windows and Linux", icon: "download", to: "/download" },
       { label: "Changelog", description: "What changed in each version", icon: "refresh", to: CHANGELOG_ROUTE },
-      { label: "Community", description: "Talk with us on Discord", icon: "contact", href: OPENBOT_LINKS.discord },
+      { label: "Community", description: "Talk with us on Discord", icon: "contact", href: ZOLLYBOT_LINKS.discord },
       {
         label: "Documentation",
-        description: "Set up and use OpenBot",
+        description: "Set up and use ZollyBot",
         icon: "folder",
-        href: OPENBOT_LINKS.documentation,
+        href: ZOLLYBOT_LINKS.documentation,
       },
       { label: "Brand", description: "The logo as SVG and PNG", icon: "logo", to: BRAND_ROUTE },
-      { label: "Status", description: "Is the service up", icon: "cloud", href: OPENBOT_LINKS.status },
+      { label: "Status", description: "Is the service up", icon: "cloud", href: ZOLLYBOT_LINKS.status },
     ],
   },
 ];

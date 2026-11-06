@@ -1,7 +1,7 @@
-import { avatarHeadColor, avatarStyleForSeed } from "@openbot/brand/bloub-avatar";
-import type { AvatarMood } from "@openbot/brand/bloub-avatar-motion";
-import type { AvatarColor, AvatarHue } from "@openbot/contracts/ipc";
 import { ImageFormat, Skia } from "@shopify/react-native-skia";
+import { avatarHeadColor, avatarStyleForSeed } from "@zollybot/brand/bloub-avatar";
+import type { AvatarMood } from "@zollybot/brand/bloub-avatar-motion";
+import type { AvatarColor, AvatarHue } from "@zollybot/contracts/ipc";
 import { Directory, File, Paths } from "expo-file-system";
 import { drawFlat, flatGeometryKey, flatRestFrame } from "./flat-draw";
 import { loadPlushArt } from "./plush-assets";

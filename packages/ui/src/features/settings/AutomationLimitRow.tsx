@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createMemo } from "solid-js";
 import { useText } from "../../text";
 

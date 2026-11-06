@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
-import { isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger } from "@openbot/logging";
+import { isOneOf, isString } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { MOBILE_ANNOUNCEMENT_FILE } from "./discord-mobile-release-announcement";
 import { appVersion, publishPlan } from "./mobile-release-steps";
 import { MOBILE_STORE_NAMES, MOBILE_STORES } from "./release-notes";
@@ -15,7 +15,7 @@ import { MOBILE_STORE_NAMES, MOBILE_STORES } from "./release-notes";
 // the store, so the command stops while apps/mobile/release-announcement.json is not ready.
 // `bun run mobile:release` does the same from a menu, and opens the pull request.
 
-const logger = createOpenBotLogger("publish-mobile-release");
+const logger = createZollyBotLogger("publish-mobile-release");
 const USAGE = "Usage: bun run mobile:release:published <ios|android|both> [--version x.y.z] [--skip-older]";
 
 const args = process.argv.slice(2);

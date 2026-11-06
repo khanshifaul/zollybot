@@ -43,7 +43,7 @@ export function ShareExtensionSync({
   agents,
 }: ShareExtensionSyncProps): null {
   const { t } = useText();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const lockReady = useAppLock((state) => state.status === "ready");
   const lockOn = useAppLock((state) => state.config.pin || state.config.deviceUnlock);
   const locked = !lockReady || lockOn;

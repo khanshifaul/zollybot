@@ -1,5 +1,5 @@
-import { type EventFilterDraft, eventFilterPointerValid } from "@openbot/contracts/event-filter-value";
-import { Button, ChevronDown, ChevronRight, IconButton, Input, Plus, SlidersHorizontal, Text, X } from "@openbot/ui";
+import { type EventFilterDraft, eventFilterPointerValid } from "@zollybot/contracts/event-filter-value";
+import { Button, ChevronDown, ChevronRight, IconButton, Input, Plus, SlidersHorizontal, Text, X } from "@zollybot/ui";
 import { createSignal, createUniqueId, For, onSettled, Show } from "solid-js";
 import { useText } from "../../text";
 

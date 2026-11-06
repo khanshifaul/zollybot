@@ -3,9 +3,9 @@ import {
   type ChatColors,
   parseSetAgentChatColorInput,
   type TeamMemberSummary,
-} from "@openbot/contracts/ipc";
-import { CHAT_COLORS_CAPABILITY, CHAT_COLORS_ROUTES } from "@openbot/contracts/team-protocol/chat-colors-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { CHAT_COLORS_CAPABILITY, CHAT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/chat-colors-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAgents } from "./dependencies";
 import { HttpError } from "./http-error";

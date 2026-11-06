@@ -17,13 +17,13 @@
 }
 
 :is(.routine-schedule-picker, .routine-popover) .ui-button:focus-visible {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .routine-schedule-picker {
   display: grid;
   min-width: 0;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 /* One line at every width. A narrow row shrinks its flexible chip, not the line count. */
@@ -32,16 +32,16 @@
   display: flex;
   min-width: 0;
   align-items: flex-start;
-  gap: var(--openbot-space-2);
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-shadow-popover-ambient);
-  padding: var(--openbot-space-1);
-  transition: border-color var(--openbot-duration-hover) ease;
+  gap: var(--zollybot-space-2);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-shadow-popover-ambient);
+  padding: var(--zollybot-space-1);
+  transition: border-color var(--zollybot-duration-hover) ease;
 }
 
 .routine-trigger-row:focus-within {
-  border-color: var(--openbot-text-muted);
+  border-color: var(--zollybot-text-muted);
 }
 
 .routine-schedule-picker[data-density="card"] .routine-trigger-row {
@@ -52,25 +52,25 @@
 
 .routine-trigger-icon {
   display: inline-flex;
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-accent);
-  color: var(--openbot-text-on-accent);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-accent);
+  color: var(--zollybot-text-on-accent);
 }
 
 .routine-trigger-icon svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   stroke-width: 2;
 }
 
 .routine-schedule-picker[data-density="panel"] .routine-trigger-icon {
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
 }
 
 .routine-schedule-picker[data-density="card"] .routine-trigger-icon {
@@ -82,17 +82,17 @@
   min-width: 0;
   flex: 1;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   /* Clips a row that is narrower than its fixed chips, and keeps the focus ring visible. */
   overflow: clip;
-  overflow-clip-margin: var(--openbot-space-1);
+  overflow-clip-margin: var(--zollybot-space-1);
 }
 
 .routine-trigger-phrase {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .routine-trigger-phrase-flexible {
@@ -101,9 +101,9 @@
 }
 
 .routine-connector {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .routine-chip-select {
@@ -118,24 +118,24 @@
 
 .routine-chip {
   display: inline-flex;
-  height: var(--openbot-control-md);
+  height: var(--zollybot-control-md);
   min-width: 0;
   max-width: 100%;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   cursor: pointer;
   border: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   outline: 0;
-  background: var(--openbot-bg-control-active);
-  padding: 0 var(--openbot-space-3);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  background: var(--zollybot-bg-control-active);
+  padding: 0 var(--zollybot-space-3);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
   white-space: nowrap;
   flex: 0 0 auto;
-  transition: background-color var(--openbot-duration-hover) ease;
+  transition: background-color var(--zollybot-duration-hover) ease;
 }
 
 .routine-chip-flexible {
@@ -150,23 +150,23 @@
 
 /* The chips sit one padding inside the box, so the row is as tall as an input at every width. */
 .routine-schedule-picker[data-density="panel"] .routine-chip {
-  height: var(--openbot-control-sm);
-  border-radius: var(--openbot-radius-xs);
+  height: var(--zollybot-control-sm);
+  border-radius: var(--zollybot-radius-xs);
 }
 
 .routine-schedule-picker[data-density="card"] .routine-chip {
-  height: var(--openbot-control-sm);
-  padding: 0 var(--openbot-space-2);
-  font-size: var(--openbot-text-md);
+  height: var(--zollybot-control-sm);
+  padding: 0 var(--zollybot-space-2);
+  font-size: var(--zollybot-text-md);
 }
 
 .routine-chip:focus-visible {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .routine-chip:is([aria-expanded="true"], [data-expanded]) {
-  background: var(--openbot-bg-control-hover);
-  box-shadow: 0 0 0 1px var(--openbot-border-strong);
+  background: var(--zollybot-bg-control-hover);
+  box-shadow: 0 0 0 1px var(--zollybot-border-strong);
 }
 
 .routine-chip:disabled,
@@ -174,13 +174,13 @@
   cursor: default;
   background: transparent;
   padding: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .routine-chip:hover:not(:disabled, [data-disabled]) {
-    background: var(--openbot-bg-control-hover);
-    box-shadow: 0 0 0 1px var(--openbot-border-strong);
+    background: var(--zollybot-bg-control-hover);
+    box-shadow: 0 0 0 1px var(--zollybot-border-strong);
   }
 }
 
@@ -189,23 +189,23 @@
 }
 
 .routine-chip-select-content .ui-select-item {
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .routine-cron-input {
   min-width: 0;
   max-width: 220px;
   flex: 1 1 180px;
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
 }
 
 .routine-schedule-hint {
   margin: 0;
-  padding-inline-start: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  padding-inline-start: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .routine-schedule-picker[data-density="card"] .routine-schedule-hint {
@@ -214,14 +214,14 @@
 
 /* Popovers */
 .routine-popover {
-  z-index: var(--openbot-layer-popover);
-  border-radius: var(--openbot-radius-lg);
-  padding: var(--openbot-space-2);
+  z-index: var(--zollybot-layer-popover);
+  border-radius: var(--zollybot-radius-lg);
+  padding: var(--zollybot-space-2);
 }
 
 .routine-weekday-strip {
   display: flex;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .routine-day-item {
@@ -230,86 +230,86 @@
 
 .routine-day {
   display: inline-flex;
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
   min-width: 0;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   padding: 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .routine-day-item:has(:focus-visible) .routine-day {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 /* The strip is short, so an unselected day can look like a button. A month grid stays plain. */
 .routine-weekday-strip .routine-day {
-  background: var(--openbot-bg-control-active);
+  background: var(--zollybot-bg-control-active);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .routine-day:hover:not(:disabled, .routine-day-selected) {
-    background: var(--openbot-hover);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-hover);
+    color: var(--zollybot-text-primary);
   }
 }
 
 .routine-day.routine-day-selected,
 .routine-day.routine-day-selected:hover {
-  background: var(--openbot-text-primary);
-  color: var(--openbot-bg-canvas);
+  background: var(--zollybot-text-primary);
+  color: var(--zollybot-bg-canvas);
 }
 
 .routine-day.routine-day-selected:focus-visible {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 /* Time */
 .routine-clock-input {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .routine-clock-segment.ui-input {
   width: 48px;
-  height: var(--openbot-control-lg);
+  height: var(--zollybot-control-lg);
   border: 0;
-  background: var(--openbot-bg-control-active);
+  background: var(--zollybot-bg-control-active);
   padding: 0;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
 
 .routine-clock-separator {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .routine-segmented {
   display: flex;
-  margin-inline-start: var(--openbot-space-1);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-control-active);
-  padding: var(--openbot-space-0-5);
+  margin-inline-start: var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-control-active);
+  padding: var(--zollybot-space-0-5);
 }
 
 .routine-segmented-control {
   display: inline-flex;
-  height: calc(var(--openbot-control-lg) - 2 * var(--openbot-space-0-5));
+  height: calc(var(--zollybot-control-lg) - 2 * var(--zollybot-space-0-5));
   min-width: 44px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: var(--openbot-radius-sm);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  border-radius: var(--zollybot-radius-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .routine-segmented-control label {
@@ -317,78 +317,78 @@
 }
 
 .routine-segmented-control[data-checked] {
-  background: var(--openbot-text-primary);
-  color: var(--openbot-bg-canvas);
+  background: var(--zollybot-text-primary);
+  color: var(--zollybot-bg-canvas);
 }
 
 .routine-segmented-item:has(:focus-visible) .routine-segmented-control {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 /* Hours window: a two-option list and, for "Between hours", the times beside it. */
 .routine-window-menu {
   display: grid;
   width: 240px;
-  gap: var(--openbot-space-1);
-  padding: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
+  padding: var(--zollybot-space-1);
 }
 
 .routine-window-options {
   display: grid;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .routine-window-repeat {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2);
-  border-top: 1px solid var(--openbot-border);
-  padding-block: var(--openbot-space-2) var(--openbot-space-1);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-1);
+  gap: var(--zollybot-space-2);
+  border-top: 1px solid var(--zollybot-border);
+  padding-block: var(--zollybot-space-2) var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-1);
 }
 
 .routine-window-repeat-label {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .routine-window-option-control {
   display: flex;
-  min-height: var(--openbot-control-lg);
+  min-height: var(--zollybot-control-lg);
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   cursor: pointer;
-  border-radius: var(--openbot-radius-md);
-  padding: var(--openbot-space-2) var(--openbot-space-3);
+  border-radius: var(--zollybot-radius-md);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
 }
 
 .routine-window-option-control[data-checked] {
-  background: var(--openbot-hover);
+  background: var(--zollybot-hover);
 }
 
 .routine-window-option:has(:focus-visible) .routine-window-option-control {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .routine-window-option-control:hover {
-    background: var(--openbot-hover);
+    background: var(--zollybot-hover);
   }
 }
 
 .routine-window-option-label {
   flex: 1;
   cursor: pointer;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
-  line-height: var(--openbot-leading-lg);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .routine-window-option-check {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
 }
 
@@ -399,63 +399,63 @@
 
 .routine-window-range {
   display: grid;
-  gap: var(--openbot-space-1-5);
-  padding: var(--openbot-space-1) var(--openbot-space-3) var(--openbot-space-2);
+  gap: var(--zollybot-space-1-5);
+  padding: var(--zollybot-space-1) var(--zollybot-space-3) var(--zollybot-space-2);
 }
 
 .routine-window-range-times {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .routine-window-range-count {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 
 /* Calendar */
 .routine-calendar {
   display: grid;
-  width: calc(7 * var(--openbot-control-md) + 6 * var(--openbot-space-0-5));
-  gap: var(--openbot-space-1);
+  width: calc(7 * var(--zollybot-control-md) + 6 * var(--zollybot-space-0-5));
+  gap: var(--zollybot-space-1);
 }
 
 .routine-calendar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--openbot-space-1);
+  padding-bottom: var(--zollybot-space-1);
 }
 
 .routine-calendar-title {
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .routine-calendar-weekdays,
 .routine-calendar-days {
   display: grid;
-  grid-template-columns: repeat(7, var(--openbot-control-md));
-  gap: var(--openbot-space-0-5);
+  grid-template-columns: repeat(7, var(--zollybot-control-md));
+  gap: var(--zollybot-space-0-5);
 }
 
 .routine-calendar-weekdays span {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-align: center;
 }
 
 .routine-calendar-day:focus-visible {
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .routine-calendar-day[aria-current="date"]:not(.routine-day-selected) {
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
 }
 
 .routine-calendar-day:disabled {
@@ -475,30 +475,30 @@
  * Each step keeps the rules of the steps before it.
  */
 .routine-schedule-picker:not([data-fit="roomy"]) .routine-trigger-chips {
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .routine-schedule-picker:not([data-fit="roomy"]) .routine-trigger-phrase {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .routine-schedule-picker:not([data-fit="roomy"]) .routine-connector {
-  font-size: var(--openbot-text-md);
+  font-size: var(--zollybot-text-md);
 }
 
 .routine-schedule-picker[data-density="panel"]:not([data-fit="roomy"]) .routine-trigger-row {
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .routine-schedule-picker[data-density="panel"]:not([data-fit="roomy"]) .routine-trigger-icon svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .routine-schedule-picker[data-density="panel"]:not([data-fit="roomy"]) .routine-chip {
-  gap: var(--openbot-space-1);
-  padding: 0 var(--openbot-space-2);
-  font-size: var(--openbot-text-md);
+  gap: var(--zollybot-space-1);
+  padding: 0 var(--zollybot-space-2);
+  font-size: var(--zollybot-text-md);
 }
 
 .routine-schedule-picker[data-density="panel"]:is([data-fit="tight"], [data-fit="minimal"])
@@ -508,17 +508,17 @@
 
 .routine-schedule-picker[data-density="panel"]:is([data-fit="tight"], [data-fit="minimal"])
   :is(.routine-trigger-row, .routine-trigger-chips) {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .routine-schedule-picker[data-density="panel"]:is([data-fit="tight"], [data-fit="minimal"]) .routine-trigger-icon {
-  width: var(--openbot-control-xs);
-  height: var(--openbot-control-xs);
+  width: var(--zollybot-control-xs);
+  height: var(--zollybot-control-xs);
   align-self: center;
 }
 
 .routine-schedule-picker[data-density="panel"]:is([data-fit="tight"], [data-fit="minimal"]) .routine-chip {
-  padding: 0 var(--openbot-space-1-5);
+  padding: 0 var(--zollybot-space-1-5);
 }
 
 /* The value chips then cut their labels short, and the frequency and time chips stay whole. */
@@ -527,7 +527,7 @@
 }
 
 .routine-schedule-picker[data-fit="minimal"] .routine-trigger-chips {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 /*
@@ -539,7 +539,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-self: center;
-  margin-inline-start: calc(var(--openbot-space-1) * -1);
+  margin-inline-start: calc(var(--zollybot-space-1) * -1);
 }
 
 .routine-trigger-action:empty {
@@ -547,9 +547,9 @@
 }
 
 :is(.routine-trigger-row, .routine-trigger-card-header) .routine-trigger-action .ui-button {
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
-  border-radius: var(--openbot-radius-xs);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
+  border-radius: var(--zollybot-radius-xs);
 }
 
 /*
@@ -559,31 +559,31 @@
 .routine-trigger-card {
   display: grid;
   min-width: 0;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-shadow-popover-ambient);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-shadow-popover-ambient);
 }
 
 .routine-trigger-card-header {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding-block: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-1);
+  gap: var(--zollybot-space-2);
+  padding-block: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-1);
 }
 
 :is(.routine-trigger-card-header, .routine-trigger-menu) .routine-trigger-icon {
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
 }
 
 .routine-trigger-card-title {
   min-width: 0;
   flex: 1;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
   /* Mostly lowercase text looks low when its line box is centered. Center the x-height on the icon. */
   text-box: trim-both ex alphabetic;
 }
@@ -591,34 +591,34 @@
 .routine-webhook-field {
   display: grid;
   /* An action, the row padding and the top border, so a row without an action has the same height. */
-  min-height: calc(var(--openbot-control-sm) + var(--openbot-space-2) + 1px);
-  grid-template-columns: minmax(84px, auto) minmax(0, 1fr) var(--openbot-control-sm);
+  min-height: calc(var(--zollybot-control-sm) + var(--zollybot-space-2) + 1px);
+  grid-template-columns: minmax(84px, auto) minmax(0, 1fr) var(--zollybot-control-sm);
   align-items: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   border: 0;
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
   margin: 0;
   background: none;
-  padding-block: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-1);
+  padding-block: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-1);
   color: inherit;
   font: inherit;
   text-align: start;
 }
 
 .routine-webhook-label {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   white-space: nowrap;
 }
 
 .routine-webhook-value {
   min-width: 0;
   overflow: hidden;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -629,8 +629,8 @@ code.routine-webhook-value {
 
 /* A new secret wraps in a fixed-width font, so the user can read each character before copying it. */
 code.routine-webhook-secret {
-  padding-block: var(--openbot-space-1-5);
-  font-family: var(--openbot-font-mono);
+  padding-block: var(--zollybot-space-1-5);
+  font-family: var(--zollybot-font-mono);
   overflow-wrap: anywhere;
   white-space: normal;
 }
@@ -641,13 +641,13 @@ code.routine-webhook-secret {
 
 .routine-webhook-field > .ui-icon-button,
 .routine-webhook-actions > .ui-icon-button {
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
 }
 
 /* The secret row can have two actions. They share the last column, which grows to fit them. */
 .routine-webhook-field:has(> .routine-webhook-actions) {
-  grid-template-columns: minmax(84px, auto) minmax(0, 1fr) minmax(var(--openbot-control-sm), auto);
+  grid-template-columns: minmax(84px, auto) minmax(0, 1fr) minmax(var(--zollybot-control-sm), auto);
 }
 
 .routine-webhook-actions {
@@ -661,7 +661,7 @@ code.routine-webhook-secret {
   min-width: 0;
   height: auto;
   justify-content: stretch;
-  border-radius: 0 0 calc(var(--openbot-radius-md) - 1px) calc(var(--openbot-radius-md) - 1px);
+  border-radius: 0 0 calc(var(--zollybot-radius-md) - 1px) calc(var(--zollybot-radius-md) - 1px);
   color: inherit;
   font: inherit;
   text-align: start;
@@ -673,19 +673,19 @@ code.routine-webhook-secret {
 }
 
 .routine-webhook-field.routine-webhook-events-toggle:hover {
-  background: var(--openbot-bg-control-hover);
+  background: var(--zollybot-bg-control-hover);
 }
 
 .routine-webhook-events-toggle:focus-visible {
   outline: 0;
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
 }
 
 .routine-webhook-events-toggle > svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  stroke-width: var(--openbot-icon-stroke);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  stroke-width: var(--zollybot-icon-stroke);
+  color: var(--zollybot-text-muted);
 }
 
 /* A status sentence wraps; a URL or a secret stays on one line. */
@@ -694,26 +694,26 @@ code.routine-webhook-secret {
 }
 
 .routine-webhook-note {
-  padding: 0 var(--openbot-space-3) var(--openbot-space-2);
+  padding: 0 var(--zollybot-space-3) var(--zollybot-space-2);
 }
 
 .routine-trigger-card-header + .routine-webhook-note {
-  border-top: 1px solid var(--openbot-border);
-  padding-top: var(--openbot-space-2);
+  border-top: 1px solid var(--zollybot-border);
+  padding-top: var(--zollybot-space-2);
 }
 
 .routine-webhook-secret-note {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 /* In a chat card the rows are one block, so the card gap does not split them, and they line up
  * with the card title. */
 .routine-webhook-card-endpoint {
   display: grid;
-  border-bottom: 1px solid var(--openbot-border);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 .routine-webhook-card-endpoint > .routine-webhook-field,
@@ -731,55 +731,55 @@ code.routine-webhook-secret {
 
 .routine-webhook-steps > li {
   display: grid;
-  grid-template-columns: var(--openbot-control-sm) minmax(0, 1fr);
-  gap: var(--openbot-space-2);
-  border-top: 1px solid var(--openbot-border);
-  padding: var(--openbot-space-3);
+  grid-template-columns: var(--zollybot-control-sm) minmax(0, 1fr);
+  gap: var(--zollybot-space-2);
+  border-top: 1px solid var(--zollybot-border);
+  padding: var(--zollybot-space-3);
 }
 
 .routine-webhook-step-body {
   display: grid;
   min-width: 0;
-  gap: var(--openbot-space-1-5);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  gap: var(--zollybot-space-1-5);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .routine-webhook-step-body > strong {
-  font-weight: var(--openbot-weight-medium);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .routine-webhook-steps > li[data-disabled] .routine-webhook-step-body > strong {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .routine-webhook-step-marker {
   display: inline-grid;
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
   place-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .routine-webhook-step-marker[data-done] {
-  border-color: var(--openbot-success);
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success-text);
+  border-color: var(--zollybot-success);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success-text);
 }
 
 .routine-webhook-step-check {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /* A value row inside a step has its own border. */
 .routine-webhook-inset {
   min-width: 0;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-sm);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-sm);
 }
 
 .routine-webhook-inset > .routine-webhook-field {
@@ -792,35 +792,35 @@ code.routine-webhook-secret {
 
 .routine-webhook-disclosure {
   justify-self: start;
-  margin-inline-start: calc(var(--openbot-space-2) * -1);
-  padding-inline: var(--openbot-space-2);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  margin-inline-start: calc(var(--zollybot-space-2) * -1);
+  padding-inline: var(--zollybot-space-2);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
   font-weight: inherit;
 }
 
 .routine-webhook-disclosure-icon {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .routine-webhook-filter {
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .routine-webhook-events {
   display: grid;
-  gap: var(--openbot-space-3);
-  border-top: 1px solid var(--openbot-border);
-  padding: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
+  border-top: 1px solid var(--zollybot-border);
+  padding: var(--zollybot-space-3);
 }
 
 .routine-webhook-events .settings-field {
   display: grid;
   margin: 0;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .routine-webhook-events .settings-field > span {
@@ -829,36 +829,36 @@ code.routine-webhook-secret {
 
 /* Hints are captions, not field labels. */
 .routine-webhook-events .settings-field > .ui-text {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .routine-webhook-add-filter {
   justify-self: start;
-  margin-inline-start: calc(var(--openbot-space-2) * -1);
-  padding-inline: var(--openbot-space-2);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-md);
+  margin-inline-start: calc(var(--zollybot-space-2) * -1);
+  padding-inline: var(--zollybot-space-2);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-md);
   font-weight: inherit;
 }
 
 /* A quiet link under the rows. Its text starts under the row labels. */
 .routine-webhook-filter-link {
   justify-self: start;
-  margin-block: 0 var(--openbot-space-1);
-  margin-inline: var(--openbot-space-1) 0;
-  padding-inline: var(--openbot-space-2);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  margin-block: 0 var(--zollybot-space-1);
+  margin-inline: var(--zollybot-space-1) 0;
+  padding-inline: var(--zollybot-space-2);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
   font-weight: inherit;
 }
 
 .routine-webhook-add-filter svg,
 .routine-webhook-filter-link svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 /* The trigger menu: a name and one line that tells when the routine runs. It is taller than a short
@@ -871,8 +871,8 @@ code.routine-webhook-secret {
 
 .routine-trigger-menu.ui-action-menu .routine-trigger-menu-item[role="menuitemradio"] {
   height: auto;
-  padding-block: var(--openbot-space-1-5);
-  gap: var(--openbot-space-3);
+  padding-block: var(--zollybot-space-1-5);
+  gap: var(--zollybot-space-3);
   white-space: normal;
 }
 
@@ -883,13 +883,13 @@ code.routine-webhook-secret {
 }
 
 .routine-trigger-menu-description {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .routine-trigger-menu.ui-action-menu .routine-trigger-menu-item > .routine-trigger-menu-check {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* The previous and next months, and the closed disclosures, point the other way in RTL. */

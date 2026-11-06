@@ -10,15 +10,15 @@
 // agent is still in "Needs you" and its own chat still shows its approval; Deny there leaves no file and
 // takes the agent out of "Needs you". At the end it deletes the thread and the files and gives the agent
 // its access back.
-// Writes .openbot-build/agent-threads-parallel-e2e/report.json and screenshots.
+// Writes .zollybot-build/agent-threads-parallel-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import { agentProviderDescriptor, isAgentProvider } from "@openbot/contracts/agent-providers";
-import { type AgentApproval, type AgentTask, DEFAULT_AGENT_ACCESS } from "@openbot/contracts/ipc";
-import { translateFor } from "@openbot/i18n";
+import { agentProviderDescriptor, isAgentProvider } from "@zollybot/contracts/agent-providers";
+import { type AgentApproval, type AgentTask, DEFAULT_AGENT_ACCESS } from "@zollybot/contracts/ipc";
+import { translateFor } from "@zollybot/i18n";
 import { argument, connectChannelE2e, WAIT_MS, waitFor, writeReport } from "./channel-e2e-support";
 
 declare global {
@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-threads-parallel-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-threads-parallel-e2e");
 mkdirSync(OUT, { recursive: true });
 const UI_WAIT_MS = 15_000;
 const english = translateFor("en");
@@ -65,7 +65,7 @@ const approvalCard = () => page.getByRole("region", { name: english("prompt.appr
 const needsYou = () => page.getByRole("region", { name: new RegExp(`^${literal(english("sidebar.waiting.title"))}`) });
 
 function writePrompt(): string {
-  const file = join(homedir(), `openbot-thread-approval-${randomUUID()}.txt`);
+  const file = join(homedir(), `zollybot-thread-approval-${randomUUID()}.txt`);
   files.push(file);
   return `Create the file ${file} with the text ok. Run the shell command with escalated permissions so that I get an approval request.`;
 }
@@ -85,12 +85,12 @@ function waitForApproval(label: string, accept: (approval: AgentApproval) => boo
 }
 
 async function readTask(): Promise<AgentTask | undefined> {
-  const snapshot = await page.evaluate((id) => window.openbot.agent.listTasks(id), agentId);
+  const snapshot = await page.evaluate((id) => window.zollybot.agent.listTasks(id), agentId);
   return snapshot.tasks.find((task) => task.id === taskId);
 }
 
 const before = await page.evaluate(async (id) => {
-  const found = (await window.openbot.agent.listAgents()).find((candidate) => candidate.id === id);
+  const found = (await window.zollybot.agent.listAgents()).find((candidate) => candidate.id === id);
   if (!found) throw new Error(`Unknown agent: ${id}`);
   return found;
 }, agentId);
@@ -115,10 +115,10 @@ try {
     await whatsNew.getByRole("button", { name: english("update.whatsNew.done") }).click();
     await whatsNew.waitFor({ state: "detached", timeout: UI_WAIT_MS });
   }
-  await page.evaluate((id) => window.openbot.agent.updateAgent({ agentId: id, access: "workspace" }), agentId);
+  await page.evaluate((id) => window.zollybot.agent.updateAgent({ agentId: id, access: "workspace" }), agentId);
   await page.evaluate(() => {
     window.parallelApprovalE2e = [];
-    window.openbot.agent.onEvent((event) => {
+    window.zollybot.agent.onEvent((event) => {
       if (event.type === "approval") window.parallelApprovalE2e?.push(event.approval);
     });
   });
@@ -135,8 +135,8 @@ try {
   // 1. The agent's own chat asks first.
   const mainThreadId = await page.evaluate(
     async ({ id, text }) => {
-      await window.openbot.agent.sendMessage({ agentId: id, text, clientMessageId: crypto.randomUUID() });
-      return (await window.openbot.agent.readConversation(id)).threadId;
+      await window.zollybot.agent.sendMessage({ agentId: id, text, clientMessageId: crypto.randomUUID() });
+      return (await window.zollybot.agent.readConversation(id)).threadId;
     },
     { id: agentId, text: writePrompt() },
   );
@@ -150,7 +150,7 @@ try {
 
   // 2. Then the side thread asks.
   const task = await page.evaluate(
-    (input) => window.openbot.agent.startTask({ ...input, clientMessageId: crypto.randomUUID() }),
+    (input) => window.zollybot.agent.startTask({ ...input, clientMessageId: crypto.randomUUID() }),
     { agentId, text: writePrompt() },
   );
   taskId = task.id;
@@ -221,15 +221,15 @@ try {
   if (taskId) {
     const id = taskId;
     await page
-      .evaluate((input) => window.openbot.agent.stopTask(input), { agentId, taskId: id })
+      .evaluate((input) => window.zollybot.agent.stopTask(input), { agentId, taskId: id })
       .catch(() => undefined);
     await waitFor(page, "the cleanup stop", readTask, (latest) => latest?.state !== "running").catch(() => undefined);
     await page
-      .evaluate((input) => window.openbot.agent.deleteTask(input), { agentId, taskId: id })
+      .evaluate((input) => window.zollybot.agent.deleteTask(input), { agentId, taskId: id })
       .catch(() => undefined);
   }
   for (const file of files) rmSync(file, { force: true });
-  const restored = await page.evaluate(({ id, access }) => window.openbot.agent.updateAgent({ agentId: id, access }), {
+  const restored = await page.evaluate(({ id, access }) => window.zollybot.agent.updateAgent({ agentId: id, access }), {
     id: agentId,
     access: originalAccess,
   });

@@ -1,5 +1,5 @@
 import { connect, isIP, type Socket } from "node:net";
-import type { BrowserEgressRefusal } from "@openbot/contracts/team-protocol/browser-egress-v1";
+import type { BrowserEgressRefusal } from "@zollybot/contracts/team-protocol/browser-egress-v1";
 import { Effect } from "effect";
 import { isPublicAddress, systemAddressLookup } from "../backend/network-address";
 import { BrowserEgressMux, type BrowserEgressRequest } from "./browser-egress-mux";

@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the updates context reaches in main: the app update status, its check, download and
@@ -6,7 +6,7 @@ import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
  */
 export interface UpdatesPort {
   update: Pick<
-    OpenBotDesktopApi["update"],
+    ZollyBotDesktopApi["update"],
     | "check"
     | "download"
     | "getStatus"
@@ -18,7 +18,7 @@ export interface UpdatesPort {
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function updatesPort(): UpdatesPort {
-  return window.openbot;
+  return window.zollybot;
 }

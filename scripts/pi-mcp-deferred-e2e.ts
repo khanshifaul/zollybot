@@ -1,16 +1,16 @@
 // Runs the real `pi` provider driver and the real Pi binary against a fake OpenAI-compatible server,
 // to check which tools each request declares. A user's MCP server, such as computer use with 56
-// tools, must wait for Pi's `tool_search` and not be declared in each request. The OpenBot tools stay
+// tools, must wait for Pi's `tool_search` and not be declared in each request. The ZollyBot tools stay
 // declared. The fake model first answers with a `tool_search` call, so the second request must
 // declare the loaded tool, which Pi then keeps for the rest of the session. The system prompt names
 // the server, so the model knows what to search for, and it stays the same in each request.
-// `PI_CLI=<pi> bun scripts/pi-mcp-deferred-e2e.ts`. Writes .openbot-build/pi-mcp-deferred-e2e/report.json.
+// `PI_CLI=<pi> bun scripts/pi-mcp-deferred-e2e.ts`. Writes .zollybot-build/pi-mcp-deferred-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { McpServerConfig } from "@openbot/contracts/ipc";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
 import { VISIBLE_DYNAMIC_TOOLS } from "../src/backend/agent/tool-catalog";
 import type { AgentClient } from "../src/backend/agent-client";
 import { resolvePiCli } from "../src/backend/cli";
@@ -19,7 +19,7 @@ import type { CustomProviderConfig } from "../src/backend/opencode-config";
 import { requireProviderDriver } from "../src/backend/provider-drivers";
 import { runTurn, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/pi-mcp-deferred-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/pi-mcp-deferred-e2e");
 const NL = String.fromCharCode(10);
 const TOOL = "ping_fixture";
 
@@ -55,7 +55,7 @@ interface Report {
 }
 
 const report: Report = { passed: false, requests: [] };
-const root = await mkdtemp(join(tmpdir(), "openbot-pi-deferred-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-pi-deferred-e2e-"));
 const clients: AgentClient[] = [];
 /** The system prompt of each request with tools. */
 const systems: string[] = [];
@@ -189,7 +189,7 @@ try {
   const bridge = (names: string[]) => names.filter((name) => name.startsWith("mcp__") && !name.endsWith(TOOL));
   assert.deepEqual(external(first), [], `The first request declares the user's tool: ${first.join(", ")}`);
   assert.ok(first.includes("tool_search"), `The first request has no tool_search: ${first.join(", ")}`);
-  assert.ok(bridge(first).length > 0, `The first request declares no OpenBot tool: ${first.join(", ")}`);
+  assert.ok(bridge(first).length > 0, `The first request declares no ZollyBot tool: ${first.join(", ")}`);
   assert.equal(external(second).length, 1, `tool_search did not load the user's tool: ${second.join(", ")}`);
   // The model finds the server by its name, and a fixed system prompt keeps the provider's cache.
   report.servers = systems[0]?.match(/<mcp_servers>[\s\S]*?<\/mcp_servers>/u)?.[0] ?? "";

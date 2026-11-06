@@ -1,12 +1,12 @@
 // The Link sign-in (link.com, by Stripe): the OAuth device flow, the token refresh and the revoke.
 //
-// OpenBot uses Link's public client, the one that Stripe's `link-cli` uses, with OpenBot as the
+// ZollyBot uses Link's public client, the one that Stripe's `link-cli` uses, with ZollyBot as the
 // client hint. A public client needs no secret, so the whole sign-in stays on this computer. Link
 // shows `connection_label` in the user's list of connected apps. Link's own page carries the code,
-// so the user does not type it: OpenBot opens `verification_uri_complete`.
+// so the user does not type it: ZollyBot opens `verification_uri_complete`.
 
 import { hostname } from "node:os";
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result, Schema } from "effect";
 import { z } from "zod";
 import { LinkOperationError, linkCall, linkDecode } from "./link-effects";
@@ -16,7 +16,7 @@ export const LINK_API_URL = "https://api.link.com";
 /** Link's public client. It needs no secret. */
 const LINK_CLIENT_ID = "lwlpk_U7Qy7ThG69STZk";
 /** The name that Link shows on its approval page. A product name: it is not translated. */
-const LINK_CLIENT_HINT = "OpenBot";
+const LINK_CLIENT_HINT = "ZollyBot";
 /** Read the user's email, and ask for one-time cards that the user approves one at a time. */
 const LINK_SCOPE = "userinfo:read payment_methods.agentic";
 const DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code";
@@ -162,7 +162,7 @@ export const refreshLinkToken = Effect.fn("Link.refreshToken")(function* (
   return yield* linkDecode(() => tokenSet(body, now()));
 });
 
-/** Tells Link to forget a token. Link then removes OpenBot from the user's connected apps. */
+/** Tells Link to forget a token. Link then removes ZollyBot from the user's connected apps. */
 export const revokeLinkToken = Effect.fn("Link.revokeToken")(function* (
   options: LinkAuthOptions & { token: string },
 ): Effect.fn.Return<void, LinkOperationError> {
@@ -173,7 +173,7 @@ export const revokeLinkToken = Effect.fn("Link.revokeToken")(function* (
   if (body.error) return yield* new LinkOperationError({ cause: flowError(body.error, body) });
 });
 
-/** An https page on link.com, the only kind that OpenBot opens for Link. */
+/** An https page on link.com, the only kind that ZollyBot opens for Link. */
 export function isLinkPage(address: string): boolean {
   try {
     const url = new URL(address);

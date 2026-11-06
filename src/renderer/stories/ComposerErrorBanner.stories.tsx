@@ -1,6 +1,6 @@
-import { ComposerErrorBanner } from "@openbot/ui/features/conversation/ComposerErrorBanner";
-import { ComposerUsageLimitNotice } from "@openbot/ui/features/conversation/ComposerNotice";
 import type { JSX } from "@solidjs/web";
+import { ComposerErrorBanner } from "@zollybot/ui/features/conversation/ComposerErrorBanner";
+import { ComposerUsageLimitNotice } from "@zollybot/ui/features/conversation/ComposerNotice";
 import { createSignal, Show } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

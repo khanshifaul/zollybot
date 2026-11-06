@@ -1,9 +1,9 @@
-import { decodeMachineAlertSettings } from "@openbot/contracts/ipc";
+import { decodeMachineAlertSettings } from "@zollybot/contracts/ipc";
 import {
   MACHINE_RESOURCES_CAPABILITY,
   MACHINE_RESOURCES_ROUTES,
-} from "@openbot/contracts/team-protocol/machine-resources-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/machine-resources-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiMachine } from "./dependencies";
 import { HttpError } from "./http-error";

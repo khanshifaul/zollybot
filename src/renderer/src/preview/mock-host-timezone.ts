@@ -1,4 +1,4 @@
-import type { HostAdminDesktopApi, HostTimezoneSettings } from "@openbot/contracts/ipc";
+import type { HostAdminDesktopApi, HostTimezoneSettings } from "@zollybot/contracts/ipc";
 
 /** Preview has one host, so every server shares this timezone. */
 export function createMockHostTimezone(): Pick<HostAdminDesktopApi, "getTimezone" | "setTimezone"> {

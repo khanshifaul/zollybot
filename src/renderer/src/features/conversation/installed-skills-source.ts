@@ -1,4 +1,4 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
 import { serverCanAdminister } from "../servers/server-capabilities";
 import type { AgentSkillsMode } from "./AgentSkillsModal";
 import type { ConversationRuntime } from "./conversation-runtime";

@@ -3,8 +3,8 @@ import {
   type ConversationPlanStep,
   type ConversationPlanStepStatus,
   clampConversationPlan,
-} from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
 import { isRecord } from "../protocol";
 
 /**

@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync, type SQLOutputValue } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; an old agent routine runs in a thread; a
 // channel routine gets the column; a failed upgrade leaves the column or the marker; a retry adds the column
@@ -25,7 +25,7 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
@@ -103,7 +103,7 @@ describe("agent routine run place migration", () => {
       // The earlier migrations run first; the rows after them are what v57 must keep.
       if (source < 56) migrateUpTo(db, 56);
       const before = contents(db);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(contents(db)).toEqual({ ...withChatRunPlace(before), ...LATER_TABLES });
       expect(columns(db, "projection_agent_routines")).toContain("run_in");
       expect(columns(db, "projection_channel_routines")).not.toContain("run_in");
@@ -118,13 +118,13 @@ describe("agent routine run place migration", () => {
     const columnsBefore = columns(db, "projection_agent_routines");
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=57
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 57 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 57 failed");
     expect(contents(db)).toEqual(before);
     expect(columns(db, "projection_agent_routines")).toEqual(columnsBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=57").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(contents(db)).toEqual({ ...withChatRunPlace(before), ...LATER_TABLES });
     expectHealthy(db);
   });
@@ -135,7 +135,7 @@ describe("agent routine run place migration", () => {
     db.exec(`ALTER TABLE projection_agent_routines ADD COLUMN run_in TEXT NOT NULL DEFAULT 'chat'
       CHECK(run_in IN ('chat', 'thread'))`);
     db.exec("UPDATE projection_agent_routines SET run_in='thread'");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(columns(db, "projection_agent_routines").filter((name) => name === "run_in")).toEqual(["run_in"]);
     expect(db.prepare("SELECT routine_id, run_in FROM projection_agent_routines").all()).toEqual([
       { routine_id: "routine-agent", run_in: "thread" },
@@ -149,9 +149,9 @@ describe("agent routine run place migration", () => {
     const before = contents(db);
     const columnsBefore = columns(db, "projection_agent_routines");
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=54");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 54");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 54");
     expect(contents(db)).toEqual(before);
     expect(columns(db, "projection_agent_routines")).toEqual(columnsBefore);
   });
@@ -159,21 +159,21 @@ describe("agent routine run place migration", () => {
   it("refuses to open a version 57 database in an older application", () => {
     const db = databaseAt(56);
     seed(db);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     const after = contents(db);
     // An application one release older knows versions up to 58 at most: version 59 is newer than it supports.
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     expect(contents(db)).toEqual(after);
   });
 
   it("rejects a place that the app cannot read, in an upgraded and in a new database", () => {
     const upgraded = databaseAt(56);
     seed(upgraded);
-    migrateOpenBotDatabase(upgraded);
+    migrateZollyBotDatabase(upgraded);
     const created = new DatabaseSync(":memory:");
     databases.push(created);
-    migrateOpenBotDatabase(created);
+    migrateZollyBotDatabase(created);
     seed(created);
     for (const db of [upgraded, created]) {
       expect(db.prepare("SELECT run_in FROM projection_agent_routines").all()).toEqual([{ run_in: "chat" }]);

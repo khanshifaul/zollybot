@@ -1,6 +1,6 @@
-import type { RoutineFields, RoutineSchedule } from "@openbot/contracts/ipc";
-import { RoutineScheduleCard } from "@openbot/ui/features/conversation/RoutineScheduleCard";
-import type { RoutineScheduleDraft } from "@openbot/ui/features/conversation/routine-schedule-draft";
+import type { RoutineFields, RoutineSchedule } from "@zollybot/contracts/ipc";
+import { RoutineScheduleCard } from "@zollybot/ui/features/conversation/RoutineScheduleCard";
+import type { RoutineScheduleDraft } from "@zollybot/ui/features/conversation/routine-schedule-draft";
 import {
   ROUTINE_LOCAL_DRAFT_KINDS,
   ROUTINE_SAVED_DRAFT_KINDS,
@@ -9,8 +9,8 @@ import {
   routineOncePassed,
   routineScheduleFromDraft,
   routineScheduleToDraft,
-} from "@openbot/ui/features/conversation/routine-schedule-saved";
-import { type TextValue, useText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/routine-schedule-saved";
+import { type TextValue, useText } from "@zollybot/ui/text";
 import { createEffect, createSignal } from "solid-js";
 import { agentRoutinesPort } from "./routines-port";
 

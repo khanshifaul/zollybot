@@ -5,7 +5,7 @@
 // The proxy cases run the real `McpGateway` and its `McpOAuthProxy` on a temporary database, with
 // the SDK MCP client as the provider and an SDK Streamable HTTP server as the signed-in MCP server.
 // The provider payload is the one `codexMcpServers` and `claudeMcpServers` build for a spawn.
-// `bun scripts/mcp-oauth-e2e.ts`. Writes .openbot-build/mcp-oauth-e2e/report.json.
+// `bun scripts/mcp-oauth-e2e.ts`. Writes .zollybot-build/mcp-oauth-e2e/report.json.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -23,9 +23,9 @@ import {
   McpError,
   ToolListChangedNotificationSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import type { McpServerConfig } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, redactText } from "@openbot/logging";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, redactText } from "@zollybot/logging";
 import { Effect } from "effect";
 import { McpGateway } from "../src/backend/agent/mcp-gateway";
 import { runCauseEffect } from "../src/backend/effect-boundary";
@@ -41,10 +41,10 @@ import type { McpOAuthProxySettings } from "../src/backend/mcp-oauth-proxy";
 import { claudeMcpServers, codexMcpServers, usableMcpServers } from "../src/backend/mcp-provider-shapes";
 import { McpServerStore } from "../src/backend/mcp-server-store";
 import { AddressLookupError, isPublicAddress } from "../src/backend/network-address";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { NO_PROVIDER_CREDENTIALS } from "../src/backend/provider-drivers";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/mcp-oauth-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/mcp-oauth-e2e");
 const REDIRECT_URL = "http://127.0.0.1:28417/mcp-auth";
 const DEADLINE_MS = 10_000;
 
@@ -245,7 +245,7 @@ async function main() {
         throw new Error("A silent path opened the browser.");
       },
       redirectUrl: REDIRECT_URL,
-      logger: createOpenBotLogger("mcp-oauth", (line) => {
+      logger: createZollyBotLogger("mcp-oauth", (line) => {
         logLines.push(line);
         onLog();
       }),
@@ -595,8 +595,8 @@ async function proxyCases(auth: Awaited<ReturnType<typeof startAuthorizationServ
   auth.setTokenMode("rotate");
   auth.setRevokeStatus(200);
   const resource = await startResourceServer(auth.base);
-  const root = await mkdtemp(join(tmpdir(), "openbot-mcp-oauth-proxy-"));
-  const database = new OpenBotDatabase(root);
+  const root = await mkdtemp(join(tmpdir(), "zollybot-mcp-oauth-proxy-"));
+  const database = new ZollyBotDatabase(root);
   const clients: Client[] = [];
   const gateways: McpGateway[] = [];
   try {
@@ -628,7 +628,7 @@ async function proxyCases(auth: Awaited<ReturnType<typeof startAuthorizationServ
         throw new Error("A proxy path opened the browser.");
       },
       redirectUrl: REDIRECT_URL,
-      logger: createOpenBotLogger("mcp-oauth", (line) => logLines.push(line)),
+      logger: createZollyBotLogger("mcp-oauth", (line) => logLines.push(line)),
     });
     // A holder, so the type is not narrowed to `null` across the writes in the callbacks.
     const saved: { value: McpOAuthProxySettings | null } = { value: null };
@@ -655,7 +655,7 @@ async function proxyCases(auth: Awaited<ReturnType<typeof startAuthorizationServ
         },
         agents: () => agents,
         computerUseMcpServer: () => null,
-        logger: createOpenBotLogger("agent-service", (line) => logLines.push(line)),
+        logger: createZollyBotLogger("agent-service", (line) => logLines.push(line)),
         hooks: { emitError: () => undefined, refreshAllAgentRuntimes: () => Effect.void },
       });
       gateways.push(gateway);
@@ -724,33 +724,33 @@ async function proxyCases(auth: Awaited<ReturnType<typeof startAuthorizationServ
     assert.ok(upstream.every((hit) => hit.authorization === "Bearer access-on-file" && hit.rowKey === "row-secret"));
     const echo = { text: "through", upstreamToken: "access-on-file", rowHeaderUpstream: true };
 
-    // The server sees OpenBot as the client, not the provider, and the agent of the route by name.
-    const openbotClient = (title: string) => ({
-      name: "openbot",
+    // The server sees ZollyBot as the client, not the provider, and the agent of the route by name.
+    const zollybotClient = (title: string) => ({
+      name: "zollybot",
       title,
       version: "9.9.9-e2e",
       websiteUrl: "https://openbot.run",
     });
-    assert.deepEqual(resource.clients.at(-1), openbotClient("OpenBot"));
-    assert.ok(upstream.every((hit) => hit.userAgent === "OpenBot/9.9.9-e2e"));
+    assert.deepEqual(resource.clients.at(-1), zollybotClient("ZollyBot"));
+    assert.ok(upstream.every((hit) => hit.userAgent === "ZollyBot/9.9.9-e2e"));
     const titleOf = async (route: { url: string; bearer: string }) => {
       const before = resource.clients.length;
       const named = await connect(route.url, route.bearer);
       assert.equal(textOf(await named.callTool({ name: "echo", arguments: { text: "named" } })), "named");
       assert.equal(resource.clients.length, before + 1);
       const info = resource.clients.at(-1);
-      assert.deepEqual(info, openbotClient(info?.title ?? ""));
+      assert.deepEqual(info, zollybotClient(info?.title ?? ""));
       return info?.title;
     };
     const researchRoute = await endpointOf(gateway, direct, "agent-research");
     assert.notEqual(researchRoute.url, directRoute.url);
-    assert.equal(await titleOf(researchRoute), "Research Bot (OpenBot)");
-    assert.equal(await titleOf(chiefRoute), "Ops Bot (OpenBot)");
+    assert.equal(await titleOf(researchRoute), "Research Bot (ZollyBot)");
+    assert.equal(await titleOf(chiefRoute), "Ops Bot (ZollyBot)");
     const research = agents[0];
     assert.ok(research);
     research.name = "Renamed Bot";
-    assert.equal(await titleOf(researchRoute), "Renamed Bot (OpenBot)");
-    assert.equal(await titleOf(await endpointOf(gateway, direct, "removed-agent")), "OpenBot");
+    assert.equal(await titleOf(researchRoute), "Renamed Bot (ZollyBot)");
+    assert.equal(await titleOf(await endpointOf(gateway, direct, "removed-agent")), "ZollyBot");
     // The bearer of a route opens neither the same row for another agent nor the row with no agent.
     const hitsBeforeCross = resource.hits.length;
     assert.equal(await rawPost(researchRoute.url, { authorization: `Bearer ${directRoute.bearer}` }), 403);
@@ -758,12 +758,12 @@ async function proxyCases(auth: Awaited<ReturnType<typeof startAuthorizationServ
     assert.equal(await rawPost(chiefRoute.url, { authorization: `Bearer ${researchRoute.bearer}` }), 403);
     assert.equal(resource.hits.length, hitsBeforeCross, "A request with another route's bearer reached the server.");
     const clientIdentity = {
-      withoutAgent: "OpenBot",
-      agent: "Research Bot (OpenBot)",
-      controlCharacters: "Ops Bot (OpenBot)",
-      renamed: "Renamed Bot (OpenBot)",
-      unknownAgent: "OpenBot",
-      userAgent: "OpenBot/9.9.9-e2e",
+      withoutAgent: "ZollyBot",
+      agent: "Research Bot (ZollyBot)",
+      controlCharacters: "Ops Bot (ZollyBot)",
+      renamed: "Renamed Bot (ZollyBot)",
+      unknownAgent: "ZollyBot",
+      userAgent: "ZollyBot/9.9.9-e2e",
       crossAgentBearers: 403,
     };
 

@@ -13,8 +13,8 @@ body:has(.browser-dock-surface),
   width: 100%;
   height: 100%;
   background: transparent;
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
 }
 
 /*
@@ -24,13 +24,13 @@ body:has(.browser-dock-surface),
  */
 .browser-dock {
   position: absolute;
-  bottom: var(--openbot-space-4);
+  bottom: var(--zollybot-space-4);
   left: 50%;
   display: flex;
-  width: min(640px, calc(100% - 2 * var(--openbot-space-6)));
+  width: min(640px, calc(100% - 2 * var(--zollybot-space-6)));
   flex-direction: column;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   isolation: isolate;
   translate: -50% 0;
 }
@@ -38,19 +38,19 @@ body:has(.browser-dock-surface),
 .browser-dock-glass {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-0-5);
-  border: 1px solid var(--openbot-glass-border);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-glass);
-  box-shadow: var(--openbot-shadow-raised);
+  gap: var(--zollybot-space-0-5);
+  border: 1px solid var(--zollybot-glass-border);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-glass);
+  box-shadow: var(--zollybot-shadow-raised);
   backdrop-filter: blur(16px);
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .browser-dock-composer svg,
 .browser-dock-island-activity svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /* The island: one glass capsule over the composer for the step, the code and the reply. A spring sets its
@@ -69,14 +69,14 @@ body:has(.browser-dock-surface),
 
 .browser-dock-island:is([data-mode="reply"], [data-mode="secret"], [data-mode="prompt"], [data-mode="approval"]) {
   width: 100%;
-  border-radius: var(--openbot-radius-lg);
+  border-radius: var(--zollybot-radius-lg);
 }
 
 /* The code card, the questions and the approval have a denser glass, so that the page under them does not
    show through as dark shapes behind the text. The code card is narrower than the reply. */
 .browser-dock-island:is([data-mode="secret"], [data-mode="prompt"], [data-mode="approval"]) {
-  border-radius: var(--openbot-radius-xl);
-  background: color-mix(in srgb, var(--openbot-bg-glass), var(--openbot-bg-control) 60%);
+  border-radius: var(--zollybot-radius-xl);
+  background: color-mix(in srgb, var(--zollybot-bg-glass), var(--zollybot-bg-control) 60%);
   backdrop-filter: blur(32px) saturate(1.4);
 }
 
@@ -104,10 +104,10 @@ body:has(.browser-dock-surface),
 .browser-dock-island-card {
   display: grid;
   max-height: 420px;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   overflow: auto;
-  padding: var(--openbot-space-3);
-  color: var(--openbot-text-primary);
+  padding: var(--zollybot-space-3);
+  color: var(--zollybot-text-primary);
 }
 
 .browser-dock-island-card :is(.question-prompt-bubble, .ui-bubble-content, .approval-card) {
@@ -125,10 +125,10 @@ body:has(.browser-dock-surface),
 .browser-dock-island-activity {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  padding-block: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-2) var(--openbot-space-1);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-1-5);
+  padding-block: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-1);
+  font-size: var(--zollybot-text-sm);
   white-space: nowrap;
 }
 
@@ -145,10 +145,10 @@ body:has(.browser-dock-surface),
 }
 
 .browser-dock-spin {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: none;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   animation: ui-spin 1s linear infinite;
 }
 
@@ -158,7 +158,7 @@ body:has(.browser-dock-surface),
   min-width: 0;
   overflow: hidden;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .browser-dock-status > span {
@@ -169,28 +169,28 @@ body:has(.browser-dock-surface),
 .browser-dock-handoff {
   flex: none;
   margin-inline-start: auto;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .browser-dock-island-reply {
   display: grid;
-  gap: var(--openbot-space-1-5);
-  padding-block: var(--openbot-space-2) var(--openbot-space-3);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-2);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
+  gap: var(--zollybot-space-1-5);
+  padding-block: var(--zollybot-space-2) var(--zollybot-space-3);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
 }
 
 .browser-dock-reply-header {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-2);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .browser-dock-reply-header > strong {
-  font-weight: var(--openbot-weight-medium);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .browser-dock-reply-close {
@@ -199,9 +199,9 @@ body:has(.browser-dock-surface),
 
 .browser-dock-reply-body {
   max-height: 160px;
-  padding-inline-end: var(--openbot-space-1);
+  padding-inline-end: var(--zollybot-space-1);
   overflow: auto;
-  line-height: var(--openbot-leading-lg);
+  line-height: var(--zollybot-leading-lg);
 }
 
 .browser-dock-reply-actions {
@@ -220,9 +220,9 @@ body:has(.browser-dock-surface),
 
 /* The queue keeps clear of the round ends of the field, and has the glass of the field. */
 .agent-queue-panel[data-variant="floating"] {
-  margin-inline: var(--openbot-space-6);
-  border-color: var(--openbot-glass-border);
-  background: var(--openbot-bg-glass);
+  margin-inline: var(--zollybot-space-6);
+  border-color: var(--zollybot-glass-border);
+  background: var(--zollybot-bg-glass);
   backdrop-filter: blur(16px);
   /* A sent message opens the queue with a clip that rises out of the field. */
   animation: none;
@@ -239,9 +239,9 @@ body:has(.browser-dock-surface),
   z-index: 2;
   box-sizing: border-box;
   width: 100%;
-  gap: var(--openbot-space-2);
-  padding-block: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-2) var(--openbot-space-1);
+  gap: var(--zollybot-space-2);
+  padding-block: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-1);
 }
 
 .browser-dock-avatar {
@@ -253,7 +253,7 @@ body:has(.browser-dock-surface),
 .browser-dock-editor {
   min-width: 0;
   flex: 1;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* The text of a new queue row waits until the sent text arrives from the field. */
@@ -267,9 +267,9 @@ body:has(.browser-dock-surface),
   z-index: 1;
   box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid var(--openbot-glass-border);
-  background: var(--openbot-bg-glass);
-  box-shadow: var(--openbot-shadow-raised);
+  border: 1px solid var(--zollybot-glass-border);
+  background: var(--zollybot-bg-glass);
+  box-shadow: var(--zollybot-shadow-raised);
   backdrop-filter: blur(16px);
   pointer-events: none;
 }
@@ -294,7 +294,7 @@ body:has(.browser-dock-surface),
   top: 0;
   left: 0;
   overflow: hidden;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   pointer-events: none;
   text-overflow: ellipsis;
   transform-origin: left center;
@@ -304,30 +304,30 @@ body:has(.browser-dock-surface),
 
 /* The row actions are small glass chips, as the field and the step are. */
 .agent-queue-panel[data-variant="floating"] .agent-queue-actions {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .agent-queue-panel[data-variant="floating"] :is(.agent-queue-steer, .agent-queue-icon-button) {
   box-sizing: border-box;
   height: 24px;
-  border: 1px solid var(--openbot-glass-border);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-glass-surface);
-  box-shadow: inset 0 1px 0 var(--openbot-glass-highlight);
+  border: 1px solid var(--zollybot-glass-border);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-glass-surface);
+  box-shadow: inset 0 1px 0 var(--zollybot-glass-highlight);
   backdrop-filter: blur(8px);
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   transition:
-    background var(--openbot-duration-hover) ease,
-    border-color var(--openbot-duration-hover) ease,
-    box-shadow var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease,
-    opacity var(--openbot-duration-hover) ease;
+    background var(--zollybot-duration-hover) ease,
+    border-color var(--zollybot-duration-hover) ease,
+    box-shadow var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease,
+    opacity var(--zollybot-duration-hover) ease;
 }
 
 .agent-queue-panel[data-variant="floating"] .agent-queue-steer {
   padding-block: 0;
-  padding-inline: var(--openbot-space-1-5) var(--openbot-space-2);
-  font-size: var(--openbot-text-sm);
+  padding-inline: var(--zollybot-space-1-5) var(--zollybot-space-2);
+  font-size: var(--zollybot-text-sm);
 }
 
 .agent-queue-panel[data-variant="floating"] .agent-queue-icon-button {
@@ -341,20 +341,20 @@ body:has(.browser-dock-surface),
 
 .agent-queue-panel[data-variant="floating"]
   :is(.agent-queue-steer, .agent-queue-icon-button):is(:hover:not(:disabled), :focus-visible) {
-  background: var(--openbot-glass-surface-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-glass-surface-hover);
+  color: var(--zollybot-text-primary);
 }
 
 .agent-queue-panel[data-variant="floating"]
   .agent-queue-icon-button.agent-queue-delete:is(:hover:not(:disabled), :focus-visible) {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger);
 }
 
 .agent-queue-panel[data-variant="floating"] :is(.agent-queue-steer, .agent-queue-icon-button):focus-visible {
   box-shadow:
-    inset 0 1px 0 var(--openbot-glass-highlight),
-    0 0 0 2px var(--openbot-border-focus);
+    inset 0 1px 0 var(--zollybot-glass-highlight),
+    0 0 0 2px var(--zollybot-border-focus);
 }
 
 /* With a pointer, the row actions are quiet. They get their glass on the row under the pointer or with
@@ -367,7 +367,7 @@ body:has(.browser-dock-surface),
     background: transparent;
     box-shadow: none;
     backdrop-filter: none;
-    color: var(--openbot-text-muted);
+    color: var(--zollybot-text-muted);
   }
 }
 

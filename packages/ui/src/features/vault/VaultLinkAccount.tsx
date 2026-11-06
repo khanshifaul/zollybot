@@ -1,4 +1,4 @@
-import type { LinkAccountStatus } from "@openbot/contracts/ipc";
+import type { LinkAccountStatus } from "@zollybot/contracts/ipc";
 import {
   Button,
   buttonVariants,
@@ -14,7 +14,7 @@ import {
   ItemTitle,
   Link2Off,
   Text,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createStore, Show } from "solid-js";
 import { useText } from "../../text";
 

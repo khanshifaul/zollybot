@@ -4,15 +4,15 @@
 //
 // It draws the "A Dark" card of the prototype in
 // apps/auth-api/src/components/marketplace/MarketplaceShareCardPrototype.{tsx,css}: on the flat
-// canvas colour, the avatar large on the left, and in the column on the right the OpenBot mark and
+// canvas colour, the avatar large on the left, and in the column on the right the ZollyBot mark and
 // wordmark, the name with the verified shield after its last word, the role, and "by <creator>".
 // The numbers below are the prototype's CSS lengths, in pixels of the 1200-wide card.
 
 import { BloubBot } from "@norbert_bodziony/bloub";
-import { APP_LOGO_CORNER, APP_LOGO_EYE_POINTS, APP_LOGO_SIZE } from "@openbot/brand/app-logo-shape";
-import { bloubAvatarProfile } from "@openbot/brand/bloub-avatar";
-import type { AvatarHue } from "@openbot/contracts/ipc";
 import { render } from "@solidjs/web";
+import { APP_LOGO_CORNER, APP_LOGO_EYE_POINTS, APP_LOGO_SIZE } from "@zollybot/brand/app-logo-shape";
+import { bloubAvatarProfile } from "@zollybot/brand/bloub-avatar";
+import type { AvatarHue } from "@zollybot/contracts/ipc";
 import { flush } from "solid-js";
 
 export interface MarketplaceCardJob {
@@ -38,11 +38,11 @@ const WIDTH = 1200;
 const HEIGHT = 630;
 const FONT_FAMILY = '"Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
-/** `tokens.css`, dark theme: `--openbot-bg-canvas`, `--openbot-text-primary`, `--openbot-text-secondary`. */
+/** `tokens.css`, dark theme: `--zollybot-bg-canvas`, `--zollybot-text-primary`, `--zollybot-text-secondary`. */
 const CANVAS = "#1a1a1a";
 const PRIMARY = "#ffffff";
 const SECONDARY = "#dcdcdc";
-/** `--openbot-logo-production` and `--openbot-logo-production-eye`. */
+/** `--zollybot-logo-production` and `--zollybot-logo-production-eye`. */
 const LOGO_BACKGROUND = "#d6adf2";
 const LOGO_EYE = "#040007";
 
@@ -125,7 +125,7 @@ async function drawMedia(context: CanvasRenderingContext2D, job: MarketplaceCard
 }
 
 /**
- * The resting Bloub as one SVG element: `createStaticAvatarSvg` in `@openbot/ui/bloub-avatar`. It is
+ * The resting Bloub as one SVG element: `createStaticAvatarSvg` in `@zollybot/ui/bloub-avatar`. It is
  * repeated here because that file is JSX, which this bundle cannot compile; `BloubBot` itself is
  * compiled already, so calling it as a function renders the same component.
  */
@@ -175,13 +175,13 @@ function drawBrand(context: CanvasRenderingContext2D): void {
   setFont(context, 600, BRAND.font, -0.02);
   context.fillStyle = PRIMARY;
   // The wordmark is centred on the mark, as `align-items: center` sets it.
-  const metrics = context.measureText("OpenBot");
+  const metrics = context.measureText("ZollyBot");
   const textHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
   const baseline = BRAND.y + (BRAND.logo - textHeight) / 2 + metrics.fontBoundingBoxAscent;
-  context.fillText("OpenBot", BRAND.x + BRAND.logo + BRAND.gap, baseline);
+  context.fillText("ZollyBot", BRAND.x + BRAND.logo + BRAND.gap, baseline);
 }
 
-/** The OpenBot mark, from the same shape data as `AppLogo`. */
+/** The ZollyBot mark, from the same shape data as `AppLogo`. */
 function drawLogo(context: CanvasRenderingContext2D, x: number, y: number, size: number): void {
   context.save();
   context.translate(x, y);

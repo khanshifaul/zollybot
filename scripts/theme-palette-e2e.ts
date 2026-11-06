@@ -3,15 +3,15 @@
 // by its name, choosing it puts its colors on the window, a rewrite of the file (a theme switch)
 // reaches the window, a file with a color that is not hex is refused, and choosing Dark again
 // removes the palette colors. Removes the file and restores the saved preference at the end.
-// Writes .openbot-build/theme-palette/report.json and a screenshot per step. Needs
+// Writes .zollybot-build/theme-palette/report.json and a screenshot per step. Needs
 // `--allow-mutations`, because it changes the theme setting.
 import assert from "node:assert/strict";
 import { mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import type { AppThemePaletteColor } from "@openbot/contracts/app-appearance";
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
-import { en } from "@openbot/i18n";
-import { createOpenBotLogger } from "@openbot/logging";
+import type { AppThemePaletteColor } from "@zollybot/contracts/app-appearance";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { en } from "@zollybot/i18n";
+import { createZollyBotLogger } from "@zollybot/logging";
 import type { Page } from "playwright-core";
 import { assertMutationAllowed, connectToDevApp } from "./dev-automation/cdp-client";
 import { readDevInstanceRecords } from "./dev-automation/instance-registry";
@@ -20,11 +20,11 @@ import { resolveDevelopmentAppDataRoot } from "./development-state-paths";
 // The page functions below run in the app window, where the preload bridge sets this.
 declare global {
   interface Window {
-    openbot: OpenBotDesktopApi;
+    zollybot: ZollyBotDesktopApi;
   }
 }
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/theme-palette");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/theme-palette");
 const PALETTE_ID = "e2e-omarchy";
 const PALETTE_NAME = "E2E Omarchy";
 // The dark canvas of tokens.css: the window shows it again when no palette is selected.
@@ -74,7 +74,7 @@ assertMutationAllowed({
   instanceNamed: true,
   target: instance.instanceId,
 });
-const logger = createOpenBotLogger("theme-palette-e2e");
+const logger = createZollyBotLogger("theme-palette-e2e");
 const session = await connectToDevApp(instance.remoteDebuggingPort, logger, {
   expectedRendererPort: instance.rendererPort,
   ownerPid: instance.pid,
@@ -83,7 +83,7 @@ const session = await connectToDevApp(instance.remoteDebuggingPort, logger, {
 const themes = join(resolveDevelopmentAppDataRoot(), instance.profile, "themes");
 const paletteFile = join(themes, `${PALETTE_ID}.json`);
 
-/** Replaces the file with a rename, as `omarchy-theme-set-openbot` does, so no reader sees half a file. */
+/** Replaces the file with a rename, as `omarchy-theme-set-zollybot` does, so no reader sees half a file. */
 function publishPalette(appearance: "light" | "dark", colors: Record<string, string>) {
   mkdirSync(themes, { recursive: true });
   const temporary = `${paletteFile}.tmp`;
@@ -130,7 +130,7 @@ async function chooseTheme(page: Page, label: string) {
 async function waitForListed(page: Page, listed: boolean) {
   await page.waitForFunction(
     async ([id, expected]) =>
-      (await window.openbot.getAppAppearancePreference()).palettes.some((palette) => palette.id === id) === expected,
+      (await window.zollybot.getAppAppearancePreference()).palettes.some((palette) => palette.id === id) === expected,
     [PALETTE_ID, listed] as const,
   );
 }
@@ -141,10 +141,10 @@ function shownColors(page: Page) {
     const root = document.documentElement;
     const style = getComputedStyle(root);
     return {
-      attribute: root.dataset.openbotColorScheme ?? null,
-      canvas: style.getPropertyValue("--openbot-bg-canvas").trim(),
-      accent: style.getPropertyValue("--openbot-accent").trim(),
-      inlineCanvas: root.style.getPropertyValue("--openbot-bg-canvas"),
+      attribute: root.dataset.zollybotColorScheme ?? null,
+      canvas: style.getPropertyValue("--zollybot-bg-canvas").trim(),
+      accent: style.getPropertyValue("--zollybot-accent").trim(),
+      inlineCanvas: root.style.getPropertyValue("--zollybot-bg-canvas"),
       bodyBackground: getComputedStyle(document.body).backgroundColor,
     };
   });
@@ -153,7 +153,7 @@ function shownColors(page: Page) {
 async function waitForCanvas(page: Page, canvas: string) {
   await page.waitForFunction(
     (expected) =>
-      getComputedStyle(document.documentElement).getPropertyValue("--openbot-bg-canvas").trim() === expected,
+      getComputedStyle(document.documentElement).getPropertyValue("--zollybot-bg-canvas").trim() === expected,
     canvas,
   );
   return shownColors(page);
@@ -161,12 +161,12 @@ async function waitForCanvas(page: Page, canvas: string) {
 
 mkdirSync(OUT, { recursive: true });
 const page = session.page;
-const original = await page.evaluate(() => window.openbot.getAppAppearancePreference());
+const original = await page.evaluate(() => window.zollybot.getAppAppearancePreference());
 type ShownColors = Awaited<ReturnType<typeof shownColors>>;
 const steps: Partial<Record<"chosen" | "rewritten" | "refused" | "restored" | "cleared", ShownColors>> = {};
 try {
   // The checks below name the base under a refused palette, so the saved base must be known.
-  await page.evaluate(() => window.openbot.setAppAppearancePreference({ appearance: "dark", palette: null }));
+  await page.evaluate(() => window.zollybot.setAppAppearancePreference({ appearance: "dark", palette: null }));
 
   // 1. A new file reaches main with no restart.
   publishPalette("dark", TOKYO_NIGHT);
@@ -175,7 +175,7 @@ try {
   // 2. Settings lists it by name, and choosing it gives the window its colors over the dark base.
   await chooseTheme(page, PALETTE_NAME);
   await page.waitForFunction(
-    async (id) => (await window.openbot.getAppAppearancePreference()).palette === id,
+    async (id) => (await window.zollybot.getAppAppearancePreference()).palette === id,
     PALETTE_ID,
   );
   let shown = await waitForCanvas(page, TOKYO_NIGHT.canvas);
@@ -190,7 +190,7 @@ try {
   // 3. A theme switch rewrites the file. The window follows, the light base included.
   publishPalette("light", CATPPUCCIN_LATTE);
   shown = await waitForCanvas(page, CATPPUCCIN_LATTE.canvas);
-  await page.waitForFunction(() => document.documentElement.dataset.openbotColorScheme === "light");
+  await page.waitForFunction(() => document.documentElement.dataset.zollybotColorScheme === "light");
   shown = await shownColors(page);
   assert.equal(shown.accent, CATPPUCCIN_LATTE.accent, "The rewritten accent is not on the window.");
   await page.screenshot({ path: resolve(OUT, "workspace-catppuccin-latte.png") });
@@ -201,7 +201,7 @@ try {
   publishPalette("dark", { ...TOKYO_NIGHT, accent: "red; background: url(https://example.com)" });
   await waitForListed(page, false);
   // The event that clears the colors can reach the window after the answer to the poll above.
-  await page.waitForFunction(() => document.documentElement.style.getPropertyValue("--openbot-bg-canvas") === "", {
+  await page.waitForFunction(() => document.documentElement.style.getPropertyValue("--zollybot-bg-canvas") === "", {
     timeout: 10_000,
   });
   shown = await shownColors(page);
@@ -215,7 +215,7 @@ try {
   await chooseTheme(page, en["settings.appearance.theme.dark"]);
   shown = await waitForCanvas(page, DARK_CANVAS);
   assert.equal(shown.inlineCanvas, "", "Dark left the palette colors on the window.");
-  assert.equal((await page.evaluate(() => window.openbot.getAppAppearancePreference())).palette, null);
+  assert.equal((await page.evaluate(() => window.zollybot.getAppAppearancePreference())).palette, null);
   await closeSettings(page);
   await page.screenshot({ path: resolve(OUT, "workspace-dark.png") });
   steps.cleared = shown;
@@ -223,7 +223,7 @@ try {
   rmSync(paletteFile, { force: true });
   rmSync(`${paletteFile}.tmp`, { force: true });
   const { appearance, transparentWindow, palette } = original;
-  await page.evaluate((preference) => window.openbot.setAppAppearancePreference(preference), {
+  await page.evaluate((preference) => window.zollybot.setAppAppearancePreference(preference), {
     appearance,
     transparentWindow,
     palette,

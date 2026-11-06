@@ -3,8 +3,8 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { McpServerConfig } from "@openbot/contracts/ipc";
-import { registerSecretValue } from "@openbot/logging";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
+import { registerSecretValue } from "@zollybot/logging";
 import { Effect } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mcpSecretValues, redactMcpRecord } from "./mcp-redaction";
@@ -78,14 +78,14 @@ describe("mcpSecretValues", () => {
       ...(process.platform === "win32" ? [] : [home]),
       "header-value",
     ]);
-    const text = `Wrote ${home}/OpenBot/Shared/demo/report.md with tok_9f8e7d6c5b4a`;
+    const text = `Wrote ${home}/ZollyBot/Shared/demo/report.md with tok_9f8e7d6c5b4a`;
     expect(redactMcpRecord({ text }, mcpSecretValues([{ ...server, env: server.env.slice(0, 1) }]))).toEqual({
-      text: `Wrote ${home}/OpenBot/Shared/demo/report.md with •••`,
+      text: `Wrote ${home}/ZollyBot/Shared/demo/report.md with •••`,
     });
   });
 
   it("gives Pi each value but only the credentials as secrets", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "openbot-pi-mcp-test-"));
+    const directory = await mkdtemp(join(tmpdir(), "zollybot-pi-mcp-test-"));
     try {
       const local = { servers: [], setThreadId: () => {}, reached: () => false, close: () => {} };
       const extension = await Effect.runPromise(
@@ -104,8 +104,8 @@ describe("mcpSecretValues", () => {
       );
       expect(extension.secrets).toEqual(["svc-login-7f3k"]);
       expect(extension.environment).toMatchObject({
-        OPENBOT_PI_MCP_VALUE_0: home,
-        OPENBOT_PI_MCP_VALUE_1: "svc-login-7f3k",
+        ZOLLYBOT_PI_MCP_VALUE_0: home,
+        ZOLLYBOT_PI_MCP_VALUE_1: "svc-login-7f3k",
       });
       await Effect.runPromise(extension.close());
     } finally {

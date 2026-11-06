@@ -4,6 +4,6 @@
     "modules": ["SpeechModule"]
   },
   "android": {
-    "modules": ["run.openbot.speech.SpeechModule"]
+    "modules": ["run.zollybot.speech.SpeechModule"]
   }
 }

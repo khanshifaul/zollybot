@@ -7,7 +7,7 @@
  *   bun scripts/hosted-site-limits-e2e.ts --api http://127.0.0.1:<port> [scenario ...]
  *
  * Start the Worker with `bun run dev:api`, and pass the port that it reports. The report goes to
- * `.openbot-build/hosted-site-limits-e2e.json`.
+ * `.zollybot-build/hosted-site-limits-e2e.json`.
  *
  * - `free-pool`: an account with no license shares 1 site between its servers with no plan. The
  *   unlinked bucket stays separate.
@@ -24,12 +24,12 @@ import { createHash, randomBytes } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { HOSTED_SITE_HOST_ID_HEADER, HOSTED_SITE_HOST_TOKEN_HEADER } from "@openbot/contracts/hosted-sites";
+import { HOSTED_SITE_HOST_ID_HEADER, HOSTED_SITE_HOST_TOKEN_HEADER } from "@zollybot/contracts/hosted-sites";
 import { z } from "zod";
 import { developmentChildEnvironment } from "./development-environment";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const REPORT = join(ROOT, ".openbot-build", "hosted-site-limits-e2e.json");
+const REPORT = join(ROOT, ".zollybot-build", "hosted-site-limits-e2e.json");
 const DAY = 86_400_000;
 const SCENARIOS = ["free-pool", "license-pool", "server-plan", "custom-limit", "race", "account-cap"] as const;
 type Scenario = (typeof SCENARIOS)[number];
@@ -47,7 +47,7 @@ const errorSchema = z.object({ error: z.object({ code: z.string(), message: z.st
 function d1<T>(sql: string, schema: z.ZodType<T>): T[] {
   const result = spawnSync(
     join(ROOT, "node_modules/.bin/wrangler"),
-    ["d1", "execute", "openbot-auth", "--local", "--json", "--command", sql],
+    ["d1", "execute", "zollybot-auth", "--local", "--json", "--command", sql],
     { cwd: join(ROOT, "apps/auth-api"), encoding: "utf8", env: developmentChildEnvironment(process.env, "app") },
   );
   if (result.status !== 0) {

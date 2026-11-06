@@ -1,4 +1,4 @@
-import type { ChannelSummary } from "@openbot/contracts/ipc";
+import type { ChannelSummary } from "@zollybot/contracts/ipc";
 import { Link } from "expo-router";
 import { memo, type ReactNode, useMemo } from "react";
 import { FlatList, View } from "react-native";

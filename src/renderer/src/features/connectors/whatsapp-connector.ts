@@ -3,10 +3,10 @@ import type {
   StartWhatsAppLinkInput,
   WhatsAppLinkState,
   WhatsAppOverview,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { WHATSAPP_LINK_IDLE } from "@openbot/ui/features/settings/WhatsAppIntegrationPanel";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { WHATSAPP_LINK_IDLE } from "@zollybot/ui/features/settings/WhatsAppIntegrationPanel";
+import { currentText } from "@zollybot/ui/text";
 import { createSignal, onCleanup, untrack } from "solid-js";
 import {
   type ConnectorAnalyticsAction,
@@ -33,8 +33,8 @@ export type WhatsAppPort = Pick<
   | "setWhatsAppOwnNumber"
 >;
 
-/** This computer's WhatsApp, through main. Read on each call: tests and stories replace `window.openbot`. */
-export const whatsappPort = (): WhatsAppPort => window.openbot.messaging;
+/** This computer's WhatsApp, through main. Read on each call: tests and stories replace `window.zollybot`. */
+export const whatsappPort = (): WhatsAppPort => window.zollybot.messaging;
 
 /** The `whatsapp-connector-v1` requests to a joined server: main's, or the browser client's. */
 export type HostWhatsAppApi = Pick<
@@ -61,7 +61,7 @@ export type HostWhatsAppApi = Pick<
  */
 export function hostWhatsAppPort(
   serverId: () => string | undefined,
-  host: () => HostWhatsAppApi = () => window.openbot.messaging,
+  host: () => HostWhatsAppApi = () => window.zollybot.messaging,
 ): WhatsAppPort {
   const call = <T>(method: (api: HostWhatsAppApi, serverId: string) => Promise<T>) => {
     const id = serverId();

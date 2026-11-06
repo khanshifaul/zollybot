@@ -1,4 +1,4 @@
-import { localeDirection } from "@openbot/i18n/mobile";
+import { localeDirection } from "@zollybot/i18n/mobile";
 import * as Updates from "expo-updates";
 import { Alert, DevSettings, I18nManager } from "react-native";
 import { currentLocale, currentText } from "@/shared/lib/text";

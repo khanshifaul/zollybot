@@ -1,6 +1,6 @@
-import { type McpServerConfig, relayCallbackQuery } from "@openbot/contracts/ipc";
-import { applyMcpFlow, type McpAuthValues } from "@openbot/contracts/mcp-connect-flows";
 import { useQueryClient } from "@tanstack/react-query";
+import { type McpServerConfig, relayCallbackQuery } from "@zollybot/contracts/ipc";
+import { applyMcpFlow, type McpAuthValues } from "@zollybot/contracts/mcp-connect-flows";
 import { useEffect, useRef, useState } from "react";
 import { Linking } from "react-native";
 import { mobileAnalytics } from "@/features/analytics/mobile-analytics";

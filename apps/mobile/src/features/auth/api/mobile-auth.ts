@@ -1,17 +1,17 @@
-import { type AvatarMimeType, isValidAvatarImage } from "@openbot/contracts/avatar-images";
-import { AVATAR_IMAGE_LIMITS } from "@openbot/contracts/input-limits";
-import { OPENBOT_CONTROL_PLANE_ORIGIN } from "@openbot/contracts/invite-links";
-import type { CentralAuthUser } from "@openbot/contracts/ipc";
+import { type AvatarMimeType, isValidAvatarImage } from "@zollybot/contracts/avatar-images";
+import { AVATAR_IMAGE_LIMITS } from "@zollybot/contracts/input-limits";
+import { ZOLLYBOT_CONTROL_PLANE_ORIGIN } from "@zollybot/contracts/invite-links";
+import type { CentralAuthUser } from "@zollybot/contracts/ipc";
 import {
   isMobileConnectDevelopmentHost,
   isMobileConnectHostBinding,
   type MobileConnectHostBinding,
   parseMobileConnectUrl,
   validateMobileConnectHostBinding,
-} from "@openbot/contracts/mobile-connect";
-import { type DynamicRecord, isBoolean, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { normalizeEmailAddress, normalizeOneTimeCode, validateProfileName } from "@openbot/contracts/validation";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+} from "@zollybot/contracts/mobile-connect";
+import { type DynamicRecord, isBoolean, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { normalizeEmailAddress, normalizeOneTimeCode, validateProfileName } from "@zollybot/contracts/validation";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import * as Crypto from "expo-crypto";
 import * as Device from "expo-device";
 import * as SecureStore from "expo-secure-store";
@@ -22,9 +22,9 @@ import * as LockedKeychain from "../../../shared/lib/locked-keychain";
 // Relative: the Node test project resolves no `@/` path that the test does not mock.
 import { fetch } from "../../support/model/logged-fetch";
 
-const MOBILE_SESSION_KEY = "openbot.mobile.session.v1";
-const MOBILE_REVOCATIONS_KEY = "openbot.mobile.pending-revocations.v1";
-const MOBILE_DEVICE_ID_KEY = "openbot.mobile.device-id.v1";
+const MOBILE_SESSION_KEY = "zollybot.mobile.session.v1";
+const MOBILE_REVOCATIONS_KEY = "zollybot.mobile.pending-revocations.v1";
+const MOBILE_DEVICE_ID_KEY = "zollybot.mobile.device-id.v1";
 const MOBILE_AUTH_REQUEST_TIMEOUT_MS = 10_000;
 // The account server can try to send a code for up to 25 s. Desktop waits 35 s too.
 const MOBILE_EMAIL_CODE_REQUEST_TIMEOUT_MS = 35_000;
@@ -118,8 +118,8 @@ async function redeemMobileConnectSession(value: string): Promise<MobileSession>
 
 /** The account service for email sign-in. A development build can name a local one. */
 function mobileAccountApiUrl(): string {
-  const override = process.env.EXPO_PUBLIC_OPENBOT_API_URL;
-  return (override && __DEV__ && normalizeAccountApiUrl(override)) || OPENBOT_CONTROL_PLANE_ORIGIN;
+  const override = process.env.EXPO_PUBLIC_ZOLLYBOT_API_URL;
+  return (override && __DEV__ && normalizeAccountApiUrl(override)) || ZOLLYBOT_CONTROL_PLANE_ORIGIN;
 }
 
 export interface MobileEmailChallenge {
@@ -744,7 +744,7 @@ function decodeStoredMobileCredential(value: unknown): MobileCredential {
 /** The Mobile Connect rule for an account service origin: HTTPS, or HTTP on a private network. */
 function normalizeAccountApiUrl(value: string): string | null {
   return (
-    parseMobileConnectUrl(`openbot://mobile-connect?api=${encodeURIComponent(value)}&ticket=${"x".repeat(32)}`)
+    parseMobileConnectUrl(`zollybot://mobile-connect?api=${encodeURIComponent(value)}&ticket=${"x".repeat(32)}`)
       ?.apiUrl ?? null
   );
 }

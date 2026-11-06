@@ -1,6 +1,6 @@
 /**
  * Telegram triggers and outputs of workflows. A Telegram trigger starts a run when a person mentions the
- * OpenBot bot, or replies to it, in a linked group chat; a Telegram output answers that message, posts in
+ * ZollyBot bot, or replies to it, in a linked group chat; a Telegram output answers that message, posts in
  * a linked chat or adds a reaction. The node fields are in `WorkflowFields`. An owner or admin of a joined
  * server changes these nodes only through `workflows-chats-v1`, with the chats of the routine-results
  * options; any other joined client reads them.

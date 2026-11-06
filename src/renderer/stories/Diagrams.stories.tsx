@@ -5,9 +5,9 @@
  * The app logic and the runtime that executes a run are not wired yet.
  */
 
-import type { AgentProfile } from "@openbot/ui/data";
-import { DiagramView } from "@openbot/ui/features/diagrams/DiagramView";
-import { diagramRoutineSteps } from "@openbot/ui/features/diagrams/diagram-graph";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { DiagramView } from "@zollybot/ui/features/diagrams/DiagramView";
+import { diagramRoutineSteps } from "@zollybot/ui/features/diagrams/diagram-graph";
 import type {
   Diagram,
   DiagramChatMessage,
@@ -15,7 +15,7 @@ import type {
   DiagramRoutineRun,
   DiagramRun,
   DiagramStepRun,
-} from "@openbot/ui/features/diagrams/diagram-model";
+} from "@zollybot/ui/features/diagrams/diagram-model";
 import { createStore, onCleanup, snapshot, untrack } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -475,7 +475,7 @@ const webhookDiagram: Diagram = {
       instruction: "Check the published release's notes and assets, then list the three things the team does next.",
       schedule: null,
       webhook: {
-        url: "https://relay.openbot.example/v1/webhooks/2e2faecf-ce55-4bb5-9d70-04ff5e40a1fc",
+        url: "https://relay.zollybot.example/v1/webhooks/2e2faecf-ce55-4bb5-9d70-04ff5e40a1fc",
         eventType: "release.published",
         filters: [{ pointer: "/release/prerelease", value: false }],
       },

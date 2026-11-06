@@ -1,12 +1,12 @@
-import { Badge, Button, Clock3, Lock } from "@openbot/ui";
-import { ProviderModelPicker } from "@openbot/ui/components/ProviderModelPicker";
-import type { AgentProfile } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { agentAccessLockLabel } from "@openbot/ui/features/agents/agent-access";
-import { RemoteDesktopIcon } from "@openbot/ui/features/conversation/ConversationIcons";
-import { SidePanelToggle, type SidePanelToggleProps } from "@openbot/ui/features/conversation/SidePanel";
-import { useText } from "@openbot/ui/text";
 import type { ComponentProps, JSX } from "@solidjs/web";
+import { Badge, Button, Clock3, Lock } from "@zollybot/ui";
+import { ProviderModelPicker } from "@zollybot/ui/components/ProviderModelPicker";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { agentAccessLockLabel } from "@zollybot/ui/features/agents/agent-access";
+import { RemoteDesktopIcon } from "@zollybot/ui/features/conversation/ConversationIcons";
+import { SidePanelToggle, type SidePanelToggleProps } from "@zollybot/ui/features/conversation/SidePanel";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 
 export interface ConversationHeaderProps {

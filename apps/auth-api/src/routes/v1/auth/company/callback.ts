@@ -13,7 +13,7 @@ export const Route = createFileRoute("/v1/auth/company/callback")({
           Effect.gen(function* () {
             const target = yield* requestCompanySignIn().finish(new URL(request.url).searchParams, request.url);
             if (!target) {
-              return apiError(410, "company_sign_in_expired", "This sign-in expired. Start it again in OpenBot.");
+              return apiError(410, "company_sign_in_expired", "This sign-in expired. Start it again in ZollyBot.");
             }
             return new Response(null, {
               status: 303,

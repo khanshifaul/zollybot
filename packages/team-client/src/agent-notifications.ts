@@ -1,12 +1,12 @@
-import { agentProviderName } from "@openbot/contracts/agent-providers";
+import { agentProviderName } from "@zollybot/contracts/agent-providers";
 import type {
   AgentEvent,
   ClientAgentSummary,
   ServerNotificationLevel,
   TeamRealtimeEvent,
-} from "@openbot/contracts/ipc";
-import { markdownPreviewText } from "@openbot/contracts/markdown-preview-text";
-import type { AppFormat, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import { markdownPreviewText } from "@zollybot/contracts/markdown-preview-text";
+import type { AppFormat, AppTranslate } from "@zollybot/i18n";
 import { hideRedactionMarks, messageSummary } from "./message-summary";
 
 export interface AgentNotificationContent {

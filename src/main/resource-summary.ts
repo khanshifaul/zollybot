@@ -1,4 +1,4 @@
-import { AGENT_PROVIDERS, type AgentProviderId } from "@openbot/contracts/agent-providers";
+import { AGENT_PROVIDERS, type AgentProviderId } from "@zollybot/contracts/agent-providers";
 import { Schema } from "effect";
 
 /**
@@ -26,7 +26,7 @@ const GONE_REASONS = ["crashed", "oom", "killed", "abnormal_exit", "launch_faile
 export type GoneReason = (typeof GONE_REASONS)[number];
 
 /**
- * The process type of a child process that ended. OpenBot's utility processes go by their group, and
+ * The process type of a child process that ended. ZollyBot's utility processes go by their group, and
  * Chromium's network service has its own value. Electron's other utility services are
  * `utility_other`; a zygote, a sandbox helper, a plugin or an unknown process is `other`.
  */
@@ -167,7 +167,7 @@ function parseCpuTime(text: string): number | null {
   return dayCount * 86_400 + seconds;
 }
 
-/** Executables whose PID OpenBot does not see, such as the Claude Code CLI that the Agent SDK starts. */
+/** Executables whose PID ZollyBot does not see, such as the Claude Code CLI that the Agent SDK starts. */
 const PROVIDER_EXECUTABLES = new Map<string, AgentProviderId>([
   ["claude", "claude"],
   ["codex", "codex"],

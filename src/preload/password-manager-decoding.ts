@@ -1,8 +1,8 @@
 // What main answers for password managers. A status never holds a key or a password. Main sends
 // only the managers that this build knows: it drops the others when it reads a host's answer. The
-// host answers have their own decoders in `@openbot/contracts`.
+// host answers have their own decoders in `@zollybot/contracts`.
 
-import { decodePasswordManagerStatus, type PasswordManagerStatus } from "@openbot/contracts/ipc";
+import { decodePasswordManagerStatus, type PasswordManagerStatus } from "@zollybot/contracts/ipc";
 
 /** One status from main. Throws for a manager that this build does not know. */
 export function decodePasswordManagerResponse(value: unknown): PasswordManagerStatus {

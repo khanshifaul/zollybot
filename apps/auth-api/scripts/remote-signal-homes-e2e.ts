@@ -5,19 +5,19 @@
 // one home.
 //
 // Run: bun apps/auth-api/scripts/remote-signal-homes-e2e.ts
-// It writes .openbot-build/remote-signal-homes-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/remote-signal-homes-e2e/report.json and exits non-zero on a failure.
 import { createHash } from "node:crypto";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { REMOTE_TICKET_AUDIENCE } from "@openbot/contracts/signal-protocol/ticket";
+import { REMOTE_TICKET_AUDIENCE } from "@zollybot/contracts/signal-protocol/ticket";
 import { Effect } from "effect";
 import { jwtVerify } from "jose";
 import { RemoteControlPlane } from "../src/server/remote-control-plane";
 import { sqliteD1 } from "./sqlite-d1";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
-const OUT = join(ROOT, ".openbot-build", "remote-signal-homes-e2e");
+const OUT = join(ROOT, ".zollybot-build", "remote-signal-homes-e2e");
 const MIGRATIONS = join(ROOT, "apps", "auth-api", "migrations");
 const ENTRY_URL = "wss://signal.test/v1/signal";
 const HOME_URLS = { a: "wss://signal-a.test/v1/signal", b: "wss://signal-b.test/v1/signal" } as const;

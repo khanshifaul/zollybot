@@ -1,7 +1,7 @@
-# OpenBot from its GitHub release: the AppImage on Linux and the app ZIP on macOS. `sources.json`
+# ZollyBot from its GitHub release: the AppImage on Linux and the app ZIP on macOS. `sources.json`
 # names the release and its hashes; `bun scripts/nix-sources.ts` writes it after each release.
 #
-# OpenBot does not update itself from the Nix store (`isNixStoreInstall` in
+# ZollyBot does not update itself from the Nix store (`isNixStoreInstall` in
 # src/main/update-service.ts). Nix replaces the whole package instead.
 {
   lib,
@@ -15,10 +15,10 @@
 }:
 
 let
-  pname = "openbot";
+  pname = "zollybot";
   inherit (sources) version;
   system = stdenvNoCC.hostPlatform.system;
-  asset = sources.assets.${system} or (throw "OpenBot has no release for ${system}");
+  asset = sources.assets.${system} or (throw "ZollyBot has no release for ${system}");
 
   src = fetchurl {
     url = "https://github.com/nightly-labs/openbot/releases/download/v${version}/${asset.name}";
@@ -39,17 +39,17 @@ let
     };
     sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
     platforms = builtins.attrNames sources.assets;
-    mainProgram = "openbot";
+    mainProgram = "zollybot";
   };
 
   # The AppImage's `AppRun` adds `--no-sandbox` when the system refuses an unprivileged user
-  # namespace, and its desktop entry passes `--no-sandbox` too. OpenBot must keep the Electron sandbox
-  # (build/linux/openbot.apparmor), so the FHS environment starts the Electron binary directly.
+  # namespace, and its desktop entry passes `--no-sandbox` too. ZollyBot must keep the Electron sandbox
+  # (build/linux/zollybot.apparmor), so the FHS environment starts the Electron binary directly.
   # Its libraries and the bundled cua-driver find the usual Linux paths there.
   contents = appimageTools.extract {
     inherit pname version src;
     # The bundled Sunshine needs the Ubuntu libraries of scripts/hosting/packages.txt, and this
-    # environment was not checked against them. Without the runtime directory, OpenBot shows remote
+    # environment was not checked against them. Without the runtime directory, ZollyBot shows remote
     # desktop as unavailable and does not try to start it.
     postExtract = ''
       rm -rf $out/resources/remote-desktop-runtime
@@ -61,13 +61,13 @@ let
     // {
       inherit pname version meta;
       targetPkgs = pkgs: appimageTools.defaultFhsEnvArgs.targetPkgs pkgs ++ [ pkgs.libsecret ];
-      runScript = "${contents}/openbot";
+      runScript = "${contents}/zollybot";
       extraInstallCommands = ''
-        install -Dm444 ${contents}/openbot.desktop $out/share/applications/openbot.desktop
-        substituteInPlace $out/share/applications/openbot.desktop \
-          --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=openbot %U'
+        install -Dm444 ${contents}/zollybot.desktop $out/share/applications/zollybot.desktop
+        substituteInPlace $out/share/applications/zollybot.desktop \
+          --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=zollybot %U'
         # The AppImage has only a 1600x1600 icon, a size that no icon theme lists.
-        install -Dm444 ${contents}/openbot.png $out/share/pixmaps/openbot.png
+        install -Dm444 ${contents}/zollybot.png $out/share/pixmaps/zollybot.png
       '';
     }
   );
@@ -95,8 +95,8 @@ let
     installPhase = ''
       runHook preInstall
       mkdir -p $out/Applications
-      cp -R OpenBot.app $out/Applications/
-      makeWrapper $out/Applications/OpenBot.app/Contents/MacOS/OpenBot $out/bin/openbot
+      cp -R ZollyBot.app $out/Applications/
+      makeWrapper $out/Applications/ZollyBot.app/Contents/MacOS/ZollyBot $out/bin/zollybot
       runHook postInstall
     '';
   };

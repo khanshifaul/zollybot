@@ -19,7 +19,7 @@ import {
   type WhatsAppGroupList,
   type WhatsAppLinkState,
   type WhatsAppOverview,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 /** The orchestrator that main created, and the sidebar section it went to. */
 export function decodeAddOrchestratorReply(value: unknown): AddMessagingOrchestratorResult {

@@ -3,11 +3,11 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync, type StatementSync } from "node:sqlite";
-import type { AgentSummary, ConversationMessage } from "@openbot/contracts/ipc";
+import type { AgentSummary, ConversationMessage } from "@zollybot/contracts/ipc";
 import { afterEach, describe, expect, it } from "vitest";
 import { runCauseEffect } from "./effect-boundary";
-import { OpenBotDatabase } from "./openbot-database";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { ZollyBotDatabase } from "./zollybot-database";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade deletes a reconcile event that is not a repeat, or the last event of a run,
 // or an event of another type or thread; it leaves the activity or receipt of a deleted event; it changes
@@ -33,7 +33,7 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
@@ -44,20 +44,20 @@ function migrateUpTo(db: DatabaseSync, version: number): void {
  */
 function seed(db: DatabaseSync): void {
   const thread = db.prepare("INSERT INTO projection_threads VALUES (?, ?, ?, NULL, ?, ?, 1)");
-  thread.run("openbot-thread-chief", "chief", 'Chief 界"\\', "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
-  thread.run("openbot-thread-other", "other", "Other", "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
+  thread.run("zollybot-thread-chief", "chief", 'Chief 界"\\', "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
+  thread.run("zollybot-thread-other", "other", "Other", "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
   const first = JSON.stringify({ detail: { messageCount: 1 }, changedMessages: [{ id: "a", text: "界" }] });
   const second = JSON.stringify({ detail: { messageCount: 1 }, changedMessages: [{ id: "a", text: "b" }] });
   const events: Array<[string, string, string]> = [
-    ["openbot-thread-chief", RECONCILED, first],
-    ["openbot-thread-chief", RECONCILED, first],
-    ["openbot-thread-other", RECONCILED, first],
-    ["openbot-thread-chief", RECONCILED, first],
-    ["openbot-thread-chief", "conversation.updated", first],
-    ["openbot-thread-chief", RECONCILED, first],
-    ["openbot-thread-other", RECONCILED, second],
-    ["openbot-thread-chief", RECONCILED, second],
-    ["openbot-thread-chief", RECONCILED, second],
+    ["zollybot-thread-chief", RECONCILED, first],
+    ["zollybot-thread-chief", RECONCILED, first],
+    ["zollybot-thread-other", RECONCILED, first],
+    ["zollybot-thread-chief", RECONCILED, first],
+    ["zollybot-thread-chief", "conversation.updated", first],
+    ["zollybot-thread-chief", RECONCILED, first],
+    ["zollybot-thread-other", RECONCILED, second],
+    ["zollybot-thread-chief", RECONCILED, second],
+    ["zollybot-thread-chief", RECONCILED, second],
   ];
   const event = db.prepare(`INSERT INTO orchestration_events
     (event_id, command_id, aggregate_type, aggregate_id, event_type, occurred_at, payload_json)
@@ -136,7 +136,7 @@ describe("mailbox reconcile cleanup migration", () => {
       // The earlier migrations run first; the rows after them are what v39 must keep.
       if (version < 38) migrateUpTo(db, 38);
       const before = contents(db);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(contents(db)).toEqual(withoutRepeats(before));
       expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
       expect(db.prepare("SELECT name FROM sqlite_temp_master").all()).toEqual([]);
@@ -152,12 +152,12 @@ describe("mailbox reconcile cleanup migration", () => {
     const before = contents(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=39
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 39 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 39 failed");
     expect(contents(db)).toEqual(before);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=39").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(contents(db)).toEqual(withoutRepeats(before));
   });
 
@@ -166,23 +166,23 @@ describe("mailbox reconcile cleanup migration", () => {
     seed(db);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
   });
 
   it("keeps the messages and what a replay rebuilds from the writes of a page read", async () => {
-    const root = await mkdtemp(join(tmpdir(), "openbot-db-mailbox-reconcile-"));
+    const root = await mkdtemp(join(tmpdir(), "zollybot-db-mailbox-reconcile-"));
     roots.push(root);
-    const database = new OpenBotDatabase(root);
+    const database = new ZollyBotDatabase(root);
     await runCauseEffect(database.initialize());
     const agent = testAgent();
     database.replaceAgents("mailbox-reconcile-agents", [agent], "agents.imported");
     const write = (eventType: string, messages: ConversationMessage[]) =>
       database.persistConversationChanges({
         agentId: agent.id,
-        threadId: "openbot-thread-chief",
+        threadId: "zollybot-thread-chief",
         activeTurnId: null,
         changedMessages: messages,
         eventType,
@@ -194,7 +194,7 @@ describe("mailbox reconcile cleanup migration", () => {
     for (let index = 0; index < 3; index++) write(RECONCILED, [question]);
     write("conversation.updated", [message("answer", "assistant", "Final")]);
     write(RECONCILED, [question]);
-    const replayed = database.rebuildThreadProjection("openbot-thread-chief");
+    const replayed = database.rebuildThreadProjection("zollybot-thread-chief");
     const rows = database.connection.prepare("SELECT * FROM projection_thread_messages ORDER BY ordinal").all();
     const events = database.connection
       .prepare(
@@ -210,7 +210,7 @@ describe("mailbox reconcile cleanup migration", () => {
       "DELETE FROM schema_migrations WHERE version IN (38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58)",
     );
     legacy.close();
-    const migrated = new OpenBotDatabase(root);
+    const migrated = new ZollyBotDatabase(root);
     await runCauseEffect(migrated.initialize());
     expect(migrated.connection.prepare("SELECT * FROM projection_thread_messages ORDER BY ordinal").all()).toEqual(
       rows,
@@ -222,7 +222,7 @@ describe("mailbox reconcile cleanup migration", () => {
       .all();
     const reconciled = events.filter((event) => event.event_type === RECONCILED);
     expect(kept).toEqual(events.filter((event) => !reconciled.slice(0, 2).includes(event)));
-    expect(migrated.rebuildThreadProjection("openbot-thread-chief")).toEqual(replayed);
+    expect(migrated.rebuildThreadProjection("zollybot-thread-chief")).toEqual(replayed);
     expect(migrated.connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
       version: 58,
     });
@@ -244,8 +244,8 @@ function testAgent(): AgentSummary {
     notifications: true,
     model: "gpt-5.6-luna",
     reasoningEffort: "medium",
-    threadId: "openbot-thread-chief",
-    workspacePath: "/tmp/openbot-chief",
+    threadId: "zollybot-thread-chief",
+    workspacePath: "/tmp/zollybot-chief",
     preview: "42",
     updatedAt: "2026-08-18T10:00:01.000Z",
     avatarSeed: "chief",

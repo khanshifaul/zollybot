@@ -8,10 +8,10 @@
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const logger = createOpenBotLogger("mobile-share-sender");
+const logger = createZollyBotLogger("mobile-share-sender");
 const ENTRY = resolve(ROOT, "apps/mobile/src/features/share/extension/share-sender.ts");
 
 // The sender shows no text: the extension shows its own. `sourceText` keeps its English, and the

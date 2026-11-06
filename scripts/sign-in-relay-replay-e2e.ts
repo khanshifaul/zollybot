@@ -3,16 +3,16 @@
 // process ends only when that page loads. The replay must load it, so a second Codex account on a
 // joined server finishes. A success page that fails does not undo the callback, and a redirect to a
 // different address must not be followed.
-// `bun run test:sign-in-relay-replay`. Writes .openbot-build/sign-in-relay-replay-e2e/report.json.
+// `bun run test:sign-in-relay-replay`. Writes .zollybot-build/sign-in-relay-replay-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { createServer, type Server } from "node:http";
 import { join, resolve } from "node:path";
-import type { McpTestResult } from "@openbot/contracts/ipc";
+import type { McpTestResult } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { SignInRelayHost } from "../src/main/sign-in-relay-host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/sign-in-relay-replay-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/sign-in-relay-replay-e2e");
 const MEMBER = "member-1";
 const STATE = "relay-state";
 

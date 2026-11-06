@@ -1,14 +1,14 @@
-import { ProviderLogo } from "@openbot/brand";
-import type { AgentProviderId } from "@openbot/contracts/ipc";
-import { Button, Progress, TOAST_DURATION, toast } from "@openbot/ui";
-import { createDigitRoll } from "@openbot/ui/digit-roll";
+import type { JSX } from "@solidjs/web";
+import { ProviderLogo } from "@zollybot/brand";
+import type { AgentProviderId } from "@zollybot/contracts/ipc";
+import { Button, Progress, TOAST_DURATION, toast } from "@zollybot/ui";
+import { createDigitRoll } from "@zollybot/ui/digit-roll";
 import {
   type ProviderUpdate,
   type ProviderUpdatePresentation,
   presentProviderUpdate,
-} from "@openbot/ui/features/provider-updates/provider-update";
-import { currentText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/provider-updates/provider-update";
+import { currentText } from "@zollybot/ui/text";
 import {
   createEffect,
   createMemo,

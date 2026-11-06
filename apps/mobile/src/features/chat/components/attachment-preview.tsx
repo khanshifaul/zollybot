@@ -1,8 +1,8 @@
-import { attachmentFileExtension } from "@openbot/contracts/attachment-files";
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
-import type { MobileTranslate } from "@openbot/i18n/mobile";
-import { MOBILE_ATTACHMENT_BYTES, type RemoteFileUpload } from "@openbot/team-client/remote-peer";
 import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
+import { attachmentFileExtension } from "@zollybot/contracts/attachment-files";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
+import { MOBILE_ATTACHMENT_BYTES, type RemoteFileUpload } from "@zollybot/team-client/remote-peer";
 import { Directory, File, Paths } from "expo-file-system";
 import { Image } from "expo-image";
 import * as Sharing from "expo-sharing";

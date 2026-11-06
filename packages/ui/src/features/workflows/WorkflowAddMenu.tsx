@@ -4,8 +4,9 @@
  * only the kinds that the host allows.
  */
 
-import type { WorkflowNodeKind } from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import type { WorkflowNodeKind } from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   Bot,
   Button,
@@ -26,8 +27,7 @@ import {
   Type,
   UserCheck,
   Zap,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { useText } from "../../text";
 import { PickerActions, type PickerGroup, PickerHeading, type PickerOption, PickerRow } from "./WorkflowPicker";

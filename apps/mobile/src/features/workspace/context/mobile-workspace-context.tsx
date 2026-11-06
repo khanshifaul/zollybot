@@ -1,3 +1,4 @@
+import { replaceEqualDeep, useQueryClient } from "@tanstack/react-query";
 import {
   type AgentEvent,
   type AvatarColor,
@@ -10,64 +11,64 @@ import {
   type SidebarPin,
   type TeamRealtimeEvent,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { AGENT_ACCESS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-access-v1";
-import { AGENT_ADMIN_CAPABILITY } from "@openbot/contracts/team-protocol/agent-admin-v1";
-import { AGENT_BACKUP_MODELS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-backup-models-v1";
-import { agentColorsEvent } from "@openbot/contracts/team-protocol/agent-colors-v1";
-import { AGENT_FOLDERS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-folders-v1";
-import { AGENT_HOST_SETTINGS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-host-settings-v1";
-import { AGENT_IMPORT_CAPABILITY } from "@openbot/contracts/team-protocol/agent-import-v1";
-import { AGENT_INSTALL_CAPABILITY } from "@openbot/contracts/team-protocol/agent-install-v1";
-import { AGENT_INSTRUCTIONS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-instructions-v1";
-import { AGENT_MEMORY_LIMIT_CAPABILITY } from "@openbot/contracts/team-protocol/agent-memory-limit-v1";
-import { AGENT_NEW_CHAT_CAPABILITY } from "@openbot/contracts/team-protocol/agent-new-chat-v1";
-import { AGENT_PLAN_CARD_CAPABILITY } from "@openbot/contracts/team-protocol/agent-plan-card-v1";
-import { AGENT_PUBLISH_CAPABILITY } from "@openbot/contracts/team-protocol/agent-publish-v1";
-import { AGENT_TASK_LIMIT_CAPABILITY } from "@openbot/contracts/team-protocol/agent-task-limit-v1";
-import { AGENT_UPDATE_CAPABILITY } from "@openbot/contracts/team-protocol/agent-update-v1";
-import { BITWARDEN_CONNECTOR_CAPABILITY } from "@openbot/contracts/team-protocol/bitwarden-connector-v1";
-import { BROWSER_PROFILES_CAPABILITY } from "@openbot/contracts/team-protocol/browser-profiles-v1";
-import { CONNECTORS_CAPABILITY } from "@openbot/contracts/team-protocol/connectors-v1";
-import { TEAM_AGENT_CREATE_MODEL_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import { EVENTS_CAPABILITY } from "@openbot/contracts/team-protocol/events-v1";
-import { FOCUS_USE_CAPABILITY, FOCUS_USE_ROUTES } from "@openbot/contracts/team-protocol/focus-use-v1";
-import { HOST_ADMIN_CAPABILITY } from "@openbot/contracts/team-protocol/host-admin-v1";
-import { HOST_KEY_ROTATION_CAPABILITY } from "@openbot/contracts/team-protocol/host-key-rotation-v1";
-import { HOST_MEMBER_UPDATE_CAPABILITY } from "@openbot/contracts/team-protocol/host-member-update-v1";
-import { HOST_RELEASE_CAPABILITY } from "@openbot/contracts/team-protocol/host-release-v1";
-import { HOST_TIMEZONE_CAPABILITY } from "@openbot/contracts/team-protocol/host-timezone-v1";
-import { HOST_UPDATE_CAPABILITY } from "@openbot/contracts/team-protocol/host-update-v1";
-import { HOSTED_SITES_CAPABILITY } from "@openbot/contracts/team-protocol/hosted-sites-v1";
-import { INSTANCE_TRANSFER_CAPABILITY } from "@openbot/contracts/team-protocol/instance-transfer-v1";
-import { LIVE_ACTIVITY_PUSH_CAPABILITY } from "@openbot/contracts/team-protocol/live-activity-push-v1";
-import { LOCAL_SERVERS_CAPABILITY } from "@openbot/contracts/team-protocol/local-servers-v1";
-import { ONEPASSWORD_CONNECTOR_CAPABILITY } from "@openbot/contracts/team-protocol/onepassword-connector-v1";
-import { PASSWORD_MANAGERS_CAPABILITY } from "@openbot/contracts/team-protocol/password-managers-v1";
-import { PROVIDER_ACCOUNTS_CAPABILITY } from "@openbot/contracts/team-protocol/provider-accounts-v1";
-import { PROVIDERS_ADMIN_CAPABILITY } from "@openbot/contracts/team-protocol/providers-v1";
-import { ANDROID_PUSH_NOTIFICATIONS_CAPABILITY } from "@openbot/contracts/team-protocol/push-notifications-android-v1";
-import { PUSH_NOTIFICATIONS_CAPABILITY } from "@openbot/contracts/team-protocol/push-notifications-v1";
-import { ROUTINE_RECOVERY_CAPABILITY } from "@openbot/contracts/team-protocol/routine-recovery-v1";
-import { ROUTINE_RESULTS_CAPABILITY } from "@openbot/contracts/team-protocol/routine-results-v1";
-import { SERVER_AUDIT_CAPABILITY } from "@openbot/contracts/team-protocol/server-audit-v1";
-import { SHARED_TABLES_CAPABILITY } from "@openbot/contracts/team-protocol/shared-tables-v1";
+} from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { AGENT_ACCESS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-access-v1";
+import { AGENT_ADMIN_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-admin-v1";
+import { AGENT_BACKUP_MODELS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-backup-models-v1";
+import { agentColorsEvent } from "@zollybot/contracts/team-protocol/agent-colors-v1";
+import { AGENT_FOLDERS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-folders-v1";
+import { AGENT_HOST_SETTINGS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-host-settings-v1";
+import { AGENT_IMPORT_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-import-v1";
+import { AGENT_INSTALL_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-install-v1";
+import { AGENT_INSTRUCTIONS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-instructions-v1";
+import { AGENT_MEMORY_LIMIT_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-memory-limit-v1";
+import { AGENT_NEW_CHAT_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-new-chat-v1";
+import { AGENT_PLAN_CARD_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-plan-card-v1";
+import { AGENT_PUBLISH_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-publish-v1";
+import { AGENT_TASK_LIMIT_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-task-limit-v1";
+import { AGENT_UPDATE_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-update-v1";
+import { BITWARDEN_CONNECTOR_CAPABILITY } from "@zollybot/contracts/team-protocol/bitwarden-connector-v1";
+import { BROWSER_PROFILES_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-profiles-v1";
+import { CONNECTORS_CAPABILITY } from "@zollybot/contracts/team-protocol/connectors-v1";
+import { TEAM_AGENT_CREATE_MODEL_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import { EVENTS_CAPABILITY } from "@zollybot/contracts/team-protocol/events-v1";
+import { FOCUS_USE_CAPABILITY, FOCUS_USE_ROUTES } from "@zollybot/contracts/team-protocol/focus-use-v1";
+import { HOST_ADMIN_CAPABILITY } from "@zollybot/contracts/team-protocol/host-admin-v1";
+import { HOST_KEY_ROTATION_CAPABILITY } from "@zollybot/contracts/team-protocol/host-key-rotation-v1";
+import { HOST_MEMBER_UPDATE_CAPABILITY } from "@zollybot/contracts/team-protocol/host-member-update-v1";
+import { HOST_RELEASE_CAPABILITY } from "@zollybot/contracts/team-protocol/host-release-v1";
+import { HOST_TIMEZONE_CAPABILITY } from "@zollybot/contracts/team-protocol/host-timezone-v1";
+import { HOST_UPDATE_CAPABILITY } from "@zollybot/contracts/team-protocol/host-update-v1";
+import { HOSTED_SITES_CAPABILITY } from "@zollybot/contracts/team-protocol/hosted-sites-v1";
+import { INSTANCE_TRANSFER_CAPABILITY } from "@zollybot/contracts/team-protocol/instance-transfer-v1";
+import { LIVE_ACTIVITY_PUSH_CAPABILITY } from "@zollybot/contracts/team-protocol/live-activity-push-v1";
+import { LOCAL_SERVERS_CAPABILITY } from "@zollybot/contracts/team-protocol/local-servers-v1";
+import { ONEPASSWORD_CONNECTOR_CAPABILITY } from "@zollybot/contracts/team-protocol/onepassword-connector-v1";
+import { PASSWORD_MANAGERS_CAPABILITY } from "@zollybot/contracts/team-protocol/password-managers-v1";
+import { PROVIDER_ACCOUNTS_CAPABILITY } from "@zollybot/contracts/team-protocol/provider-accounts-v1";
+import { PROVIDERS_ADMIN_CAPABILITY } from "@zollybot/contracts/team-protocol/providers-v1";
+import { ANDROID_PUSH_NOTIFICATIONS_CAPABILITY } from "@zollybot/contracts/team-protocol/push-notifications-android-v1";
+import { PUSH_NOTIFICATIONS_CAPABILITY } from "@zollybot/contracts/team-protocol/push-notifications-v1";
+import { ROUTINE_RECOVERY_CAPABILITY } from "@zollybot/contracts/team-protocol/routine-recovery-v1";
+import { ROUTINE_RESULTS_CAPABILITY } from "@zollybot/contracts/team-protocol/routine-results-v1";
+import { SERVER_AUDIT_CAPABILITY } from "@zollybot/contracts/team-protocol/server-audit-v1";
+import { SHARED_TABLES_CAPABILITY } from "@zollybot/contracts/team-protocol/shared-tables-v1";
 import {
   SIDEBAR_FOLDERS_CAPABILITY,
   SIDEBAR_FOLDERS_ROUTES,
-} from "@openbot/contracts/team-protocol/sidebar-folders-v1";
-import { SIDEBAR_PINS_CAPABILITY } from "@openbot/contracts/team-protocol/sidebar-pins-v1";
-import { SIGN_IN_RELAY_CAPABILITY } from "@openbot/contracts/team-protocol/sign-in-relay-v1";
-import { SKILLS_ADMIN_CAPABILITY } from "@openbot/contracts/team-protocol/skills-admin-v1";
-import type { TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
-import { TEAM_PROTOCOL_V3 } from "@openbot/contracts/team-protocol/v3";
-import { decodeTeamProtocolSupportV9 } from "@openbot/contracts/team-protocol/v9";
-import { VAULT_IMPORT_CAPABILITY } from "@openbot/contracts/team-protocol/vault-import-v1";
-import { VAULT_CAPABILITY } from "@openbot/contracts/team-protocol/vault-v1";
-import { VAULT_V2_CAPABILITY } from "@openbot/contracts/team-protocol/vault-v2";
-import { WHATSAPP_CONNECTOR_CAPABILITY } from "@openbot/contracts/team-protocol/whatsapp-connector-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/sidebar-folders-v1";
+import { SIDEBAR_PINS_CAPABILITY } from "@zollybot/contracts/team-protocol/sidebar-pins-v1";
+import { SIGN_IN_RELAY_CAPABILITY } from "@zollybot/contracts/team-protocol/sign-in-relay-v1";
+import { SKILLS_ADMIN_CAPABILITY } from "@zollybot/contracts/team-protocol/skills-admin-v1";
+import type { TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
+import { TEAM_PROTOCOL_V3 } from "@zollybot/contracts/team-protocol/v3";
+import { decodeTeamProtocolSupportV9 } from "@zollybot/contracts/team-protocol/v9";
+import { VAULT_IMPORT_CAPABILITY } from "@zollybot/contracts/team-protocol/vault-import-v1";
+import { VAULT_CAPABILITY } from "@zollybot/contracts/team-protocol/vault-v1";
+import { VAULT_V2_CAPABILITY } from "@zollybot/contracts/team-protocol/vault-v2";
+import { WHATSAPP_CONNECTOR_CAPABILITY } from "@zollybot/contracts/team-protocol/whatsapp-connector-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   createRemoteAccountRefresh,
   createRemoteReadRefresh,
@@ -81,11 +82,11 @@ import {
   readAgentAnalytics,
   remoteRecoveryMessage,
   runTeamEffect,
-} from "@openbot/team-client";
-import { verifyEd25519Base64Url } from "@openbot/team-client/ed25519";
-import { createFocusUsePing } from "@openbot/team-client/focus-use";
-import { createHostedServerWake, WAKE_RECONNECT_DELAY_MS } from "@openbot/team-client/hosted-server-wake";
-import type { RemoteFileUpload } from "@openbot/team-client/remote-peer";
+} from "@zollybot/team-client";
+import { verifyEd25519Base64Url } from "@zollybot/team-client/ed25519";
+import { createFocusUsePing } from "@zollybot/team-client/focus-use";
+import { createHostedServerWake, WAKE_RECONNECT_DELAY_MS } from "@zollybot/team-client/hosted-server-wake";
+import type { RemoteFileUpload } from "@zollybot/team-client/remote-peer";
 import {
   createHostLocalServer,
   deleteHostLocalServer,
@@ -96,7 +97,7 @@ import {
   seedSidebarPins,
   setSidebarPins,
   updateHostIdentity,
-} from "@openbot/team-client/team-admin-requests";
+} from "@zollybot/team-client/team-admin-requests";
 import {
   deleteAgent,
   discardAttachmentDraft,
@@ -106,8 +107,7 @@ import {
   respondToBrowserTakeover,
   type TeamApiRequest,
   uploadAttachmentDraft,
-} from "@openbot/team-client/team-api-requests";
-import { replaceEqualDeep, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/team-client/team-api-requests";
 import { Effect } from "effect";
 import * as Crypto from "expo-crypto";
 import { type PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -255,7 +255,7 @@ const OTHER_SERVERS_RETURN_DELAY_MS = 3_000;
 const STARTUP_SERVER_WAIT_MS = 4_000;
 const EMPTY_SERVER: MobileServer = {
   id: "unavailable",
-  name: "OpenBot",
+  name: "ZollyBot",
   logoKey: null,
   kind: "local",
   state: "connecting",
@@ -1118,7 +1118,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
       supportLog.add(
         "info",
         "connection",
-        `${serverId} host OpenBot ${compatibility.appVersion}, protocol ${compatibility.protocol.minimum}-${compatibility.protocol.maximum}, capabilities: ${compatibility.capabilities.join(" ")}`,
+        `${serverId} host ZollyBot ${compatibility.appVersion}, protocol ${compatibility.protocol.minimum}-${compatibility.protocol.maximum}, capabilities: ${compatibility.capabilities.join(" ")}`,
       );
       if (compatibility.protocol.minimum > TEAM_PROTOCOL_V3 || compatibility.protocol.maximum < TEAM_PROTOCOL_V3) {
         throw new Error(sourceText("error.remote.mobileUpdateRequired"));
@@ -1859,7 +1859,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
       deleteLocalServer: async (serverId) => {
         const computerId = localServerLinksRef.current.parents.get(serverId);
         const computer = serversRef.current.find((candidate) => candidate.id === computerId);
-        // The server runs as a part of OpenBot on its computer, so only that computer can delete it.
+        // The server runs as a part of ZollyBot on its computer, so only that computer can delete it.
         if (!computerId || !computer || !showsOnline(computer))
           throw new Error(currentText().t("mobile.server.local.deleteOffline"));
         await runTeamRequest(deleteHostLocalServer(teamApi(computerId), serverId));

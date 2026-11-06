@@ -20,13 +20,13 @@ vi.mock("electron", () => ({
   },
 }));
 
-const TRUSTED_EVENT = { senderFrame: { url: "openbot-app://app/index.html" } };
+const TRUSTED_EVENT = { senderFrame: { url: "zollybot-app://app/index.html" } };
 const UNTRUSTED_EVENT = { senderFrame: { url: "https://evil.example/index.html" } };
 
 describe("trusted IPC renderer boundary", () => {
-  it("accepts only the packaged OpenBot application origin", () => {
-    expect(isTrustedRendererUrl("openbot-app://app/index.html", undefined)).toBe(true);
-    expect(isTrustedRendererUrl("openbot-app://other/index.html", undefined)).toBe(false);
+  it("accepts only the packaged ZollyBot application origin", () => {
+    expect(isTrustedRendererUrl("zollybot-app://app/index.html", undefined)).toBe(true);
+    expect(isTrustedRendererUrl("zollybot-app://other/index.html", undefined)).toBe(false);
     expect(isTrustedRendererUrl("https://app.example/index.html", undefined)).toBe(false);
     expect(isTrustedRendererUrl(null, undefined)).toBe(false);
   });

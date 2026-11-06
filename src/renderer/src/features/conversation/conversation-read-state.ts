@@ -1,10 +1,10 @@
-import { itemTypeCountsAsUnread } from "@openbot/contracts/conversation-read";
+import { itemTypeCountsAsUnread } from "@zollybot/contracts/conversation-read";
 import type {
   ConversationMessageAuthor,
   ConversationReadState,
   DirectConversationSnapshot,
   DirectMessage,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   CONTEXT_RESET_ITEM_TYPE,
   HOSTED_SITE_EVENT_ITEM_TYPE_PREFIX,
@@ -13,8 +13,8 @@ import {
   ROUTINE_EVENT_ITEM_TYPE_PREFIX,
   ROUTINE_RUN_EVENT_ITEM_TYPE_PREFIX,
   SKILL_EVENT_ITEM_TYPE_PREFIX,
-} from "@openbot/contracts/ipc";
-import type { AgentMessage } from "@openbot/ui/data";
+} from "@zollybot/contracts/ipc";
+import type { AgentMessage } from "@zollybot/ui/data";
 
 /**
  * What the renderer has already asked main to mark read, per conversation. A

@@ -1,16 +1,16 @@
-import { serializeAttachmentReference } from "@openbot/contracts/attachment-references";
-import type { AgentEvent, AttachmentSummary, DraftAttachment, QueueSnapshot } from "@openbot/contracts/ipc";
+import { Portal } from "@solidjs/web";
+import { serializeAttachmentReference } from "@zollybot/contracts/attachment-references";
+import type { AgentEvent, AttachmentSummary, DraftAttachment, QueueSnapshot } from "@zollybot/contracts/ipc";
 import {
   type ConversationUiBlock,
   type UiChoiceBlock,
   type UiConfirmBlock,
   uiBlockFallbackQuestions,
-} from "@openbot/contracts/ui-blocks";
-import type { AgentMessage as RendererAgentMessage, RoutineRunMarkerModel } from "@openbot/ui/data";
-import { BrowserTakeoverCard } from "@openbot/ui/features/conversation/ConversationPrompts";
-import type { VoicePhase } from "@openbot/ui/features/conversation/VoiceRecordingMorph";
-import { currentText } from "@openbot/ui/text";
-import { Portal } from "@solidjs/web";
+} from "@zollybot/contracts/ui-blocks";
+import type { AgentMessage as RendererAgentMessage, RoutineRunMarkerModel } from "@zollybot/ui/data";
+import { BrowserTakeoverCard } from "@zollybot/ui/features/conversation/ConversationPrompts";
+import type { VoicePhase } from "@zollybot/ui/features/conversation/VoiceRecordingMorph";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createSignal, onCleanup, onSettled, Show } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -35,7 +35,7 @@ import {
   STORY_QUEUES,
   STORY_REPLY_QUOTE_BODY,
 } from "./fixtures";
-import { createMockOpenBot } from "./mock-openbot";
+import { createMockZollyBot } from "./mock-zollybot";
 
 const storyAttachment = CONVERSATION_STORY_ATTACHMENT;
 const messages = CONVERSATION_STORY_MESSAGES;
@@ -94,8 +94,8 @@ const imageGenerationMessages: RendererAgentMessage[] = [
   },
 ];
 
-const generatedImagePreview = new URL("../src/assets/openbot-logo-production.png", import.meta.url).href;
-const generatedImagePreviewAlternate = new URL("../src/assets/openbot-logo-dev.png", import.meta.url).href;
+const generatedImagePreview = new URL("../src/assets/zollybot-logo-production.png", import.meta.url).href;
+const generatedImagePreviewAlternate = new URL("../src/assets/zollybot-logo-dev.png", import.meta.url).href;
 const generatedImageAttachment: AttachmentSummary = {
   id: "generated-image-in-chat",
   name: "generated-image.png",
@@ -230,9 +230,9 @@ const agentMessageGalleryMessages: RendererAgentMessage[] = [
     body: [
       "## Links and references",
       "",
-      "Review [OpenBot documentation](https://openbot.run/docs), the [Kobalte guide](https://kobalte.dev/docs/core/overview/introduction), and https://zaidan.carere.dev/docs/components/kobalte/bubble.",
+      "Review [ZollyBot documentation](https://openbot.run/docs), the [Kobalte guide](https://kobalte.dev/docs/core/overview/introduction), and https://zaidan.carere.dev/docs/components/kobalte/bubble.",
       "",
-      "You can also open [ConversationView.tsx](/Users/test/OpenBot/src/renderer/src/features/conversation/ConversationView.tsx), ask @Research, or inspect the attached source file below.",
+      "You can also open [ConversationView.tsx](/Users/test/ZollyBot/src/renderer/src/features/conversation/ConversationView.tsx), ask @Research, or inspect the attached source file below.",
       "",
       `Attachment reference: ${serializeAttachmentReference(storyAttachment.name, storyAttachment.id)}.`,
       "",
@@ -498,7 +498,7 @@ const markdownImageMessages: RendererAgentMessage[] = [
       "",
       `![Development logo](${generatedImagePreviewAlternate})`,
       "",
-      `![](${new URL("../src/assets/openbot-logo-preview.png", import.meta.url).href})`,
+      `![](${new URL("../src/assets/zollybot-logo-preview.png", import.meta.url).href})`,
     ].join("\n"),
     time: "10:03",
     kind: "text",
@@ -524,7 +524,7 @@ const longPathReplyMessages: RendererAgentMessage[] = [
       "- **Disk after the clean-up:**",
       "  - Used: 81% → **64%**. The next full rotation is due in 12 days.",
       "  - Largest folder now: **release-candidates**, with 410 MB.",
-      "- **Copies:** I kept the list of deleted logs and their checksums in `/Users/test/OpenBot/Agents/agent-5b0c2e7a-91d4-4f3e-8a6b-2c7d9e1f0a3b/backups/build-log-cleanup-2026-10-15/deleted-build-logs-with-checksums.json`.",
+      "- **Copies:** I kept the list of deleted logs and their checksums in `/Users/test/ZollyBot/Agents/agent-5b0c2e7a-91d4-4f3e-8a6b-2c7d9e1f0a3b/backups/build-log-cleanup-2026-10-15/deleted-build-logs-with-checksums.json`.",
       "",
       "Nothing else on the disk changed. Tell me if you also want the crash dumps archived.",
     ].join("\n"),
@@ -1088,8 +1088,8 @@ function MockedConversation(props: {
   conversationError?: string;
   replyToMessageId?: string;
 }) {
-  const previousApi = window.openbot;
-  const mock = createMockOpenBot();
+  const previousApi = window.zollybot;
+  const mock = createMockZollyBot();
   const controller = createConversationController({ onTypingChange: props.args.onTypingChange });
   const previewUrls = new Set<string>();
   let storyFrameElement: HTMLDivElement | undefined;
@@ -1146,7 +1146,7 @@ function MockedConversation(props: {
       setFirstUnreadMessageId(messageId);
     },
   );
-  window.openbot = mock.api;
+  window.zollybot = mock.api;
   if (props.takeoverStateGallery) {
     onSettled(() => {
       const mount = storyFrameElement?.querySelector<HTMLElement>(".conversation-scroll") ?? null;
@@ -1194,7 +1194,7 @@ function MockedConversation(props: {
     if (takeoverGalleryScrollTimer !== undefined) window.clearTimeout(takeoverGalleryScrollTimer);
     for (const previewUrl of previewUrls) URL.revokeObjectURL(previewUrl);
     mock.dispose();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
   });
   return (
     <div ref={setStoryFrameElement} class="conversation-story-frame">
@@ -2147,8 +2147,8 @@ const actionMarkerMessages: RendererAgentMessage[] = [
       operationId: "op-1",
       siteId: "site-1",
       title: "Launch status page",
-      hostname: "launch-status-23456789ab.openbot.site",
-      url: "https://launch-status-23456789ab.openbot.site",
+      hostname: "launch-status-23456789ab.zollybot.site",
+      url: "https://launch-status-23456789ab.zollybot.site",
       timestamp: "2026-08-19T22:50:00.000Z",
     },
   },

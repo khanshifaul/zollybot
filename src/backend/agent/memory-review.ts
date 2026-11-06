@@ -4,8 +4,8 @@ import {
   type AgentSummary,
   type ConversationMessage,
   isContextResetMarker,
-} from "@openbot/contracts/ipc";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect, Exit, Fiber, Schema, Scope } from "effect";
 import type { AgentClient } from "../agent-client";
 import { extractJsonObject } from "../structured-output";
@@ -17,7 +17,7 @@ import type { ProfileClients } from "./profile-clients";
 import { type GenerationObserver, GenerationUsageLimitError, generateTextWithoutTools } from "./profile-generation";
 import type { ProviderOperationFailed } from "./provider-runtime";
 
-const logger = createOpenBotLogger("memory-review");
+const logger = createZollyBotLogger("memory-review");
 
 /** The completed turns of one conversation between two reviews, by default. */
 const MEMORY_REVIEW_INTERVAL = 20;

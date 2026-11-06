@@ -6,31 +6,31 @@
  *
  * boat saves /home file by file while the sandbox runs, and it resumes before the disk is restored.
  * The run starts with a new test database. Each cycle resumes the sandbox, checks the test database
- * that the last cycle left, starts a writer in WAL mode as OpenBot uses it, and stops the sandbox while
+ * that the last cycle left, starts a writer in WAL mode as ZollyBot uses it, and stops the sandbox while
  * the writer runs. `live` stops during writes, with no hook for the writer. `pre-stop` runs the writer as a
- * systemd unit and installs openbot-boat-pre-stop for that unit, as a hosted server does for
- * openbot.service. The writer then closes the database before boat saves the disk, and each check
+ * systemd unit and installs zollybot-boat-pre-stop for that unit, as a hosted server does for
+ * zollybot.service. The writer then closes the database before boat saves the disk, and each check
  * must find every row that the writer committed. The first damaged or incomplete check ends the run.
- * The test database is in /home/user/openbot-durability; OpenBot's own data is not touched. The test
- * hook also runs the OpenBot hook of the sandbox, and the run puts that hook back at the end. The
- * report is in .openbot-build/hosted-database-durability/.
+ * The test database is in /home/user/zollybot-durability; ZollyBot's own data is not touched. The test
+ * hook also runs the ZollyBot hook of the sandbox, and the run puts that hook back at the end. The
+ * report is in .zollybot-build/hosted-database-durability/.
  */
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
-import { type DynamicRecord, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, registerSecretValue } from "@openbot/logging";
+import { type DynamicRecord, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, registerSecretValue } from "@zollybot/logging";
 
-const logger = createOpenBotLogger("hosted-database-durability-e2e");
+const logger = createZollyBotLogger("hosted-database-durability-e2e");
 const BOAT_API_URL = "https://boat.dev/api/v1";
 const TTL_SECONDS = 7200;
-const REMOTE_DIRECTORY = "/home/user/openbot-durability";
-const REPORT_DIRECTORY = join(process.cwd(), ".openbot-build", "hosted-database-durability");
-const WRITER_UNIT = "openbot-durability-writer.service";
-const PRE_STOP_FLAG = "/run/openbot-durability-pre-stop";
+const REMOTE_DIRECTORY = "/home/user/zollybot-durability";
+const REPORT_DIRECTORY = join(process.cwd(), ".zollybot-build", "hosted-database-durability");
+const WRITER_UNIT = "zollybot-durability-writer.service";
+const PRE_STOP_FLAG = "/run/zollybot-durability-pre-stop";
 const BOAT_PRE_STOP = "/home/user/.boat/pre-stop";
-const SAVED_PRE_STOP = `${REMOTE_DIRECTORY}/openbot-pre-stop`;
+const SAVED_PRE_STOP = `${REMOTE_DIRECTORY}/zollybot-pre-stop`;
 const WRITER_PRE_STOP = `${REMOTE_DIRECTORY}/writer-pre-stop`;
 
 const MODES = ["live", "pre-stop"] as const;
@@ -58,7 +58,7 @@ interface CycleReport {
 
 /**
  * Writes rows with automatic checkpoints until SIGTERM. Then it writes its last committed row to the
- * status file and closes the database, as OpenBot does at its teardown.
+ * status file and closes the database, as ZollyBot does at its teardown.
  */
 const WRITER = `
 import json, os, signal, sqlite3, sys, time
@@ -164,7 +164,7 @@ async function main(): Promise<void> {
   let finalCheck: DynamicRecord | null = null;
   let stoppedBootId: unknown;
   await ensureRunning(boat, options.sandboxId);
-  await saveOpenBotHook(boat, options.sandboxId);
+  await saveZollyBotHook(boat, options.sandboxId);
   for (let cycle = 1; cycle <= options.cycles; cycle += 1) {
     await ensureRunning(boat, options.sandboxId);
     if (cycle === 1) {
@@ -178,7 +178,7 @@ async function main(): Promise<void> {
     const restored = stoppedBootId === undefined ? undefined : check?.bootId !== stoppedBootId;
     logger.info("Checked the restored test database.", { cycle, restored, check });
     if (check?.present === true && !isGood(check, options.mode)) {
-      await restoreOpenBotHook(boat, options.sandboxId);
+      await restoreZollyBotHook(boat, options.sandboxId);
       cycles.push({ cycle, check, restored, stoppedBy: await stop(boat, options.sandboxId) });
       break;
     }
@@ -198,7 +198,7 @@ async function main(): Promise<void> {
     await ensureRunning(boat, options.sandboxId);
     finalCheck = await checkDatabase(boat, options.sandboxId);
     if (finalCheck?.bootId === stoppedBootId) logger.warn("The sandbox did not start again before the final check.");
-    await restoreOpenBotHook(boat, options.sandboxId);
+    await restoreZollyBotHook(boat, options.sandboxId);
     await stop(boat, options.sandboxId);
   }
   const checks = [...cycles.map((cycle) => cycle.check), finalCheck];
@@ -276,24 +276,24 @@ async function checkDatabase(boat: BoatRequester, sandboxId: string): Promise<Dy
   const output = await command(
     boat,
     sandboxId,
-    `mkdir -p ${REMOTE_DIRECTORY} && python3 -I -c ${shellQuote(CHECK)} ${REMOTE_DIRECTORY} /tmp/openbot-durability-check ${PRE_STOP_FLAG}`,
+    `mkdir -p ${REMOTE_DIRECTORY} && python3 -I -c ${shellQuote(CHECK)} ${REMOTE_DIRECTORY} /tmp/zollybot-durability-check ${PRE_STOP_FLAG}`,
   );
   return parseJson(output);
 }
 
 /**
- * Keeps the OpenBot hook of the sandbox, which the test hook runs and the run puts back. Only a file
- * with the OpenBot first line: a test hook that an earlier run left is not kept.
+ * Keeps the ZollyBot hook of the sandbox, which the test hook runs and the run puts back. Only a file
+ * with the ZollyBot first line: a test hook that an earlier run left is not kept.
  */
-async function saveOpenBotHook(boat: BoatRequester, sandboxId: string): Promise<void> {
+async function saveZollyBotHook(boat: BoatRequester, sandboxId: string): Promise<void> {
   await command(
     boat,
     sandboxId,
-    `mkdir -p ${REMOTE_DIRECTORY} && if grep -q '^# openbot-boat-pre-stop:' ${BOAT_PRE_STOP} 2>/dev/null; then cp -p ${BOAT_PRE_STOP} ${SAVED_PRE_STOP}; fi`,
+    `mkdir -p ${REMOTE_DIRECTORY} && if grep -q '^# zollybot-boat-pre-stop:' ${BOAT_PRE_STOP} 2>/dev/null; then cp -p ${BOAT_PRE_STOP} ${SAVED_PRE_STOP}; fi`,
   );
 }
 
-async function restoreOpenBotHook(boat: BoatRequester, sandboxId: string): Promise<void> {
+async function restoreZollyBotHook(boat: BoatRequester, sandboxId: string): Promise<void> {
   await command(
     boat,
     sandboxId,
@@ -302,13 +302,13 @@ async function restoreOpenBotHook(boat: BoatRequester, sandboxId: string): Promi
 }
 
 /**
- * The test hook runs the real hook for the writer unit (not in `live` mode), and then the OpenBot
- * hook. It has no OpenBot first line, so a start of OpenBot does not replace it during the run.
+ * The test hook runs the real hook for the writer unit (not in `live` mode), and then the ZollyBot
+ * hook. It has no ZollyBot first line, so a start of ZollyBot does not replace it during the run.
  */
 async function installHook(boat: BoatRequester, sandboxId: string, mode: Mode): Promise<void> {
-  const writerHook = (await readFile(join(import.meta.dirname, "openbot-boat-pre-stop"), "utf8"))
-    .replaceAll("openbot.service", WRITER_UNIT)
-    .replaceAll("/run/openbot-pre-stop", PRE_STOP_FLAG);
+  const writerHook = (await readFile(join(import.meta.dirname, "zollybot-boat-pre-stop"), "utf8"))
+    .replaceAll("zollybot.service", WRITER_UNIT)
+    .replaceAll("/run/zollybot-pre-stop", PRE_STOP_FLAG);
   const hook = [
     "#!/bin/bash",
     "# Test hook of hosted-database-durability-e2e.ts.",

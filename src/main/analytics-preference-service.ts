@@ -1,5 +1,5 @@
-import type { CentralAuthState, CentralAuthUser } from "@openbot/contracts/ipc";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import type { CentralAuthState, CentralAuthUser } from "@zollybot/contracts/ipc";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect, Semaphore } from "effect";
 import {
   readAnalyticsPreference,
@@ -9,7 +9,7 @@ import {
   writeAnalyticsPreference,
 } from "./analytics-preference-store";
 
-const logger = createOpenBotLogger("analytics-preference");
+const logger = createZollyBotLogger("analytics-preference");
 
 /** The account side: the signed-in user, and the request that saves an answer on the account. */
 export interface AnalyticsAccount {

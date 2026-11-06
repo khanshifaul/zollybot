@@ -1,16 +1,16 @@
-import type { MarketplaceAgentSkill, MarketplaceSkillSummary } from "@openbot/contracts/ipc";
-import type { SkillCategory } from "@openbot/contracts/ipc-skills";
-import {
-  createOpenBotMarketplaceUrl,
-  createWebAppMarketplacePath,
-  type MarketplaceListingLink,
-} from "@openbot/contracts/marketplace-links";
-import type { AppTranslate, TranslatedLocale } from "@openbot/i18n";
-import { routineScheduleSummary } from "@openbot/ui/features/conversation/routine-schedule-ui";
-import { CATEGORY_LABELS } from "@openbot/ui/features/marketplace/marketplace-listing";
-import { type TextValue, useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
 import { Link } from "@tanstack/solid-router";
+import type { MarketplaceAgentSkill, MarketplaceSkillSummary } from "@zollybot/contracts/ipc";
+import type { SkillCategory } from "@zollybot/contracts/ipc-skills";
+import {
+  createWebAppMarketplacePath,
+  createZollyBotMarketplaceUrl,
+  type MarketplaceListingLink,
+} from "@zollybot/contracts/marketplace-links";
+import type { AppTranslate, TranslatedLocale } from "@zollybot/i18n";
+import { routineScheduleSummary } from "@zollybot/ui/features/conversation/routine-schedule-ui";
+import { CATEGORY_LABELS } from "@zollybot/ui/features/marketplace/marketplace-listing";
+import { type TextValue, useText } from "@zollybot/ui/text";
 import { For, onSettled, Show } from "solid-js";
 import { landingAnalytics } from "../../lib/analytics";
 import type { MarketplaceAgentListing, MarketplaceRoutineView, MarketplaceSkillView } from "../../lib/marketplace";
@@ -20,7 +20,7 @@ import { PluginOpenButtons, type PluginOpenButtonsText } from "../plugins/Plugin
 import { AgentMark, CopyLinkButton, ListingLink, MarketplaceFrame, SkillIcon, VerifiedMark } from "./MarketplaceParts";
 
 /**
- * How far OpenBot checked a listing. Every listing in a list was reviewed before it went live; an
+ * How far ZollyBot checked a listing. Every listing in a list was reviewed before it went live; an
  * agent that waits for its first review is reached only through the link its creator shared.
  */
 type Trust = "verified" | "reviewed" | "pending";
@@ -161,7 +161,7 @@ function listingFacts(
 }
 
 /**
- * Add to OpenBot opens the app at the listing, which shows what it brings and asks before it adds
+ * Add to ZollyBot opens the app at the listing, which shows what it brings and asks before it adds
  * anything; the browser button opens the web app at the same place. Both links come from the shared
  * helpers, never from listing data.
  */
@@ -176,9 +176,9 @@ function ListingActions(props: { link: MarketplaceListingLink; name: string }) {
   return (
     <div class="marketplace-site-actions">
       <PluginOpenButtons
-        href={createOpenBotMarketplaceUrl(props.link)}
+        href={createZollyBotMarketplaceUrl(props.link)}
         browserHref={createWebAppMarketplacePath(props.link)}
-        label={t("sitePage.marketplace.addToOpenBot")}
+        label={t("sitePage.marketplace.addToZollyBot")}
         downloadCopy={t("sitePage.marketplace.addFromApp", { name: props.name })}
         text={buttonText()}
       />

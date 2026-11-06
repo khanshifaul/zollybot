@@ -1,5 +1,5 @@
-import type { AgentProviderId, AgentSessionSettingsSnapshot, AgentSessionSettingValue } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import type { AgentProviderId, AgentSessionSettingsSnapshot, AgentSessionSettingValue } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import type { Effect } from "effect";
 import type { AppServerNotification, AppServerRequest, RequestId, ResponseDecoder, RpcError } from "./protocol";
 import type { ProviderClientOperationError } from "./provider-client-effects";
@@ -16,7 +16,7 @@ export interface AgentClient {
   readonly provider: AgentProvider;
   /**
    * Explicit completion contract; missing capability means unsupported. `handoff`: the provider
-   * cannot compact on request, so OpenBot replaces the session with one that starts from the history
+   * cannot compact on request, so ZollyBot replaces the session with one that starts from the history
    * handoff.
    */
   readonly contextCompaction?: "events" | "request" | "native" | "handoff" | "unsupported";
@@ -28,7 +28,7 @@ export interface AgentClient {
   readonly running: boolean;
   readonly readHistory?: ReadProviderHistory;
   /**
-   * True when the user's MCP tools in this thread wait for the provider's own `tool_search`. OpenBot's
+   * True when the user's MCP tools in this thread wait for the provider's own `tool_search`. ZollyBot's
    * tool search knows only the built-in tools, so it then sends the model to that tool. Optional,
    * because the other providers declare the MCP tools or load them on their own.
    */
@@ -86,7 +86,7 @@ export interface AgentClient {
   on(event: "request", listener: (request: AppServerRequest) => void): this;
   /**
    * `origin.duringStop` marks a stderr line of a process that `stop()` ended while it still ran: the
-   * shutdown that OpenBot started, not an error for the user. A line with no `origin` is reported.
+   * shutdown that ZollyBot started, not an error for the user. A line with no `origin` is reported.
    */
   on(event: "diagnostic", listener: (message: string, origin?: DiagnosticOrigin) => void): this;
   once(event: "exit", listener: (error: Error) => void): this;
@@ -145,7 +145,7 @@ export class MissingPiSessionError extends Error {
 const EXIT_DETAIL_LIMIT = 300;
 
 /**
- * The provider CLI ended while OpenBot waited for an answer. The message names how it ended.
+ * The provider CLI ended while ZollyBot waited for an answer. The message names how it ended.
  *
  * The last line the CLI wrote to stderr is usually the only cause a user can act on: a config the
  * CLI refuses, a CPU it cannot run on, a file it cannot open. It stays private, out of the message

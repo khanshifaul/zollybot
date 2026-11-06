@@ -159,7 +159,7 @@ function systemName(): string {
 export function supportLogFileText(): string {
   const entries = supportLog.entries();
   return [
-    "OpenBot support log",
+    "ZollyBot support log",
     `Saved: ${new Date().toISOString()}`,
     `App: ${appVersion()}`,
     `System: ${systemName()}`,
@@ -229,7 +229,7 @@ export function installSupportLog(): void {
   installed = true;
   restoreWhenIdle();
   supportLog.subscribe(schedulePersist);
-  supportLog.add("info", "app", `Started OpenBot ${appVersion()} on ${systemName()}`);
+  supportLog.add("info", "app", `Started ZollyBot ${appVersion()} on ${systemName()}`);
   captureConsole();
   captureErrors();
   captureFetch();

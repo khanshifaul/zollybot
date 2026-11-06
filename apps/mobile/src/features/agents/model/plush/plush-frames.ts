@@ -6,8 +6,8 @@ import {
   SHAPE_BY_ID,
   type ShapeId,
 } from "@norbert_bodziony/bloub";
-import { bloubAvatarProfile } from "@openbot/brand/bloub-avatar";
-import type { AvatarMood } from "@openbot/brand/bloub-avatar-motion";
+import { bloubAvatarProfile } from "@zollybot/brand/bloub-avatar";
+import type { AvatarMood } from "@zollybot/brand/bloub-avatar-motion";
 import {
   ballBox,
   type DecorTrack,

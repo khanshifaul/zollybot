@@ -1,22 +1,22 @@
 // Drives issue #3643 on the real modules: the SQLite MCP store and McpGateway, over a database that
 // holds MCP rows this build cannot read. The startup read must not throw, and the user must be able to
 // see, correct and remove the row. No provider or account is used.
-// bun scripts/mcp-server-unreadable-row-e2e.ts. Writes .openbot-build/mcp-server-unreadable-row-e2e/report.json.
+// bun scripts/mcp-server-unreadable-row-e2e.ts. Writes .zollybot-build/mcp-server-unreadable-row-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { decodeMcpServerConfigs, type McpServerConfig } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+import { decodeMcpServerConfigs, type McpServerConfig } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect } from "effect";
 import { McpGateway } from "../src/backend/agent/mcp-gateway";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { McpServerError, McpServerStore } from "../src/backend/mcp-server-store";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { NO_PROVIDER_CREDENTIALS } from "../src/backend/provider-drivers";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/mcp-server-unreadable-row-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/mcp-server-unreadable-row-e2e");
 const HEADER_SECRET = "header-secret-5e19c3";
 
 const draft = (name: string, fields: Partial<McpServerConfig>): McpServerConfig => ({
@@ -34,8 +34,8 @@ const draft = (name: string, fields: Partial<McpServerConfig>): McpServerConfig 
   ...fields,
 });
 
-const root = await mkdtemp(join(tmpdir(), "openbot-mcp-unreadable-row-"));
-const database = new OpenBotDatabase(root);
+const root = await mkdtemp(join(tmpdir(), "zollybot-mcp-unreadable-row-"));
+const database = new ZollyBotDatabase(root);
 const steps: Array<{ step: string; detail: unknown }> = [];
 const report: { passed: boolean; steps: typeof steps; warnings: string[]; failures: string[] } = {
   passed: false,
@@ -49,13 +49,13 @@ try {
   // Each line the store logs is kept, to check that a row is said once and no value is.
   const store = new McpServerStore(
     database,
-    createOpenBotLogger("mcp-server-store", (line) => report.warnings.push(line)),
+    createZollyBotLogger("mcp-server-store", (line) => report.warnings.push(line)),
   );
   const gateway = new McpGateway({
     servers: store,
     credentials: NO_PROVIDER_CREDENTIALS,
     computerUseMcpServer: () => null,
-    logger: createOpenBotLogger("agent-service", () => undefined),
+    logger: createZollyBotLogger("agent-service", () => undefined),
     hooks: { emitError: () => undefined, refreshAllAgentRuntimes: () => Effect.void },
   });
 

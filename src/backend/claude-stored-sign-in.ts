@@ -13,7 +13,7 @@ import { readFile } from "node:fs/promises";
 import { homedir, platform, userInfo } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect, Option, Result, Schema } from "effect";
 
 const KEYCHAIN_TIMEOUT_MS = 3_000;

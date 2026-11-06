@@ -1,7 +1,7 @@
-import { analyticsRange, type ClientAgentSummary, type HostAnalytics, LOCAL_SERVER_ID } from "@openbot/contracts/ipc";
-import type { ProfileActivityPhase } from "@openbot/ui/features/settings/ProfileActivity";
-import type { ProfileActivityState } from "@openbot/ui/features/settings/SettingsProfileTab";
-import { errorReference } from "@openbot/user-errors";
+import { analyticsRange, type ClientAgentSummary, type HostAnalytics, LOCAL_SERVER_ID } from "@zollybot/contracts/ipc";
+import type { ProfileActivityPhase } from "@zollybot/ui/features/settings/ProfileActivity";
+import type { ProfileActivityState } from "@zollybot/ui/features/settings/SettingsProfileTab";
+import { errorReference } from "@zollybot/user-errors";
 import { createEffect, createStore, untrack } from "solid-js";
 import { usagePort } from "../usage/usage-port";
 

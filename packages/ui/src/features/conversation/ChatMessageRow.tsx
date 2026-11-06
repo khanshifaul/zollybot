@@ -1,4 +1,5 @@
-import type { AttachmentSummary, AvatarColor, ConversationReaction, InstalledSkill } from "@openbot/contracts/ipc";
+import type { JSX } from "@solidjs/web";
+import type { AttachmentSummary, AvatarColor, ConversationReaction, InstalledSkill } from "@zollybot/contracts/ipc";
 import {
   Bubble,
   BubbleContent,
@@ -8,8 +9,7 @@ import {
   MessageAvatar,
   MessageContent,
   MessageHeader,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { children, createMemo, For, Show } from "solid-js";
 import { avatarHeadColor } from "../../bloub-avatar";
 import type { AgentMessage, AgentProfile } from "../../data";

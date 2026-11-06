@@ -1,11 +1,11 @@
-import { DISCONNECTED_LINK_ACCOUNT, type LinkAccountDesktopApi, type LinkAccountStatus } from "@openbot/contracts/ipc";
+import { DISCONNECTED_LINK_ACCOUNT, type LinkAccountDesktopApi, type LinkAccountStatus } from "@zollybot/contracts/ipc";
 import { createStore } from "solid-js";
 
 /**
  * The Link account of this computer, for the Vault page. Each call answers with the new status, and
  * main sends it again when the sign-in in the browser ends.
  */
-export function createLinkAccountStore(api: () => LinkAccountDesktopApi = () => window.openbot.linkAccount) {
+export function createLinkAccountStore(api: () => LinkAccountDesktopApi = () => window.zollybot.linkAccount) {
   const [state, setState] = createStore<{ status: LinkAccountStatus }>({ status: { ...DISCONNECTED_LINK_ACCOUNT } });
   let request = 0;
 

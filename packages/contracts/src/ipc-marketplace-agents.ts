@@ -32,7 +32,7 @@ export interface MarketplaceAgentSummary {
   version: number;
   installs: number;
   featured: boolean;
-  /** OpenBot checked the agent beyond the listing review. Absent from a Worker that has no such flag. */
+  /** ZollyBot checked the agent beyond the listing review. Absent from a Worker that has no such flag. */
   verified?: boolean;
   avatarSeed: string;
   avatarHue: AvatarHue | null;
@@ -46,7 +46,7 @@ export interface MarketplaceAgentSummary {
 export interface MarketplaceAgentDetail extends MarketplaceAgentSummary {
   versionId: string;
   /**
-   * True when OpenBot has not reviewed the agent yet: its shared link shows the version that waits for
+   * True when ZollyBot has not reviewed the agent yet: its shared link shows the version that waits for
    * the first review. Only the listing read returns one; the catalog and the install never do.
    */
   pending?: boolean;

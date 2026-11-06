@@ -3,11 +3,11 @@ plugins {
   id 'expo-module-gradle-plugin'
 }
 
-group = 'run.openbot'
+group = 'run.zollybot'
 version = '1.0.0'
 
 android {
-  namespace "run.openbot.applock"
+  namespace "run.zollybot.applock"
   defaultConfig {
     versionCode 1
     versionName '1.0.0'

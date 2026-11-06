@@ -3,7 +3,7 @@
 // request. A turn with no open step runs once more, at most 2 times, when its answer only asks whether
 // to continue or is short and ends on a next step that it did not do. Runs the real agent service on a temporary profile with a fake Codex app-server. The
 // current message names its turns in `<<PLAN[...]PLAN>>`: each element is one turn, with its plan
-// steps, its answer, its delay and its OpenBot tool calls. A continuation turn takes the next element
+// steps, its answer, its delay and its ZollyBot tool calls. A continuation turn takes the next element
 // of its thread.
 // Checks:
 //   1. A turn with open steps continues once, and the request completes when the plan is done.
@@ -24,39 +24,39 @@
 // Not checked: a message sent in the short gap before a continuation starts. The drain starts the
 // continuation at once, and a hidden agent refuses new messages. Check 7 covers the same rule.
 // No provider, account or network is used. `bun run test:plan-continuation`.
-// Writes .openbot-build/plan-continuation-e2e/report.json.
+// Writes .zollybot-build/plan-continuation-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS, type AgentEvent, PLAN_CONTINUATION_ITEM_TYPE } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS, type AgentEvent, PLAN_CONTINUATION_ITEM_TYPE } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/plan-continuation-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-plan-continuation-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/plan-continuation-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-plan-continuation-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
 const fakeLog = join(root, "codex.jsonl");
-const NOTE_MARKER = "OpenBot note, not a message from the user";
+const NOTE_MARKER = "ZollyBot note, not a message from the user";
 
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 type StepStatus = "pending" | "inProgress" | "completed";
 
-/** One turn of the fake: its plan, its answer, its delay and its OpenBot tool calls. */
+/** One turn of the fake: its plan, its answer, its delay and its ZollyBot tool calls. */
 interface FakeTurn {
   steps: [string, StepStatus][];
   answer?: string;
@@ -101,7 +101,7 @@ const callNext = (turn) => {
   if (!call) return timers.set(turn.turnId, setTimeout(() => finish(turn), turn.script.delayMs || 5));
   const id = "tool-" + turn.turnId + "-" + turn.calls.length;
   waiting.set(id, turn);
-  write({ id, method: "item/tool/call", params: { threadId: turn.threadId, turnId: turn.turnId, callId: "call-" + id, namespace: "openbot", tool: call.tool, arguments: call.arguments } });
+  write({ id, method: "item/tool/call", params: { threadId: turn.threadId, turnId: turn.turnId, callId: "call-" + id, namespace: "zollybot", tool: call.tool, arguments: call.arguments } });
 };
 const answer = (message) => {
   const params = message.params || {};
@@ -240,7 +240,7 @@ async function check(name: string, run: () => Promise<unknown>) {
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
 
 function openService() {
-  const database = new OpenBotDatabase(userData);
+  const database = new ZollyBotDatabase(userData);
   const store = new AgentStore(userData, home, database);
   const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
   const service = new AgentService({

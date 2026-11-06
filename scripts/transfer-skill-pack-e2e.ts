@@ -1,5 +1,5 @@
 // Run: bun scripts/transfer-skill-pack-e2e.ts
-// Report: .openbot-build/transfer-skill-pack-e2e.json
+// Report: .zollybot-build/transfer-skill-pack-e2e.json
 // Installs a skill pack with more skills than an agent can have, exports the agent with the real
 // transfer service, and imports it through the real local skill library and pack installer.
 
@@ -9,8 +9,8 @@ import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promis
 import { tmpdir } from "node:os";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentSummary, MarketplaceSkillDetail } from "@openbot/contracts/ipc";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentSummary, MarketplaceSkillDetail } from "@zollybot/contracts/ipc";
 import { Effect, Schema } from "effect";
 import { zipSync } from "fflate";
 import { CentralAuthOperationError } from "../src/main/central-auth-effects";
@@ -20,11 +20,11 @@ import { LocalSkillLibrary } from "../src/main/local-skill-library";
 import { SkillMarketplaceService } from "../src/main/skill-marketplace-service";
 
 const run = Effect.runPromise;
-const root = await mkdtemp(join(tmpdir(), "openbot-transfer-pack-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-transfer-pack-"));
 const reportPath = join(
   dirname(fileURLToPath(import.meta.url)),
   "..",
-  ".openbot-build",
+  ".zollybot-build",
   "transfer-skill-pack-e2e.json",
 );
 interface Report {
@@ -132,7 +132,7 @@ const decodeLock = Schema.decodeUnknownSync(
 );
 
 async function lockedFolders(workspace: string): Promise<Array<{ slug: string; folders: number }>> {
-  const lock = decodeLock(await readFile(join(workspace, ".openbot", "skills-lock.json"), "utf8"));
+  const lock = decodeLock(await readFile(join(workspace, ".zollybot", "skills-lock.json"), "utf8"));
   return Object.values(lock.skills)
     .map((entry) => ({ slug: entry.slug, folders: entry.folders?.length ?? 0 }))
     .sort((left, right) => left.slug.localeCompare(right.slug));
@@ -156,7 +156,7 @@ try {
     library,
   );
   await run(skills.install({ agentId: source.id, skillId: detail.id }));
-  // A skill a user put in the folder without OpenBot travels as a skill of its own.
+  // A skill a user put in the folder without ZollyBot travels as a skill of its own.
   await mkdir(join(source.workspacePath, ".agents/skills/notes"), { recursive: true });
   await writeFile(join(source.workspacePath, ".agents/skills/notes/SKILL.md"), skillMarkdown("notes"));
 

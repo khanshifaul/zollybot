@@ -4,8 +4,8 @@ import {
   isAgentProvider,
   PROVIDER_ACCOUNT_LABEL_MAX_LENGTH,
   type ProviderAccountStatus,
-} from "@openbot/contracts/ipc";
-import { CLAUDE_API_KEY_ACCOUNT_ID } from "@openbot/contracts/team-protocol/claude-api-key-v1";
+} from "@zollybot/contracts/ipc";
+import { CLAUDE_API_KEY_ACCOUNT_ID } from "@zollybot/contracts/team-protocol/claude-api-key-v1";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { useEffect, useRef, useState } from "react";

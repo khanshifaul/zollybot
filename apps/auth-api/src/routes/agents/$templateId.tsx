@@ -1,10 +1,10 @@
-import type { AgentTemplateDetail } from "@openbot/contracts/ipc";
 import { createFileRoute, notFound } from "@tanstack/solid-router";
+import type { AgentTemplateDetail } from "@zollybot/contracts/ipc";
 import { AgentTemplateNotSharedPage } from "../../components/agents/AgentTemplateNotSharedPage";
 import { AgentTemplatePage } from "../../components/agents/AgentTemplatePage";
 import { agentTemplatePath } from "../../lib/agent-template-path";
 import { readAgentTemplate } from "../../lib/agent-templates";
-import { OPENBOT_SOCIAL_IMAGE_ALT, OPENBOT_SOCIAL_IMAGE_URL } from "../../lib/site-metadata";
+import { ZOLLYBOT_SOCIAL_IMAGE_ALT, ZOLLYBOT_SOCIAL_IMAGE_URL } from "../../lib/site-metadata";
 
 async function loadAgentTemplate(templateId: string): Promise<AgentTemplateDetail> {
   const template = await readAgentTemplate({ data: templateId });
@@ -18,25 +18,25 @@ async function loadAgentTemplate(templateId: string): Promise<AgentTemplateDetai
  * head runs, because `head` stays in the bundle of every page (see routes/compare/$slug.tsx).
  */
 async function agentTemplateHead(template: AgentTemplateDetail, siteUrl: string) {
-  const { AGENT_TEMPLATE_CARD } = await import("@openbot/contracts/ipc");
-  const { markdownPreviewText } = await import("@openbot/contracts/markdown-preview-text");
+  const { AGENT_TEMPLATE_CARD } = await import("@zollybot/contracts/ipc");
+  const { markdownPreviewText } = await import("@zollybot/contracts/markdown-preview-text");
   const url = new URL(agentTemplatePath(template.id), siteUrl).toString();
-  const title = `${template.name} — OpenBot agent`;
+  const title = `${template.name} — ZollyBot agent`;
   const description = template.title || markdownPreviewText(template.description).slice(0, 200);
   // The agent's own share card when the publish sent one, so a post on X shows this agent.
   const card = template.cardUrl
     ? {
         url: new URL(template.cardUrl, siteUrl).toString(),
-        alt: `${template.name}, an OpenBot agent by ${template.creatorName}`,
+        alt: `${template.name}, an ZollyBot agent by ${template.creatorName}`,
       }
-    : { url: OPENBOT_SOCIAL_IMAGE_URL, alt: OPENBOT_SOCIAL_IMAGE_ALT };
+    : { url: ZOLLYBOT_SOCIAL_IMAGE_URL, alt: ZOLLYBOT_SOCIAL_IMAGE_ALT };
   return {
     meta: [
       { title },
       { name: "description", content: description },
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "OpenBot" },
+      { property: "og:site_name", content: "ZollyBot" },
       { property: "og:url", content: url },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
@@ -60,7 +60,7 @@ async function agentTemplateHead(template: AgentTemplateDetail, siteUrl: string)
 }
 
 const NOT_SHARED_HEAD = {
-  meta: [{ title: "Agent no longer shared — OpenBot" }, { name: "robots", content: "noindex, nofollow" }],
+  meta: [{ title: "Agent no longer shared — ZollyBot" }, { name: "robots", content: "noindex, nofollow" }],
 };
 
 export const Route = createFileRoute("/agents/$templateId")({

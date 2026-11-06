@@ -14,9 +14,9 @@ description: "Review a screen and return ranked, concrete fixes across hierarchy
 ## Inputs
 
 1. **The screen.** In this order:
-   - A page in `openbot_browser`. Call `openbot_browser.list_tabs` first. Use an open tab or open the address.
-   - A Figma frame: an installed Figma plugin (find it with `tool_search` in the `openbot` tools), or a
-     signed-in Figma tab in `openbot_browser`.
+   - A page in `zollybot_browser`. Call `zollybot_browser.list_tabs` first. Use an open tab or open the address.
+   - A Figma frame: an installed Figma plugin (find it with `tool_search` in the `zollybot` tools), or a
+     signed-in Figma tab in `zollybot_browser`.
    - A screenshot or exported image the user uploads.
 2. **The user task.** What must a person do on this screen? If it is not clear, ask once with `ask_user`.
 3. A static image shows layout, type and color. It does not show focus, keyboard or screen-reader behavior.
@@ -26,7 +26,7 @@ description: "Review a screen and return ranked, concrete fixes across hierarchy
 
 1. Write the task in one sentence. Write what the user must notice, decide and do, in order.
 2. Take one screenshot of the screen as reviewed. For a live page, also check the mobile width with
-   `openbot_browser.set_environment`.
+   `zollybot_browser.set_environment`.
 3. Review each area: hierarchy, layout and spacing, type, color and contrast, copy, states (empty, loading,
    error, success, disabled), accessibility.
 4. For each problem, write: where (region and element), what is wrong, why it matters for the task, and the

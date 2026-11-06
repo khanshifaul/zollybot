@@ -1,14 +1,14 @@
 import { generateKeyPairSync, randomBytes, sign, verify } from "node:crypto";
 import { EventEmitter } from "node:events";
-import type { AgentEvent, TeamRealtimeEvent } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { teamCapabilitiesForProtocol } from "@openbot/contracts/team-protocol/current";
-import { optionalTeamEvent, optionalTeamEventToCurrent } from "@openbot/contracts/team-protocol/optional-events";
-import { teamSideRouteCodec } from "@openbot/contracts/team-protocol/side-routes";
+import type { AgentEvent, TeamRealtimeEvent } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { teamCapabilitiesForProtocol } from "@zollybot/contracts/team-protocol/current";
+import { optionalTeamEvent, optionalTeamEventToCurrent } from "@zollybot/contracts/team-protocol/optional-events";
+import { teamSideRouteCodec } from "@zollybot/contracts/team-protocol/side-routes";
 import {
   type TeamProtocolV1CurrentEventControl,
   toWireTeamProtocolV1ClientEvent,
-} from "@openbot/contracts/team-protocol/v1-adapter";
+} from "@zollybot/contracts/team-protocol/v1-adapter";
 import {
   decodeTeamProtocolV2AuthFrame,
   decodeTeamProtocolV2EventFrame,
@@ -18,16 +18,16 @@ import {
   type TeamProtocolV2Json,
   type TeamProtocolV2RpcFrame,
   teamProtocolV2AuthenticationTranscript,
-} from "@openbot/contracts/team-protocol/v2";
+} from "@zollybot/contracts/team-protocol/v2";
 import {
   decodeTeamProtocolV8CurrentEvent,
   encodeTeamProtocolV8WebRtcHttpRequest,
-} from "@openbot/contracts/team-protocol/v8-webrtc-adapter";
-import { decodeTeamProtocolSupportV9 } from "@openbot/contracts/team-protocol/v9";
-import { decodeTeamProtocolV9WebRtcHttpResponse } from "@openbot/contracts/team-protocol/v9-webrtc-adapter";
-import { sourceText } from "@openbot/i18n/source";
-import { remoteWorkspaceReadTimeout } from "@openbot/team-client/remote-recovery";
-import { type RemoteRequestProfile, startRemoteRequest } from "@openbot/team-client/sync-profile";
+} from "@zollybot/contracts/team-protocol/v8-webrtc-adapter";
+import { decodeTeamProtocolSupportV9 } from "@zollybot/contracts/team-protocol/v9";
+import { decodeTeamProtocolV9WebRtcHttpResponse } from "@zollybot/contracts/team-protocol/v9-webrtc-adapter";
+import { sourceText } from "@zollybot/i18n/source";
+import { remoteWorkspaceReadTimeout } from "@zollybot/team-client/remote-recovery";
+import { type RemoteRequestProfile, startRemoteRequest } from "@zollybot/team-client/sync-profile";
 import { Context, Deferred, Effect, Fiber, Layer, Result, Schema } from "effect";
 import type { CentralAuthOperationError } from "./central-auth-effects";
 import type { RemoteConnectionBootstrap } from "./central-auth-manager";
@@ -115,7 +115,7 @@ interface TeamWebRtcClientTransportOptions {
    */
   sessionCache?: RemoteSessionCache;
   /**
-   * Development only (`OPENBOT_DEV_RTT_MS`, 0 in a packaged app): an added network round trip, to
+   * Development only (`ZOLLYBOT_DEV_RTT_MS`, 0 in a packaged app): an added network round trip, to
    * measure a connect on a real network. Each data-channel message waits half of it in each
    * direction, and each account service read waits all of it. The Signal socket does not wait.
    */
@@ -169,7 +169,7 @@ class TeamClientBridge extends Context.Service<
     connect(...args: Parameters<TeamWebRtcBridge["connect"]>): Effect.Effect<void, RemoteWorkflowError>;
     disconnect(hostId: string): Effect.Effect<void, RemoteWorkflowError>;
   }
->()("openbot/main/TeamClientBridge") {}
+>()("zollybot/main/TeamClientBridge") {}
 
 export class TeamWebRtcClientTransport extends EventEmitter<TeamWebRtcClientTransportEvents> {
   readonly #options: TeamWebRtcClientTransportOptions;

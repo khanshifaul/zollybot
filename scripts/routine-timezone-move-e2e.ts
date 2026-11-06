@@ -3,7 +3,7 @@
 // `RoutineScheduler.saveRecord` on the real SQLite stores. The clock is moved with `setSystemTime`.
 // No provider, account or network is started: a queued delivery is cancelled to end its run.
 // Run: `bun scripts/routine-timezone-move-e2e.ts`.
-// Writes .openbot-build/routine-timezone-move-e2e/report.json.
+// Writes .zollybot-build/routine-timezone-move-e2e/report.json.
 
 import { setSystemTime } from "bun:test";
 import assert from "node:assert/strict";
@@ -11,7 +11,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { Routine, RoutineSchedule } from "@openbot/contracts/ipc";
+import type { Routine, RoutineSchedule } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { ConversationRuntime } from "../src/backend/agent/conversation-runtime";
 import { RoutineScheduler } from "../src/backend/agent/routine-scheduler";
@@ -21,20 +21,20 @@ import { AgentWaitStore } from "../src/backend/agent-waits/agent-wait-store";
 import { AgentWaits } from "../src/backend/agent-waits/agent-waits";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { MailboxStore } from "../src/backend/mailbox-store";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { RoutineTimer } from "../src/backend/routine-timer";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import { parseSaveEventRoutine } from "../src/main/host-events-inputs";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const OUT = join(ROOT, ".openbot-build", "routine-timezone-move-e2e");
+const OUT = join(ROOT, ".zollybot-build", "routine-timezone-move-e2e");
 const STEP_DEADLINE_MS = 15_000;
 // In March 2031 Cairo is UTC+2 and Istanbul is UTC+3.
 const FROM = "Africa/Cairo";
 const TO = "Europe/Istanbul";
 const at = (day: string, time: string) => new Date(`2031-03-${day}T${time}:00.000Z`);
 
-const root = await mkdtemp(join(tmpdir(), "openbot-routine-timezone-"));
-const database = new OpenBotDatabase(join(root, "state"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-routine-timezone-"));
+const database = new ZollyBotDatabase(join(root, "state"));
 const store = new AgentStore(join(root, "state"), join(root, "home"), database);
 const mailbox = new MailboxStore(join(root, "state"), store.sharedRoot, database);
 const conversation = new ConversationRuntime(

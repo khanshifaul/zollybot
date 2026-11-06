@@ -1,12 +1,12 @@
-import { canAdministerServer, type RoutineSchedule, type WorkflowTriggerType } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+import { canAdministerServer, type RoutineSchedule, type WorkflowTriggerType } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import {
   type RoutineScheduleDraft,
   routineDraftProblemCode,
   routineScheduleFromDraft,
   routineScheduleToDraft,
   switchDraftKind,
-} from "@openbot/team-client/routine-schedule-draft";
+} from "@zollybot/team-client/routine-schedule-draft";
 import * as Clipboard from "expo-clipboard";
 import { useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
@@ -99,7 +99,7 @@ const TRIGGER_DEFAULTS: Partial<Record<WorkflowTriggerType, Record<string, strin
 export function WorkflowTriggerScreen() {
   const { t } = useText();
   const { nodeId } = useLocalSearchParams<{ nodeId: string }>();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const draft = useWorkflowDraft((state) => state.draft);
   const { setFields, setSchedule, setTriggerProblem } = useWorkflowDraft.getState();
   const node = draft?.graph.nodes.find((item) => item.id === nodeId);
@@ -216,7 +216,7 @@ export function WorkflowTriggerScreen() {
           // Only an owner or admin adds a GitHub trigger, on a host that runs it, as on desktop.
           ...((admin && githubSupported) || type === "github" ? [GITHUB_CHOICE] : []),
           ...(type === "message" ? [MESSAGE_CHOICE] : []),
-          // Only the computer that runs OpenBot has the Discord roles. An owner or admin adds a Telegram or
+          // Only the computer that runs ZollyBot has the Discord roles. An owner or admin adds a Telegram or
           // Slack trigger on a host that has a linked chat or workspace, as on desktop.
           ...(type === "discord" ? [DISCORD_CHOICE] : []),
           ...(telegramOffered || type === "telegram" ? [TELEGRAM_CHOICE] : []),

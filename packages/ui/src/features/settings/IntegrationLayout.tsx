@@ -1,11 +1,12 @@
 /**
  * The parts that every integration page shares: the page shell, the logo on its tile, the status pill,
- * the page header, the danger zone, and the connect dialog with OpenBot and the other app side by side.
+ * the page header, the danger zone, and the connect dialog with ZollyBot and the other app side by side.
  * The connectors and the Marketplace app pages use them.
  */
 
-import { AppLogo } from "@openbot/brand";
-import type { AppTextKey } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import { AppLogo } from "@zollybot/brand";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertActions,
@@ -31,8 +32,7 @@ import {
   Text,
   TriangleAlert,
   X,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createSignal, For, Show } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { useText } from "../../text";
@@ -70,7 +70,7 @@ export function StatusPill(props: { status: IntegrationStatus; label: string }) 
 }
 
 /**
- * The status of a connection that OpenBot could not read. It is not "Not set up": the connection can
+ * The status of a connection that ZollyBot could not read. It is not "Not set up": the connection can
  * be there. The page says why the read failed and has Retry.
  */
 export const UNKNOWN_STATUS = {
@@ -300,7 +300,7 @@ export function Stepper(props: { steps: readonly string[]; current: number; labe
   );
 }
 
-/** The line between OpenBot and the other app: moving while connecting, solid when done, broken on an error. */
+/** The line between ZollyBot and the other app: moving while connecting, solid when done, broken on an error. */
 export type WizardLink = "connecting" | "connected" | "broken";
 
 export interface WizardProps {

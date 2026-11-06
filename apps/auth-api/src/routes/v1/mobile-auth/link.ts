@@ -1,5 +1,5 @@
-import { isMobileConnectHostBinding } from "@openbot/contracts/mobile-connect";
 import { createFileRoute } from "@tanstack/solid-router";
+import { isMobileConnectHostBinding } from "@zollybot/contracts/mobile-connect";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../server/effect-runtime";
 import { readJsonObject } from "../../../server/json-body";

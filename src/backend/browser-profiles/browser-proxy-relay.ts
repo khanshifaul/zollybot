@@ -1,7 +1,7 @@
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { connect, createServer, isIP, type Server, type Socket } from "node:net";
 import type { Duplex } from "node:stream";
-import type { BrowserProxyFailure } from "@openbot/contracts/ipc";
+import type { BrowserProxyFailure } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { type BrowserOperationError, browserFailure } from "../browser-effects";
 
@@ -53,7 +53,7 @@ export interface BrowserProxyRelay {
   readonly close: Effect.Effect<void>;
 }
 
-const RELAY_USERNAME = "openbot";
+const RELAY_USERNAME = "zollybot";
 /** The request head that a browser sends is much smaller. A larger one is not a browser. */
 const HEAD_MAX_BYTES = 64 * 1024;
 const HEAD_TIMEOUT_MS = 30_000;
@@ -65,7 +65,7 @@ const HOP_HEADERS = new Set(["proxy-authorization", "proxy-connection", "connect
 const BAD_GATEWAY = "HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";
 const BAD_REQUEST = "HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";
 const SIGN_IN_REQUIRED =
-  'HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic realm="OpenBot"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n';
+  'HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic realm="ZollyBot"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n';
 
 interface RelayRequest {
   target: RelayTarget;

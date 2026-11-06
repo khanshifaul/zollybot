@@ -12,7 +12,7 @@ export interface AgentChatColorEntry {
   color: AvatarColor;
 }
 
-/** The chat colour of one member of a server. It comes from the member's OpenBot account. */
+/** The chat colour of one member of a server. It comes from the member's ZollyBot account. */
 export interface MemberChatColorEntry {
   memberId: string;
   color: AvatarColor;

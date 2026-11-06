@@ -1,8 +1,8 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { type ConversationMessage, isQueuedAgentReply, type QueueDelivery } from "@openbot/contracts/ipc";
-import { isQueueEditRejected } from "@openbot/contracts/team-protocol/queue-edit-v1";
-import { type MobileTextKey, sourceText } from "@openbot/i18n/mobile";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { type ConversationMessage, isQueuedAgentReply, type QueueDelivery } from "@zollybot/contracts/ipc";
+import { isQueueEditRejected } from "@zollybot/contracts/team-protocol/queue-edit-v1";
+import { type MobileTextKey, sourceText } from "@zollybot/i18n/mobile";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";

@@ -1,5 +1,5 @@
-import { Button, Plus, TriangleAlert } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import { Button, Plus, TriangleAlert } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 import { AppLogo, Done } from "./MarketplaceParts";
 import type { MarketplaceApp } from "./marketplace-model";

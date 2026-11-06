@@ -1,12 +1,12 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { useQueryClient } from "@tanstack/react-query";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   agentPermissionLevel,
   canAdministerServer,
   DEFAULT_PROVIDER_ACCOUNT_ID,
   type HostProviderAccounts,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";

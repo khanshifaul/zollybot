@@ -4,11 +4,11 @@ import { EventEmitter } from "node:events";
 import { access, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { isAbsolute, resolve } from "node:path";
-import { agentProviderName, type KeyOnlyProviderId } from "@openbot/contracts/agent-providers";
-import { type DynamicRecord, isBoolean, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, redactText } from "@openbot/logging";
-import { type CauseCode, classifyFailure, httpStatusCause, structuredCause } from "@openbot/telemetry";
+import { agentProviderName, type KeyOnlyProviderId } from "@zollybot/contracts/agent-providers";
+import { type DynamicRecord, isBoolean, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, redactText } from "@zollybot/logging";
+import { type CauseCode, classifyFailure, httpStatusCause, structuredCause } from "@zollybot/telemetry";
 import { Cause, Effect, Exit, Option, Schema, Scope, Semaphore } from "effect";
 import { secretElicitationField } from "./agent/prompts";
 import { waitForSuccessfulProcess } from "./agent/provider-status";
@@ -67,11 +67,11 @@ import type {
 } from "./provider-history";
 import { stopProcessTree } from "./windows-process-tree";
 
-const logger = createOpenBotLogger("provider-runtime");
+const logger = createZollyBotLogger("provider-runtime");
 
 /**
  * How long a turn may send nothing, with no tool call or compaction open and no question to the
- * user, before OpenBot ends it. A model request that never answers held the turn open with no
+ * user, before ZollyBot ends it. A model request that never answers held the turn open with no
  * limit (#4304). Pi ends an idle model request itself after `httpIdleTimeoutMs` (5 minutes) and
  * retries it after at most 60 seconds, so the limit is longer: Pi's own timeout and retry go first.
  */
@@ -171,7 +171,7 @@ interface PiThread {
   closed: boolean;
   gate: Semaphore.Semaphore;
   /**
-   * Opened with the session settings of `thread/start` or `thread/resume`: OpenBot tools,
+   * Opened with the session settings of `thread/start` or `thread/resume`: ZollyBot tools,
    * instructions and access. A thread that a history read opened after a restart has none of them.
    */
   configured: boolean;
@@ -183,7 +183,7 @@ interface ClientEvents {
   diagnostic: [string, DiagnosticOrigin?];
 }
 
-/** Owns Pi's native sessions. The database owns OpenBot history and agent identity. */
+/** Owns Pi's native sessions. The database owns ZollyBot history and agent identity. */
 export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentClient {
   readonly contextCompaction = "request";
   readonly provider: "pi" | KeyOnlyProviderId;
@@ -460,7 +460,7 @@ export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentCl
    * such as the stealth model `stealth/crouton-alpha`, did not show in the picker (#4926). This runs
    * Pi's own command, which saves the refresh before the list is read.
    *
-   * It runs without confinement: it is OpenBot's own command, with no model and no tools, and it
+   * It runs without confinement: it is ZollyBot's own command, with no model and no tools, and it
    * writes only Pi's catalog cache. Its output is ignored, so the key cannot get into a log. It never
    * fails: with no network, or with an old Pi, the list is the one that Pi has.
    */
@@ -544,7 +544,7 @@ export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentCl
     if (resume && requestedId) {
       const live = this.#threads.get(requestedId);
       if (live && (live.configured || !configured)) return live;
-      // The live thread has no OpenBot tools, and its next prompt would remove them from the session
+      // The live thread has no ZollyBot tools, and its next prompt would remove them from the session
       // (#3343). An idle one is replaced by a thread with the session settings.
       if (live) {
         const replaced = yield* live.gate.withPermit(
@@ -800,7 +800,7 @@ export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentCl
     params: unknown,
   ) {
     const turn = thread.turn;
-    // Pi starts a message for an ended turn as a run of its own, which OpenBot did not start.
+    // Pi starts a message for an ended turn as a run of its own, which ZollyBot did not start.
     // The message then waits in the queue.
     if (!turn || turn.id !== getString(params, "expectedTurnId") || turn.stopped || turn.finishing)
       return yield* providerFailure(new Error(sourceText("error.backend.steerTurnChanged")));
@@ -832,7 +832,7 @@ export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentCl
       const index = steering.indexOf(message);
       if (index >= 0) steering.splice(index, 1);
       for (const text of steering) {
-        // A steer for an ended or stopped turn would start a Pi run that OpenBot did not start.
+        // A steer for an ended or stopped turn would start a Pi run that ZollyBot did not start.
         if (thread.turn !== turn || turn.stopped || turn.finishing) return;
         yield* thread.rpc
           .request({ type: "steer", message: text })
@@ -852,7 +852,7 @@ export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentCl
   #notify(method: string, thread: PiThread, params: DynamicRecord): void {
     // Usage contains only validated numeric counters. Generic secret-name matching masks `*Tokens`.
     const safe =
-      method === "openbot/usage" || method === "thread/tokenUsage/updated"
+      method === "zollybot/usage" || method === "thread/tokenUsage/updated"
         ? params
         : redactMcpRecord(params, this.#secretValues());
     this.emit("notification", {
@@ -979,7 +979,7 @@ export class PiAgentClient extends EventEmitter<ClientEvents> implements AgentCl
         return providerSync(() => Schema.decodeUnknownSync(PiSessionUsage)(stats));
       }),
       Effect.map(({ tokens }) =>
-        this.#notify("openbot/usage", thread, {
+        this.#notify("zollybot/usage", thread, {
           usage: {
             inputTokens: tokens.input + tokens.cacheRead + tokens.cacheWrite,
             outputTokens: tokens.output,

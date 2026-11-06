@@ -2,8 +2,8 @@ import {
   isPasswordManagerId,
   type PasswordManagerConnectMethod,
   type PasswordManagerStatus,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import {
   PASSWORD_MANAGERS_CAPABILITY,
   PASSWORD_MANAGERS_KEY_LIMIT,
@@ -13,9 +13,9 @@ import {
   PASSWORD_MANAGERS_URL_LIMIT,
   PASSWORD_MANAGERS_VAULT_LIMIT,
   PASSWORD_MANAGERS_VAULT_NAME_LIMIT,
-} from "@openbot/contracts/team-protocol/password-managers-v1";
-import { sourceText } from "@openbot/i18n/source";
-import { registerSecretValue } from "@openbot/logging";
+} from "@zollybot/contracts/team-protocol/password-managers-v1";
+import { sourceText } from "@zollybot/i18n/source";
+import { registerSecretValue } from "@zollybot/logging";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiPasswordManagers } from "./dependencies";
 import { HttpError } from "./http-error";

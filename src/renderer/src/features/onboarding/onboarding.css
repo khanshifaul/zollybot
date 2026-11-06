@@ -1,13 +1,13 @@
 .onboarding-screen {
   position: absolute;
-  z-index: var(--openbot-layer-dialog);
+  z-index: var(--zollybot-layer-dialog);
   inset: 0;
   min-height: 100vh;
   display: grid;
   place-items: center;
   overflow-y: auto;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
   -webkit-app-region: drag;
 }
 
@@ -23,27 +23,27 @@
 .onboarding-progress {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   margin-bottom: 20px;
 }
 
 .onboarding-progress span {
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-border-strong);
   transition:
-    width var(--openbot-duration-normal) var(--openbot-ease-out),
-    background-color var(--openbot-duration-normal) ease;
+    width var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    background-color var(--zollybot-duration-normal) ease;
 }
 
 .onboarding-progress span.is-complete {
-  background: var(--openbot-text-muted);
+  background: var(--zollybot-text-muted);
 }
 
 .onboarding-progress span.is-active {
   width: 22px;
-  background: var(--openbot-text-primary);
+  background: var(--zollybot-text-primary);
 }
 
 .onboarding-step {
@@ -63,9 +63,9 @@
 .onboarding-panel h1 {
   max-width: 620px;
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-display);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-display);
+  font-weight: var(--zollybot-weight-medium);
   letter-spacing: -0.045em;
   line-height: 1.12;
 }
@@ -73,8 +73,8 @@
 .onboarding-description {
   max-width: 560px;
   margin: 10px 0 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-lg);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-lg);
   line-height: 1.45;
 }
 
@@ -96,7 +96,7 @@
 }
 
 .onboarding-provider .provider-picker-label {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .onboarding-provider .provider-picker-heading {
@@ -104,11 +104,11 @@
 }
 
 .onboarding-provider .provider-picker-list {
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
 }
 
 .onboarding-provider .provider-picker-hint {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .onboarding-computer-visual {
@@ -119,16 +119,16 @@
 
 .onboarding-computer-stop-mist,
 .onboarding-computer-highlight-start {
-  stop-color: var(--openbot-onboarding-desktop-mist);
+  stop-color: var(--zollybot-onboarding-desktop-mist);
 }
 
 .onboarding-computer-stop-blue,
 .onboarding-computer-highlight-end {
-  stop-color: var(--openbot-onboarding-desktop-blue);
+  stop-color: var(--zollybot-onboarding-desktop-blue);
 }
 
 .onboarding-computer-stop-indigo {
-  stop-color: var(--openbot-onboarding-desktop-indigo);
+  stop-color: var(--zollybot-onboarding-desktop-indigo);
 }
 
 .onboarding-computer-highlight-start {
@@ -140,9 +140,9 @@
 }
 
 .onboarding-computer-desktop {
-  stroke: var(--openbot-paper-border);
+  stroke: var(--zollybot-paper-border);
   stroke-width: 1;
-  filter: drop-shadow(0 16px 22px var(--openbot-shadow-popover-ambient));
+  filter: drop-shadow(0 16px 22px var(--zollybot-shadow-popover-ambient));
 }
 
 .onboarding-computer-desktop-highlight {
@@ -150,51 +150,51 @@
 }
 
 .onboarding-computer-desktop-beam {
-  fill: var(--openbot-onboarding-desktop-mist);
+  fill: var(--zollybot-onboarding-desktop-mist);
   opacity: 0.16;
   pointer-events: none;
 }
 
 .onboarding-computer-window-shadow {
-  fill: var(--openbot-shadow-dialog);
+  fill: var(--zollybot-shadow-dialog);
   opacity: 0.46;
 }
 
 .onboarding-computer-window {
   transform-box: fill-box;
   transform-origin: center;
-  animation: onboarding-computer-window-drag 4.6s var(--openbot-ease-in-out) infinite;
+  animation: onboarding-computer-window-drag 4.6s var(--zollybot-ease-in-out) infinite;
 }
 
 .onboarding-computer-window-body {
-  fill: var(--openbot-onboarding-window);
-  stroke: var(--openbot-paper-border);
+  fill: var(--zollybot-onboarding-window);
+  stroke: var(--zollybot-paper-border);
   stroke-width: 1;
 }
 
 .onboarding-computer-window-bar,
 .onboarding-computer-window-bar-fill {
-  fill: var(--openbot-paper-text-muted);
+  fill: var(--zollybot-paper-text-muted);
   opacity: 0.24;
 }
 
 .onboarding-computer-window-bar {
-  stroke: var(--openbot-paper-border);
+  stroke: var(--zollybot-paper-border);
   stroke-width: 1;
 }
 
 .onboarding-computer-window-pane {
-  fill: var(--openbot-paper-text-dim);
+  fill: var(--zollybot-paper-text-dim);
   opacity: 0.18;
 }
 
 .onboarding-computer-window-card {
-  fill: var(--openbot-paper-text-dim);
+  fill: var(--zollybot-paper-text-dim);
   opacity: 0.24;
 }
 
 .onboarding-computer-window-line {
-  fill: var(--openbot-paper-text-dim);
+  fill: var(--zollybot-paper-text-dim);
   opacity: 0.54;
 }
 
@@ -203,30 +203,30 @@
 }
 
 .onboarding-computer-dot-danger {
-  fill: var(--openbot-danger);
+  fill: var(--zollybot-danger);
 }
 
 .onboarding-computer-dot-warning {
-  fill: var(--openbot-warning);
+  fill: var(--zollybot-warning);
 }
 
 .onboarding-computer-dot-success {
-  fill: var(--openbot-success);
+  fill: var(--zollybot-success);
 }
 
 .onboarding-computer-cursor {
   transform-box: fill-box;
   transform-origin: 0 0;
-  animation: onboarding-computer-cursor-drag 4.6s var(--openbot-ease-in-out) infinite;
+  animation: onboarding-computer-cursor-drag 4.6s var(--zollybot-ease-in-out) infinite;
 }
 
 .onboarding-computer-cursor path {
-  fill: var(--openbot-paper-text);
-  stroke: var(--openbot-onboarding-window);
+  fill: var(--zollybot-paper-text);
+  stroke: var(--zollybot-onboarding-window);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.8;
-  filter: drop-shadow(0 2px 3px var(--openbot-shadow-popover-ambient));
+  filter: drop-shadow(0 2px 3px var(--zollybot-shadow-popover-ambient));
   paint-order: stroke fill;
 }
 
@@ -240,7 +240,7 @@
   display: grid;
   place-items: center;
   pointer-events: none;
-  animation: onboarding-computer-avatar-drag 4.6s var(--openbot-ease-in-out) infinite;
+  animation: onboarding-computer-avatar-drag 4.6s var(--zollybot-ease-in-out) infinite;
 }
 
 .onboarding-computer-avatar .agent-avatar {
@@ -251,7 +251,7 @@
 .onboarding-computer-avatar .agent-avatar > svg {
   width: 128%;
   height: 128%;
-  filter: drop-shadow(0 2px 4px var(--openbot-shadow-popover-ambient));
+  filter: drop-shadow(0 2px 4px var(--zollybot-shadow-popover-ambient));
 }
 
 @keyframes onboarding-computer-window-drag {
@@ -345,8 +345,8 @@
 .onboarding-error {
   width: min(100%, 480px);
   margin: 12px 0 0;
-  color: var(--openbot-danger);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-danger);
+  font-size: var(--zollybot-text-sm);
   line-height: 1.45;
   text-align: center;
 }
@@ -354,7 +354,7 @@
 .onboarding-actions {
   width: min(100%, 288px);
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   margin-top: 22px;
 }
 
@@ -365,7 +365,7 @@
 .onboarding-actions .ui-button {
   width: 100%;
   min-height: 44px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .onboarding-next {
@@ -374,8 +374,8 @@
 
 .onboarding-next-reason {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 1.45;
   text-align: center;
 }
@@ -386,11 +386,11 @@
   }
 
   .onboarding-panel h1 {
-    font-size: var(--openbot-text-3xl);
+    font-size: var(--zollybot-text-3xl);
   }
 
   .onboarding-description {
-    font-size: var(--openbot-text-md);
+    font-size: var(--zollybot-text-md);
   }
 
   .onboarding-computer-visual {
@@ -461,8 +461,8 @@
   .provider-picker-list
   > :first-child
   > .provider-picker-option:first-child {
-  border-top-left-radius: calc(var(--openbot-radius-md) - 1px);
-  border-top-right-radius: calc(var(--openbot-radius-md) - 1px);
+  border-top-left-radius: calc(var(--zollybot-radius-md) - 1px);
+  border-top-right-radius: calc(var(--zollybot-radius-md) - 1px);
 }
 
 :is(.onboarding-provider, .setup-local-content) .provider-picker-list > :last-child,
@@ -470,8 +470,8 @@
   .provider-picker-list
   > :last-child
   > .provider-picker-option:last-child {
-  border-bottom-left-radius: calc(var(--openbot-radius-md) - 1px);
-  border-bottom-right-radius: calc(var(--openbot-radius-md) - 1px);
+  border-bottom-left-radius: calc(var(--zollybot-radius-md) - 1px);
+  border-bottom-right-radius: calc(var(--zollybot-radius-md) - 1px);
 }
 
 :is(.onboarding-provider, .setup-local-content) .provider-picker-option-with-callout {
@@ -487,20 +487,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  color: var(--openbot-onboarding-desktop-indigo);
+  color: var(--zollybot-onboarding-desktop-indigo);
   pointer-events: none;
   animation: provider-picker-callout-in 420ms cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .provider-picker-callout-title {
-  font-size: var(--openbot-text-md);
+  font-size: var(--zollybot-text-md);
   font-weight: 620;
   line-height: 18px;
 }
 
 .provider-picker-callout-detail {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 16px;
 }
 
@@ -606,7 +606,7 @@
 ::view-transition-group(first-run-progress),
 ::view-transition-group(first-run-actions) {
   animation-duration: 440ms;
-  animation-timing-function: var(--openbot-ease-out);
+  animation-timing-function: var(--zollybot-ease-out);
 }
 
 /* The steps are not the same width. Each image keeps its own size in the middle, so none stretches. */
@@ -618,11 +618,11 @@
 }
 
 html:active-view-transition-type(step)::view-transition-old(first-run-step) {
-  animation: first-run-step-out 220ms var(--openbot-ease-out) both;
+  animation: first-run-step-out 220ms var(--zollybot-ease-out) both;
 }
 
 html:active-view-transition-type(step)::view-transition-new(first-run-step) {
-  animation: first-run-step-in 440ms var(--openbot-ease-out) 40ms both;
+  animation: first-run-step-in 440ms var(--zollybot-ease-out) 40ms both;
 }
 
 /* The live dots animate their own width, so the old picture of them is not needed. */
@@ -637,25 +637,25 @@ html:active-view-transition-type(step)::view-transition-new(first-run-step) {
 
 ::view-transition-new(first-run-progress):only-child,
 ::view-transition-new(first-run-actions):only-child {
-  animation: first-run-step-rise 440ms var(--openbot-ease-out) 40ms both;
+  animation: first-run-step-rise 440ms var(--zollybot-ease-out) 40ms both;
 }
 
 /* The buttons change their labels in place, so the old ones blur away under the new ones. */
 ::view-transition-old(first-run-actions),
 ::view-transition-old(first-run-progress):only-child {
-  animation: first-run-blur-out 220ms var(--openbot-ease-out) both;
+  animation: first-run-blur-out 220ms var(--zollybot-ease-out) both;
 }
 
 ::view-transition-new(first-run-actions):not(:only-child) {
-  animation: first-run-blur-in 440ms var(--openbot-ease-out) 40ms both;
+  animation: first-run-blur-in 440ms var(--zollybot-ease-out) 40ms both;
 }
 
 html:active-view-transition-type(open)::view-transition-old(*) {
-  animation: first-run-open-out 320ms var(--openbot-ease-out) both;
+  animation: first-run-open-out 320ms var(--zollybot-ease-out) both;
 }
 
 html:active-view-transition-type(open)::view-transition-new(*) {
-  animation: first-run-open-in 520ms var(--openbot-ease-out) 60ms both;
+  animation: first-run-open-in 520ms var(--zollybot-ease-out) 60ms both;
 }
 
 @keyframes first-run-step-out {
@@ -719,7 +719,7 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   margin-bottom: 40px;
 }
 
@@ -727,7 +727,7 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   width: 52px;
   height: 52px;
   flex: none;
-  animation: first-run-rise var(--openbot-duration-overlay) var(--openbot-ease-out) both;
+  animation: first-run-rise var(--zollybot-duration-overlay) var(--zollybot-ease-out) both;
 }
 
 .first-run-choice-avatar:nth-child(1),
@@ -755,41 +755,41 @@ html:active-view-transition-type(open)::view-transition-new(*) {
 }
 
 .first-run-choice-avatar:nth-child(2) {
-  animation-delay: calc(var(--openbot-duration-fast) * 1);
+  animation-delay: calc(var(--zollybot-duration-fast) * 1);
 }
 
 .first-run-choice-avatar:nth-child(3) {
-  animation-delay: calc(var(--openbot-duration-fast) * 2);
+  animation-delay: calc(var(--zollybot-duration-fast) * 2);
 }
 
 .first-run-choice-avatar:nth-child(4) {
-  animation-delay: calc(var(--openbot-duration-fast) * 3);
+  animation-delay: calc(var(--zollybot-duration-fast) * 3);
 }
 
 .first-run-choice-avatar:nth-child(5) {
-  animation-delay: calc(var(--openbot-duration-fast) * 4);
+  animation-delay: calc(var(--zollybot-duration-fast) * 4);
 }
 
 .first-run-choice-avatar:nth-child(6) {
-  animation-delay: calc(var(--openbot-duration-fast) * 5);
+  animation-delay: calc(var(--zollybot-duration-fast) * 5);
 }
 
 .first-run-choice-avatar:nth-child(7) {
-  animation-delay: calc(var(--openbot-duration-fast) * 6);
+  animation-delay: calc(var(--zollybot-duration-fast) * 6);
 }
 
 .first-run-choice-title {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-hero);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-hero);
+  font-weight: var(--zollybot-weight-semibold);
   letter-spacing: -0.055em;
   line-height: 1;
   text-wrap: balance;
 }
 
 .first-run-choice .onboarding-description {
-  margin-top: var(--openbot-space-4);
+  margin-top: var(--zollybot-space-4);
 }
 
 .first-run-choice-rows {
@@ -797,25 +797,25 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-top: var(--openbot-space-8);
-  border: 1px solid var(--openbot-border-grouped);
-  border-radius: var(--openbot-radius-grouped);
-  background: var(--openbot-bg-grouped);
+  margin-top: var(--zollybot-space-8);
+  border: 1px solid var(--zollybot-border-grouped);
+  border-radius: var(--zollybot-radius-grouped);
+  background: var(--zollybot-bg-grouped);
 }
 
 .first-run-choice-rows .first-run-choice-row {
   height: auto;
   min-height: 64px;
   justify-content: flex-start;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   border-radius: 0;
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
   text-align: start;
   white-space: normal;
 }
 
 .first-run-choice-rows .first-run-choice-row + .first-run-choice-row {
-  border-top-color: var(--openbot-border-grouped);
+  border-top-color: var(--zollybot-border-grouped);
 }
 
 .first-run-choice-row-text {
@@ -824,16 +824,16 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .first-run-choice-row-text strong {
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .first-run-choice-logos {
@@ -845,18 +845,18 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   width: 16px;
   height: 16px;
   overflow: visible;
-  fill: var(--openbot-provider-current);
+  fill: var(--zollybot-provider-current);
 }
 
 .first-run-choice-row-chevron {
   width: 16px;
   height: 16px;
   flex: none;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .first-run-choice-reason {
-  margin-top: var(--openbot-space-3);
+  margin-top: var(--zollybot-space-3);
 }
 
 /* The product analytics choice is the last line of the answer list, lighter than the answers. */
@@ -864,9 +864,9 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  border-top: 1px solid var(--openbot-border-grouped);
-  padding: var(--openbot-space-3) var(--openbot-space-4);
+  gap: var(--zollybot-space-2);
+  border-top: 1px solid var(--zollybot-border-grouped);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
   text-align: start;
   cursor: pointer;
 }
@@ -876,31 +876,31 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .first-run-choice-improve-text strong {
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 /* Three of the team rise beside the title line, which is short, so they never cover the detail. */
 .first-run-choice-improve-pop {
   position: absolute;
-  top: var(--openbot-space-2);
-  inset-inline-end: var(--openbot-space-4);
+  top: var(--zollybot-space-2);
+  inset-inline-end: var(--zollybot-space-4);
   display: flex;
   align-items: flex-end;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   pointer-events: none;
 }
 
 .first-run-choice-improve-agent.agent-avatar {
   width: 20px;
   height: 20px;
-  animation: first-run-improve-pop 1600ms var(--openbot-ease-out) both;
+  animation: first-run-improve-pop 1600ms var(--zollybot-ease-out) both;
 }
 
 .first-run-choice-improve-agent:nth-child(2) {
@@ -939,18 +939,18 @@ html:active-view-transition-type(open)::view-transition-new(*) {
 
 .first-run-consent-notice {
   width: min(100%, 440px);
-  margin: var(--openbot-space-4) 0 0;
-  color: var(--openbot-text-muted);
+  margin: var(--zollybot-space-4) 0 0;
+  color: var(--zollybot-text-muted);
   text-align: center;
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .first-run-consent-notice .first-run-consent-link {
   display: inline;
   vertical-align: baseline;
   font: inherit;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -964,7 +964,7 @@ html:active-view-transition-type(open)::view-transition-new(*) {
 
 @media (max-width: 760px) {
   .first-run-choice-team {
-    gap: var(--openbot-space-1-5);
+    gap: var(--zollybot-space-1-5);
   }
 
   .first-run-choice-avatar:nth-child(1),
@@ -1025,8 +1025,8 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   .first-run-choice-avatar:active,
   .first-run-launch-member:active .first-run-launch-avatar {
     scale: 0.9;
-    transition-duration: var(--openbot-duration-fast);
-    transition-timing-function: var(--openbot-ease-out);
+    transition-duration: var(--zollybot-duration-fast);
+    transition-timing-function: var(--zollybot-ease-out);
   }
 }
 
@@ -1036,23 +1036,23 @@ html:active-view-transition-type(open)::view-transition-new(*) {
  * fills with the download; a wait with no percent draws and erases it.
  */
 .first-run-launch {
-  --first-run-launch-accent: var(--openbot-logo-production);
+  --first-run-launch-accent: var(--zollybot-logo-production);
   position: absolute;
-  z-index: var(--openbot-layer-dialog);
+  z-index: var(--zollybot-layer-dialog);
   inset: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
   -webkit-app-region: drag;
 }
 
 .first-run-launch[data-variant="dev"] {
-  --first-run-launch-accent: var(--openbot-logo-dev);
+  --first-run-launch-accent: var(--zollybot-logo-dev);
 }
 
 .first-run-launch[data-variant="preview"] {
-  --first-run-launch-accent: var(--openbot-logo-preview);
+  --first-run-launch-accent: var(--zollybot-logo-preview);
 }
 
 .first-run-launch-stage {
@@ -1066,7 +1066,7 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
 }
 
 .first-run-launch-member {
@@ -1140,18 +1140,18 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   stroke: var(--first-run-launch-accent);
   stroke-dasharray: 1 1;
   stroke-dashoffset: calc(1 - var(--first-run-launch-percent));
-  transition: stroke-dashoffset var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: stroke-dashoffset var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .first-run-launch-label {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
 }
 
 @media (max-width: 760px) {
   .first-run-launch-team {
-    gap: var(--openbot-space-1-5);
+    gap: var(--zollybot-space-1-5);
   }
 
   .first-run-launch-member:nth-child(1),
@@ -1162,7 +1162,7 @@ html:active-view-transition-type(open)::view-transition-new(*) {
 
 @media (prefers-reduced-motion: no-preference) {
   .first-run-launch-avatar {
-    animation: first-run-launch-hop 1.8s var(--openbot-ease-in-out) infinite;
+    animation: first-run-launch-hop 1.8s var(--zollybot-ease-in-out) infinite;
   }
 
   .first-run-launch-member:nth-child(2) .first-run-launch-avatar {
@@ -1192,7 +1192,7 @@ html:active-view-transition-type(open)::view-transition-new(*) {
   .first-run-launch-progress[data-known="false"] .first-run-launch-fill {
     stroke-dasharray: 0.35 1.2;
     transition: none;
-    animation: first-run-launch-scribble 1.8s var(--openbot-ease-in-out) infinite;
+    animation: first-run-launch-scribble 1.8s var(--zollybot-ease-in-out) infinite;
   }
 }
 
@@ -1220,5 +1220,5 @@ html:active-view-transition-type(open)::view-transition-new(*) {
 /* The read error reuses the sign-in screen; its one secondary action sits under the primary button. */
 .setup-read-error-actions {
   justify-content: center;
-  margin-top: var(--openbot-space-3);
+  margin-top: var(--zollybot-space-3);
 }

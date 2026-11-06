@@ -1,7 +1,7 @@
-import { type AppAppearance, isAppAppearance } from "@openbot/contracts/app-appearance";
-import type { AppLanguage } from "@openbot/contracts/app-language";
-import type { AvatarColor, CentralAuthUser } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import { type AppAppearance, isAppAppearance } from "@zollybot/contracts/app-appearance";
+import type { AppLanguage } from "@zollybot/contracts/app-language";
+import type { AvatarColor, CentralAuthUser } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   CreditCard,
@@ -17,18 +17,18 @@ import {
   Tabs,
   toast,
   UserRound,
-} from "@openbot/ui";
-import { AppearanceSelect } from "@openbot/ui/features/settings/AppearanceSelect";
-import { ACTION_SOUND_CHOICES, TASK_SOUND_CHOICES } from "@openbot/ui/features/settings/app-settings";
-import { OwnChatColorTrigger } from "@openbot/ui/features/settings/ChatColorSetting";
-import { LanguageSelect } from "@openbot/ui/features/settings/LanguageSelect";
-import { NotificationMatrix, NotificationScopeTitle } from "@openbot/ui/features/settings/NotificationMatrix";
-import { SendShortcutSelect } from "@openbot/ui/features/settings/SendShortcutSelect";
-import { SettingsDialogShell, type SettingsPagePlacement } from "@openbot/ui/features/settings/SettingsDialogShell";
-import { SettingsProfileTab } from "@openbot/ui/features/settings/SettingsProfileTab";
-import { SoundChoiceSelect } from "@openbot/ui/features/settings/SoundChoiceSelect";
-import { createSettingsProfileStore } from "@openbot/ui/features/settings/stores/profile-store";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { AppearanceSelect } from "@zollybot/ui/features/settings/AppearanceSelect";
+import { ACTION_SOUND_CHOICES, TASK_SOUND_CHOICES } from "@zollybot/ui/features/settings/app-settings";
+import { OwnChatColorTrigger } from "@zollybot/ui/features/settings/ChatColorSetting";
+import { LanguageSelect } from "@zollybot/ui/features/settings/LanguageSelect";
+import { NotificationMatrix, NotificationScopeTitle } from "@zollybot/ui/features/settings/NotificationMatrix";
+import { SendShortcutSelect } from "@zollybot/ui/features/settings/SendShortcutSelect";
+import { SettingsDialogShell, type SettingsPagePlacement } from "@zollybot/ui/features/settings/SettingsDialogShell";
+import { SettingsProfileTab } from "@zollybot/ui/features/settings/SettingsProfileTab";
+import { SoundChoiceSelect } from "@zollybot/ui/features/settings/SoundChoiceSelect";
+import { createSettingsProfileStore } from "@zollybot/ui/features/settings/stores/profile-store";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { readActionSoundChoice, setActionSoundChoice } from "../../action-sounds";
 import { setShowAgentSteps, useShowAgentSteps } from "../../agent-steps-preference";

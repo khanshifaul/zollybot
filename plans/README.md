@@ -38,7 +38,7 @@ Allowed states: `TODO`, `IN PROGRESS`, `DONE`, `BLOCKED: <reason>`,
   the OAuth question. Stages 1 to 4 are done in #635 (`87f488804`). Stage 4
   replaced `mcp-remote` with native MCP OAuth.
 - Plan 001 was written against a dirty working tree at commit `8229759`.
-  Uncommitted files of the OpenBot Remote feature are part of the input state.
+  Uncommitted files of the ZollyBot Remote feature are part of the input state.
   The implementer must preserve them and check them before making a change.
 
 - Plan 004 was written by the `improve-animations` skill on 2026-10-12 for the mobile search sheet. It
@@ -77,7 +77,7 @@ Findings that were confirmed but not planned, in rank order:
 Direction options (for the maintainer, not ranked against bugs):
 
 - A restore for the backup export: `maintenance-service.ts:90` writes
-  `openbot-data.json`, and nothing reads it.
+  `zollybot-data.json`, and nothing reads it.
 - A sealed offline queue for incoming chat-app messages while the host is off.
 - Keep the Telegram chat context across restarts. Needs a migration.
 - Link Discord direct messages to an agent.

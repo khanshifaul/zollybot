@@ -14,7 +14,7 @@
 // another host or a key with no handover fails. `hostKeyChangedAt`, the time that Server settings
 // shows, is the time of the step that leads to the key, and is null for a step that does not verify.
 // Run: `bun scripts/host-key-rotation-e2e.ts`.
-// Writes .openbot-build/host-key-rotation-e2e/report.json.
+// Writes .zollybot-build/host-key-rotation-e2e/report.json.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash, generateKeyPairSync } from "node:crypto";
@@ -22,18 +22,18 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { decodeHostKeyHandover, type HostKeyHandover } from "@openbot/contracts/host-key-handover";
-import { decodeRecord, requiredString } from "@openbot/contracts/ipc-decoding";
-import { verifyEd25519Base64Url } from "@openbot/team-client/ed25519";
+import { decodeHostKeyHandover, type HostKeyHandover } from "@zollybot/contracts/host-key-handover";
+import { decodeRecord, requiredString } from "@zollybot/contracts/ipc-decoding";
+import { verifyEd25519Base64Url } from "@zollybot/team-client/ed25519";
 import {
   followHostKeyHandovers,
   hostKeyChangedAt,
   remoteHostFingerprint,
-} from "@openbot/team-client/host-key-handover";
+} from "@zollybot/team-client/host-key-handover";
 import { Effect } from "effect";
 import { verifyHostKeySignature } from "../src/main/remote-server-host-directory";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/host-key-rotation-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/host-key-rotation-e2e");
 const HOST_LINE = "host-key-rotation ";
 const STEP_DEADLINE_MS = 30_000;
 
@@ -162,8 +162,8 @@ function hostFingerprint(publicKey: string): string {
 
 async function main(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
-  const root = await mkdtemp(join(tmpdir(), "openbot-host-key-rotation-"));
-  const file = join(root, "openbot-team-server-v2.json");
+  const root = await mkdtemp(join(tmpdir(), "zollybot-host-key-rotation-"));
+  const file = join(root, "zollybot-team-server-v2.json");
   const checks: Record<string, boolean> = {};
   try {
     const begun = await hostStep(file, "begin");

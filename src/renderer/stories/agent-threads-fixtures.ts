@@ -1,9 +1,9 @@
-import type { AgentTask, ConversationMessage, ConversationSnapshot } from "@openbot/contracts/ipc";
-import type { MockOpenBotOptions } from "../src/preview/mock-openbot";
+import type { AgentTask, ConversationMessage, ConversationSnapshot } from "@zollybot/contracts/ipc";
+import type { MockZollyBotOptions } from "../src/preview/mock-zollybot";
 
 /** Side threads of Chief for the desktop and web thread stories. */
 export const AGENT_ID = "chief";
-export const TABS_KEY = "openbot:thread-tabs:v1";
+export const TABS_KEY = "zollybot:thread-tabs:v1";
 
 function message(id: string, author: "user" | "assistant", text: string, createdAt: string): ConversationMessage {
   return { id, author, source: author, text, createdAt, status: "completed" };
@@ -102,7 +102,7 @@ function snapshot(task: AgentTask, messages: ConversationMessage[]): Conversatio
   return { agentId: AGENT_ID, threadId: task.threadId, activeTurnId: task.activeTurnId, revision: 1, messages };
 }
 
-export const THREAD_OPTIONS: MockOpenBotOptions = {
+export const THREAD_OPTIONS: MockZollyBotOptions = {
   tasks: { [AGENT_ID]: THREADS },
   // The open thread shows its context meter, with the Compact action.
   runtimeSnapshot: {
@@ -180,7 +180,7 @@ const COMPETITORS_DONE = thread("competitors", "Competitor scan", "2026-08-19T10
  * Chief has unread agent messages in three side threads. "Competitor scan" has finished, so Chief does
  * not work and the sidebar shows the unread count. "Pricing FAQ" has no tab: only the menu shows its dot.
  */
-export const UNREAD_OPTIONS: MockOpenBotOptions = {
+export const UNREAD_OPTIONS: MockZollyBotOptions = {
   ...THREAD_OPTIONS,
   tasks: { [AGENT_ID]: THREADS.map((task) => (task.id === COMPETITORS_DONE.id ? COMPETITORS_DONE : task)) },
   taskConversations: {

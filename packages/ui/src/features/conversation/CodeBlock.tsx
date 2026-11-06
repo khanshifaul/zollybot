@@ -1,7 +1,7 @@
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
-import { Button, Check, Copy } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
 import { type ShjLanguage, type ShjToken, tokenize } from "@speed-highlight/core";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
+import { Button, Check, Copy } from "@zollybot/ui";
 import { createEffect, createMemo, createSignal, For, onCleanup, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import type { MessageCodeBlock } from "./DataTable";

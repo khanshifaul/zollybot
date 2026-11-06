@@ -7,24 +7,24 @@
 // started.
 //
 // Run: bun scripts/workflow-schedule-e2e.ts
-// Writes .openbot-build/workflow-schedule-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/workflow-schedule-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { RoutineSchedule, WorkflowGraph, WorkflowNode } from "@openbot/contracts/ipc";
+import type { RoutineSchedule, WorkflowGraph, WorkflowNode } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { runCauseEffect } from "../src/backend/effect-boundary";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { RoutineTimer } from "../src/backend/routine-timer";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
 import { WorkflowRunStore } from "../src/backend/workflows/workflow-run-store";
 import { WorkflowStore } from "../src/backend/workflows/workflow-store";
 import { WorkflowTriggers, workflowScheduleDueAt } from "../src/backend/workflows/workflow-triggers";
 import { createWorkflows, type WorkflowsHandle } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/workflow-schedule-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/workflow-schedule-e2e");
 const ZONE = "UTC";
 const START = "2026-10-24T09:00:00.000Z";
 const EVERY_15: RoutineSchedule = { kind: "interval", amount: 15, unit: "minutes", anchorAt: START };
@@ -61,9 +61,9 @@ const graphOf = (schedule: RoutineSchedule | undefined, step: "notify" | "approv
   strokes: [],
 });
 
-const directory = await mkdtemp(join(tmpdir(), "openbot-workflow-schedule-"));
+const directory = await mkdtemp(join(tmpdir(), "zollybot-workflow-schedule-"));
 let clock = new Date(START);
-let database = new OpenBotDatabase(directory);
+let database = new ZollyBotDatabase(directory);
 let service: WorkflowsHandle | null = null;
 
 async function open() {
@@ -293,7 +293,7 @@ try {
 
   // The plan is in the database: a restart keeps it.
   await close();
-  database = new OpenBotDatabase(directory);
+  database = new ZollyBotDatabase(directory);
   app = await open();
   check("a restart keeps the plans", (await app.nextDueAt(once.summary.id)) === "2026-10-24T12:00:00.000Z");
   check("a restart keeps the earliest wake", app.timer.nextDueAt() === "2026-10-24T11:00:00.000Z");

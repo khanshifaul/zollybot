@@ -1,5 +1,5 @@
-import { DEFAULT_VOICE_SETTINGS, isVoiceLanguage, isVoiceModelId, type VoiceSettings } from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+import { DEFAULT_VOICE_SETTINGS, isVoiceLanguage, isVoiceModelId, type VoiceSettings } from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect, Result, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";

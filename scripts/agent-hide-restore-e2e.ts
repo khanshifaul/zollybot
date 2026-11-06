@@ -5,7 +5,7 @@
 // The agent service is not initialized, so no provider CLI starts and its routine timer never arms;
 // the clock moves with `setSystemTime` to make a routine occurrence come due while the agent is hidden.
 // Run: `bun scripts/agent-hide-restore-e2e.ts`.
-// Writes .openbot-build/agent-hide-restore-e2e/report.json.
+// Writes .zollybot-build/agent-hide-restore-e2e/report.json.
 
 import { setSystemTime } from "bun:test";
 import assert from "node:assert/strict";
@@ -13,23 +13,23 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { AgentEvent, HiddenAgentsSnapshot } from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
+import type { AgentEvent, HiddenAgentsSnapshot } from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import {
   TEAM_APP_VERSION_HEADER,
   TEAM_CAPABILITIES_HEADER,
   TEAM_PROTOCOL_V1_WEBSOCKET,
   TEAM_PROTOCOL_VERSION_HEADER,
-} from "@openbot/contracts/team-protocol";
+} from "@zollybot/contracts/team-protocol";
 import {
   AGENT_HIDDEN_CAPABILITY,
   AGENT_HIDDEN_CODECS,
   AGENT_HIDDEN_ROUTES,
   agentHiddenEvent,
-} from "@openbot/contracts/team-protocol/agent-hidden-v1";
-import { teamCapabilitiesForProtocol } from "@openbot/contracts/team-protocol/current";
-import { TEAM_PROTOCOL_V7 } from "@openbot/contracts/team-protocol/v7";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/agent-hidden-v1";
+import { teamCapabilitiesForProtocol } from "@zollybot/contracts/team-protocol/current";
+import { TEAM_PROTOCOL_V7 } from "@zollybot/contracts/team-protocol/v7";
+import { sourceText } from "@zollybot/i18n/source";
 import { plugin } from "bun";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
@@ -37,11 +37,11 @@ import { AgentService } from "../src/backend/agent-service";
 import { AgentStore } from "../src/backend/agent-store";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { MailboxStore } from "../src/backend/mailbox-store";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { SidebarLayoutStore } from "../src/backend/sidebar-layout-store";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import type { TeamApiBrowser } from "../src/main/team-api/dependencies";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-hide-restore-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-hide-restore-e2e");
 const HOST_VERSION = "0.0.0-e2e";
 const OWNER = { username: "owner-user", password: "owner-password-123" };
 const MEMBER = { username: "member-user", password: "member-password-123" };
@@ -184,12 +184,12 @@ const teamBrowser: TeamApiBrowser = {
   importSignIn: unused,
 };
 
-const root = await mkdtemp(join(tmpdir(), "openbot-agent-hide-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-agent-hide-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 
 interface Host {
-  database: OpenBotDatabase;
+  database: ZollyBotDatabase;
   agents: AgentService;
   server: InstanceType<typeof TeamApiServer>;
   team: InstanceType<typeof TeamStore>;
@@ -203,11 +203,11 @@ const sockets: WebSocket[] = [];
 
 /** Starts the host on the profile, as the app does at each launch. The stores keep their files. */
 async function startHost(): Promise<Host> {
-  const database = new OpenBotDatabase(userData);
+  const database = new ZollyBotDatabase(userData);
   const agentStore = new AgentStore(userData, home, database);
   const mailbox = new MailboxStore(userData, agentStore.sharedRoot, agentStore.database);
   const sidebar = new SidebarLayoutStore(join(userData, "sidebar-layout.json"));
-  const team = new TeamStore(join(userData, "openbot-team-server-v2.json"));
+  const team = new TeamStore(join(userData, "zollybot-team-server-v2.json"));
   await runCauseEffect(sidebar.initialize());
   // The stores only: `AgentService.initialize` would start the provider CLIs, which no step needs.
   await runCauseEffect(agentStore.initialize());
@@ -292,7 +292,7 @@ async function login(credentials: { username: string; password: string }): Promi
 async function openEvents(token: string): Promise<WebSocket> {
   const socket = new WebSocket(`ws://127.0.0.1:${current().port}${TEAM_API_ROUTES.events}`, [
     TEAM_PROTOCOL_V1_WEBSOCKET,
-    `openbot-token.${token}`,
+    `zollybot-token.${token}`,
   ]);
   sockets.push(socket);
   await new Promise<void>((resolveOpen, reject) => {

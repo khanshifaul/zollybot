@@ -1,6 +1,6 @@
-import type { AppTextKey } from "@openbot/i18n";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@zollybot/ui";
 import { useText } from "../../text";
 import { SEND_SHORTCUT_MODES, type SendShortcutMode } from "../conversation/send-shortcut";
 

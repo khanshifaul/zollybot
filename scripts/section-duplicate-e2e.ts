@@ -1,18 +1,18 @@
 // Checks that the sidebar "Duplicate section" chain copies a section and its agents. The chain that the
-// desktop and web clients run (`duplicateSection` in `@openbot/ui/features/sidebar/duplicate-section`) runs
+// desktop and web clients run (`duplicateSection` in `@zollybot/ui/features/sidebar/duplicate-section`) runs
 // here against the real agent service and the real sidebar layout store on a temporary profile. Each call
 // goes through the same backend path as the `agent:duplicate` and `agent:mutate-sidebar-layout` handlers.
 // The agent service is not initialized, so no provider CLI starts.
 // Run: `bun scripts/section-duplicate-e2e.ts`.
-// Writes .openbot-build/section-duplicate-e2e/report.json.
+// Writes .zollybot-build/section-duplicate-e2e/report.json.
 
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { SidebarLayoutAction, SidebarLayoutSnapshot } from "@openbot/contracts/ipc";
-import { duplicateSection } from "@openbot/ui/features/sidebar/duplicate-section";
+import type { SidebarLayoutAction, SidebarLayoutSnapshot } from "@zollybot/contracts/ipc";
+import { duplicateSection } from "@zollybot/ui/features/sidebar/duplicate-section";
 import { Effect } from "effect";
 import { duplicateAgentIntoLayout } from "../src/backend/agent/duplication-gate";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
@@ -20,10 +20,10 @@ import { AgentService } from "../src/backend/agent-service";
 import { AgentStore } from "../src/backend/agent-store";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { MailboxStore } from "../src/backend/mailbox-store";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { SidebarLayoutStore } from "../src/backend/sidebar-layout-store";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/section-duplicate-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/section-duplicate-e2e");
 
 interface Step {
   name: string;
@@ -74,11 +74,11 @@ const agentBrowser: AgentBrowserHost = {
   agentTab: () => null,
 };
 
-const root = await mkdtemp(join(tmpdir(), "openbot-section-duplicate-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-section-duplicate-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const agentStore = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, agentStore.sharedRoot, agentStore.database);
 const sidebar = new SidebarLayoutStore(join(userData, "sidebar-layout.json"));

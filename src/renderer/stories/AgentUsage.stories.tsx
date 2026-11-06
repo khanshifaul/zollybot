@@ -1,11 +1,11 @@
-import { emptyAnalyticsTotals, type HostAnalytics, type MachineMetrics } from "@openbot/contracts/ipc";
-import { UsageMachineMeter } from "@openbot/ui/features/usage/UsageMachineMeter";
+import { emptyAnalyticsTotals, type HostAnalytics, type MachineMetrics } from "@zollybot/contracts/ipc";
+import { UsageMachineMeter } from "@zollybot/ui/features/usage/UsageMachineMeter";
 import { onCleanup } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { AgentUsagePanel } from "../src/features/usage/AgentUsagePanel";
 import { mockHostAnalytics } from "../src/preview/mock-agent-analytics";
-import { createMockOpenBot } from "./mock-openbot";
+import { createMockZollyBot } from "./mock-zollybot";
 
 function UsageStory(props: {
   state: "ready" | "empty" | "partial" | "loading" | "error" | "unsupported" | "large" | "small" | "long";
@@ -14,9 +14,9 @@ function UsageStory(props: {
   /** The machine use in the header, as an owner or admin sees it. */
   machine?: "normal" | "high";
 }) {
-  const previous = window.openbot;
-  const mock = createMockOpenBot();
-  window.openbot = mock.api;
+  const previous = window.zollybot;
+  const mock = createMockZollyBot();
+  window.zollybot = mock.api;
   mock.api.agent.getHostAnalytics = async (input) => {
     if (props.state === "error") throw new Error("Host is offline.");
     if (props.state === "unsupported") return null;
@@ -55,7 +55,7 @@ function UsageStory(props: {
     mock.dispose();
     // Storybook can mount the next render before it disposes this one. Restore only our own mock,
     // or the next render loses its bridge.
-    if (window.openbot === mock.api) window.openbot = previous;
+    if (window.zollybot === mock.api) window.zollybot = previous;
   });
   // A named function, not a ternary in the prop: Solid reads the prop in a tracked scope.
   const machine = () => {
@@ -68,7 +68,7 @@ function UsageStory(props: {
         width: props.narrow ? "390px" : "100%",
         height: "900px",
         overflow: "hidden",
-        background: "var(--openbot-bg-canvas)",
+        background: "var(--zollybot-bg-canvas)",
       }}
     >
       <AgentUsagePanel

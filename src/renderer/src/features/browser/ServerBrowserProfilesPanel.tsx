@@ -1,7 +1,7 @@
-import type { AgentSummary } from "@openbot/contracts/ipc";
-import { BrowserProfilesPanel } from "@openbot/ui/features/browser/BrowserProfilesPanel";
-import type { BrowserProfileProxies } from "@openbot/ui/features/browser/BrowserProxies";
-import { useText } from "@openbot/ui/text";
+import type { AgentSummary } from "@zollybot/contracts/ipc";
+import { BrowserProfilesPanel } from "@zollybot/ui/features/browser/BrowserProfilesPanel";
+import type { BrowserProfileProxies } from "@zollybot/ui/features/browser/BrowserProxies";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createSignal } from "solid-js";
 import { actionToast } from "../../action-toast";
 import type { BrowserProfilesStore } from "./stores/browser-profiles-store";

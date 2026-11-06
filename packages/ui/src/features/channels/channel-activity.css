@@ -2,7 +2,7 @@
    agent chat's size and optical offset, so the two indicators only differ in how many faces they
    hold. */
 .agent-activity-content.channel-activity-content {
-  padding-inline-start: var(--openbot-space-0-5);
+  padding-inline-start: var(--zollybot-space-0-5);
 }
 
 .channel-activity-faces {
@@ -11,23 +11,23 @@
   align-items: center;
 }
 .channel-activity-faces .agent-activity-avatar + .agent-activity-avatar {
-  margin-inline-start: calc(-1 * var(--openbot-space-2));
+  margin-inline-start: calc(-1 * var(--zollybot-space-2));
 }
 
 /* Who works, before what the work is. Each name takes its agent's message colour. */
 .channel-activity-names {
   flex: 0 1 auto;
   min-width: 0;
-  margin-inline-start: var(--openbot-space-2);
+  margin-inline-start: var(--zollybot-space-2);
   overflow: hidden;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .channel-activity-name {
-  color: var(--channel-activity-name-color, var(--openbot-text-muted));
+  color: var(--channel-activity-name-color, var(--zollybot-text-muted));
 }
 /* In a narrow pane, long names end in an ellipsis before the short label wraps. */
 .channel-activity-content .agent-activity-label {
@@ -41,14 +41,14 @@
   position: relative;
   max-height: 35dvh;
   overflow-y: auto;
-  margin: calc(-1 * var(--openbot-space-6)) var(--openbot-space-3) calc(-1 * var(--openbot-radius-lg));
-  border-radius: var(--openbot-radius-lg) var(--openbot-radius-lg) var(--openbot-radius-md) var(--openbot-radius-md);
-  background: var(--openbot-accent-strong);
-  box-shadow: 0 0 0 1px var(--openbot-accent-soft);
-  -webkit-backdrop-filter: blur(var(--openbot-space-3));
-  backdrop-filter: blur(var(--openbot-space-3));
-  padding-bottom: var(--openbot-radius-lg);
-  color: var(--openbot-accent-text);
+  margin: calc(-1 * var(--zollybot-space-6)) var(--zollybot-space-3) calc(-1 * var(--zollybot-radius-lg));
+  border-radius: var(--zollybot-radius-lg) var(--zollybot-radius-lg) var(--zollybot-radius-md) var(--zollybot-radius-md);
+  background: var(--zollybot-accent-strong);
+  box-shadow: 0 0 0 1px var(--zollybot-accent-soft);
+  -webkit-backdrop-filter: blur(var(--zollybot-space-3));
+  backdrop-filter: blur(var(--zollybot-space-3));
+  padding-bottom: var(--zollybot-radius-lg);
+  color: var(--zollybot-accent-text);
 }
 
 /* Under the waiting block, the panel covers that block's lower edge, as the queue does, instead of
@@ -61,32 +61,32 @@
 .channel-paused-task {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   align-items: center;
   justify-content: space-between;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
 }
 .channel-paused-task + .channel-paused-task {
-  border-top: 1px solid var(--openbot-accent-soft);
+  border-top: 1px solid var(--zollybot-accent-soft);
 }
 .channel-paused-task-reason {
   min-width: 0;
   flex: 1 1 24ch;
   margin: 0;
   overflow-wrap: anywhere;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
 }
 .channel-paused-task-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   align-items: center;
 }
 .channel-paused-task-actions .ui-button {
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 .channel-paused-task-actions .ui-button:hover {
-  background: var(--openbot-surface-light);
-  box-shadow: 0 0 0 1px var(--openbot-text-dim-on-light);
+  background: var(--zollybot-surface-light);
+  box-shadow: 0 0 0 1px var(--zollybot-text-dim-on-light);
 }

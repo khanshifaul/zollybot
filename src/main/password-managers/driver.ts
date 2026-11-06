@@ -2,7 +2,7 @@
 // one manager: its sign-in, its stored access and its CLI. The engine owns the list, the checks that
 // every manager shares, and the login routes of the browser. A new manager needs only a new driver.
 
-import type { PasswordManagerConnectMethod, PasswordManagerId, PasswordManagerStatus } from "@openbot/contracts/ipc";
+import type { PasswordManagerConnectMethod, PasswordManagerId, PasswordManagerStatus } from "@zollybot/contracts/ipc";
 import { type Effect, Schema } from "effect";
 import type { PasswordVault } from "../../backend/password-vault";
 

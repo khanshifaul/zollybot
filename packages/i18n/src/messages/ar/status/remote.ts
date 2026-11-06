@@ -17,7 +17,7 @@ export const messages = {
   "status.remote.stageCompatibility": "جارٍ التحقق من توافق سطح المكتب: {reason}",
   "status.remote.stageAgents": "جارٍ تحميل الوكلاء: {reason}",
   "status.remote.stageReads": "جارٍ تحميل حالة القراءة: {reason}",
-  "status.remote.suspendedDetail": "حدّث OpenBot Mobile أو تطبيق سطح المكتب قبل الاتصال.\n{detail}",
+  "status.remote.suspendedDetail": "حدّث ZollyBot Mobile أو تطبيق سطح المكتب قبل الاتصال.\n{detail}",
   "status.remote.cooldownDetail": "فشل الاتصال بعد {limit} محاولات. إعادة المحاولة خلال {minutes}:{seconds}.\n{detail}",
   "status.remote.cooldown": "فشل الاتصال بعد {limit} محاولات. إعادة المحاولة خلال {minutes}:{seconds}.",
   "status.remote.connectionLostDetail": {

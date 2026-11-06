@@ -10,7 +10,7 @@ export const messages = {
     "لا توجد جداول بعد. ينشئ الوكيل جدولًا بنفسه عندما تحتاج مهمة إلى سجلات بين الأدوار، ويمكن لكل وكيل استخدامه.",
   "sharedTable.loadFailed": "تعذّر تحميل الجداول.",
   "sharedTable.deleteFailed": "تعذّر حذف هذا.",
-  "sharedTable.madeOutside": "أُنشئ خارج OpenBot · يمكن لأي وكيل حذفه",
+  "sharedTable.madeOutside": "أُنشئ خارج ZollyBot · يمكن لأي وكيل حذفه",
   "sharedTable.keptBy": "يحتفظ به {name}",
   "sharedTable.keptByDeleted": "يحتفظ به وكيل لم يعد موجودًا",
   "sharedTable.deleteName": "حذف {name}",

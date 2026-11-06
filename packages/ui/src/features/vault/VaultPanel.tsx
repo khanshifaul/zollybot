@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import type {
   VaultCardBrand,
   VaultCardSummary,
@@ -10,7 +11,7 @@ import type {
   VaultSecretField,
   VaultSecretRequest,
   VaultState,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   API_KEY_NAME_PATTERN,
   cardBrand,
@@ -20,8 +21,8 @@ import {
   VAULT_PASSWORD_LIMIT,
   VAULT_TEXT_LIMIT,
   vaultExpiryText,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertActions,
@@ -67,9 +68,8 @@ import {
   UserRound,
   userInitials,
   X,
-} from "@openbot/ui";
-import type { UserErrorDetails } from "@openbot/user-errors";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import type { UserErrorDetails } from "@zollybot/user-errors";
 import { createMemo, createSignal, createStore, For, Match, Show, Switch, untrack } from "solid-js";
 import { useText } from "../../text";
 import { VaultLinkAccount, type VaultLinkAccountProps } from "./VaultLinkAccount";

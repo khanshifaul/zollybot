@@ -1,4 +1,4 @@
-import { ServerUpgradeDialog } from "@openbot/ui/features/servers/ServerUpgradeDialog";
+import { ServerUpgradeDialog } from "@zollybot/ui/features/servers/ServerUpgradeDialog";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 

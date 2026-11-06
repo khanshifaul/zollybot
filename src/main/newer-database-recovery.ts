@@ -1,12 +1,12 @@
-// A newer OpenBot migrated the database, and then an older copy started, for example from an old
+// A newer ZollyBot migrated the database, and then an older copy started, for example from an old
 // shortcut or a second install (#4969). The older copy cannot read the data, and it must not change
 // it. It installs the latest release instead, which opens the data. When it cannot, the user gets a
 // download link in place of a dead-end error.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import type { UpdateStatus } from "@openbot/contracts/ipc";
-import type { AppTranslate } from "@openbot/i18n";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import type { UpdateStatus } from "@zollybot/contracts/ipc";
+import type { AppTranslate } from "@zollybot/i18n";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect } from "effect";
 import { app, type BrowserWindow, dialog, shell } from "electron";
 import { runCauseEffect } from "../backend/effect-boundary";
@@ -21,13 +21,13 @@ import {
   UPDATE_INSTALL_TIMEOUT_MS,
   UpdateService,
 } from "./update-service";
-import { listSiblingOpenBotInstances } from "./update-sibling-instances";
+import { listSiblingZollyBotInstances } from "./update-sibling-instances";
 
-const logger = createOpenBotLogger("update");
+const logger = createZollyBotLogger("update");
 // The time that the user has to read the download dialog after a stalled install, before the app exits.
 const STALLED_INSTALL_DIALOG_MS = 10 * 60_000;
 const GUIDE_URL =
-  "https://github.com/nightly-labs/openbot/blob/main/docs/TROUBLESHOOTING.md#openbot-says-a-newer-version-saved-your-data";
+  "https://github.com/nightly-labs/openbot/blob/main/docs/TROUBLESHOOTING.md#zollybot-says-a-newer-version-saved-your-data";
 
 interface NewerDatabaseRecoveryOptions {
   window: BrowserWindow | null;
@@ -86,7 +86,7 @@ async function createRecoveryUpdater(
     // The forced exit waits longer, so the download dialog can show after a stalled install.
     beforeInstall: () => beforeInstall(UPDATE_INSTALL_TIMEOUT_MS + STALLED_INSTALL_DIALOG_MS),
     checkSiblingInstances: () =>
-      listSiblingOpenBotInstances({
+      listSiblingZollyBotInstances({
         executablePath: app.getPath("exe"),
         currentPid: process.pid,
         platform: process.platform,
@@ -123,7 +123,7 @@ async function installLatest(updater: UpdateService, quit: { readonly chosen: bo
   const downloaded = nextPhase(updater, ["ready", "up-to-date", "unsupported", "error"]);
   // With automatic download on, the check starts the download of an available release.
   const checked = await Effect.runPromise(updater.checkForUpdates());
-  logger.info(`An older OpenBot started over newer data. Update check: ${checked.phase}.`);
+  logger.info(`An older ZollyBot started over newer data. Update check: ${checked.phase}.`);
   if (checked.phase !== "available" && checked.phase !== "downloading" && checked.phase !== "ready") {
     downloaded.cancel();
     return;

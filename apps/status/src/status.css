@@ -1,6 +1,6 @@
 @import "@fontsource-variable/inter";
-@import "@openbot/brand/tokens.css";
-@import "@openbot/brand/logo.css";
+@import "@zollybot/brand/tokens.css";
+@import "@zollybot/brand/logo.css";
 
 /* The status page. Every rule is under `.status-page`, so the page also renders in Storybook. */
 
@@ -13,45 +13,45 @@
 }
 
 .status-page {
-  --status-hairline: color-mix(in srgb, var(--openbot-text-primary) 8%, transparent);
-  --status-fill: color-mix(in srgb, var(--openbot-text-primary) 5%, transparent);
+  --status-hairline: color-mix(in srgb, var(--zollybot-text-primary) 8%, transparent);
+  --status-fill: color-mix(in srgb, var(--zollybot-text-primary) 5%, transparent);
   min-height: 100vh;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
   font-family: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
 }
 
 .status-page [data-state="operational"] {
-  --status-color: var(--openbot-success);
-  --status-text: var(--openbot-success-text);
+  --status-color: var(--zollybot-success);
+  --status-text: var(--zollybot-success-text);
 }
 
 .status-page [data-state="degraded"] {
-  --status-color: var(--openbot-warning);
-  --status-text: var(--openbot-warning-text);
+  --status-color: var(--zollybot-warning);
+  --status-text: var(--zollybot-warning-text);
 }
 
 .status-page [data-state="partial"] {
-  --status-color: color-mix(in srgb, var(--openbot-warning) 50%, var(--openbot-danger));
-  --status-text: color-mix(in srgb, var(--openbot-warning-text) 50%, var(--openbot-danger-text));
+  --status-color: color-mix(in srgb, var(--zollybot-warning) 50%, var(--zollybot-danger));
+  --status-text: color-mix(in srgb, var(--zollybot-warning-text) 50%, var(--zollybot-danger-text));
 }
 
 .status-page [data-state="major"] {
-  --status-color: var(--openbot-danger);
-  --status-text: var(--openbot-danger-text);
+  --status-color: var(--zollybot-danger);
+  --status-text: var(--zollybot-danger-text);
 }
 
 .status-page [data-state="maintenance"] {
-  --status-color: var(--openbot-accent);
-  --status-text: var(--openbot-accent-text);
+  --status-color: var(--zollybot-accent);
+  --status-text: var(--zollybot-accent-text);
 }
 
 /* A day or a service that no check has covered. */
 .status-page [data-state="none"] {
-  --status-color: var(--openbot-text-muted);
-  --status-text: var(--openbot-text-muted);
+  --status-color: var(--zollybot-text-muted);
+  --status-text: var(--zollybot-text-muted);
 }
 
 :where(.status-page) :where(h1, h2, h3, p, ol, ul) {
@@ -86,7 +86,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   font-size: 16px;
   font-weight: 600;
 }
@@ -129,7 +129,7 @@
 }
 
 .status-muted {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
 }
 
@@ -143,7 +143,7 @@
 }
 
 .status-section-title {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -156,7 +156,7 @@
 }
 
 .status-link {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
   font-weight: 500;
   text-decoration: underline;
@@ -173,18 +173,18 @@
 .status-brand:focus-visible,
 .status-link:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
   border-radius: 6px;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .status-link:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   .status-button:hover {
-    border-color: color-mix(in srgb, var(--openbot-text-primary) 32%, transparent);
-    color: var(--openbot-text-primary);
+    border-color: color-mix(in srgb, var(--zollybot-text-primary) 32%, transparent);
+    color: var(--zollybot-text-primary);
   }
 }
 
@@ -196,17 +196,17 @@
   height: 38px;
   gap: 7px;
   padding: 0 17px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 13px;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
   transition:
-    border-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease;
+    border-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease;
 }
 
 .status-button-icon,
@@ -228,7 +228,7 @@
 
 .status-button:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .status-button:active {
@@ -239,7 +239,7 @@
 .status-toggle {
   display: inline-flex;
   padding: 3px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: rgba(255, 255, 255, 0.025);
   box-shadow:
     0 0 0 1px var(--status-hairline),
@@ -248,27 +248,27 @@
 
 .status-toggle button {
   border: 0;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: none;
   padding: 5px 12px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font: inherit;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition:
-    color var(--openbot-duration-normal) ease,
-    background-color var(--openbot-duration-normal) ease;
+    color var(--zollybot-duration-normal) ease,
+    background-color var(--zollybot-duration-normal) ease;
 }
 
 .status-toggle button[aria-pressed="true"] {
   background: rgba(255, 255, 255, 0.08);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .status-toggle button:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 2px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 2px var(--zollybot-accent-strong);
 }
 
 /* Updates of one incident, newest first. */
@@ -296,14 +296,14 @@
 }
 
 .status-update-stage {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   font-weight: 600;
 }
 
 .status-update-body {
   max-width: 64ch;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.55;
   text-wrap: pretty;
@@ -323,8 +323,8 @@
   gap: 6px;
   padding: 3px 10px;
   border: 1px solid var(--status-hairline);
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-text-secondary);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-text-secondary);
   font-size: 13px;
   white-space: nowrap;
 }
@@ -347,7 +347,7 @@
 }
 
 .status-title {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 600;
   letter-spacing: -0.05em;
@@ -366,7 +366,7 @@
 
 .status-banner-title {
   flex: 1 1 auto;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 19px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -393,7 +393,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 17px;
   font-weight: 600;
 }
@@ -421,14 +421,14 @@
 }
 
 .status-service-name {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 16px;
   font-weight: 500;
 }
 
 .status-service-description {
   margin-top: 2px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
 }
 
@@ -463,12 +463,12 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
 }
 
 .status-bars-foot strong {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-weight: 500;
 }
 
@@ -479,16 +479,16 @@
   width: max-content;
   max-width: 260px;
   padding: 10px 12px;
-  border: 1px solid var(--openbot-border-strong);
+  border: 1px solid var(--zollybot-border-strong);
   border-radius: 12px;
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
   box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6);
   pointer-events: none;
   transform: translateX(calc(var(--status-tooltip-at) * -100%));
 }
 
 .status-tooltip-date {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 13px;
   font-weight: 600;
 }
@@ -507,7 +507,7 @@
 
 .status-month-title {
   margin-bottom: 10px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -529,7 +529,7 @@
   border: 0;
   background: none;
   padding: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
   font-size: 16px;
   font-weight: 500;
@@ -540,7 +540,7 @@
 .status-incident-title:focus-visible {
   outline: 0;
   border-radius: 6px;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .status-incident-chevron {
@@ -548,8 +548,8 @@
   height: 16px;
   flex: 0 0 auto;
   margin-left: auto;
-  color: var(--openbot-text-muted);
-  transition: transform var(--openbot-duration-normal) ease;
+  color: var(--zollybot-text-muted);
+  transition: transform var(--zollybot-duration-normal) ease;
 }
 
 .status-incident-title[aria-expanded="true"] .status-incident-chevron {

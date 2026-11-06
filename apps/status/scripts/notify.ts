@@ -1,4 +1,4 @@
-// Status webhooks for the tools of the OpenBot team. The public way to follow the page is the feed.
+// Status webhooks for the tools of the ZollyBot team. The public way to follow the page is the feed.
 // The `notify` job of the `status-page` workflow runs it after each run that publishes the page:
 //   bun apps/status/scripts/notify.ts --status <status.json> --state <notify.json> [--bootstrap] [--test]
 // It compares `status.json` with `notify.json` (kept on the `status-notify` branch), queues one
@@ -17,7 +17,7 @@ import { createHash, createHmac } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
-import { createOpenBotLogger, registerSecretValue } from "@openbot/logging";
+import { createZollyBotLogger, registerSecretValue } from "@zollybot/logging";
 import { Schema } from "effect";
 import {
   CheckResult,
@@ -31,7 +31,7 @@ import {
   serviceName,
 } from "../src/model";
 
-const logger = createOpenBotLogger("status-notify");
+const logger = createZollyBotLogger("status-notify");
 
 const { values: args } = parseArgs({
   options: {
@@ -131,7 +131,7 @@ const WebhookEvent = Schema.Struct({
 type WebhookEvent = typeof WebhookEvent.Type;
 
 const Delivery = Schema.Struct({
-  /** The `x-openbot-delivery-id` header. The same for each try, so a receiver can drop a repeat. */
+  /** The `x-zollybot-delivery-id` header. The same for each try, so a receiver can drop a repeat. */
   id: Schema.String,
   subscription: Schema.String,
   event: WebhookEvent,
@@ -398,7 +398,7 @@ function message(event: WebhookEvent): { headline: string; lines: string[]; link
       link: SITE_URL,
     };
   }
-  return { headline: "Test event from the OpenBot status page", lines: ["The webhook works."], link: SITE_URL };
+  return { headline: "Test event from the ZollyBot status page", lines: ["The webhook works."], link: SITE_URL };
 }
 
 const slackText = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -431,16 +431,16 @@ async function send(subscription: Subscription, delivery: Delivery): Promise<Out
   const timestamp = String(Math.floor(Date.now() / 1000));
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "User-Agent": "openbot-status-webhook",
-    "x-openbot-event": delivery.event.type,
-    "x-openbot-delivery-id": delivery.id,
-    "x-openbot-timestamp": timestamp,
+    "User-Agent": "zollybot-status-webhook",
+    "x-zollybot-event": delivery.event.type,
+    "x-zollybot-delivery-id": delivery.id,
+    "x-zollybot-timestamp": timestamp,
   };
   if (subscription.secret) {
     const signature = createHmac("sha256", subscription.secret)
       .update(`${timestamp}.${delivery.id}.${body}`)
       .digest("hex");
-    headers["x-openbot-signature"] = `sha256=${signature}`;
+    headers["x-zollybot-signature"] = `sha256=${signature}`;
   }
   try {
     // A redirect is a failure: the request must not go to an address that is not in the secret.

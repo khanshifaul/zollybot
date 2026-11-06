@@ -1,4 +1,4 @@
-import type { SpeechModelFile } from "@openbot/contracts/speech-models";
+import type { SpeechModelFile } from "@zollybot/contracts/speech-models";
 import { Directory, File } from "expo-file-system";
 import { create } from "zustand";
 import { speechNative } from "./speech-native";

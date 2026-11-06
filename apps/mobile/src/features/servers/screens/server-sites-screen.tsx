@@ -1,4 +1,4 @@
-import type { HostedSiteSummary } from "@openbot/contracts/ipc";
+import type { HostedSiteSummary } from "@zollybot/contracts/ipc";
 import { useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { useRef, useState } from "react";
@@ -27,7 +27,7 @@ function httpsLink(href: string): string | null {
 }
 
 /**
- * Server sheet > Sites: the openbot.site sites that agents on the server published. Every member
+ * Server sheet > Sites: the zollybot.site sites that agents on the server published. Every member
  * opens a site; an owner or admin also deletes it, as on desktop.
  */
 export function ServerSitesScreen() {

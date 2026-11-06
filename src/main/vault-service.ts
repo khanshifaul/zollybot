@@ -1,5 +1,5 @@
 // The Vault of this computer: logins, payment cards, contact info and API keys that the user saves in
-// Server settings. Agents fill logins through the `PasswordVault` port (`openbot:` IDs) and cards and
+// Server settings. Agents fill logins through the `PasswordVault` port (`zollybot:` IDs) and cards and
 // contact info through `VaultItems`; neither port gives an agent a password, a card number or a security
 // code. Agents can also add and change items through `VaultItems`, and save a password or an API key
 // that they have, but never read one back or set a card number. API keys reach an agent only as files
@@ -19,9 +19,9 @@ import {
   type VaultSecretRequest,
   type VaultState,
   type VaultStatus,
-} from "@openbot/contracts/ipc";
-import { type SourceMessages, sourceText } from "@openbot/i18n/source";
-import { registerSecretValues } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { type SourceMessages, sourceText } from "@zollybot/i18n/source";
+import { registerSecretValues } from "@zollybot/logging";
 import { Effect } from "effect";
 import { type PasswordVault, PasswordVaultError, websiteMatchesOrigin, websiteUrl } from "../backend/password-vault";
 import type {
@@ -354,7 +354,7 @@ export class VaultService {
     return this.state();
   });
 
-  /** The built-in logins, for the password vault router under the `openbot:` prefix. */
+  /** The built-in logins, for the password vault router under the `zollybot:` prefix. */
   readonly logins: PasswordVault = {
     connected: () => this.#status === "ready" && this.#store.read().logins.length > 0,
     loginsFor: (origin) =>

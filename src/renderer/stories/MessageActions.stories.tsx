@@ -1,5 +1,5 @@
-import type { AgentMessage } from "@openbot/ui/data";
-import { MessageActions } from "@openbot/ui/features/conversation/MessageRendering";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { MessageActions } from "@zollybot/ui/features/conversation/MessageRendering";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 

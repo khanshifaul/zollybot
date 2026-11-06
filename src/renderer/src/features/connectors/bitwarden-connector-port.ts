@@ -1,7 +1,7 @@
-import type { BitwardenConnectorStatus, BitwardenHostConnectInput, OpenBotDesktopApi } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import type { BitwardenConnectorStatus, BitwardenHostConnectInput, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 
-type DesktopBitwarden = OpenBotDesktopApi["bitwardenConnector"];
+type DesktopBitwarden = ZollyBotDesktopApi["bitwardenConnector"];
 
 /** What the Bitwarden page reaches: one connection, of this computer or of a joined server. */
 export type BitwardenConnectorPort = Pick<DesktopBitwarden, "status" | "connect" | "disconnect" | "onChanged"> & {
@@ -11,9 +11,9 @@ export type BitwardenConnectorPort = Pick<DesktopBitwarden, "status" | "connect"
 
 const unsupported = () => Promise.reject(new Error(sourceText("error.team.connectorsUnsupported")));
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function bitwardenConnectorPort(): BitwardenConnectorPort {
-  const api = window.openbot.bitwardenConnector;
+  const api = window.zollybot.bitwardenConnector;
   return {
     status: () => api.status(),
     connect: (key) => api.connect(key),
@@ -88,7 +88,7 @@ export function hostBitwardenConnectorPort(serverId: () => string | undefined): 
     if (!id) throw new Error(sourceText("error.team.connectorsUnsupported"));
     return id;
   };
-  const api = () => window.openbot.bitwardenConnector;
+  const api = () => window.zollybot.bitwardenConnector;
   return polledBitwardenConnectorPort({
     status: async () => api().hostStatus(server()),
     connectHost: async (input) => api().hostConnect(input, server()),

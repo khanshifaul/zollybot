@@ -1,4 +1,4 @@
-import type { AgentProviderStatus } from "@openbot/contracts/ipc";
+import type { AgentProviderStatus } from "@zollybot/contracts/ipc";
 
 /**
  * Whether Codex on this computer can open live voice: `ready` with a ChatGPT sign-in, `signIn` with

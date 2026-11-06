@@ -1,10 +1,10 @@
-import { avatarHeadColor } from "@openbot/brand/bloub-avatar";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { ConversationMessage } from "@openbot/contracts/ipc";
-import { markdownPlainText } from "@openbot/contracts/markdown-preview-text";
-import { serializeSelectionInstruction } from "@openbot/contracts/selection-instruction";
-import { type CauseCode, classifyFailure, type FailureProperties } from "@openbot/telemetry";
 import { useQueryClient } from "@tanstack/react-query";
+import { avatarHeadColor } from "@zollybot/brand/bloub-avatar";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { ConversationMessage } from "@zollybot/contracts/ipc";
+import { markdownPlainText } from "@zollybot/contracts/markdown-preview-text";
+import { serializeSelectionInstruction } from "@zollybot/contracts/selection-instruction";
+import { type CauseCode, classifyFailure, type FailureProperties } from "@zollybot/telemetry";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { router, useIsFocused } from "expo-router";
 import type { NativeStackNavigationProp } from "expo-router/native-stack";

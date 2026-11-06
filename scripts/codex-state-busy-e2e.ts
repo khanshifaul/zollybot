@@ -6,20 +6,20 @@
 //    `error.provider.codexStateBusy`, not the CLI's words.
 // 3. An update whose new copy fails the same way keeps the copy, and does not report
 //    `error.provider.cliUpdateFailed`.
-// `bun run test:codex-state-busy`. Writes .openbot-build/codex-state-busy-e2e/report.json.
+// `bun run test:codex-state-busy`. Writes .zollybot-build/codex-state-busy-e2e/report.json.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { chmod, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result } from "effect";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/codex-state-busy-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/codex-state-busy-e2e");
 const REQUEST_TIMEOUT_MS = 1_000;
 /** Longer than the request timeout, and shorter than the long start timeout below. */
 const SLOW_INITIALIZE_MS = 2_500;
 const LONG_START_TIMEOUT_MS = 8_000;
-const root = await mkdtemp(join(tmpdir(), "openbot-codex-state-busy-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-codex-state-busy-"));
 const home = join(root, "home");
 const logPath = join(root, "protocol.jsonl");
 const modePath = join(root, "mode.json");
@@ -27,19 +27,19 @@ const modePath = join(root, "mode.json");
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_FAKE_CODEX_LOG = logPath;
-process.env.OPENBOT_FAKE_CODEX_MODE = modePath;
-delete process.env.OPENBOT_CODEX_PATH;
+process.env.ZOLLYBOT_FAKE_CODEX_LOG = logPath;
+process.env.ZOLLYBOT_FAKE_CODEX_MODE = modePath;
+delete process.env.ZOLLYBOT_CODEX_PATH;
 // A second provider that is on makes the launch a start of several providers, as on a hosted server.
 // Its CLI path names no file, so it fails at once and starts no process.
-process.env.OPENBOT_OPENCODE_PATH = join(root, "no-opencode");
+process.env.ZOLLYBOT_OPENCODE_PATH = join(root, "no-opencode");
 mkdirSync(home, { recursive: true });
 
 const { ConversationRuntime } = await import("../src/backend/agent/conversation-runtime");
 const { ProviderRuntime } = await import("../src/backend/agent/provider-runtime");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 const { BUILT_IN_PROVIDER_DRIVERS, NO_PROVIDER_CREDENTIALS } = await import("../src/backend/provider-drivers");
 
 // The mode applies to each process that starts while it is set: `slow` answers `initialize` late,
@@ -51,8 +51,8 @@ if (process.argv.includes("--version")) {
   process.stdout.write("codex-cli 99.0.0\\n");
   process.exit(0);
 }
-const log = (entry) => fs.appendFileSync(process.env.OPENBOT_FAKE_CODEX_LOG, JSON.stringify({ pid: process.pid, ...entry }) + "\\n");
-const mode = JSON.parse(fs.readFileSync(process.env.OPENBOT_FAKE_CODEX_MODE, "utf8")).mode;
+const log = (entry) => fs.appendFileSync(process.env.ZOLLYBOT_FAKE_CODEX_LOG, JSON.stringify({ pid: process.pid, ...entry }) + "\\n");
+const mode = JSON.parse(fs.readFileSync(process.env.ZOLLYBOT_FAKE_CODEX_MODE, "utf8")).mode;
 log({ start: true, mode });
 if (mode === "busy") {
   process.stderr.write("Error: failed to initialize sqlite state runtime at /home/user/.codex: timed out waiting for state db backfill at /home/user/.codex (status: running)\\n");
@@ -134,7 +134,7 @@ async function installFakeCodex(directory: string): Promise<string> {
 }
 
 function runtime(executable: string) {
-  const store = new AgentStore(join(root, "profile"), home, new OpenBotDatabase(join(root, "profile")));
+  const store = new AgentStore(join(root, "profile"), home, new ZollyBotDatabase(join(root, "profile")));
   const providers = new ProviderRuntime({
     offProviders: BUILT_IN_PROVIDER_DRIVERS.map((driver) => driver.id).filter(
       (id) => id !== "codex" && id !== "opencode",

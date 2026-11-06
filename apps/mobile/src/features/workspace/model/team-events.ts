@@ -1,7 +1,7 @@
-import type { AgentEvent, TeamRealtimeEvent } from "@openbot/contracts/ipc";
-import { type PlanLimits, withUsageEvent } from "@openbot/team-client/plan-limits";
-import { reconcilePendingRequests } from "@openbot/team-client/runtime-attention";
 import { type QueryClient, replaceEqualDeep } from "@tanstack/react-query";
+import type { AgentEvent, TeamRealtimeEvent } from "@zollybot/contracts/ipc";
+import { type PlanLimits, withUsageEvent } from "@zollybot/team-client/plan-limits";
+import { reconcilePendingRequests } from "@zollybot/team-client/runtime-attention";
 import { decodeMobileBrowserTabs } from "@/features/browser/model/browser-tabs";
 import type { LiveWorkspaceStore } from "./live-workspace-store";
 import { AGENT_SETTINGS_PARTS, type QueryScope, queryKeys } from "./query-keys";

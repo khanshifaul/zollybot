@@ -1,6 +1,11 @@
-import { nextSpeechSpeed, type OpenBotDesktopApi, type SpeechSettings, type SpeechSpeed } from "@openbot/contracts/ipc";
-import { toast } from "@openbot/ui";
-import { currentText } from "@openbot/ui/text";
+import {
+  nextSpeechSpeed,
+  type SpeechSettings,
+  type SpeechSpeed,
+  type ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
+import { toast } from "@zollybot/ui";
+import { currentText } from "@zollybot/ui/text";
 import { createSignal } from "solid-js";
 import { setReplyPlaybackRate } from "./speech-playback";
 import { speechPort } from "./speech-port";
@@ -24,7 +29,7 @@ function apply(next: SpeechSpeed): void {
  * again, so that it keeps a change that another control made since its own load.
  */
 export function updateSpeechSettings(
-  voice: Pick<OpenBotDesktopApi["voice"], "getSpeechSettings" | "setSpeechSettings">,
+  voice: Pick<ZollyBotDesktopApi["voice"], "getSpeechSettings" | "setSpeechSettings">,
   patch: Partial<SpeechSettings>,
 ): Promise<SpeechSettings> {
   const next = saving.then(async () => voice.setSpeechSettings({ ...(await voice.getSpeechSettings()), ...patch }));

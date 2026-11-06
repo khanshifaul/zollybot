@@ -1,9 +1,9 @@
 import { createRequire } from "node:module";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import type { BrowserWindow } from "electron";
 import type * as Koffi from "koffi";
 
-const logger = createOpenBotLogger("mac-panel-activation");
+const logger = createZollyBotLogger("mac-panel-activation");
 const requireModule = createRequire(import.meta.url);
 
 interface ObjcRuntime {
@@ -33,7 +33,7 @@ function objcRuntime(): ObjcRuntime {
 }
 
 /**
- * Stops a macOS panel from making OpenBot the active application.
+ * Stops a macOS panel from making ZollyBot the active application.
  *
  * Electron's `type: "panel"` window reports the non-activating style only from its own `styleMask`
  * getter, so the window server never learns that the panel must not take activation. When the user
@@ -55,6 +55,6 @@ export function preventPanelActivation(window: BrowserWindow): void {
     }
     objc.sendBool(nsWindow, setPreventsActivation, true);
   } catch (error) {
-    logger.warn("Unable to stop the panel from activating OpenBot:", toLogValue(error));
+    logger.warn("Unable to stop the panel from activating ZollyBot:", toLogValue(error));
   }
 }

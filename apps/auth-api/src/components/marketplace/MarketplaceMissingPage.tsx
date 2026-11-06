@@ -26,7 +26,7 @@ export function isMarketplaceMissingData(value: unknown): value is MarketplaceMi
 }
 
 /**
- * A listing that is not in the Marketplace: the creator removed it, OpenBot rejected it, or the
+ * A listing that is not in the Marketplace: the creator removed it, ZollyBot rejected it, or the
  * link is wrong. The page does not say which, so a rejected listing looks like a wrong link.
  */
 export function MarketplaceMissingPage(props: { data?: unknown }) {

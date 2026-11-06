@@ -8,7 +8,7 @@ index c1f2a8fd902926ae2490879bf565277d79ed1d9e..2506a47a14dc1592b43e95ce369ae438
        rnRuntime, "__reanimatedModuleProxy", reanimatedModuleProxy->toOptimizedObject(rnRuntime));
 +
 +#ifdef ANDROID
-+  // OpenBot patch: React Native writes `ShadowNodeWrapper::shadowNode` of a mounted view on the JS
++  // ZollyBot patch: React Native writes `ShadowNodeWrapper::shadowNode` of a mounted view on the JS
 +  // thread at each commit, while the UI thread copies the same `shared_ptr` in animated updates. The
 +  // copy races with the write and corrupts the reference count (double free). A detached wrapper
 +  // holds the same family and tag, and nothing writes it.
@@ -30,7 +30,7 @@ index fde44fface4d5a2a64aac6e4a3a8acdc14fca0f1..604d621b9f9a068269ed13a55889798d
      throw new Error(`[Reanimated] Failed to find shadow node for a ref.`);
    }
 -  return shadowNodeWrapper;
-+  // OpenBot patch: only Android installs this function. See RNRuntimeDecorator.cpp.
++  // ZollyBot patch: only Android installs this function. See RNRuntimeDecorator.cpp.
 +  const detachShadowNodeWrapper = global._reanimatedDetachShadowNodeWrapper;
 +  return detachShadowNodeWrapper ? detachShadowNodeWrapper(shadowNodeWrapper) : shadowNodeWrapper;
  }
@@ -45,7 +45,7 @@ index 4d478fc28a8035ae2f43eef2caf4873c600910a5..58e6a2d66f65e045f6511861ceb044cc
    }
  
 -  return shadowNodeWrapper;
-+  // OpenBot patch: only Android installs this function. See RNRuntimeDecorator.cpp.
++  // ZollyBot patch: only Android installs this function. See RNRuntimeDecorator.cpp.
 +  const detachShadowNodeWrapper = global._reanimatedDetachShadowNodeWrapper;
 +  return detachShadowNodeWrapper
 +    ? detachShadowNodeWrapper(shadowNodeWrapper)

@@ -6,7 +6,7 @@
       to it.
     -->
     <service
-      android:name="run.openbot.mobile.notifications.OpenBotMessagingService"
+      android:name="run.zollybot.mobile.notifications.ZollyBotMessagingService"
       android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />

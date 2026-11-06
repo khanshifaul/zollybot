@@ -1,13 +1,13 @@
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { CustomProviderReasoningEffort } from "@openbot/contracts/ipc";
+import type { CustomProviderReasoningEffort } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import { type CustomProviderConfig, customModelOutputLimit } from "./opencode-config";
 import type { PiMcpExtension } from "./pi-mcp";
 import { providerCall } from "./provider-client-effects";
 
-const VARIABLE = "OPENBOT_PI_CUSTOM_ENDPOINTS";
+const VARIABLE = "ZOLLYBOT_PI_CUSTOM_ENDPOINTS";
 
 /** Pi's default for a model with no context window (Pi 1.4.0 `models-configuration.md`). */
 const DEFAULT_CONTEXT_WINDOW = 128_000;
@@ -39,7 +39,7 @@ type PiThinkingLevelMap = Readonly<
  * The `reasoning_effort` that Pi sends for each of its levels, and null for a level that the endpoint
  * does not accept. Pi lists only the levels that are not null (`getSupportedThinkingLevels`, Pi 1.1.0:
  * https://github.com/earendil-works/pi/blob/abe508e1b89912adde45528136c3221eb69acdd7/packages/ai/src/models.ts#L1224-L1233).
- * Pi's `off` is OpenBot's `none`.
+ * Pi's `off` is ZollyBot's `none`.
  */
 function thinkingLevelMap(efforts: readonly CustomProviderReasoningEffort[]): PiThinkingLevelMap {
   const accepted = (effort: CustomProviderReasoningEffort) => (efforts.includes(effort) ? effort : null);
@@ -61,7 +61,7 @@ function thinkingLevelMap(efforts: readonly CustomProviderReasoningEffort[]): Pi
 // escaped to stay literal. Pi lists a model only when its provider has a key, so a keyless endpoint
 // gets a placeholder key, as Pi's own Ollama example does; a local server ignores it.
 const SOURCE = `export default function (pi) {
-  const slot = Symbol.for("openbot.pi.customEndpoints");
+  const slot = Symbol.for("zollybot.pi.customEndpoints");
   globalThis[slot] ??= process.env.${VARIABLE};
   delete process.env.${VARIABLE};
   const payload = globalThis[slot];
@@ -72,7 +72,7 @@ const SOURCE = `export default function (pi) {
       name: endpoint.name,
       baseUrl: endpoint.baseUrl,
       api: "openai-completions",
-      apiKey: endpoint.apiKey ? literal(endpoint.apiKey) : "openbot",
+      apiKey: endpoint.apiKey ? literal(endpoint.apiKey) : "zollybot",
       headers: Object.fromEntries(Object.entries(endpoint.headers).map(([name, value]) => [name, literal(value)])),
       models: endpoint.models.map((model) => ({
         type: "chat",
@@ -125,7 +125,7 @@ export const createPiCustomEndpointExtension = Effect.fn("PiCustomEndpoints.crea
   if (usable.length === 0) return null;
   const root = directory ?? tmpdir();
   yield* providerCall(() => mkdir(root, { recursive: true, mode: 0o700 }));
-  const folder = yield* providerCall(() => mkdtemp(join(root, "openbot-pi-")));
+  const folder = yield* providerCall(() => mkdtemp(join(root, "zollybot-pi-")));
   const path = join(folder, "custom-endpoints.mjs");
   yield* providerCall(() => writeFile(path, SOURCE, { mode: 0o600 })).pipe(
     Effect.onError(() => providerCall(() => rm(folder, { recursive: true, force: true })).pipe(Effect.orDie)),

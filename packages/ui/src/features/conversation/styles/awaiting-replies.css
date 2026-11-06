@@ -11,17 +11,17 @@
   z-index: 9;
   width: auto;
   margin: 0 12px calc(-1 * var(--awaiting-composer-overlap));
-  border-color: var(--openbot-queue-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-queue-surface);
+  border-color: var(--zollybot-queue-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-queue-surface);
   padding-bottom: var(--awaiting-composer-overlap);
-  animation: queue-panel-in var(--openbot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: queue-panel-in var(--zollybot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .awaiting-replies.task-list .task-list-header {
   min-width: 0;
   flex: 1;
-  border-radius: var(--openbot-radius-lg);
+  border-radius: var(--zollybot-radius-lg);
 }
 
 /* The close button sits next to the header button, because a button cannot hold another. */
@@ -31,8 +31,8 @@
 }
 
 .awaiting-replies-dismiss {
-  margin-inline-end: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
+  margin-inline-end: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
 }
 
 .awaiting-replies-item {
@@ -40,10 +40,10 @@
 }
 
 .awaiting-replies-avatar {
-  --agent-avatar-optical-offset: calc(var(--openbot-icon-md) * -0.14);
+  --agent-avatar-optical-offset: calc(var(--zollybot-icon-md) * -0.14);
 
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
   flex: 0 0 auto;
 }
 
@@ -52,21 +52,21 @@
   min-width: 0;
   flex: 1;
   align-items: baseline;
-  gap: var(--openbot-space-2);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  gap: var(--zollybot-space-2);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 
 .awaiting-replies-name {
   flex: 0 0 auto;
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .awaiting-replies-preview {
   overflow: hidden;
   min-width: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -75,23 +75,23 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-md);
+  gap: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-md);
 }
 
 .awaiting-replies-detail {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .awaiting-replies-item[data-state="failed"] .awaiting-replies-state-label {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 /* An agent that was asked waits for the user or for its plan, so its work does not go on. */
 .awaiting-replies-item[data-wait] .awaiting-replies-state-label {
-  color: var(--openbot-warning-text);
+  color: var(--zollybot-warning-text);
 }
 
 .awaiting-replies-open,

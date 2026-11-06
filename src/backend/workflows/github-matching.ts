@@ -7,7 +7,7 @@
  * data: a value of the wrong shape makes the event match nothing.
  */
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   isGitHubRepositoryName,
   WORKFLOW_GITHUB_EVENTS,
@@ -18,7 +18,7 @@ import {
   workflowGitHubEventItemKind,
   workflowGitHubTriggerRepositories,
   workflowListField,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   type DynamicRecord,
   isBoolean,
@@ -26,7 +26,7 @@ import {
   isNumber,
   isOneOf,
   isString,
-} from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/runtime-values";
 import { EXTERNAL_EVENT_END, EXTERNAL_EVENT_START } from "../webhook-trigger";
 
 /** The parts of one GitHub event that the triggers, the loop guard and the run text read. */
@@ -45,7 +45,7 @@ export interface GitHubEventFacts {
    * event, the item's author. A check suite names no author, so it is false there.
    */
   authorIsBot: boolean;
-  /** Whether the actor is the OpenBot GitHub App's own bot. */
+  /** Whether the actor is the ZollyBot GitHub App's own bot. */
   causedByBot: boolean;
   /** GitHub's `author_association` of the comment, review or item. */
   association: string | null;

@@ -16,11 +16,11 @@ export const messages = {
   "connector.github.connectedAs": "Połączono jako @{login}",
   "connector.github.repositoriesTitle": "Repozytoria",
   "connector.github.repositoriesDescription":
-    "Agenci mogą używać tylko repozytoriów, w których zainstalowano OpenBot GitHub App.",
+    "Agenci mogą używać tylko repozytoriów, w których zainstalowano ZollyBot GitHub App.",
   "connector.github.chooseRepositories": "Wybierz repozytoria",
   "connector.github.repositoriesLoading": "Odczytywanie repozytoriów z GitHub",
-  "connector.github.repositoriesFailed": "OpenBot nie mógł odczytać repozytoriów z GitHub.",
-  "connector.github.noRepositories": "OpenBot GitHub App nie jest jeszcze zainstalowana w żadnym repozytorium.",
+  "connector.github.repositoriesFailed": "ZollyBot nie mógł odczytać repozytoriów z GitHub.",
+  "connector.github.noRepositories": "ZollyBot GitHub App nie jest jeszcze zainstalowana w żadnym repozytorium.",
   "connector.github.moreRepositories": {
     one: "I jeszcze {count} repozytorium",
     few: "I jeszcze {count} repozytoria",
@@ -34,7 +34,7 @@ export const messages = {
   "connector.github.expiredTitle": "Połączenie z GitHub wygasło",
   "connector.github.expiredDescription": "Połącz ponownie jako @{login}, aby przywrócić agentom dostęp do GitHub.",
   "connector.github.reconnect": "Połącz ponownie",
-  "connector.github.actionFailed": "OpenBot nie mógł zmienić połączenia z GitHub.",
+  "connector.github.actionFailed": "ZollyBot nie mógł zmienić połączenia z GitHub.",
   "connector.github.statusConnected": "Połączono",
   "connector.github.statusConnecting": "Łączenie",
   "connector.github.statusExpired": "Wygasło",
@@ -49,7 +49,7 @@ export const messages = {
   "connector.github.noMatch": "Żadne repozytorium nie pasuje do „{query}”.",
   "connector.github.stepSignIn": "Logowanie",
   "connector.github.stepConnected": "Połączono",
-  "connector.github.requestingCode": "OpenBot prosi GitHub o kod.",
+  "connector.github.requestingCode": "ZollyBot prosi GitHub o kod.",
   "connector.github.codeLabel": "Kod {code}",
   "connector.github.failedTitle": "Nie udało się połączyć z GitHub",
   "connector.github.cancelConnecting": "Anuluj łączenie z GitHub",
@@ -64,7 +64,7 @@ export const messages = {
   "connector.github.disconnectConfirmTitle": "Odłączyć GitHub?",
   "connector.github.disconnectConfirmDescription": "Odłączenie usuwa logowanie @{login} z tego komputera.",
   "connector.github.disconnectEffectTools": "Każdy agent traci narzędzia GitHub, gh i git.",
-  "connector.github.disconnectEffectRevoke": "Potem otworzy się GitHub, gdzie możesz cofnąć dostęp dla OpenBot.",
+  "connector.github.disconnectEffectRevoke": "Potem otworzy się GitHub, gdzie możesz cofnąć dostęp dla ZollyBot.",
   "connector.github.disconnectEffectKept": "Czaty, pliki i pamięć agentów zostają na tym komputerze.",
   // The same text for the connection of a joined server. {host} is the server name, such as Studio.
   "connector.github.descriptionHost":
@@ -85,7 +85,7 @@ export const messages = {
 
   "connector.slack.title": "Slack",
   "connector.slack.description":
-    "Ludzie oznaczają @OpenBot w Slacku lub wysyłają mu wiadomość prywatną. Slack Orchestrator pyta odpowiedniego agenta i odpowiada.",
+    "Ludzie oznaczają @ZollyBot w Slacku lub wysyłają mu wiadomość prywatną. Slack Orchestrator pyta odpowiedniego agenta i odpowiada.",
   "connector.slack.statusConnected": "Połączono",
   "connector.slack.statusAttention": "Wymaga uwagi",
   "connector.slack.summaryConnected": "{workspace} · odpowiada Slack Orchestrator",
@@ -101,16 +101,16 @@ export const messages = {
   "connector.slack.addAgent": "Dodaj agenta",
   "connector.slack.actionFailed": "Slack nie przyjął zmiany",
   "connector.slack.workspaceTitle": "Obszary robocze",
-  "connector.slack.workspaceDescription": "Ludzie oznaczają @OpenBot lub wysyłają mu wiadomość prywatną.",
+  "connector.slack.workspaceDescription": "Ludzie oznaczają @ZollyBot lub wysyłają mu wiadomość prywatną.",
   "connector.slack.disconnectWorkspace": "Odłącz",
   "connector.slack.disconnectAllTitle": "Odłącz Slack",
   "connector.slack.disconnectAllSummary":
-    "Wszystkie przestrzenie robocze zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez @OpenBot.",
+    "Wszystkie przestrzenie robocze zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez @ZollyBot.",
   "connector.slack.disconnectAllSummaryOrchestrator":
-    "Wszystkie przestrzenie robocze zostaną odłączone. Slack Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "Wszystkie przestrzenie robocze zostaną odłączone. Slack Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.slack.missingScopes":
-    "OpenBot nie ma tych uprawnień w Slacku: {scopes}. Odłącz obszar roboczy, a potem połącz go ponownie.",
-  "connector.slack.retryAt": "Slack poprosił OpenBot o czekanie. Kolejna próba o {time}.",
+    "ZollyBot nie ma tych uprawnień w Slacku: {scopes}. Odłącz obszar roboczy, a potem połącz go ponownie.",
+  "connector.slack.retryAt": "Slack poprosił ZollyBot o czekanie. Kolejna próba o {time}.",
   "connector.slack.reconnect": "Połącz ponownie",
   "connector.slack.pause": "Wstrzymaj",
   "connector.slack.resume": "Wznów",
@@ -121,12 +121,12 @@ export const messages = {
   "connector.slack.orchestratorNone": "Żaden agent jeszcze nie odpowiada",
   "connector.slack.orchestratorNoneDescription": "Dodaj Slack Orchestrator, inaczej Slack nie dostanie odpowiedzi.",
   "connector.slack.inviteNote":
-    "OpenBot sam dołącza do każdego publicznego kanału, także do nowych. Do kanału prywatnego zaproś go: /invite @OpenBot.",
+    "ZollyBot sam dołącza do każdego publicznego kanału, także do nowych. Do kanału prywatnego zaproś go: /invite @ZollyBot.",
   "connector.slack.stepWorkspace": "Obszar roboczy",
   "connector.slack.stepAgent": "Agent",
   "connector.slack.connectTitle": "Połącz obszar roboczy Slack",
   "connector.slack.connectDescription":
-    "OpenBot instaluje w obszarze roboczym jedną aplikację o nazwie OpenBot, która dołącza do każdego publicznego kanału.",
+    "ZollyBot instaluje w obszarze roboczym jedną aplikację o nazwie ZollyBot, która dołącza do każdego publicznego kanału.",
   "connector.slack.connectStepBrowser": "Slack otworzy się w przeglądarce",
   "connector.slack.connectStepAllow": "Wybierz obszar roboczy w prawym górnym rogu, a potem Allow",
   "connector.slack.connectStepReturn": "To okno przejdzie dalej, gdy Slack skończy",
@@ -134,25 +134,25 @@ export const messages = {
   "connector.slack.connectWaiting": "Czekanie na Slack. Dokończ instalację w przeglądarce.",
   "connector.slack.agentStepTitle": "Dodaj Slack Orchestrator",
   "connector.slack.agentStepDescription":
-    "Ten nowy agent odpowiada na wszystko, co ludzie wysyłają do @OpenBot w obszarze roboczym {workspace}.",
+    "Ten nowy agent odpowiada na wszystko, co ludzie wysyłają do @ZollyBot w obszarze roboczym {workspace}.",
   "connector.slack.orchestratorName": "Slack Orchestrator",
   "connector.slack.orchestratorRole": "Odpowiada w Slacku i pyta zespół",
   "connector.slack.orchestratorDoesReceive": "Jako pierwszy odbiera każdą prośbę ze Slacka",
   "connector.slack.orchestratorDoesDelegate": "Przekazuje każde zadanie najlepiej pasującemu agentowi",
   "connector.slack.orchestratorDoesAnswer": "Publikuje odpowiedź w wątku Slacka",
   "connector.slack.orchestratorModel": "Model",
-  "connector.slack.doneTitle": "OpenBot jest w obszarze roboczym {workspace}",
-  "connector.slack.doneDescription": "Oznacz @OpenBot w dowolnym publicznym kanale lub wyślij mu wiadomość prywatną.",
+  "connector.slack.doneTitle": "ZollyBot jest w obszarze roboczym {workspace}",
+  "connector.slack.doneDescription": "Oznacz @ZollyBot w dowolnym publicznym kanale lub wyślij mu wiadomość prywatną.",
   "connector.slack.done": "Gotowe",
   "connector.slack.disconnectTitle": "Odłączyć {workspace}?",
   "connector.slack.disconnectDescription":
-    "OpenBot przestaje odpowiadać w obszarze roboczym {workspace} i usuwa swój token Slack z tego komputera.",
+    "ZollyBot przestaje odpowiadać w obszarze roboczym {workspace} i usuwa swój token Slack z tego komputera.",
   "connector.slack.disconnectDescriptionHost":
-    "OpenBot przestaje odpowiadać w obszarze roboczym {workspace} i usuwa swój token Slack z serwera {host}.",
+    "ZollyBot przestaje odpowiadać w obszarze roboczym {workspace} i usuwa swój token Slack z serwera {host}.",
   "connector.slack.disconnectEffect":
-    "Ludzie z obszaru roboczego {workspace} nie będą już mogli kontaktować się z twoimi agentami przez @OpenBot.",
-  "connector.slack.removeEffectKept": "Rozmowy i Slack Orchestrator zostają w OpenBot.",
-  "connector.slack.removeEffectDeleted": "Slack Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "Ludzie z obszaru roboczego {workspace} nie będą już mogli kontaktować się z twoimi agentami przez @ZollyBot.",
+  "connector.slack.removeEffectKept": "Rozmowy i Slack Orchestrator zostają w ZollyBot.",
+  "connector.slack.removeEffectDeleted": "Slack Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.slack.keep": "Nie odłączaj",
   "connector.slack.close": "Zamknij",
   "connector.slack.addWorkspace": "Dodaj obszar roboczy",
@@ -171,7 +171,7 @@ export const messages = {
 
   "connector.discord.title": "Discord",
   "connector.discord.description":
-    "Ludzie oznaczają @OpenBot na kanale serwera Discord. Discord Orchestrator pyta odpowiedniego agenta i odpowiada.",
+    "Ludzie oznaczają @ZollyBot na kanale serwera Discord. Discord Orchestrator pyta odpowiedniego agenta i odpowiada.",
   "connector.discord.statusConnected": "Połączono",
   "connector.discord.statusAttention": "Wymaga uwagi",
   "connector.discord.summaryConnected": "{workspace} · odpowiada Discord Orchestrator",
@@ -188,16 +188,16 @@ export const messages = {
   "connector.discord.actionFailed": "Discord nie przyjął zmiany",
   "connector.discord.workspaceTitle": "Serwery Discord",
   "connector.discord.workspaceDescription":
-    "Oznacz @OpenBot na kanale. Odpowiedz na wiadomość OpenBot, aby kontynuować.",
+    "Oznacz @ZollyBot na kanale. Odpowiedz na wiadomość ZollyBot, aby kontynuować.",
   "connector.discord.disconnectWorkspace": "Odłącz",
   "connector.discord.disconnectAllTitle": "Odłącz Discord",
   "connector.discord.disconnectAllSummary":
-    "Wszystkie serwery zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez @OpenBot.",
+    "Wszystkie serwery zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez @ZollyBot.",
   "connector.discord.disconnectAllSummaryOrchestrator":
-    "Wszystkie serwery zostaną odłączone. Discord Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "Wszystkie serwery zostaną odłączone. Discord Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.discord.missingScopes":
-    "OpenBot nie ma tych uprawnień w Discordzie: {scopes}. Odłącz serwer Discord, a potem połącz go ponownie.",
-  "connector.discord.retryAt": "Discord poprosił OpenBot o czekanie. Kolejna próba o {time}.",
+    "ZollyBot nie ma tych uprawnień w Discordzie: {scopes}. Odłącz serwer Discord, a potem połącz go ponownie.",
+  "connector.discord.retryAt": "Discord poprosił ZollyBot o czekanie. Kolejna próba o {time}.",
   "connector.discord.reconnect": "Połącz ponownie",
   "connector.discord.pause": "Wstrzymaj",
   "connector.discord.resume": "Wznów",
@@ -208,11 +208,11 @@ export const messages = {
   "connector.discord.orchestratorNone": "Żaden agent jeszcze nie odpowiada",
   "connector.discord.orchestratorNoneDescription":
     "Dodaj Discord Orchestrator, inaczej Discord nie dostanie odpowiedzi.",
-  "connector.discord.channelsNote": "OpenBot widzi kanały, które może wyświetlać jego rola.",
+  "connector.discord.channelsNote": "ZollyBot widzi kanały, które może wyświetlać jego rola.",
   "connector.discord.stepWorkspace": "Serwer Discord",
   "connector.discord.stepAgent": "Agent",
   "connector.discord.connectTitle": "Połącz serwer Discord",
-  "connector.discord.connectDescription": "OpenBot dodaje do serwera Discord jednego bota o nazwie OpenBot.",
+  "connector.discord.connectDescription": "ZollyBot dodaje do serwera Discord jednego bota o nazwie ZollyBot.",
   "connector.discord.connectStepBrowser": "Discord otworzy się w przeglądarce",
   "connector.discord.connectStepAllow": "Wybierz serwer, a potem Authorize",
   "connector.discord.connectStepReturn": "To okno przejdzie dalej, gdy Discord skończy",
@@ -220,25 +220,25 @@ export const messages = {
   "connector.discord.connectWaiting": "Czekanie na Discord. Dokończ autoryzację w przeglądarce.",
   "connector.discord.agentStepTitle": "Dodaj Discord Orchestrator",
   "connector.discord.agentStepDescription":
-    "Ten nowy agent odpowiada na wszystko, co ludzie wysyłają do @OpenBot na serwerze {workspace}.",
+    "Ten nowy agent odpowiada na wszystko, co ludzie wysyłają do @ZollyBot na serwerze {workspace}.",
   "connector.discord.orchestratorName": "Discord Orchestrator",
   "connector.discord.orchestratorRole": "Odpowiada w Discordzie i pyta zespół",
   "connector.discord.orchestratorDoesReceive": "Jako pierwszy odbiera każdą prośbę z Discorda",
   "connector.discord.orchestratorDoesDelegate": "Przekazuje każde zadanie najlepiej pasującemu agentowi",
   "connector.discord.orchestratorDoesAnswer": "Odpowiada na kanale Discord",
   "connector.discord.orchestratorModel": "Model",
-  "connector.discord.doneTitle": "OpenBot jest na serwerze {workspace}",
-  "connector.discord.doneDescription": "Oznacz @OpenBot na kanale. Odpowiedz na wiadomość OpenBot, aby kontynuować.",
+  "connector.discord.doneTitle": "ZollyBot jest na serwerze {workspace}",
+  "connector.discord.doneDescription": "Oznacz @ZollyBot na kanale. Odpowiedz na wiadomość ZollyBot, aby kontynuować.",
   "connector.discord.done": "Gotowe",
   "connector.discord.disconnectTitle": "Odłączyć {workspace}?",
   "connector.discord.disconnectDescription":
-    "OpenBot przestaje odpowiadać na serwerze {workspace} i usuwa połączenie z Discord z tego komputera.",
+    "ZollyBot przestaje odpowiadać na serwerze {workspace} i usuwa połączenie z Discord z tego komputera.",
   "connector.discord.disconnectDescriptionHost":
-    "OpenBot przestaje odpowiadać na serwerze {workspace} i usuwa połączenie z Discord z serwera {host}.",
+    "ZollyBot przestaje odpowiadać na serwerze {workspace} i usuwa połączenie z Discord z serwera {host}.",
   "connector.discord.disconnectEffect":
-    "Ludzie na serwerze {workspace} nie będą już mogli kontaktować się z twoimi agentami przez @OpenBot.",
-  "connector.discord.removeEffectKept": "Rozmowy i Discord Orchestrator zostają w OpenBot.",
-  "connector.discord.removeEffectDeleted": "Discord Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "Ludzie na serwerze {workspace} nie będą już mogli kontaktować się z twoimi agentami przez @ZollyBot.",
+  "connector.discord.removeEffectKept": "Rozmowy i Discord Orchestrator zostają w ZollyBot.",
+  "connector.discord.removeEffectDeleted": "Discord Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.discord.keep": "Nie odłączaj",
   "connector.discord.close": "Zamknij",
   "connector.discord.addWorkspace": "Dodaj serwer Discord",
@@ -254,25 +254,25 @@ export const messages = {
     many: "{count} serwerów Discord · odpowiada Discord Orchestrator",
     other: "{count} serwera Discord · odpowiada Discord Orchestrator",
   },
-  "connector.discord.accessTitle": "Kto może używać OpenBot",
-  "connector.discord.accessDescription": "OpenBot odpowiada tylko tym osobom. Ignoruje oznaczenia od innych.",
+  "connector.discord.accessTitle": "Kto może używać ZollyBot",
+  "connector.discord.accessDescription": "ZollyBot odpowiada tylko tym osobom. Ignoruje oznaczenia od innych.",
   "connector.discord.accessEveryone": "Wszyscy na serwerze",
   "connector.discord.accessEveryoneDescription":
-    "Każdy, kto może pisać na kanale widocznym dla OpenBot, może go oznaczyć.",
+    "Każdy, kto może pisać na kanale widocznym dla ZollyBot, może go oznaczyć.",
   "connector.discord.accessRoles": "Członkowie z rolami: {roles}",
   "connector.discord.accessChoose": "Wybierz role",
-  "connector.discord.accessDialogTitle": "Kto może używać OpenBot na {workspace}?",
-  "connector.discord.accessDialogDescription": "Bez wybranej roli każdy może oznaczyć OpenBot.",
+  "connector.discord.accessDialogTitle": "Kto może używać ZollyBot na {workspace}?",
+  "connector.discord.accessDialogDescription": "Bez wybranej roli każdy może oznaczyć ZollyBot.",
   "connector.discord.accessLoading": "Wczytywanie ról…",
   "connector.discord.accessLoadFailed": "Nie udało się wczytać ról Discord",
   "connector.discord.accessNoRoles": "Ten serwer nie ma ról do wyboru.",
   "connector.discord.accessRoleDeleted": "{role} (usunięta)",
   "connector.discord.accessSave": "Zapisz",
-  "connector.discord.accessHostUpdate": "Zaktualizuj OpenBot na {host}, aby wybrać role.",
+  "connector.discord.accessHostUpdate": "Zaktualizuj ZollyBot na {host}, aby wybrać role.",
 
   "connector.telegram.title": "Telegram",
   "connector.telegram.description":
-    "Dodaj bota OpenBot do grupy Telegram lub otwórz z nim czat prywatny. Telegram Orchestrator pyta odpowiedniego agenta i odpowiada.",
+    "Dodaj bota ZollyBot do grupy Telegram lub otwórz z nim czat prywatny. Telegram Orchestrator pyta odpowiedniego agenta i odpowiada.",
   "connector.telegram.statusConnected": "Połączono",
   "connector.telegram.statusAttention": "Wymaga uwagi",
   "connector.telegram.summaryConnected": {
@@ -300,29 +300,29 @@ export const messages = {
   "connector.telegram.chatsTitle": "Czaty",
   "connector.telegram.groupDescription": "Ludzie oznaczają bota lub odpowiadają na jego wiadomości.",
   "connector.telegram.directDescription": "Każda wiadomość w tym czacie trafia do Telegram Orchestrator.",
-  "connector.telegram.helpRemoved": "Bota OpenBot nie ma już w tym czacie. Odłącz czat, a potem dodaj bota ponownie.",
+  "connector.telegram.helpRemoved": "Bota ZollyBot nie ma już w tym czacie. Odłącz czat, a potem dodaj bota ponownie.",
   "connector.telegram.helpRelayUnavailable":
-    "OpenBot nie może odbierać wiadomości z Telegram na tym komputerze. Zaloguj się, nadaj temu komputerowi nazwę w ustawieniach serwera i nie zamykaj OpenBot.",
+    "ZollyBot nie może odbierać wiadomości z Telegram na tym komputerze. Zaloguj się, nadaj temu komputerowi nazwę w ustawieniach serwera i nie zamykaj ZollyBot.",
   "connector.telegram.helpRelayUnavailableHost":
-    "OpenBot na serwerze {host} nie może odbierać wiadomości z Telegram. Na serwerze {host} zaloguj się, nadaj serwerowi nazwę w ustawieniach serwera i nie zamykaj OpenBot.",
-  "connector.telegram.helpError": "OpenBot nie może połączyć się z tym czatem. Połącz ponownie lub odłącz czat.",
-  "connector.telegram.retryAt": "Telegram poprosił OpenBot o czekanie. Kolejna próba o {time}.",
+    "ZollyBot na serwerze {host} nie może odbierać wiadomości z Telegram. Na serwerze {host} zaloguj się, nadaj serwerowi nazwę w ustawieniach serwera i nie zamykaj ZollyBot.",
+  "connector.telegram.helpError": "ZollyBot nie może połączyć się z tym czatem. Połącz ponownie lub odłącz czat.",
+  "connector.telegram.retryAt": "Telegram poprosił ZollyBot o czekanie. Kolejna próba o {time}.",
   "connector.telegram.pause": "Wstrzymaj",
   "connector.telegram.resume": "Wznów",
   "connector.telegram.reconnect": "Połącz ponownie",
   "connector.telegram.disconnectChat": "Odłącz",
   "connector.telegram.disconnectAllTitle": "Odłącz Telegram",
   "connector.telegram.disconnectAllSummary":
-    "Wszystkie czaty zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez bota OpenBot.",
+    "Wszystkie czaty zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez bota ZollyBot.",
   "connector.telegram.disconnectAllSummaryOrchestrator":
-    "Wszystkie czaty zostaną odłączone. Telegram Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "Wszystkie czaty zostaną odłączone. Telegram Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.telegram.rowAction": "{action}: {name}",
   "connector.telegram.linkChat": "Połącz czat",
   "connector.telegram.addToGroup": "Dodaj do grupy",
   "connector.telegram.openDirectChat": "Otwórz czat prywatny",
   "connector.telegram.orchestratorTitle": "Telegram Orchestrator",
   "connector.telegram.orchestratorDescription":
-    "Ten agent odbiera wiadomości do OpenBot ze wszystkich twoich czatów Telegram. Na krótkie odpowiada sam, inną pracę przekazuje odpowiedniemu agentowi i publikuje odpowiedź w czacie.",
+    "Ten agent odbiera wiadomości do ZollyBot ze wszystkich twoich czatów Telegram. Na krótkie odpowiada sam, inną pracę przekazuje odpowiedniemu agentowi i publikuje odpowiedź w czacie.",
   "connector.telegram.orchestratorNone": "Żaden agent jeszcze nie odpowiada",
   "connector.telegram.orchestratorNoneDescription":
     "Dodaj Telegram Orchestrator, inaczej Telegram nie dostanie odpowiedzi.",
@@ -332,29 +332,29 @@ export const messages = {
   "connector.telegram.stepAgent": "Agent",
   "connector.telegram.connectTitle": "Połącz czat Telegram",
   "connector.telegram.connectDescription":
-    "Dodaj bota OpenBot do grupy lub otwórz z nim czat prywatny. Jeden bot obsługuje wszystkie twoje czaty.",
+    "Dodaj bota ZollyBot do grupy lub otwórz z nim czat prywatny. Jeden bot obsługuje wszystkie twoje czaty.",
   "connector.telegram.connectStepBrowser": "Telegram otworzy się w przeglądarce",
   "connector.telegram.connectStepPick": "Wybierz grupę lub naciśnij Start w czacie prywatnym",
   "connector.telegram.connectStepReturn": "To okno przejdzie dalej, gdy czat zostanie połączony",
   "connector.telegram.connectWaiting": "Czekanie na Telegram. Wybierz czat w Telegramie.",
   "connector.telegram.agentStepTitle": "Dodaj Telegram Orchestrator",
   "connector.telegram.agentStepDescription":
-    "Ten nowy agent odpowiada na wiadomości do OpenBot w czacie {chat} i w każdym czacie, który połączysz później.",
+    "Ten nowy agent odpowiada na wiadomości do ZollyBot w czacie {chat} i w każdym czacie, który połączysz później.",
   "connector.telegram.orchestratorName": "Telegram Orchestrator",
   "connector.telegram.orchestratorRole": "Odpowiada w Telegramie i pyta zespół",
-  "connector.telegram.orchestratorDoesReceive": "Jako pierwszy odbiera każdą wiadomość z Telegram do OpenBot",
+  "connector.telegram.orchestratorDoesReceive": "Jako pierwszy odbiera każdą wiadomość z Telegram do ZollyBot",
   "connector.telegram.orchestratorDoesDelegate": "Przekazuje każde zadanie najlepiej pasującemu agentowi",
   "connector.telegram.orchestratorDoesAnswer": "Publikuje odpowiedź w czacie Telegram",
   "connector.telegram.orchestratorModel": "Model",
-  "connector.telegram.doneTitle": "OpenBot jest w czacie {chat}",
+  "connector.telegram.doneTitle": "ZollyBot jest w czacie {chat}",
   "connector.telegram.done": "Gotowe",
   "connector.telegram.disconnectTitle": "Odłączyć {chat}?",
-  "connector.telegram.leaveDescription": "Bot OpenBot opuści czat {chat}, a OpenBot przestanie tam odpowiadać.",
+  "connector.telegram.leaveDescription": "Bot ZollyBot opuści czat {chat}, a ZollyBot przestanie tam odpowiadać.",
   "connector.telegram.disconnectEffect":
-    "Ludzie w czacie {chat} nie będą już mogli kontaktować się z twoimi agentami przez bota OpenBot.",
-  "connector.telegram.removeEffectKept": "Rozmowy i Telegram Orchestrator zostają w OpenBot.",
+    "Ludzie w czacie {chat} nie będą już mogli kontaktować się z twoimi agentami przez bota ZollyBot.",
+  "connector.telegram.removeEffectKept": "Rozmowy i Telegram Orchestrator zostają w ZollyBot.",
   "connector.telegram.removeEffectDeleted":
-    "To ostatni czat, więc Telegram Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "To ostatni czat, więc Telegram Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.telegram.keep": "Nie odłączaj",
   "connector.telegram.close": "Zamknij",
   "connector.whatsapp.title": "WhatsApp",
@@ -389,14 +389,14 @@ export const messages = {
   "connector.whatsapp.numbersTitle": "Numery",
   "connector.whatsapp.linkNumber": "Połącz numer",
   "connector.whatsapp.ownNumberNote":
-    "Do OpenBot trafiają wiadomości z twojego czatu „Wiadomość do siebie” i od osób, którym pozwolisz.",
+    "Do ZollyBot trafiają wiadomości z twojego czatu „Wiadomość do siebie” i od osób, którym pozwolisz.",
   "connector.whatsapp.dedicatedNote":
-    "Do OpenBot trafiają wiadomości od osób, którym pozwolisz. Inne osoby dostają kod, który mają ci przekazać.",
+    "Do ZollyBot trafiają wiadomości od osób, którym pozwolisz. Inne osoby dostają kod, który mają ci przekazać.",
   "connector.whatsapp.helpLoggedOut": "WhatsApp usunął ten komputer z połączonych urządzeń. Połącz numer ponownie.",
   "connector.whatsapp.helpLoggedOutHost": "WhatsApp usunął ten serwer z połączonych urządzeń. Połącz numer ponownie.",
   "connector.whatsapp.helpError":
-    "OpenBot nie może połączyć się z WhatsApp na tym numerze. Połącz ponownie lub odłącz numer.",
-  "connector.whatsapp.retryAt": "WhatsApp poprosił OpenBot o czekanie. Kolejna próba o {time}.",
+    "ZollyBot nie może połączyć się z WhatsApp na tym numerze. Połącz ponownie lub odłącz numer.",
+  "connector.whatsapp.retryAt": "WhatsApp poprosił ZollyBot o czekanie. Kolejna próba o {time}.",
   "connector.whatsapp.pause": "Wstrzymaj",
   "connector.whatsapp.resume": "Wznów",
   "connector.whatsapp.reconnect": "Połącz ponownie",
@@ -406,14 +406,14 @@ export const messages = {
   "connector.whatsapp.disconnectAllSummary":
     "Wszystkie numery zostaną odłączone. Nikt nie dotrze już do Twoich agentów przez WhatsApp.",
   "connector.whatsapp.disconnectAllSummaryOrchestrator":
-    "Wszystkie numery zostaną odłączone. WhatsApp Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "Wszystkie numery zostaną odłączone. WhatsApp Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.whatsapp.rowAction": "{action}: {name}",
   "connector.whatsapp.ownNumber": "Numer prywatny",
   "connector.whatsapp.ownNumberDescription":
-    "Pisać mogą tylko twój czat „Wiadomość do siebie” i osoby, którym pozwolisz. Wyłącz dla numeru tylko dla OpenBot.",
+    "Pisać mogą tylko twój czat „Wiadomość do siebie” i osoby, którym pozwolisz. Wyłącz dla numeru tylko dla ZollyBot.",
   "connector.whatsapp.orchestratorTitle": "WhatsApp Orchestrator",
   "connector.whatsapp.orchestratorDescription":
-    "Ten agent odbiera wiadomości do OpenBot ze wszystkich twoich połączonych numerów. Na krótkie odpowiada sam, inną pracę przekazuje odpowiedniemu agentowi i odpowiada w WhatsApp.",
+    "Ten agent odbiera wiadomości do ZollyBot ze wszystkich twoich połączonych numerów. Na krótkie odpowiada sam, inną pracę przekazuje odpowiedniemu agentowi i odpowiada w WhatsApp.",
   "connector.whatsapp.orchestratorNone": "Żaden agent jeszcze nie odpowiada",
   "connector.whatsapp.orchestratorNoneDescription":
     "Dodaj WhatsApp Orchestrator, inaczej WhatsApp nie dostanie odpowiedzi.",
@@ -427,8 +427,8 @@ export const messages = {
   "connector.whatsapp.kindLabel": "Numer",
   "connector.whatsapp.kindPersonal": "Mój numer prywatny",
   "connector.whatsapp.kindPersonalDescription":
-    "OpenBot odpowiada tylko w twoim czacie „Wiadomość do siebie” i osobom, którym pozwolisz.",
-  "connector.whatsapp.kindDedicated": "Numer tylko dla OpenBot",
+    "ZollyBot odpowiada tylko w twoim czacie „Wiadomość do siebie” i osobom, którym pozwolisz.",
+  "connector.whatsapp.kindDedicated": "Numer tylko dla ZollyBot",
   "connector.whatsapp.kindDedicatedDescription":
     "Nieznane osoby dostają kod, który mają ci przekazać. Zatwierdzasz je tutaj.",
   "connector.whatsapp.methodLabel": "Sposób połączenia",
@@ -455,27 +455,27 @@ export const messages = {
   "connector.whatsapp.failedTimeout": "Kod wygasł, zanim telefon go użył.",
   "connector.whatsapp.failedRefused": "WhatsApp odrzucił połączenie. Odczekaj kilka minut i spróbuj ponownie.",
   "connector.whatsapp.failedBusy": "Trwa inne łączenie. Poczekaj, aż się skończy, i spróbuj ponownie.",
-  "connector.whatsapp.failedUnavailable": "OpenBot nie może połączyć się z WhatsApp. Sprawdź połączenie z internetem.",
+  "connector.whatsapp.failedUnavailable": "ZollyBot nie może połączyć się z WhatsApp. Sprawdź połączenie z internetem.",
   "connector.whatsapp.tryAgain": "Ponów",
   "connector.whatsapp.agentStepTitle": "Dodaj WhatsApp Orchestrator",
   "connector.whatsapp.agentStepDescription":
-    "Ten nowy agent odpowiada na wiadomości do OpenBot na numerze {number} i na każdym numerze, który połączysz później.",
+    "Ten nowy agent odpowiada na wiadomości do ZollyBot na numerze {number} i na każdym numerze, który połączysz później.",
   "connector.whatsapp.orchestratorName": "WhatsApp Orchestrator",
   "connector.whatsapp.orchestratorRole": "Odpowiada w WhatsApp i pyta zespół",
-  "connector.whatsapp.orchestratorDoesReceive": "Jako pierwszy odbiera każdą wiadomość z WhatsApp do OpenBot",
+  "connector.whatsapp.orchestratorDoesReceive": "Jako pierwszy odbiera każdą wiadomość z WhatsApp do ZollyBot",
   "connector.whatsapp.orchestratorDoesDelegate": "Przekazuje każde zadanie najlepiej pasującemu agentowi",
   "connector.whatsapp.orchestratorDoesAnswer": "Odpowiada w czacie WhatsApp",
   "connector.whatsapp.orchestratorModel": "Model",
-  "connector.whatsapp.doneTitle": "OpenBot jest połączony z numerem {number}",
+  "connector.whatsapp.doneTitle": "ZollyBot jest połączony z numerem {number}",
   "connector.whatsapp.done": "Gotowe",
   "connector.whatsapp.disconnectTitle": "Odłączyć {number}?",
   "connector.whatsapp.disconnectDescription":
-    "OpenBot wyloguje się z WhatsApp na numerze {number}. Jeśli OpenBot był wyłączony, usuń też urządzenie w WhatsApp > Połączone urządzenia.",
+    "ZollyBot wyloguje się z WhatsApp na numerze {number}. Jeśli ZollyBot był wyłączony, usuń też urządzenie w WhatsApp > Połączone urządzenia.",
   "connector.whatsapp.disconnectEffect":
     "Ludzie nie będą już mogli kontaktować się z twoimi agentami przez numer {number}.",
-  "connector.whatsapp.removeEffectKept": "Rozmowy i WhatsApp Orchestrator zostają w OpenBot.",
+  "connector.whatsapp.removeEffectKept": "Rozmowy i WhatsApp Orchestrator zostają w ZollyBot.",
   "connector.whatsapp.removeEffectDeleted":
-    "To ostatni numer, więc WhatsApp Orchestrator i jego rozmowy zostaną usunięte z OpenBot.",
+    "To ostatni numer, więc WhatsApp Orchestrator i jego rozmowy zostaną usunięte z ZollyBot.",
   "connector.whatsapp.keep": "Nie odłączaj",
   "connector.whatsapp.close": "Zamknij",
   "connector.whatsapp.sendersTitle": "Kto może pisać na {number}",
@@ -495,7 +495,7 @@ export const messages = {
   "connector.whatsapp.groupDescription": "Osoby w tej grupie mogą zlecać pracę twoim agentom.",
   "connector.whatsapp.groupSearch": "Szukaj grup",
   "connector.whatsapp.groupsLoading": "Odczytywanie grup…",
-  "connector.whatsapp.groupsLoadFailed": "OpenBot nie mógł odczytać grup",
+  "connector.whatsapp.groupsLoadFailed": "ZollyBot nie mógł odczytać grup",
   "connector.whatsapp.groupsEmpty": "Ten numer nie należy do żadnej grupy.",
   "connector.whatsapp.groupsNoMatch": "Żadna grupa nie ma tej nazwy.",
   "connector.whatsapp.groupAdded": "Dodano",
@@ -508,9 +508,9 @@ export const messages = {
   "connector.whatsapp.deny": "Odrzuć",
   "connector.onePassword.title": "1Password",
   "connector.onePassword.description":
-    "Udostępnij OpenBot osobny sejf 1Password przez konto usługi, aby agenci mogli logować się na strony w przeglądarce OpenBot.",
+    "Udostępnij ZollyBot osobny sejf 1Password przez konto usługi, aby agenci mogli logować się na strony w przeglądarce ZollyBot.",
   "connector.onePassword.howItWorks":
-    "Połączenie tworzy sejf „Shared with OpenBot” na twoim koncie 1Password i konto usługi, które może odczytywać tylko ten sejf. OpenBot wypełnia zapisane loginy w swojej przeglądarce na tym komputerze, więc udostępniane są tylko elementy przeniesione do tego sejfu. Agenci nigdy nie widzą hasła.",
+    "Połączenie tworzy sejf „Shared with ZollyBot” na twoim koncie 1Password i konto usługi, które może odczytywać tylko ten sejf. ZollyBot wypełnia zapisane loginy w swojej przeglądarce na tym komputerze, więc udostępniane są tylko elementy przeniesione do tego sejfu. Agenci nigdy nie widzą hasła.",
   "connector.onePassword.connect": "Połącz 1Password",
   "connector.onePassword.setupTitle": "Konfiguracja",
   "connector.onePassword.stepCliTitle": "Zainstaluj 1Password CLI",
@@ -518,9 +518,9 @@ export const messages = {
   "connector.onePassword.stepCliInstalling": "Pobieranie 1Password CLI z 1Password",
   "connector.onePassword.stepCliReady": "Zainstalowana wersja: {version}.",
   "connector.onePassword.stepCliMissing":
-    "OpenBot pobierze je z 1Password do własnego folderu. Nie potrzeba hasła administratora.",
+    "ZollyBot pobierze je z 1Password do własnego folderu. Nie potrzeba hasła administratora.",
   "connector.onePassword.stepCliManual":
-    "OpenBot nie może go zainstalować na tym komputerze. Zainstaluj je z 1Password i wróć na tę stronę.",
+    "ZollyBot nie może go zainstalować na tym komputerze. Zainstaluj je z 1Password i wróć na tę stronę.",
   "connector.onePassword.installCli": "Zainstaluj",
   "connector.onePassword.stepAppTitle": "Włącz integrację z CLI",
   "connector.onePassword.stepAppDescription":
@@ -531,7 +531,7 @@ export const messages = {
   "connector.onePassword.checkAgain": "Sprawdź ponownie",
   "connector.onePassword.stepVaultTitle": "Utwórz udostępniony sejf",
   "connector.onePassword.stepVaultDescription":
-    "OpenBot tworzy sejf „Shared with OpenBot” i konto usługi, które może go tylko odczytywać. 1Password poprosi cię o zatwierdzenie.",
+    "ZollyBot tworzy sejf „Shared with ZollyBot” i konto usługi, które może go tylko odczytywać. 1Password poprosi cię o zatwierdzenie.",
   "connector.onePassword.useTokenDescription": "Zamiast tych kroków wklej token konta usługi z 1Password.com.",
   "connector.onePassword.useTokenAction": "Użyj tokenu",
   "connector.onePassword.tokenLabel": "Token konta usługi",
@@ -540,7 +540,7 @@ export const messages = {
   "connector.onePassword.approveInApp": "Zatwierdź prośbę w aplikacji 1Password",
   "connector.onePassword.cancel": "Anuluj",
   "connector.onePassword.chooseAccountTitle": "Wybierz konto",
-  "connector.onePassword.chooseAccountDescription": "OpenBot utworzy udostępniony sejf na wybranym koncie.",
+  "connector.onePassword.chooseAccountDescription": "ZollyBot utworzy udostępniony sejf na wybranym koncie.",
   "connector.onePassword.useAccount": "Użyj tego konta",
   "connector.onePassword.vaultTitle": "Udostępniony sejf",
   "connector.onePassword.vaultDescription":
@@ -555,46 +555,46 @@ export const messages = {
   "connector.onePassword.disconnect": "Odłącz",
   "connector.onePassword.disconnectTitle": "Odłącz 1Password",
   "connector.onePassword.disconnectSummary":
-    "OpenBot zapomina token. Sejf i konto usługi zostają w 1Password; usuń je tam, jeśli już ich nie potrzebujesz.",
-  "connector.onePassword.actionFailed": "OpenBot nie mógł zmienić połączenia z 1Password.",
+    "ZollyBot zapomina token. Sejf i konto usługi zostają w 1Password; usuń je tam, jeśli już ich nie potrzebujesz.",
+  "connector.onePassword.actionFailed": "ZollyBot nie mógł zmienić połączenia z 1Password.",
   "connector.onePassword.statusConnected": "Połączono",
   "connector.onePassword.statusConnecting": "Łączenie",
   "connector.onePassword.descriptionHost":
-    "Udostępnij OpenBot na serwerze {host} osobny sejf 1Password przez konto usługi, aby agenci na serwerze {host} mogli logować się na strony w jego przeglądarce.",
+    "Udostępnij ZollyBot na serwerze {host} osobny sejf 1Password przez konto usługi, aby agenci na serwerze {host} mogli logować się na strony w jego przeglądarce.",
   "connector.onePassword.howItWorksHost":
-    "{host} łączy się tokenem konta usługi. Na 1Password.com utwórz konto usługi, które może odczytywać tylko sejf udostępniany OpenBot, a potem wklej tutaj jego token. {host} sprawdza token i go przechowuje; ten komputer go nie przechowuje. Agenci nigdy nie widzą hasła.",
+    "{host} łączy się tokenem konta usługi. Na 1Password.com utwórz konto usługi, które może odczytywać tylko sejf udostępniany ZollyBot, a potem wklej tutaj jego token. {host} sprawdza token i go przechowuje; ten komputer go nie przechowuje. Agenci nigdy nie widzą hasła.",
   "connector.onePassword.disconnectSummaryHost":
     "{host} zapomina token. Sejf i konto usługi zostają w 1Password; usuń je tam, jeśli już ich nie potrzebujesz.",
   "connector.bitwarden.title": "Bitwarden",
   "connector.bitwarden.description": "Wypełniaj loginy w przeglądarce z Bitwarden.",
   "connector.bitwarden.setup":
-    "Zainstaluj Bitwarden CLI i zaloguj się poleceniem bw login. Utwórz folder o nazwie Shared with OpenBot i umieść w nim tylko loginy, których agenci mogą używać. Uruchom bw unlock --raw i wklej poniżej klucz sesji. Nie wklejaj hasła głównego.",
+    "Zainstaluj Bitwarden CLI i zaloguj się poleceniem bw login. Utwórz folder o nazwie Shared with ZollyBot i umieść w nim tylko loginy, których agenci mogą używać. Uruchom bw unlock --raw i wklej poniżej klucz sesji. Nie wklejaj hasła głównego.",
   "connector.bitwarden.scope":
-    "Wszyscy agenci na tym komputerze mogą używać pasujących loginów z Shared with OpenBot. OpenBot używa dokładnych źródeł HTTPS. Nie używa elementów, które wymagają podania hasła głównego ani niestandardowej reguły dopasowania URI.",
+    "Wszyscy agenci na tym komputerze mogą używać pasujących loginów z Shared with ZollyBot. ZollyBot używa dokładnych źródeł HTTPS. Nie używa elementów, które wymagają podania hasła głównego ani niestandardowej reguły dopasowania URI.",
   "connector.bitwarden.session":
-    "Klucz sesji zostaje w pamięci. Połącz ponownie po 8 godzinach bez użycia sejfu lub po zamknięciu OpenBot. Odłączenie kończy dostęp OpenBot; nie blokuje innych klientów Bitwarden.",
+    "Klucz sesji zostaje w pamięci. Połącz ponownie po 8 godzinach bez użycia sejfu lub po zamknięciu ZollyBot. Odłączenie kończy dostęp ZollyBot; nie blokuje innych klientów Bitwarden.",
   "connector.bitwarden.sessionKey": "Klucz sesji Bitwarden",
   "connector.bitwarden.connect": "Połącz Bitwarden",
   "connector.bitwarden.disconnect": "Odłącz Bitwarden",
   "connector.bitwarden.disconnectAction": "Odłącz",
   "connector.bitwarden.disconnectSummary":
-    "OpenBot zapomina klucz sesji. Agenci nie mogą już wypełniać danych logowania z Bitwarden. Inne klienty Bitwarden pozostają odblokowane.",
+    "ZollyBot zapomina klucz sesji. Agenci nie mogą już wypełniać danych logowania z Bitwarden. Inne klienty Bitwarden pozostają odblokowane.",
   "connector.bitwarden.disconnectSummaryHost":
     "{host} usuwa klucz API i hasło główne. Agenci na {host} nie mogą już wypełniać danych logowania z Bitwarden.",
   "connector.bitwarden.connected": "Połączono",
-  "connector.bitwarden.actionFailed": "OpenBot nie mógł zmienić połączenia z Bitwarden.",
+  "connector.bitwarden.actionFailed": "ZollyBot nie mógł zmienić połączenia z Bitwarden.",
   "connector.bitwarden.descriptionHost": "Wypełniaj loginy w przeglądarce na {host} z Bitwarden lub Vaultwarden.",
   "connector.bitwarden.setupHost":
-    "{host} loguje się własnym Bitwarden CLI. W sejfie utwórz folder o nazwie Shared with OpenBot i umieść w nim tylko loginy, których agenci mogą używać. W sejfie internetowym otwórz Ustawienia › Zabezpieczenia › Klucze i wyświetl klucz API. Poniżej wpisz adres serwera, client_id, client_secret i hasło główne.",
+    "{host} loguje się własnym Bitwarden CLI. W sejfie utwórz folder o nazwie Shared with ZollyBot i umieść w nim tylko loginy, których agenci mogą używać. W sejfie internetowym otwórz Ustawienia › Zabezpieczenia › Klucze i wyświetl klucz API. Poniżej wpisz adres serwera, client_id, client_secret i hasło główne.",
   "connector.bitwarden.scopeHost":
-    "Wszyscy agenci na {host} mogą używać pasujących loginów z Shared with OpenBot. OpenBot używa dokładnych źródeł HTTPS. Nie używa elementów, które wymagają ponownego podania hasła głównego, ani elementów z własną regułą dopasowania URI.",
+    "Wszyscy agenci na {host} mogą używać pasujących loginów z Shared with ZollyBot. ZollyBot używa dokładnych źródeł HTTPS. Nie używa elementów, które wymagają ponownego podania hasła głównego, ani elementów z własną regułą dopasowania URI.",
   "connector.bitwarden.sessionHost":
     "{host} przechowuje klucz API i hasło główne w postaci zaszyfrowanej, aby po ponownym uruchomieniu znowu odblokować sejf. Ten komputer ich nie przechowuje. Rozłączenie usuwa je z {host}. {host} musi łączyć się z adresem serwera przez HTTPS.",
   "connector.bitwarden.serverUrl": "Adres serwera",
   "connector.bitwarden.folderTitle": "Udostępniony folder",
   "connector.bitwarden.folderDescription":
     "Przenieś login do tego folderu w Bitwarden, aby agenci mogli się nim logować. Usuń go z folderu, aby cofnąć dostęp.",
-  "connector.bitwarden.folderName": "Shared with OpenBot",
+  "connector.bitwarden.folderName": "Shared with ZollyBot",
   "connector.bitwarden.folderKind": "Folder w Bitwarden",
   "connector.bitwarden.clientId": "client_id klucza API",
   "connector.bitwarden.clientSecret": "client_secret klucza API",
@@ -612,19 +612,19 @@ export const messages = {
   "connector.protonPass.keyPlaceholder": "pst_…",
   "connector.protonPass.setupTitle": "Konfiguracja",
   "connector.protonPass.setupDescription":
-    "Połącz otwiera logowanie do Proton w przeglądarce. Potem OpenBot tworzy udostępniony sejf i zachowuje tylko klucz tylko do odczytu.",
+    "Połącz otwiera logowanie do Proton w przeglądarce. Potem ZollyBot tworzy udostępniony sejf i zachowuje tylko klucz tylko do odczytu.",
   "connector.protonPass.setupDescriptionHost":
     "Połącz otwiera logowanie do Proton w przeglądarce. Potem {host} tworzy udostępniony sejf i zachowuje tylko klucz tylko do odczytu.",
-  "connector.protonPass.vaultName": "Shared with OpenBot",
+  "connector.protonPass.vaultName": "Shared with ZollyBot",
   "connector.protonPass.vaultSetup":
-    "OpenBot tworzy ten sejf podczas łączenia. Przenieś do niego dane logowania, aby je udostępnić.",
+    "ZollyBot tworzy ten sejf podczas łączenia. Przenieś do niego dane logowania, aby je udostępnić.",
   "connector.protonPass.showSteps": "Pokaż kroki",
   "connector.protonPass.stepsLabel": "Kroki połączenia",
   "connector.protonPass.stepSignIn": "Logowanie",
   "connector.protonPass.stepVault": "Tworzenie sejfu",
   "connector.protonPass.stepDone": "Gotowe",
   "connector.protonPass.signInTitle": "Zaloguj się do Proton",
-  "connector.protonPass.signInStarting": "OpenBot rozpoczyna logowanie. Strona Proton otworzy się w przeglądarce.",
+  "connector.protonPass.signInStarting": "ZollyBot rozpoczyna logowanie. Strona Proton otworzy się w przeglądarce.",
   "connector.protonPass.signInDescription":
     "Logowanie jest otwarte w przeglądarce. Proton prosi o hasło i drugi składnik.",
   "connector.protonPass.signInDescriptionHost":
@@ -635,7 +635,7 @@ export const messages = {
   "connector.protonPass.continue": "Dalej",
   "connector.protonPass.setupStepTitle": "Tworzenie udostępnionego sejfu",
   "connector.protonPass.setupStepDescription":
-    "OpenBot tworzy sejf „{vault}” i klucz tylko do odczytu. Potem wylogowuje Twoją sesję Proton.",
+    "ZollyBot tworzy sejf „{vault}” i klucz tylko do odczytu. Potem wylogowuje Twoją sesję Proton.",
   "connector.protonPass.doneTitle": "Proton Pass jest połączony",
   "connector.protonPass.doneDescription": "Przenieś dane logowania do „{vault}”, aby agenci mogli się nimi logować.",
   "connector.protonPass.failedTitle": "Nie połączono Proton Pass",
@@ -669,9 +669,9 @@ export const messages = {
   "connector.protonPass.keyNoExpiry": "Tylko do odczytu. Nie wygasa.",
   "connector.protonPass.disconnectTitle": "Odłącz Proton Pass",
   "connector.protonPass.disconnectSummary":
-    "OpenBot usuwa swój klucz dostępu z tego komputera. Sejf i jego dane logowania zostają na Twoim koncie Proton.",
+    "ZollyBot usuwa swój klucz dostępu z tego komputera. Sejf i jego dane logowania zostają na Twoim koncie Proton.",
   "connector.protonPass.disconnectSummaryHost":
-    "OpenBot usuwa swój klucz dostępu z {host}. Sejf i jego dane logowania zostają na Twoim koncie Proton.",
+    "ZollyBot usuwa swój klucz dostępu z {host}. Sejf i jego dane logowania zostają na Twoim koncie Proton.",
   "connector.protonPass.disconnect": "Odłącz",
-  "connector.protonPass.actionFailed": "OpenBot nie mógł zmienić połączenia z Proton Pass.",
+  "connector.protonPass.actionFailed": "ZollyBot nie mógł zmienić połączenia z Proton Pass.",
 } as const satisfies PartialTranslation<typeof source>;

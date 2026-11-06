@@ -1,10 +1,9 @@
-import type { RoutineRunFields } from "@openbot/contracts/ipc";
-import type { EventRoutineOwner, EventRoutineRun } from "@openbot/contracts/ipc-events";
-import { ROUTINE_RECOVERY_RUN_ERROR_LIMIT } from "@openbot/contracts/team-protocol/routine-recovery-v1";
+import type { RoutineRunFields } from "@zollybot/contracts/ipc";
+import type { EventRoutineOwner, EventRoutineRun } from "@zollybot/contracts/ipc-events";
+import { ROUTINE_RECOVERY_RUN_ERROR_LIMIT } from "@zollybot/contracts/team-protocol/routine-recovery-v1";
 import { Effect, Schema } from "effect";
 import type { RoutineScheduler } from "./agent/routine-scheduler";
 import type { ChannelRoutineScheduler } from "./channel-routine-scheduler";
-import type { OpenBotDatabase } from "./openbot-database";
 import type {
   OwnedRoutineRecord,
   ReceivedWebhookEvent,
@@ -12,6 +11,7 @@ import type {
   WebhookReceiveResult,
 } from "./routine-store";
 import { WebhookRouteStore } from "./webhook-route-store";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 export class RoutineRecordFailed extends Schema.TaggedError<RoutineRecordFailed>()("RoutineRecordFailed", {
   operation: Schema.String,
@@ -19,7 +19,7 @@ export class RoutineRecordFailed extends Schema.TaggedError<RoutineRecordFailed>
 }) {}
 
 export interface RoutineRecordsOptions {
-  database: OpenBotDatabase;
+  database: ZollyBotDatabase;
   agentRoutines: RoutineScheduler;
   channelRoutines: ChannelRoutineScheduler;
   agentExists(agentId: string): boolean;

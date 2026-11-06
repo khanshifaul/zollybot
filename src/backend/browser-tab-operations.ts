@@ -1,4 +1,4 @@
-import type { BrowserDiagnosticEntry, BrowserSnapshot, BrowserTarget } from "@openbot/contracts/ipc";
+import type { BrowserDiagnosticEntry, BrowserSnapshot, BrowserTarget } from "@zollybot/contracts/ipc";
 import { Context, Deferred, Effect, Fiber } from "effect";
 import type { BrowserDialog, BrowserDialogOwner, BrowserPageStatus, SnapshotReadResult } from "./browser-cdp";
 import { type BrowserOperationError, browserFailure, browserSync } from "./browser-effects";
@@ -21,7 +21,7 @@ const OPERATION_DEADLINE_BACKSTOP_MS = 250;
  * Whether a person controls a tab. Only the agent tool paths provide it, so a person's own actions and
  * the host's internal work still run while the person holds the tab.
  */
-export const BrowserToolHold = Context.Reference<(tabId: string) => boolean>("openbot/BrowserToolHold", {
+export const BrowserToolHold = Context.Reference<(tabId: string) => boolean>("zollybot/BrowserToolHold", {
   defaultValue: () => () => false,
 });
 
@@ -29,7 +29,7 @@ export const BrowserToolHold = Context.Reference<(tabId: string) => boolean>("op
  * The agent turn that runs a tool. Only the agent tool paths provide it: a dialog that opens during the
  * action of a person stays with the person.
  */
-export const BrowserDialogTurn = Context.Reference<BrowserDialogOwner | undefined>("openbot/BrowserDialogTurn", {
+export const BrowserDialogTurn = Context.Reference<BrowserDialogOwner | undefined>("zollybot/BrowserDialogTurn", {
   defaultValue: () => undefined,
 });
 

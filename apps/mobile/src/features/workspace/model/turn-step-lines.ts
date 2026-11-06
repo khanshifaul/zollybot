@@ -1,4 +1,4 @@
-import type { ConversationMessage } from "@openbot/contracts/ipc";
+import type { ConversationMessage } from "@zollybot/contracts/ipc";
 
 /**
  * A progress line of a turn, such as "Running a command…". The host sends each line once and stores

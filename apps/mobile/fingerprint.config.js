@@ -4,7 +4,7 @@
 //
 // The iOS share extension carries its own copy of the share sender, which `plugins/with-share-target.js`
 // builds at prebuild. An update cannot change it, so its sources change `runtimeVersion` too. A change in
-// `@openbot/team-client` reaches the extension with the next build.
+// `@zollybot/team-client` reaches the extension with the next build.
 //
 // `pod install` downloads sherpa-onnx into `modules/speech/ios/vendor/`, after EAS has already hashed the
 // project, so the build would hash a different tree. The podspec pins the archive's SHA-256 and is hashed.

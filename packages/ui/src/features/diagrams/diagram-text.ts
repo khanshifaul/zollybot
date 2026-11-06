@@ -1,5 +1,5 @@
-import type { RoutineSchedule } from "@openbot/contracts/ipc";
-import type { AppMessages } from "@openbot/i18n";
+import type { RoutineSchedule } from "@zollybot/contracts/ipc";
+import type { AppMessages } from "@zollybot/i18n";
 import { currentText } from "../../text";
 import { routineScheduleSummary } from "../conversation/routine-schedule-ui";
 import type { DiagramRoutineWebhook, DiagramRunStatus, DiagramStepRun, DiagramStepStatus } from "./diagram-model";

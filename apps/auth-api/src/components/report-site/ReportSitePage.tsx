@@ -1,6 +1,6 @@
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
 import type { JSX } from "@solidjs/web";
 import { Link } from "@tanstack/solid-router";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { createSignal, createUniqueId, For, Show } from "solid-js";
 import { CONTACT_EMAIL } from "../../lib/contact";
 import { LandingIcon } from "../landing/LandingIcon";
@@ -13,7 +13,7 @@ const REPORT_REASONS = ["phishing", "malware", "abuse", "copyright", "other"] as
 const DETAILS_LIMIT = 1_000;
 
 /** An example value, not text: it is the same in all languages. */
-const HOSTNAME_EXAMPLE = "example.openbot.site";
+const HOSTNAME_EXAMPLE = "example.zollybot.site";
 
 type ReportStatus = "idle" | "sending" | "sent" | "failed";
 

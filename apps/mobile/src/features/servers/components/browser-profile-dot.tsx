@@ -1,5 +1,5 @@
-import { avatarHueSwatch } from "@openbot/brand/bloub-avatar";
-import type { AvatarHue } from "@openbot/contracts/ipc";
+import { avatarHueSwatch } from "@zollybot/brand/bloub-avatar";
+import type { AvatarHue } from "@zollybot/contracts/ipc";
 import { View } from "react-native";
 import { useCSSVariable } from "uniwind";
 
@@ -9,7 +9,7 @@ import { useCSSVariable } from "uniwind";
  * the same, so screen readers skip it.
  */
 export function BrowserProfileDot({ hue, size = 12 }: { hue: AvatarHue | "shared" | null; size?: number }) {
-  const muted = String(useCSSVariable("--openbot-text-grouped-secondary"));
+  const muted = String(useCSSVariable("--zollybot-text-grouped-secondary"));
   return (
     <View
       accessibilityElementsHidden

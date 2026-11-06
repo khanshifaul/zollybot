@@ -1,6 +1,6 @@
-import type { MachineMetrics, OpenBotDesktopApi } from "@openbot/contracts/ipc";
-import { MACHINE_RESOURCES_CAPABILITY } from "@openbot/contracts/team-protocol/machine-resources-v1";
-import { UsageMachineMeter } from "@openbot/ui/features/usage/UsageMachineMeter";
+import type { MachineMetrics, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { MACHINE_RESOURCES_CAPABILITY } from "@zollybot/contracts/team-protocol/machine-resources-v1";
+import { UsageMachineMeter } from "@zollybot/ui/features/usage/UsageMachineMeter";
 import { createMemo, createSignal, Show, untrack } from "solid-js";
 import { createUsageRefreshPoll } from "../account/usage-refresh-poll";
 import { canManageStorage } from "../files/storage-usage";
@@ -13,11 +13,11 @@ const MACHINE_REFRESH_MS = 60_000;
 /** The poll compares the age often, so a reading is at most this much later than the minute. */
 const MACHINE_REFRESH_CHECK_MS = 10_000;
 
-type MachinePort = Pick<OpenBotDesktopApi["storage"], "getMachineMetrics">;
+type MachinePort = Pick<ZollyBotDesktopApi["storage"], "getMachineMetrics">;
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 function machinePort(): MachinePort {
-  return window.openbot.storage;
+  return window.zollybot.storage;
 }
 
 /**

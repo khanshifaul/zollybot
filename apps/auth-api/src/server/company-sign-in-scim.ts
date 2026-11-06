@@ -1,8 +1,8 @@
 // The SCIM 2.0 user endpoint of company sign-in (RFC 7643, RFC 7644), only as much as Entra ID, Okta
 // and Google use for provisioning: find a user by `userName`, add one, and turn one off or on. A
-// user is an OpenBot account at one of the connection's domains, and `userName` is its email.
+// user is an ZollyBot account at one of the connection's domains, and `userName` is its email.
 
-import { type DynamicRecord, isBoolean, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { type DynamicRecord, isBoolean, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import type { ScimUser } from "./company-sign-in";
 import { CompanySignInError } from "./company-sign-in";
@@ -138,7 +138,7 @@ export const readScimUser = Effect.fn("Scim.readUser")(function* (request: Reque
   return scimJson(representation(user, request.url));
 });
 
-/** PATCH, PUT and DELETE. Only `active` changes; other attributes belong to the OpenBot account. */
+/** PATCH, PUT and DELETE. Only `active` changes; other attributes belong to the ZollyBot account. */
 export const updateScimUser = Effect.fn("Scim.updateUser")(function* (
   request: Request,
   userId: string,

@@ -4,7 +4,7 @@
 // the host profile and starts real provider turns, so the prompts are short. Pass an agent of the host
 // whose provider is signed in, and the Auth API address that the stack log prints:
 // `bun scripts/web-client-threads-e2e.ts --allow-mutations --agent=<agent id> --auth-api=http://localhost:<port>
-//  [--email=openbot-dev-host@example.com] [--browser-executable=<path>]`
+//  [--email=zollybot-dev-host@example.com] [--browser-executable=<path>]`
 //
 // 1. The test client starts a thread on the host, renames it, archives and restores it. The host shows
 //    each change.
@@ -12,20 +12,20 @@
 //    thread list, and sends a message in its tab. The host has the message.
 // 3. The web app deletes the thread from its tab menu. After the Undo time the host and the test client
 //    no longer list it.
-// Writes .openbot-build/web-client-threads-e2e/report.json and screenshots.
+// Writes .zollybot-build/web-client-threads-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
-import type { AgentTask, AgentTasksSnapshot, ConversationSnapshot } from "@openbot/contracts/ipc";
-import { AGENT_THREADS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-threads-v1";
-import { translateFor } from "@openbot/i18n";
-import { createOpenBotLogger } from "@openbot/logging";
+import type { AgentTask, AgentTasksSnapshot, ConversationSnapshot } from "@zollybot/contracts/ipc";
+import { AGENT_THREADS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-threads-v1";
+import { translateFor } from "@zollybot/i18n";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { chromium, type Page } from "playwright-core";
 import { argument, connectChannelE2e, SHORT_PROMPT, waitFor, writeReport } from "./channel-e2e-support";
 import { assertMutationAllowed, connectToDevApp } from "./dev-automation/cdp-client";
 import { readDevInstanceRecords } from "./dev-automation/instance-registry";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/web-client-threads-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/web-client-threads-e2e");
 mkdirSync(OUT, { recursive: true });
 const UI_WAIT_MS = 30_000;
 const english = translateFor("en");
@@ -34,7 +34,7 @@ const authApi = argument("auth-api")?.replace(/\/$/, "");
 assert.ok(agentArgument, "Pass --agent=<agent id> of a host agent whose provider is signed in.");
 assert.ok(authApi, "Pass --auth-api=<url> from the dev:test-client log.");
 const agentId: string = agentArgument;
-const email = argument("email") ?? "openbot-dev-host@example.com";
+const email = argument("email") ?? "zollybot-dev-host@example.com";
 const browserExecutable = argument("browser-executable");
 const run = crypto.randomUUID().slice(0, 6);
 const title = `Web thread ${run}`;
@@ -66,7 +66,7 @@ assertMutationAllowed({
   instanceNamed: true,
   target: clientRecord.instanceId,
 });
-const client = await connectToDevApp(clientRecord.remoteDebuggingPort, createOpenBotLogger("web-client-threads-e2e"), {
+const client = await connectToDevApp(clientRecord.remoteDebuggingPort, createZollyBotLogger("web-client-threads-e2e"), {
   expectedRendererPort: clientRecord.rendererPort,
   ownerPid: clientRecord.pid,
 });
@@ -82,7 +82,7 @@ let deleted = false;
 const literal = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 function hostTasks(): Promise<AgentTasksSnapshot> {
-  return host.page.evaluate((id) => window.openbot.agent.listTasks(id), agentId);
+  return host.page.evaluate((id) => window.zollybot.agent.listTasks(id), agentId);
 }
 
 async function hostTask(): Promise<AgentTask | undefined> {
@@ -97,7 +97,7 @@ async function shot(page: Page, label: string): Promise<void> {
 
 try {
   // 1. The test client works on the host's threads through the Team API.
-  const servers = await client.page.evaluate(() => window.openbot.servers.list());
+  const servers = await client.page.evaluate(() => window.zollybot.servers.list());
   const server = servers.find(
     (item) => item.kind === "remote" && item.compatibility?.capabilities.includes(AGENT_THREADS_CAPABILITY) === true,
   );
@@ -107,24 +107,24 @@ try {
 
   const task = await client.page.evaluate(
     ({ id, text, server }) =>
-      window.openbot.agent.startTask({ agentId: id, text, clientMessageId: crypto.randomUUID() }, server),
+      window.zollybot.agent.startTask({ agentId: id, text, clientMessageId: crypto.randomUUID() }, server),
     { id: agentId, text: SHORT_PROMPT, server: serverId },
   );
   taskId = task.id;
   report.taskId = task.id;
   await waitFor(host.page, "the host runs the thread", hostTask, (current) => current?.state === "idle");
   const input = { agentId, taskId: task.id };
-  await client.page.evaluate(({ value, server }) => window.openbot.agent.renameTask(value, server), {
+  await client.page.evaluate(({ value, server }) => window.zollybot.agent.renameTask(value, server), {
     value: { ...input, title },
     server: serverId,
   });
   await waitFor(host.page, "the host has the new title", hostTask, (current) => current?.title === title);
-  await client.page.evaluate(({ value, server }) => window.openbot.agent.closeTask(value, server), {
+  await client.page.evaluate(({ value, server }) => window.zollybot.agent.closeTask(value, server), {
     value: input,
     server: serverId,
   });
   await waitFor(host.page, "the host archives the thread", hostTask, (current) => current?.state === "closed");
-  await client.page.evaluate(({ value, server }) => window.openbot.agent.reopenTask(value, server), {
+  await client.page.evaluate(({ value, server }) => window.zollybot.agent.reopenTask(value, server), {
     value: input,
     server: serverId,
   });
@@ -141,7 +141,7 @@ try {
   assert.ok(code && code.length === 8, "The page shows no development code.");
   await web.keyboard.type(code);
   const agentName = await host.page.evaluate(async (id) => {
-    const found = (await window.openbot.agent.listAgents()).find((candidate) => candidate.id === id);
+    const found = (await window.zollybot.agent.listAgents()).find((candidate) => candidate.id === id);
     if (!found) throw new Error(`Unknown agent: ${id}`);
     return found.name;
   }, agentId);
@@ -169,7 +169,7 @@ try {
   await waitFor(
     host.page,
     "the host has the web message",
-    (): Promise<ConversationSnapshot> => host.page.evaluate((value) => window.openbot.agent.readTask(value), input),
+    (): Promise<ConversationSnapshot> => host.page.evaluate((value) => window.zollybot.agent.readTask(value), input),
     (snapshot) => snapshot.messages.some((message) => message.text.includes(webText)),
   );
   await waitFor(host.page, "the web turn ends", hostTask, (current) => current?.state === "idle");
@@ -187,7 +187,7 @@ try {
     .waitFor({ timeout: UI_WAIT_MS });
   await waitFor(host.page, "the host deletes the thread", hostTask, (current) => current === undefined);
   deleted = true;
-  const clientList = await client.page.evaluate(({ id, server }) => window.openbot.agent.listTasks(id, server), {
+  const clientList = await client.page.evaluate(({ id, server }) => window.zollybot.agent.listTasks(id, server), {
     id: agentId,
     server: serverId,
   });
@@ -201,10 +201,10 @@ try {
 } finally {
   if (taskId && !deleted) {
     const id = taskId;
-    await host.page.evaluate((value) => window.openbot.agent.stopTask(value), { agentId, taskId: id }).catch(() => {});
+    await host.page.evaluate((value) => window.zollybot.agent.stopTask(value), { agentId, taskId: id }).catch(() => {});
     await waitFor(host.page, "the cleanup stop", hostTask, (current) => current?.state !== "running").catch(() => {});
     await host.page
-      .evaluate((value) => window.openbot.agent.deleteTask(value), { agentId, taskId: id })
+      .evaluate((value) => window.zollybot.agent.deleteTask(value), { agentId, taskId: id })
       .catch(() => {});
   }
   writeReport("web-client-threads-e2e", report);

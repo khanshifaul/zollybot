@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   AUTOMATIC_VOICE_LANGUAGE,
   ELEVENLABS_VOICE_MODEL_ID,
@@ -20,9 +20,9 @@ import {
   type VoiceStreamAudio,
   type VoiceStreamTranscript,
   type VoiceTranscriptionResult,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect, Exit, Fiber, Scope } from "effect";
 import type { VoiceApiKeyStore } from "./voice-api-key-store";
 import {
@@ -46,7 +46,7 @@ import type {
   VoiceTranscriptionResponse,
 } from "./voice-transcription-protocol";
 
-const logger = createOpenBotLogger("voice-transcription-service");
+const logger = createZollyBotLogger("voice-transcription-service");
 
 const TRANSCRIPTION_TIMEOUT_MS = 180_000;
 /** The sherpa-onnx engine of each local model. The bench and smoke scripts use it too. */

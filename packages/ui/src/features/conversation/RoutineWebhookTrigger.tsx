@@ -1,8 +1,8 @@
-import type { EventFilterDraft } from "@openbot/contracts/event-filter-value";
-import type { WebhookTestResult } from "@openbot/contracts/ipc-events";
-import type { AppTextKey } from "@openbot/i18n";
-import { Button, Check, ChevronDown, ChevronRight, Text, Webhook } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { EventFilterDraft } from "@zollybot/contracts/event-filter-value";
+import type { WebhookTestResult } from "@zollybot/contracts/ipc-events";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Button, Check, ChevronDown, ChevronRight, Text, Webhook } from "@zollybot/ui";
 import { createEffect, createStore, Show } from "solid-js";
 import { useText } from "../../text";
 import { CodeBlock } from "./CodeBlock";
@@ -57,12 +57,12 @@ function curlExample(url: string): string {
   return [
     `BODY='{"type":"order.created","data":{"order":{"status":"paid"}}}'`,
     "TS=$(date +%s); ID=$(openssl rand -hex 16)",
-    `SIG=$(printf '%s.%s.%s' "$TS" "$ID" "$BODY" | openssl dgst -sha256 -hmac "$OPENBOT_WEBHOOK_SECRET" | sed 's/^.* //')`,
+    `SIG=$(printf '%s.%s.%s' "$TS" "$ID" "$BODY" | openssl dgst -sha256 -hmac "$ZOLLYBOT_WEBHOOK_SECRET" | sed 's/^.* //')`,
     `curl -X POST "${url}" \\`,
     `  -H "Content-Type: application/json" \\`,
-    `  -H "X-OpenBot-Timestamp: $TS" \\`,
-    `  -H "X-OpenBot-Delivery-Id: $ID" \\`,
-    `  -H "X-OpenBot-Signature: sha256=$SIG" \\`,
+    `  -H "X-ZollyBot-Timestamp: $TS" \\`,
+    `  -H "X-ZollyBot-Delivery-Id: $ID" \\`,
+    `  -H "X-ZollyBot-Signature: sha256=$SIG" \\`,
     `  --data "$BODY"`,
   ].join("\n");
 }

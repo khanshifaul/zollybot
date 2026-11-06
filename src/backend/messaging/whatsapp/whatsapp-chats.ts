@@ -1,4 +1,4 @@
-import type { WAMessage } from "@openbot/whatsapp/baileys";
+import type { WAMessage } from "@zollybot/whatsapp/baileys";
 import type { ContextEntry, MessageBody } from "../messaging-types";
 
 /** What one number remembers of the messages it saw. WhatsApp sends no history to a new device. */

@@ -177,7 +177,7 @@ export const messages = {
   "sidebar.delete.pending": "جارٍ الحذف…",
   "sidebar.delete.title": "حذف {name}؟",
   "sidebar.delete.agentDescription":
-    "يزيل هذا الوكيل ومحادثته في OpenBot من التطبيق. تُحذف قائمة انتظاره وذكرياته ومهامه الدورية ومساحة العمل الخاصة به. لا يُحذف السجل الذي يخزّنه مزوّد CLI المتصل بشكل منفصل.",
+    "يزيل هذا الوكيل ومحادثته في ZollyBot من التطبيق. تُحذف قائمة انتظاره وذكرياته ومهامه الدورية ومساحة العمل الخاصة به. لا يُحذف السجل الذي يخزّنه مزوّد CLI المتصل بشكل منفصل.",
   "sidebar.delete.channelDescription":
     "يوقف هذا القناة. يبقى سجلها في «القنوات المحذوفة» للمعاينة فقط. يمكنك استعادتها من هناك. يُحتفَظ بالوكلاء الأعضاء.",
   "sidebar.delete.sectionDescription":
@@ -191,7 +191,7 @@ export const messages = {
   "sidebar.announce.movedPinned": "تم نقل الدردشة المثبّتة إلى الموضع {position} من {total}.",
   "sidebar.announce.personFallback": "شخص",
   "sidebar.announce.chatFallback": "دردشة",
-  "sidebar.mobileApp.title": "OpenBot للهاتف المحمول",
+  "sidebar.mobileApp.title": "ZollyBot للهاتف المحمول",
   "sidebar.mobileApp.body": "التطبيق متاح الآن على iPhone وAndroid.",
   "sidebar.mobileApp.howToInstall": "طريقة التثبيت",
   "sidebar.mobileApp.dismiss": "إغلاق إعلان تطبيق الهاتف المحمول",
@@ -215,6 +215,6 @@ export const messages = {
   "sidebar.community.title": "انضم إلينا.",
   "sidebar.community.body": "هناك مكان لك في مستقبل الذكاء الاصطناعي. انضم إلى المجتمع على Discord وX.",
   "sidebar.community.joinDiscord": "الانضمام إلى Discord",
-  "sidebar.community.followX": "متابعة OpenBot على X",
+  "sidebar.community.followX": "متابعة ZollyBot على X",
   "sidebar.community.dismiss": "إغلاق دعوة المجتمع",
 } as const satisfies PartialTranslation<typeof source>;

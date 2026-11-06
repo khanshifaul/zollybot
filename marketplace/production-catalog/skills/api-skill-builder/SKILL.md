@@ -1,6 +1,6 @@
 ---
 name: "API Skill Builder"
-description: "Turn an API or a repeated workflow into a tested local OpenBot skill. Read the docs, sample one real response first, keep keys out of files, write the smallest SKILL.md and a script only when needed, test it, then register it. Use when the user repeats the same request against a service."
+description: "Turn an API or a repeated workflow into a tested local ZollyBot skill. Read the docs, sample one real response first, keep keys out of files, write the smallest SKILL.md and a script only when needed, test it, then register it. Use when the user repeats the same request against a service."
 ---
 
 # API Skill Builder
@@ -14,7 +14,7 @@ description: "Turn an API or a repeated workflow into a tested local OpenBot ski
 
 1. **The job.** One sentence: the request the user repeats, its inputs, and the result they want. If it is
    not clear, ask one question with `ask_user`.
-2. **The docs.** Open them with `openbot_browser` (call `openbot_browser.list_tabs` first), or ask the user to
+2. **The docs.** Open them with `zollybot_browser` (call `zollybot_browser.list_tabs` first), or ask the user to
    paste the relevant page. You need: the base address, the auth method, the one or two endpoints for the
    job, paging, and rate limits.
 3. **The key.** If the API needs a key or token, check whether one is already saved with `list_api_keys`. If not, call

@@ -25,7 +25,7 @@ describe("password manager decoding", () => {
     state: "connected",
     step: null,
     signInUrl: null,
-    vaultNames: ["Shared with OpenBot"],
+    vaultNames: ["Shared with ZollyBot"],
     loginCount: 12,
     expiresAt: 1_800_000_000_000,
   };

@@ -1,9 +1,9 @@
 name: Provider CLI canary
 
-# Users get each new provider CLI release within an hour of its publication, with no OpenBot release
+# Users get each new provider CLI release within an hour of its publication, with no ZollyBot release
 # between. This run reads the newest release of each provider for each target, installs the newest
 # OpenCode, and runs the conformance cases on it with a free model and no account
-# (scripts/provider-cli-canary.ts). When a release breaks OpenBot, add its version to
+# (scripts/provider-cli-canary.ts). When a release breaks ZollyBot, add its version to
 # `provider-runtime-blocklist.json` on `main` to stop the offer. The `alert` job opens one issue on
 # the second failed run in a row and closes it after a run that passes. An issue that a person closes
 # stays closed until the canary passes and then fails two times again.
@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: provider-cli-canary
-          path: .openbot-build/provider-cli-canary/
+          path: .zollybot-build/provider-cli-canary/
           if-no-files-found: ignore
 
   alert:

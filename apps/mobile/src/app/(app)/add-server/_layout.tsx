@@ -15,7 +15,7 @@ export const unstable_settings = { anchor: "index" };
 // back button and the create action, as the same page in the cloud server sheet.
 export default function AddServerLayout() {
   const { t } = useText();
-  const background = String(useCSSVariable("--openbot-bg-sheet"));
+  const background = String(useCSSVariable("--zollybot-bg-sheet"));
   return (
     <Stack
       screenListeners={sheetBackHaptics}

@@ -7,25 +7,25 @@
 // fails as uncertain.
 //
 // Run: bun scripts/workflow-output-e2e.ts
-// Writes .openbot-build/workflow-output-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/workflow-output-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { WorkflowGraph, WorkflowNode, WorkflowStep } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import type { WorkflowGraph, WorkflowNode, WorkflowStep } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import type { MessagingPostFailure } from "../src/backend/messaging/messaging-threads";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
 import { WorkflowRunStore } from "../src/backend/workflows/workflow-run-store";
 import { WorkflowStore } from "../src/backend/workflows/workflow-store";
 import { workflowScheduleDueAt } from "../src/backend/workflows/workflow-triggers";
 import { createWorkflows, type WorkflowsHandle } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/workflow-output-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/workflow-output-e2e");
 const CONNECTION = "messaging-e2e";
 const PLACE = "C0123";
 const WAIT_MS = 5_000;
@@ -57,8 +57,8 @@ const graphOf = (text: string, output: WorkflowNode["fields"]): WorkflowGraph =>
 });
 const toPlace = { connectionId: CONNECTION, placeId: PLACE };
 
-const directory = await mkdtemp(join(tmpdir(), "openbot-workflow-output-"));
-let database = new OpenBotDatabase(directory);
+const directory = await mkdtemp(join(tmpdir(), "zollybot-workflow-output-"));
+let database = new ZollyBotDatabase(directory);
 let service: WorkflowsHandle | null = null;
 
 async function open() {
@@ -266,7 +266,7 @@ try {
   const waitingRun = await runOnce(workflows, quiet);
   const waiting = await outputStep(workflows, waitingRun.id, ended);
   await close();
-  database = new OpenBotDatabase(directory);
+  database = new ZollyBotDatabase(directory);
   await Effect.runPromise(database.initialize());
   // The second run's output as if the restart came between its keep and its post, and the first as
   // if the process died during its post.
@@ -284,7 +284,7 @@ try {
     .run(waiting.id, CONNECTION, PLACE, now, now);
   database.connection.prepare("UPDATE workflow_output_deliveries SET status = 'sending' WHERE step_id = ?").run(cut.id);
   database.close();
-  database = new OpenBotDatabase(directory);
+  database = new ZollyBotDatabase(directory);
   answer = "posted";
   const postsRestart = report.posts.length;
   workflows = await open();

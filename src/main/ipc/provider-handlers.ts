@@ -9,7 +9,7 @@ import {
   isDownloadableProvider,
   isManagedRuntimeProvider,
   type ManagedProviderId,
-} from "@openbot/contracts/agent-providers";
+} from "@zollybot/contracts/agent-providers";
 import {
   type AgentProviderId,
   type ConnectProviderAccountInput,
@@ -19,10 +19,10 @@ import {
   type RenameProviderAccountInput,
   type ResetProviderUsageInput,
   type SetProviderApiKeyInput,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { registerSecretValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { registerSecretValue } from "@zollybot/logging";
 import { AgentLifecycleFailed, type AgentService } from "../../backend/agent-service";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { SignInRegion } from "../../backend/kimi-region";
@@ -180,7 +180,7 @@ export function providerIpcHandlers({
 }
 
 /**
- * Codex keeps its key in its own login, not in OpenBot's store, so the store does not register it for
+ * Codex keeps its key in its own login, not in ZollyBot's store, so the store does not register it for
  * redaction. It is registered here, before Codex can echo it in a log line.
  */
 export function signInCodexWithApiKey(service: Pick<AgentService, "signInCodexWithApiKey">, key: string) {
@@ -204,14 +204,14 @@ export function parseProviderApiKeyInput(value: unknown): SetProviderApiKeyInput
 
 function parseManagedProviderId(value: unknown): ManagedProviderId {
   const provider = parseProviderId(value);
-  if (!isManagedRuntimeProvider(provider)) throw new Error("OpenBot does not manage this provider's CLI.");
+  if (!isManagedRuntimeProvider(provider)) throw new Error("ZollyBot does not manage this provider's CLI.");
   return provider;
 }
 
-/** A managed runtime, or a provider that OpenBot installs with the provider's own installer. */
+/** A managed runtime, or a provider that ZollyBot installs with the provider's own installer. */
 export function parseDownloadableProviderId(value: unknown): DownloadableProviderId {
   const provider = parseProviderId(value);
-  if (!isDownloadableProvider(provider)) throw new Error("OpenBot does not manage this provider's CLI.");
+  if (!isDownloadableProvider(provider)) throw new Error("ZollyBot does not manage this provider's CLI.");
   return provider;
 }
 

@@ -8,21 +8,21 @@ import { type JSX, Portal } from "@solidjs/web";
 import { createStore, onSettled, Show, untrack } from "solid-js";
 import { App } from "../src/App";
 import { skipStartupSplash } from "../src/AppView";
-import { createMockOpenBot, type MockOpenBotControls, type MockOpenBotOptions } from "../src/preview/mock-openbot";
-import { OpenBotPlayground } from "../src/preview/OpenBotPlayground";
+import { createMockZollyBot, type MockZollyBotControls, type MockZollyBotOptions } from "../src/preview/mock-zollybot";
+import { ZollyBotPlayground } from "../src/preview/ZollyBotPlayground";
 
 /**
  * The real app on the preview mock. `setup` adds data to the mock before the app reads it. The
  * startup splash fades as soon as the app is ready, so each page load does not play it through.
  */
-export function PrototypeApp(props: { options?: MockOpenBotOptions; setup?: (mock: MockOpenBotControls) => void }) {
+export function PrototypeApp(props: { options?: MockZollyBotOptions; setup?: (mock: MockZollyBotControls) => void }) {
   skipStartupSplash();
   return (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={props.options}
       dependencies={{
         createMock: (options) => {
-          const mock = createMockOpenBot(options);
+          const mock = createMockZollyBot(options);
           untrack(() => props.setup)?.(mock);
           return mock;
         },

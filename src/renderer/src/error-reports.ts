@@ -1,5 +1,5 @@
-import type { AppInfo, CentralAuthUser } from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber } from "@openbot/contracts/runtime-values";
+import type { AppInfo, CentralAuthUser } from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber } from "@zollybot/contracts/runtime-values";
 import {
   ANALYTICS_GENERATIONS,
   analyticsOnByDefault,
@@ -10,8 +10,8 @@ import {
   openPanelTransport,
   ReportQueue,
   safeProperties,
-} from "@openbot/telemetry";
-import { indexedReportStorage } from "@openbot/telemetry/browser";
+} from "@zollybot/telemetry";
+import { indexedReportStorage } from "@zollybot/telemetry/browser";
 import { Effect } from "effect";
 import { version } from "../../../package.json";
 
@@ -28,13 +28,13 @@ let installId: string | null = null;
 /** The install ID of this page. Each read gives the same ID, so analytics and reports agree. */
 let webInstallId: string | null | undefined;
 /** The web analytics preference. The key keeps its first name, so stored choices stay. */
-export const WEB_PREFERENCE = "openbot:web:error-reports-enabled";
+export const WEB_PREFERENCE = "zollybot:web:error-reports-enabled";
 /** A choice of this browser that the account has not saved yet, "true" or "false". */
-const WEB_ACCOUNT_PENDING = "openbot:web:analytics-account-pending";
+const WEB_ACCOUNT_PENDING = "zollybot:web:analytics-account-pending";
 /** "true" or "false". Missing: an app from before the account kept answers saved the choice. */
-const WEB_KEEP_OFF = "openbot:web:analytics-keep-off";
+const WEB_KEEP_OFF = "zollybot:web:analytics-keep-off";
 /** The random install ID of this browser and the time it was made. */
-const WEB_INSTALL_ID = "openbot:web:analytics-install-id";
+const WEB_INSTALL_ID = "zollybot:web:analytics-install-id";
 
 export function configureDesktopReports(
   info: AppInfo,
@@ -44,7 +44,7 @@ export function configureDesktopReports(
   const capture = info.analyticsCaptureUrl;
   if (capture === undefined && (!import.meta.env.PROD || info.variant !== "production")) return;
   queue ??= new ReportQueue(
-    indexedReportStorage("openbot-desktop-error-reports-v1"),
+    indexedReportStorage("zollybot-desktop-error-reports-v1"),
     openPanelTransport({
       clientId: "6c989975-87ef-4f0c-857e-ab449a65b5c2",
       ...(capture === undefined ? {} : { endpoint: `${capture}/track` }),
@@ -131,7 +131,7 @@ export function configureWebReports(user: Pick<CentralAuthUser, "id" | "email"> 
   webSignedIn = user !== null;
   if (!import.meta.env.PROD || window.location.origin !== "https://openbot.run") return;
   queue ??= new ReportQueue(
-    indexedReportStorage("openbot-web-error-reports-v1"),
+    indexedReportStorage("zollybot-web-error-reports-v1"),
     openPanelTransport({ clientId: "6c989975-87ef-4f0c-857e-ab449a65b5c2" }),
     { surface: "web", platform: "web", app_version: version, event_schema_version: ANALYTICS_GENERATIONS.web },
   );

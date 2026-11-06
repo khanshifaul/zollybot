@@ -7,19 +7,19 @@ import {
   type WorkflowRunDetail,
   type WorkflowRunPage,
   type WorkflowStep,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   WORKFLOWS_GITHUB_CAPABILITY,
   WORKFLOWS_GITHUB_ROUTES,
-} from "@openbot/contracts/team-protocol/workflows-github-v1";
+} from "@zollybot/contracts/team-protocol/workflows-github-v1";
 import {
   WORKFLOW_RUN_STEP_LIMIT,
   WORKFLOW_STEP_TEXT_LIMIT,
   WORKFLOWS_CAPABILITY,
   WORKFLOWS_ROUTES,
-} from "@openbot/contracts/team-protocol/workflows-v1";
-import { sourceText } from "@openbot/i18n/source";
-import { RoutineInputError } from "@openbot/team-client/routine-schedule";
+} from "@zollybot/contracts/team-protocol/workflows-v1";
+import { sourceText } from "@zollybot/i18n/source";
+import { RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import type { Effect } from "effect";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import { WorkflowStoreError } from "../../backend/workflows/workflow-store";

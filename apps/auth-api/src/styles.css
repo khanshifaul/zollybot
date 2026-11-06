@@ -1,11 +1,11 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/inter/wght-italic.css";
 @import "tailwindcss";
-@import "@openbot/brand/tokens.css";
+@import "@zollybot/brand/tokens.css";
 /* Only the web client at /app sets the attribute that turns it on. The public pages stay dark. */
-@import "@openbot/brand/tokens-light.css";
-@import "@openbot/ui/stagger.css";
-@import "@openbot/ui/styles/sr-only.css";
+@import "@zollybot/brand/tokens-light.css";
+@import "@zollybot/ui/stagger.css";
+@import "@zollybot/ui/styles/sr-only.css";
 
 /* Arial with the size and line metrics of Inter. Until Inter loads, the text takes the same space,
    so the hero does not move when the font changes. Inter is wider than the system font, and on a
@@ -31,7 +31,7 @@
 
 :root {
   color-scheme: dark;
-  --openbot-font-sans:
+  --zollybot-font-sans:
     "Inter Variable", "Inter Variable Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --pulse-dur: 1000ms;
   --pulse-count: 1;
@@ -46,15 +46,15 @@
 }
 
 html {
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
   font-synthesis: none;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
@@ -210,7 +210,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -218,7 +218,7 @@ a {
 
 .landing-brand:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .landing-brand-logo {
@@ -251,7 +251,7 @@ a {
 .site-nav-track {
   display: flex;
   padding: 4px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: rgba(255, 255, 255, 0.025);
   box-shadow:
     0 0 0 1px var(--site-nav-hairline),
@@ -272,7 +272,7 @@ a {
   left: 4px;
   width: var(--site-nav-pill-width, 0);
   height: calc(100% - 8px);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: rgba(255, 255, 255, 0.08);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.07),
@@ -283,7 +283,7 @@ a {
   transition:
     transform var(--site-nav-quick) var(--site-nav-ease),
     width var(--site-nav-quick) var(--site-nav-ease),
-    opacity var(--openbot-duration-normal) ease;
+    opacity var(--zollybot-duration-normal) ease;
 }
 
 .site-nav-pill[data-shown] {
@@ -298,26 +298,26 @@ a {
   height: 32px;
   padding: 0 11px 0 14px;
   border: 0;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: transparent;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font: inherit;
   font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .site-nav-trigger[aria-expanded="true"],
 .site-nav-trigger[aria-current="page"] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .site-nav-trigger:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 2px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 2px var(--zollybot-accent-strong);
 }
 
 /* A link with no panel: no chevron, so the padding is even on both sides. */
@@ -331,7 +331,7 @@ a {
   opacity: 0.55;
   transition:
     transform var(--site-nav-duration) var(--site-nav-ease),
-    opacity var(--openbot-duration-normal) ease;
+    opacity var(--zollybot-duration-normal) ease;
 }
 
 .site-nav-trigger[aria-expanded="true"] .site-nav-chevron {
@@ -482,7 +482,7 @@ a {
 
 .site-panel a:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 2px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 2px var(--zollybot-accent-strong);
 }
 
 .site-panel-body {
@@ -509,7 +509,7 @@ a {
   inset: 0;
   z-index: -2;
   background: var(--site-panel-art);
-  transition: transform 700ms var(--site-nav-ease, var(--openbot-ease-out));
+  transition: transform 700ms var(--site-nav-ease, var(--zollybot-ease-out));
   /* Firefox on a GPU drew the live shader canvas with square corners here, past the
      host's own clip and the card's, and even past a clip-path. Only while the zoom
      below made the host a layer of its own were the corners round, so it is one
@@ -530,13 +530,13 @@ a {
   top: 12px;
   left: 12px;
   padding: 4px 8px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   /* Solid, not frosted. Chromium does not paint a backdrop filter while an
      ancestor fades or blurs on the compositor, so a frosted badge appeared only
      after the panel had finished coming in. */
   background: rgba(0, 0, 0, 0.44);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -555,7 +555,7 @@ a {
 .site-panel-feature-title {
   display: -webkit-box;
   overflow: hidden;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.015em;
@@ -567,7 +567,7 @@ a {
 
 .site-panel-meta {
   overflow: hidden;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   line-height: 1.3;
   text-overflow: ellipsis;
@@ -603,7 +603,7 @@ a {
   gap: 12px;
   padding: 10px;
   border-radius: 12px;
-  transition: background-color var(--openbot-duration-normal) ease;
+  transition: background-color var(--zollybot-duration-normal) ease;
 }
 
 .site-panel-row-art,
@@ -616,14 +616,14 @@ a {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   /* A short ease and a layer of its own. With the menu's long settle, the browser painted the
      mark again on each step of the last few tenths of a pixel, so the hover zoom stuttered. */
-  transition: transform var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-slow) var(--zollybot-ease-out);
   will-change: transform;
 }
 
 .site-panel-plugin-mark {
   display: grid;
   place-items: center;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .site-panel-plugin-logo {
@@ -654,7 +654,7 @@ a {
 .site-panel-row-title {
   display: -webkit-box;
   overflow: hidden;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -677,7 +677,7 @@ a {
 
 .site-panel-summary {
   min-width: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
 }
 
@@ -688,17 +688,17 @@ a {
   gap: 6px;
   margin: -6px -10px;
   padding: 6px 10px;
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-text-primary);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-text-primary);
   font-size: 12.5px;
   font-weight: 500;
-  transition: background-color var(--openbot-duration-normal) ease;
+  transition: background-color var(--zollybot-duration-normal) ease;
 }
 
 .site-panel-index svg {
   width: 14px;
   height: 14px;
-  transition: transform var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .site-header-actions {
@@ -738,7 +738,7 @@ a {
 
 @media (hover: hover) and (pointer: fine) {
   .site-nav-trigger:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   .site-panel-row:hover,
@@ -782,16 +782,16 @@ a {
     place-items: center;
     padding: 0;
     border: 0;
-    border-radius: var(--openbot-radius-pill);
+    border-radius: var(--zollybot-radius-pill);
     background: rgba(255, 255, 255, 0.04);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
     cursor: pointer;
   }
 
   .site-menu-button:focus-visible {
     outline: 0;
-    box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+    box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
   }
 
   .site-menu-button-line {
@@ -874,7 +874,7 @@ a {
 
   .site-sheet-heading {
     margin: 0 0 8px 6px;
-    color: var(--openbot-text-dim);
+    color: var(--zollybot-text-dim);
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -908,9 +908,9 @@ a {
     justify-content: space-between;
     padding: 16px 18px;
     border-radius: 18px;
-    background: color-mix(in srgb, var(--openbot-text-primary) 3%, transparent);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--openbot-text-primary) 7%, transparent);
-    color: var(--openbot-text-primary);
+    background: color-mix(in srgb, var(--zollybot-text-primary) 3%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--zollybot-text-primary) 7%, transparent);
+    color: var(--zollybot-text-primary);
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
@@ -919,11 +919,11 @@ a {
   .site-sheet-link svg {
     width: 16px;
     height: 16px;
-    color: var(--openbot-text-muted);
+    color: var(--zollybot-text-muted);
   }
 
   .site-sheet-link:focus-visible {
-    outline: 2px solid var(--openbot-border-focus);
+    outline: 2px solid var(--zollybot-border-focus);
     outline-offset: 2px;
   }
 
@@ -958,16 +958,16 @@ a {
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   font: inherit;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    border-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease,
-    transform var(--openbot-duration-fast) var(--openbot-ease-out);
+    background-color var(--zollybot-duration-normal) ease,
+    border-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease,
+    transform var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .landing-button::before {
@@ -1016,9 +1016,9 @@ a {
   width: min(100%, 520px);
   display: grid;
   justify-items: center;
-  border: 1px solid var(--openbot-border-strong);
+  border: 1px solid var(--zollybot-border-strong);
   border-radius: 24px;
-  background: var(--openbot-bg-sidebar);
+  background: var(--zollybot-bg-sidebar);
   padding: clamp(32px, 7vw, 56px);
   text-align: center;
 }
@@ -1031,7 +1031,7 @@ a {
 
 .join-card-eyebrow {
   margin: 0 0 10px;
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -1048,7 +1048,7 @@ a {
 .join-card-copy {
   max-width: 420px;
   margin: 18px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.55;
 }
@@ -1075,26 +1075,26 @@ a {
 /* The line under the join action: the browser and the download, as links in a sentence. */
 .join-card-alternatives {
   margin: 16px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
   line-height: 1.5;
 }
 
 .join-card-alternatives a {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: underline;
-  text-decoration-color: var(--openbot-text-muted);
+  text-decoration-color: var(--zollybot-text-muted);
   text-underline-offset: 3px;
 }
 
 .join-card-error {
   margin: 26px 0 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .join-card-note {
   margin: 24px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -1127,23 +1127,23 @@ a {
 }
 
 .landing-button-primary {
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .landing-button-secondary {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .landing-button-glass {
-  border-color: var(--openbot-glass-border);
-  background: var(--openbot-glass-surface);
+  border-color: var(--zollybot-glass-border);
+  background: var(--zollybot-glass-surface);
   box-shadow:
-    inset 0 1px 0 var(--openbot-glass-highlight),
-    0 10px 30px -18px var(--openbot-glass-shadow);
-  color: var(--openbot-text-primary);
+    inset 0 1px 0 var(--zollybot-glass-highlight),
+    0 10px 30px -18px var(--zollybot-glass-shadow);
+  color: var(--zollybot-text-primary);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
 }
@@ -1177,7 +1177,7 @@ a {
   content: "";
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .landing-button[data-beam-struck]::after {
@@ -1186,7 +1186,7 @@ a {
 
 .landing-button:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .landing-button:active {
@@ -1208,10 +1208,10 @@ a {
   width: 100vw;
   pointer-events: none;
   background-image:
-    linear-gradient(90deg, var(--openbot-hero-grid-line) 1px, var(--openbot-transparent) 1px),
-    linear-gradient(var(--openbot-hero-grid-line) 1px, var(--openbot-transparent) 1px);
+    linear-gradient(90deg, var(--zollybot-hero-grid-line) 1px, var(--zollybot-transparent) 1px),
+    linear-gradient(var(--zollybot-hero-grid-line) 1px, var(--zollybot-transparent) 1px);
   background-size: 48px 48px;
-  mask-image: radial-gradient(80% 62% at 50% 40%, var(--openbot-mask-solid) 40%, var(--openbot-transparent) 100%);
+  mask-image: radial-gradient(80% 62% at 50% 40%, var(--zollybot-mask-solid) 40%, var(--zollybot-transparent) 100%);
   transform: translateX(-50%);
 }
 
@@ -1227,7 +1227,7 @@ a {
   width: 100vw;
   pointer-events: none;
   transform: translateX(-50%);
-  mask-image: linear-gradient(var(--openbot-transparent), var(--openbot-mask-solid) 120px);
+  mask-image: linear-gradient(var(--zollybot-transparent), var(--zollybot-mask-solid) 120px);
 }
 
 /* A beam that falls through a header button lights the top of the hero, so the top needs no fade. */
@@ -1260,8 +1260,8 @@ a {
   padding: 4px 12px 4px 4px;
   border-width: 1px;
   border-style: solid;
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-text-secondary);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-text-secondary);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -1274,24 +1274,24 @@ a {
   display: inline-flex;
   align-items: center;
   padding: 0 9px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
-  font-family: var(--openbot-font-mono);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
+  font-family: var(--zollybot-font-mono);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.08em;
 }
 
 .landing-availability-copy {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .landing-availability-platform {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-availability-platform svg {
@@ -1301,7 +1301,7 @@ a {
 }
 
 .landing-availability-separator {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 /* Between the desktop systems and the phone apps. */
@@ -1309,7 +1309,7 @@ a {
   width: 1px;
   height: 12px;
   margin-inline: 2px;
-  background: var(--openbot-border-strong);
+  background: var(--zollybot-border-strong);
 }
 
 .landing-title {
@@ -1319,8 +1319,8 @@ a {
   flex-wrap: wrap;
   gap: 0;
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-hero);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-hero);
   font-weight: 500;
   letter-spacing: -0.065em;
   line-height: 0.96;
@@ -1337,7 +1337,7 @@ a {
 .landing-description {
   max-width: 720px;
   margin: 30px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(17px, 2vw, 20px);
   line-height: 1.55;
   text-wrap: pretty;
@@ -1347,7 +1347,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.28em;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
@@ -1364,7 +1364,7 @@ a {
   height: 0.84em;
   flex: 0 0 auto;
   overflow: visible;
-  fill: var(--openbot-provider-current);
+  fill: var(--zollybot-provider-current);
 }
 
 .landing-actions {
@@ -1383,9 +1383,9 @@ a {
   display: inline-flex;
   align-items: stretch;
   overflow: hidden;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .landing-download-primary {
@@ -1399,7 +1399,7 @@ a {
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
-  transition: opacity var(--openbot-duration-normal) ease;
+  transition: opacity var(--zollybot-duration-normal) ease;
 }
 
 .landing-download-primary svg {
@@ -1409,7 +1409,7 @@ a {
 }
 
 .landing-download-primary[data-state="coming-soon"] {
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
 }
 
 .landing-download-trigger {
@@ -1420,17 +1420,17 @@ a {
   margin: 0;
   padding: 0;
   border: 0;
-  border-left: 1px solid var(--openbot-download-card-border);
+  border-left: 1px solid var(--zollybot-download-card-border);
   background: transparent;
   color: currentColor;
   font: inherit;
-  transition: opacity var(--openbot-duration-normal) ease;
+  transition: opacity var(--zollybot-duration-normal) ease;
 }
 
 .landing-download-trigger svg {
   width: 13px;
   height: 13px;
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .landing-download-trigger[aria-expanded="true"] svg {
@@ -1441,7 +1441,7 @@ a {
 .landing-download-trigger:focus-visible {
   position: relative;
   z-index: 1;
-  outline: 2px solid var(--openbot-logo-production);
+  outline: 2px solid var(--zollybot-logo-production);
   outline-offset: -3px;
 }
 
@@ -1454,13 +1454,13 @@ a {
   flex-direction: column;
   gap: 2px;
   padding: 6px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-sidebar);
-  box-shadow: 0 18px 48px -24px var(--openbot-mask-solid);
-  color: var(--openbot-text-primary);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-sidebar);
+  box-shadow: 0 18px 48px -24px var(--zollybot-mask-solid);
+  color: var(--zollybot-text-primary);
   transform: translateX(-50%);
-  animation: landing-download-menu-enter var(--openbot-duration-normal) var(--openbot-ease-out) both;
+  animation: landing-download-menu-enter var(--zollybot-duration-normal) var(--zollybot-ease-out) both;
 }
 
 .landing-download-menu-item {
@@ -1473,15 +1473,15 @@ a {
   margin: 0;
   padding: 0 11px;
   border: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font: inherit;
   font-size: 13px;
   text-align: left;
   transition:
-    background-color var(--openbot-duration-fast) ease,
-    color var(--openbot-duration-fast) ease;
+    background-color var(--zollybot-duration-fast) ease,
+    color var(--zollybot-duration-fast) ease;
 }
 
 .landing-download-menu-item svg {
@@ -1498,8 +1498,8 @@ a {
 }
 
 .landing-download-menu-item small {
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
   font-size: 9px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1507,12 +1507,12 @@ a {
 }
 
 .landing-download-menu-item[data-selected="true"] {
-  background: var(--openbot-bg-surface);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-surface);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-download-menu-item:focus-visible {
-  outline: 2px solid var(--openbot-logo-production);
+  outline: 2px solid var(--zollybot-logo-production);
   outline-offset: -2px;
 }
 
@@ -1520,14 +1520,14 @@ a {
   height: 1px;
   margin: 4px 5px;
   border: 0;
-  background: var(--openbot-border-strong);
+  background: var(--zollybot-border-strong);
 }
 
 .landing-download-menu-label {
   padding: 6px 11px 4px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-align: left;
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-size: 9px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1541,10 +1541,10 @@ a {
   isolation: isolate;
   max-height: 760px;
   margin-top: clamp(68px, 9vw, 112px);
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-sidebar);
-  box-shadow: inset 0 1px var(--openbot-glass-highlight);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-sidebar);
+  box-shadow: inset 0 1px var(--zollybot-glass-highlight);
 }
 
 .landing-preview-window-controls {
@@ -1563,7 +1563,7 @@ a {
   width: 12px;
   height: 12px;
   border: 0.5px solid rgba(0, 0, 0, 0.18);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.14);
 }
 
@@ -1583,14 +1583,14 @@ a {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: calc(var(--openbot-radius-lg) - 1px);
-  background: var(--openbot-bg-canvas);
+  border-radius: calc(var(--zollybot-radius-lg) - 1px);
+  background: var(--zollybot-bg-canvas);
 }
 
 .landing-preview-placeholder {
   overflow: hidden;
-  border-radius: calc(var(--openbot-radius-lg) - 1px);
-  background: var(--openbot-bg-canvas);
+  border-radius: calc(var(--zollybot-radius-lg) - 1px);
+  background: var(--zollybot-bg-canvas);
 }
 
 .landing-app-preview iframe {
@@ -1598,12 +1598,12 @@ a {
   height: 100%;
   display: block;
   border: 0;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
 }
 
 .landing-download {
   scroll-margin-top: 24px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-download-inner {
@@ -1627,7 +1627,7 @@ a {
 .landing-download-heading p {
   max-width: 620px;
   margin: 22px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.8vw, 19px);
   line-height: 1.55;
   text-wrap: pretty;
@@ -1646,21 +1646,21 @@ a {
   display: flex;
   flex-direction: column;
   padding: clamp(26px, 2.6vw, 34px);
-  border: 1px solid var(--openbot-download-card-border);
+  border: 1px solid var(--zollybot-download-card-border);
   border-radius: 20px;
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .landing-download-card[data-download-platform="macos"] {
-  background: var(--openbot-logo-production);
+  background: var(--zollybot-logo-production);
 }
 
 .landing-download-card[data-download-platform="windows"] {
-  background: var(--openbot-logo-preview);
+  background: var(--zollybot-logo-preview);
 }
 
 .landing-download-card[data-download-platform="linux"] {
-  background: var(--openbot-logo-dev);
+  background: var(--zollybot-logo-dev);
 }
 
 /* The phone apps: a blue and a coral beside the three build colours. Dark text keeps over 7:1 on both. */
@@ -1688,12 +1688,12 @@ a {
 
 .landing-download-card[data-state="available"] {
   transition:
-    transform var(--openbot-duration-normal) var(--openbot-ease-out),
-    box-shadow var(--openbot-duration-normal) ease;
+    transform var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    box-shadow var(--zollybot-duration-normal) ease;
 }
 
 .landing-download-card:focus-visible {
-  outline: 3px solid var(--openbot-download-card-focus);
+  outline: 3px solid var(--zollybot-download-card-focus);
   outline-offset: 3px;
 }
 
@@ -1715,10 +1715,10 @@ a {
   display: inline-flex;
   align-items: center;
   padding: 0 11px;
-  border: 1px solid var(--openbot-download-card-border);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-download-card-chip);
-  font-family: var(--openbot-font-mono);
+  border: 1px solid var(--zollybot-download-card-border);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-download-card-chip);
+  font-family: var(--zollybot-font-mono);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -1741,7 +1741,7 @@ a {
 
 .landing-download-card-copy p {
   margin: 14px 0 0;
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -1758,7 +1758,7 @@ a {
 .landing-download-arrow {
   width: 15px;
   height: 15px;
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .landing-download-heading[data-revealed="false"],
@@ -1780,7 +1780,7 @@ a {
 }
 
 .landing-pricing {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-pricing-inner {
@@ -1792,7 +1792,7 @@ a {
 
 .landing-pricing-eyebrow {
   margin: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.8vw, 19px);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1814,20 +1814,20 @@ a {
   background-image:
     linear-gradient(
       180deg,
-      var(--openbot-price-sheen-cool-clear) 36%,
-      var(--openbot-price-sheen-cool-soft) 44%,
-      var(--openbot-price-sheen-cool) 47.5%,
-      var(--openbot-price-sheen-light) 50%,
-      var(--openbot-price-sheen-warm) 52.5%,
-      var(--openbot-price-sheen-warm-soft) 56%,
-      var(--openbot-price-sheen-warm-clear) 64%
+      var(--zollybot-price-sheen-cool-clear) 36%,
+      var(--zollybot-price-sheen-cool-soft) 44%,
+      var(--zollybot-price-sheen-cool) 47.5%,
+      var(--zollybot-price-sheen-light) 50%,
+      var(--zollybot-price-sheen-warm) 52.5%,
+      var(--zollybot-price-sheen-warm-soft) 56%,
+      var(--zollybot-price-sheen-warm-clear) 64%
     ),
     linear-gradient(
       180deg,
-      var(--openbot-price-metal-high) 0%,
-      var(--openbot-price-metal-core) 16%,
-      var(--openbot-price-metal-core) 84%,
-      var(--openbot-price-metal-low) 100%
+      var(--zollybot-price-metal-high) 0%,
+      var(--zollybot-price-metal-core) 16%,
+      var(--zollybot-price-metal-core) 84%,
+      var(--zollybot-price-metal-low) 100%
     );
   background-repeat: no-repeat;
   /* The band layer is twice the glyph height, so the 13% of it the sheen occupies
@@ -1847,7 +1847,7 @@ a {
      the rendered silhouette, where stem and S are already one shape. Held in a
      variable because the entrance animates filter, and a keyframe that set
      blur() alone would drop the bevel for the length of the entrance. */
-  --price-bevel: drop-shadow(0 -1px 0 var(--openbot-price-rim)) drop-shadow(0 1px 0 var(--openbot-price-rim-under));
+  --price-bevel: drop-shadow(0 -1px 0 var(--zollybot-price-rim)) drop-shadow(0 1px 0 var(--zollybot-price-rim-under));
   filter: var(--price-bevel);
 }
 
@@ -1856,7 +1856,7 @@ a {
   position: absolute;
   inset: 0;
   z-index: -1;
-  color: var(--openbot-price-glow);
+  color: var(--zollybot-price-glow);
   filter: blur(clamp(24px, 4vw, 56px));
 }
 
@@ -1867,7 +1867,7 @@ a {
   gap: 12px 28px;
   margin: 0;
   padding: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.8vw, 18px);
   line-height: 1.5;
   list-style: none;
@@ -1924,10 +1924,10 @@ a {
 /* The sections between the hero and the price: what it does, how it starts, and
    the questions. Same width and heading as the download section. */
 .landing-section {
-  --landing-card-border: color-mix(in srgb, var(--openbot-text-primary) 8%, transparent);
-  --landing-card-border-hover: color-mix(in srgb, var(--openbot-text-primary) 16%, transparent);
-  --landing-card-fill: color-mix(in srgb, var(--openbot-text-primary) 5%, transparent);
-  color: var(--openbot-text-primary);
+  --landing-card-border: color-mix(in srgb, var(--zollybot-text-primary) 8%, transparent);
+  --landing-card-border-hover: color-mix(in srgb, var(--zollybot-text-primary) 16%, transparent);
+  --landing-card-fill: color-mix(in srgb, var(--zollybot-text-primary) 5%, transparent);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-section-inner {
@@ -1951,7 +1951,7 @@ a {
 .landing-section-heading p {
   max-width: 620px;
   margin: 22px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.8vw, 19px);
   line-height: 1.55;
   text-wrap: pretty;
@@ -1972,7 +1972,7 @@ a {
 
 /* Provider marks in their brand colours. Gemini's mark is a gradient. */
 .landing-section svg[data-provider] {
-  color: var(--openbot-provider-current);
+  color: var(--zollybot-provider-current);
   fill: currentColor;
 }
 
@@ -1996,7 +1996,7 @@ a {
   overflow: hidden;
   border: 1px solid var(--landing-card-border);
   border-radius: 28px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
   transition:
     border-color 200ms ease,
@@ -2005,7 +2005,7 @@ a {
 
 .landing-feature:hover {
   border-color: var(--landing-card-border-hover);
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
 }
 
 .landing-feature[data-feature="team"] {
@@ -2024,10 +2024,10 @@ a {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   grid-template-areas: "copy visual";
-  border-color: var(--openbot-download-card-border);
-  background: var(--openbot-logo-production);
+  border-color: var(--zollybot-download-card-border);
+  background: var(--zollybot-logo-production);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .landing-feature[data-feature="persist"] {
@@ -2068,14 +2068,14 @@ a {
 .landing-feature p {
   max-width: 44ch;
   margin: 10px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.6;
   text-wrap: pretty;
 }
 
 .landing-feature[data-feature="local"] p {
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
 }
 
 /* The provider names lead to their pages. An underline marks them, so the colour
@@ -2083,14 +2083,14 @@ a {
 .landing-feature-link {
   color: inherit;
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 38%, var(--openbot-transparent));
+  text-decoration-color: color-mix(in srgb, currentColor 38%, var(--zollybot-transparent));
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  transition: text-decoration-color var(--openbot-duration-normal) ease;
+  transition: text-decoration-color var(--zollybot-duration-normal) ease;
 }
 
 .landing-feature-link:hover {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration-color: currentColor;
 }
 
@@ -2099,7 +2099,7 @@ a {
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--landing-card-border);
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
   box-shadow: 0 24px 60px rgb(0 0 0 / 28%);
 }
 
@@ -2131,7 +2131,7 @@ a {
 
 .landing-team-hash {
   margin-right: 6px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-weight: 400;
 }
 
@@ -2169,13 +2169,13 @@ a {
   place-items: center;
   width: var(--landing-team-avatar-size);
   height: var(--landing-team-avatar-size);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .landing-feature .landing-team-avatar-small {
   --landing-team-avatar-size: 28px;
-  box-shadow: 0 0 0 2px var(--openbot-bg-canvas);
-  background: var(--openbot-bg-surface-raised);
+  box-shadow: 0 0 0 2px var(--zollybot-bg-canvas);
+  background: var(--zollybot-bg-surface-raised);
 }
 
 /* The empty circle the Worker renders until the avatar loads. */
@@ -2210,13 +2210,13 @@ a {
 }
 
 .landing-team-time {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 
 .landing-team-text {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.5;
 }
@@ -2225,7 +2225,7 @@ a {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   font-weight: 500;
 }
@@ -2257,15 +2257,15 @@ a {
   gap: 4px;
   margin-left: 60px;
   padding: 12px 14px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--landing-card-fill);
 }
 
 .landing-team-typing span {
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-text-muted);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-text-muted);
   animation: landing-typing 1200ms ease-in-out infinite;
 }
 
@@ -2340,7 +2340,7 @@ a {
   gap: 9px;
   padding: 10px 16px 10px 12px;
   border: 1px solid var(--landing-card-border);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--landing-card-fill);
   font-size: 14px;
   font-weight: 500;
@@ -2352,8 +2352,8 @@ a {
 }
 
 .landing-provider-pill:hover {
-  border-color: color-mix(in srgb, var(--openbot-provider-current) 55%, transparent);
-  background: color-mix(in srgb, var(--openbot-provider-current) 12%, transparent);
+  border-color: color-mix(in srgb, var(--zollybot-provider-current) 55%, transparent);
+  background: color-mix(in srgb, var(--zollybot-provider-current) 12%, transparent);
   transform: translateY(-2px);
 }
 
@@ -2377,17 +2377,17 @@ a {
 }
 
 .landing-local-window {
-  border-color: var(--openbot-download-card-border);
+  border-color: var(--zollybot-download-card-border);
   border-right: 0;
   border-bottom: 0;
   border-radius: 16px 0 0;
-  background: color-mix(in srgb, var(--openbot-text-primary) 42%, transparent);
-  box-shadow: 0 20px 44px color-mix(in srgb, var(--openbot-text-on-light) 18%, transparent);
+  background: color-mix(in srgb, var(--zollybot-text-primary) 42%, transparent);
+  box-shadow: 0 20px 44px color-mix(in srgb, var(--zollybot-text-on-light) 18%, transparent);
 }
 
 .landing-local-window .landing-window-bar {
   padding: 11px 16px;
-  border-bottom-color: var(--openbot-download-card-border);
+  border-bottom-color: var(--zollybot-download-card-border);
 }
 
 .landing-local-title {
@@ -2431,14 +2431,14 @@ a {
 }
 
 .landing-local-files li:hover {
-  background: var(--openbot-download-card-chip);
+  background: var(--zollybot-download-card-chip);
 }
 
 .landing-local-folder {
   flex: none;
   width: 17px;
   height: 17px;
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
 }
 
 /* A chat with one agent. On hover the provider changes, and the next message
@@ -2510,7 +2510,7 @@ a {
 .landing-persist-chevron {
   width: 14px;
   height: 14px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .landing-persist-thread {
@@ -2531,7 +2531,7 @@ a {
   max-width: 85%;
   padding: 9px 14px;
   border-radius: 16px 16px 4px;
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -2618,13 +2618,13 @@ a {
   gap: 6px;
   padding: 0 8px;
   border-radius: 8px 8px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
 }
 
 .landing-browser-tab[data-controlled] {
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-browser-tab-title {
@@ -2651,14 +2651,14 @@ a {
   width: 24px;
   height: 28px;
   place-items: center;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* The agent's pointer takes the place of the page icon. */
 .landing-browser-control {
   display: grid;
   flex: none;
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
 }
 
 .landing-browser-control svg {
@@ -2672,8 +2672,8 @@ a {
   align-items: center;
   gap: 8px;
   padding: 7px 10px;
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-muted);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-muted);
 }
 
 .landing-browser-toolbar svg {
@@ -2692,8 +2692,8 @@ a {
   margin-left: 4px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-secondary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-secondary);
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2703,8 +2703,8 @@ a {
   display: grid;
   justify-items: start;
   padding: 18px 20px 22px;
-  background: var(--openbot-text-primary);
-  color: var(--openbot-text-on-light);
+  background: var(--zollybot-text-primary);
+  color: var(--zollybot-text-on-light);
 }
 
 .landing-browser-heading {
@@ -2715,7 +2715,7 @@ a {
 
 .landing-browser-label {
   margin-top: 12px;
-  color: color-mix(in srgb, var(--openbot-text-on-light) 60%, transparent);
+  color: color-mix(in srgb, var(--zollybot-text-on-light) 60%, transparent);
   font-size: 11px;
   font-weight: 500;
 }
@@ -2727,7 +2727,7 @@ a {
   height: 32px;
   margin-top: 5px;
   padding: 0 10px;
-  border: 1px solid color-mix(in srgb, var(--openbot-text-on-light) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--zollybot-text-on-light) 18%, transparent);
   border-radius: 8px;
   font-size: 13px;
   transition: border-color 160ms ease;
@@ -2751,8 +2751,8 @@ a {
   margin-top: 12px;
   padding: 7px 14px;
   border-radius: 8px;
-  background: var(--openbot-text-on-light);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-text-on-light);
+  color: var(--zollybot-text-primary);
   font-size: 12px;
   font-weight: 600;
   transition:
@@ -2761,7 +2761,7 @@ a {
 }
 
 .landing-feature[data-feature="browser"]:hover .landing-browser-input {
-  border-color: color-mix(in srgb, var(--openbot-text-on-light) 55%, transparent);
+  border-color: color-mix(in srgb, var(--zollybot-text-on-light) 55%, transparent);
 }
 
 /* One step for each character, as if typed. */
@@ -2798,16 +2798,16 @@ a {
   position: relative;
   margin: 0 10px -14px;
   padding: 6px 5px 19px;
-  border: 1px solid var(--openbot-queue-border);
+  border: 1px solid var(--zollybot-queue-border);
   border-radius: 14px;
-  background: var(--openbot-queue-surface);
+  background: var(--zollybot-queue-surface);
 }
 
 .landing-queue-hold {
   display: block;
   overflow: hidden;
   padding: 0 8px 4px 9px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   line-height: 16px;
   text-overflow: ellipsis;
@@ -2828,13 +2828,13 @@ a {
   height: 29px;
   padding: 0 4px 0 8px;
   border-radius: 8px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 13px;
   transition: background 140ms ease;
 }
 
 .landing-queue-row:hover {
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
 }
 
 .landing-queue-row svg {
@@ -2849,7 +2849,7 @@ a {
 }
 
 .landing-queue-row > svg {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .landing-queue-text {
@@ -2870,8 +2870,8 @@ a {
   gap: 8px;
   padding: 0 8px 0 24px;
   border-radius: 0 8px 8px 0;
-  background: linear-gradient(to right, transparent, var(--openbot-bg-surface-raised) 20px);
-  color: var(--openbot-text-muted);
+  background: linear-gradient(to right, transparent, var(--zollybot-bg-surface-raised) 20px);
+  color: var(--zollybot-text-muted);
   opacity: 0;
   transition: opacity 140ms ease;
 }
@@ -2884,7 +2884,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 12px;
   font-weight: 500;
 }
@@ -2923,7 +2923,7 @@ a {
   padding: 10px 10px 10px 14px;
   border: 1px solid var(--landing-card-border);
   border-radius: 16px;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
   box-shadow: 0 18px 44px rgb(0 0 0 / 28%);
 }
 
@@ -2945,7 +2945,7 @@ a {
 }
 
 .landing-queue-placeholder {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   opacity: 0;
 }
 
@@ -2965,9 +2965,9 @@ a {
   height: 28px;
   flex: none;
   place-items: center;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-text-primary);
-  color: var(--openbot-text-on-light);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-text-primary);
+  color: var(--zollybot-text-on-light);
   transition:
     transform 140ms ease,
     opacity 200ms ease;
@@ -3002,7 +3002,7 @@ a {
   align-items: center;
   gap: 6px;
   margin-top: 28px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 15px;
   font-weight: 500;
   transition: color 160ms ease;
@@ -3010,7 +3010,7 @@ a {
 
 .landing-faq-contact:hover,
 .landing-faq-contact:focus-visible {
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
 }
 
 .landing-faq-contact-icon {
@@ -3024,7 +3024,7 @@ a {
 
 .landing-compare-links h3 {
   margin: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   font-weight: 500;
 }
@@ -3048,7 +3048,7 @@ a {
   overflow: hidden;
   border: 1px solid var(--landing-card-border);
   border-radius: 18px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
   font-size: 15px;
   font-weight: 500;
   transition:
@@ -3059,7 +3059,7 @@ a {
 .landing-compare-links a:hover,
 .landing-compare-links a:focus-visible {
   border-color: var(--landing-card-border-hover);
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
 }
 
 .landing-compare-art {
@@ -3081,15 +3081,15 @@ a {
   width: 40px;
   height: 40px;
   padding: 8px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-canvas);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-canvas);
   box-shadow: 0 4px 14px rgb(0 0 0 / 24%);
 }
 
 .landing-compare-mark-rival {
   margin-left: -8px;
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-compare-label {
@@ -3103,14 +3103,14 @@ a {
   bottom: 20px;
   width: 16px;
   height: 16px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   transition:
     color 160ms ease,
     transform 160ms ease;
 }
 
 .landing-compare-links a:hover .landing-compare-arrow {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   transform: translateX(2px);
 }
 
@@ -3233,8 +3233,8 @@ a {
 }
 
 .landing-footer {
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-footer-inner {
@@ -3260,7 +3260,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   font-size: 21px;
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -3272,7 +3272,7 @@ a {
 .landing-footer-column a:focus-visible,
 .landing-footer-meta a:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .landing-footer-logo {
@@ -3284,7 +3284,7 @@ a {
 .landing-footer-description {
   max-width: 560px;
   margin: 32px 0 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(24px, 3vw, 34px);
   font-weight: 400;
   letter-spacing: -0.04em;
@@ -3297,8 +3297,8 @@ a {
   align-items: center;
   gap: 5px;
   margin-top: 28px;
-  border-radius: var(--openbot-radius-md);
-  color: var(--openbot-text-primary);
+  border-radius: var(--zollybot-radius-md);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   font-weight: 500;
 }
@@ -3307,7 +3307,7 @@ a {
 .landing-footer-meta a svg {
   width: 14px;
   height: 14px;
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .landing-footer-socials {
@@ -3321,13 +3321,13 @@ a {
   height: 38px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-sidebar);
-  color: var(--openbot-text-muted);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-sidebar);
+  color: var(--zollybot-text-muted);
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease;
+    background-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease;
 }
 
 .landing-footer-social svg {
@@ -3345,7 +3345,7 @@ a {
 
 .landing-footer-column h2 {
   margin: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -3363,9 +3363,9 @@ a {
 
 .landing-footer-column a {
   border-radius: 4px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .landing-footer-bottom {
@@ -3375,8 +3375,8 @@ a {
   gap: 24px;
   margin-top: clamp(53px, 6.3vw, 84px);
   padding-top: 24px;
-  border-top: 1px solid var(--openbot-border);
-  color: var(--openbot-text-muted);
+  border-top: 1px solid var(--zollybot-border);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
 }
 
@@ -3399,18 +3399,18 @@ a {
 
 .landing-footer-meta a {
   border-radius: 4px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .landing-footer-availability {
   width: 7px;
   height: 7px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-logo-preview);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-logo-preview);
 }
 
 .landing-footer-made {
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3419,8 +3419,8 @@ a {
 .landing-footer-made svg {
   width: 14px;
   height: 14px;
-  fill: var(--openbot-logo-production);
-  color: var(--openbot-logo-production);
+  fill: var(--zollybot-logo-production);
+  color: var(--zollybot-logo-production);
   animation: landing-footer-heart 1.8s ease-in-out infinite;
 }
 
@@ -3580,7 +3580,7 @@ a {
 }
 
 [data-enter] {
-  animation: landing-enter var(--openbot-duration-overlay) var(--openbot-ease-out) both;
+  animation: landing-enter var(--zollybot-duration-overlay) var(--zollybot-ease-out) both;
 }
 
 /* Backwards, not both: a transform left on the header after it has arrived
@@ -3635,7 +3635,7 @@ a {
   }
 
   .landing-button-primary:hover {
-    background: var(--openbot-text-primary);
+    background: var(--zollybot-text-primary);
   }
 
   .landing-download-primary[data-state="available"]:hover,
@@ -3649,22 +3649,22 @@ a {
   }
 
   .landing-download-menu-item:hover {
-    background: var(--openbot-bg-surface);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-bg-surface);
+    color: var(--zollybot-text-primary);
   }
 
   .landing-button-secondary:hover {
-    border-color: var(--openbot-text-dim);
-    background: var(--openbot-bg-control-hover);
-    color: var(--openbot-text-primary);
+    border-color: var(--zollybot-text-dim);
+    background: var(--zollybot-bg-control-hover);
+    color: var(--zollybot-text-primary);
   }
 
   .landing-button-glass:hover {
-    border-color: var(--openbot-glass-highlight);
-    background: var(--openbot-glass-surface-hover);
+    border-color: var(--zollybot-glass-highlight);
+    background: var(--zollybot-glass-surface-hover);
     box-shadow:
-      inset 0 1px 0 var(--openbot-glass-border),
-      0 14px 36px -18px var(--openbot-glass-shadow);
+      inset 0 1px 0 var(--zollybot-glass-border),
+      0 14px 36px -18px var(--zollybot-glass-shadow);
   }
 
   .site-header-actions > .landing-button-glass:hover {
@@ -3679,7 +3679,7 @@ a {
 
   .landing-download-card[data-state="available"]:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 44px -28px var(--openbot-text-on-light);
+    box-shadow: 0 18px 44px -28px var(--zollybot-text-on-light);
   }
 
   .landing-download-card[data-state="available"]:hover .landing-download-arrow {
@@ -3687,13 +3687,13 @@ a {
   }
 
   .landing-footer-social:hover {
-    background: var(--openbot-bg-surface);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-bg-surface);
+    color: var(--zollybot-text-primary);
   }
 
   .landing-footer-column a:hover,
   .landing-footer-meta a:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 }
 
@@ -3795,7 +3795,7 @@ a {
 
   .landing-hero-grid {
     background-size: 36px 36px;
-    mask-image: radial-gradient(100% 66% at 50% 36%, var(--openbot-mask-solid) 34%, var(--openbot-transparent) 100%);
+    mask-image: radial-gradient(100% 66% at 50% 36%, var(--zollybot-mask-solid) 34%, var(--zollybot-transparent) 100%);
   }
 
   .landing-description {
@@ -4016,11 +4016,11 @@ a {
     linear-gradient(
       to bottom,
       transparent var(--landing-network-top),
-      var(--openbot-mask-solid) calc(var(--landing-network-top) + 96px),
-      var(--openbot-mask-solid) calc(100% - 120px),
+      var(--zollybot-mask-solid) calc(var(--landing-network-top) + 96px),
+      var(--zollybot-mask-solid) calc(100% - 120px),
       transparent
     ),
-    radial-gradient(ellipse 72% 78% at 50% 55%, var(--openbot-mask-solid) 60%, transparent 100%);
+    radial-gradient(ellipse 72% 78% at 50% 55%, var(--zollybot-mask-solid) 60%, transparent 100%);
   -webkit-mask-image: var(--landing-network-mask);
   -webkit-mask-composite: source-in;
   mask-image: var(--landing-network-mask);
@@ -4061,12 +4061,12 @@ a {
 @keyframes landing-network-word {
   from {
     opacity: 0;
-    color: var(--openbot-text-muted);
+    color: var(--zollybot-text-muted);
     filter: blur(var(--reveal-blur));
   }
 
   55% {
-    color: var(--openbot-text-muted);
+    color: var(--zollybot-text-muted);
   }
 }
 
@@ -4077,7 +4077,7 @@ a {
   overflow: hidden;
 }
 
-/* OpenBot for Teams --------------------------------------------------------
+/* ZollyBot for Teams --------------------------------------------------------
    The heading and the button stay on the left. One colour card for each offer
    sticks one step below the previous card, so the label row of each card stays
    visible. `TeamsSection` sets `--landing-teams-covered` from 0 to 1 while the
@@ -4092,15 +4092,15 @@ a {
 
 /* Each offer has one colour, from the build colours of the logo and the iOS download card. */
 .landing-teams [data-offer="servers"] {
-  --landing-teams-color: var(--openbot-logo-production);
+  --landing-teams-color: var(--zollybot-logo-production);
 }
 
 .landing-teams [data-offer="environments"] {
-  --landing-teams-color: var(--openbot-logo-preview);
+  --landing-teams-color: var(--zollybot-logo-preview);
 }
 
 .landing-teams [data-offer="integrations"] {
-  --landing-teams-color: var(--openbot-logo-dev);
+  --landing-teams-color: var(--zollybot-logo-dev);
 }
 
 .landing-teams [data-offer="support"] {
@@ -4125,7 +4125,7 @@ a {
 
 .landing-section-heading .landing-teams-statement {
   margin-top: 20px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(19px, 1.8vw, 22px);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -4158,10 +4158,10 @@ a {
   align-items: baseline;
   gap: 14px;
   padding: 10px 0 10px 20px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   font-weight: 500;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .landing-teams-progress-item::before {
@@ -4171,14 +4171,14 @@ a {
   bottom: 8px;
   left: -1px;
   width: 2px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--landing-teams-color);
   scale: 1 0;
-  transition: scale var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: scale var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .landing-teams-progress-item[data-active] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .landing-teams-progress-item[data-active]::before {
@@ -4186,7 +4186,7 @@ a {
 }
 
 .landing-teams-progress-number {
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-size: 11px;
   font-weight: 600;
 }
@@ -4208,11 +4208,11 @@ a {
   grid-template-rows: var(--landing-teams-step) 1fr auto;
   overflow: hidden;
   padding: 0 clamp(26px, 3vw, 40px) clamp(26px, 3vw, 40px);
-  border: 1px solid var(--openbot-download-card-border);
+  border: 1px solid var(--zollybot-download-card-border);
   border-radius: 28px;
   background: var(--landing-teams-color);
   box-shadow: 0 -20px 40px -28px rgb(0 0 0 / 70%);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
   transform-origin: top center;
   scale: calc(1 - var(--landing-teams-covered, 0) * 0.05);
   filter: brightness(calc(1 - var(--landing-teams-covered, 0) * 0.22));
@@ -4225,14 +4225,14 @@ a {
   z-index: -1;
   inset: 0;
   background-image:
-    linear-gradient(color-mix(in srgb, var(--openbot-text-on-light) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--openbot-text-on-light) 7%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--zollybot-text-on-light) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--zollybot-text-on-light) 7%, transparent) 1px, transparent 1px);
   background-position: -1px -1px;
   background-size: 28px 28px;
   mask-image: radial-gradient(
     120% 100% at 85% 25%,
-    var(--openbot-mask-solid) 15%,
-    color-mix(in srgb, var(--openbot-mask-solid) 35%, transparent) 100%
+    var(--zollybot-mask-solid) 15%,
+    color-mix(in srgb, var(--zollybot-mask-solid) 35%, transparent) 100%
   );
   pointer-events: none;
 }
@@ -4244,7 +4244,7 @@ a {
 }
 
 .landing-teams-card-number {
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-size: 12px;
   font-weight: 600;
   opacity: 0.6;
@@ -4280,7 +4280,7 @@ a {
 .landing-teams-card-description {
   max-width: 34ch;
   margin: 16px 0 0;
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
   font-size: 16px;
   line-height: 1.5;
   text-wrap: pretty;
@@ -4338,13 +4338,13 @@ a {
    you scroll. */
 
 .teams-page {
-  --landing-card-border: color-mix(in srgb, var(--openbot-text-primary) 8%, transparent);
-  --landing-card-border-hover: color-mix(in srgb, var(--openbot-text-primary) 16%, transparent);
-  --landing-card-fill: color-mix(in srgb, var(--openbot-text-primary) 5%, transparent);
+  --landing-card-border: color-mix(in srgb, var(--zollybot-text-primary) 8%, transparent);
+  --landing-card-border-hover: color-mix(in srgb, var(--zollybot-text-primary) 16%, transparent);
+  --landing-card-fill: color-mix(in srgb, var(--zollybot-text-primary) 5%, transparent);
   --teams-soft-grid:
-    linear-gradient(color-mix(in srgb, var(--openbot-text-on-light) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--openbot-text-on-light) 7%, transparent) 1px, transparent 1px);
-  color: var(--openbot-text-primary);
+    linear-gradient(color-mix(in srgb, var(--zollybot-text-on-light) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--zollybot-text-on-light) 7%, transparent) 1px, transparent 1px);
+  color: var(--zollybot-text-primary);
 }
 
 .teams-page .teams-main {
@@ -4354,19 +4354,19 @@ a {
 .teams-page [data-setup="local"],
 .teams-page [data-tile="0"],
 .teams-page [data-cursor="0"] {
-  --teams-color: var(--openbot-logo-production);
+  --teams-color: var(--zollybot-logo-production);
 }
 
 .teams-page [data-setup="managed"],
 .teams-page [data-tile="1"],
 .teams-page [data-cursor="1"] {
-  --teams-color: var(--openbot-logo-preview);
+  --teams-color: var(--zollybot-logo-preview);
 }
 
 .teams-page [data-setup="custom"],
 .teams-page [data-tile="2"],
 .teams-page [data-cursor="2"] {
-  --teams-color: var(--openbot-logo-dev);
+  --teams-color: var(--zollybot-logo-dev);
 }
 
 .teams-page [data-tile="3"] {
@@ -4404,7 +4404,7 @@ a {
 .teams-page .teams-heading p {
   max-width: 560px;
   margin: 22px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.8vw, 19px);
   line-height: 1.55;
   text-wrap: pretty;
@@ -4421,7 +4421,7 @@ a {
   justify-content: center;
   gap: 12px 16px;
   margin: 32px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
 }
 
@@ -4459,10 +4459,10 @@ a {
   gap: 10px;
   margin: 0 0 28px;
   padding: 5px 14px 5px 6px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-sidebar);
-  color: var(--openbot-text-secondary);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-sidebar);
+  color: var(--zollybot-text-secondary);
   font-size: 12px;
   font-weight: 500;
 }
@@ -4476,9 +4476,9 @@ a {
   background: conic-gradient(
     from var(--teams-pill-angle),
     transparent 0deg 190deg,
-    var(--openbot-logo-production) 250deg,
-    var(--openbot-logo-preview) 295deg,
-    var(--openbot-logo-dev) 340deg,
+    var(--zollybot-logo-production) 250deg,
+    var(--zollybot-logo-preview) 295deg,
+    var(--zollybot-logo-dev) 340deg,
     transparent 360deg
   );
   content: "";
@@ -4504,8 +4504,8 @@ a {
 .teams-page .teams-pill-dots span {
   width: 16px;
   height: 16px;
-  border: 2px solid var(--openbot-bg-sidebar);
-  border-radius: var(--openbot-radius-pill);
+  border: 2px solid var(--zollybot-bg-sidebar);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--teams-color);
   animation: teams-pill-hop 2.8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
 }
@@ -4526,9 +4526,9 @@ a {
   background:
     linear-gradient(
       100deg,
-      var(--openbot-text-secondary) 42%,
-      var(--openbot-text-primary) 50%,
-      var(--openbot-text-secondary) 58%
+      var(--zollybot-text-secondary) 42%,
+      var(--zollybot-text-primary) 50%,
+      var(--zollybot-text-secondary) 58%
     )
     0 0 / 300% 100%;
   -webkit-background-clip: text;
@@ -4598,11 +4598,11 @@ a {
   flex-direction: column;
   overflow: hidden;
   padding: clamp(26px, 2.6vw, 34px);
-  border: 1px solid var(--openbot-download-card-border);
+  border: 1px solid var(--zollybot-download-card-border);
   border-radius: 28px;
   background: var(--teams-color);
-  color: var(--openbot-text-on-light);
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  color: var(--zollybot-text-on-light);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .teams-page .teams-setup::before {
@@ -4612,7 +4612,7 @@ a {
   inset: 0;
   background-image: var(--teams-soft-grid);
   background-size: 28px 28px;
-  mask-image: radial-gradient(90% 70% at 20% 15%, var(--openbot-mask-solid) 10%, transparent 100%);
+  mask-image: radial-gradient(90% 70% at 20% 15%, var(--zollybot-mask-solid) 10%, transparent 100%);
   pointer-events: none;
 }
 
@@ -4652,7 +4652,7 @@ a {
   overflow: hidden;
   border: 1px solid var(--landing-card-border);
   border-radius: 28px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
   transition:
     border-color 200ms ease,
@@ -4661,7 +4661,7 @@ a {
 
 .teams-page .teams-tile:hover {
   border-color: var(--landing-card-border-hover);
-  background: var(--openbot-bg-surface-raised);
+  background: var(--zollybot-bg-surface-raised);
 }
 
 .teams-page .teams-tile[data-tile="0"] {
@@ -4689,22 +4689,22 @@ a {
   place-items: center;
   background:
     radial-gradient(50% 70% at 50% 60%, color-mix(in srgb, var(--teams-color) 22%, transparent), transparent 70%),
-    linear-gradient(90deg, var(--openbot-hero-grid-line) 1px, transparent 1px) 0 0 / 32px 32px,
-    linear-gradient(var(--openbot-hero-grid-line) 1px, transparent 1px) 0 0 / 32px 32px;
-  mask-image: linear-gradient(var(--openbot-mask-solid) 55%, transparent);
+    linear-gradient(90deg, var(--zollybot-hero-grid-line) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(var(--zollybot-hero-grid-line) 1px, transparent 1px) 0 0 / 32px 32px;
+  mask-image: linear-gradient(var(--zollybot-mask-solid) 55%, transparent);
 }
 
 .teams-page .teams-tile-art svg {
   width: 88px;
   height: 88px;
   padding: 20px;
-  border: 1px solid var(--openbot-download-card-border);
+  border: 1px solid var(--zollybot-download-card-border);
   border-radius: 24px;
   background: var(--teams-color);
   box-shadow: 0 20px 50px -18px var(--teams-color);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
   stroke-width: 1.6;
-  transition: transform 400ms var(--openbot-ease-out);
+  transition: transform 400ms var(--zollybot-ease-out);
 }
 
 .teams-page .teams-tile:hover .teams-tile-art svg {
@@ -4726,7 +4726,7 @@ a {
 .teams-page .teams-tile-copy p {
   max-width: 48ch;
   margin: 10px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.6;
   text-wrap: pretty;
@@ -4754,9 +4754,9 @@ a {
   inset: 0;
   background: linear-gradient(
     90deg,
-    var(--openbot-logo-production),
-    var(--openbot-logo-preview),
-    var(--openbot-logo-dev),
+    var(--zollybot-logo-production),
+    var(--zollybot-logo-preview),
+    var(--zollybot-logo-dev),
     var(--download-ios-color)
   );
   transform-origin: left;
@@ -4771,10 +4771,10 @@ a {
   height: 12px;
   margin: -6px 0 0 -6px;
   border-radius: 50%;
-  background: var(--openbot-text-primary);
+  background: var(--zollybot-text-primary);
   box-shadow:
-    0 0 10px 3px color-mix(in srgb, var(--openbot-logo-preview) 80%, transparent),
-    0 0 36px 12px color-mix(in srgb, var(--openbot-logo-production) 45%, transparent);
+    0 0 10px 3px color-mix(in srgb, var(--zollybot-logo-preview) 80%, transparent),
+    0 0 36px 12px color-mix(in srgb, var(--zollybot-logo-production) 45%, transparent);
   opacity: 0;
 }
 
@@ -4784,7 +4784,7 @@ a {
   right: 50%;
   width: 160px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--openbot-text-primary));
+  background: linear-gradient(90deg, transparent, var(--zollybot-text-primary));
   content: "";
   translate: 0 -50%;
 }
@@ -4816,9 +4816,9 @@ a {
   border-radius: 50%;
   background: var(--teams-color);
   box-shadow:
-    0 0 0 10px var(--openbot-bg-canvas),
+    0 0 0 10px var(--zollybot-bg-canvas),
     0 0 36px 6px color-mix(in srgb, var(--teams-color) 40%, transparent);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .teams-page .teams-step-node::after {
@@ -4837,8 +4837,8 @@ a {
 
 .teams-page .teams-step-number {
   margin: 26px 0 0;
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
   font-size: 12px;
   font-weight: 600;
 }
@@ -4859,8 +4859,8 @@ a {
 }
 
 .teams-page [data-play="false"] .teams-step-node {
-  background: var(--openbot-bg-surface-raised);
-  box-shadow: 0 0 0 10px var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-surface-raised);
+  box-shadow: 0 0 0 10px var(--zollybot-bg-canvas);
   color: transparent;
   transform: scale(0.5);
 }
@@ -4918,8 +4918,8 @@ a {
 
 @keyframes teams-step-pop {
   from {
-    background: var(--openbot-bg-surface-raised);
-    box-shadow: 0 0 0 10px var(--openbot-bg-canvas);
+    background: var(--zollybot-bg-surface-raised);
+    box-shadow: 0 0 0 10px var(--zollybot-bg-canvas);
     color: transparent;
     transform: scale(0.5);
   }
@@ -4993,14 +4993,14 @@ a {
   gap: 16px;
   padding: 12px 28px 12px 12px;
   border: 1px solid var(--landing-card-border);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--landing-card-fill);
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(17px, 1.6vw, 21px);
   white-space: nowrap;
   transition:
-    border-color var(--openbot-duration-normal) var(--openbot-ease-out),
-    background-color var(--openbot-duration-normal) var(--openbot-ease-out);
+    border-color var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    background-color var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .teams-page .teams-chip:hover {
@@ -5009,7 +5009,7 @@ a {
 }
 
 .teams-page .teams-chip strong {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
 }
 
@@ -5021,7 +5021,7 @@ a {
   place-items: center;
   border-radius: 50%;
   background: var(--teams-color);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .teams-page .teams-chip-icon svg {
@@ -5059,11 +5059,11 @@ a {
 
 /* A second grid in a setup colour, shown only in a circle under the pointer. */
 .teams-page .teams-closing-spot {
-  --openbot-hero-grid-line: color-mix(in srgb, var(--openbot-logo-preview) 60%, transparent);
+  --zollybot-hero-grid-line: color-mix(in srgb, var(--zollybot-logo-preview) 60%, transparent);
   mask-image: radial-gradient(
     220px circle at var(--teams-x, -999px) var(--teams-y, -999px),
-    var(--openbot-mask-solid),
-    var(--openbot-transparent)
+    var(--zollybot-mask-solid),
+    var(--zollybot-transparent)
   );
 }
 
@@ -5080,7 +5080,7 @@ a {
 }
 
 .teams-page .teams-closing-word[data-accent] {
-  background: linear-gradient(100deg, var(--openbot-logo-production), var(--openbot-logo-preview));
+  background: linear-gradient(100deg, var(--zollybot-logo-production), var(--zollybot-logo-preview));
   background-clip: text;
   color: transparent;
 }
@@ -5098,20 +5098,20 @@ a {
   position: absolute;
   inset: -8px -14px;
   z-index: -1;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: linear-gradient(
     100deg,
-    var(--openbot-logo-production),
-    var(--openbot-logo-preview) 50%,
-    var(--openbot-logo-dev)
+    var(--zollybot-logo-production),
+    var(--zollybot-logo-preview) 50%,
+    var(--zollybot-logo-dev)
   );
   content: "";
   filter: blur(18px);
   opacity: 0;
   scale: 0.85;
   transition:
-    opacity 1200ms var(--openbot-ease-out),
-    scale 1200ms var(--openbot-ease-out);
+    opacity 1200ms var(--zollybot-ease-out),
+    scale 1200ms var(--zollybot-ease-out);
 }
 
 .teams-page .teams-closing[data-done="true"] .teams-closing-action::before {
@@ -5142,7 +5142,7 @@ a {
   place-items: center;
   width: var(--teams-avatar-size);
   height: var(--teams-avatar-size);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .teams-page .teams-avatar:empty {
@@ -5199,7 +5199,7 @@ a {
   width: 30px;
   height: 30px;
   fill: var(--teams-color);
-  stroke: var(--openbot-bg-canvas);
+  stroke: var(--zollybot-bg-canvas);
   stroke-width: 1.5;
   stroke-linejoin: round;
   filter: drop-shadow(0 2px 4px rgb(0 0 0 / 35%));
@@ -5210,10 +5210,10 @@ a {
 .teams-page .teams-cursor-name {
   margin: 22px 0 0 -6px;
   padding: 6px 13px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--teams-color);
   box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
   font-size: 14px;
   font-weight: 600;
 }
@@ -5261,9 +5261,9 @@ a {
   .teams-page .teams-timeline-fill {
     background: linear-gradient(
       180deg,
-      var(--openbot-logo-production),
-      var(--openbot-logo-preview),
-      var(--openbot-logo-dev),
+      var(--zollybot-logo-production),
+      var(--zollybot-logo-preview),
+      var(--zollybot-logo-dev),
       var(--download-ios-color)
     );
     transform-origin: top;
@@ -5286,7 +5286,7 @@ a {
     left: 50%;
     width: 2px;
     height: 120px;
-    background: linear-gradient(180deg, transparent, var(--openbot-text-primary));
+    background: linear-gradient(180deg, transparent, var(--zollybot-text-primary));
     translate: -50% 0;
   }
 
@@ -5422,7 +5422,7 @@ a {
 
 .post-meta {
   display: block;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 13px;
   line-height: 1.4;
 }
@@ -5462,7 +5462,7 @@ a {
 .post-featured-description {
   max-width: 46ch;
   margin: 16px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 15px;
   line-height: 1.6;
 }
@@ -5495,7 +5495,7 @@ a {
   display: grid;
   place-items: center;
   overflow: hidden;
-  border: 1px solid var(--openbot-border-strong);
+  border: 1px solid var(--zollybot-border-strong);
   /* The artwork is decoration, and it is the largest thing on a card. It takes no
      pointer, so a click on it reaches the link that covers the block: on the
      featured article that link is a stretched pseudo-element, and it cannot paint
@@ -5554,7 +5554,7 @@ a {
 .post-gradient > canvas {
   border-radius: inherit;
   opacity: 0;
-  transition: opacity var(--openbot-duration-slow) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .post-gradient[data-shader="live"] > canvas {
@@ -5571,7 +5571,7 @@ a {
      it has nothing to answer a pointer with. */
   pointer-events: none;
   padding: clamp(18px, 2.6vw, 40px);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.12;
@@ -5604,7 +5604,7 @@ a {
 
 .post-card:focus-visible {
   border-radius: 24px;
-  outline: 3px solid var(--openbot-border-focus);
+  outline: 3px solid var(--zollybot-border-focus);
   outline-offset: 4px;
 }
 
@@ -5620,12 +5620,12 @@ a {
 
 .post-card-title {
   margin: 6px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.35;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 /* The reveal is per card, ordered by --post-card-index, so the row arrives as a
@@ -5689,9 +5689,9 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .post-article-back::before {
@@ -5709,7 +5709,7 @@ a {
 
 .post-article-standfirst {
   margin: 18px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.6vw, 19px);
   line-height: 1.55;
 }
@@ -5720,7 +5720,7 @@ a {
 
 .post-prose {
   margin-top: clamp(32px, 4vw, 48px);
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 17px;
   line-height: 1.7;
 }
@@ -5731,7 +5731,7 @@ a {
 
 .post-prose h2 {
   margin: 40px 0 14px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 26px;
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -5740,7 +5740,7 @@ a {
 
 .post-prose h3 {
   margin: 32px 0 12px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -5768,12 +5768,12 @@ a {
 }
 
 .post-prose strong {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
 }
 
 .post-prose a {
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -5781,8 +5781,8 @@ a {
 .post-prose code {
   padding: 2px 6px;
   border-radius: 6px;
-  background: var(--openbot-bg-surface);
-  font-family: var(--openbot-font-mono);
+  background: var(--zollybot-bg-surface);
+  font-family: var(--zollybot-font-mono);
   font-size: 0.9em;
 }
 
@@ -5790,11 +5790,11 @@ a {
   margin: 0 0 24px;
   padding: 16px 18px;
   overflow-x: auto;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -5811,19 +5811,19 @@ a {
 
 .post-prose kbd {
   padding: 2px 7px;
-  border: 1px solid var(--openbot-border-strong);
+  border: 1px solid var(--zollybot-border-strong);
   border-bottom-width: 2px;
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-bg-surface);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-bg-surface);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
   font-size: 0.85em;
 }
 
 .post-prose hr {
   margin: 40px 0;
   border: 0;
-  border-top: 1px solid var(--openbot-border-strong);
+  border-top: 1px solid var(--zollybot-border-strong);
 }
 
 .post-prose table {
@@ -5836,21 +5836,21 @@ a {
 .post-prose th,
 .post-prose td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--openbot-border-strong);
+  border-bottom: 1px solid var(--zollybot-border-strong);
   text-align: left;
   vertical-align: top;
 }
 
 .post-prose th {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
 }
 
 .post-prose blockquote {
   margin: 24px 0;
   padding-left: 18px;
-  border-left: 2px solid var(--openbot-border-strong);
-  color: var(--openbot-text-muted);
+  border-left: 2px solid var(--zollybot-border-strong);
+  color: var(--zollybot-text-muted);
 }
 
 .post-prose > :last-child {
@@ -5882,12 +5882,12 @@ a {
   display: block;
   width: 100%;
   height: auto;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-card);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-card);
   /* The frame is filled before the file arrives, so what the reader sees in that
      moment is the shape the picture will take rather than a hole in the page. The
      space itself comes from the width and height the component writes. */
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 /* A picture with room around it, standing on the article's own gradient. A
@@ -5906,8 +5906,8 @@ a {
   isolation: isolate;
   display: grid;
   overflow: hidden;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-card);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-card);
   /* Proportional, so the room around the picture stays the same fraction of the
      column on a phone as on a wide screen, with a floor and a ceiling that keep
      it from vanishing or from eating the picture. Authors pick `tight` or
@@ -5934,14 +5934,14 @@ a {
 }
 
 .post-mount .post-media {
-  border-color: var(--openbot-border);
+  border-color: var(--zollybot-border);
   border-radius: 9px;
-  box-shadow: var(--openbot-shadow-overlay);
+  box-shadow: var(--zollybot-shadow-overlay);
 }
 
 .post-figure-caption {
   margin-top: 12px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -6083,10 +6083,10 @@ a {
   inset: 0;
   overflow: hidden;
   mask-image: linear-gradient(
-    var(--openbot-transparent),
-    var(--openbot-mask-solid) 14%,
-    var(--openbot-mask-solid) 86%,
-    var(--openbot-transparent)
+    var(--zollybot-transparent),
+    var(--zollybot-mask-solid) 14%,
+    var(--zollybot-mask-solid) 86%,
+    var(--zollybot-transparent)
   );
 }
 
@@ -6104,9 +6104,9 @@ a {
 .post-cta-veil {
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--openbot-bg-canvas) 62%, var(--openbot-transparent));
+  background: color-mix(in srgb, var(--zollybot-bg-canvas) 62%, var(--zollybot-transparent));
   backdrop-filter: blur(16px);
-  mask-image: radial-gradient(720px 340px at 50% 50%, var(--openbot-mask-solid) 50%, var(--openbot-transparent) 100%);
+  mask-image: radial-gradient(720px 340px at 50% 50%, var(--zollybot-mask-solid) 50%, var(--zollybot-transparent) 100%);
   pointer-events: none;
 }
 
@@ -6120,17 +6120,17 @@ a {
   .post-cta-comb {
     mask-image:
       linear-gradient(
-        var(--openbot-transparent),
-        var(--openbot-mask-solid) 14%,
-        var(--openbot-mask-solid) 86%,
-        var(--openbot-transparent)
+        var(--zollybot-transparent),
+        var(--zollybot-mask-solid) 14%,
+        var(--zollybot-mask-solid) 86%,
+        var(--zollybot-transparent)
       ),
       linear-gradient(
         90deg,
-        var(--openbot-transparent) calc(50% - 960px),
-        var(--openbot-mask-solid) calc(50% - 810px),
-        var(--openbot-mask-solid) calc(50% + 810px),
-        var(--openbot-transparent) calc(50% + 960px)
+        var(--zollybot-transparent) calc(50% - 960px),
+        var(--zollybot-mask-solid) calc(50% - 810px),
+        var(--zollybot-mask-solid) calc(50% + 810px),
+        var(--zollybot-transparent) calc(50% + 960px)
       );
     mask-composite: intersect;
   }
@@ -6148,7 +6148,11 @@ a {
   }
 
   .post-cta-veil {
-    mask-image: radial-gradient(340px 400px at 50% 50%, var(--openbot-mask-solid) 55%, var(--openbot-transparent) 100%);
+    mask-image: radial-gradient(
+      340px 400px at 50% 50%,
+      var(--zollybot-mask-solid) 55%,
+      var(--zollybot-transparent) 100%
+    );
   }
 }
 
@@ -6164,7 +6168,7 @@ a {
 .post-cta-description {
   max-width: 580px;
   margin: 20px auto 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.8vw, 19px);
   line-height: 1.55;
   text-wrap: pretty;
@@ -6249,7 +6253,7 @@ a {
        moving layer and again for the resting element, and that second pass lands
        on different pixels: the title looks like it jumps as the growth ends. */
     transform: scale(1);
-    transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+    transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
     will-change: transform;
   }
 
@@ -6266,11 +6270,11 @@ a {
 
   .post-card:hover .post-card-title,
   .post-article-back:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   .post-featured-title a:hover {
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 }
 
@@ -6309,13 +6313,13 @@ a {
    Reading progress, on news, guides and comparisons.
 
    One segment per section, as long as the section. The part the reader has
-   passed is OpenBot's lilac, and the segment they are in glows at the point
+   passed is ZollyBot's lilac, and the segment they are in glows at the point
    they have reached. Pointing at the rail brings in the titles through the
    same blur as the header menu, over a scrim with no edge.
    ------------------------------------------------------------------------- */
 
 .reading-progress {
-  --reading-accent: var(--openbot-logo-production);
+  --reading-accent: var(--zollybot-logo-production);
   --reading-track: rgba(255, 255, 255, 0.1);
   --reading-glow: color-mix(in srgb, var(--reading-accent) 60%, transparent);
   /* The header menu's motion. Its tokens live on .site-nav, out of reach here. */
@@ -6394,8 +6398,8 @@ a {
     inset: -64px -12px -64px -64px;
     background: linear-gradient(
       to left,
-      var(--openbot-bg-canvas) 0%,
-      color-mix(in srgb, var(--openbot-bg-canvas) 92%, transparent) 55%,
+      var(--zollybot-bg-canvas) 0%,
+      color-mix(in srgb, var(--zollybot-bg-canvas) 92%, transparent) 55%,
       transparent 100%
     );
     mask-image: linear-gradient(to bottom, transparent, #000 64px, #000 calc(100% - 64px), transparent);
@@ -6409,8 +6413,8 @@ a {
     justify-content: space-between;
     margin: 0 0 12px;
     padding: 0 20px 0 18px;
-    color: var(--openbot-text-dim);
-    font-family: var(--openbot-font-mono);
+    color: var(--zollybot-text-dim);
+    font-family: var(--zollybot-font-mono);
     font-size: 10px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -6446,19 +6450,19 @@ a {
     display: flex;
     gap: 14px;
     padding-left: 18px;
-    color: var(--openbot-text-muted);
+    color: var(--zollybot-text-muted);
     text-decoration: none;
     outline: none;
   }
 
   .reading-progress-item[data-state="read"] .reading-progress-link {
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 
   .reading-progress-item[data-state="active"] .reading-progress-link,
   .reading-progress-link:hover,
   .reading-progress-link:focus-visible {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   .reading-progress-label {
@@ -6600,20 +6604,20 @@ a {
    rather than prose: the two marks side by side over the artwork, the short
    answer, a table, a pair of cards per topic, the questions, and the sources.
    Each side keeps one accent the whole way down (`--compare-accent`), so a reader
-   can tell which column is which without reading the label again. OpenBot's is
-   its own lilac and the rival's is a quiet grey, so OpenBot is the side the eye
+   can tell which column is which without reading the label again. ZollyBot's is
+   its own lilac and the rival's is a quiet grey, so ZollyBot is the side the eye
    goes to. Where one side is better, the page marks it in green
-   (`--openbot-success`), with a check and a word, never with colour alone.
+   (`--zollybot-success`), with a check and a word, never with colour alone.
    A page that compares two other apps (sides "a" and "b") gives both sides the
    same quiet accent: it takes no side.
    ------------------------------------------------------------------------- */
 
-.compare-page [data-side="openbot"] {
-  --compare-accent: var(--openbot-logo-production);
+.compare-page [data-side="zollybot"] {
+  --compare-accent: var(--zollybot-logo-production);
 }
 
 .compare-page :is([data-side="rival"], [data-side="a"], [data-side="b"]) {
-  --compare-accent: var(--openbot-text-muted);
+  --compare-accent: var(--zollybot-text-muted);
 }
 
 /* One centred column for the hero and every section under it. */
@@ -6635,8 +6639,8 @@ a {
 
 .compare-eyebrow {
   margin: 22px 0 0;
-  color: var(--openbot-text-dim);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-dim);
+  font-family: var(--zollybot-font-mono);
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -6658,7 +6662,7 @@ a {
 .compare-standfirst {
   max-width: 48ch;
   margin: 18px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.55;
 }
@@ -6673,10 +6677,10 @@ a {
 
 .compare-meta a,
 .compare-sources-note a {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 /* The artwork frame, the same shape as the featured article on /news. The
@@ -6692,7 +6696,7 @@ a {
   place-items: center;
   aspect-ratio: 19 / 10;
   overflow: hidden;
-  border: 1px solid var(--openbot-border-strong);
+  border: 1px solid var(--zollybot-border-strong);
   border-radius: 16px;
   pointer-events: none;
   animation: compare-rise 720ms cubic-bezier(0.22, 1, 0.36, 1) 160ms backwards;
@@ -6724,7 +6728,7 @@ a {
   align-items: center;
   gap: 12px;
   min-width: clamp(96px, 9vw, 128px);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   animation: compare-mark-in 800ms cubic-bezier(0.22, 1, 0.36, 1) 420ms backwards;
 }
 
@@ -6738,7 +6742,7 @@ a {
 }
 
 .compare-mark-rival {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .compare-mark-name {
@@ -6787,7 +6791,7 @@ a {
 
 @keyframes compare-rise {
   from {
-    border-color: var(--openbot-transparent);
+    border-color: var(--zollybot-transparent);
     transform: translate3d(0, 16px, 0);
   }
 }
@@ -6814,24 +6818,24 @@ a {
 .compare-answer-text {
   max-width: 62ch;
   margin: 16px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(17px, 1.6vw, 20px);
   line-height: 1.55;
 }
 
 .compare-glance-summary {
   margin: 10px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 15px;
 }
 
 /* The plans an agent can run on, each with its provider's logo in its own colour
-   (`--openbot-provider-current`, from `data-provider` on the logo). Plain cards:
+   (`--zollybot-provider-current`, from `data-provider` on the logo). Plain cards:
    the logos are the colour on this part of the page. */
 .compare-plans-lead {
   max-width: 62ch;
   margin: 14px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.4vw, 18px);
   line-height: 1.6;
 }
@@ -6862,21 +6866,21 @@ a {
   column-gap: 14px;
   row-gap: 3px;
   padding: 16px 18px;
-  border: 1px solid var(--openbot-border);
+  border: 1px solid var(--zollybot-border);
   border-radius: 14px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 /* On a page about two other apps, their two plans lead the grid. */
 .compare-plan[data-highlighted] {
-  border-color: color-mix(in srgb, var(--openbot-logo-production) 34%, var(--openbot-border));
+  border-color: color-mix(in srgb, var(--zollybot-logo-production) 34%, var(--zollybot-border));
   background:
     radial-gradient(
       120% 90% at 0% 0%,
-      color-mix(in srgb, var(--openbot-logo-production) 10%, var(--openbot-transparent)),
-      var(--openbot-transparent) 62%
+      color-mix(in srgb, var(--zollybot-logo-production) 10%, var(--zollybot-transparent)),
+      var(--zollybot-transparent) 62%
     ),
-    var(--openbot-bg-surface);
+    var(--zollybot-bg-surface);
 }
 
 .compare-plan-logo-frame {
@@ -6894,24 +6898,24 @@ a {
   width: 20px;
   height: 20px;
   overflow: visible;
-  fill: var(--openbot-provider-current);
+  fill: var(--zollybot-provider-current);
 }
 
 .compare-plan-logo-custom {
   fill: none;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .compare-plan-name {
   align-self: end;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .compare-plan-text {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 13.5px;
   line-height: 1.45;
 }
@@ -6921,13 +6925,13 @@ a {
   align-items: flex-start;
   gap: 10px;
   margin: 18px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 15px;
   line-height: 1.5;
 }
 
 .compare-plans-rival strong {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-weight: 600;
 }
 
@@ -6942,7 +6946,7 @@ a {
 .compare-intro {
   max-width: 62ch;
   margin: clamp(56px, 7vw, 96px) auto 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(17px, 1.6vw, 19px);
   line-height: 1.7;
   text-align: center;
@@ -6963,26 +6967,26 @@ a {
   min-width: 0;
   overflow: hidden;
   padding: clamp(20px, 2.2vw, 28px);
-  border: 1px solid var(--openbot-border);
+  border: 1px solid var(--zollybot-border);
   border-radius: 16px;
   background:
     radial-gradient(
       120% 80% at 0% 0%,
-      color-mix(in srgb, var(--compare-accent) 9%, var(--openbot-transparent)),
-      var(--openbot-transparent) 60%
+      color-mix(in srgb, var(--compare-accent) 9%, var(--zollybot-transparent)),
+      var(--zollybot-transparent) 60%
     ),
-    var(--openbot-bg-surface);
+    var(--zollybot-bg-surface);
 }
 
 .compare-card[data-better] {
-  border-color: color-mix(in srgb, var(--compare-accent) 34%, var(--openbot-border));
+  border-color: color-mix(in srgb, var(--compare-accent) 34%, var(--zollybot-border));
   background:
     radial-gradient(
       120% 90% at 0% 0%,
-      color-mix(in srgb, var(--compare-accent) 16%, var(--openbot-transparent)),
-      var(--openbot-transparent) 62%
+      color-mix(in srgb, var(--compare-accent) 16%, var(--zollybot-transparent)),
+      var(--zollybot-transparent) 62%
     ),
-    var(--openbot-bg-surface);
+    var(--zollybot-bg-surface);
 }
 
 .compare-card::before {
@@ -7011,7 +7015,7 @@ a {
   align-items: center;
   gap: 8px;
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -7030,7 +7034,7 @@ a {
 
 .compare-card-text {
   margin: 14px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.65;
 }
@@ -7040,7 +7044,7 @@ a {
   gap: 10px;
   margin: 16px 0 0;
   padding: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.5;
 }
@@ -7056,7 +7060,7 @@ a {
   width: 16px;
   height: 16px;
   margin-top: 0.15em;
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
   stroke-width: 2.6;
 }
 
@@ -7066,7 +7070,7 @@ a {
   height: 6px;
   margin: 0.6em 5px 0;
   border-radius: 50%;
-  background: var(--openbot-text-dim);
+  background: var(--zollybot-text-dim);
 }
 
 .compare-better-badge {
@@ -7074,10 +7078,10 @@ a {
   align-items: center;
   gap: 5px;
   padding: 4px 10px 4px 8px;
-  border-radius: var(--openbot-radius-pill);
-  background: color-mix(in srgb, var(--openbot-success) 14%, var(--openbot-transparent));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--openbot-success) 30%, var(--openbot-transparent));
-  color: var(--openbot-success-text);
+  border-radius: var(--zollybot-radius-pill);
+  background: color-mix(in srgb, var(--zollybot-success) 14%, var(--zollybot-transparent));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zollybot-success) 30%, var(--zollybot-transparent));
+  color: var(--zollybot-success-text);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0;
@@ -7092,9 +7096,9 @@ a {
 .compare-table-frame {
   margin-top: 22px;
   overflow-x: auto;
-  border: 1px solid var(--openbot-border);
+  border: 1px solid var(--zollybot-border);
   border-radius: 16px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 .compare-table {
@@ -7113,9 +7117,9 @@ a {
 }
 
 .compare-table thead th {
-  border-bottom: 1px solid var(--openbot-border-strong);
-  background: var(--openbot-bg-surface-raised);
-  color: var(--openbot-text-primary);
+  border-bottom: 1px solid var(--zollybot-border-strong);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   font-weight: 600;
 }
@@ -7135,18 +7139,18 @@ a {
   height: 22px;
 }
 
-/* OpenBot's column is lit the whole way down, the way a pricing table marks the
+/* ZollyBot's column is lit the whole way down, the way a pricing table marks the
    plan it recommends. */
-.compare-table thead th[data-side="openbot"] {
+.compare-table thead th[data-side="zollybot"] {
   box-shadow: inset 0 2px 0 var(--compare-accent);
 }
 
-.compare-table [data-side="openbot"] {
-  background: color-mix(in srgb, var(--compare-accent) 5%, var(--openbot-transparent));
+.compare-table [data-side="zollybot"] {
+  background: color-mix(in srgb, var(--compare-accent) 5%, var(--zollybot-transparent));
 }
 
 .compare-table td[data-better] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .compare-better-mark {
@@ -7157,8 +7161,8 @@ a {
   height: 20px;
   margin: 1px 9px 0 0;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--openbot-success) 18%, var(--openbot-transparent));
-  color: var(--openbot-success);
+  background: color-mix(in srgb, var(--zollybot-success) 18%, var(--zollybot-transparent));
+  color: var(--zollybot-success);
 }
 
 .compare-better-icon {
@@ -7168,16 +7172,16 @@ a {
 }
 
 .compare-table tbody tr + tr {
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .compare-table tbody th {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 500;
 }
 
 .compare-table td {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .compare-topic {
@@ -7191,17 +7195,17 @@ a {
   width: 18px;
   height: 18px;
   margin-top: 2px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .compare-faq-list {
   interpolate-size: allow-keywords;
   margin-top: 18px;
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .compare-faq-item {
-  border-bottom: 1px solid var(--openbot-border);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 /* The panel grows to its own height where the browser can animate to `auto`;
@@ -7210,8 +7214,8 @@ a {
   block-size: 0;
   overflow: clip;
   transition:
-    block-size var(--openbot-duration-normal) var(--openbot-ease-out),
-    content-visibility var(--openbot-duration-normal) allow-discrete;
+    block-size var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    content-visibility var(--zollybot-duration-normal) allow-discrete;
 }
 
 .compare-faq-item[open]::details-content {
@@ -7225,7 +7229,7 @@ a {
   gap: 16px;
   padding: 18px 2px;
   cursor: pointer;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 17px;
   font-weight: 500;
   letter-spacing: -0.015em;
@@ -7238,7 +7242,7 @@ a {
 
 .compare-faq-question:focus-visible {
   border-radius: 8px;
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
@@ -7246,8 +7250,8 @@ a {
   flex: none;
   width: 18px;
   height: 18px;
-  color: var(--openbot-text-muted);
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  color: var(--zollybot-text-muted);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .compare-faq-item[open] .compare-faq-chevron {
@@ -7258,7 +7262,7 @@ a {
   max-width: 70ch;
   margin: 0;
   padding: 0 2px 20px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.65;
 }
@@ -7280,21 +7284,21 @@ a {
 }
 
 .landing-faq-body .compare-faq-answer a {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .landing-faq-body .compare-faq-answer a:hover,
 .landing-faq-body .compare-faq-answer a:focus-visible {
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
 }
 
 .compare-sources-note {
   max-width: 68ch;
   margin: 14px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -7311,15 +7315,15 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .compare-sources-icon {
   width: 14px;
   height: 14px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 /* The roundup: a wide table with one row per app, then a card per app with the
@@ -7327,7 +7331,7 @@ a {
 .compare-roundup-disclosure {
   max-width: 62ch;
   margin: 12px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -7350,14 +7354,14 @@ a {
 }
 
 .compare-roundup-rank {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-variant-numeric: tabular-nums;
   font-weight: 500;
 }
 
 .compare-roundup-best {
   margin: 10px 0 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 15px;
   font-weight: 500;
   line-height: 1.5;
@@ -7376,7 +7380,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
   font-size: 14px;
   font-weight: 500;
 }
@@ -7384,34 +7388,34 @@ a {
 .compare-roundup-link-icon {
   width: 14px;
   height: 14px;
-  transition: transform var(--openbot-duration-normal) ease;
+  transition: transform var(--zollybot-duration-normal) ease;
 }
 
 /* The benchmark chart: a table with a bar in each cell. Each agent has its own
    colour, and the rows keep this order, so each pair of neighbours stays apart for
    colour-blind readers. Checked with the dataviz palette check, dark mode, on
-   --openbot-bg-canvas: "#d95926,#3987e5,#199e70,#9085e9". Blue next to violet fails,
+   --zollybot-bg-canvas: "#d95926,#3987e5,#199e70,#9085e9". Blue next to violet fails,
    so do not reorder. Text stays in the text colours; only the bars are coloured. */
 .compare-bench-table tr[data-agent="claude-code"] {
-  --compare-bench-fill: var(--openbot-chart-storage-files);
+  --compare-bench-fill: var(--zollybot-chart-storage-files);
 }
 
 .compare-bench-table tr[data-agent="codex"] {
-  --compare-bench-fill: var(--openbot-chart-storage-workspaces);
+  --compare-bench-fill: var(--zollybot-chart-storage-workspaces);
 }
 
 .compare-bench-table tr[data-agent="devin"] {
-  --compare-bench-fill: var(--openbot-chart-storage-chats);
+  --compare-bench-fill: var(--zollybot-chart-storage-chats);
 }
 
 .compare-bench-table tr[data-agent="antigravity"] {
-  --compare-bench-fill: var(--openbot-chart-storage-downloads);
+  --compare-bench-fill: var(--zollybot-chart-storage-downloads);
 }
 
 .compare-bench-takeaway {
   max-width: 62ch;
   margin: 14px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.4vw, 18px);
   line-height: 1.6;
 }
@@ -7431,7 +7435,7 @@ a {
 
 .compare-bench-hint {
   display: block;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
   font-weight: 400;
 }
@@ -7445,25 +7449,25 @@ a {
 .compare-bench-agent .compare-table-logo {
   flex: none;
   margin-top: 1px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .compare-bench-name {
   display: block;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
 }
 
 .compare-bench-model,
 .compare-bench-note {
   display: block;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
   font-weight: 400;
 }
 
 .compare-bench-note {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 /* The bar starts square at zero and ends round at its value; the value sits after
@@ -7485,7 +7489,7 @@ a {
 
 .compare-bench-value {
   flex: none;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -7493,13 +7497,13 @@ a {
 .compare-bench-credit {
   max-width: 68ch;
   margin: 14px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .compare-bench-credit a {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -7566,7 +7570,7 @@ a {
 .compare-index-description {
   max-width: 56ch;
   margin: 18px auto 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.55;
 }
@@ -7588,7 +7592,7 @@ a {
 
 .compare-index-card:focus-visible {
   border-radius: 20px;
-  outline: 3px solid var(--openbot-border-focus);
+  outline: 3px solid var(--zollybot-border-focus);
   outline-offset: 4px;
 }
 
@@ -7598,7 +7602,7 @@ a {
   place-items: center;
   aspect-ratio: 19 / 10;
   overflow: hidden;
-  border: 1px solid var(--openbot-border-strong);
+  border: 1px solid var(--zollybot-border-strong);
   border-radius: 14px;
   pointer-events: none;
 }
@@ -7653,7 +7657,7 @@ a {
 
 .compare-index-card-title {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(18px, 1.7vw, 22px);
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -7662,7 +7666,7 @@ a {
 
 .compare-index-card-description {
   margin: 8px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 15px;
   line-height: 1.55;
 }
@@ -7672,7 +7676,7 @@ a {
   align-items: center;
   gap: 6px;
   margin-top: 14px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
   font-weight: 500;
 }
@@ -7680,7 +7684,7 @@ a {
 .compare-index-card-arrow {
   width: 15px;
   height: 15px;
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 /* The card only rises, and its parts fade one by one, for the reason given at
@@ -7760,7 +7764,7 @@ a {
   }
 
   /* Out of the grid but still in the table, so the brand headers keep their
-     columns: removed, "OpenBot" would head the topic column. */
+     columns: removed, "ZollyBot" would head the topic column. */
   .compare-table thead th:first-child {
     position: absolute;
     width: 1px;
@@ -7842,11 +7846,11 @@ a {
   .compare-meta a:hover,
   .compare-sources-note a:hover,
   .compare-sources-list a:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   .compare-faq-question:hover .compare-faq-chevron {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   .compare-roundup-links a:hover .compare-roundup-link-icon {
@@ -7858,7 +7862,7 @@ a {
   }
 
   .compare-index-card:hover .compare-index-card-title {
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 }
 
@@ -7894,7 +7898,7 @@ a {
    /providers and /providers/<slug>.
 
    Built from the compare parts: the same hero plate, sections, table, plan grid
-   and questions. Only the setup steps, the cards of what OpenBot adds and the
+   and questions. Only the setup steps, the cards of what ZollyBot adds and the
    comparison links are new.
    --------------------------------------------------------------------------- */
 
@@ -7907,22 +7911,22 @@ a {
   width: 100%;
   height: 100%;
   overflow: visible;
-  fill: var(--openbot-provider-current);
+  fill: var(--zollybot-provider-current);
 }
 
 .provider-mark-custom {
   width: 78%;
   height: 78%;
   fill: none;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .compare-page :is(.provider-step-text, .provider-table td) code {
   padding: 1px 6px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.06);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
   font-size: 0.88em;
 }
 
@@ -7938,9 +7942,9 @@ a {
 .provider-step {
   position: relative;
   padding: 18px 20px 18px 64px;
-  border: 1px solid var(--openbot-border);
+  border: 1px solid var(--zollybot-border);
   border-radius: 14px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
   counter-increment: provider-step;
 }
 
@@ -7953,8 +7957,8 @@ a {
   width: 28px;
   height: 28px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--openbot-logo-production) 16%, var(--openbot-transparent));
-  color: var(--openbot-text-primary);
+  background: color-mix(in srgb, var(--zollybot-logo-production) 16%, var(--zollybot-transparent));
+  color: var(--zollybot-text-primary);
   font-size: 13px;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
@@ -7963,7 +7967,7 @@ a {
 
 .provider-step-title {
   margin: 3px 0 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -7972,7 +7976,7 @@ a {
 .provider-step-text {
   max-width: 68ch;
   margin: 8px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.6;
 }
@@ -7992,7 +7996,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
   font-size: 14px;
   font-weight: 500;
 }
@@ -8017,7 +8021,7 @@ a {
 .provider-step-arrow {
   width: 14px;
   height: 14px;
-  transition: transform var(--openbot-duration-normal) ease;
+  transition: transform var(--zollybot-duration-normal) ease;
 }
 
 .provider-adds-grid {
@@ -8032,32 +8036,32 @@ a {
 .provider-add {
   min-width: 0;
   padding: 18px 20px;
-  border: 1px solid var(--openbot-border);
+  border: 1px solid var(--zollybot-border);
   border-radius: 14px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 /* The first card is the one about this provider, so it carries the accent. */
 .provider-add:first-child {
-  border-color: color-mix(in srgb, var(--openbot-logo-production) 34%, var(--openbot-border));
+  border-color: color-mix(in srgb, var(--zollybot-logo-production) 34%, var(--zollybot-border));
   background:
     radial-gradient(
       120% 90% at 0% 0%,
-      color-mix(in srgb, var(--openbot-logo-production) 10%, var(--openbot-transparent)),
-      var(--openbot-transparent) 62%
+      color-mix(in srgb, var(--zollybot-logo-production) 10%, var(--zollybot-transparent)),
+      var(--zollybot-transparent) 62%
     ),
-    var(--openbot-bg-surface);
+    var(--zollybot-bg-surface);
 }
 
 .provider-add-icon {
   width: 22px;
   height: 22px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .provider-add-title {
   margin: 14px 0 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -8065,7 +8069,7 @@ a {
 
 .provider-add-text {
   margin: 6px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   line-height: 1.55;
 }
@@ -8158,7 +8162,7 @@ a {
 
 .plugin-intro-title {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(30px, 3.4vw, 40px);
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -8183,7 +8187,7 @@ a {
 
 .plugin-card:focus-visible {
   border-radius: 24px;
-  outline: 3px solid var(--openbot-border-focus);
+  outline: 3px solid var(--zollybot-border-focus);
   outline-offset: 4px;
 }
 
@@ -8196,7 +8200,7 @@ a {
      rather than its ancestor. Without this, crossing onto the mark counts as
      leaving the artwork and throws the shader away where the pointer rests. */
   pointer-events: none;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   filter: drop-shadow(0 1px 6px rgb(0 0 0 / 35%));
 }
 
@@ -8222,7 +8226,7 @@ a {
 .plugin-card-icon {
   position: relative;
   height: 40%;
-  border-radius: var(--openbot-radius-logo);
+  border-radius: var(--zollybot-radius-logo);
   box-shadow: 0 2px 12px rgb(0 0 0 / 35%);
   pointer-events: none;
 }
@@ -8253,13 +8257,13 @@ a {
 
 .plugin-card-meta {
   margin-top: 14px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
 }
 
 .plugin-card-version {
   flex: none;
-  letter-spacing: var(--openbot-tracking-wide);
+  letter-spacing: var(--zollybot-tracking-wide);
 }
 
 /* One end of each line gives way first, and it is whichever end a reader can lose:
@@ -8300,13 +8304,13 @@ a {
 }
 
 .plugin-tag {
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   padding: 5px 11px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
-  letter-spacing: var(--openbot-tracking-wide);
+  letter-spacing: var(--zollybot-tracking-wide);
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -8319,25 +8323,25 @@ a {
   height: 38px;
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
   background: transparent;
   padding: 0 17px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font: inherit;
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: var(--openbot-tracking-wide);
+  letter-spacing: var(--zollybot-tracking-wide);
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
   /* Colour, and a press. A filter row is read before it is used, so the motion
      that belongs on it is the motion every other button here already has. */
   transition:
-    border-color var(--openbot-duration-normal) ease,
-    background-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease,
-    transform var(--openbot-duration-fast) var(--openbot-ease-out);
+    border-color var(--zollybot-duration-normal) ease,
+    background-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease,
+    transform var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 /* Pressed is the only state that fills a switch in, and it fills it the way a
@@ -8345,9 +8349,9 @@ a {
    from one that was never on, and the grid behind it has already changed, so the
    fill confirms what happened rather than announcing it. */
 .plugin-tag-button[aria-pressed="true"] {
-  border-color: var(--openbot-surface-light);
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  border-color: var(--zollybot-surface-light);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .plugin-tag-button:active {
@@ -8356,12 +8360,12 @@ a {
 
 .plugin-tag-button:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .plugin-empty {
   margin: 0;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 14px;
 }
 
@@ -8371,16 +8375,16 @@ a {
 
 .plugin-card-title {
   flex: none;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.35;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .plugin-card-tagline {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 13px;
 }
 
@@ -8459,9 +8463,9 @@ a {
   width: clamp(56px, 6vw, 76px);
   aspect-ratio: 1;
   overflow: hidden;
-  border: 1px solid var(--openbot-glass-border);
-  border-radius: var(--openbot-radius-logo);
-  background: var(--openbot-glass-surface);
+  border: 1px solid var(--zollybot-glass-border);
+  border-radius: var(--zollybot-radius-logo);
+  background: var(--zollybot-glass-surface);
   /* Decoration, like every other frame on this page: it takes no pointer. */
   pointer-events: none;
 }
@@ -8506,12 +8510,12 @@ a {
   width: min(380px, calc(100vw - 32px));
   margin: auto;
   padding: 22px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-sidebar);
-  box-shadow: var(--openbot-shadow-overlay);
-  color: var(--openbot-text-primary);
-  animation: plugin-dialog-enter var(--openbot-duration-overlay) var(--openbot-ease-out) both;
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-sidebar);
+  box-shadow: var(--zollybot-shadow-overlay);
+  color: var(--zollybot-text-primary);
+  animation: plugin-dialog-enter var(--zollybot-duration-overlay) var(--zollybot-ease-out) both;
 }
 
 @keyframes plugin-dialog-enter {
@@ -8528,7 +8532,7 @@ a {
 
 /* The page stays visible behind it, because the visitor is deciding whether to leave it. */
 .plugin-dialog::backdrop {
-  background: var(--openbot-dialog-overlay);
+  background: var(--zollybot-dialog-overlay);
   backdrop-filter: blur(6px);
 }
 
@@ -8540,7 +8544,7 @@ a {
 
 .plugin-dialog-copy {
   margin: 8px 0 0;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 14px;
   line-height: 1.55;
 }
@@ -8560,18 +8564,18 @@ a {
   margin: 0;
   padding: 6px 10px;
   border: 0;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: none;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font: inherit;
   font-size: 13px;
-  transition: color var(--openbot-duration-fast) ease;
+  transition: color var(--zollybot-duration-fast) ease;
 }
 
 /* The ring the site's buttons take, rather than the browser's own box. */
 .plugin-dialog-dismiss:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 .plugin-body {
@@ -8580,7 +8584,7 @@ a {
 
 .plugin-description {
   margin: 0;
-  color: var(--openbot-text-readable);
+  color: var(--zollybot-text-readable);
   font-size: 17px;
   line-height: 1.7;
 }
@@ -8597,8 +8601,8 @@ a {
 
 /* No use is more important than the others, so the first card does not take the accent. */
 .plugin-uses .provider-add:first-child {
-  border-color: var(--openbot-border);
-  background: var(--openbot-bg-surface);
+  border-color: var(--zollybot-border);
+  background: var(--zollybot-bg-surface);
 }
 
 .plugin-uses .provider-add-title {
@@ -8616,13 +8620,13 @@ a {
   max-width: 68ch;
   margin: 10px 0 0;
   padding-left: 18px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.6;
 }
 
 .plugin-connect-field-label {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 500;
 }
 
@@ -8646,7 +8650,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
 }
 
 .agent-share-main {
@@ -8665,9 +8669,9 @@ a {
   z-index: 1;
   width: min(100%, 520px);
   overflow: hidden;
-  border: 1px solid var(--openbot-glass-border);
+  border: 1px solid var(--zollybot-glass-border);
   border-radius: 28px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
   box-shadow: 0 40px 120px -40px color-mix(in srgb, var(--agent-share-accent) 45%, transparent);
 }
 
@@ -8704,7 +8708,7 @@ a {
   pointer-events: none;
 }
 
-/* The agent's own avatar from `@openbot/ui`. The hero in the selector outranks the generic
+/* The agent's own avatar from `@zollybot/ui`. The hero in the selector outranks the generic
    `.agent-avatar` size rule, which loads with the avatar's own code after this stylesheet. */
 .agent-share-hero .agent-share-avatar {
   --agent-share-avatar-size: clamp(100px, 16vh, 140px);
@@ -8714,7 +8718,7 @@ a {
   place-items: center;
   width: var(--agent-share-avatar-size);
   height: var(--agent-share-avatar-size);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
 }
 
@@ -8749,7 +8753,7 @@ a {
 
 .agent-share-name {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(26px, 4vw, 30px);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -8759,7 +8763,7 @@ a {
 
 .agent-share-creator {
   margin: 4px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
 }
 
@@ -8776,10 +8780,10 @@ a {
 
 .agent-share-tags > li {
   padding: 3px 10px;
-  border: 1px solid var(--openbot-border-grouped);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-secondary);
+  border: 1px solid var(--zollybot-border-grouped);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-secondary);
   font-size: 12px;
 }
 
@@ -8789,7 +8793,7 @@ a {
   display: -webkit-box;
   margin: 14px 0 0;
   overflow: hidden;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.55;
   -webkit-box-orient: vertical;
@@ -8802,7 +8806,7 @@ a {
 .agent-share-instructions {
   width: 100%;
   margin: 14px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.55;
   text-align: start;
@@ -8819,7 +8823,7 @@ a {
 
 .agent-share-instructions .message-markdown-heading {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 17px;
   font-weight: 600;
   line-height: 1.4;
@@ -8855,17 +8859,17 @@ a {
 }
 
 .agent-share-instructions strong {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
 }
 
 .agent-share-instructions code {
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-size: 0.9em;
 }
 
 .agent-share-instructions .message-link {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -8890,9 +8894,9 @@ a {
   margin-top: 4px;
   padding: 2px 8px;
   border: 0;
-  border-radius: var(--openbot-radius-sm);
+  border-radius: var(--zollybot-radius-sm);
   background: none;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font: inherit;
   font-size: 13px;
   text-decoration: underline;
@@ -8901,7 +8905,7 @@ a {
 }
 
 .agent-share-more:hover {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .agent-share-divider {
@@ -8909,12 +8913,12 @@ a {
   height: 1px;
   margin: 18px 0 0;
   border: 0;
-  background: var(--openbot-border-grouped);
+  background: var(--zollybot-border-grouped);
 }
 
 .agent-share-notice {
   margin: 12px 0 0;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -8931,13 +8935,13 @@ a {
   position: relative;
   z-index: 1;
   margin: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   text-align: center;
 }
 
 .agent-share-fallback a {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -8949,7 +8953,7 @@ a {
   align-items: center;
   gap: 8px;
   margin: 0 0 12px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 15px;
   font-weight: 500;
 }
@@ -8963,9 +8967,9 @@ a {
   min-width: 22px;
   height: 22px;
   padding-inline: 6px;
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-glass-surface);
-  color: var(--openbot-text-muted);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-glass-surface);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
@@ -9005,9 +9009,9 @@ a {
   list-style: none;
   display: grid;
   gap: 0;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-card);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-card);
+  background: var(--zollybot-bg-surface);
 }
 
 /* One request as the app draws it: the plugin's chip, then the line a reader would
@@ -9019,10 +9023,10 @@ a {
   flex-wrap: wrap;
   gap: 8px;
   min-width: 0;
-  border-radius: var(--openbot-radius-card);
-  background: var(--openbot-bg-canvas);
+  border-radius: var(--zollybot-radius-card);
+  background: var(--zollybot-bg-canvas);
   padding: 12px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.5;
 }
@@ -9034,10 +9038,10 @@ a {
   flex: 0 0 auto;
   align-items: center;
   gap: 6px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-glass-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-glass-surface);
   padding: 3px 10px 3px 6px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 13px;
 }
 
@@ -9064,13 +9068,13 @@ a {
   gap: 12px;
   min-width: 0;
   padding: 12px 14px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
   line-height: 1.55;
 }
 
 .plugin-rows > .plugin-row + .plugin-row {
-  border-top: 1px solid var(--openbot-border-strong);
+  border-top: 1px solid var(--zollybot-border-strong);
 }
 
 /* What kind of thing the row is, in a tile the height of its two lines of type. The
@@ -9087,11 +9091,11 @@ a {
   width: 32px;
   height: 32px;
   overflow: hidden;
-  border: 1px solid var(--openbot-glass-border);
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-glass-surface);
+  border: 1px solid var(--zollybot-glass-border);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-glass-surface);
   padding: 5px;
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
 }
 
 .plugin-row-icon svg {
@@ -9138,14 +9142,14 @@ a {
 
 .plugin-row-title {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   font-weight: 500;
 }
 
 .plugin-row-copy {
   margin: 2px 0 0;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 13px;
   line-height: 1.55;
 }
@@ -9161,25 +9165,25 @@ a {
   grid-template-columns: 160px minmax(0, 1fr);
   gap: 16px;
   padding: 11px 0;
-  border-top: 1px solid var(--openbot-glass-surface);
+  border-top: 1px solid var(--zollybot-glass-surface);
   font-size: 14px;
 }
 
 .plugin-fact dt {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .plugin-fact dd {
   margin: 0;
   min-width: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   overflow-wrap: anywhere;
 }
 
 .plugin-fact-link {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   text-decoration: none;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 @media (max-width: 900px) {
@@ -9211,18 +9215,18 @@ a {
   .plugin-card-logo,
   .plugin-card-icon {
     transform: scale(1);
-    transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+    transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
     will-change: transform;
   }
 
   .plugin-tag-button:hover:not([aria-pressed="true"]) {
-    border-color: var(--openbot-text-dim);
-    background: var(--openbot-bg-control-hover);
-    color: var(--openbot-text-primary);
+    border-color: var(--zollybot-text-dim);
+    background: var(--zollybot-bg-control-hover);
+    color: var(--zollybot-text-primary);
   }
 
   .plugin-tag-button[aria-pressed="true"]:hover {
-    background: var(--openbot-text-primary);
+    background: var(--zollybot-text-primary);
   }
 
   .plugin-card:hover .plugin-card-logo,
@@ -9233,7 +9237,7 @@ a {
   .plugin-card:hover .plugin-card-title,
   .plugin-dialog-dismiss:hover,
   .plugin-fact-link:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 }
 
@@ -9262,7 +9266,7 @@ a {
   }
 }
 
-/* 404. The "0" is the OpenBot logo: it looks around while the page is idle,
+/* 404. The "0" is the ZollyBot logo: it looks around while the page is idle,
    and follows the pointer while it moves. A search log types out below. */
 .not-found-main {
   position: relative;
@@ -9276,7 +9280,7 @@ a {
 }
 
 .not-found-grid {
-  mask-image: radial-gradient(60% 55% at 50% 30%, var(--openbot-mask-solid) 30%, var(--openbot-transparent) 100%);
+  mask-image: radial-gradient(60% 55% at 50% 30%, var(--zollybot-mask-solid) 30%, var(--zollybot-transparent) 100%);
 }
 
 .not-found-searchlight {
@@ -9290,8 +9294,8 @@ a {
   pointer-events: none;
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--openbot-logo-production) 22%, var(--openbot-transparent)),
-    var(--openbot-transparent)
+    color-mix(in srgb, var(--zollybot-logo-production) 22%, var(--zollybot-transparent)),
+    var(--zollybot-transparent)
   );
   animation: not-found-sweep 9s ease-in-out infinite alternate;
 }
@@ -9311,7 +9315,7 @@ a {
 .not-found-digit,
 .not-found-bot {
   animation:
-    not-found-drop 900ms var(--openbot-ease-out) both,
+    not-found-drop 900ms var(--zollybot-ease-out) both,
     not-found-float 6s ease-in-out 900ms infinite;
 }
 
@@ -9321,12 +9325,12 @@ a {
 .not-found-digit {
   background-image: linear-gradient(
     180deg,
-    var(--openbot-text-primary) 25%,
-    color-mix(in srgb, var(--openbot-logo-production) 70%, var(--openbot-transparent))
+    var(--zollybot-text-primary) 25%,
+    color-mix(in srgb, var(--zollybot-logo-production) 70%, var(--zollybot-transparent))
   );
   -webkit-background-clip: text;
   background-clip: text;
-  color: var(--openbot-transparent);
+  color: var(--zollybot-transparent);
 }
 
 .not-found-bot {
@@ -9339,7 +9343,7 @@ a {
 
 .not-found-digit:last-child {
   animation:
-    not-found-drop 900ms var(--openbot-ease-out) 240ms both,
+    not-found-drop 900ms var(--zollybot-ease-out) 240ms both,
     not-found-float 6s ease-in-out -3s infinite,
     not-found-flicker 7s linear 2s infinite;
 }
@@ -9352,7 +9356,7 @@ a {
   height: 100%;
   border-radius: 24%;
   pointer-events: none;
-  filter: drop-shadow(0 0 48px color-mix(in srgb, var(--openbot-logo-production) 45%, var(--openbot-transparent)));
+  filter: drop-shadow(0 0 48px color-mix(in srgb, var(--zollybot-logo-production) 45%, var(--zollybot-transparent)));
   animation: not-found-tilt 6s cubic-bezier(0.77, 0, 0.175, 1) infinite;
 }
 
@@ -9367,7 +9371,7 @@ a {
   width: 76%;
   height: 0.07em;
   border-radius: 50%;
-  background: radial-gradient(closest-side, var(--openbot-scroll-edge-overlay), var(--openbot-transparent));
+  background: radial-gradient(closest-side, var(--zollybot-scroll-edge-overlay), var(--zollybot-transparent));
   animation: not-found-shadow 6s ease-in-out 900ms infinite;
 }
 
@@ -9375,13 +9379,13 @@ a {
   display: grid;
   justify-items: center;
   margin-top: clamp(28px, 5vw, 48px);
-  animation: landing-enter 700ms var(--openbot-ease-out) 420ms both;
+  animation: landing-enter 700ms var(--zollybot-ease-out) 420ms both;
 }
 
 .not-found-eyebrow {
   margin: 0 0 12px;
-  color: var(--openbot-logo-production);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-logo-production);
+  font-family: var(--zollybot-font-mono);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -9398,7 +9402,7 @@ a {
 .not-found-description {
   max-width: 460px;
   margin: 16px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.55;
 }
@@ -9415,27 +9419,27 @@ a {
   width: min(100%, 540px);
   margin-top: 48px;
   overflow: hidden;
-  border: 1px solid var(--openbot-glass-border);
+  border: 1px solid var(--zollybot-glass-border);
   border-radius: 14px;
-  background: var(--openbot-bg-glass);
-  box-shadow: 0 24px 80px var(--openbot-glass-shadow);
+  background: var(--zollybot-bg-glass);
+  box-shadow: 0 24px 80px var(--zollybot-glass-shadow);
   backdrop-filter: blur(12px);
   text-align: left;
-  animation: landing-enter 700ms var(--openbot-ease-out) 560ms both;
+  animation: landing-enter 700ms var(--zollybot-ease-out) 560ms both;
 }
 
 .not-found-terminal-bar {
   display: flex;
   gap: 6px;
   padding: 12px 14px;
-  border-bottom: 1px solid var(--openbot-glass-surface);
+  border-bottom: 1px solid var(--zollybot-glass-surface);
 }
 
 .not-found-terminal-bar i {
   width: 9px;
   height: 9px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-glass-surface-hover);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-glass-surface-hover);
 }
 
 .not-found-terminal-lines {
@@ -9444,8 +9448,8 @@ a {
   margin: 0;
   padding: 16px 18px 18px;
   list-style: none;
-  color: var(--openbot-text-secondary);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-secondary);
+  font-family: var(--zollybot-font-mono);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -9458,19 +9462,19 @@ a {
 
 .not-found-prompt,
 .not-found-arrow {
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
 }
 
 .not-found-path {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .not-found-result {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .not-found-line-error {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .not-found-caret {
@@ -9479,7 +9483,7 @@ a {
   height: 1.1em;
   margin-left: 4px;
   vertical-align: text-bottom;
-  background: var(--openbot-text-secondary);
+  background: var(--zollybot-text-secondary);
   animation: not-found-caret 1s steps(1, end) infinite;
 }
 
@@ -9493,25 +9497,25 @@ a {
 
 .not-found-link {
   padding: 7px 14px;
-  border: 1px solid var(--openbot-glass-border);
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-text-muted);
+  border: 1px solid var(--zollybot-glass-border);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
   transition:
-    color var(--openbot-duration-normal) ease,
-    background-color var(--openbot-duration-normal) ease,
-    border-color var(--openbot-duration-normal) ease;
-  animation: landing-enter 500ms var(--openbot-ease-out) calc(3900ms + var(--link) * 70ms) both;
+    color var(--zollybot-duration-normal) ease,
+    background-color var(--zollybot-duration-normal) ease,
+    border-color var(--zollybot-duration-normal) ease;
+  animation: landing-enter 500ms var(--zollybot-ease-out) calc(3900ms + var(--link) * 70ms) both;
 }
 
 .not-found-link:hover {
-  border-color: var(--openbot-glass-highlight);
-  background: var(--openbot-glass-surface);
-  color: var(--openbot-text-primary);
+  border-color: var(--zollybot-glass-highlight);
+  background: var(--zollybot-glass-surface);
+  color: var(--zollybot-text-primary);
 }
 
 .not-found-link:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
@@ -9643,7 +9647,7 @@ a {
    reader scanning for fixes finds the green groups without reading headings. */
 
 .changelog-page {
-  --changelog-hairline: color-mix(in srgb, var(--openbot-text-primary) 8%, transparent);
+  --changelog-hairline: color-mix(in srgb, var(--zollybot-text-primary) 8%, transparent);
   --changelog-scroll-offset: 24px;
   /* The header menu's motion, so a change of app reads as a change of menu section. */
   --changelog-swap-ease: cubic-bezier(0.32, 0.72, 0, 1);
@@ -9669,8 +9673,8 @@ a {
   overflow: hidden;
   border-radius: 24px;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, var(--openbot-mask-solid) 40%, transparent 100%);
-  mask-image: linear-gradient(to bottom, var(--openbot-mask-solid) 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, var(--zollybot-mask-solid) 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, var(--zollybot-mask-solid) 40%, transparent 100%);
 }
 
 /* A shade on the reading side, so white type keeps its contrast over the lightest
@@ -9681,8 +9685,8 @@ a {
   inset: 0;
   background-image: linear-gradient(
     100deg,
-    color-mix(in srgb, var(--openbot-bg-canvas) 62%, transparent) 0%,
-    color-mix(in srgb, var(--openbot-bg-canvas) 18%, transparent) 55%,
+    color-mix(in srgb, var(--zollybot-bg-canvas) 62%, transparent) 0%,
+    color-mix(in srgb, var(--zollybot-bg-canvas) 18%, transparent) 55%,
     transparent 80%
   );
 }
@@ -9694,7 +9698,7 @@ a {
 
 .changelog-eyebrow {
   margin: 0;
-  color: color-mix(in srgb, var(--openbot-text-primary) 76%, transparent);
+  color: color-mix(in srgb, var(--zollybot-text-primary) 76%, transparent);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -9703,7 +9707,7 @@ a {
 
 .changelog-title {
   margin: 12px 0 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: clamp(38px, 5.6vw, 72px);
   font-weight: 600;
   letter-spacing: -0.05em;
@@ -9714,7 +9718,7 @@ a {
 .changelog-lede {
   max-width: 54ch;
   margin: 18px 0 0;
-  color: color-mix(in srgb, var(--openbot-text-primary) 80%, transparent);
+  color: color-mix(in srgb, var(--zollybot-text-primary) 80%, transparent);
   font-size: clamp(15px, 1.4vw, 18px);
   line-height: 1.55;
   text-wrap: pretty;
@@ -9745,7 +9749,7 @@ a {
   align-items: center;
   gap: 8px;
   margin: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
 }
 
@@ -9754,8 +9758,8 @@ a {
   width: 8px;
   height: 8px;
   margin-right: 4px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-success);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-success);
 }
 
 /* A ring that grows out of the dot and fades: the release is live, and the dot says so
@@ -9765,7 +9769,7 @@ a {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: var(--openbot-success);
+  background: var(--zollybot-success);
   animation: changelog-pulse 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
@@ -9782,20 +9786,20 @@ a {
 }
 
 .changelog-latest-version {
-  border-radius: var(--openbot-radius-xs);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
+  border-radius: var(--zollybot-radius-xs);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
   font-weight: 500;
   text-decoration: none;
 }
 
 .changelog-latest-version:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
 .changelog-latest-date {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .changelog-layout {
@@ -9860,7 +9864,7 @@ a {
   position: relative;
   display: inline-flex;
   padding: 3px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: rgba(255, 255, 255, 0.025);
   box-shadow:
     0 0 0 1px var(--changelog-hairline),
@@ -9875,7 +9879,7 @@ a {
   bottom: 3px;
   left: 0;
   width: var(--changelog-pill-width, 0);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: rgba(255, 255, 255, 0.08);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.07),
@@ -9896,18 +9900,18 @@ a {
   position: relative;
   z-index: 1;
   padding: 5px 12px;
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-text-muted);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
   text-decoration: none;
   white-space: nowrap;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .changelog-platform[aria-current="page"] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* Before the pill is measured, and with no script, the open link carries its own. */
@@ -9917,7 +9921,7 @@ a {
 
 .changelog-platform:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 2px var(--openbot-accent-strong);
+  box-shadow: 0 0 0 2px var(--zollybot-accent-strong);
 }
 
 /* The index -------------------------------------------------------------- */
@@ -9932,7 +9936,7 @@ a {
   align-items: baseline;
   gap: 8px;
   margin: 0 0 14px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -9940,8 +9944,8 @@ a {
 }
 
 .changelog-index-count {
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-mono);
   font-weight: 500;
   letter-spacing: 0;
 }
@@ -9961,15 +9965,15 @@ a {
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent,
-    var(--openbot-mask-solid) 12px,
-    var(--openbot-mask-solid) calc(100% - 32px),
+    var(--zollybot-mask-solid) 12px,
+    var(--zollybot-mask-solid) calc(100% - 32px),
     transparent
   );
   mask-image: linear-gradient(
     to bottom,
     transparent,
-    var(--openbot-mask-solid) 12px,
-    var(--openbot-mask-solid) calc(100% - 32px),
+    var(--zollybot-mask-solid) 12px,
+    var(--zollybot-mask-solid) calc(100% - 32px),
     transparent
   );
 }
@@ -9980,7 +9984,7 @@ a {
 
 .changelog-index-month-label {
   margin: 0 0 6px 14px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
   font-weight: 500;
 }
@@ -9999,11 +10003,11 @@ a {
   justify-content: space-between;
   gap: 12px;
   padding: 6px 10px 6px 14px;
-  border-radius: 0 var(--openbot-radius-sm) var(--openbot-radius-sm) 0;
-  color: var(--openbot-text-dim);
+  border-radius: 0 var(--zollybot-radius-sm) var(--zollybot-radius-sm) 0;
+  color: var(--zollybot-text-dim);
   font-size: 13px;
   text-decoration: none;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 /* The current row's mark sits on the rail, so the rail reads as a track the reader
@@ -10015,17 +10019,17 @@ a {
   bottom: 5px;
   left: -1px;
   width: 2px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-text-primary);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-text-primary);
   opacity: 0;
   transform: scaleY(0.3);
   transition:
-    opacity var(--openbot-duration-normal) ease,
-    transform 320ms var(--openbot-ease-out);
+    opacity var(--zollybot-duration-normal) ease,
+    transform 320ms var(--zollybot-ease-out);
 }
 
 .changelog-index-link[aria-current="true"] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .changelog-index-link[aria-current="true"]::before {
@@ -10034,17 +10038,17 @@ a {
 }
 
 .changelog-index-link:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: -2px;
 }
 
 .changelog-index-version {
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-variant-numeric: tabular-nums;
 }
 
 .changelog-index-date {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -10081,15 +10085,15 @@ a {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 13px;
 }
 
 .changelog-release-badge {
   padding: 2px 8px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success-text);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success-text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -10107,9 +10111,9 @@ a {
   align-items: center;
   gap: 6px;
   padding: 2px 8px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   box-shadow: inset 0 0 0 1px var(--changelog-hairline);
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -10119,19 +10123,19 @@ a {
 .changelog-store-dot {
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-success);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-success);
 }
 
 .changelog-store-detail {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-weight: 500;
 }
 
 .changelog-store[data-state="review"] {
-  background: var(--openbot-warning-soft);
+  background: var(--zollybot-warning-soft);
   box-shadow: none;
-  color: var(--openbot-warning-text);
+  color: var(--zollybot-warning-text);
 }
 
 .changelog-store[data-state="review"] .changelog-store-dot {
@@ -10145,7 +10149,7 @@ a {
 
 /* A store that a newer version replaced. It will not ship this version, so it reads as done, not waiting. */
 .changelog-store[data-state="skipped"] {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .changelog-store[data-state="skipped"] .changelog-store-dot {
@@ -10162,8 +10166,8 @@ a {
 }
 
 .changelog-release-anchor {
-  border-radius: var(--openbot-radius-sm);
-  color: var(--openbot-text-primary);
+  border-radius: var(--zollybot-radius-sm);
+  color: var(--zollybot-text-primary);
   text-decoration: none;
 }
 
@@ -10172,68 +10176,68 @@ a {
 .changelog-release-anchor::after {
   content: "#";
   margin-left: 10px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-weight: 400;
   opacity: 0;
-  transition: opacity var(--openbot-duration-normal) ease;
+  transition: opacity var(--zollybot-duration-normal) ease;
 }
 
 .changelog-release-anchor:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 4px;
 }
 
 .changelog-release-version {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-weight: 500;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .changelog-release-intro {
   max-width: 68ch;
   margin: 16px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.65;
 }
 
 .changelog-code {
   padding: 1px 6px;
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-bg-surface);
   box-shadow: inset 0 0 0 1px var(--changelog-hairline);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
   font-size: 0.86em;
   overflow-wrap: anywhere;
 }
 
 .changelog-strong {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 600;
 }
 
 .changelog-link {
-  border-radius: var(--openbot-radius-xs);
-  color: var(--openbot-accent-text);
+  border-radius: var(--zollybot-radius-xs);
+  color: var(--zollybot-accent-text);
   text-decoration: none;
 }
 
 .changelog-link:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
 .changelog-notice {
   margin-top: 24px;
   padding: 16px 18px 18px;
-  border-radius: var(--openbot-radius-card);
+  border-radius: var(--zollybot-radius-card);
   background-image: linear-gradient(
     180deg,
-    var(--openbot-warning-soft),
-    color-mix(in srgb, var(--openbot-warning) 3%, transparent)
+    var(--zollybot-warning-soft),
+    color-mix(in srgb, var(--zollybot-warning) 3%, transparent)
   );
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--openbot-warning) 26%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zollybot-warning) 26%, transparent);
 }
 
 .changelog-notice-title {
@@ -10241,7 +10245,7 @@ a {
   align-items: center;
   gap: 10px;
   margin: 0;
-  color: var(--openbot-warning-text);
+  color: var(--zollybot-warning-text);
   font-size: 13px;
   font-weight: 600;
 }
@@ -10252,9 +10256,9 @@ a {
   place-items: center;
   width: 18px;
   height: 18px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-warning);
-  color: var(--openbot-text-on-light);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-warning);
+  color: var(--zollybot-text-on-light);
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
@@ -10269,7 +10273,7 @@ a {
 }
 
 .changelog-notice-item {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.6;
 }
@@ -10277,31 +10281,31 @@ a {
 /* Most notices are bold from end to end in the file. Inside a box that already says
    "act on this", full weight on every word is only harder to read. */
 .changelog-notice .changelog-strong {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 500;
 }
 
 .changelog-group {
-  --changelog-tone: var(--openbot-text-muted);
+  --changelog-tone: var(--zollybot-text-muted);
   margin-top: 28px;
 }
 
 .changelog-group[data-type="added"] {
-  --changelog-tone: var(--openbot-logo-production);
+  --changelog-tone: var(--zollybot-logo-production);
 }
 
 .changelog-group[data-type="changed"] {
-  --changelog-tone: var(--openbot-accent-text);
+  --changelog-tone: var(--zollybot-accent-text);
 }
 
 .changelog-group[data-type="fixed"] {
-  --changelog-tone: var(--openbot-success-text);
+  --changelog-tone: var(--zollybot-success-text);
 }
 
 .changelog-group[data-type="removed"],
 .changelog-group[data-type="security"],
 .changelog-group[data-type="deprecated"] {
-  --changelog-tone: var(--openbot-warning-text);
+  --changelog-tone: var(--zollybot-warning-text);
 }
 
 .changelog-group-title {
@@ -10319,16 +10323,16 @@ a {
 .changelog-group-dot {
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--changelog-tone);
   box-shadow: 0 0 10px color-mix(in srgb, var(--changelog-tone) 70%, transparent);
 }
 
 .changelog-group-count {
   padding: 1px 7px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: color-mix(in srgb, var(--changelog-tone) 12%, transparent);
-  font-family: var(--openbot-font-mono);
+  font-family: var(--zollybot-font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0;
@@ -10347,7 +10351,7 @@ a {
 .changelog-item {
   position: relative;
   padding-left: 22px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.6;
   text-wrap: pretty;
@@ -10388,7 +10392,7 @@ a {
     margin: 0 calc(clamp(20px, 4vw, 48px) * -1);
     padding: 12px 0;
     border-bottom: 1px solid var(--changelog-hairline);
-    background: color-mix(in srgb, var(--openbot-bg-canvas) 86%, transparent);
+    background: color-mix(in srgb, var(--zollybot-bg-canvas) 86%, transparent);
     -webkit-backdrop-filter: blur(14px) saturate(1.4);
     backdrop-filter: blur(14px) saturate(1.4);
   }
@@ -10407,15 +10411,15 @@ a {
     -webkit-mask-image: linear-gradient(
       to right,
       transparent,
-      var(--openbot-mask-solid) 16px,
-      var(--openbot-mask-solid) calc(100% - 32px),
+      var(--zollybot-mask-solid) 16px,
+      var(--zollybot-mask-solid) calc(100% - 32px),
       transparent
     );
     mask-image: linear-gradient(
       to right,
       transparent,
-      var(--openbot-mask-solid) 16px,
-      var(--openbot-mask-solid) calc(100% - 32px),
+      var(--zollybot-mask-solid) 16px,
+      var(--zollybot-mask-solid) calc(100% - 32px),
       transparent
     );
   }
@@ -10431,11 +10435,11 @@ a {
 
   .changelog-index-link {
     padding: 6px 12px;
-    border-radius: var(--openbot-radius-pill);
+    border-radius: var(--zollybot-radius-pill);
     box-shadow: inset 0 0 0 1px var(--changelog-hairline);
     transition:
-      color var(--openbot-duration-normal) ease,
-      background-color var(--openbot-duration-normal) ease;
+      color var(--zollybot-duration-normal) ease,
+      background-color var(--zollybot-duration-normal) ease;
   }
 
   .changelog-index-link::before,
@@ -10444,8 +10448,8 @@ a {
   }
 
   .changelog-index-link[aria-current="true"] {
-    background: var(--openbot-action);
-    color: var(--openbot-action-foreground);
+    background: var(--zollybot-action);
+    color: var(--zollybot-action-foreground);
   }
 
   .changelog-latest {
@@ -10493,11 +10497,11 @@ a {
 @media (hover: hover) and (pointer: fine) {
   .changelog-index-link:hover,
   .changelog-platform:not([aria-current="page"]):hover {
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 
   .changelog-release-anchor:hover .changelog-release-version {
-    color: var(--openbot-text-secondary);
+    color: var(--zollybot-text-secondary);
   }
 
   .changelog-release-anchor:hover::after {
@@ -10527,17 +10531,17 @@ a {
 
 .download-main[data-download-platform="macos"],
 .download-main [data-download-platform="macos"] {
-  --download-color: var(--openbot-logo-production);
+  --download-color: var(--zollybot-logo-production);
 }
 
 .download-main[data-download-platform="windows"],
 .download-main [data-download-platform="windows"] {
-  --download-color: var(--openbot-logo-preview);
+  --download-color: var(--zollybot-logo-preview);
 }
 
 .download-main[data-download-platform="linux"],
 .download-main [data-download-platform="linux"] {
-  --download-color: var(--openbot-logo-dev);
+  --download-color: var(--zollybot-logo-dev);
 }
 
 .download-main[data-download-platform="ios"],
@@ -10553,9 +10557,9 @@ a {
 .download-panel,
 .download-hub-card,
 .download-system-card {
-  border: 1px solid var(--openbot-download-card-border);
+  border: 1px solid var(--zollybot-download-card-border);
   background: var(--download-color);
-  color: var(--openbot-text-on-light);
+  color: var(--zollybot-text-on-light);
 }
 
 /* Platform page: the panel ---------------------------------------------- */
@@ -10577,11 +10581,11 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border-radius: var(--openbot-radius-pill);
-  color: var(--openbot-download-card-muted);
+  border-radius: var(--zollybot-radius-pill);
+  color: var(--zollybot-download-card-muted);
   font-size: 14px;
   font-weight: 500;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .download-panel-back-icon {
@@ -10602,7 +10606,7 @@ a {
 .download-panel-intro {
   max-width: 50ch;
   margin: clamp(20px, 2.4vw, 28px) 0 0;
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
   font-size: clamp(17px, 1.5vw, 19px);
   line-height: 1.5;
 }
@@ -10625,7 +10629,7 @@ a {
 
 .download-panel-installer-detail {
   padding-left: 4px;
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
   font-size: 13px;
 }
 
@@ -10638,7 +10642,7 @@ a {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0;
-  border-top: 1px solid var(--openbot-download-card-border);
+  border-top: 1px solid var(--zollybot-download-card-border);
 }
 
 .download-panel-specs > div {
@@ -10647,12 +10651,12 @@ a {
 }
 
 .download-panel-specs > div + div {
-  border-left: 1px solid var(--openbot-download-card-border);
+  border-left: 1px solid var(--zollybot-download-card-border);
 }
 
 .download-panel-specs dt,
 .download-hub-card-specs dt {
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
   font-size: 13px;
 }
 
@@ -10672,26 +10676,26 @@ a {
   gap: 10px;
   height: 52px;
   padding: 0 24px 0 20px;
-  border: 1px solid var(--openbot-text-on-light);
-  border-radius: var(--openbot-radius-pill);
+  border: 1px solid var(--zollybot-text-on-light);
+  border-radius: var(--zollybot-radius-pill);
   font-size: 15px;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease,
-    transform var(--openbot-duration-normal) var(--openbot-ease-out);
+    background-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease,
+    transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .download-installer-button[data-variant="primary"] {
-  background: var(--openbot-text-on-light);
+  background: var(--zollybot-text-on-light);
   color: var(--download-color);
 }
 
 .download-installer-button[data-variant="secondary"] {
-  background: var(--openbot-download-card-chip);
-  color: var(--openbot-text-on-light);
+  background: var(--zollybot-download-card-chip);
+  color: var(--zollybot-text-on-light);
 }
 
 .download-installer-icon {
@@ -10704,7 +10708,7 @@ a {
 .download-panel-back:focus-visible,
 .download-hub-card-link:focus-visible,
 .download-system-card:focus-visible {
-  outline: 3px solid var(--openbot-download-card-focus);
+  outline: 3px solid var(--zollybot-download-card-focus);
   outline-offset: 3px;
 }
 
@@ -10719,7 +10723,7 @@ a {
   grid-template-columns: minmax(180px, 300px) minmax(0, 1fr);
   gap: 24px clamp(32px, 5vw, 80px);
   padding: clamp(36px, 4.5vw, 56px) 0;
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .download-row > * {
@@ -10766,10 +10770,10 @@ a {
   height: 40px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--download-color, var(--openbot-border-strong));
+  border: 1px solid var(--download-color, var(--zollybot-border-strong));
   border-radius: 50%;
-  background: var(--openbot-bg-canvas);
-  color: var(--download-color, var(--openbot-text-primary));
+  background: var(--zollybot-bg-canvas);
+  color: var(--download-color, var(--zollybot-text-primary));
   font-size: 15px;
   font-weight: 500;
 }
@@ -10781,13 +10785,13 @@ a {
   bottom: 8px;
   left: 19.5px;
   width: 1px;
-  background: var(--openbot-border-strong);
+  background: var(--zollybot-border-strong);
 }
 
 .download-steps p {
   grid-column: 2;
   margin: 8px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.6;
 }
@@ -10798,9 +10802,9 @@ a {
   display: flex;
   align-items: flex-start;
   margin-top: 14px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface);
 }
 
 .download-command pre {
@@ -10809,8 +10813,8 @@ a {
   margin: 0;
   overflow-x: auto;
   padding: 15px 18px;
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
   font-size: 13px;
   line-height: 1.65;
 }
@@ -10823,25 +10827,25 @@ a {
   height: 32px;
   margin: 9px 9px 9px 0;
   padding: 0 12px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
   background: transparent;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font: inherit;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease;
+    background-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease;
 }
 
 .download-command-copy[data-state="copied"] {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .download-command-copy:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
@@ -10859,14 +10863,14 @@ a {
 .download-notes li {
   position: relative;
   padding: 0 0 18px 24px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.6;
 }
 
 .download-notes li + li {
   padding-top: 18px;
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .download-notes li::before {
@@ -10877,7 +10881,7 @@ a {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--download-color, var(--openbot-text-dim));
+  background: var(--download-color, var(--zollybot-text-dim));
 }
 
 .download-notes li + li::before {
@@ -10905,7 +10909,7 @@ a {
   gap: 18px;
   padding: 22px 24px;
   border-radius: 20px;
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .download-system-card-logo {
@@ -10927,7 +10931,7 @@ a {
 }
 
 .download-system-card-detail {
-  color: var(--openbot-download-card-muted);
+  color: var(--zollybot-download-card-muted);
   font-size: 13px;
   line-height: 1.4;
 }
@@ -10937,7 +10941,7 @@ a {
   width: 16px;
   height: 16px;
   flex: none;
-  transition: transform var(--openbot-duration-normal) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .download-system-card-arrow {
@@ -10949,13 +10953,13 @@ a {
   flex-wrap: wrap;
   gap: 8px 24px;
   margin-top: 28px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
 }
 
 .download-resources a {
   text-decoration: underline;
-  text-decoration-color: var(--openbot-border-strong);
+  text-decoration-color: var(--zollybot-border-strong);
   text-underline-offset: 3px;
 }
 
@@ -11019,7 +11023,7 @@ a {
   grid-template-columns: 84px minmax(0, 1fr);
   gap: 12px;
   padding: 10px 0;
-  border-top: 1px solid var(--openbot-download-card-border);
+  border-top: 1px solid var(--zollybot-download-card-border);
   font-size: 14px;
   line-height: 1.4;
 }
@@ -11048,7 +11052,7 @@ a {
   align-items: center;
   gap: 7px;
   margin-top: 22px;
-  border-radius: var(--openbot-radius-xs);
+  border-radius: var(--zollybot-radius-xs);
   font-size: 14px;
   font-weight: 500;
 }
@@ -11063,11 +11067,11 @@ a {
   }
 
   .download-installer-button[data-variant="secondary"]:hover {
-    background: var(--openbot-download-card-border);
+    background: var(--zollybot-download-card-border);
   }
 
   .download-panel-back:hover {
-    color: var(--openbot-text-on-light);
+    color: var(--zollybot-text-on-light);
   }
 
   .download-system-card:hover {
@@ -11080,12 +11084,12 @@ a {
   }
 
   .download-command-copy:hover {
-    background: var(--openbot-bg-control-hover);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-bg-control-hover);
+    color: var(--zollybot-text-primary);
   }
 
   .download-resources a:hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 }
 
@@ -11144,7 +11148,7 @@ a {
   }
 
   .download-panel-specs > div:nth-child(n + 3) {
-    border-top: 1px solid var(--openbot-download-card-border);
+    border-top: 1px solid var(--zollybot-download-card-border);
   }
 
   .download-system-cards {
@@ -11157,7 +11161,7 @@ a {
   flex-wrap: wrap;
   gap: 6px 16px;
   margin-top: 28px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
 }
 
@@ -11167,13 +11171,13 @@ a {
   gap: 6px 16px;
   margin-left: 4px;
   padding-left: 20px;
-  border-left: 1px solid var(--openbot-border-strong);
+  border-left: 1px solid var(--zollybot-border-strong);
 }
 
 .landing-download-pages a {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: underline;
-  text-decoration-color: var(--openbot-border-strong);
+  text-decoration-color: var(--zollybot-border-strong);
   text-underline-offset: 3px;
 }
 
@@ -11183,9 +11187,9 @@ a {
    --------------------------------------------------------------------------- */
 
 .contact-section {
-  --contact-fill: color-mix(in srgb, var(--openbot-text-primary) 5%, transparent);
-  --contact-border: color-mix(in srgb, var(--openbot-text-primary) 8%, transparent);
-  --contact-border-hover: color-mix(in srgb, var(--openbot-text-primary) 48%, transparent);
+  --contact-fill: color-mix(in srgb, var(--zollybot-text-primary) 5%, transparent);
+  --contact-border: color-mix(in srgb, var(--zollybot-text-primary) 8%, transparent);
+  --contact-border-hover: color-mix(in srgb, var(--zollybot-text-primary) 48%, transparent);
 }
 
 .contact-card {
@@ -11224,7 +11228,7 @@ a {
 
 .contact-field-head label {
   flex: 0 0 auto;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   font-weight: 500;
 }
@@ -11239,27 +11243,27 @@ a {
 }
 
 .contact-optional {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .contact-error {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .contact-field :is(input, textarea, select) {
   width: 100%;
   min-height: 48px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-card);
-  background: var(--openbot-bg-canvas);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-card);
+  background: var(--zollybot-bg-canvas);
   padding: 12px 14px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
   font-size: 15px;
   line-height: 1.5;
   transition:
-    border-color var(--openbot-duration-normal) ease,
-    box-shadow var(--openbot-duration-normal) ease;
+    border-color var(--zollybot-duration-normal) ease,
+    box-shadow var(--zollybot-duration-normal) ease;
 }
 
 .contact-field textarea {
@@ -11267,7 +11271,7 @@ a {
 }
 
 .contact-field textarea::placeholder {
-  color: var(--openbot-text-placeholder);
+  color: var(--zollybot-text-placeholder);
 }
 
 .contact-field :is(input, textarea, select):hover {
@@ -11276,23 +11280,23 @@ a {
 
 .contact-field :is(input, textarea, select):focus-visible {
   outline: 0;
-  border-color: var(--openbot-border-focus);
-  box-shadow: 0 0 0 3px var(--openbot-accent-strong);
+  border-color: var(--zollybot-border-focus);
+  box-shadow: 0 0 0 3px var(--zollybot-accent-strong);
 }
 
 /* A value that the page filled in, such as the site on the report form. */
 .contact-field input[readonly] {
   border-color: var(--contact-border);
   background: transparent;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .contact-field [aria-invalid="true"] {
-  border-color: var(--openbot-danger-border);
+  border-color: var(--zollybot-danger-border);
 }
 
 .contact-field [aria-invalid="true"]:focus-visible {
-  box-shadow: 0 0 0 3px var(--openbot-danger-focus);
+  box-shadow: 0 0 0 3px var(--zollybot-danger-focus);
 }
 
 .contact-select {
@@ -11310,14 +11314,14 @@ a {
   right: 14px;
   width: 16px;
   height: 16px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   pointer-events: none;
   transform: translateY(-50%);
 }
 
 .contact-count {
   justify-self: end;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
@@ -11337,19 +11341,19 @@ a {
 .contact-privacy {
   flex: 1 1 240px;
   margin: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 13px;
   line-height: 1.5;
 }
 
 .contact-privacy a {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .contact-privacy.contact-failed {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .contact-sent {
@@ -11365,9 +11369,9 @@ a {
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success-text);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success-text);
 }
 
 .contact-sent-mark svg {
@@ -11384,14 +11388,14 @@ a {
 
 .contact-sent p {
   margin: 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
 .contact-sent strong {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-weight: 500;
 }
 
@@ -11400,7 +11404,7 @@ a {
   border: 0;
   background: none;
   padding: 6px 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
   font-size: 15px;
   font-weight: 500;
@@ -11409,7 +11413,7 @@ a {
 
 .contact-text-button:hover,
 .contact-text-button:focus-visible {
-  color: var(--openbot-logo-production);
+  color: var(--zollybot-logo-production);
 }
 
 /* The other channels under the heading. */
@@ -11418,11 +11422,11 @@ a {
   margin: 32px 0 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
 }
 
 .contact-channels li {
-  border-bottom: 1px solid var(--openbot-border);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 .contact-channels a {
@@ -11440,7 +11444,7 @@ a {
 
 .contact-channel-detail {
   overflow: hidden;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -11448,15 +11452,15 @@ a {
 .contact-channel-icon {
   width: 16px;
   height: 16px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   transition:
-    color var(--openbot-duration-normal) ease,
-    transform var(--openbot-duration-fast) ease;
+    color var(--zollybot-duration-normal) ease,
+    transform var(--zollybot-duration-fast) ease;
 }
 
 .contact-channels a:hover .contact-channel-icon,
 .contact-channels a:focus-visible .contact-channel-icon {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   transform: translate(2px, -2px);
 }
 
@@ -11474,7 +11478,7 @@ a {
 
 .agent-share-gone-copy {
   margin: 12px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 16px;
   line-height: 1.55;
 }
@@ -11569,8 +11573,8 @@ a {
   display: grid;
   place-items: center;
   aspect-ratio: 21 / 8;
-  border-radius: var(--openbot-radius-modal);
-  background: var(--openbot-logo-production);
+  border-radius: var(--zollybot-radius-modal);
+  background: var(--zollybot-logo-production);
 }
 
 .brand-stage-logo {
@@ -11590,19 +11594,19 @@ a {
 @keyframes brand-stage-party {
   0%,
   100% {
-    background-color: var(--openbot-logo-production);
+    background-color: var(--zollybot-logo-production);
   }
 
   22% {
-    background-color: var(--openbot-logo-dev);
+    background-color: var(--zollybot-logo-dev);
   }
 
   48% {
-    background-color: var(--openbot-logo-preview);
+    background-color: var(--zollybot-logo-preview);
   }
 
   74% {
-    background-color: var(--openbot-logo-production);
+    background-color: var(--zollybot-logo-production);
   }
 }
 
@@ -11612,7 +11616,7 @@ a {
 }
 
 .brand-stage:has(.app-logo:focus-visible) {
-  outline: 2px solid var(--openbot-text-primary);
+  outline: 2px solid var(--zollybot-text-primary);
   outline-offset: 2px;
 }
 
@@ -11659,7 +11663,7 @@ a {
   gap: 10px;
   border-radius: 9px;
   padding: 8px 10px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   cursor: default;
   outline: 0;
@@ -11673,7 +11677,7 @@ a {
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .site-logo-menu-separator {
@@ -11685,11 +11689,11 @@ a {
 /* Brand page logo cards --------------------------------------------------- */
 
 .brand-card-art[data-surface="dark"] {
-  background: var(--openbot-bg-frame);
+  background: var(--zollybot-bg-frame);
 }
 
 .brand-card-art[data-surface="light"] {
-  background: var(--openbot-surface-light);
+  background: var(--zollybot-surface-light);
 }
 
 .brand-groups {
@@ -11733,9 +11737,9 @@ a {
 .brand-card {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-xl);
-  background: var(--openbot-bg-surface);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-xl);
+  background: var(--zollybot-bg-surface);
 }
 
 .brand-card-art {
@@ -11804,8 +11808,8 @@ a {
 .marketplace-site-switch {
   display: flex;
   gap: 2px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   padding: 4px;
 }
 
@@ -11815,19 +11819,19 @@ a {
   align-items: center;
   justify-content: center;
   height: 36px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   padding: 0 20px;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 14px;
   font-weight: 500;
   transition:
-    background-color var(--openbot-duration-normal) ease,
-    color var(--openbot-duration-normal) ease;
+    background-color var(--zollybot-duration-normal) ease,
+    color var(--zollybot-duration-normal) ease;
 }
 
 .marketplace-site-switch-option[aria-current="page"] {
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 
 /* One field as wide as the page, filled like the rows' Add, with the magnifier inside it. */
@@ -11842,7 +11846,7 @@ a {
   left: 18px;
   width: 17px;
   height: 17px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -11851,20 +11855,20 @@ a {
   width: 100%;
   height: 48px;
   border: 1px solid transparent;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   padding: 0 20px 0 46px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
   font-size: 15px;
 }
 
 .marketplace-site-search-input::placeholder {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .marketplace-site-search-input:focus-visible {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
   outline: 0;
 }
 
@@ -11873,7 +11877,7 @@ a {
 .marketplace-site-view-all:focus-visible,
 .marketplace-site-row:focus-visible,
 .marketplace-site-feature:focus-visible {
-  outline: 2px solid var(--openbot-border-strong);
+  outline: 2px solid var(--zollybot-border-strong);
   outline-offset: 2px;
 }
 
@@ -11883,9 +11887,9 @@ a {
 
 /* The category links take the filter switches' look; the current one is filled like a pressed switch. */
 .marketplace-site-categories .plugin-tag-button[aria-current="page"] {
-  border-color: var(--openbot-surface-light);
-  background: var(--openbot-surface-light);
-  color: var(--openbot-text-on-light);
+  border-color: var(--zollybot-surface-light);
+  background: var(--zollybot-surface-light);
+  color: var(--zollybot-text-on-light);
 }
 
 .marketplace-site-empty {
@@ -11903,7 +11907,7 @@ a {
   flex: 0 0 auto;
   width: 0.9em;
   height: 0.9em;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 /* The avatar box. The Worker renders it empty and the browser draws the agent in it. It fills the
@@ -11915,7 +11919,7 @@ a {
   place-items: center;
   width: 100%;
   height: 100%;
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
   pointer-events: none;
 }
 
@@ -11937,7 +11941,7 @@ a {
   position: relative;
   width: auto;
   height: 28%;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .marketplace-site-trust {
@@ -11945,7 +11949,7 @@ a {
   align-items: center;
   gap: 8px;
   margin: 18px 0 0;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -11994,16 +11998,16 @@ a {
 
 .marketplace-site-group-title {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
 
 .marketplace-site-view-all {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 14px;
-  transition: color var(--openbot-duration-normal) ease;
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 .marketplace-site-features {
@@ -12021,11 +12025,11 @@ a {
   gap: 4px;
   height: 100%;
   border-radius: 16px;
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
   padding: 22px 16px 20px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   text-align: center;
-  transition: background-color var(--openbot-duration-normal) ease;
+  transition: background-color var(--zollybot-duration-normal) ease;
 }
 
 .marketplace-site-feature-mark {
@@ -12051,7 +12055,7 @@ a {
 }
 
 .marketplace-site-feature-by {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 13px;
 }
 
@@ -12072,8 +12076,8 @@ a {
   border-radius: 14px;
   padding: 12px;
   margin-inline: -12px;
-  color: var(--openbot-text-primary);
-  transition: background-color var(--openbot-duration-normal) ease;
+  color: var(--zollybot-text-primary);
+  transition: background-color var(--zollybot-duration-normal) ease;
 }
 
 .marketplace-site-row-mark {
@@ -12104,24 +12108,24 @@ a {
 }
 
 .marketplace-site-row-by {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-weight: 400;
 }
 
 .marketplace-site-row-line {
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 14px;
 }
 
 .marketplace-site-row-add {
   flex: 0 0 auto;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   padding: 7px 16px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 14px;
   font-weight: 500;
-  transition: background-color var(--openbot-duration-normal) ease;
+  transition: background-color var(--zollybot-duration-normal) ease;
 }
 
 /* A skill's square icon, at the size an avatar fills. */
@@ -12137,7 +12141,7 @@ a {
    the information side by side. */
 .marketplace-site-detail-head {
   padding-bottom: clamp(32px, 4vw, 44px);
-  border-bottom: 1px solid var(--openbot-border-strong);
+  border-bottom: 1px solid var(--zollybot-border-strong);
 }
 
 /* Where the listing is, each step a link: it replaces the single back link. */
@@ -12157,12 +12161,12 @@ a {
 .marketplace-site-crumbs li + li::before {
   content: "/";
   margin-inline: 8px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
 }
 
 .marketplace-site-crumb {
-  color: var(--openbot-text-dim);
-  transition: color var(--openbot-duration-normal) ease;
+  color: var(--zollybot-text-dim);
+  transition: color var(--zollybot-duration-normal) ease;
 }
 
 /* The name starts at the top of the mark, with or without a trust line under it, and the buttons
@@ -12209,7 +12213,7 @@ a {
 
 .marketplace-site-detail-by {
   margin: 6px 0 0;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   font-size: 15px;
 }
 
@@ -12220,7 +12224,7 @@ a {
 .marketplace-site-detail-description {
   max-width: 46em;
   margin: clamp(20px, 2.4vw, 28px) 0 0;
-  color: var(--openbot-text-readable);
+  color: var(--zollybot-text-readable);
   font-size: 17px;
   line-height: 1.6;
 }
@@ -12255,8 +12259,8 @@ a {
   width: 88%;
   height: 88%;
   border-radius: 22%;
-  background: var(--openbot-bg-surface);
-  color: var(--openbot-text-secondary);
+  background: var(--zollybot-bg-surface);
+  color: var(--zollybot-text-secondary);
 }
 
 .marketplace-site-routine-mark > svg {
@@ -12272,17 +12276,17 @@ a {
   .marketplace-site-view-all:hover,
   .marketplace-site-crumb:hover,
   .marketplace-site-switch-option:not([aria-current="page"]):hover {
-    color: var(--openbot-text-primary);
+    color: var(--zollybot-text-primary);
   }
 
   a.marketplace-site-row:hover,
   .marketplace-site-feature:hover {
-    background: var(--openbot-bg-surface);
+    background: var(--zollybot-bg-surface);
   }
 
   .marketplace-site-feature:hover,
   a.marketplace-site-row:hover .marketplace-site-row-add {
-    background: var(--openbot-bg-surface-raised);
+    background: var(--zollybot-bg-surface-raised);
   }
 }
 

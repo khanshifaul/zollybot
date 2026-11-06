@@ -1,7 +1,7 @@
 /** An LLM step: one model call with no agent, no tools and no workspace. */
 
-import { AGENT_REASONING_EFFORTS, type AgentModelId, type AgentReasoningEffort } from "@openbot/contracts/ipc";
-import { Button, Play, Sparkles, Textarea } from "@openbot/ui";
+import { AGENT_REASONING_EFFORTS, type AgentModelId, type AgentReasoningEffort } from "@zollybot/contracts/ipc";
+import { Button, Play, Sparkles, Textarea } from "@zollybot/ui";
 import { untrack } from "solid-js";
 import { useText } from "../../text";
 import { useBoard } from "./workflow-board";

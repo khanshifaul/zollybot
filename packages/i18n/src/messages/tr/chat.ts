@@ -423,7 +423,7 @@ export const messages = {
   "chat.suggestion.dismissNamed": "{name} önerisini kapat",
   "chat.suggestion.dismissed": "{name} önerisi kapatıldı.",
   "chat.suggestion.undo": "Geri al",
-  "chat.suggestion.localOnly": "{name} bağlantısını kendi bilgisayarınızdaki OpenBot'ta kurun.",
+  "chat.suggestion.localOnly": "{name} bağlantısını kendi bilgisayarınızdaki ZollyBot'ta kurun.",
   "chat.suggestion.unavailable": "Bu sunucu {name} uygulamasını bağlayamaz.",
   "chat.compaction.running": "Bağlam sıkıştırılıyor",
   "chat.compaction.completed": "Bağlam sıkıştırıldı",

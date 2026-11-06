@@ -1,13 +1,13 @@
-import type { AgentModelId, AgentProviderRef, AgentReasoningEffort } from "@openbot/contracts/ipc";
-import { markdownPreviewText } from "@openbot/contracts/markdown-preview-text";
-import type { AgentProfile } from "@openbot/ui/data";
-import { type AgentActivityLabel, nextAgentActivityLabel } from "@openbot/ui/features/conversation/AgentActivity";
+import type { AgentModelId, AgentProviderRef, AgentReasoningEffort } from "@zollybot/contracts/ipc";
+import { markdownPreviewText } from "@zollybot/contracts/markdown-preview-text";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { type AgentActivityLabel, nextAgentActivityLabel } from "@zollybot/ui/features/conversation/AgentActivity";
 import {
   agentActivityExitDelay,
   agentActivityExitDuration,
   agentActivityShowDelay,
-} from "@openbot/ui/features/conversation/activity-timing";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/activity-timing";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, onCleanup, untrack } from "solid-js";
 import { agentConversationKey } from "../conversation-keys";
 import type { ConversationProps } from "../conversation-types";

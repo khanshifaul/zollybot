@@ -6,9 +6,9 @@ import {
   decodeAgentProfileDraft,
   type GenerateAgentProfileInput,
   type SidebarSection,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect, Fiber, Result, Schema } from "effect";
 import type { AgentClient } from "../agent-client";
 import { causeHelpers } from "../effect-boundary";
@@ -24,7 +24,7 @@ import { extractJsonObject, StructuredOutputError } from "../structured-output";
 import { isBalanceDiagnostic, isPlanLimitDiagnostic } from "./provider-diagnostics";
 import { USAGE_LIMIT_METHOD } from "./usage-limit-gate";
 
-const logger = createOpenBotLogger("profile-generation");
+const logger = createZollyBotLogger("profile-generation");
 
 const GENERATION_TIMEOUT_MS = 120_000;
 
@@ -118,7 +118,7 @@ export const generateTextWithoutTools = Effect.fn("Agent.generateTextWithoutTool
 });
 
 /** A temporary directory for a client without tools to run in. */
-export const makeToollessDirectory = () => profileIo(() => mkdtemp(join(tmpdir(), "openbot-profile-")));
+export const makeToollessDirectory = () => profileIo(() => mkdtemp(join(tmpdir(), "zollybot-profile-")));
 
 /**
  * Removes a directory that `makeToollessDirectory` made. Windows answers `EBUSY` for a moment after
@@ -134,7 +134,7 @@ export const startToolless = Effect.fnUntraced(function* (client: AgentClient) {
     .request(
       "initialize",
       {
-        clientInfo: { name: "openbot-profile", title: "OpenBot profile generation", version: "0.1.0" },
+        clientInfo: { name: "zollybot-profile", title: "ZollyBot profile generation", version: "0.1.0" },
         capabilities: { experimentalApi: true },
       },
       decodeRecordResponse,

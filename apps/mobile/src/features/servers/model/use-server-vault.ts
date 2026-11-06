@@ -1,5 +1,5 @@
-import type { VaultState } from "@openbot/contracts/ipc";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { VaultState } from "@zollybot/contracts/ipc";
 import { useRef } from "react";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import { useMobileWorkspace, useMobileWorkspaceActions } from "@/features/workspace/context/mobile-workspace-context";

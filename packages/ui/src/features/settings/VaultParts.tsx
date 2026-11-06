@@ -1,4 +1,5 @@
-import type { AppTextKey } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   Field,
@@ -9,8 +10,7 @@ import {
   ItemGroup,
   ItemTitle,
   SettingsSection,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createSignal, Show } from "solid-js";
 import { useText } from "../../text";
 import { DangerZone, type IntegrationStatus, UNKNOWN_STATUS } from "./IntegrationLayout";
@@ -111,7 +111,7 @@ export function VaultSecretForm(props: {
   );
 }
 
-/** The vaults or folders that OpenBot reads, as one card of `VaultRow`s and notes. */
+/** The vaults or folders that ZollyBot reads, as one card of `VaultRow`s and notes. */
 export function SharedVaultSection(props: { title: string; description: string; children: JSX.Element }) {
   return (
     <SettingsSection title={props.title} description={props.description}>

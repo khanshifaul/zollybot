@@ -1,6 +1,6 @@
-import type { OnePasswordConnectorStatus } from "@openbot/contracts/ipc";
-import { ONEPASSWORD_CONNECTOR_TOKEN_LIMIT } from "@openbot/contracts/team-protocol/onepassword-connector-v1";
 import type { UseQueryResult } from "@tanstack/react-query";
+import type { OnePasswordConnectorStatus } from "@zollybot/contracts/ipc";
+import { ONEPASSWORD_CONNECTOR_TOKEN_LIMIT } from "@zollybot/contracts/team-protocol/onepassword-connector-v1";
 import { Typography } from "heroui-native";
 import { useState } from "react";
 import { Alert } from "react-native";

@@ -6,7 +6,7 @@ import {
   useMotionPreferences,
 } from "./motion";
 
-const key = "openbot.mobile.motion.v1";
+const key = "zollybot.mobile.motion.v1";
 
 function storedValue(): string {
   const state = useMotionPreferences.getState();

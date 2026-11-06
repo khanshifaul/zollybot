@@ -2,7 +2,7 @@ import {
   type ChatTagReference,
   chatTagReferences,
   serializeChatTagReference,
-} from "@openbot/contracts/chat-tag-references";
+} from "@zollybot/contracts/chat-tag-references";
 
 export function mentionDraft(source: string) {
   let cursor = 0;

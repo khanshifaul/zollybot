@@ -1,8 +1,8 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentEvent, AgentWait, AgentWaitsSnapshot } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentEvent, AgentWait, AgentWaitsSnapshot } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { z } from "zod";
-import { type OpenBotToolResponse, openBotToolFailure, openBotToolResult } from "../agent/routine-tools";
+import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "../agent/routine-tools";
 import type { MailboxStore } from "../mailbox-store";
 import type { DynamicToolCallParams } from "../protocol";
 import { AgentWaitError, AgentWaitLimitError, type AgentWaitStore } from "./agent-wait-store";
@@ -112,7 +112,7 @@ export class AgentWaits {
   }
 
   /** Answers `await_event`, `close_wait` and `list_waits`; null for every other tool. */
-  handleTool(params: DynamicToolCallParams, caller: AgentWaitCaller): OpenBotToolResponse | null {
+  handleTool(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse | null {
     try {
       if (params.tool === AWAIT_EVENT_TOOL) return this.#awaitEvent(params, caller);
       if (params.tool === CLOSE_WAIT_TOOL) return this.#closeWait(params, caller);
@@ -124,7 +124,7 @@ export class AgentWaits {
     }
   }
 
-  #awaitEvent(params: DynamicToolCallParams, caller: AgentWaitCaller): OpenBotToolResponse {
+  #awaitEvent(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse {
     const parsed = awaitEventToolSchema.safeParse(params.arguments);
     if (!parsed.success) return openBotToolFailure(sourceText("error.backend.agentWaitNoteRequired"));
     const { note, routineId } = parsed.data;
@@ -178,18 +178,18 @@ export class AgentWaits {
       limit: INPUT_LIMITS.agentWaits,
       ...(openWaits >= INPUT_LIMITS.agentWaits - NEAR_LIMIT_MARGIN
         ? {
-            nearLimit: `You are close to the limit of open waits. Call openbot.${LIST_WAITS_TOOL} and close the waits whose request is done.`,
+            nearLimit: `You are close to the limit of open waits. Call zollybot.${LIST_WAITS_TOOL} and close the waits whose request is done.`,
           }
         : {}),
       wakes: wait.routineId
         ? `The next run of routine ${wait.routineId} wakes this wait, or a script event that names it.`
         : "The next run of any of your routines wakes this wait, or a script event that names it.",
       scriptEvent: `A local script names the wait with "waitId": "${wait.id}" next to "payload" in the body of its routine run request.`,
-      next: "End your turn now. The run that wakes the wait repeats the request and your note. Close the wait with openbot.close_wait when the request is done.",
+      next: "End your turn now. The run that wakes the wait repeats the request and your note. Close the wait with zollybot.close_wait when the request is done.",
     });
   }
 
-  #closeWait(params: DynamicToolCallParams, caller: AgentWaitCaller): OpenBotToolResponse {
+  #closeWait(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse {
     const parsed = closeWaitToolSchema.safeParse(params.arguments);
     if (!parsed.success) return openBotToolFailure(z.prettifyError(parsed.error));
     const agentId = this.#waitOwner(parsed.data.agentId, caller);
@@ -199,7 +199,7 @@ export class AgentWaits {
     return openBotToolResult({ closed: parsed.data.waitId });
   }
 
-  #listWaits(params: DynamicToolCallParams, caller: AgentWaitCaller): OpenBotToolResponse {
+  #listWaits(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse {
     const parsed = listWaitsToolSchema.safeParse(params.arguments ?? {});
     if (!parsed.success) return openBotToolFailure(z.prettifyError(parsed.error));
     const agentId = this.#waitOwner(parsed.data.agentId, caller);
@@ -247,7 +247,7 @@ export function wokenWaitsPromptText(waits: readonly AgentWait[]): string | null
   if (waits.length === 0) return null;
   return [
     "--- open waits that this run wakes ---",
-    `You opened these waits with openbot.${AWAIT_EVENT_TOOL}. Continue each request with what this run brings. When a request is done, or can no longer be done, tell the user and call openbot.${CLOSE_WAIT_TOOL} with its wait id. To wait for the next run again, leave the wait open.`,
+    `You opened these waits with zollybot.${AWAIT_EVENT_TOOL}. Continue each request with what this run brings. When a request is done, or can no longer be done, tell the user and call zollybot.${CLOSE_WAIT_TOOL} with its wait id. To wait for the next run again, leave the wait open.`,
     ...waits.flatMap((wait) => [
       "",
       `Wait ID: ${wait.id}`,

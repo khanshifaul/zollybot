@@ -5,36 +5,36 @@ import {
   type ConversationMessage,
   latestTurnAnswer,
   type ServerNotificationLevel,
-} from "@openbot/contracts/ipc";
-import type { LiveActivityRelayPush } from "@openbot/contracts/live-activity-relay";
+} from "@zollybot/contracts/ipc";
+import type { LiveActivityRelayPush } from "@zollybot/contracts/live-activity-relay";
 import {
   type AndroidNotificationRelayPush,
   NOTIFICATION_SEALED_LIMIT,
   type NotificationRelayPush,
   type NotificationSound,
-} from "@openbot/contracts/notification-relay";
-import { TEAM_CHANNEL_ATTENTION_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import { resolveLocale, translateFor } from "@openbot/i18n";
-import { redactText, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/notification-relay";
+import { TEAM_CHANNEL_ATTENTION_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import { resolveLocale, translateFor } from "@zollybot/i18n";
+import { redactText, toLogValue } from "@zollybot/logging";
 import {
   type AgentNotificationChannel,
   agentEventCanNotify,
   agentEventRequestThread,
   agentNotificationLevel,
   notificationForAgentEvent,
-} from "@openbot/team-client/agent-notifications";
+} from "@zollybot/team-client/agent-notifications";
 import {
   decodeLiveActivityBytes,
   LIVE_ACTIVITY_NONCE_BYTES,
   LIVE_ACTIVITY_SECRET_BYTES,
-} from "@openbot/team-client/live-activity-seal";
+} from "@zollybot/team-client/live-activity-seal";
 import {
   type PushNotificationContent,
   type PushNotificationKeys,
   type PushNotificationKind,
   pushNotificationKeys,
   sealPushNotification,
-} from "@openbot/team-client/push-notification-seal";
+} from "@zollybot/team-client/push-notification-seal";
 import { Effect, Exit, Fiber, Result, Schema, Scope } from "effect";
 import { isNoUpdateAnswer } from "../backend/agent/routine-quiet-runs";
 import type { AgentService } from "../backend/agent-service";
@@ -49,7 +49,7 @@ const ANSWER_PAGE_SIZE = 20;
  * desktop app (`computer-activity-v1`), is at that app, which shows the event itself, so the phone
  * stays quiet. This includes the events that wait for the member: the desktop app asks for them. The
  * computer of this host counts the same idle time. It is short: a task can end at any time after the
- * member leaves the computer. An unpackaged app can set another time (`OPENBOT_DEV_AWAY_SECONDS`).
+ * member leaves the computer. An unpackaged app can set another time (`ZOLLYBOT_DEV_AWAY_SECONDS`).
  */
 export const DESKTOP_USE_MS = 30 * 1000;
 /**

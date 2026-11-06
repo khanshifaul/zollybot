@@ -6,4 +6,4 @@ declare class ShareFilesModule extends NativeModule {
 }
 
 /** `modules/share-files`. A build without it, such as Expo Go, cannot share many files at once. */
-export const shareFilesNative = requireOptionalNativeModule<ShareFilesModule>("OpenBotShareFiles");
+export const shareFilesNative = requireOptionalNativeModule<ShareFilesModule>("ZollyBotShareFiles");

@@ -1,7 +1,7 @@
 import { Portal } from "@solidjs/web";
 import { type Accessor, createSignal, createUniqueId, onCleanup, Show } from "solid-js";
 import { detectDownloadPlatform } from "../../lib/download-platforms";
-import { OPENBOT_DOWNLOAD_LINKS } from "../../lib/landing-links";
+import { ZOLLYBOT_DOWNLOAD_LINKS } from "../../lib/landing-links";
 import { Button } from "../ui/button";
 import type { OpenAppFallbackText } from "./page-text";
 
@@ -9,7 +9,7 @@ import type { OpenAppFallbackText } from "./page-text";
 const OPEN_APP_HINT_DELAY_MS = 1200;
 
 export interface OpenAppFallback {
-  /** Starts the timer. Call it when the visitor presses a button that opens an `openbot://` link. */
+  /** Starts the timer. Call it when the visitor presses a button that opens an `zollybot://` link. */
   arm: () => void;
   open: Accessor<boolean>;
   close: () => void;
@@ -86,7 +86,7 @@ export function OpenAppFallbackDialog(props: { fallback: OpenAppFallback; text: 
             <button class="plugin-dialog-dismiss" type="button" onClick={() => dialog?.close()}>
               {props.text.dismiss}
             </button>
-            <Button autofocus href={OPENBOT_DOWNLOAD_LINKS[platform()]} variant="primary" size="sm" icon="download">
+            <Button autofocus href={ZOLLYBOT_DOWNLOAD_LINKS[platform()]} variant="primary" size="sm" icon="download">
               {props.text.download[platform()]}
             </Button>
           </div>

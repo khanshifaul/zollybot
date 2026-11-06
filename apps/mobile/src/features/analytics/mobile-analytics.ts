@@ -1,5 +1,5 @@
-import { ANALYTICS_GENERATIONS } from "@openbot/telemetry";
 import { OpenPanel, type TrackHandlerPayload } from "@openpanel/react-native";
+import { ANALYTICS_GENERATIONS } from "@zollybot/telemetry";
 import * as Application from "expo-application";
 import { Platform } from "react-native";
 import { MobileAnalytics } from "./analytics-core";

@@ -14,7 +14,7 @@ import { typeCheckerScript } from "../../../scripts/type-checker";
 
 const PACKAGE = resolve(import.meta.dirname, "..");
 const TYPES = join(PACKAGE, "vendor/baileys/types");
-const out = mkdtempSync(join(tmpdir(), "openbot-baileys-types-"));
+const out = mkdtempSync(join(tmpdir(), "zollybot-baileys-types-"));
 
 try {
   const result = spawnSync(
@@ -29,7 +29,7 @@ try {
       "--emitDeclarationOnly",
       "--incremental",
       "false",
-      // The vendor imports OpenBot's curve module, so the root is the package folder.
+      // The vendor imports ZollyBot's curve module, so the root is the package folder.
       "--rootDir",
       PACKAGE,
       "--outDir",

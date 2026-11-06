@@ -10,8 +10,8 @@ import {
   isHiddenAgent,
   isSidebarLayoutSnapshot,
   type SidebarLayoutSnapshot,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 
 /**
  * The frame of a joined server's workspace from its last load: the agents, their sidebar layout and
@@ -36,7 +36,7 @@ export interface RemoteWorkspaceFrame {
 
 type FrameStorage = Pick<Storage, "getItem" | "setItem" | "removeItem" | "key" | "length">;
 
-const FRAME_KEY_PREFIX = "openbot:remote-frame:v1:";
+const FRAME_KEY_PREFIX = "zollybot:remote-frame:v1:";
 /** The agents that `recentAgentIds` keeps: the open one and the 3 before it. */
 const RECENT_AGENTS = 4;
 /** An older frame shows a workspace that has changed too much to be useful. */

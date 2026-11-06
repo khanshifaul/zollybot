@@ -1,4 +1,4 @@
-import type { HostAgentMemoryLimit, OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { HostAgentMemoryLimit, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 import {
   Item,
   ItemActions,
@@ -10,15 +10,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createSignal, Show, untrack } from "solid-js";
 
 /** The memory limit calls of one server's host. The desktop reaches them through main. */
-export type HostMemoryLimitCalls = Pick<OpenBotDesktopApi["hostAdmin"], "getAgentMemoryLimit" | "setAgentMemoryLimit">;
+export type HostMemoryLimitCalls = Pick<ZollyBotDesktopApi["hostAdmin"], "getAgentMemoryLimit" | "setAgentMemoryLimit">;
 
 export interface ServerMemoryLimitOptions {
-  /** The calls of a client with no `window.openbot`, such as the web client. */
+  /** The calls of a client with no `window.zollybot`, such as the web client. */
   calls?: HostMemoryLimitCalls;
 }
 
@@ -35,7 +35,7 @@ export function ServerMemoryLimitSetting(
   },
 ) {
   const { t, errorMessage } = useText();
-  const calls = (): HostMemoryLimitCalls => props.calls ?? window.openbot.hostAdmin;
+  const calls = (): HostMemoryLimitCalls => props.calls ?? window.zollybot.hostAdmin;
   const [settings, setSettings] = createSignal<HostAgentMemoryLimit | null>(null);
   const [loadError, setLoadError] = createSignal<string | null>(null);
   /** Bumped for each server, so an answer for an earlier one is dropped. */

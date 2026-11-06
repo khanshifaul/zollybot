@@ -1,8 +1,8 @@
 import { appendFile, mkdir, readFile, rename, stat } from "node:fs/promises";
 import { join } from "node:path";
-import type { AgentEvent } from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { redactValue } from "@openbot/logging";
+import type { AgentEvent } from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { redactValue } from "@zollybot/logging";
 import { Effect, Exit, Scope, Semaphore } from "effect";
 import { analyticsIO } from "./analytics-effects";
 

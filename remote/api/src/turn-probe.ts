@@ -28,7 +28,7 @@ const PROBE_TIMEOUT_MILLISECONDS = 5_000;
 const REFRESH_TIMEOUT_MILLISECONDS = 1_000;
 // The credentials only have to outlive the probe.
 const CREDENTIAL_TTL_SECONDS = 60;
-const PROBE_USER = "openbot-status-probe";
+const PROBE_USER = "zollybot-status-probe";
 
 /** `full`: the relay refused the allocation at its quota. `refused`: another error. `no-answer`: no reply in time. */
 export class TurnProbeError extends Schema.TaggedError<TurnProbeError>()("TurnProbeError", {

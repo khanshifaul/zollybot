@@ -21,27 +21,27 @@
 
 /* The agent's name is the first tab, for the agent's own chat, with the shape of the thread tabs. */
 .conversation-title.ui-button[data-tab] {
-  height: var(--openbot-control-sm);
-  gap: var(--openbot-space-1-5);
+  height: var(--zollybot-control-sm);
+  gap: var(--zollybot-space-1-5);
   padding-block: 0;
-  padding-inline: var(--openbot-space-1-5) var(--openbot-space-2);
-  border-radius: var(--openbot-radius-md);
-  color: var(--openbot-text-secondary);
+  padding-inline: var(--zollybot-space-1-5) var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-md);
+  color: var(--zollybot-text-secondary);
 }
 
 .conversation-title.ui-button[data-tab] h1 {
   color: inherit;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
 }
 
 .conversation-title.ui-button[data-tab]:hover {
-  background: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
 }
 
 .conversation-title.ui-button[data-tab][data-selected] {
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-primary);
 }
 
 /* The gap after the name tab is the gap between two tabs, with the same divider in it: this margin and
@@ -72,7 +72,7 @@
 .conversation-heading-group:has(.agent-threads-header[data-fold]) .conversation-title {
   position: relative;
   flex-shrink: 0;
-  padding-inline-end: var(--openbot-space-1-5);
+  padding-inline-end: var(--zollybot-space-1-5);
 }
 
 .conversation-heading-group:has(.agent-threads-header[data-fold]) .conversation-title h1 {
@@ -119,12 +119,12 @@
   position: absolute;
   top: 50%;
   z-index: 2;
-  height: var(--openbot-control-sm);
+  height: var(--zollybot-control-sm);
   padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   transform: translateY(-50%);
 }
 
@@ -135,7 +135,7 @@
   /* "+" and the thread list follow the last tab directly. */
   padding-inline-end: 0;
   overflow-x: auto;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   background: transparent;
   box-shadow: none;
   scrollbar-width: none;
@@ -146,27 +146,27 @@
 
 /* A soft edge where more tabs are out of view. */
 .agent-threads-tabs[data-more-before] {
-  mask-image: linear-gradient(to right, transparent, var(--openbot-text-primary) 24px);
+  mask-image: linear-gradient(to right, transparent, var(--zollybot-text-primary) 24px);
 }
 
 .agent-threads-tabs[data-more-after] {
-  mask-image: linear-gradient(to left, transparent, var(--openbot-text-primary) 24px);
+  mask-image: linear-gradient(to left, transparent, var(--zollybot-text-primary) 24px);
 }
 
 .agent-threads-tabs[data-more-before][data-more-after] {
   mask-image: linear-gradient(
     to right,
     transparent,
-    var(--openbot-text-primary) 24px,
-    var(--openbot-text-primary) calc(100% - 24px),
+    var(--zollybot-text-primary) 24px,
+    var(--zollybot-text-primary) calc(100% - 24px),
     transparent
   );
 }
 
 /* The fill of the selected tab, as in the side panel tabs. */
 .agent-threads-tabs .agent-threads-fill {
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-bg-control-active);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-control-active);
 }
 
 /* The trigger that keeps the agent's own chat selected in the tabs. It never shows. */
@@ -185,14 +185,14 @@
   max-width: 140px;
   flex: 0 1 auto;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   padding-block: 0;
-  padding-inline: var(--openbot-space-1-5) var(--openbot-space-2);
-  border-radius: var(--openbot-radius-md);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
-  animation: agent-threads-tab-in var(--openbot-duration-normal) var(--openbot-ease-out);
+  padding-inline: var(--zollybot-space-1-5) var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-md);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
+  animation: agent-threads-tab-in var(--zollybot-duration-normal) var(--zollybot-ease-out);
   /* The other tabs slide when a tab moves past them. */
   transition:
     color var(--sliding-tabs-duration) var(--sliding-tabs-ease),
@@ -225,10 +225,10 @@
 /* A tab whose title the user edits has the fill of a selected tab and a thin border, so it reads as
    a field. Its own title hides under the field, and the icon slot stays. */
 .agent-threads-tab.ui-sliding-tabs-trigger[data-renaming] {
-  outline: 1px solid var(--openbot-border-focus);
+  outline: 1px solid var(--zollybot-border-focus);
   outline-offset: -1px;
-  background-color: var(--openbot-bg-control-active);
-  color: var(--openbot-text-primary);
+  background-color: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-primary);
 }
 
 .agent-threads-tab[data-renaming] .agent-threads-tab-title {
@@ -238,8 +238,8 @@
 /* The selected tab is on the fill, which the tabs measure. The tab of an open right-click menu
    looks hovered, so the user sees which tab the menu acts on. A tab in rename keeps its own fill. */
 .agent-threads-tab.ui-sliding-tabs-trigger:not([aria-selected="true"], [data-renaming]):is(:hover, [data-menu-open]) {
-  background-color: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
+  background-color: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
 }
 
 /* The icon slot. On hover, a round fill and an X replace the icon, as in a side panel tab. */
@@ -248,9 +248,9 @@
   display: grid;
   flex: none;
   place-items: center;
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  border-radius: var(--openbot-radius-pill);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .agent-threads-tab-icon,
@@ -265,8 +265,8 @@
 
 .agent-threads-tab-icon > svg,
 .agent-threads-tab-x {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .agent-threads-tab-x {
@@ -275,7 +275,7 @@
 
 /* A tab in rename keeps its icon: the pointer is there to edit the title, not to close the tab. */
 .agent-threads-tab:hover:where(:not([data-renaming])) .agent-threads-tab-close {
-  background: var(--openbot-bg-control-hover);
+  background: var(--zollybot-bg-control-hover);
 }
 
 .agent-threads-tab:hover:where(:not([data-renaming])) .agent-threads-tab-icon {
@@ -287,8 +287,8 @@
 }
 
 .agent-threads-tab-close:hover {
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-primary);
 }
 
 .agent-threads-tab[data-renaming] .agent-threads-tab-close {
@@ -298,9 +298,9 @@
 /* The state badge of the thread takes the icon slot at its own size. */
 .agent-threads-tab-close:has(.agent-threads-state) {
   width: auto;
-  min-width: var(--openbot-icon-md);
+  min-width: var(--zollybot-icon-md);
   height: auto;
-  min-height: var(--openbot-icon-md);
+  min-height: var(--zollybot-icon-md);
 }
 
 .agent-threads-tab:not(:hover) .agent-threads-tab-icon:has(.agent-threads-state) {
@@ -309,11 +309,11 @@
 
 /* As tall as a tab and with its corners, so a hover fill on "+" matches the tab fill. */
 .agent-threads-icon-button.ui-button {
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
   flex: 0 0 auto;
-  border-radius: var(--openbot-radius-sm);
-  color: var(--openbot-text-muted);
+  border-radius: var(--zollybot-radius-sm);
+  color: var(--zollybot-text-muted);
 }
 
 /* A narrow header: the open thread as one button, with the shape, fill and type of a selected tab.
@@ -321,42 +321,42 @@
 .agent-threads-switcher.ui-button {
   min-width: 0;
   max-width: 200px;
-  height: var(--openbot-control-sm);
+  height: var(--zollybot-control-sm);
   flex: 0 1 auto;
-  gap: var(--openbot-space-1-5);
-  border-radius: var(--openbot-radius-md);
-  background-color: var(--openbot-bg-control-active);
+  gap: var(--zollybot-space-1-5);
+  border-radius: var(--zollybot-radius-md);
+  background-color: var(--zollybot-bg-control-active);
   padding-block: 0;
-  padding-inline: var(--openbot-space-1-5) var(--openbot-space-1);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
+  padding-inline: var(--zollybot-space-1-5) var(--zollybot-space-1);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .agent-threads-switcher.ui-button:hover,
 .agent-threads-switcher.ui-button[aria-expanded="true"] {
-  background-color: var(--openbot-bg-control-hover);
+  background-color: var(--zollybot-bg-control-hover);
 }
 
 .agent-threads-switcher-icon {
   display: grid;
   flex: none;
   place-items: center;
-  min-width: var(--openbot-icon-md);
-  min-height: var(--openbot-icon-md);
+  min-width: var(--zollybot-icon-md);
+  min-height: var(--zollybot-icon-md);
 }
 
 .agent-threads-switcher-icon > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   opacity: 0.7;
 }
 
 .agent-threads-switcher-chevron {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: none;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .agent-threads-menu {
@@ -377,8 +377,8 @@
   mask-image: linear-gradient(
     to bottom,
     transparent,
-    var(--openbot-text-primary) var(--agent-threads-fade-top),
-    var(--openbot-text-primary) calc(100% - var(--agent-threads-fade-bottom)),
+    var(--zollybot-text-primary) var(--agent-threads-fade-top),
+    var(--zollybot-text-primary) calc(100% - var(--agent-threads-fade-bottom)),
     transparent
   );
 }
@@ -406,7 +406,7 @@
   display: flex;
   flex: none;
   align-self: stretch;
-  margin-block: calc(var(--openbot-space-1-5) * -1);
+  margin-block: calc(var(--zollybot-space-1-5) * -1);
 }
 
 .agent-threads-stem-rail,
@@ -420,7 +420,7 @@
 .agent-threads-stem-elbow::after {
   position: absolute;
   inset-inline-start: 7px;
-  border: 0 solid color-mix(in srgb, var(--openbot-text-muted) 60%, transparent);
+  border: 0 solid color-mix(in srgb, var(--zollybot-text-muted) 60%, transparent);
   content: "";
 }
 
@@ -461,8 +461,8 @@
   min-width: 44px;
   flex: 0 0 auto;
   white-space: nowrap;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
   text-align: end;
 }
@@ -474,7 +474,7 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 /* Agent messages that the user has not read: a dot in the color of the "new messages" mark of the
@@ -482,14 +482,14 @@
 .agent-threads-unread {
   width: 8px;
   height: 8px;
-  background: var(--openbot-unread-surface);
+  background: var(--zollybot-unread-surface);
 }
 
 /* The pill of the sidebar badge, with the dots while the agent works. */
 .agent-threads-state-working {
   width: 24px;
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-secondary);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-secondary);
 }
 
 @keyframes agent-threads-tab-in {
@@ -509,11 +509,11 @@
 }
 
 :is(.agent-threads-tab, .agent-threads-switcher, .side-panel-thread-tab)[data-attention="waiting"] {
-  --agent-threads-tint: color-mix(in srgb, var(--openbot-warning-soft) 40%, var(--openbot-transparent));
+  --agent-threads-tint: color-mix(in srgb, var(--zollybot-warning-soft) 40%, var(--zollybot-transparent));
 }
 
 :is(.agent-threads-tab, .agent-threads-switcher, .side-panel-thread-tab)[data-attention="failed"] {
-  --agent-threads-tint: color-mix(in srgb, var(--openbot-danger-soft) 40%, var(--openbot-transparent));
+  --agent-threads-tint: color-mix(in srgb, var(--zollybot-danger-soft) 40%, var(--zollybot-transparent));
 }
 
 /* The tabs measure their own fill. Kobalte's fill stays hidden. */
@@ -529,13 +529,13 @@
   + .agent-threads-tab::before {
   position: absolute;
   top: 50%;
-  inset-inline-start: calc(var(--openbot-space-1) / -2 - 0.5px);
+  inset-inline-start: calc(var(--zollybot-space-1) / -2 - 0.5px);
   width: 1px;
-  height: var(--openbot-icon-lg);
-  background: var(--openbot-border-strong);
+  height: var(--zollybot-icon-lg);
+  background: var(--zollybot-border-strong);
   content: "";
   transform: translateY(-50%);
-  transition: opacity var(--openbot-duration-fast) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 :where(.conversation-heading-group:has(.conversation-title:is([data-selected], :hover)))
@@ -567,8 +567,8 @@
 /* The moving tab wears the fill itself, so it covers the tabs that it passes. */
 .agent-threads-tab.ui-sliding-tabs-trigger[data-dragged=""] {
   z-index: 2;
-  background-color: var(--openbot-bg-control-active);
-  color: var(--openbot-text-primary);
+  background-color: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-primary);
   transition: color var(--sliding-tabs-duration) var(--sliding-tabs-ease);
 }
 
@@ -600,10 +600,10 @@
 
 /* Where a side panel tab goes when the pointer lets it go over the chat. */
 .agent-threads-header[data-drop-target] {
-  border-radius: var(--openbot-radius-md);
-  outline: 1px dashed var(--openbot-text-secondary);
+  border-radius: var(--zollybot-radius-md);
+  outline: 1px dashed var(--zollybot-text-secondary);
   outline-offset: 2px;
-  background: var(--openbot-bg-control-hover);
+  background: var(--zollybot-bg-control-hover);
 }
 
 /* Marks after the title in the thread menu, as in a sidebar row. A mark opens and closes in width, and the negative
@@ -617,7 +617,7 @@
   transition:
     grid-template-columns var(--sliding-tabs-duration) var(--sliding-tabs-ease),
     margin-inline-start var(--sliding-tabs-duration) var(--sliding-tabs-ease),
-    opacity var(--openbot-duration-fast) var(--openbot-ease-out);
+    opacity var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .agent-threads-tab-mark-slot[data-open] {
@@ -632,7 +632,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 /* In the menu, the badges share one centred column. */
@@ -646,8 +646,8 @@
 .agent-threads-state-icon {
   width: 20px;
   height: 20px;
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-muted);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-muted);
 }
 
 .agent-threads-state-icon svg {
@@ -656,21 +656,21 @@
 }
 
 .agent-threads-tab-mark[data-kind="waiting"] .agent-threads-state-icon {
-  background: var(--openbot-warning-soft);
-  color: var(--openbot-warning-text);
+  background: var(--zollybot-warning-soft);
+  color: var(--zollybot-warning-text);
 }
 
 .agent-threads-tab-mark[data-kind="failed"] .agent-threads-state-icon {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger-text);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger-text);
 }
 
 .agent-thread-origin {
   margin: 0;
-  padding-top: var(--openbot-chat-entry-gap);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  padding-top: var(--zollybot-chat-entry-gap);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 /* The line after the messages that a branch copied: "Branched from" and the source, between two rules. */
@@ -678,18 +678,18 @@
   display: flex;
   width: 100%;
   align-items: center;
-  gap: var(--openbot-space-2);
-  margin: var(--openbot-space-2) 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  gap: var(--zollybot-space-2);
+  margin: var(--zollybot-space-2) 0;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .agent-thread-branch-divider hr {
   height: 1px;
   flex: 1;
   border: 0;
-  background: var(--openbot-border);
+  background: var(--zollybot-border);
 }
 
 .agent-thread-branch-text,
@@ -698,7 +698,7 @@
   flex: 0 1 auto;
   min-width: 0;
   align-items: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   color: inherit;
   font-size: inherit;
 }
@@ -720,15 +720,15 @@
 .agent-thread-queued {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-1);
-  padding-top: var(--openbot-chat-entry-gap);
+  gap: var(--zollybot-space-1);
+  padding-top: var(--zollybot-chat-entry-gap);
 }
 
 .agent-thread-queued-text {
   margin: 0;
   overflow: hidden;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

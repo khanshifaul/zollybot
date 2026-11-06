@@ -1,1 +1,1 @@
-export { userErrorMessage as errorMessage } from "@openbot/user-errors";
+export { userErrorMessage as errorMessage } from "@zollybot/user-errors";

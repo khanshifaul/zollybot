@@ -1,4 +1,4 @@
-import { Alert, AlertActions, AlertContent, AlertDescription, AlertIcon, AlertTitle, Button, Moon } from "@openbot/ui";
+import { Alert, AlertActions, AlertContent, AlertDescription, AlertIcon, AlertTitle, Button, Moon } from "@zollybot/ui";
 import { useText } from "../../text";
 import type { HostedUpsellHost } from "./hosted-server-upsell-host";
 

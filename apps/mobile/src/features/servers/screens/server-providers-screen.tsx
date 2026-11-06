@@ -1,5 +1,5 @@
-import { isAgentProvider, providerDisplayName } from "@openbot/contracts/ipc";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { isAgentProvider, providerDisplayName } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import Plus from "lucide-react-native/icons/plus";
@@ -152,7 +152,7 @@ export function ServerProvidersScreen() {
  */
 function CustomProvidersSection({ serverId, admin }: { serverId: string; admin: ProviderAdmin }) {
   const { t, errorMessage } = useText();
-  const [muted, accent] = useCSSVariable(["--openbot-text-grouped-secondary", "--openbot-accent"]);
+  const [muted, accent] = useCSSVariable(["--zollybot-text-grouped-secondary", "--zollybot-accent"]);
   const { list } = useServerCustomProviders(serverId, admin);
   const open = (customProviderId?: string) =>
     router.push({
@@ -219,7 +219,7 @@ function CustomProvidersSection({ serverId, admin }: { serverId: string; admin: 
  */
 function AgentsSection({ serverId, admin }: { serverId: string; admin: ProviderAdmin }) {
   const { t, errorMessage } = useText();
-  const accent = useCSSVariable("--openbot-accent");
+  const accent = useCSSVariable("--zollybot-accent");
   const { list } = useServerCustomAgents(serverId, admin);
   return (
     <SettingsSection

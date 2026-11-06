@@ -1,8 +1,8 @@
 import { randomBytes } from "node:crypto";
-import { type AvatarHue, isAvatarHue } from "@openbot/contracts/ipc";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
+import { type AvatarHue, isAvatarHue } from "@zollybot/contracts/ipc";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
 import { databaseRows, requiredNumberColumn, requiredStringColumn } from "../database/database-rows";
-import type { OpenBotDatabase } from "../openbot-database";
+import type { ZollyBotDatabase } from "../zollybot-database";
 
 export interface BrowserProfileRecord {
   id: string;
@@ -16,9 +16,9 @@ export interface BrowserProfileRecord {
  * as `MessagingStore` writes its role lists.
  */
 export class BrowserProfileStore {
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
 
-  constructor(database: OpenBotDatabase) {
+  constructor(database: ZollyBotDatabase) {
     this.#database = database;
   }
 

@@ -3,8 +3,8 @@
 // Each provider process gets `AGENT_PROCESS_VARIABLE`, and so every program that an agent starts.
 // When the shell of a tool call ends, the system adopts a program that it left in the background:
 // its parent becomes PID 1, or a subreaper such as `systemd --user` on Linux. A process with the
-// variable and such a parent is the root of a left program, also after OpenBot quit and started
-// again. A provider process that OpenBot runs has OpenBot as its parent, so it is never one.
+// variable and such a parent is the root of a left program, also after ZollyBot quit and started
+// again. A provider process that ZollyBot runs has ZollyBot as its parent, so it is never one.
 //
 // macOS shows the environment of a program, but not of an Apple system program such as `/bin/sleep`.
 // Such a program is not found. The environment stays in memory: it can hold secrets.
@@ -12,8 +12,8 @@
 import { execFile } from "node:child_process";
 import { readFile, realpath } from "node:fs/promises";
 import { sep } from "node:path";
-import type { BackgroundProcess } from "@openbot/contracts/ipc";
-import { redactText } from "@openbot/logging";
+import type { BackgroundProcess } from "@zollybot/contracts/ipc";
+import { redactText } from "@zollybot/logging";
 import { Effect, Schema } from "effect";
 import { causeHelpers } from "../backend/effect-boundary";
 import { AGENT_PROCESS_VARIABLE } from "./server-memory";
@@ -151,7 +151,7 @@ const findLeftProcesses = Effect.fn("BackgroundProcesses.find")(function* (platf
     if (!marked.has(root.pid)) continue;
     const tree = [root];
     for (let index = 0; index < tree.length; index++) tree.push(...(children.get(tree[index]?.pid ?? -1) ?? []));
-    // An OpenBot that an agent started is never stopped from this one.
+    // An ZollyBot that an agent started is never stopped from this one.
     if (tree.some((row) => row.pid === process.pid)) continue;
     left.push({ root, tree });
   }
@@ -193,7 +193,7 @@ function ownerOf(cwd: string | undefined, agents: readonly BackgroundProcessAgen
   return owner?.id ?? null;
 }
 
-/** Null on Windows, where OpenBot cannot find these programs. */
+/** Null on Windows, where ZollyBot cannot find these programs. */
 export const listBackgroundProcesses = Effect.fn("BackgroundProcesses.list")(function* (
   platform: NodeJS.Platform,
   agents: readonly BackgroundProcessAgent[],

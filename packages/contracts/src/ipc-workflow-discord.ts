@@ -1,11 +1,11 @@
 /**
  * Discord triggers and outputs of workflows. A Discord trigger starts a run when a person mentions
- * OpenBot in a channel of a connected Discord server; a Discord output answers that message, posts in a
+ * ZollyBot in a channel of a connected Discord server; a Discord output answers that message, posts in a
  * channel or adds a reaction. The node fields are in `WorkflowFields`. A joined client reads these nodes
  * and cannot change them: the server list, its channels and its roles are on the host only.
  */
 
-/** The events that a Discord trigger can start on. Signal passes on only messages that mention OpenBot. */
+/** The events that a Discord trigger can start on. Signal passes on only messages that mention ZollyBot. */
 export const WORKFLOW_DISCORD_EVENTS = ["mention"] as const;
 export type WorkflowDiscordEvent = (typeof WORKFLOW_DISCORD_EVENTS)[number];
 

@@ -1,14 +1,14 @@
 // The OpenCode Go quota, read from the endpoint the OpenCode console serves for the Go API key.
 //
 // OpenCode's ACP process does not report a quota, so this is a direct HTTPS request with the key the
-// CLI uses: the key the user pasted into OpenBot, else the CLI's own key. The route is
+// CLI uses: the key the user pasted into ZollyBot, else the CLI's own key. The route is
 // `packages/console/app/src/routes/zen/go/v1/usage.ts` in anomalyco/opencode; it answers
 // `{ usage: { rolling, weekly, monthly } }`, each with an integer `percent` and an ISO `resetsAt`.
 
 import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { DynamicRecord } from "@openbot/contracts/runtime-values";
+import type { DynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect, Option, Schema } from "effect";
 import { openCodeDataDirectory } from "./process-confinement";
 import { type AccountRateLimitsReadResult, type AccountRateLimitWindowResult, getRecord, getString } from "./protocol";

@@ -2,9 +2,9 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { chmod, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { companySignInErrorKey } from "@openbot/contracts/company-sign-in";
-import type { HostKeyHandover } from "@openbot/contracts/host-key-handover";
-import { parseHostedServerClaim } from "@openbot/contracts/hosted-servers";
+import { companySignInErrorKey } from "@zollybot/contracts/company-sign-in";
+import type { HostKeyHandover } from "@zollybot/contracts/host-key-handover";
+import { parseHostedServerClaim } from "@zollybot/contracts/hosted-servers";
 import type {
   AvatarColor,
   AvatarImageInput,
@@ -16,40 +16,40 @@ import type {
   MobileConnectedDevice,
   MobileConnectLink,
   MobileConnectTicket,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   decodeCompanySignInScimToken,
   decodeCompanySignInSettings,
   type TestCompanySignInInput,
   type TestCompanySignInResult,
-} from "@openbot/contracts/ipc";
-import { decodeRecord, requiredString } from "@openbot/contracts/ipc-decoding";
-import type { LiveActivityRelayPush } from "@openbot/contracts/live-activity-relay";
+} from "@zollybot/contracts/ipc";
+import { decodeRecord, requiredString } from "@zollybot/contracts/ipc-decoding";
+import type { LiveActivityRelayPush } from "@zollybot/contracts/live-activity-relay";
 import {
   createMobileConnectUrl,
   isMobileConnectHostBinding,
   type MobileConnectHostBinding,
-} from "@openbot/contracts/mobile-connect";
+} from "@zollybot/contracts/mobile-connect";
 import {
   decodeRemoteSession,
   decodeRemoteSessionTicket,
   type RemoteSession,
   type RemoteSessionTicket,
-} from "@openbot/contracts/remote-control-plane";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/remote-control-plane";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import {
   GITHUB_REPOSITORY_NAME_PATTERN,
   type GitHubRouteRepository,
-} from "@openbot/contracts/signal-protocol/github-route";
-import { TELEGRAM_LINK_CODE_PATTERN } from "@openbot/contracts/signal-protocol/telegram-route";
+} from "@zollybot/contracts/signal-protocol/github-route";
+import { TELEGRAM_LINK_CODE_PATTERN } from "@zollybot/contracts/signal-protocol/telegram-route";
 import {
   REMOTE_TICKET_AUDIENCE,
   type RemoteMemberRole,
   type RemoteTicketClaims,
-} from "@openbot/contracts/signal-protocol/ticket";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
-import { referenceFrom, safeReference } from "@openbot/user-errors";
+} from "@zollybot/contracts/signal-protocol/ticket";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
+import { referenceFrom, safeReference } from "@zollybot/user-errors";
 import { Deferred, Effect, type Layer, Result, Schema, Semaphore } from "effect";
 import { createLocalJWKSet, jwtVerify } from "jose";
 import { z } from "zod";
@@ -94,7 +94,7 @@ interface CentralAuthManagerOptions {
   encrypt: (value: string) => Buffer;
   decrypt: (value: Buffer) => string;
   canPersist?: () => boolean;
-  /** True when the Linux keyring failed in this process and a key file of OpenBot now keeps the secrets. */
+  /** True when the Linux keyring failed in this process and a key file of ZollyBot now keeps the secrets. */
   keyringChanged?: () => boolean;
   fetch?: AuthFetcher;
   startupRetryWindowMs?: number;
@@ -114,7 +114,7 @@ interface StoredMobileConnectLink {
 
 const MOBILE_CONNECT_LINK_TOKEN = /^[A-Za-z0-9_-]{32,128}$/u;
 
-const logger = createOpenBotLogger("central-auth");
+const logger = createZollyBotLogger("central-auth");
 
 /** The step of a session file read or write that failed, for the account log. */
 type StoredSessionStage = "read" | "decrypt" | "decode" | "encrypt" | "write";
@@ -166,7 +166,7 @@ const remoteTicketJwksSchema = z.object({
 });
 
 // The account API answers the same shape for a host credential and for a member session, so both
-// paths below decode it with the one function in `@openbot/contracts/remote-control-plane`.
+// paths below decode it with the one function in `@zollybot/contracts/remote-control-plane`.
 export type RemoteConnectionBootstrap = RemoteSessionTicket;
 
 /** Asks for the host's home Signal machine. Only the host peer asks; see `issueRemoteHostTicket`. */
@@ -909,7 +909,7 @@ export class CentralAuthManager extends EventEmitter<CentralAuthEvents> {
     (operation) => this.#owned(operation),
   ).bind(this);
 
-  /** A one-use code that links the next Telegram chat that adds the OpenBot bot to this host. */
+  /** A one-use code that links the next Telegram chat that adds the ZollyBot bot to this host. */
 
   readonly createTelegramLink = Effect.fn("CentralAuth.createTelegramLink")(
     function* (
@@ -1323,7 +1323,7 @@ export class CentralAuthManager extends EventEmitter<CentralAuthEvents> {
         `/v2/remote/hosts/${encodeURIComponent(hostId)}/logo`,
         {
           method: "PUT",
-          headers: { "Content-Type": image.mimeType, ...(version ? { "OpenBot-Logo-Version": version } : {}) },
+          headers: { "Content-Type": image.mimeType, ...(version ? { "ZollyBot-Logo-Version": version } : {}) },
           body: Buffer.from(image.bytes),
         },
         (value) => requiredString(decodeRecord(value, "remote host logo"), "logoKey"),
@@ -2441,7 +2441,7 @@ export function readCentralAuthApiUrl(value: string | undefined, fallback = "htt
   const url = new URL(value ?? fallback);
   const loopback = url.hostname === "127.0.0.1" || url.hostname === "localhost";
   if ((url.protocol !== "https:" && !(url.protocol === "http:" && loopback)) || url.pathname !== "/") {
-    throw new Error("OPENBOT_AUTH_API_URL must be HTTPS or an HTTP loopback origin.");
+    throw new Error("ZOLLYBOT_AUTH_API_URL must be HTTPS or an HTTP loopback origin.");
   }
   return url.origin;
 }

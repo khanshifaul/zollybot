@@ -30,7 +30,7 @@ export function openExtraPasswordPipe(
 }
 
 async function namedPipe(onRead: (answer: ExtraPasswordAnswer) => void): Promise<ExtraPasswordPipe> {
-  const path = `\\\\.\\pipe\\openbot-protonpass-${randomBytes(12).toString("hex")}`;
+  const path = `\\\\.\\pipe\\zollybot-protonpass-${randomBytes(12).toString("hex")}`;
   const server = createServer((socket) => {
     socket.on("error", () => socket.destroy());
     onRead(

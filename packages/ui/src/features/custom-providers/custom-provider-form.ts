@@ -2,14 +2,14 @@
 // submit produces the contract `SaveCustomProviderInput` verbatim. Every bound/pattern comes
 // from the contract; main rechecks on save, so a drifted copy would pass the form and fail save.
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   CustomProviderHarness,
   CustomProviderReasoningEffort,
   CustomProviderSummary,
   SaveCustomProviderInput,
   UpdateCustomProviderInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   AGENT_PROVIDERS,
   CUSTOM_PROVIDER_ID_PATTERN,
@@ -20,8 +20,8 @@ import {
   isCustomProviderContextWindow,
   isCustomProviderHeaderName,
   isCustomProviderMaxOutput,
-} from "@openbot/contracts/ipc";
-import type { AppFormat, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppFormat, AppTranslate } from "@zollybot/i18n";
 import { currentText } from "../../text";
 
 export interface CustomModelDraft {

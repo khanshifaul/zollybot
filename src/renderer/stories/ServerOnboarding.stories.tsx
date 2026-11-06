@@ -1,5 +1,5 @@
-import type { AgentStatus, ProviderRuntimeStatus } from "@openbot/contracts/ipc";
-import { Toaster, toast } from "@openbot/ui";
+import type { AgentStatus, ProviderRuntimeStatus } from "@zollybot/contracts/ipc";
+import { Toaster, toast } from "@zollybot/ui";
 import { onCleanup } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

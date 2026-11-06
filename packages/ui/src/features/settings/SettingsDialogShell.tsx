@@ -1,6 +1,6 @@
-import { Button, ChevronRight } from "@openbot/ui";
-import { cx, prefersReducedMotion } from "@openbot/ui/utils";
 import { type JSX, Portal } from "@solidjs/web";
+import { Button, ChevronRight } from "@zollybot/ui";
+import { cx, prefersReducedMotion } from "@zollybot/ui/utils";
 import { createEffect, createSignal, createUniqueId, onCleanup, Show, untrack } from "solid-js";
 
 /** Where a settings page puts its parts, when the settings show as a page of the window. */

@@ -3,8 +3,8 @@ import {
   isRemovableSkill,
   type MarketplaceSkillSort,
   type MarketplaceSkillSummary,
-} from "@openbot/contracts/ipc";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import { useText } from "@zollybot/ui/text";
 import type { MarketplaceAgent, MarketplaceModel } from "./marketplace-model";
 
 export const isOn = (skill: InstalledSkill | undefined) => skill?.enabled !== false;
@@ -32,8 +32,8 @@ export function matches(query: string, text: string): boolean {
 }
 
 /**
- * The skills that the user's agents have and OpenBot manages, by name: no built-in, folder or home
- * skill, as OpenBot cannot add or remove those. A skill that more than one agent has is one entry.
+ * The skills that the user's agents have and ZollyBot manages, by name: no built-in, folder or home
+ * skill, as ZollyBot cannot add or remove those. A skill that more than one agent has is one entry.
  * Without `installedSkills`, only the loaded catalog skills.
  */
 export function userSkills(

@@ -1,10 +1,10 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import type { Message, PluralMessage } from "@openbot/i18n";
-import { TRANSLATED_LOCALES } from "@openbot/i18n";
-import { matchingSourceKeys } from "@openbot/i18n/source";
-import { createOpenBotLogger } from "@openbot/logging";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import type { Message, PluralMessage } from "@zollybot/i18n";
+import { TRANSLATED_LOCALES } from "@zollybot/i18n";
+import { matchingSourceKeys } from "@zollybot/i18n/source";
+import { createZollyBotLogger } from "@zollybot/logging";
 
 // Checks the catalogs in packages/i18n/src/messages. See docs/i18n.md.
 //
@@ -19,7 +19,7 @@ import { createOpenBotLogger } from "@openbot/logging";
 // Reports, and does not fail on, translated modules whose keys are not in the English order.
 // `--fix` puts those keys in the English order; it moves each key with the comments and blank lines
 // above it and does not change the text. `--fix` also removes translated keys from
-// untranslated.json. `--json` writes the report to .openbot-build/i18n-report.json.
+// untranslated.json. `--json` writes the report to .zollybot-build/i18n-report.json.
 
 const ROOT = resolve(import.meta.dirname, "..");
 const MESSAGES = resolve(ROOT, "packages/i18n/src/messages");
@@ -49,7 +49,7 @@ const RELEASED_SOURCE_KEYS = new Set([
   "error.backend.channelHistoryLeadRequired",
 ]);
 
-const logger = createOpenBotLogger("i18n-check");
+const logger = createZollyBotLogger("i18n-check");
 const failures: string[] = [];
 const OBJECT_START = "export const messages = {";
 /** The quoted key of a catalog entry, after the comments and blank lines above it. */
@@ -342,7 +342,7 @@ const report = {
 };
 
 if (process.argv.includes("--json")) {
-  const path = resolve(ROOT, ".openbot-build/i18n-report.json");
+  const path = resolve(ROOT, ".zollybot-build/i18n-report.json");
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(report, null, 2)}\n`);
   logger.info(`Wrote ${relative(ROOT, path)}.`);

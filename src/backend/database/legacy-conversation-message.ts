@@ -1,7 +1,7 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { ConversationMessage } from "@openbot/contracts/ipc";
-import { isConversationMessage, isConversationTurnTrace } from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { ConversationMessage } from "@zollybot/contracts/ipc";
+import { isConversationMessage, isConversationTurnTrace } from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 
 /**
  * A conversation message a released build persisted spells the product agent `bot`.

@@ -1,4 +1,4 @@
-import type { AgentNotificationLevelsSnapshot } from "@openbot/contracts/ipc";
+import type { AgentNotificationLevelsSnapshot } from "@zollybot/contracts/ipc";
 import { useEffect, useRef } from "react";
 import {
   clearSyncedNotificationLevels,

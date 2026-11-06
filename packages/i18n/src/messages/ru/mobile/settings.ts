@@ -8,12 +8,12 @@ export const messages = {
   "mobile.settings.language.system": "Как в системе",
   "mobile.settings.language.footer":
     "Вариант «Как в системе» берёт первый язык из настроек телефона. Непереведённый текст показывается на английском.",
-  "mobile.settings.language.restartTitle": "Перезапустить OpenBot?",
+  "mobile.settings.language.restartTitle": "Перезапустить ZollyBot?",
   "mobile.settings.language.restartBody":
-    "Этот язык читается в другом направлении. Экраны сменят направление при следующем запуске OpenBot. Если после перезапуска экраны выглядят неправильно, закройте OpenBot в переключателе приложений и откройте его снова.",
+    "Этот язык читается в другом направлении. Экраны сменят направление при следующем запуске ZollyBot. Если после перезапуска экраны выглядят неправильно, закройте ZollyBot в переключателе приложений и откройте его снова.",
   "mobile.settings.language.restartNow": "Перезапустить сейчас",
   "mobile.settings.language.restartFailed":
-    "Не удалось перезапустить OpenBot. Экраны сменят направление, когда вы снова откроете OpenBot.",
+    "Не удалось перезапустить ZollyBot. Экраны сменят направление, когда вы снова откроете ZollyBot.",
   "mobile.settings.dictation.language": "Язык диктовки",
   "mobile.settings.about.development": "Разработка",
   "mobile.settings.about.openFailed": "Не удалось открыть ссылку. Повторите попытку.",
@@ -22,7 +22,7 @@ export const messages = {
   "mobile.settings.about.privacy": "Политика конфиденциальности",
   "mobile.settings.home.profile": "Профиль",
   "mobile.settings.home.preferences": "Параметры",
-  "mobile.settings.home.about": "Об OpenBot",
+  "mobile.settings.home.about": "Об ZollyBot",
   "mobile.settings.home.support": "Поддержка",
   "mobile.settings.home.supportHint": "Помощь и сохранение журнала поддержки",
   "mobile.settings.support.help": "Получить помощь",
@@ -45,7 +45,7 @@ export const messages = {
   "mobile.settings.support.clearTitle": "Очистить журнал поддержки?",
   "mobile.settings.support.clearBody": "Все события будут удалены из журнала на этом телефоне.",
   "mobile.settings.support.logFooter":
-    "Журнал хранится на этом телефоне, OpenBot его не отправляет. В нём записаны шаги подключения, запросы и ошибки, но не сообщения и файлы; пароли и токены скрыты. Прочитайте файл, прежде чем делиться им.",
+    "Журнал хранится на этом телефоне, ZollyBot его не отправляет. В нём записаны шаги подключения, запросы и ошибки, но не сообщения и файлы; пароли и токены скрыты. Прочитайте файл, прежде чем делиться им.",
   "mobile.settings.support.saveFailed": "Не удалось сохранить файл журнала. Повторите попытку.",
   "mobile.settings.support.sharingUnavailable": "На этом телефоне нельзя поделиться файлом.",
   "mobile.settings.support.newestFirst": "Сначала новые.",
@@ -100,27 +100,27 @@ export const messages = {
   "mobile.settings.feedback.retry": "Повторить сохранение настройки вибрации",
   "mobile.settings.liveActivities.title": "Live Activities",
   "mobile.settings.liveActivities.footer":
-    "Показывает работу агентов, сообщения, вопросы и запросы одобрения на экране блокировки и в Dynamic Island, пока работает OpenBot.",
+    "Показывает работу агентов, сообщения, вопросы и запросы одобрения на экране блокировки и в Dynamic Island, пока работает ZollyBot.",
   "mobile.settings.liveActivities.toggle": "Показывать активность агентов",
   "mobile.settings.liveActivities.retry": "Повторить сохранение настройки Live Activities",
   "mobile.settings.notifications.title": "Уведомления",
   "mobile.settings.notifications.toggle": "Разрешить уведомления",
   "mobile.settings.notifications.footer":
-    "Агенты сообщают, когда заканчивают работу, останавливаются с ошибкой или ждут вашего ответа, подтверждения или шага в браузере. Уведомлений нет, пока вы пользуетесь OpenBot здесь или в приложении для компьютера. Пока показана Live Activity, событие показывает она.",
+    "Агенты сообщают, когда заканчивают работу, останавливаются с ошибкой или ждут вашего ответа, подтверждения или шага в браузере. Уведомлений нет, пока вы пользуетесь ZollyBot здесь или в приложении для компьютера. Пока показана Live Activity, событие показывает она.",
   "mobile.settings.notifications.footerAndroid":
-    "Агенты сообщают, когда заканчивают работу, останавливаются с ошибкой или ждут вашего ответа, подтверждения или шага в браузере. Уведомлений нет, пока вы пользуетесь OpenBot здесь или в приложении для компьютера.",
-  "mobile.settings.notifications.denied": "Уведомления OpenBot выключены в «Настройках» iOS.",
-  "mobile.settings.notifications.deniedAndroid": "Уведомления OpenBot выключены в настройках Android.",
+    "Агенты сообщают, когда заканчивают работу, останавливаются с ошибкой или ждут вашего ответа, подтверждения или шага в браузере. Уведомлений нет, пока вы пользуетесь ZollyBot здесь или в приложении для компьютера.",
+  "mobile.settings.notifications.denied": "Уведомления ZollyBot выключены в «Настройках» iOS.",
+  "mobile.settings.notifications.deniedAndroid": "Уведомления ZollyBot выключены в настройках Android.",
   "mobile.settings.notifications.openSettings": "Открыть Настройки iOS",
   "mobile.settings.notifications.openSettingsAndroid": "Открыть настройки Android",
   "mobile.settings.notifications.preview": "Показывать начало ответа",
   "mobile.settings.notifications.previewFooter":
-    "Показывает начало ответа, вопрос или действие, которое нужно подтвердить. Apple и служба аккаунтов OpenBot не могут его прочитать.",
+    "Показывает начало ответа, вопрос или действие, которое нужно подтвердить. Apple и служба аккаунтов ZollyBot не могут его прочитать.",
   "mobile.settings.notifications.previewFooterAndroid":
-    "Показывает начало ответа, вопрос или действие, которое нужно подтвердить. Google и служба аккаунтов OpenBot не могут его прочитать.",
+    "Показывает начало ответа, вопрос или действие, которое нужно подтвердить. Google и служба аккаунтов ZollyBot не могут его прочитать.",
   "mobile.settings.notifications.sound": "Звук",
   "mobile.settings.notifications.playSound": "Воспроизводить звук",
-  "mobile.settings.notifications.sound.openbot": "OpenBot",
+  "mobile.settings.notifications.sound.zollybot": "ZollyBot",
   "mobile.settings.notifications.sound.warm": "Тёплая",
   "mobile.settings.notifications.sound.mech": "Механическая",
   "mobile.settings.notifications.sound.bubble": "Пузырьковая",
@@ -128,9 +128,9 @@ export const messages = {
   "mobile.settings.notifications.sound.default": "Стандартный iOS",
   "mobile.settings.notifications.sound.defaultAndroid": "Стандартный Android",
   "mobile.settings.notifications.soundFooter":
-    "Уведомления и Live Activity воспроизводят этот звук. Live Activity также включает экран. Звук OpenBot — тот же звук, который играет приложение для компьютера, когда задача завершена. Следующие четыре звука — звуки звуковых тем приложения для компьютера.",
+    "Уведомления и Live Activity воспроизводят этот звук. Live Activity также включает экран. Звук ZollyBot — тот же звук, который играет приложение для компьютера, когда задача завершена. Следующие четыре звука — звуки звуковых тем приложения для компьютера.",
   "mobile.settings.notifications.soundFooterAndroid":
-    "Уведомления воспроизводят этот звук. Звук OpenBot — тот же звук, который играет приложение для компьютера, когда задача завершена. Следующие четыре звука — звуки звуковых тем приложения для компьютера.",
+    "Уведомления воспроизводят этот звук. Звук ZollyBot — тот же звук, который играет приложение для компьютера, когда задача завершена. Следующие четыре звука — звуки звуковых тем приложения для компьютера.",
   "mobile.settings.notifications.level.all": "Вся активность",
   "mobile.settings.notifications.level.needsMe": "Только когда я нужен",
   "mobile.settings.notifications.level.nothing": "Ничего",
@@ -146,7 +146,7 @@ export const messages = {
   "mobile.settings.notifications.serverFooter":
     "События этого сервера, о которых уведомляет этот телефон. У приложения для компьютера свои настройки.",
   "mobile.settings.notifications.serverUnsupported":
-    "Этот сервер не может отправлять уведомления. Обновите OpenBot на компьютере, где он работает.",
+    "Этот сервер не может отправлять уведомления. Обновите ZollyBot на компьютере, где он работает.",
   "mobile.settings.notifications.thisPhone": "Этот телефон",
   "mobile.settings.notifications.whatYouHear": "О чём вы узнаёте",
   "mobile.settings.notifications.wholeServer": "Весь сервер",
@@ -160,7 +160,7 @@ export const messages = {
   "mobile.settings.notifications.chooseAgent": "Выбрать для одного агента",
   "mobile.settings.notifications.chooseAnotherAgent": "Выбрать другого агента",
   "mobile.settings.notifications.levelsFooter": "Нажмите уровень агента ещё раз, чтобы он следовал настройке сервера.",
-  "mobile.settings.notifications.agentsUnsupported": "Обновите OpenBot на этом сервере, чтобы выбирать агентов.",
+  "mobile.settings.notifications.agentsUnsupported": "Обновите ZollyBot на этом сервере, чтобы выбирать агентов.",
   "mobile.settings.notifications.agentsOffline": "Агенты появятся, когда этот сервер будет в сети.",
   "mobile.settings.notifications.scopeFooter":
     "Ваш выбор действует на всех ваших устройствах. Режим без звука действует только на этом телефоне.",
@@ -168,7 +168,7 @@ export const messages = {
   "mobile.settings.notifications.channelSilent": "Уведомления агентов (без звука)",
   "mobile.settings.privacy.title": "Конфиденциальность",
   "mobile.settings.privacy.footer":
-    "Данные об использовании функций и результатах подключения с этого телефона всегда отправляются в аналитику OpenBot. Вкл.: вместе с ID аккаунта и почтой. Выкл.: только со случайным ID установки. Содержимое сообщений и файлы не отправляются.",
+    "Данные об использовании функций и результатах подключения с этого телефона всегда отправляются в аналитику ZollyBot. Вкл.: вместе с ID аккаунта и почтой. Выкл.: только со случайным ID установки. Содержимое сообщений и файлы не отправляются.",
   "mobile.settings.privacy.analytics": "Связывать аналитику с моим аккаунтом",
   "mobile.settings.privacy.retry": "Повторить сохранение настройки конфиденциальности",
   "mobile.settings.conversations.title": "Диалоги",
@@ -188,7 +188,7 @@ export const messages = {
   "mobile.settings.profile.security": "Безопасность",
   "mobile.settings.profile.accountSessions": "Сеансы аккаунта",
   "mobile.settings.profile.signOutTitle": "Выйти?",
-  "mobile.settings.profile.signOutBody": "Чтобы подключиться снова, отсканируйте новый код в OpenBot на компьютере.",
+  "mobile.settings.profile.signOutBody": "Чтобы подключиться снова, отсканируйте новый код в ZollyBot на компьютере.",
   "mobile.settings.profile.signOut": "Выйти",
   "mobile.settings.voice.title": "Голос",
   "mobile.settings.voice.sample": "Привет. Так я буду читать вам свои ответы.",
@@ -219,7 +219,7 @@ export const messages = {
   "mobile.settings.voice.supertonic.male": "Мужской голос {number}",
   "mobile.settings.voice.elevenLabs.title": "ElevenLabs",
   "mobile.settings.voice.elevenLabs.footer":
-    "OpenBot отправляет текст каждого ответа в ElevenLabs с вашим ключом, и ElevenLabs списывает оплату с вашего аккаунта. Ключ хранится в связке ключей этого телефона.",
+    "ZollyBot отправляет текст каждого ответа в ElevenLabs с вашим ключом, и ElevenLabs списывает оплату с вашего аккаунта. Ключ хранится в связке ключей этого телефона.",
   "mobile.settings.voice.elevenLabs.key": "Ключ API",
   "mobile.settings.voice.elevenLabs.keySaved": "Сохранён на этом телефоне",
   "mobile.settings.voice.elevenLabs.chooseVoice": "Выберите голос",
@@ -229,7 +229,7 @@ export const messages = {
   "mobile.settings.voice.elevenLabs.removeBody": "Supertonic 3 снова читает ответы.",
   "mobile.settings.voice.elevenLabs.saveKey": "Сохранить ключ",
   "mobile.settings.voice.elevenLabs.testing": "Проверка ключа",
-  "mobile.settings.voice.elevenLabs.keyHint": "OpenBot проверяет первые два разрешения перед сохранением ключа.",
+  "mobile.settings.voice.elevenLabs.keyHint": "ZollyBot проверяет первые два разрешения перед сохранением ключа.",
   "mobile.settings.voice.elevenLabs.testFailed": "ElevenLabs не ответил. Повторите попытку.",
   "mobile.settings.voice.elevenLabs.getKey": "Получить ключ API",
   "mobile.settings.voice.engine.supertonicReady": "На этом телефоне · {voice}",
@@ -275,11 +275,11 @@ export const messages = {
   "mobile.settings.voice.pause.title": "Пауза перед отправкой",
   "mobile.settings.voice.pause.label": "Ждать новые слова",
   "mobile.settings.voice.pause.footer":
-    "В голосовом разговоре OpenBot отправляет ваши слова, когда столько времени не распознаёт новых слов. Шум без слов не продлевает прослушивание. Выберите паузу длиннее, если говорите медленно или останавливаетесь подумать.",
+    "В голосовом разговоре ZollyBot отправляет ваши слова, когда столько времени не распознаёт новых слов. Шум без слов не продлевает прослушивание. Выберите паузу длиннее, если говорите медленно или останавливаетесь подумать.",
   "mobile.settings.voice.pause.seconds": "{seconds} с",
   "mobile.settings.voice.speed.title": "Скорость ответов",
-  "mobile.settings.voice.speed.footer": "Скорость ответов, которые OpenBot читает вслух, также в голосовом разговоре.",
+  "mobile.settings.voice.speed.footer": "Скорость ответов, которые ZollyBot читает вслух, также в голосовом разговоре.",
   "mobile.settings.voice.speed.value": "{speed}×",
   "mobile.settings.voice.elevenLabs.recognitionFooter":
-    "OpenBot передаёт вашу речь в ElevenLabs с одноразовым токеном, и ElevenLabs списывает оплату с вашего аккаунта. Ключ остаётся на этом телефоне.",
+    "ZollyBot передаёт вашу речь в ElevenLabs с одноразовым токеном, и ElevenLabs списывает оплату с вашего аккаунта. Ключ остаётся на этом телефоне.",
 } as const satisfies PartialTranslation<typeof source>;

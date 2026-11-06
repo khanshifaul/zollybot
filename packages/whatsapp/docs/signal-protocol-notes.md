@@ -463,5 +463,5 @@ message [IMPL-FACT] **(vector)**. libsignal-node emits the fields in the order 1
   Every byte-level fact also has an [IMPL-FACT] source and most have a vector.
 - **Java signing nonce details** (section 3.4) were not checked in this work.
 - Storage formats of existing libsignal-node or Baileys session and sender key records are not
-  described. OpenBot has no stored records in those formats. If an import is ever needed, the
+  described. ZollyBot has no stored records in those formats. If an import is ever needed, the
   oracle (outside the repository) reads them.

@@ -7,7 +7,7 @@ import type {
   CustomProviderHarness,
   CustomProviderSummary,
   ProviderRuntimeStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   agentProviderName,
   CUSTOM_AGENT_DEFAULT_MODEL,
@@ -15,8 +15,8 @@ import {
   isAgentProvider,
   isFreeOpencodeModel,
   isKnownAgentProvider,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
 import { currentText } from "../text";
 
 /** The efforts that have a name in the catalog. The other efforts show their id. */
@@ -49,7 +49,7 @@ export interface PickerModelGroup {
 }
 
 /**
- * How a provider id inside a custom agent reads in a group heading. An id that is also an OpenBot
+ * How a provider id inside a custom agent reads in a group heading. An id that is also an ZollyBot
  * provider takes its display name; a few other well-known ids keep their brand casing here; any
  * other id falls back to one capitalized word per `-`, `_` or space.
  */
@@ -264,7 +264,7 @@ export function providerTurnedOff(status: AgentStatus, provider: AgentProviderId
 }
 
 /**
- * Whether the user can choose a model of the provider now, or soon: it is available, OpenBot checks
+ * Whether the user can choose a model of the provider now, or soon: it is available, ZollyBot checks
  * it, it signs in, or its runtime downloads. A provider that is not connected cannot.
  */
 export function providerUsable(status: AgentProviderStatus, runtime?: ProviderRuntimeStatus): boolean {

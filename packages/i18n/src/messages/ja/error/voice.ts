@@ -11,8 +11,8 @@ export const messages = {
   "error.voice.modelUnavailable": "音声モデルを使用できません。",
   "error.voice.transcriptionTimedOut": "音声文字起こしがタイムアウトしました。",
   "error.voice.prepareRequired":
-    "ローカル音声文字起こしを使用できません。`bun run voice:prepare` を実行し、OpenBot を再起動してください。",
-  "error.voice.transcriptionFailed": "OpenBot はこの録音を文字起こしできませんでした。",
+    "ローカル音声文字起こしを使用できません。`bun run voice:prepare` を実行し、ZollyBot を再起動してください。",
+  "error.voice.transcriptionFailed": "ZollyBot はこの録音を文字起こしできませんでした。",
   "error.voice.cloud.keyRequired": "設定 → 音声 で ElevenLabs の API キーを追加してください。",
   "error.voice.cloud.keyRejected":
     "ElevenLabs が API キーを受け付けませんでした。設定 → 音声 でキーを確認してください。",
@@ -25,8 +25,8 @@ export const messages = {
   "error.voice.speech.runtimeUnavailable": "このプラットフォームではローカル音声合成を利用できません。",
   "error.voice.speech.modelRequired": "設定 → 音声 で音声合成モデルをダウンロードしてください。",
   "error.voice.speech.timedOut": "返信の読み上げがタイムアウトしました。",
-  "error.voice.speech.failed": "OpenBot は返信を読み上げられませんでした。",
-  "error.voice.recordingNotKept": "OpenBot は音声録音を保存できませんでした。",
+  "error.voice.speech.failed": "ZollyBot は返信を読み上げられませんでした。",
+  "error.voice.recordingNotKept": "ZollyBot は音声録音を保存できませんでした。",
   "error.voice.live.timedOut": "Codex ライブ音声が時間内に開始しませんでした。もう一度お試しください。",
   "error.voice.live.failed": "ライブ音声が停止しました: {reason}",
   "error.voice.live.disconnected": "ライブ音声の接続が切れました。",

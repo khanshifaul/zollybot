@@ -1,5 +1,5 @@
-import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES, essentialMemoryBytes } from "@openbot/contracts/agent-memory-context";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES, essentialMemoryBytes } from "@zollybot/contracts/agent-memory-context";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentEvent,
   AgentMemory,
@@ -9,10 +9,10 @@ import type {
   DeleteAgentMemoryInput,
   SetAgentMemoryInclusionInput,
   UpdateAgentMemoryInput,
-} from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { redactText } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { redactText } from "@zollybot/logging";
 import {
   type AgentMemoryListPage,
   type AgentMemorySearchResult,
@@ -25,7 +25,7 @@ import { type DynamicToolCallParams, isRecord } from "../protocol";
 import type { ConversationRuntime } from "./conversation-runtime";
 import type { MemoryReviewOperation } from "./memory-review-prompt";
 import { listMemoriesInput, searchMemoriesInput, setMemoryInclusionInput } from "./memory-tool-inputs";
-import { type OpenBotToolResponse, openBotToolFailure, openBotToolResult } from "./routine-tools";
+import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "./routine-tools";
 
 type PendingMemoryMutation =
   | {
@@ -259,7 +259,7 @@ export class AgentMemories {
     params: DynamicToolCallParams,
     senderAgentId: string,
     redact: (value: string) => string = redactText,
-  ): OpenBotToolResponse | null {
+  ): ZollyBotToolResponse | null {
     try {
       return this.#handleTool(params, senderAgentId, redact);
     } catch (error) {
@@ -273,7 +273,7 @@ export class AgentMemories {
     params: DynamicToolCallParams,
     senderAgentId: string,
     redact: (value: string) => string,
-  ): OpenBotToolResponse | null {
+  ): ZollyBotToolResponse | null {
     if (params.tool === "search_memories") {
       const parsed = searchMemoriesInput.safeParse(params.arguments);
       if (!parsed.success) return openBotToolFailure(sourceText("error.backend.memorySearchQuery"));
@@ -790,7 +790,7 @@ export class AgentMemories {
 function memoryRecallResult(
   result: AgentMemorySearchResult | AgentMemoryListPage,
   redact: (value: string) => string,
-): { response: OpenBotToolResponse; count: number } {
+): { response: ZollyBotToolResponse; count: number } {
   while (
     Buffer.byteLength(redact(JSON.stringify(result)), "utf8") > AGENT_MEMORY_CONTEXT_BUDGET_BYTES &&
     result.memories.length > 0

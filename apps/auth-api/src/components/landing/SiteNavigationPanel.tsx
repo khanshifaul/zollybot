@@ -1,5 +1,5 @@
-import { AppLogo } from "@openbot/brand";
 import { Link } from "@tanstack/solid-router";
+import { AppLogo } from "@zollybot/brand";
 import { For, Match, Show, Switch } from "solid-js";
 import { articleGradient, articleGradientCss } from "../../lib/article-gradient";
 import { formatArticleDate } from "../../lib/content-collection";

@@ -1,5 +1,5 @@
-import type { ConversationSubagentStepKind } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import type { ConversationSubagentStepKind } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { isRecord } from "../protocol";
 import {
   dropSubagent,
@@ -22,7 +22,7 @@ export const OPENCODE_CHILD_SESSION_UPDATES = "opencode/child-session-updates";
 /** The fields of an ACP `tool_call` or `tool_call_update` that a subagent card reads. */
 export interface AcpSubagentToolCall {
   id: string;
-  /** The name that OpenBot shows for the call: the ACP `name`, else the title. */
+  /** The name that ZollyBot shows for the call: the ACP `name`, else the title. */
   name: string;
   status: string | undefined;
   rawInput: unknown;

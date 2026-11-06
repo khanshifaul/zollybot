@@ -46,7 +46,7 @@ export const messages = {
   "error.skill.tooManySkills": "Een agent kan maximaal {limit} vaardigheden hebben.",
   "error.skill.unmanagedExists": "Er bestaat al een niet-beheerde vaardigheid op {path}.",
   "error.skill.managedSlug":
-    "OpenBot geeft elke agent een eigen vaardigheid {slug}. Geef deze vaardigheid een andere naam.",
+    "ZollyBot geeft elke agent een eigen vaardigheid {slug}. Geef deze vaardigheid een andere naam.",
   "error.skill.templateMarkdownTooLarge":
     "{name}: SKILL.md is groter dan 64 KB. Maak het korter voordat je publiceert.",
   "error.skill.localNoRevisions": "De lokale vaardigheid heeft geen gepubliceerde revisies.",

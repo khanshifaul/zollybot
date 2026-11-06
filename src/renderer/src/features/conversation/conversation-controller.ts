@@ -5,11 +5,11 @@ import type {
   BrowserBounds,
   BrowserTab,
   MarketplaceSkillDetail,
-} from "@openbot/contracts/ipc";
-import { SETTINGS_PANEL_DEFAULT } from "@openbot/ui/components/SettingsPanel";
-import type { AgentActivityLabel } from "@openbot/ui/features/conversation/AgentActivity";
-import { currentText } from "@openbot/ui/text";
-import type { UserErrorDetails } from "@openbot/user-errors";
+} from "@zollybot/contracts/ipc";
+import { SETTINGS_PANEL_DEFAULT } from "@zollybot/ui/components/SettingsPanel";
+import type { AgentActivityLabel } from "@zollybot/ui/features/conversation/AgentActivity";
+import { currentText } from "@zollybot/ui/text";
+import type { UserErrorDetails } from "@zollybot/user-errors";
 import { createEffect, createSignal, createStore, onCleanup } from "solid-js";
 import { actionToast } from "../../action-toast";
 import type { ChatSearchMatch } from "./chat-search";
@@ -46,7 +46,7 @@ import { createVoiceSessions } from "./stores/voice-session-store";
 import type { VoiceCloudStream } from "./stores/voice-store";
 
 const BROWSER_PANEL_DEFAULT = 380;
-const BROWSER_PIP_STORAGE_KEY = "openbot:browser-pip-native-bounds";
+const BROWSER_PIP_STORAGE_KEY = "zollybot:browser-pip-native-bounds";
 
 function readBrowserPipBounds(): BrowserBounds | null {
   const values = (window.localStorage.getItem(BROWSER_PIP_STORAGE_KEY) ?? "")

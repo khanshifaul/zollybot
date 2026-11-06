@@ -2,20 +2,20 @@ import type { PartialTranslation } from "../../../message";
 import type { messages as source } from "../../en/error/connector";
 
 export const messages = {
-  "error.connector.githubUnavailable": "В этой сборке OpenBot нет GitHub App.",
+  "error.connector.githubUnavailable": "В этой сборке ZollyBot нет GitHub App.",
   "error.connector.githubDenied": "Вход через GitHub отклонён.",
   "error.connector.githubCodeExpired": "Срок действия кода GitHub истёк. Подключите GitHub заново.",
   "error.connector.githubDeviceFlowDisabled": "GitHub App не разрешает вход с устройства.",
   "error.connector.githubClientUnknown": "GitHub не знает Client ID этого GitHub App.",
   "error.connector.githubUnexpected": "GitHub прислал неожиданный ответ: {detail}",
-  "error.connector.githubUnreachable": "OpenBot не может связаться с GitHub: {detail}",
+  "error.connector.githubUnreachable": "ZollyBot не может связаться с GitHub: {detail}",
   "error.connector.githubExpired": "Подключение к GitHub истекло. Подключите GitHub заново.",
   "error.connector.githubFileUnreadable": "Файл подключения GitHub не читается.",
   "error.connector.githubFileTooLarge": "Файл подключения GitHub слишком большой.",
   "error.connector.onePasswordCliMissing":
-    "OpenBot не находит CLI 1Password. Установите его и включите интеграцию в приложении 1Password либо используйте токен сервисного аккаунта.",
+    "ZollyBot не находит CLI 1Password. Установите его и включите интеграцию в приложении 1Password либо используйте токен сервисного аккаунта.",
   "error.connector.onePasswordCliInstallFailed":
-    "OpenBot не смог установить CLI 1Password. Проверьте подключение к интернету и повторите попытку.",
+    "ZollyBot не смог установить CLI 1Password. Проверьте подключение к интернету и повторите попытку.",
   "error.connector.onePasswordCliSignedOut":
     "В CLI 1Password не выполнен вход. Включите его интеграцию в приложении 1Password и подключитесь снова.",
   "error.connector.onePasswordCliFailed": "CLI 1Password завершился с ошибкой: {detail}",
@@ -26,15 +26,15 @@ export const messages = {
   "error.connector.onePasswordFileUnreadable": "Файл подключения 1Password не читается.",
   "error.connector.onePasswordFileTooLarge": "Файл подключения 1Password слишком большой.",
   "error.connector.bitwardenFailed":
-    "Не удалось прочитать Bitwarden. Установите CLI bw, войдите, разблокируйте его и создайте одну папку с именем Shared with OpenBot. Подключитесь с новым ключом сессии.",
+    "Не удалось прочитать Bitwarden. Установите CLI bw, войдите, разблокируйте его и создайте одну папку с именем Shared with ZollyBot. Подключитесь с новым ключом сессии.",
   "error.connector.bitwardenHostInput":
     "Введите адрес сервера HTTPS, client_id и client_secret ключа API и мастер-пароль.",
   "error.connector.bitwardenHostFailed":
-    "Не удалось открыть Bitwarden на этом сервере. Проверьте адрес сервера, ключ API и мастер-пароль и убедитесь, что одна папка называется Shared with OpenBot. Затем подключитесь снова.",
+    "Не удалось открыть Bitwarden на этом сервере. Проверьте адрес сервера, ключ API и мастер-пароль и убедитесь, что одна папка называется Shared with ZollyBot. Затем подключитесь снова.",
   "error.connector.bitwardenCliInstallFailed":
     "Не удалось установить Bitwarden CLI на этом сервере. Проверьте его сетевое подключение и подключитесь снова.",
   "error.connector.bitwardenFileUnreadable": "Файл подключения Bitwarden не читается.",
-  "error.connector.passwordManagerUnknown": "OpenBot не знает этот менеджер паролей.",
+  "error.connector.passwordManagerUnknown": "ZollyBot не знает этот менеджер паролей.",
   "error.connector.passwordManagerMethod": "Этот менеджер паролей нельзя подключить таким способом.",
   "error.connector.passwordManagerNoSignIn": "Страница входа не открыта. Подключитесь снова.",
   "error.connector.protonPassFailed": "Не удалось подключить Proton Pass. Подключитесь снова.",
@@ -49,5 +49,5 @@ export const messages = {
   "error.connector.protonPassFileUnreadable": "Не удалось прочитать файл подключения Proton Pass.",
   "error.connector.protonPassSignInTimeout": "Вход в Proton занял слишком много времени. Подключитесь снова.",
   "error.connector.protonPassSetupFailed":
-    "Не удалось создать в Proton Pass хранилище Shared with OpenBot или его ключ доступа. Подключитесь снова.",
+    "Не удалось создать в Proton Pass хранилище Shared with ZollyBot или его ключ доступа. Подключитесь снова.",
 } as const satisfies PartialTranslation<typeof source>;

@@ -6,8 +6,8 @@ import {
   machineAlertLevel,
   machineMetricRatio,
   type ServerSummary,
-} from "@openbot/contracts/ipc";
-import { MACHINE_RESOURCES_CAPABILITY } from "@openbot/contracts/team-protocol/machine-resources-v1";
+} from "@zollybot/contracts/ipc";
+import { MACHINE_RESOURCES_CAPABILITY } from "@zollybot/contracts/team-protocol/machine-resources-v1";
 import { createMemo, createSignal, untrack } from "solid-js";
 import { createUsageRefreshPoll } from "../account/usage-refresh-poll";
 import { MACHINE_RESOURCES_SHOWN } from "../files/machine-resources";
@@ -16,7 +16,7 @@ import { serverSupportsCapability } from "../servers/server-capabilities";
 import { sidebarPort } from "./sidebar-port";
 
 /** A closed card stays closed on this computer, per server, until another metric or level alerts. */
-const DISMISSED_KEY_PREFIX = "openbot:machine-card-dismissed:";
+const DISMISSED_KEY_PREFIX = "zollybot:machine-card-dismissed:";
 
 interface MachineCardState {
   metric: MachineMetric;

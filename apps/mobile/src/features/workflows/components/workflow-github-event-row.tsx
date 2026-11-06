@@ -1,5 +1,5 @@
-import type { WorkflowGitHubDelivery, WorkflowGitHubHistory, WorkflowRun } from "@openbot/contracts/ipc";
-import type { MobileTranslate } from "@openbot/i18n/mobile";
+import type { WorkflowGitHubDelivery, WorkflowGitHubHistory, WorkflowRun } from "@zollybot/contracts/ipc";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import { Typography } from "heroui-native";
 import { Linking } from "react-native";
 import { SettingsRow } from "@/features/settings/components/settings-content";

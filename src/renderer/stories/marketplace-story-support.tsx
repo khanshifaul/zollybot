@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
   AVATAR_HUES,
   type ClientAgentSummary,
@@ -7,25 +8,24 @@ import {
   type MarketplaceSkillSummary,
   type McpServerConfig,
   type SkillCategory,
-} from "@openbot/contracts/ipc";
-import type { McpConnectFlow } from "@openbot/contracts/mcp-connect-flows";
-import { CONNECTOR_LISTINGS } from "@openbot/ui/features/connectors/connector-catalog";
-import { Marketplace } from "@openbot/ui/features/marketplace/Marketplace";
-import { AgentsDialog } from "@openbot/ui/features/marketplace/MarketplaceAgentsDialog";
+} from "@zollybot/contracts/ipc";
+import type { McpConnectFlow } from "@zollybot/contracts/mcp-connect-flows";
+import { CONNECTOR_LISTINGS } from "@zollybot/ui/features/connectors/connector-catalog";
+import { Marketplace } from "@zollybot/ui/features/marketplace/Marketplace";
+import { AgentsDialog } from "@zollybot/ui/features/marketplace/MarketplaceAgentsDialog";
 import type {
   MarketplaceApp,
   MarketplaceAppAccount,
   MarketplaceAppConnection,
   MarketplaceModel,
-} from "@openbot/ui/features/marketplace/marketplace-model";
+} from "@zollybot/ui/features/marketplace/marketplace-model";
 import {
   createMarketplaceNavigation,
   type MarketplaceNavigation,
-} from "@openbot/ui/features/marketplace/marketplace-view";
-import { McpConnectDialog } from "@openbot/ui/features/settings/McpConnectDialog";
-import type { McpConnectSubject } from "@openbot/ui/features/settings/McpConnectShell";
-import { currentText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/marketplace/marketplace-view";
+import { McpConnectDialog } from "@zollybot/ui/features/settings/McpConnectDialog";
+import type { McpConnectSubject } from "@zollybot/ui/features/settings/McpConnectShell";
+import { currentText } from "@zollybot/ui/text";
 import { createSignal, createStore, onSettled, Show, untrack } from "solid-js";
 import { fn } from "storybook/test";
 import { MARKETPLACE_PLUGINS } from "../src/features/settings/marketplace-plugin-catalog";
@@ -95,7 +95,7 @@ const MORE_SKILLS: readonly MarketplaceSkillSummary[] = SKILL_WORDS.flatMap(([ca
     name,
     description: `${name.replace(/^\S+/, (verb) => `${verb}s`)} and reports what it found, one line for each.`,
     category,
-    creatorName: index % 3 === 0 ? "OpenBot" : "Priya Raman",
+    creatorName: index % 3 === 0 ? "ZollyBot" : "Priya Raman",
     version: 1 + (index % 4),
     installs: 900 - index * 17,
     featured: index % 9 === 0,

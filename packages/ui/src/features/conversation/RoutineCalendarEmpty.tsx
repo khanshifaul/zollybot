@@ -1,6 +1,6 @@
-import type { AppTextKey } from "@openbot/i18n";
-import { type CalendarDay, calendarDayDate, calendarMonthStart } from "@openbot/team-client/routine-calendar-dates";
-import { Button, buttonVariants, Check, DropdownMenu } from "@openbot/ui";
+import type { AppTextKey } from "@zollybot/i18n";
+import { type CalendarDay, calendarDayDate, calendarMonthStart } from "@zollybot/team-client/routine-calendar-dates";
+import { Button, buttonVariants, Check, DropdownMenu } from "@zollybot/ui";
 import { createMemo, createSignal, For, Match, onSettled, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { prefersReducedMotion } from "../../utils";

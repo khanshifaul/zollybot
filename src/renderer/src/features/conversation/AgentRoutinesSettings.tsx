@@ -1,10 +1,11 @@
+import type { JSX } from "@solidjs/web";
 import {
   type EventFilterDraft,
   eventFilterDraft,
   eventFilterDraftsValid,
   eventFiltersFromDrafts,
-} from "@openbot/contracts/event-filter-value";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+} from "@zollybot/contracts/event-filter-value";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   ROUTINE_LIMIT_POLICIES,
   ROUTINE_MISSED_POLICIES,
@@ -16,9 +17,9 @@ import {
   type RoutineRunFields,
   type RoutineRunPlace,
   type RoutineSchedule,
-} from "@openbot/contracts/ipc";
-import type { RoutineWebhookTriggerInput, WebhookTestResult } from "@openbot/contracts/ipc-events";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { RoutineWebhookTriggerInput, WebhookTestResult } from "@zollybot/contracts/ipc-events";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   CircleCheck,
@@ -39,22 +40,22 @@ import {
   Textarea,
   toast,
   Webhook,
-} from "@openbot/ui";
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
-import { SettingsBackIcon, SettingsForwardIcon } from "@openbot/ui/components/SettingsPanel";
+} from "@zollybot/ui";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
+import { SettingsBackIcon, SettingsForwardIcon } from "@zollybot/ui/components/SettingsPanel";
 import {
   type RoutineResultChoice,
   RoutineResultDestinationField,
-} from "@openbot/ui/features/conversation/RoutineResultDestinationField";
-import { RoutineRunHistory } from "@openbot/ui/features/conversation/RoutineRunHistory";
-import { RoutineSchedulePicker } from "@openbot/ui/features/conversation/RoutineSchedulePicker";
-import { RoutineTriggerMenu } from "@openbot/ui/features/conversation/RoutineTriggerMenu";
-import { RoutineWebhookTrigger } from "@openbot/ui/features/conversation/RoutineWebhookTrigger";
+} from "@zollybot/ui/features/conversation/RoutineResultDestinationField";
+import { RoutineRunHistory } from "@zollybot/ui/features/conversation/RoutineRunHistory";
+import { RoutineSchedulePicker } from "@zollybot/ui/features/conversation/RoutineSchedulePicker";
+import { RoutineTriggerMenu } from "@zollybot/ui/features/conversation/RoutineTriggerMenu";
+import { RoutineWebhookTrigger } from "@zollybot/ui/features/conversation/RoutineWebhookTrigger";
 import {
   ROUTINE_EVERY_DAY,
   type RoutineScheduleDraft,
   switchDraftKind,
-} from "@openbot/ui/features/conversation/routine-schedule-draft";
+} from "@zollybot/ui/features/conversation/routine-schedule-draft";
 import {
   ROUTINE_LOCAL_DRAFT_KINDS,
   ROUTINE_SAVED_DRAFT_KINDS,
@@ -63,9 +64,8 @@ import {
   routineOncePassed,
   routineScheduleFromDraft,
   routineScheduleToDraft,
-} from "@openbot/ui/features/conversation/routine-schedule-saved";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/conversation/routine-schedule-saved";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, createStore, For, onCleanup, Show, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { type DesktopAnalyticsScope, desktopAnalytics } from "../../analytics";
@@ -1205,7 +1205,7 @@ function routineCompleted(routine: RoutineEditorRecord): boolean {
 }
 
 /**
- * The draft with a new schedule. A switch to a one-time run also runs it when OpenBot opens after
+ * The draft with a new schedule. A switch to a one-time run also runs it when ZollyBot opens after
  * its time, so a reminder is not lost; the person can still choose to skip it.
  */
 function withSchedule(value: RoutineDraft, scheduleDraft: RoutineScheduleDraft): RoutineDraft {

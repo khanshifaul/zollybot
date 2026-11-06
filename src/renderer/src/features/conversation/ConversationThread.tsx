@@ -1,14 +1,14 @@
-import { supportedAttachmentExtensions } from "@openbot/contracts/attachment-files";
-import { canPreviewAttachment } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { classifyFailure } from "@openbot/telemetry";
-import { Input } from "@openbot/ui";
-import type { AgentMessage } from "@openbot/ui/data";
-import { ChatSearch } from "@openbot/ui/features/conversation/ChatSearch";
-import { contextUsageView } from "@openbot/ui/features/conversation/ContextUsage";
-import { AgentThreadView, type AgentThreadVoice } from "@openbot/ui/features/conversation/threads/AgentThreadView";
-import type { AgentThreadBranchSource } from "@openbot/ui/features/conversation/threads/BranchDivider";
-import { useText } from "@openbot/ui/text";
+import { supportedAttachmentExtensions } from "@zollybot/contracts/attachment-files";
+import { canPreviewAttachment } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { classifyFailure } from "@zollybot/telemetry";
+import { Input } from "@zollybot/ui";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { ChatSearch } from "@zollybot/ui/features/conversation/ChatSearch";
+import { contextUsageView } from "@zollybot/ui/features/conversation/ContextUsage";
+import { AgentThreadView, type AgentThreadVoice } from "@zollybot/ui/features/conversation/threads/AgentThreadView";
+import type { AgentThreadBranchSource } from "@zollybot/ui/features/conversation/threads/BranchDivider";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createProjection, createSignal, Show, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { useShowAgentSteps } from "../../agent-steps-preference";
@@ -248,7 +248,7 @@ export function ConversationThread() {
               multiple
               hidden
               tabindex={-1}
-              data-openbot-attachment-picker="true"
+              data-zollybot-attachment-picker="true"
             />
           </Show>
           <Show when={threadSearchOpen()}>

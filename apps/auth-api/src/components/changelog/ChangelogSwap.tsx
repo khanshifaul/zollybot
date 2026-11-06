@@ -1,5 +1,5 @@
-import { cx, prefersReducedMotion } from "@openbot/ui/utils";
 import type { JSX } from "@solidjs/web";
+import { cx, prefersReducedMotion } from "@zollybot/ui/utils";
 import { type Accessor, createEffect, createSignal, For, untrack } from "solid-js";
 import { CHANGELOG_PLATFORMS, type ChangelogPlatform } from "../../lib/changelog";
 

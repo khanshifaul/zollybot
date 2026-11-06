@@ -1,6 +1,6 @@
-import { ProviderLogo } from "@openbot/brand";
-import { Button, ChevronRight, Monitor } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { ProviderLogo } from "@zollybot/brand";
+import { Button, ChevronRight, Monitor } from "@zollybot/ui";
 import { createUniqueId, Show } from "solid-js";
 import { useText } from "../../text";
 import { HermesLogo } from "./HermesImportView";

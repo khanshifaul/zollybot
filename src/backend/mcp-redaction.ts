@@ -1,5 +1,5 @@
-import type { McpServerConfig } from "@openbot/contracts/ipc";
-import { isSecretName, type LogValue, redactText, registerSecretValue, toLogValue } from "@openbot/logging";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
+import { isSecretName, type LogValue, redactText, registerSecretValue, toLogValue } from "@zollybot/logging";
 import { mcpEnvironment } from "./mcp-provider-shapes";
 
 const MASK = "•••";

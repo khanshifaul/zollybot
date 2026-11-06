@@ -23,7 +23,7 @@ import {
   type IpcEndpoints,
   type RequestEndpoint,
   type Untyped,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { IpcMainInvokeEvent } from "electron";
 import {
   type AuthorizeSender,

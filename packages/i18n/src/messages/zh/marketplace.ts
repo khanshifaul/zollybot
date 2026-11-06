@@ -29,7 +29,7 @@ export const messages = {
   "marketplace.description.skills": "教助手完成某项任务或使用某个工具的指令。",
 
   // A plugin link.
-  "marketplace.plugins.missing": "OpenBot 目录中没有该插件。",
+  "marketplace.plugins.missing": "ZollyBot 目录中没有该插件。",
 
   // The agent page.
   "marketplace.agents.loadingDetail": "正在加载助手详情…",
@@ -41,16 +41,16 @@ export const messages = {
   "marketplace.agents.yours": "我的助手",
   "marketplace.agents.all": "全部助手",
   "marketplace.agents.missing": "市场中没有该助手。",
-  "marketplace.agents.trust.reviewed": "由其他 OpenBot 用户创建。上线前已经 OpenBot 审核。",
+  "marketplace.agents.trust.reviewed": "由其他 ZollyBot 用户创建。上线前已经 ZollyBot 审核。",
   "marketplace.agents.trust.reviewedBeforeAdd":
-    "由其他 OpenBot 用户创建。上线前已经 OpenBot 审核。添加后，它可以代表你执行操作。",
-  "marketplace.agents.trust.pending": "创建者在 OpenBot 审核前分享了它。",
-  "marketplace.agents.trust.pendingBeforeAdd": "创建者在 OpenBot 审核前分享了它。添加后，它可以代表你执行操作。",
+    "由其他 ZollyBot 用户创建。上线前已经 ZollyBot 审核。添加后，它可以代表你执行操作。",
+  "marketplace.agents.trust.pending": "创建者在 ZollyBot 审核前分享了它。",
+  "marketplace.agents.trust.pendingBeforeAdd": "创建者在 ZollyBot 审核前分享了它。添加后，它可以代表你执行操作。",
   "marketplace.agents.source.pending": "尚未审核",
 
   // The skill page, and why Try is off.
   "marketplace.skill.loading": "正在加载技能",
-  "marketplace.try.readFailed": "OpenBot 无法读取该助手的技能，请重试。",
+  "marketplace.try.readFailed": "ZollyBot 无法读取该助手的技能，请重试。",
   "marketplace.try.enable": "请在助手设置中启用该技能后再试用。",
   "marketplace.try.repair": "请在助手设置中修复该技能后再试用。",
   "marketplace.try.update": "请更新该技能后再试用该版本。",
@@ -125,7 +125,7 @@ export const messages = {
   "marketplace.app.setup.account": "在浏览器中使用你的 {name} 账号登录。",
   "marketplace.app.setup.key": "需要你的 {name} 账号中的 API 密钥。",
   "marketplace.app.setup.keySaved": "{field} 已保存在 {host} 上。",
-  "marketplace.app.account.removeDescription": "OpenBot 会删除 {host} 上该账号的登录凭据。",
+  "marketplace.app.account.removeDescription": "ZollyBot 会删除 {host} 上该账号的登录凭据。",
   "marketplace.app.setup.desktop": "在 {name} 桌面应用中运行，地址为 {address}。",
   "marketplace.app.setup.desktopConnected": "已连接到 {address}。",
   "marketplace.app.setup.open": "无需登录或密钥。",
@@ -134,10 +134,10 @@ export const messages = {
   "marketplace.app.automation.title": "Apple 应用访问权限",
   "marketplace.app.automation.description": "macOS 会为每个应用显示一次提示。已关闭的应用会短暂打开，然后退出。",
   "marketplace.app.automation.request": "请求访问",
-  "marketplace.app.automation.allowed": "OpenBot 现在可以控制所有 Apple 应用。",
+  "marketplace.app.automation.allowed": "ZollyBot 现在可以控制所有 Apple 应用。",
   "marketplace.app.automation.refused":
-    "macOS 没有授予对 {apps} 的访问权限。在系统设置 › 隐私与安全性 › 自动化中允许 OpenBot。",
-  "marketplace.app.automation.failed": "OpenBot 无法就 {apps} 询问 macOS。请重试。",
+    "macOS 没有授予对 {apps} 的访问权限。在系统设置 › 隐私与安全性 › 自动化中允许 ZollyBot。",
+  "marketplace.app.automation.failed": "ZollyBot 无法就 {apps} 询问 macOS。请重试。",
   "marketplace.app.automation.app.calendar": "日历",
   "marketplace.app.automation.app.contacts": "通讯录",
   "marketplace.app.automation.app.mail": "邮件",
@@ -196,7 +196,7 @@ export const messages = {
   "marketplace.plugin.figma.prompt.assets": "把营销图标按 2 倍导出，用于应用打包。",
   "marketplace.plugin.paper.tagline": "基于 HTML 与 CSS 的设计画布",
   "marketplace.plugin.paper.description":
-    "Paper 让助手读写 Paper Desktop 中打开的设计文件：检查画板、选区、计算样式、JSX 与 token，并创建或修改画框、文本和样式。请先安装 Paper Desktop，打开一次，并在开始前打开一个文件。OpenBot 会启动 Paper Desktop 安装的 Paper CLI。Paper 不需要密钥。写入类工具会改动当前文件，因此每次批准前请先核对。",
+    "Paper 让助手读写 Paper Desktop 中打开的设计文件：检查画板、选区、计算样式、JSX 与 token，并创建或修改画框、文本和样式。请先安装 Paper Desktop，打开一次，并在开始前打开一个文件。ZollyBot 会启动 Paper Desktop 安装的 Paper CLI。Paper 不需要密钥。写入类工具会改动当前文件，因此每次批准前请先核对。",
   "marketplace.plugin.paper.app":
     "通过 Paper CLI 转发的本地 MCP 服务器读写已打开的 Paper Desktop 文件。需要 Paper Desktop，并打开一个文件。",
   "marketplace.plugin.paper.prompt.implement": "按我们的代码规范，在这个代码库里实现选中的 Paper 画框。",
@@ -212,7 +212,7 @@ export const messages = {
   "marketplace.plugin.higgsfield.prompt.clip": "用 Higgsfield 生成一段 5 秒的日落海浪视频。",
   "marketplace.plugin.appleApps.tagline": "Mac 上的邮件、日历等",
   "marketplace.plugin.appleApps.description":
-    "Apple apps 让助手使用这台 Mac 上的邮件、日历、通讯录、提醒事项、备忘录、信息和 Safari。它仅适用于 macOS。OpenBot 会启动 mcp-icloud，这是一个社区服务器，不是 Apple 或 OpenBot 制作的。该服务器在这台电脑上通过 AppleScript 控制这些应用，不需要账号和密钥。安装时，OpenBot 可以一次性向 macOS 请求访问所有这些应用，每个应用显示一次提示。如果不这样做，macOS 会在助手第一次使用某个应用时询问。如需之后更改，打开系统设置 › 隐私与安全性 › 自动化。助手可以发送邮件和 iMessage，并修改或删除日程、联系人和提醒事项，因此请在批准前检查每次写入。工具读取的内容（例如邮件正文）会发送给助手的模型提供商。",
+    "Apple apps 让助手使用这台 Mac 上的邮件、日历、通讯录、提醒事项、备忘录、信息和 Safari。它仅适用于 macOS。ZollyBot 会启动 mcp-icloud，这是一个社区服务器，不是 Apple 或 ZollyBot 制作的。该服务器在这台电脑上通过 AppleScript 控制这些应用，不需要账号和密钥。安装时，ZollyBot 可以一次性向 macOS 请求访问所有这些应用，每个应用显示一次提示。如果不这样做，macOS 会在助手第一次使用某个应用时询问。如需之后更改，打开系统设置 › 隐私与安全性 › 自动化。助手可以发送邮件和 iMessage，并修改或删除日程、联系人和提醒事项，因此请在批准前检查每次写入。工具读取的内容（例如邮件正文）会发送给助手的模型提供商。",
   "marketplace.plugin.appleApps.app":
     "通过本地 mcp-icloud 服务器使用邮件、日历、通讯录、提醒事项、备忘录、信息和 Safari。需要 macOS 和自动化权限。",
   "marketplace.plugin.appleApps.prompt.unread": "总结我今天在 Apple 邮件中的未读邮件。",
@@ -433,8 +433,8 @@ export const messages = {
   "marketplace.skills.source.all": "全部",
   "marketplace.skills.source.verified": "已验证",
   "marketplace.skills.source.public": "公开",
-  "marketplace.skills.source.verifiedLong": "由 OpenBot 验证",
-  "marketplace.skills.source.publicLong": "经 OpenBot 审核",
+  "marketplace.skills.source.verifiedLong": "由 ZollyBot 验证",
+  "marketplace.skills.source.publicLong": "经 ZollyBot 审核",
   "marketplace.skills.sortLabel": "排序",
   "marketplace.skills.sortName": "排序：{name}",
   "marketplace.skills.sort.installs": "最常用",

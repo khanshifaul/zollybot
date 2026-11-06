@@ -16,8 +16,8 @@ import {
   type VoiceModelStatus,
   WHISPER_LANGUAGES,
   type WhisperLanguage,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Badge,
   Button,
@@ -40,8 +40,8 @@ import {
   SettingsSection,
   Square,
   SwitchField,
-} from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createMemo, createSignal, createStore, For, Show } from "solid-js";
 import type { CodexLiveAccess } from "../speech/codex-live-access";
 import type { SettingsVoiceStore } from "./settings-voice-store";

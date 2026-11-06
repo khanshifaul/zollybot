@@ -4,7 +4,7 @@ import {
   type SidebarSection,
   sidebarFolderParents,
   sidebarFolderTreeOrder,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 /** As the store does: each action, then the folders back in tree order. */
 export function applySidebarLayoutAction(

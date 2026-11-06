@@ -1,5 +1,5 @@
-import { HOSTED_SERVER_ENTRY_POINTS } from "@openbot/contracts/hosted-servers";
-import { isDynamicRecord, isOneOf } from "@openbot/contracts/runtime-values";
+import { HOSTED_SERVER_ENTRY_POINTS } from "@zollybot/contracts/hosted-servers";
+import { isDynamicRecord, isOneOf } from "@zollybot/contracts/runtime-values";
 import { Effect, Schema } from "effect";
 import {
   ACCOUNT_ANALYTICS_SCHEMA_VERSION,
@@ -266,7 +266,7 @@ export class SalesAnalyticsDelivery {
           "content-type": "application/json",
           "openpanel-client-id": clientId,
           "openpanel-client-secret": clientSecret,
-          "openpanel-sdk-name": "openbot-account-api",
+          "openpanel-sdk-name": "zollybot-account-api",
         },
         body: JSON.stringify({ type: "identify", payload: { profileId, email } }),
         signal: AbortSignal.timeout(SEND_TIMEOUT_MS),
@@ -314,7 +314,7 @@ export class SalesAnalyticsDelivery {
           "content-type": "application/json",
           "openpanel-client-id": clientId,
           "openpanel-client-secret": clientSecret,
-          "openpanel-sdk-name": "openbot-account-api",
+          "openpanel-sdk-name": "zollybot-account-api",
         },
         body: JSON.stringify({ type: "track", payload }),
         signal: AbortSignal.timeout(SEND_TIMEOUT_MS),

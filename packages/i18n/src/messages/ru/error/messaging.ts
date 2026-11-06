@@ -6,17 +6,18 @@ export const messages = {
   "error.messaging.notConnected": "Это рабочее пространство Slack не подключено.",
   "error.messaging.unsupported": "Этот компьютер не может подключиться к Slack.",
   "error.messaging.relayUnavailable":
-    "OpenBot не может получать события Slack на этом компьютере. Войдите, дайте компьютеру имя и повторите попытку.",
+    "ZollyBot не может получать события Slack на этом компьютере. Войдите, дайте компьютеру имя и повторите попытку.",
   "error.messaging.discordNotConnected": "Этот сервер Discord не подключён.",
   "error.messaging.discordUnsupported": "Этот компьютер не может подключиться к Discord.",
   "error.messaging.discordRelayUnavailable":
-    "OpenBot не может получать события Discord на этом компьютере. Войдите, дайте компьютеру имя и повторите попытку.",
-  "error.messaging.discordRolesUnsupported": "OpenBot пока не может показать роли Discord. Повторите попытку позже.",
+    "ZollyBot не может получать события Discord на этом компьютере. Войдите, дайте компьютеру имя и повторите попытку.",
+  "error.messaging.discordRolesUnsupported": "ZollyBot пока не может показать роли Discord. Повторите попытку позже.",
   "error.messaging.telegramNotConnected": "Этот чат Telegram не подключён.",
   "error.messaging.telegramUnsupported": "Этот компьютер не может подключиться к Telegram.",
   "error.messaging.telegramRelayUnavailable":
-    "OpenBot не может связаться с Telegram на этом компьютере. Войдите в аккаунт, задайте компьютеру имя и повторите попытку.",
-  "error.messaging.telegramServiceUnavailable": "OpenBot сейчас не может подключить Telegram. Повторите попытку позже.",
+    "ZollyBot не может связаться с Telegram на этом компьютере. Войдите в аккаунт, задайте компьютеру имя и повторите попытку.",
+  "error.messaging.telegramServiceUnavailable":
+    "ZollyBot сейчас не может подключить Telegram. Повторите попытку позже.",
   "error.messaging.whatsappNotConnected": "Этот номер WhatsApp не подключён.",
   "error.messaging.whatsappUnsupported": "Этот компьютер не может подключиться к WhatsApp.",
   "error.messaging.whatsappTooManySenders": "Номер WhatsApp может разрешить не более 200 контактов и групп.",

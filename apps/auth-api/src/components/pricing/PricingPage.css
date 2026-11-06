@@ -1,4 +1,4 @@
-/* The /pricing page around the shared order form (`@openbot/ui/features/billing/order-form.css`). Every rule is
+/* The /pricing page around the shared order form (`@zollybot/ui/features/billing/order-form.css`). Every rule is
    scoped under `.pricing-page`. */
 
 .pricing-page .pricing-hero {
@@ -22,7 +22,7 @@
   z-index: -1;
   inset: 0 auto 0 50%;
   width: 100vw;
-  background: radial-gradient(36% 26% at 50% 34%, rgba(var(--pricing-accent), 0.14), var(--openbot-transparent) 70%);
+  background: radial-gradient(36% 26% at 50% 34%, rgba(var(--pricing-accent), 0.14), var(--zollybot-transparent) 70%);
   content: "";
   pointer-events: none;
   transform: translateX(-50%);
@@ -31,7 +31,7 @@
 
 .pricing-page .pricing-enterprise h2 {
   margin: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -72,11 +72,11 @@
 .pricing-page .pricing-enterprise {
   --pricing-band: linear-gradient(
     105deg,
-    var(--openbot-price-sheen-cool-clear) 38%,
-    var(--openbot-price-sheen-cool-soft) 46%,
-    var(--openbot-price-sheen-light) 50%,
-    var(--openbot-price-sheen-warm-soft) 54%,
-    var(--openbot-price-sheen-warm-clear) 62%
+    var(--zollybot-price-sheen-cool-clear) 38%,
+    var(--zollybot-price-sheen-cool-soft) 46%,
+    var(--zollybot-price-sheen-light) 50%,
+    var(--zollybot-price-sheen-warm-soft) 54%,
+    var(--zollybot-price-sheen-warm-clear) 62%
   );
   position: relative;
   isolation: isolate;
@@ -87,26 +87,26 @@
   gap: 16px;
   margin-top: 20px;
   padding: 22px 24px;
-  border: 1px solid var(--openbot-price-rim-under);
+  border: 1px solid var(--zollybot-price-rim-under);
   border-radius: 18px;
   background:
     linear-gradient(
       90deg,
-      var(--openbot-price-sheen-cool-clear),
-      var(--openbot-price-sheen-cool) 35%,
-      var(--openbot-price-sheen-light) 50%,
-      var(--openbot-price-sheen-warm) 65%,
-      var(--openbot-price-sheen-warm-clear)
+      var(--zollybot-price-sheen-cool-clear),
+      var(--zollybot-price-sheen-cool) 35%,
+      var(--zollybot-price-sheen-light) 50%,
+      var(--zollybot-price-sheen-warm) 65%,
+      var(--zollybot-price-sheen-warm-clear)
     )
     top center / 70% 1px no-repeat,
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--openbot-price-rim-under) 35%, var(--openbot-transparent)),
-      var(--openbot-transparent) 70%
+      color-mix(in srgb, var(--zollybot-price-rim-under) 35%, var(--zollybot-transparent)),
+      var(--zollybot-transparent) 70%
     );
   box-shadow:
-    inset 0 1px 0 var(--openbot-price-rim-under),
-    0 28px 90px -44px var(--openbot-price-glow);
+    inset 0 1px 0 var(--zollybot-price-rim-under),
+    0 28px 90px -44px var(--zollybot-price-glow);
   overflow: hidden;
 }
 
@@ -138,8 +138,8 @@
   content: "";
   pointer-events: none;
   mask:
-    linear-gradient(var(--openbot-mask-solid) 0 0) content-box exclude,
-    linear-gradient(var(--openbot-mask-solid) 0 0);
+    linear-gradient(var(--zollybot-mask-solid) 0 0) content-box exclude,
+    linear-gradient(var(--zollybot-mask-solid) 0 0);
   animation: pricing-sweep 6s ease-in-out infinite;
 }
 
@@ -147,26 +147,26 @@
   background:
     linear-gradient(
       105deg,
-      var(--openbot-price-sheen-cool-clear) 35%,
-      color-mix(in srgb, var(--openbot-price-sheen-cool) 50%, var(--openbot-price-sheen-cool-clear)) 47%,
-      color-mix(in srgb, var(--openbot-price-sheen-warm) 50%, var(--openbot-price-sheen-warm-clear)) 53%,
-      var(--openbot-price-sheen-warm-clear) 65%
+      var(--zollybot-price-sheen-cool-clear) 35%,
+      color-mix(in srgb, var(--zollybot-price-sheen-cool) 50%, var(--zollybot-price-sheen-cool-clear)) 47%,
+      color-mix(in srgb, var(--zollybot-price-sheen-warm) 50%, var(--zollybot-price-sheen-warm-clear)) 53%,
+      var(--zollybot-price-sheen-warm-clear) 65%
     )
     0 0 / 300% 100% no-repeat,
-    var(--openbot-surface-light);
-  box-shadow: 0 0 30px -10px var(--openbot-price-glow);
+    var(--zollybot-surface-light);
+  box-shadow: 0 0 30px -10px var(--zollybot-price-glow);
   animation: pricing-glint 6s ease-in-out infinite;
 }
 
 @media (hover: hover) {
   .pricing-page .pricing-enterprise .landing-button:hover {
-    background-color: var(--openbot-text-primary);
+    background-color: var(--zollybot-text-primary);
   }
 }
 
 .pricing-page .pricing-enterprise-body {
   margin: 4px 0 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: 14px;
   line-height: 1.45;
 }

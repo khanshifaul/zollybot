@@ -1,4 +1,4 @@
-import type { UsageTokens } from "@openbot/contracts/ipc";
+import type { UsageTokens } from "@zollybot/contracts/ipc";
 
 // Standard API-equivalent rates per million tokens, verified 2026-10-21.
 // These are not subscription charges. No guessed alias or default-model prices.

@@ -1,5 +1,5 @@
-import { WEBHOOK_ROUTES_LIMIT } from "@openbot/contracts/signal-protocol/webhook-route";
 import { createFileRoute } from "@tanstack/solid-router";
+import { WEBHOOK_ROUTES_LIMIT } from "@zollybot/contracts/signal-protocol/webhook-route";
 import { Effect } from "effect";
 import { z } from "zod";
 import { runApiResponse } from "../../../../server/effect-runtime";

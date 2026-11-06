@@ -1,9 +1,9 @@
-import { isAgentModel, isAgentProvider } from "@openbot/contracts/ipc";
+import { isAgentModel, isAgentProvider } from "@zollybot/contracts/ipc";
 import {
   PROVIDER_DEFAULT_CAPABILITY,
   PROVIDER_DEFAULT_ROUTES,
-} from "@openbot/contracts/team-protocol/provider-default-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/provider-default-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { ProviderDefaultSetting, TeamApiAdmin } from "./dependencies";
 import { HttpError } from "./http-error";

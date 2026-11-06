@@ -1,8 +1,8 @@
-import type { AgentImportResult } from "@openbot/contracts/ipc";
-import { AgentImportSources } from "@openbot/ui/features/import/AgentImportSources";
-import { AgentImportView } from "@openbot/ui/features/import/AgentImportView";
-import { HermesImportView } from "@openbot/ui/features/import/HermesImportView";
 import type { JSX } from "@solidjs/web";
+import type { AgentImportResult } from "@zollybot/contracts/ipc";
+import { AgentImportSources } from "@zollybot/ui/features/import/AgentImportSources";
+import { AgentImportView } from "@zollybot/ui/features/import/AgentImportView";
+import { HermesImportView } from "@zollybot/ui/features/import/HermesImportView";
 import { createSignal } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -169,7 +169,7 @@ const hermesArgs = (overrides: Partial<HermesArgs> = {}): HermesArgs => ({
   ...overrides,
 });
 
-/** The first screen: Hermes, Grok Bot, or another OpenBot computer. */
+/** The first screen: Hermes, Grok Bot, or another ZollyBot computer. */
 export const Sources: Story = {
   name: "Import: Sources",
   render: () => (

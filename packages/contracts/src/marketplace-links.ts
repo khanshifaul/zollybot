@@ -5,8 +5,8 @@
  * ```
  * https://openbot.run/marketplace/agents/<id>     the link a person shares and the app copies
  * https://openbot.run/marketplace/skills/<slug>
- * openbot://marketplace/agents/<id>               the link the page button opens
- * openbot://marketplace/skills/<slug>
+ * zollybot://marketplace/agents/<id>               the link the page button opens
+ * zollybot://marketplace/skills/<slug>
  * /app?marketplaceAgent=<id>                      the page's link to the browser client
  * /app?marketplaceSkill=<slug>
  * ```
@@ -20,9 +20,9 @@
  * foreign address behind the button that copies its own link.
  */
 
-export const OPENBOT_MARKETPLACE_ORIGIN = "https://openbot.run";
-export const OPENBOT_MARKETPLACE_PATH = "/marketplace";
-export const OPENBOT_MARKETPLACE_HOST = "marketplace";
+export const ZOLLYBOT_MARKETPLACE_ORIGIN = "https://openbot.run";
+export const ZOLLYBOT_MARKETPLACE_PATH = "/marketplace";
+export const ZOLLYBOT_MARKETPLACE_HOST = "marketplace";
 export const WEB_APP_MARKETPLACE_AGENT_PARAM = "marketplaceAgent";
 export const WEB_APP_MARKETPLACE_SKILL_PARAM = "marketplaceSkill";
 
@@ -59,13 +59,13 @@ function isListingId(kind: MarketplaceListingKind, id: string): boolean {
 }
 
 function assertListing(link: MarketplaceListingLink): void {
-  if (!isListingId(link.kind, link.id)) throw new Error("The OpenBot Marketplace link is invalid.");
+  if (!isListingId(link.kind, link.id)) throw new Error("The ZollyBot Marketplace link is invalid.");
 }
 
 /** The path of a listing page on the site, such as `/marketplace/agents/<id>`. */
 export function marketplaceListingPath(link: MarketplaceListingLink): string {
   assertListing(link);
-  return `${OPENBOT_MARKETPLACE_PATH}/${LISTING_SEGMENTS[link.kind]}/${link.id}`;
+  return `${ZOLLYBOT_MARKETPLACE_PATH}/${LISTING_SEGMENTS[link.kind]}/${link.id}`;
 }
 
 /**
@@ -74,14 +74,14 @@ export function marketplaceListingPath(link: MarketplaceListingLink): string {
  */
 export function createMarketplaceShareUrl(
   link: MarketplaceListingLink,
-  origin: string = OPENBOT_MARKETPLACE_ORIGIN,
+  origin: string = ZOLLYBOT_MARKETPLACE_ORIGIN,
 ): string {
-  if (!isMarketplaceShareOrigin(origin)) throw new Error("The OpenBot Marketplace link origin is invalid.");
+  if (!isMarketplaceShareOrigin(origin)) throw new Error("The ZollyBot Marketplace link origin is invalid.");
   return `${origin}${marketplaceListingPath(link)}`;
 }
 
 function isMarketplaceShareOrigin(origin: string): boolean {
-  if (origin === OPENBOT_MARKETPLACE_ORIGIN) return true;
+  if (origin === ZOLLYBOT_MARKETPLACE_ORIGIN) return true;
   try {
     const url = new URL(origin);
     return (
@@ -95,9 +95,9 @@ function isMarketplaceShareOrigin(origin: string): boolean {
 }
 
 /** The link the page's button opens, which raises the app on this listing. */
-export function createOpenBotMarketplaceUrl(link: MarketplaceListingLink): string {
+export function createZollyBotMarketplaceUrl(link: MarketplaceListingLink): string {
   assertListing(link);
-  return `openbot://${OPENBOT_MARKETPLACE_HOST}/${LISTING_SEGMENTS[link.kind]}/${link.id}`;
+  return `zollybot://${ZOLLYBOT_MARKETPLACE_HOST}/${LISTING_SEGMENTS[link.kind]}/${link.id}`;
 }
 
 /**
@@ -128,15 +128,15 @@ export function parseMarketplaceUrl(value: string): MarketplaceListingLink {
   try {
     url = new URL(value);
   } catch {
-    throw new Error("The OpenBot Marketplace link is invalid.");
+    throw new Error("The ZollyBot Marketplace link is invalid.");
   }
 
   /* The origin is compared as one string. An `endsWith` or a host expression here is what lets
      `openbot.run.example.com` through. */
-  const prefix = `${OPENBOT_MARKETPLACE_PATH}/`;
+  const prefix = `${ZOLLYBOT_MARKETPLACE_PATH}/`;
   const canonical =
-    url.protocol === "https:" && url.origin === OPENBOT_MARKETPLACE_ORIGIN && url.pathname.startsWith(prefix);
-  const customScheme = url.protocol === "openbot:" && url.hostname === OPENBOT_MARKETPLACE_HOST;
+    url.protocol === "https:" && url.origin === ZOLLYBOT_MARKETPLACE_ORIGIN && url.pathname.startsWith(prefix);
+  const customScheme = url.protocol === "zollybot:" && url.hostname === ZOLLYBOT_MARKETPLACE_HOST;
   if (
     (!canonical && !customScheme) ||
     url.username !== "" ||
@@ -145,7 +145,7 @@ export function parseMarketplaceUrl(value: string): MarketplaceListingLink {
     url.search !== "" ||
     url.hash !== ""
   ) {
-    throw new Error("The OpenBot Marketplace link is invalid.");
+    throw new Error("The ZollyBot Marketplace link is invalid.");
   }
 
   /* Two segments, the kind and the id, and no empty one. `..` and a trailing slash fail here. */
@@ -153,7 +153,7 @@ export function parseMarketplaceUrl(value: string): MarketplaceListingLink {
   const [segment, id, ...extra] = rest.split("/");
   const kind = LISTING_KINDS.find((candidate) => LISTING_SEGMENTS[candidate] === segment);
   if (kind === undefined || id === undefined || extra.length > 0) {
-    throw new Error("The OpenBot Marketplace link is invalid.");
+    throw new Error("The ZollyBot Marketplace link is invalid.");
   }
   const link = { kind, id };
   assertListing(link);

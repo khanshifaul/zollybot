@@ -2,12 +2,12 @@
 //   1. Start, wait for the marker to say `running`, and kill the Electron main process by its PID.
 //   2. Start again. The marker of run 1 makes one `system_unclean_exit` event: the main log says so
 //      once, and a local capture server receives it once when analytics can send it.
-//   3. Send SIGTERM to the Electron main process. OpenBot quits for `signal` and runs its teardown.
+//   3. Send SIGTERM to the Electron main process. ZollyBot quits for `signal` and runs its teardown.
 //      Check that the marker says `clean`, and start again. This start makes no event.
 // `bun run dev:stop` is not the clean quit here: it stops the whole process group and sends SIGKILL
 // after 3 s, which can end the teardown first. The run then correctly counts as `quitting`.
 // The script stops the stack at the end with `bun run dev:stop` and writes
-// .openbot-build/unclean-exit-e2e/report.json.
+// .zollybot-build/unclean-exit-e2e/report.json.
 //
 //   bun scripts/unclean-exit-e2e.ts [--capture-port=47321]
 //
@@ -19,13 +19,13 @@ import { createServer, type IncomingMessage, type Server } from "node:http";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { z } from "zod";
 import { RUN_MARKER_FILE } from "../src/main/run-marker";
 import { readDevInstanceRecords } from "./dev-automation/instance-registry";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const OUT = join(ROOT, ".openbot-build/unclean-exit-e2e");
+const OUT = join(ROOT, ".zollybot-build/unclean-exit-e2e");
 const portFlag = process.argv.find((argument) => argument.startsWith("--capture-port="));
 const CAPTURE_PORT = Number(portFlag?.slice("--capture-port=".length) ?? 47321);
 const START_TIMEOUT_MS = 240_000;
@@ -167,7 +167,7 @@ function electronMainPid(supervisorPid: number): number | null {
 
 const environment: NodeJS.ProcessEnv = {
   ...process.env,
-  OPENBOT_ANALYTICS_CAPTURE_URL: `http://localhost:${CAPTURE_PORT}`,
+  ZOLLYBOT_ANALYTICS_CAPTURE_URL: `http://localhost:${CAPTURE_PORT}`,
 };
 delete environment.ELECTRON_RUN_AS_NODE;
 
@@ -324,7 +324,7 @@ report.passed = failure === null;
 if (failure) report.error = failure instanceof Error ? failure.message : String(failure);
 report.finishedAt = new Date().toISOString();
 writeFileSync(join(OUT, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
-const logger = createOpenBotLogger("unclean-exit-e2e");
+const logger = createZollyBotLogger("unclean-exit-e2e");
 if (failure) logger.error(`Failed: ${report.error}`);
 else logger.info(`Passed. Wrote ${join(OUT, "report.json")}.`);
 if (failure) process.exitCode = 1;

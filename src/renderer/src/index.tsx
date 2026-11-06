@@ -1,5 +1,5 @@
-import { installPointerFocusGuard } from "@openbot/ui/pointer-focus";
 import { render } from "@solidjs/web";
+import { installPointerFocusGuard } from "@zollybot/ui/pointer-focus";
 // Copying a selection with a formula in it gives its LaTeX source, not the typeset glyphs twice.
 import "katex/contrib/copy-tex";
 // Copying a selection gives clean HTML, without the theme colors of the app.
@@ -19,7 +19,7 @@ if (!root) {
 }
 
 // A startup mark for `dev:bench`, after the bundle is parsed.
-performance.mark("openbot:renderer-start");
+performance.mark("zollybot:renderer-start");
 installPointerFocusGuard();
 syncAppearance({ windowGlass: true });
 syncLogoColor();

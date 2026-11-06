@@ -47,7 +47,7 @@ export const messages = {
   "provider.status.checking": "Sprawdzanie",
   "provider.status.off": "Wyłączony",
   "provider.gemini.hostSignIn":
-    "Aby połączyć Gemini, otwórz OpenBot na hoście i wybierz „Połącz” w sekcji Ustawienia serwera > Dostawcy. Logowanie Google wymaga przeglądarki na tym hoście. Zdalne logowanie nie jest obsługiwane.",
+    "Aby połączyć Gemini, otwórz ZollyBot na hoście i wybierz „Połącz” w sekcji Ustawienia serwera > Dostawcy. Logowanie Google wymaga przeglądarki na tym hoście. Zdalne logowanie nie jest obsługiwane.",
 
   "provider.key.free": "Darmowy",
 
@@ -75,13 +75,13 @@ export const messages = {
   "provider.aria.cancelSignIn": "Anuluj logowanie do {name}",
   "provider.aria.apiKey": "Klucz API {name}",
   "provider.connecting.browserHint": "Dokończ logowanie, jeśli otworzy się strona w przeglądarce.",
-  "provider.connecting.cancelFailed": "OpenBot nie mógł anulować logowania do {name}. Spróbuj ponownie.",
+  "provider.connecting.cancelFailed": "ZollyBot nie mógł anulować logowania do {name}. Spróbuj ponownie.",
   "provider.aria.install": "Zainstaluj {name}",
   "provider.aria.signIn": "Zaloguj się do {name}",
   "provider.aria.codeFallback": "Zaloguj się do {name} kodem",
   "provider.aria.moreActions": "Więcej działań: {name}",
 
-  "provider.aria.use": "Używaj {name} w OpenBot",
+  "provider.aria.use": "Używaj {name} w ZollyBot",
   "provider.use.inUseOne": "{agent} używa {name}. Zmień model tego agenta, a potem wyłącz {name}.",
   "provider.use.inUse": {
     one: "{count} agent używa {name}. Zmień model tego agenta, a potem wyłącz {name}.",
@@ -91,7 +91,7 @@ export const messages = {
   },
 
   "provider.codeLogin.title": "Zaloguj się do {name} kodem",
-  "provider.codeLogin.description": "Dokończ na telefonie lub w innej przeglądarce. OpenBot czeka tutaj.",
+  "provider.codeLogin.description": "Dokończ na telefonie lub w innej przeglądarce. ZollyBot czeka tutaj.",
   "provider.codeLogin.starting": "Pobieranie kodu od: {name}…",
   "provider.codeLogin.qrLabel": "Kod QR strony logowania {name}",
   "provider.codeLogin.open": "Otwórz",
@@ -112,12 +112,12 @@ export const messages = {
   "provider.codeLogin.pageDescription": "Ta strona jest otwarta w przeglądarce na: {host}. Zaloguj się tutaj.",
   "provider.codeLogin.relayStarting": "Uruchamianie logowania do {name} na {host}…",
   "provider.codeLogin.pageOpening": "Otwieranie strony logowania {name} na {host}…",
-  "provider.codeLogin.linkStep": "Zaloguj się do {name}. OpenBot będzie kontynuować samodzielnie.",
+  "provider.codeLogin.linkStep": "Zaloguj się do {name}. ZollyBot będzie kontynuować samodzielnie.",
   "provider.codeLogin.chatgptDeviceSetting":
     "W ChatGPT na komputerze otwórz ustawienia bezpieczeństwa i włącz logowanie kodem urządzenia dla Codex. Na koncie służbowym włącza je administrator obszaru roboczego.",
-  "provider.useApp.title": "Połącz {name} w aplikacji OpenBot",
+  "provider.useApp.title": "Połącz {name} w aplikacji ZollyBot",
   "provider.useApp.description":
-    "Logowanie do {name} wraca na komputer, który je rozpoczął, a karta przeglądarki nie może go odebrać. Połącz {name} w aplikacji OpenBot. Aplikacja sama dokończy logowanie.",
+    "Logowanie do {name} wraca na komputer, który je rozpoczął, a karta przeglądarki nie może go odebrać. Połącz {name} w aplikacji ZollyBot. Aplikacja sama dokończy logowanie.",
   "provider.useApp.download": "Pobierz aplikację",
 
   "provider.picker.noEndpoints": "Brak endpointów",
@@ -128,7 +128,7 @@ export const messages = {
   "provider.picker.providers": "Dostawcy modeli",
   "provider.picker.downloading": "Pobieranie {percent}",
   "provider.picker.unavailable": "{name} jest niedostępny.",
-  "provider.picker.updateToUse": "Zaktualizuj OpenBot, aby używać {name}",
+  "provider.picker.updateToUse": "Zaktualizuj ZollyBot, aby używać {name}",
   "provider.picker.models": "Modele {name}",
   "provider.picker.addProvider": "Dodaj dostawcę",
   "provider.picker.download": "Pobieranie {name}",
@@ -181,15 +181,15 @@ export const messages = {
   "provider.claudeKey.label": "Klucz API Anthropic",
   "provider.inceptionKey.title": "Klucz API Inception",
   "provider.inceptionKey.description":
-    "Zapisz klucz API Inception na tym komputerze, aby używać modeli Mercury. OpenBot uruchamia je w pobranym Pi CLI.",
+    "Zapisz klucz API Inception na tym komputerze, aby używać modeli Mercury. ZollyBot uruchamia je w pobranym Pi CLI.",
   "provider.inceptionKey.label": "Klucz API Inception",
   "provider.deepseekKey.title": "Klucz API DeepSeek",
   "provider.deepseekKey.description":
-    "Zapisz klucz API DeepSeek na tym komputerze, aby używać modeli DeepSeek. OpenBot uruchamia je w pobranym Pi CLI.",
+    "Zapisz klucz API DeepSeek na tym komputerze, aby używać modeli DeepSeek. ZollyBot uruchamia je w pobranym Pi CLI.",
   "provider.deepseekKey.label": "Klucz API DeepSeek",
   "provider.openrouterKey.title": "Klucz API OpenRouter",
   "provider.openrouterKey.description":
-    "Zapisz klucz API OpenRouter na tym komputerze, aby używać modeli z OpenRouter. OpenBot uruchamia je w pobranym Pi CLI.",
+    "Zapisz klucz API OpenRouter na tym komputerze, aby używać modeli z OpenRouter. ZollyBot uruchamia je w pobranym Pi CLI.",
   "provider.openrouterKey.label": "Klucz API OpenRouter",
 
   "provider.openCodeKey.title": "Zaloguj się do OpenCode Go",
@@ -243,10 +243,10 @@ export const messages = {
   "provider.settings.disconnectTitle": "Odłączyć {name}?",
   "provider.settings.disconnectOthers": "Pozostałe konta {provider} czekają, aż ponownie połączysz {provider}.",
   "provider.settings.disconnectLocal":
-    "OpenBot wyloguje {provider} na tym komputerze. CLI {provider} w terminalu również zostanie wylogowane.",
-  "provider.settings.disconnectHost": "OpenBot wyloguje {provider} na serwerze.",
+    "ZollyBot wyloguje {provider} na tym komputerze. CLI {provider} w terminalu również zostanie wylogowane.",
+  "provider.settings.disconnectHost": "ZollyBot wyloguje {provider} na serwerze.",
   "provider.settings.versionInstalledByUser": "{version} · zainstalowana przez Ciebie",
-  "provider.settings.versionDownloaded": "{version} · pobrana przez OpenBot",
+  "provider.settings.versionDownloaded": "{version} · pobrana przez ZollyBot",
   "provider.settings.cache": "Pamięć podręczna",
   "provider.settings.promptCache": "Pamięć podręczna promptów",
   "provider.settings.promptCacheDescription":
@@ -269,8 +269,8 @@ export const messages = {
   "provider.settings.modelsNoMatch": "Żaden model nie pasuje do wyszukiwania.",
   "provider.settings.modelsLoadFailed": "Nie udało się wczytać modeli tego serwera.",
   "provider.settings.deleteTitle": "Usuń {name}",
-  "provider.settings.deleteOn": "Wyłącza {name} i usuwa CLI pobrane przez OpenBot. Konta, logowania i agenci zostają.",
+  "provider.settings.deleteOn": "Wyłącza {name} i usuwa CLI pobrane przez ZollyBot. Konta, logowania i agenci zostają.",
   "provider.settings.deleteOff":
-    "Usuwa CLI pobrane przez OpenBot dla {name} ({size}). Konta, logowania i agenci zostają.",
+    "Usuwa CLI pobrane przez ZollyBot dla {name} ({size}). Konta, logowania i agenci zostają.",
   "provider.settings.removeDownloadFailed": "Nie udało się usunąć pobranych plików.",
 } as const satisfies PartialTranslation<typeof source>;

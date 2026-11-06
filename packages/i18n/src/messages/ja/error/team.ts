@@ -3,13 +3,13 @@ import type { messages as source } from "../../en/error/team";
 
 export const messages = {
   // Errors that the Team API and the team store send to clients.
-  "error.team.ownerNotLinked": "このホストは OpenBot のオーナーアカウントにリンクされていません。",
-  "error.team.ownerEmailRequired": "このホストを作成した OpenBot のメールアドレスでサインインしてください。",
+  "error.team.ownerNotLinked": "このホストは ZollyBot のオーナーアカウントにリンクされていません。",
+  "error.team.ownerEmailRequired": "このホストを作成した ZollyBot のメールアドレスでサインインしてください。",
   "error.team.hostNotConfigured": "チームのホストが設定されていません。",
   "error.team.alreadyConfigured": "チームのサーバーはすでに設定されています。",
   "error.team.identityCreateFailed": "チームの ID を作成できませんでした。",
   "error.team.accountChangedDuringCreate": "このサーバーの作成中に、サインイン中のアカウントが変わりました。",
-  "error.team.notConfigured": "この OpenBot はまだ設定されていません。",
+  "error.team.notConfigured": "この ZollyBot はまだ設定されていません。",
   "error.team.keyRotationMissing": "保留中のサーバーキー変更はありません。",
   "error.team.serverNotActive": "このサーバーは、サインイン中のアカウントの有効なサーバーではなくなりました。",
   "error.team.logoInvalid": "512 KB 以下の有効な PNG、JPEG、または WebP 画像を選択してください。",
@@ -22,9 +22,9 @@ export const messages = {
   "error.team.inviteEmailMismatch": "この招待は別のメールアドレス宛てです。",
   "error.team.memberDisabled": "このチームメンバーは無効になっています。",
   "error.team.memberLimit": "1 つのホストのメンバーは最大 {limit} 人です。",
-  "error.team.accountNotMember": "この OpenBot アカウントはチームのメンバーではありません。",
+  "error.team.accountNotMember": "この ZollyBot アカウントはチームのメンバーではありません。",
   "error.team.usernameTaken": "このユーザー名はすでに使用されています。",
-  "error.team.inviteRequiresAccount": "この招待には確認済みの OpenBot アカウントが必要です。",
+  "error.team.inviteRequiresAccount": "この招待には確認済みの ZollyBot アカウントが必要です。",
   "error.team.loginIncorrect": "ユーザー名またはパスワードが正しくありません。",
   "error.team.currentPasswordIncorrect": "現在のパスワードが正しくありません。",
   "error.team.memberNotFound": "チームメンバーが見つかりません。",
@@ -45,17 +45,17 @@ export const messages = {
   "error.team.usernameInvalid": "ユーザー名は 3〜32 文字の英字、数字、ドット、ハイフン、アンダースコアにしてください。",
   "error.team.passwordLength": "パスワードは 12〜256 文字にしてください。",
   "error.team.bindFailed": "チーム API をバインドできませんでした。",
-  "error.team.signInRequired": "OpenBot へのサインインが必要です。",
+  "error.team.signInRequired": "ZollyBot へのサインインが必要です。",
   "error.team.authenticationRequired": "認証が必要です。",
   "error.team.agentNotFound": "エージェントが見つかりません。",
   "error.team.routeNotFound": "ルートが見つかりません。",
   "error.team.requestFailed": "リクエストに失敗しました。",
   "error.team.tooManySignInAttempts": "サインインの試行回数が多すぎます。しばらくしてから再試行してください。",
-  "error.team.clientUpdateRequired": "このホストに接続する前に、この OpenBot クライアントを更新してください。",
-  "error.team.hostUpdateRequired": "接続する前に、ホストの OpenBot を更新してください。",
+  "error.team.clientUpdateRequired": "このホストに接続する前に、この ZollyBot クライアントを更新してください。",
+  "error.team.hostUpdateRequired": "接続する前に、ホストの ZollyBot を更新してください。",
   "error.team.sidebarLayoutUnavailable": "サイドバーのレイアウトを利用できません。",
   "error.team.providersUnsupported": "この接続ではプロバイダーの設定を利用できません。",
-  "error.team.providerNotManaged": "OpenBot はこのプロバイダーの CLI を管理していません。",
+  "error.team.providerNotManaged": "ZollyBot はこのプロバイダーの CLI を管理していません。",
   "error.team.channelsUnsupported": "この接続ではチャンネルのチャットを利用できません。",
   "error.team.channelPictureUnsupported": "この接続ではチャンネル画像を使用できません。",
   "error.team.channelDeleteUnsupported": "この接続ではチャンネルを削除できません。",
@@ -70,9 +70,9 @@ export const messages = {
   "error.team.chatColorsUnsupported": "この接続ではチャットの色を使用できません。",
   "error.team.sidebarFoldersUnsupported": "この接続ではフォルダー内のフォルダーを使用できません。",
   "error.team.agentNotificationLevelsUnsupported":
-    "このサーバーはエージェントごとの通知レベルを保存できません。サーバーを実行しているコンピューターで OpenBot を更新してください。",
+    "このサーバーはエージェントごとの通知レベルを保存できません。サーバーを実行しているコンピューターで ZollyBot を更新してください。",
   "error.team.sidebarPinsUnsupported":
-    "このサーバーは、ピン留めしたチャットをすべてのデバイスで共有できません。サーバーを実行しているコンピューターの OpenBot を更新してください。",
+    "このサーバーは、ピン留めしたチャットをすべてのデバイスで共有できません。サーバーを実行しているコンピューターの ZollyBot を更新してください。",
   "error.team.agentInstructionsUnsupported": "この接続ではエージェントの指示を編集できません。",
   "error.team.agentPublishUnsupported": "この接続ではエージェントを公開できません。",
   "error.team.agentUpdateUnsupported": "この接続ではエージェントを更新できません。",
@@ -83,7 +83,7 @@ export const messages = {
   "error.team.conversationFileSearchUnsupported": "この接続ではファイルを検索できません。",
   "error.team.sideQuestionUnsupported": "この接続ではサイド質問を使えません。",
   "error.team.routineFlowsUnsupported":
-    "このサーバーはルーティンフローに対応していません。サーバーを実行しているコンピューターの OpenBot を更新してください。",
+    "このサーバーはルーティンフローに対応していません。サーバーを実行しているコンピューターの ZollyBot を更新してください。",
   "error.team.routineCanvasTooLarge":
     "このルーティンキャンバスは大きすぎるため、このデバイスに送信できません。サーバーを実行しているコンピューターでルーティンの指示を短くしてください。",
   "error.team.conversationPageTooLarge":
@@ -120,7 +120,7 @@ export const messages = {
   "error.team.machineAlertMemberInvalid":
     "マシンのアラートを受け取れるのは、このサーバーのオーナーまたは管理者のみです。",
   "error.team.hostedSitesUnsupported": "この接続ではサイトを利用できません。",
-  "error.team.hostedSitesUnregistered": "このサーバーは OpenBot に登録されていないため、サイトがありません。",
+  "error.team.hostedSitesUnregistered": "このサーバーは ZollyBot に登録されていないため、サイトがありません。",
   "error.team.hostedSiteNotFound": "サイトが見つかりません。",
   "error.team.markUnreadUnsupported": "このクライアントは会話を未読にする操作に対応していません。",
   "error.team.inviteServiceUnavailable": "招待サービスを利用できません。",
@@ -143,12 +143,12 @@ export const messages = {
   "error.team.ownerRequired": "この操作ができるのはこのサーバーのオーナーだけです。",
   "error.team.requestTooLarge": "リクエストの本文が大きすぎます。",
   "error.team.signInRelayUnsupported":
-    "このサーバーはサインインを中継できません。ホストの OpenBot を更新してください。",
+    "このサーバーはサインインを中継できません。ホストの ZollyBot を更新してください。",
   "error.team.connectorsUnsupported":
-    "このサーバーの接続はここから管理できません。ホストの OpenBot を更新してください。",
+    "このサーバーの接続はここから管理できません。ホストの ZollyBot を更新してください。",
   "error.team.discordAccessUnsupported":
-    "このサーバーでは Discord のロールを設定できません。サーバーの OpenBot を更新してください。",
-  "error.team.connectorPageRefused": "サーバーが OpenBot で開かないページを送信しました。",
+    "このサーバーでは Discord のロールを設定できません。サーバーの ZollyBot を更新してください。",
+  "error.team.connectorPageRefused": "サーバーが ZollyBot で開かないページを送信しました。",
   "error.team.signInRelayUnknown": "このサインインは終了したか、存在しません。",
   "error.team.signInRelayUsed": "このサインインはすでに送信されています。",
   "error.team.signInRelayMismatch": "このアドレスはこのサインインのものではありません。",

@@ -1,6 +1,6 @@
 Supertone Supertonic 3
 
-OpenBot downloads this text-to-speech model when the user turns on reading replies aloud. The model
+ZollyBot downloads this text-to-speech model when the user turns on reading replies aloud. The model
 is not part of the application package.
 
 Model: Supertone/supertonic-3
@@ -10,13 +10,13 @@ Copyright (c) 2025 Supertone Inc.
 Model weights license: BigScience Open RAIL-M License
 Code license: MIT
 
-Changes: the model was quantized to int8 for sherpa-onnx by the sherpa-onnx project. OpenBot uses
+Changes: the model was quantized to int8 for sherpa-onnx by the sherpa-onnx project. ZollyBot uses
 that converted model without further changes:
 https://huggingface.co/csukuangfj2/sherpa-onnx-supertonic-3-tts-int8-2026-05-11
 (revision cca5a0e6c96e1d2c720986bf7e75fcc81dee3ae4)
 
 The Open RAIL-M License includes use-based restrictions in its Attachment A. They apply to every
-use of the model, also through OpenBot. The MIT notice and the Open RAIL-M License text follow.
+use of the model, also through ZollyBot. The MIT notice and the Open RAIL-M License text follow.
 
 -------------------------------------------------------------------------------
 

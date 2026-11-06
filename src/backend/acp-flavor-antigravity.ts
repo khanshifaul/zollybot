@@ -1,5 +1,5 @@
 import { RequestError } from "@agentclientprotocol/sdk";
-import { type SourceMessages, sourceText } from "@openbot/i18n/source";
+import { type SourceMessages, sourceText } from "@zollybot/i18n/source";
 import { type AcpFlavor, shownFailureDetail } from "./acp-flavor";
 import { isRecord } from "./protocol";
 
@@ -88,9 +88,9 @@ export const ANTIGRAVITY_ACP_FLAVOR: AcpFlavor = {
   // `jetbrains.*` or `android studio*` (`supports_third_party_models`). Any other client gets the
   // Gemini models only, also when the plan includes the others. The server also sends the name and
   // version to Google in its User-Agent (`_surface`), so Google sees these requests as `zed/0.1.0`.
-  clientInfo: { name: "zed", title: "OpenBot", version: "0.1.0" },
-  // Antigravity 1.4.5 declares these built-ins in each request, about 2.4k tokens. OpenBot has its own
-  // routines, and a workflow runs agents that OpenBot does not show. Antigravity keeps the filter with
+  clientInfo: { name: "zed", title: "ZollyBot", version: "0.1.0" },
+  // Antigravity 1.4.5 declares these built-ins in each request, about 2.4k tokens. ZollyBot has its own
+  // routines, and a workflow runs agents that ZollyBot does not show. Antigravity keeps the filter with
   // the session; a load or resume sends it again, so a session from an earlier release gets it too.
   sessionMeta: { antigravity: { disabledTools: ["schedule", "run_workflow"] } },
   // Antigravity 1.3.0 has three exact forms: a load or resume puts the ID in data.sessionId, a

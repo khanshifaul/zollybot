@@ -4,7 +4,7 @@
 // - the second keeps the first build's files, and drops a file that is too old, one that the site
 //   no longer has, one that the site answers with a page, and a name that is not a flat file name;
 // - the third keeps the files of both earlier builds, and a kept file keeps the time it stopped being live.
-// `bun run test:keep-previous-assets`. Writes .openbot-build/keep-previous-assets-e2e.json.
+// `bun run test:keep-previous-assets`. Writes .zollybot-build/keep-previous-assets-e2e.json.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
@@ -14,7 +14,7 @@ import { tmpdir } from "node:os";
 import { join, normalize, resolve } from "node:path";
 import { Schema } from "effect";
 
-const OUT = resolve(import.meta.dirname, "../../../.openbot-build/keep-previous-assets-e2e.json");
+const OUT = resolve(import.meta.dirname, "../../../.zollybot-build/keep-previous-assets-e2e.json");
 const SCRIPT = resolve(import.meta.dirname, "keep-previous-assets.ts");
 const HOUR_MS = 60 * 60 * 1000;
 

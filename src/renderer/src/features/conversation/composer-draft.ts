@@ -1,16 +1,16 @@
-import { attachmentReferenceIds } from "@openbot/contracts/attachment-references";
-import { serializeChatTagReference } from "@openbot/contracts/chat-tag-references";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { attachmentReferenceIds } from "@zollybot/contracts/attachment-references";
+import { serializeChatTagReference } from "@zollybot/contracts/chat-tag-references";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type DraftAttachment,
   isAttachmentSummary,
   type MarketplaceSkillDetail,
   SKILL_CREATION_REQUEST,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { decodeQueueEditRequest, type QueueEditRequest } from "@openbot/contracts/team-protocol/queue-edit-v1";
-import { skillExamplePrompt } from "@openbot/ui/components/SkillPreview";
-import type { ComposerSelection } from "@openbot/ui/features/conversation/ComposerEditor";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { decodeQueueEditRequest, type QueueEditRequest } from "@zollybot/contracts/team-protocol/queue-edit-v1";
+import { skillExamplePrompt } from "@zollybot/ui/components/SkillPreview";
+import type { ComposerSelection } from "@zollybot/ui/features/conversation/ComposerEditor";
 import type { ComposerDraft } from "./conversation-types";
 
 export const EMPTY_DRAFT: ComposerDraft = {
@@ -59,7 +59,7 @@ function appendDraftLine(draft: ComposerDraft, line: string): ComposerDraft {
   return { ...draft, text: draft.text ? `${draft.text}\n${line}` : line };
 }
 
-export const QUEUE_EDIT_STORAGE_KEY = "openbot:queue-edit";
+export const QUEUE_EDIT_STORAGE_KEY = "zollybot:queue-edit";
 type StoredQueueSave = Extract<QueueEditRequest, { action: "save" }>;
 export interface StoredQueueEdit {
   agentId: string;
@@ -131,7 +131,7 @@ function decodeStoredQueueEdit(value: unknown): StoredQueueEdit | null {
   };
 }
 
-export const THREAD_QUEUE_EDIT_STORAGE_KEY = "openbot:thread-queue-edit";
+export const THREAD_QUEUE_EDIT_STORAGE_KEY = "zollybot:thread-queue-edit";
 /**
  * A queue edit in the message box of a side thread. It has its own record, so it does not take the
  * place of an edit in the agent's own chat. `draftKey` is the thread's `threadDraftKey`.

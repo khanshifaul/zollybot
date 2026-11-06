@@ -1,3 +1,4 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   type AgentAdminSettings,
   type AgentPermissionLevel,
@@ -6,9 +7,8 @@ import {
   agentPermissionUpdate,
   canAdministerServer,
   widensAgentPermission,
-} from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { Typography } from "heroui-native";
 import { useState } from "react";
 import { Alert } from "react-native";

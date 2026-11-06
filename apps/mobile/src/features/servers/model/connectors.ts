@@ -1,5 +1,5 @@
-import type { ConnectorMessagingPlatform, MessagingConnection } from "@openbot/contracts/ipc";
-import type { AppMobileMessages, MobileTextKey } from "@openbot/i18n/mobile";
+import type { ConnectorMessagingPlatform, MessagingConnection } from "@zollybot/contracts/ipc";
+import type { AppMobileMessages, MobileTextKey } from "@zollybot/i18n/mobile";
 
 /**
  * The connectors of a joined server, in the order of the desktop Marketplace apps. A host
@@ -23,7 +23,7 @@ export function isMobileConnectorId(value: string | undefined): value is MobileC
   return MOBILE_CONNECTOR_IDS.some((id) => id === value);
 }
 
-/** Slack and Discord install the OpenBot app in a workspace; Telegram links chats to one bot. */
+/** Slack and Discord install the ZollyBot app in a workspace; Telegram links chats to one bot. */
 export type WorkspacePlatform = Exclude<ConnectorMessagingPlatform, "telegram">;
 
 export const CONNECTOR_TITLE_KEYS = {
@@ -177,12 +177,12 @@ export function platformPage(platform: keyof typeof PAGE_HOSTS, address: string 
 }
 
 /**
- * The `openbot://` link where a Slack or Discord install returns, from the page at `/slack/connect` or
+ * The `zollybot://` link where a Slack or Discord install returns, from the page at `/slack/connect` or
  * `/discord/connect`. The phone takes it in the browser session that opened the install.
  */
 export const MESSAGING_INSTALL_RETURN = {
-  slack: "openbot://slack-workspace",
-  discord: "openbot://discord-guild",
+  slack: "zollybot://slack-workspace",
+  discord: "zollybot://discord-guild",
 } as const satisfies Record<WorkspacePlatform, string>;
 
 /** True for the return link of a Slack or Discord install, which only its browser session takes. */

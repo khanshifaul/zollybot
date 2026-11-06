@@ -1,12 +1,12 @@
+import type { JSX } from "@solidjs/web";
 import {
   DEFAULT_MACHINE_ALERT_SETTINGS,
   type MachineMetric,
   type MachineMetrics,
   machineAlertLevel,
-} from "@openbot/contracts/ipc";
-import { Button, buttonVariants, ChevronRight, Popover, Progress, RadialProgress } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/contracts/ipc";
+import { Button, buttonVariants, ChevronRight, Popover, Progress, RadialProgress } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, For, Show } from "solid-js";
 import {
   MACHINE_METRIC_ICONS,

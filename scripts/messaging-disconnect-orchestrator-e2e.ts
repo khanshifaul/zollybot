@@ -3,14 +3,14 @@
 // left in it, and changes nothing when the orchestrator cannot be deleted. Runs the real agent,
 // messaging and sidebar services on a temporary profile, and boots them again to check that the
 // result stays: `bun scripts/messaging-disconnect-orchestrator-e2e.ts`.
-// Writes .openbot-build/messaging-disconnect-orchestrator-e2e/report.json.
+// Writes .zollybot-build/messaging-disconnect-orchestrator-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { MessagingPlatform, SidebarLayoutSnapshot } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import type { MessagingPlatform, SidebarLayoutSnapshot } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 import { AgentLifecycleFailed, AgentService } from "../src/backend/agent-service";
@@ -19,11 +19,11 @@ import { runCauseEffect } from "../src/backend/effect-boundary";
 import { MailboxStore } from "../src/backend/mailbox-store";
 import { type MessagingCredentials, MessagingService } from "../src/backend/messaging/messaging-service";
 import type { MessagingIngress } from "../src/backend/messaging/messaging-types";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { SidebarLayoutStore } from "../src/backend/sidebar-layout-store";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/messaging-disconnect-orchestrator-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-messaging-disconnect-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/messaging-disconnect-orchestrator-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-messaging-disconnect-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const SECTION = sourceText("status.messaging.integrationsSection");
@@ -94,7 +94,7 @@ async function boot<T>(
     busy: Set<string>;
   }) => Promise<T>,
 ): Promise<T> {
-  const database = new OpenBotDatabase(userData);
+  const database = new ZollyBotDatabase(userData);
   const store = new AgentStore(userData, home, database);
   const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
   const sidebar = new SidebarLayoutStore(join(userData, "sidebar-layout.json"));
@@ -241,7 +241,7 @@ try {
           channelId: "group-1",
           draft: { name: "Group", title: "", instructions: "", members: [{ agentId: user.id }], leadAgentId: null },
         },
-        { id: "openbot", name: "OpenBot" },
+        { id: "zollybot", name: "ZollyBot" },
       ),
     );
     await runCauseEffect(

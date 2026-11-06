@@ -1,4 +1,4 @@
-import { type AgentProviderId, isKeyOnlyProvider, isKnownAgentProvider } from "@openbot/contracts/agent-providers";
+import { type AgentProviderId, isKeyOnlyProvider, isKnownAgentProvider } from "@zollybot/contracts/agent-providers";
 import {
   type AgentModelChoice,
   agentPermissionLevel,
@@ -8,21 +8,21 @@ import {
   sameAgentModelChoice,
   type UpdateAgentAdminSettingsInput,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { BROWSER_PROFILES_CAPABILITY } from "@openbot/contracts/team-protocol/browser-profiles-v1";
-import { CONVERSATION_UNREAD_FROM_CAPABILITY } from "@openbot/contracts/team-protocol/conversation-unread-from-v1";
-import { MESSAGE_DELETE_CAPABILITY } from "@openbot/contracts/team-protocol/message-delete-v1";
-import { hasVisibleToasts } from "@openbot/ui";
-import type { AgentMessage } from "@openbot/ui/data";
+} from "@zollybot/contracts/ipc";
+import { BROWSER_PROFILES_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-profiles-v1";
+import { CONVERSATION_UNREAD_FROM_CAPABILITY } from "@zollybot/contracts/team-protocol/conversation-unread-from-v1";
+import { MESSAGE_DELETE_CAPABILITY } from "@zollybot/contracts/team-protocol/message-delete-v1";
+import { hasVisibleToasts } from "@zollybot/ui";
+import type { AgentMessage } from "@zollybot/ui/data";
 import {
   type BackupModelSource,
   rememberedBackupModels,
   type UsageLimitAskCardProps,
   usageLimitAskOptions,
-} from "@openbot/ui/features/conversation/BackupModels";
-import { unloadedHistory } from "@openbot/ui/features/conversation/ChatScrollRail";
-import { sidebarAgentWaits } from "@openbot/ui/features/sidebar/sidebar-agent-states";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/BackupModels";
+import { unloadedHistory } from "@zollybot/ui/features/conversation/ChatScrollRail";
+import { sidebarAgentWaits } from "@zollybot/ui/features/sidebar/sidebar-agent-states";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
 import { ProviderSignInDialogs } from "../../components/ProviderSignInDialogs";
@@ -617,7 +617,7 @@ export function WorkspaceConversation(props: { account: () => CentralAuthUser })
         browserEnabled={
           !platform.landingPreview && !platform.chatWindow && activeServerSupportsCapability("browser-control")
         }
-        openLinksInBrowser={generalSettings().externalLinkTarget.kind === "openbot"}
+        openLinksInBrowser={generalSettings().externalLinkTarget.kind === "zollybot"}
         remoteDesktopSessionActive={Boolean(activeRemoteDesktopSession())}
         remoteDesktopVisible={remoteDesktopWorkspaceVisible()}
         remoteDesktopEnabled={

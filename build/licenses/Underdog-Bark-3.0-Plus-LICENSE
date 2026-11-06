@@ -1,6 +1,6 @@
 Underdog Bark 3.0 Plus
 
-OpenBot downloads this speech recognition model when you select it for dictation. The model is not
+ZollyBot downloads this speech recognition model when you select it for dictation. The model is not
 part of the application package.
 
 Model: ConwayResearch/Underdog-Bark-3.0-Plus
@@ -18,7 +18,7 @@ The model derives from:
     https://huggingface.co/moondream/parakeet-ultra
 
 Changes: Conway Research post-trained and compressed the model. An unofficial conversion exported it
-to ONNX and quantized it to int8 for sherpa-onnx. OpenBot uses that converted model without further
+to ONNX and quantized it to int8 for sherpa-onnx. ZollyBot uses that converted model without further
 changes:
 https://huggingface.co/velddev/Underdog-Bark-3.0-Plus-sherpa-onnx
 (revision 5f95a80a9da9d392a38df8e9a6609e25be643d07)

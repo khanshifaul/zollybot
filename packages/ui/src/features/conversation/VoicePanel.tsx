@@ -1,10 +1,10 @@
-import type { AppTextKey } from "@openbot/i18n";
-import { Button, Mic, MicOff, X } from "@openbot/ui";
-import type { AgentProfile } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { StopIcon } from "@openbot/ui/features/conversation/ConversationIcons";
-import { VoiceWaveform } from "@openbot/ui/features/conversation/VoiceRecordingMorph";
-import { useText } from "@openbot/ui/text";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Button, Mic, MicOff, X } from "@zollybot/ui";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { StopIcon } from "@zollybot/ui/features/conversation/ConversationIcons";
+import { VoiceWaveform } from "@zollybot/ui/features/conversation/VoiceRecordingMorph";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 
 /** What a voice conversation does now. */

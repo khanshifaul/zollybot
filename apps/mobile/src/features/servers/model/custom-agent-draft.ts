@@ -6,7 +6,7 @@ import {
   isCustomAgentUsagePrompt,
   isNewCustomAgentId,
   type SaveCustomAgentInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { PairItem } from "@/features/servers/components/repeatable-fields";
 import type { MobileText } from "@/shared/lib/text";
 

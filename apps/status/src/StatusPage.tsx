@@ -1,4 +1,4 @@
-import { AppLogo } from "@openbot/brand";
+import { AppLogo } from "@zollybot/brand";
 import ChevronDown from "lucide-solid/icons/chevron-down";
 import Rss from "lucide-solid/icons/rss";
 import { createMemo, createSignal, createUniqueId, For, Show } from "solid-js";
@@ -169,15 +169,15 @@ export function StatusPage(props: StatusPageProps) {
   return (
     <div class="status-page">
       <header class="status-header">
-        <a class="status-brand" href={SITE_URL} aria-label="OpenBot home">
+        <a class="status-brand" href={SITE_URL} aria-label="ZollyBot home">
           <AppLogo variant="production" class="status-brand-logo" />
-          <span>OpenBot</span>
+          <span>ZollyBot</span>
         </a>
       </header>
 
       <main class="status-main">
         <header class="status-hero">
-          <h1 class="status-title">OpenBot status</h1>
+          <h1 class="status-title">ZollyBot status</h1>
           <div class="status-hero-actions">
             <a class="status-button" href="feed.xml" type="application/atom+xml">
               <Rss class="status-button-icon" aria-hidden="true" />

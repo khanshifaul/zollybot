@@ -2,7 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { withDangerousMod, withEntitlementsPlist, withInfoPlist, withXcodeProject } = require("expo/config-plugins");
 
-// Adds the Notification Service Extension that opens a sealed OpenBot notification before iOS shows
+// Adds the Notification Service Extension that opens a sealed ZollyBot notification before iOS shows
 // it (`notification-service/NotificationService.swift`). It reads the keys that the app writes into
 // the App Group, so it has the App Group entitlement and nothing else. It also makes an agent
 // notification a communication notification with the agent picture, so the app has the Communication
@@ -53,7 +53,7 @@ function infoPlist({ targetName, groupIdentifier }) {
       </array>
     </dict>
   </dict>
-  <key>OpenBotAppGroup</key>
+  <key>ZollyBotAppGroup</key>
   <string>${groupIdentifier}</string>
 </dict>
 </plist>

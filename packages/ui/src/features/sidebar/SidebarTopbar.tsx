@@ -14,7 +14,7 @@ import {
   Hash,
   IconButton,
   Puzzle,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { Show } from "solid-js";
 import { useText } from "../../text";
 import { ServerMenu } from "../servers/ServerMenu";

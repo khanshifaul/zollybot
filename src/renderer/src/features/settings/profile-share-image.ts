@@ -1,14 +1,14 @@
-import type { CentralAuthUser } from "@openbot/contracts/ipc";
-import { userInitials } from "@openbot/ui";
+import type { CentralAuthUser } from "@zollybot/contracts/ipc";
+import { userInitials } from "@zollybot/ui";
 import {
   heatLevel,
   heatmapMonths,
   heatmapWeeks,
   type ProfileDay,
   type ProfileStats,
-} from "@openbot/ui/features/settings/profile-stats";
-import { usageCompact } from "@openbot/ui/features/usage/usage-format";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/settings/profile-stats";
+import { usageCompact } from "@zollybot/ui/features/usage/usage-format";
+import { currentText } from "@zollybot/ui/text";
 import { drawLogo, ellipsize, FONT } from "../agent-templates/agent-template-card";
 
 /*
@@ -69,14 +69,14 @@ function shareColors(): ShareColors {
     return value;
   };
   return {
-    surface: token("--openbot-paper"),
-    text: token("--openbot-paper-text"),
-    muted: token("--openbot-paper-text-muted"),
-    border: token("--openbot-paper-border"),
-    accent: token("--openbot-accent"),
-    accentSoft: token("--openbot-accent-soft"),
-    logo: token("--openbot-logo-production"),
-    logoEye: token("--openbot-logo-production-eye"),
+    surface: token("--zollybot-paper"),
+    text: token("--zollybot-paper-text"),
+    muted: token("--zollybot-paper-text-muted"),
+    border: token("--zollybot-paper-border"),
+    accent: token("--zollybot-accent"),
+    accentSoft: token("--zollybot-accent-soft"),
+    logo: token("--zollybot-logo-production"),
+    logoEye: token("--zollybot-logo-production-eye"),
   };
 }
 

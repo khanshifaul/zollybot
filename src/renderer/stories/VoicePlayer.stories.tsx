@@ -1,5 +1,5 @@
-import { nextSpeechSpeed } from "@openbot/contracts/ipc";
-import { VoicePlayer } from "@openbot/ui/features/conversation/VoicePlayer";
+import { nextSpeechSpeed } from "@zollybot/contracts/ipc";
+import { VoicePlayer } from "@zollybot/ui/features/conversation/VoicePlayer";
 import { createSignal, untrack } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

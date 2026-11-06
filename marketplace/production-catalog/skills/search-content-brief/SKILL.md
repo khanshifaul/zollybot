@@ -13,7 +13,7 @@ description: "Turn a keyword list or Search Console data into keyword groups by 
 
 ## Inputs
 
-1. **Keywords.** Tool path: Search Console in a signed-in tab (`openbot_browser.list_tabs` first). Read the
+1. **Keywords.** Tool path: Search Console in a signed-in tab (`zollybot_browser.list_tabs` first). Read the
    Queries and Pages reports for the last 3 months: clicks, impressions, position. Paste path: a keyword list or a
    keyword tool export that the user gives.
 2. **The site.** The user's site address, for existing pages and internal links.

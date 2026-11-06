@@ -2,7 +2,7 @@ import Intents
 import SwiftUI
 import UIKit
 
-/// The OpenBot share extension. It sends a share to the chosen agent without the app. The share
+/// The ZollyBot share extension. It sends a share to the chosen agent without the app. The share
 /// sheet also offers the agents that got messages last (`INSendMessageIntent`); a tap on one opens
 /// this sheet with that agent selected.
 ///
@@ -131,7 +131,7 @@ class ShareIntoViewController: UIViewController {
       try? await Task.sleep(nanoseconds: 900_000_000)
       cancel()
     case let .failed(unconfirmed, detail):
-      NSLog("OpenBot share extension: send failed at %@", detail)
+      NSLog("ZollyBot share extension: send failed at %@", detail)
       model.phase = .failed(unconfirmed: unconfirmed)
     }
   }

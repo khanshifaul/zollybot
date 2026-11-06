@@ -11,11 +11,11 @@
 // 3. A tag of another agent's tab shares nothing: the agent does not read that page.
 // 4. The stored messages keep the markers, so each delivery reads the current tab and thread.
 // The provider input is not visible here, so the script does not measure the tokens of a tag.
-// Writes .openbot-build/chat-tags-e2e/report.json.
+// Writes .zollybot-build/chat-tags-e2e/report.json.
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
-import { serializeChatTagReference } from "@openbot/contracts/chat-tag-references";
-import type { ConversationSnapshot } from "@openbot/contracts/ipc";
+import { serializeChatTagReference } from "@zollybot/contracts/chat-tag-references";
+import type { ConversationSnapshot } from "@zollybot/contracts/ipc";
 import { argument, connectChannelE2e, SHORT_PROMPT, waitFor, writeReport } from "./channel-e2e-support";
 
 const agentArgument = argument("agent");
@@ -59,23 +59,23 @@ const session = await connectChannelE2e("chat-tags-e2e");
 const { page } = session;
 
 const bridge = {
-  agents: () => page.evaluate(() => window.openbot.agent.listAgents()),
-  main: (): Promise<ConversationSnapshot> => page.evaluate((id) => window.openbot.agent.readConversation(id), agentId),
+  agents: () => page.evaluate(() => window.zollybot.agent.listAgents()),
+  main: (): Promise<ConversationSnapshot> => page.evaluate((id) => window.zollybot.agent.readConversation(id), agentId),
   side: (taskId: string): Promise<ConversationSnapshot> =>
-    page.evaluate((input) => window.openbot.agent.readTask(input), { agentId, taskId }),
+    page.evaluate((input) => window.zollybot.agent.readTask(input), { agentId, taskId }),
   send: (text: string, taskId?: string) =>
-    page.evaluate((input) => window.openbot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }), {
+    page.evaluate((input) => window.zollybot.agent.sendMessage({ ...input, clientMessageId: crypto.randomUUID() }), {
       agentId,
       text,
       ...(taskId ? { taskId } : {}),
     }),
   openTab: (url: string, ownerAgentId: string, ownerThreadId: string) =>
-    page.evaluate((input) => window.openbot.browser.open({ ...input, focus: false }), {
+    page.evaluate((input) => window.zollybot.browser.open({ ...input, focus: false }), {
       url,
       ownerAgentId,
       ownerThreadId,
     }),
-  tabs: () => page.evaluate(() => window.openbot.browser.listTabs()),
+  tabs: () => page.evaluate(() => window.zollybot.browser.listTabs()),
 };
 
 /** The assistant reply that names one of `needles`, after the turn ends. */
@@ -121,7 +121,7 @@ try {
   );
 
   const task = await page.evaluate(
-    (input) => window.openbot.agent.startTask({ ...input, clientMessageId: crypto.randomUUID() }),
+    (input) => window.zollybot.agent.startTask({ ...input, clientMessageId: crypto.randomUUID() }),
     {
       agentId,
       text: `The thread code word is ${words.thread}. Keep it. Reply with the single word ready. Do not use tools.`,
@@ -202,12 +202,12 @@ try {
   report.passed = true;
 } finally {
   for (const tabId of openedTabs) {
-    await page.evaluate((id) => window.openbot.browser.close(id), tabId).catch(() => undefined);
+    await page.evaluate((id) => window.zollybot.browser.close(id), tabId).catch(() => undefined);
   }
   if (taskId) {
     const input = { agentId, taskId };
-    await page.evaluate((value) => window.openbot.agent.stopTask(value), input).catch(() => undefined);
-    await page.evaluate((value) => window.openbot.agent.deleteTask(value), input).catch(() => undefined);
+    await page.evaluate((value) => window.zollybot.agent.stopTask(value), input).catch(() => undefined);
+    await page.evaluate((value) => window.zollybot.agent.deleteTask(value), input).catch(() => undefined);
   }
   writeReport("chat-tags-e2e", report);
   await session.close();

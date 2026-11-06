@@ -1,13 +1,13 @@
-import { LOCAL_SERVER_ID } from "@openbot/contracts/ipc";
+import { LOCAL_SERVER_ID } from "@zollybot/contracts/ipc";
 import { onSettled } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import type { MockOpenBotOptions } from "../src/preview/mock-openbot";
+import type { MockZollyBotOptions } from "../src/preview/mock-zollybot";
 import { AGENT_ID, TABS_KEY, THREAD_OPTIONS, UNREAD_OPTIONS } from "./agent-threads-fixtures";
 import { createAppDom, openChat, PrototypeApp } from "./prototype-support";
 import "./agent-threads-story.css";
 
 /** The real app on Chief, with the open tabs that this device stored. */
-function AgentThreadsApp(props: { open: string[]; active: string | null; options?: MockOpenBotOptions }) {
+function AgentThreadsApp(props: { open: string[]; active: string | null; options?: MockZollyBotOptions }) {
   const options = props.options ?? THREAD_OPTIONS;
   localStorage.setItem(
     TABS_KEY,

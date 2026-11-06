@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import { Effect } from "effect";
 import { z } from "zod";
 import { AGENT_DATABASE_LIMITS } from "../agent-data/agent-database-protocol";
@@ -17,7 +17,7 @@ export const DATA_TOOL_DEFINITIONS = [
   {
     name: "list_tables",
     description:
-      "List the tables in the shared database with their CREATE statements, row counts, and the agent that created each one. Every OpenBot agent reads and writes the same tables. Call this first, so you add to a table that already holds this kind of record instead of making a near-duplicate.",
+      "List the tables in the shared database with their CREATE statements, row counts, and the agent that created each one. Every ZollyBot agent reads and writes the same tables. Call this first, so you add to a table that already holds this kind of record instead of making a near-duplicate.",
     shape: {},
   },
   {

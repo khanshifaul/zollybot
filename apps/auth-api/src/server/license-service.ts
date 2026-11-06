@@ -6,7 +6,7 @@ import {
   type BillingInterval,
   type BillingSubscriptionStatus,
   isOpenBillingStatus,
-} from "@openbot/contracts/billing";
+} from "@zollybot/contracts/billing";
 import {
   LICENSE_INCLUDED_USERS,
   LICENSE_LOOKUP_KEYS,
@@ -27,9 +27,9 @@ import {
   licensePeriodAmount,
   licensePlanFromPrice,
   ORDER_METADATA,
-} from "@openbot/contracts/license";
-import { isOneOf } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/license";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Context, Effect, Layer } from "effect";
 import {
   type AccountAnalytics,
@@ -79,9 +79,9 @@ export type LicenseReturnTarget = "desktop" | "web";
  * welcome and ended claims name the subscription, the failed payment claim names the invoice.
  */
 const LICENSE_EMAIL_CLAIM_PREFIXES = {
-  welcome: "openbot_license_email:",
-  payment_failed: "openbot_license_payment_failed:",
-  ended: "openbot_license_ended:",
+  welcome: "zollybot_license_email:",
+  payment_failed: "zollybot_license_payment_failed:",
+  ended: "zollybot_license_ended:",
 } as const satisfies Record<LicenseEmailInput["kind"], string>;
 /** A license that changes from one of these statuses had no payment yet. */
 const BEFORE_FIRST_PAYMENT_STATUSES: ReadonlySet<string> = new Set(["trialing", "incomplete"]);
@@ -812,7 +812,7 @@ export class LicenseService {
         !Number.isSafeInteger(users) ||
         users < 1
       ) {
-        console.warn("billing: subscription is not an OpenBot license", { subscriptionId: subscription.id });
+        console.warn("billing: subscription is not an ZollyBot license", { subscriptionId: subscription.id });
         return null;
       }
       const cancelAtPeriodEnd = subscription.cancel_at_period_end || typeof subscription.cancel_at === "number";

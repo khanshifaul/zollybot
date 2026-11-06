@@ -1,5 +1,5 @@
-import type { AgentTasksSnapshot, ConversationMessage } from "@openbot/contracts/ipc";
 import { useQueryClient } from "@tanstack/react-query";
+import type { AgentTasksSnapshot, ConversationMessage } from "@zollybot/contracts/ipc";
 import * as Crypto from "expo-crypto";
 import { router } from "expo-router";
 import { useCallback, useMemo, useRef } from "react";

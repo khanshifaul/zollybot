@@ -12,14 +12,14 @@
 //    Stop while they work pauses each task, and "continue" continues the same tasks; it starts no
 //    new ones.
 // It makes its own channel and deletes it at the end.
-// Writes .openbot-build/channel-many-responders-e2e/report.json and screenshots.
+// Writes .zollybot-build/channel-many-responders-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
-import { CHANNEL_ROUTING_EVENT_ITEM_TYPE_PREFIX, type ChannelPage, type ChannelTask } from "@openbot/contracts/ipc";
-import { translateFor } from "@openbot/i18n";
+import { CHANNEL_ROUTING_EVENT_ITEM_TYPE_PREFIX, type ChannelPage, type ChannelTask } from "@zollybot/contracts/ipc";
+import { translateFor } from "@zollybot/i18n";
 import { ChannelClient, connectChannelE2e, waitFor, writeReport } from "./channel-e2e-support";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/channel-many-responders-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/channel-many-responders-e2e");
 const UI_WAIT_MS = 15_000;
 const english = translateFor("en");
 

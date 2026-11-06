@@ -1,5 +1,5 @@
-// OpenBot's Signal repository for Baileys: pairwise sessions, sender keys and LID mapping, stored in
-// the Baileys key store. Session and sender key records use OpenBot's own binary format under the key
+// ZollyBot's Signal repository for Baileys: pairwise sessions, sender keys and LID mapping, stored in
+// the Baileys key store. Session and sender key records use ZollyBot's own binary format under the key
 // types `session` and `sender-key`; remote identity keys (33 bytes) go under `identity-key`.
 
 import {
@@ -17,7 +17,7 @@ import {
   type SignalKeyStoreWithTransaction,
   type SignalRepositoryWithLIDStore,
   type SocketConfig,
-} from "@openbot/whatsapp/baileys";
+} from "@zollybot/whatsapp/baileys";
 import { addressToString, jidToAddress, senderKeyName } from "./signal/address";
 import { bytesEqual } from "./signal/crypto";
 import { generateKeyPair, withKeyType } from "./signal/curve";
@@ -49,7 +49,7 @@ import {
 /** The Baileys logger interface, which its package index does not export by name. */
 type ILogger = SocketConfig["logger"];
 
-export function makeOpenBotSignalRepository(
+export function makeZollyBotSignalRepository(
   auth: SignalAuthState,
   logger: ILogger,
   pnToLIDFunc?: (jids: string[]) => Promise<LIDMapping[] | undefined>,

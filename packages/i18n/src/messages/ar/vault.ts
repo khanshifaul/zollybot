@@ -4,7 +4,7 @@ import type { messages as source } from "../en/vault";
 export const messages = {
   "vault.items.title": "العناصر المحفوظة",
   "vault.items.description":
-    "يمكن لكل وكيل على هذا الخادم استخدام هذه العناصر. يكتب OpenBot كلمات المرور وأرقام البطاقات ورموز الأمان في الصفحة، لذا لا يراها الوكلاء أبدًا. يقرأ الوكلاء مفاتيح API من ملف خاص، لا من الدردشة.",
+    "يمكن لكل وكيل على هذا الخادم استخدام هذه العناصر. يكتب ZollyBot كلمات المرور وأرقام البطاقات ورموز الأمان في الصفحة، لذا لا يراها الوكلاء أبدًا. يقرأ الوكلاء مفاتيح API من ملف خاص، لا من الدردشة.",
   "vault.newItem": "عنصر جديد",
   "vault.kind.login": "بيانات دخول",
   "vault.kind.card": "بطاقة",
@@ -93,15 +93,15 @@ export const messages = {
   "vault.importMenu": "استيراد من CSV",
   "vault.importTitle": "استيراد من ملف CSV",
   "vault.importDescription":
-    "استورد بيانات الدخول من ملف CSV يصدّره 1Password أو Bitwarden أو Chrome أو Edge أو Firefox أو Safari أو Apple Passwords أو LastPass أو Proton Pass. يقرأ OpenBot الملف على هذا الحاسوب ولا يرفعه.",
+    "استورد بيانات الدخول من ملف CSV يصدّره 1Password أو Bitwarden أو Chrome أو Edge أو Firefox أو Safari أو Apple Passwords أو LastPass أو Proton Pass. يقرأ ZollyBot الملف على هذا الحاسوب ولا يرفعه.",
   "vault.importChoose": "اختيار ملف CSV",
   "vault.importDone": "المستورد: {imported}. المتخطى: {skipped}.",
   "vault.unavailableTitle": "لا يمكن لهذا الحاسوب حفظ الأسرار",
   "vault.unavailableDescription":
-    "يشفّر OpenBot الخزنة باستخدام مخزن الأسرار في النظام. أعدّ سلسلة مفاتيح، ثم افتح هذه الصفحة مرة أخرى.",
-  "vault.unreadableTitle": "لا يمكن لـ OpenBot قراءة الخزنة",
+    "يشفّر ZollyBot الخزنة باستخدام مخزن الأسرار في النظام. أعدّ سلسلة مفاتيح، ثم افتح هذه الصفحة مرة أخرى.",
+  "vault.unreadableTitle": "لا يمكن لـ ZollyBot قراءة الخزنة",
   "vault.unreadableDescription":
-    "ملف الخزنة موجود على هذا الحاسوب، لكن لا يمكن لـ OpenBot فك تشفيره. قد يحدث ذلك عند تغيّر سلسلة مفاتيح النظام. أعد تعيين الخزنة للبدء من جديد دون عناصر.",
+    "ملف الخزنة موجود على هذا الحاسوب، لكن لا يمكن لـ ZollyBot فك تشفيره. قد يحدث ذلك عند تغيّر سلسلة مفاتيح النظام. أعد تعيين الخزنة للبدء من جديد دون عناصر.",
   "vault.link.group": "حسابات الدفع",
   "vault.link.name": "Link",
   "vault.link.connect": "ربط",
@@ -115,7 +115,7 @@ export const messages = {
     "لن يتمكن الوكلاء من طلب الدفع عبر Link بعد الآن. يبقى حساب Link وبطاقاته كما هي.",
   "vault.reset": "إعادة تعيين الخزنة",
   "vault.resetTitle": "إعادة تعيين الخزنة؟",
-  "vault.resetDescription": "يحذف OpenBot ملف الخزنة وكل العناصر فيه. لا يمكنك التراجع عن ذلك.",
+  "vault.resetDescription": "يحذف ZollyBot ملف الخزنة وكل العناصر فيه. لا يمكنك التراجع عن ذلك.",
   "vault.request.private": "يُحفظ في خزنتك. لا يراه {agent} أبدًا.",
   "vault.request.privateUnnamed": "يُحفظ في خزنتك. لا يراه الوكيل أبدًا.",
   "vault.request.addLogin": "إضافة بيانات دخول",

@@ -5,9 +5,9 @@
 
 :where(.wfn-stage) {
   /* A control in the tool bar: the bar radius less the bar padding. */
-  --wfn-tool-radius: calc(var(--openbot-radius-grouped) - var(--openbot-space-1-5));
+  --wfn-tool-radius: calc(var(--zollybot-radius-grouped) - var(--zollybot-space-1-5));
   /* The canvas inside the window card: the card radius less its 1px border. */
-  --wfn-card-inner-radius: calc(var(--openbot-radius-card) - 1px);
+  --wfn-card-inner-radius: calc(var(--zollybot-radius-card) - 1px);
 }
 
 .wfn-stage {
@@ -17,33 +17,33 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 120px var(--openbot-space-8);
-  background-color: var(--openbot-bg-frame);
+  padding: 120px var(--zollybot-space-8);
+  background-color: var(--zollybot-bg-frame);
   background-image: radial-gradient(
-    color-mix(in srgb, var(--openbot-text-primary) 9%, transparent) 1px,
+    color-mix(in srgb, var(--zollybot-text-primary) 9%, transparent) 1px,
     transparent 1px
   );
   background-size: 20px 20px;
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
 }
 
 /* ------------------------------------------------------ Menus, library */
 
 .wfn-menu-text {
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
 }
 
 .wfn-menu-meta {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: var(--wfn-small);
 }
 
 .wfn-menu-check {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   margin-inline-start: auto;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* ---------------------------------------------------------- Connections */
@@ -76,17 +76,17 @@
  * line. The fade is over the world and under the bars, the cursors and the selection box.
  */
 .wfn-viewport::after {
-  --wfn-edge-fade: var(--openbot-space-8);
+  --wfn-edge-fade: var(--zollybot-space-8);
 
   position: absolute;
   inset: 0;
   z-index: 1;
   content: "";
   background:
-    linear-gradient(to right, var(--openbot-bg-frame), transparent) left / var(--wfn-edge-fade) 100% no-repeat,
-    linear-gradient(to left, var(--openbot-bg-frame), transparent) right / var(--wfn-edge-fade) 100% no-repeat,
-    linear-gradient(to bottom, var(--openbot-bg-frame), transparent) top / 100% var(--wfn-edge-fade) no-repeat,
-    linear-gradient(to top, var(--openbot-bg-frame), transparent) bottom / 100% var(--wfn-edge-fade) no-repeat;
+    linear-gradient(to right, var(--zollybot-bg-frame), transparent) left / var(--wfn-edge-fade) 100% no-repeat,
+    linear-gradient(to left, var(--zollybot-bg-frame), transparent) right / var(--wfn-edge-fade) 100% no-repeat,
+    linear-gradient(to bottom, var(--zollybot-bg-frame), transparent) top / 100% var(--wfn-edge-fade) no-repeat,
+    linear-gradient(to top, var(--zollybot-bg-frame), transparent) bottom / 100% var(--wfn-edge-fade) no-repeat;
   pointer-events: none;
 }
 
@@ -97,12 +97,12 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, var(--openbot-text-primary) 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, var(--zollybot-text-primary) 45%, transparent 100%);
   pointer-events: none;
 }
 
 .wfn-dots circle {
-  fill: color-mix(in srgb, var(--openbot-text-primary) 15%, transparent);
+  fill: color-mix(in srgb, var(--zollybot-text-primary) 15%, transparent);
 }
 
 /* A drag on the empty canvas draws a selection box; Space held turns it into a pan. */
@@ -152,7 +152,7 @@
  */
 .wfn-canvas {
   /* The space between the bottom bars and the edges of the canvas. */
-  --wfn-hud-inset: var(--openbot-space-4);
+  --wfn-hud-inset: var(--zollybot-space-4);
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -164,24 +164,24 @@
   display: flex;
   gap: 2px;
   align-items: center;
-  height: calc(var(--openbot-control-md) + var(--openbot-space-2));
-  padding: var(--openbot-space-1);
-  border-radius: var(--openbot-radius-lg);
+  height: calc(var(--zollybot-control-md) + var(--zollybot-space-2));
+  padding: var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-lg);
   background: var(--wfn-glass);
   box-shadow: 0 0 0 1px var(--wfn-ring-strong);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
   backdrop-filter: var(--wfn-glass-blur);
 }
 
 .wfn-hud-top {
   position: absolute;
-  top: var(--openbot-space-4);
-  inset-inline-end: var(--openbot-space-4);
-  inset-inline-start: var(--openbot-space-4);
+  top: var(--zollybot-space-4);
+  inset-inline-end: var(--zollybot-space-4);
+  inset-inline-start: var(--zollybot-space-4);
   z-index: 3;
   display: flex;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   align-items: flex-start;
   justify-content: space-between;
   pointer-events: none;
@@ -194,7 +194,7 @@
 
 .wfn-hud-group {
   display: flex;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   align-items: center;
 }
 
@@ -206,41 +206,41 @@
 }
 
 .wfn-stage .wfn-hud-add-button {
-  margin-inline-start: var(--openbot-space-1);
+  margin-inline-start: var(--zollybot-space-1);
 }
 
 /* A pressed tool, such as Select or an open minimap: a quiet fill, not a colour. */
 .wfn-stage .wfn-hud .wfn-hud-tool[aria-pressed="true"] {
   background: var(--wfn-hover);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .wfn-stage .wfn-hud .wfn-hud-tool svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 /* The workflow switcher: the name and a small chevron in one button. The name has the type of the other page titles. */
 .wfn-stage .wfn-hud-title .wfn-hud-switcher {
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   min-width: 0;
-  padding-inline: var(--openbot-space-3) calc(var(--openbot-space-2) + var(--openbot-space-0-5));
+  padding-inline: var(--zollybot-space-3) calc(var(--zollybot-space-2) + var(--zollybot-space-0-5));
 }
 
 .wfn-stage .wfn-hud-switcher-name {
   overflow: hidden;
   max-width: 40ch;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .wfn-stage .wfn-hud-switcher .wfn-hud-chevron {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  color: var(--zollybot-text-muted);
 }
 
 /* In the desktop window, the page lets clicks through to the server menu in the top row. The parts of the canvas take
@@ -276,32 +276,32 @@
 /* The options of the Draw, Sticky note and Shapes tools sit above the tool bar, at its centre. */
 .wfn-hud.wfn-hud-sub {
   right: 0;
-  bottom: calc(var(--wfn-hud-inset) + var(--openbot-control-lg) + var(--openbot-space-3) + var(--openbot-space-2));
+  bottom: calc(var(--wfn-hud-inset) + var(--zollybot-control-lg) + var(--zollybot-space-3) + var(--zollybot-space-2));
   left: 0;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   width: fit-content;
   margin-inline: auto;
 }
 
 .wfn-stage .wfn-hud-sub .wfn-hud-tool {
-  width: var(--openbot-control-md);
+  width: var(--zollybot-control-md);
 }
 
 .wfn-stage .wfn-hud-sub .wfn-shape-icon {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 /* The shape colour: the picked colour and a chevron, as the colour button of Higgsfield. */
 .wfn-stage .wfn-hud .wfn-hud-fill {
-  gap: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-2) var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-1-5);
 }
 
 .wfn-stage .wfn-hud-fill .wfn-hud-chevron {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  color: var(--zollybot-text-muted);
 }
 
 /*
@@ -314,7 +314,7 @@
   opacity: 0.5;
   translate: -50% -50%;
   pointer-events: none;
-  animation: wfn-fade-in var(--openbot-duration-fast) var(--openbot-ease-out);
+  animation: wfn-fade-in var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 /* A shape that a drag draws grows from the corner where the drag started. */
@@ -342,14 +342,14 @@
 }
 
 .wfn-ink-dot {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  border-radius: var(--openbot-radius-pill);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--wfn-ink);
   box-shadow: inset 0 0 0 1px var(--wfn-ring-strong);
   transition-property: box-shadow;
-  transition-duration: var(--openbot-duration-fast);
-  transition-timing-function: var(--openbot-ease-out);
+  transition-duration: var(--zollybot-duration-fast);
+  transition-timing-function: var(--zollybot-ease-out);
 }
 
 /* The picked colour has a ring in the text colour, with a gap of the bar colour. */
@@ -360,7 +360,7 @@
 .wfn-ink-swatch[aria-pressed="true"] .wfn-ink-dot {
   box-shadow:
     0 0 0 2px var(--wfn-glass),
-    0 0 0 3.5px var(--openbot-text-primary);
+    0 0 0 3.5px var(--zollybot-text-primary);
 }
 
 /* The lines: in canvas units, so a zoom scales them with the nodes. */
@@ -381,8 +381,8 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   transition-property: opacity;
-  transition-duration: var(--openbot-duration-fast);
-  transition-timing-function: var(--openbot-ease-out);
+  transition-duration: var(--zollybot-duration-fast);
+  transition-timing-function: var(--zollybot-ease-out);
 }
 
 .wfn-ink-line[data-brush="marker"] {
@@ -397,11 +397,11 @@
 .wfn-eraser {
   position: absolute;
   z-index: 3;
-  width: var(--openbot-space-4);
-  height: var(--openbot-space-4);
-  border-radius: var(--openbot-radius-pill);
-  background: color-mix(in srgb, var(--openbot-text-primary) 8%, transparent);
-  box-shadow: inset 0 0 0 1px var(--openbot-text-primary);
+  width: var(--zollybot-space-4);
+  height: var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-pill);
+  background: color-mix(in srgb, var(--zollybot-text-primary) 8%, transparent);
+  box-shadow: inset 0 0 0 1px var(--zollybot-text-primary);
   translate: -50% -50%;
   pointer-events: none;
 }
@@ -417,8 +417,8 @@
   inset-inline-end: var(--wfn-hud-inset);
   bottom: var(--wfn-hud-inset);
   z-index: 3;
-  gap: var(--openbot-space-1-5);
-  animation: wfn-fade-in var(--openbot-duration-normal) var(--openbot-ease-out);
+  gap: var(--zollybot-space-1-5);
+  animation: wfn-fade-in var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .wfn-hud-zoom {
@@ -428,22 +428,22 @@
 
 .wfn-hud-separator {
   width: 1px;
-  height: var(--openbot-space-4);
-  margin: 0 var(--openbot-space-1);
+  height: var(--zollybot-space-4);
+  margin: 0 var(--zollybot-space-1);
   background: var(--wfn-ring-strong);
 }
 
 /* Every control in a bar, and in a node toolbar: 32px and a press scale. Bar controls have radius 8. */
 .wfn-stage .wfn-hud .ui-button {
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .wfn-stage :is(.wfn-hud, .wfn-toolbar) .ui-button {
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
   transition-property: background-color, color, opacity, scale;
-  transition-duration: var(--openbot-duration-fast);
-  transition-timing-function: var(--openbot-ease-out);
+  transition-duration: var(--zollybot-duration-fast);
+  transition-timing-function: var(--zollybot-ease-out);
 }
 
 .wfn-stage :is(.wfn-hud, .wfn-toolbar) .ui-button:active:not(:disabled) {
@@ -451,29 +451,29 @@
 }
 
 .wfn-stage .wfn-hud .ui-button-variant-ghost {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .wfn-stage .wfn-hud .ui-button-variant-ghost:hover:not(:disabled),
 .wfn-stage .wfn-hud .ui-button-variant-ghost[data-expanded] {
   background: var(--wfn-hover);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .wfn-stage .wfn-hud-button {
-  gap: var(--openbot-space-1-5);
-  height: var(--openbot-control-md);
-  padding-inline: var(--openbot-space-3);
+  gap: var(--zollybot-space-1-5);
+  height: var(--zollybot-control-md);
+  padding-inline: var(--zollybot-space-3);
 }
 
 /* An icon has space of its own at its edge, so the side with the icon gets less padding. Then the two sides look equal. */
 .wfn-stage .wfn-hud-button:has(> svg:first-child) {
-  padding-inline-start: calc(var(--openbot-space-2) + var(--openbot-space-0-5));
+  padding-inline-start: calc(var(--zollybot-space-2) + var(--zollybot-space-0-5));
 }
 
 .wfn-stage .wfn-hud-button svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /*
@@ -481,31 +481,31 @@
  * 20px icons. The control radius is 16 - 6 = 10, so the corners stay concentric.
  */
 .wfn-stage .wfn-hud-tools {
-  gap: var(--openbot-space-1-5);
-  height: calc(var(--openbot-control-lg) + var(--openbot-space-3));
-  padding: var(--openbot-space-1-5);
-  border-radius: var(--openbot-radius-grouped);
+  gap: var(--zollybot-space-1-5);
+  height: calc(var(--zollybot-control-lg) + var(--zollybot-space-3));
+  padding: var(--zollybot-space-1-5);
+  border-radius: var(--zollybot-radius-grouped);
 }
 
 .wfn-stage .wfn-hud-tools .ui-button {
-  height: var(--openbot-control-lg);
+  height: var(--zollybot-control-lg);
   border-radius: var(--wfn-tool-radius);
 }
 
 .wfn-stage .wfn-hud-tools .wfn-hud-tool {
-  width: var(--openbot-control-lg);
+  width: var(--zollybot-control-lg);
 }
 
 .wfn-stage .wfn-hud-tools .wfn-hud-tool svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .wfn-stage .wfn-hud-tools .wfn-hud-add-button svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 /*
@@ -519,13 +519,13 @@
 
 .wfn-stage .wfn-hud-tools .wfn-hud-tool[data-art] {
   position: relative;
-  width: calc(var(--openbot-control-lg) + var(--openbot-space-2));
+  width: calc(var(--zollybot-control-lg) + var(--zollybot-space-2));
   padding: 0;
   overflow: visible;
 }
 
 .wfn-stage .wfn-hud-tools .wfn-hud-tool:is([data-art="note"], [data-art="shape"]) {
-  width: calc(var(--openbot-control-lg) + var(--openbot-space-4));
+  width: calc(var(--zollybot-control-lg) + var(--zollybot-space-4));
 }
 
 .wfn-stage .wfn-hud .wfn-hud-tool[data-art]:is(:hover, [aria-pressed="true"]) {
@@ -539,10 +539,10 @@
  */
 .wfn-stage .wfn-hud-tools .wfn-hud-tool[data-art] .wfn-tool-art {
   --wfn-art-base: var(--wfn-art-color);
-  --wfn-art-light: color-mix(in srgb, var(--wfn-art-color) 58%, var(--openbot-paper));
-  --wfn-art-dark: color-mix(in srgb, var(--wfn-art-color) 72%, var(--openbot-paper-text));
-  --wfn-art-wood-color: color-mix(in srgb, var(--openbot-file-orange) 38%, var(--openbot-paper));
-  --wfn-art-metal-color: color-mix(in srgb, var(--openbot-paper) 78%, var(--openbot-paper-text));
+  --wfn-art-light: color-mix(in srgb, var(--wfn-art-color) 58%, var(--zollybot-paper));
+  --wfn-art-dark: color-mix(in srgb, var(--wfn-art-color) 72%, var(--zollybot-paper-text));
+  --wfn-art-wood-color: color-mix(in srgb, var(--zollybot-file-orange) 38%, var(--zollybot-paper));
+  --wfn-art-metal-color: color-mix(in srgb, var(--zollybot-paper) 78%, var(--zollybot-paper-text));
   position: absolute;
   top: 0;
   left: 0;
@@ -555,52 +555,52 @@
  * The light palette darkens each colour for text. A note or a shape keeps the hue at a fixed light
  * tone there, as the note paper does, so it is bright and clean. The ink colour becomes a light neutral tone.
  */
-:root[data-openbot-color-scheme="light"] .wfn-stage .wfn-hud-tools .wfn-hud-tool[data-art] .wfn-tool-art {
+:root[data-zollybot-color-scheme="light"] .wfn-stage .wfn-hud-tools .wfn-hud-tool[data-art] .wfn-tool-art {
   --wfn-art-base: oklch(from var(--wfn-art-color) 0.82 calc(c * 0.75) h);
   --wfn-art-light: oklch(from var(--wfn-art-color) 0.93 calc(c * 0.35) h);
 }
 
 /* The pen comes up out of the bar. */
 .wfn-hud-tool[data-art="draw"]:is(:hover, [aria-pressed="true"]) .wfn-art-layer {
-  translate: 0 calc(var(--openbot-space-1-5) * -1);
+  translate: 0 calc(var(--zollybot-space-1-5) * -1);
 }
 
 /* The notes fan out: the back note goes to the left, the front note goes up and to the right. */
 .wfn-hud-tool[data-art="note"]:is(:hover, [aria-pressed="true"]) [data-layer="back"] {
   rotate: -15deg;
-  translate: calc(var(--openbot-space-1) * -1) calc(var(--openbot-space-0-5) * -1);
+  translate: calc(var(--zollybot-space-1) * -1) calc(var(--zollybot-space-0-5) * -1);
 }
 
 .wfn-hud-tool[data-art="note"]:is(:hover, [aria-pressed="true"]) [data-layer="middle"] {
   rotate: 4deg;
-  translate: 0 calc(var(--openbot-space-1) * -1);
+  translate: 0 calc(var(--zollybot-space-1) * -1);
 }
 
 .wfn-hud-tool[data-art="note"]:is(:hover, [aria-pressed="true"]) [data-layer="front"] {
   rotate: 4deg;
-  translate: var(--openbot-space-1) calc(var(--openbot-space-1-5) * -1);
+  translate: var(--zollybot-space-1) calc(var(--zollybot-space-1-5) * -1);
 }
 
 /* The square grows and turns to the left, the circle rolls to the right, the next shape lifts. */
 .wfn-hud-tool[data-art="shape"]:is(:hover, [aria-pressed="true"]) [data-layer="back"] {
   rotate: -17deg;
-  translate: calc(var(--openbot-space-1) * -1) calc(var(--openbot-space-0-5) * -1);
+  translate: calc(var(--zollybot-space-1) * -1) calc(var(--zollybot-space-0-5) * -1);
   scale: 1.06;
 }
 
 .wfn-hud-tool[data-art="shape"]:is(:hover, [aria-pressed="true"]) [data-layer="middle"] {
   rotate: 12deg;
-  translate: var(--openbot-space-1) var(--openbot-space-0-5);
+  translate: var(--zollybot-space-1) var(--zollybot-space-0-5);
 }
 
 .wfn-hud-tool[data-art="shape"]:is(:hover, [aria-pressed="true"]) [data-layer="front"] {
   rotate: 6deg;
-  translate: var(--openbot-space-0-5) calc(var(--openbot-space-1-5) * -1);
+  translate: var(--zollybot-space-0-5) calc(var(--zollybot-space-1-5) * -1);
 }
 
 .wfn-hud-tools .wfn-hud-separator {
-  height: calc(var(--openbot-space-4) + var(--openbot-space-1));
-  margin: 0 var(--openbot-space-0-5);
+  height: calc(var(--zollybot-space-4) + var(--zollybot-space-1));
+  margin: 0 var(--zollybot-space-0-5);
 }
 
 /* The icon of a HUD bar, such as the version bar. */
@@ -608,34 +608,34 @@
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
-  border-radius: var(--openbot-radius-md);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
+  border-radius: var(--zollybot-radius-md);
   background: var(--wfn-hover);
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .wfn-stage .wfn-hud-icon svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 .wfn-stage .wfn-hud-name {
   field-sizing: content;
   min-width: 8ch;
   max-width: 40ch;
-  height: var(--openbot-control-md);
-  padding: 0 var(--openbot-space-2);
+  height: var(--zollybot-control-md);
+  padding: 0 var(--zollybot-space-2);
   border: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   background: transparent;
   box-shadow: none;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
   text-overflow: ellipsis;
   transition-property: background-color, box-shadow;
-  transition-duration: var(--openbot-duration-fast);
+  transition-duration: var(--zollybot-duration-fast);
 }
 
 .wfn-stage .wfn-hud-name:hover {
@@ -650,15 +650,15 @@
 
 /* A past run on view. */
 .wfn-hud-viewing {
-  gap: var(--openbot-space-1-5);
-  padding-inline-start: var(--openbot-space-3);
+  gap: var(--zollybot-space-1-5);
+  padding-inline-start: var(--zollybot-space-3);
   font-variant-numeric: tabular-nums;
 }
 
 .wfn-stage .wfn-hud-viewing > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  color: var(--zollybot-text-muted);
 }
 
 /* The tools bar gives its place to the version bar while a version shows. */
@@ -670,7 +670,7 @@
 .wfn-hud-version {
   bottom: var(--wfn-hud-inset);
   left: round(50%, 1px);
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   translate: round(-50%, 1px) 0;
@@ -678,15 +678,15 @@
 
 .wfn-hud-lock {
   display: inline-flex;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   align-items: center;
-  margin-inline-end: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
+  margin-inline-end: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
 }
 
 .wfn-hud-lock-icon {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
 /* Any drag on a version pans. */
@@ -699,50 +699,50 @@
 }
 
 .wfn-hud-label {
-  font-weight: var(--openbot-weight-medium);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .wfn-hud-meta {
-  margin-inline-end: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
+  margin-inline-end: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
 }
 
 .wfn-hud-count {
-  min-width: var(--openbot-space-4);
-  padding: 0 var(--openbot-space-1);
-  border-radius: var(--openbot-radius-xs);
+  min-width: var(--zollybot-space-4);
+  padding: 0 var(--zollybot-space-1);
+  border-radius: var(--zollybot-radius-xs);
   background: var(--wfn-hover);
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: var(--wfn-small);
   font-variant-numeric: tabular-nums;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
   text-align: center;
 }
 
 /* The run: a primary button, or progress and Stop while it runs. */
 .wfn-hud-progress {
   display: inline-flex;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   align-items: center;
-  padding: 0 var(--openbot-space-2);
-  color: var(--openbot-text-secondary);
+  padding: 0 var(--zollybot-space-2);
+  color: var(--zollybot-text-secondary);
   font-variant-numeric: tabular-nums;
-  animation: wfn-fade-in var(--openbot-duration-fast) var(--openbot-ease-out);
+  animation: wfn-fade-in var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .wfn-hud-progress .wfn-hud-ring {
-  --ui-radial-progress-color: var(--openbot-text-primary);
+  --ui-radial-progress-color: var(--zollybot-text-primary);
 
-  width: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
 }
 
 .wfn-stage .wfn-hud-stop {
-  animation: wfn-fade-in var(--openbot-duration-fast) var(--openbot-ease-out);
+  animation: wfn-fade-in var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .wfn-stage .wfn-hud-stop svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
   fill: currentColor;
 }
 
@@ -756,7 +756,7 @@
 .wfn-stage .wfn-zoom-value {
   justify-content: center;
   min-width: 6ch;
-  padding-inline: var(--openbot-space-1);
+  padding-inline: var(--zollybot-space-1);
   font-variant-numeric: tabular-nums;
 }
 
@@ -777,13 +777,13 @@
 
 .wfn-zoom-menu.ui-action-menu .wfn-zoom-presets .wfn-zoom-preset {
   justify-content: center;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
 }
 
 .wfn-zoom-menu.ui-action-menu .wfn-zoom-presets .wfn-zoom-preset[data-current] {
   background: var(--wfn-hover);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* Context menu icons sit in one column, so the labels align. */
@@ -791,17 +791,17 @@
   display: inline-grid;
   flex: 0 0 auto;
   place-items: center;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .wfn-menu-glyph svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /* The shared danger colour reaches only a direct icon, so the column icon takes it here. */
 .wfn-menu .ui-action-menu-danger .wfn-menu-glyph {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 /* ------------------------------------------------------------- Search */
@@ -811,44 +811,44 @@
  * then the empty line or the results. The panel radius is the field radius + its 4px inset.
  */
 .wfn-hud.wfn-search {
-  bottom: calc(var(--wfn-hud-inset) + var(--openbot-control-md) + var(--openbot-space-2) + var(--openbot-space-2));
+  bottom: calc(var(--wfn-hud-inset) + var(--zollybot-control-md) + var(--zollybot-space-2) + var(--zollybot-space-2));
   left: round(50%, 1px);
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   align-items: stretch;
-  width: min(480px, calc(100% - var(--openbot-space-8)));
+  width: min(480px, calc(100% - var(--zollybot-space-8)));
   height: auto;
   translate: round(-50%, 1px) 0;
 }
 
 .wfn-search-field {
   display: flex;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   align-items: center;
-  padding-inline-start: var(--openbot-space-2);
+  padding-inline-start: var(--zollybot-space-2);
   border-radius: var(--wfn-tool-radius);
 }
 
 /* The field has no border, so a 1px ring in the focus colour shows where typing goes. */
 .wfn-search-field:has(.wfn-search-input:focus-visible) {
-  box-shadow: inset 0 0 0 1px var(--openbot-border-focus);
+  box-shadow: inset 0 0 0 1px var(--zollybot-border-focus);
 }
 
 .wfn-stage .wfn-search-icon {
   flex: 0 0 auto;
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  color: var(--zollybot-text-muted);
 }
 
 .wfn-stage .wfn-search-input {
   flex: 1 1 auto;
-  height: var(--openbot-control-md);
-  padding: 0 var(--openbot-space-1);
+  height: var(--zollybot-control-md);
+  padding: 0 var(--zollybot-space-1);
   border: 0;
   background: transparent;
   box-shadow: none;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
 }
 
 .wfn-stage .wfn-search-input:focus-visible {
@@ -858,10 +858,10 @@
 
 .wfn-search-empty {
   margin: 0;
-  padding: var(--openbot-space-2) var(--openbot-space-2) var(--openbot-space-3);
+  padding: var(--zollybot-space-2) var(--zollybot-space-2) var(--zollybot-space-3);
   border-top: 1px solid var(--wfn-ring);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   text-wrap: pretty;
 }
 
@@ -870,7 +870,7 @@
   gap: 2px;
   max-height: 320px;
   margin: 0;
-  padding: var(--openbot-space-1) 0 0;
+  padding: var(--zollybot-space-1) 0 0;
   overflow-y: auto;
   border-top: 1px solid var(--wfn-ring);
   list-style: none;
@@ -878,12 +878,12 @@
 
 .wfn-stage .wfn-hud .wfn-search-result {
   justify-content: flex-start;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   width: 100%;
   height: auto;
-  min-height: var(--openbot-control-md);
-  padding: var(--openbot-space-1) var(--openbot-space-2);
-  color: var(--openbot-text-primary);
+  min-height: var(--zollybot-control-md);
+  padding: var(--zollybot-space-1) var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
   text-align: start;
 }
 
@@ -908,8 +908,8 @@
 /* Its groups and rows are those of the add menu: the icon of the kind and its name. */
 .wfn-hud.wfn-drop-menu .wfn-search-results {
   display: block;
-  max-height: min(560px, calc(100vh - var(--openbot-space-8)));
-  padding: var(--openbot-space-1) 0 0;
+  max-height: min(560px, calc(100vh - var(--zollybot-space-8)));
+  padding: var(--zollybot-space-1) 0 0;
 }
 
 .wfn-drop-list {
@@ -927,9 +927,9 @@
 .wfn-search-snippet {
   min-width: 0;
   overflow: hidden;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-size: var(--wfn-small);
-  font-weight: var(--openbot-weight-regular);
+  font-weight: var(--zollybot-weight-regular);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -938,7 +938,7 @@
 
 /* The minimap sits over the zoom bar. Nodes are kind-tinted blocks; the view is a bright frame. */
 .wfn-hud.wfn-minimap {
-  bottom: calc(var(--wfn-hud-inset) + var(--openbot-control-md) + var(--openbot-space-2) + var(--openbot-space-2));
+  bottom: calc(var(--wfn-hud-inset) + var(--zollybot-control-md) + var(--zollybot-space-2) + var(--zollybot-space-2));
   inset-inline-start: var(--wfn-hud-inset);
   height: auto;
   padding: 0;
@@ -952,11 +952,11 @@
 }
 
 .wfn-minimap-node {
-  fill: color-mix(in srgb, var(--wfn-kind, var(--openbot-text-primary)) 40%, transparent);
+  fill: color-mix(in srgb, var(--wfn-kind, var(--zollybot-text-primary)) 40%, transparent);
 }
 
 .wfn-minimap-node[data-selected] {
-  fill: var(--openbot-text-primary);
+  fill: var(--zollybot-text-primary);
 }
 
 /* A drawn line, thin at every size, so it does not cover the nodes. */
@@ -973,8 +973,8 @@
 }
 
 .wfn-minimap-view {
-  fill: color-mix(in srgb, var(--openbot-text-primary) 4%, transparent);
-  stroke: color-mix(in srgb, var(--openbot-text-primary) 64%, transparent);
+  fill: color-mix(in srgb, var(--zollybot-text-primary) 4%, transparent);
+  stroke: color-mix(in srgb, var(--zollybot-text-primary) 64%, transparent);
   stroke-width: 1.5;
 }
 
@@ -1001,25 +1001,25 @@
 /* Each node kind has one colour, for its menu tile and its results strip. The tile is a soft wash of
  * that colour behind the icon. */
 .wfn-menu-icon {
-  --wfn-kind: var(--openbot-text-secondary);
+  --wfn-kind: var(--zollybot-text-secondary);
 
   display: inline-grid;
   flex: none;
   place-items: center;
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  margin-inline-start: calc(var(--openbot-space-1) * -1);
-  border-radius: var(--openbot-radius-sm);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  margin-inline-start: calc(var(--zollybot-space-1) * -1);
+  border-radius: var(--zollybot-radius-sm);
   background: color-mix(in srgb, var(--wfn-kind) 16%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wfn-kind) 14%, transparent);
   color: var(--wfn-kind);
 }
 
 :is(.wfn-menu, .wfn-search) .wfn-menu-icon svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   color: inherit;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1081,11 +1081,11 @@
   position: absolute;
   inset: 0;
   display: grid;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   place-content: center;
   justify-items: center;
   pointer-events: none;
-  animation: wfn-fade-in var(--openbot-duration-normal) var(--openbot-ease-out);
+  animation: wfn-fade-in var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 .wfn-empty > * {
@@ -1093,21 +1093,21 @@
 }
 
 .wfn-stage .wfn-empty-icon {
-  width: var(--openbot-control-lg);
-  height: var(--openbot-control-lg);
-  border-radius: var(--openbot-radius-lg);
+  width: var(--zollybot-control-lg);
+  height: var(--zollybot-control-lg);
+  border-radius: var(--zollybot-radius-lg);
 }
 
 .wfn-stage .wfn-empty-icon svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 .wfn-empty-title {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
   text-wrap: balance;
 }
 
@@ -1117,9 +1117,9 @@
 .wfn-marquee {
   position: absolute;
   z-index: 3;
-  border-radius: var(--openbot-radius-xs);
-  background: color-mix(in srgb, var(--openbot-text-primary) 4%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--openbot-text-primary) 32%, transparent);
+  border-radius: var(--zollybot-radius-xs);
+  background: color-mix(in srgb, var(--zollybot-text-primary) 4%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zollybot-text-primary) 32%, transparent);
   pointer-events: none;
 }
 
@@ -1128,20 +1128,20 @@
   position: absolute;
   z-index: 2;
   border-radius: var(--wfn-radius-card);
-  outline: calc(1px / var(--wfn-scale, 1)) dashed color-mix(in srgb, var(--openbot-text-primary) 24%, transparent);
+  outline: calc(1px / var(--wfn-scale, 1)) dashed color-mix(in srgb, var(--zollybot-text-primary) 24%, transparent);
   outline-offset: calc(12px / var(--wfn-scale, 1));
   pointer-events: none;
 }
 
 .wfn-group .wfn-group-bar {
-  bottom: calc(100% + (12px + var(--openbot-space-3)) / var(--wfn-scale, 1));
+  bottom: calc(100% + (12px + var(--zollybot-space-3)) / var(--wfn-scale, 1));
   pointer-events: auto;
 }
 
 .wfn-group-count {
-  padding: 0 var(--openbot-space-1) 0 var(--openbot-space-3);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  padding: 0 var(--zollybot-space-1) 0 var(--zollybot-space-3);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1154,10 +1154,10 @@
 .wfn-guide {
   position: absolute;
   z-index: 3;
-  background: color-mix(in srgb, var(--openbot-text-primary) 22%, transparent);
+  background: color-mix(in srgb, var(--zollybot-text-primary) 22%, transparent);
   pointer-events: none;
   opacity: 1;
-  transition: opacity var(--openbot-duration-fast) var(--openbot-ease-out);
+  transition: opacity var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 @starting-style {
@@ -1189,20 +1189,20 @@
 }
 
 .wfn-stage .wfn-hud-step {
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   max-width: 360px;
   font-variant-numeric: tabular-nums;
 }
 
 .wfn-stage .wfn-hud .wfn-hud-step > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: none;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .wfn-stage .wfn-hud-status[data-status="failed"] .wfn-hud-step > svg {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .wfn-hud-step .wfn-hud-meta {
@@ -1229,23 +1229,23 @@
 
 /* The Undo toast of a workflow delete has the 1px ring and no shadow, as the other canvas surfaces. */
 .wfn-undo-toast-host .agent-delete-undo-toast {
-  box-shadow: 0 0 0 1px var(--openbot-border);
+  box-shadow: 0 0 0 1px var(--zollybot-border);
 }
 
 .wfn-undo-toast-tile {
   display: grid;
   place-items: center;
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-bg-control);
-  box-shadow: inset 0 0 0 1px var(--openbot-border);
-  color: var(--openbot-text-secondary);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-bg-control);
+  box-shadow: inset 0 0 0 1px var(--zollybot-border);
+  color: var(--zollybot-text-secondary);
 }
 
 .wfn-undo-toast-icon {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
 }
 
 /* --------------------------------------------------------------- In app */
@@ -1260,7 +1260,7 @@
  * holds the canvas bar, and the canvas paints only the card below it, inside the card's border and corners.
  */
 .wfn-stage.wfn-canvas[data-frame="window"] {
-  --wfn-hud-inset: var(--openbot-space-2);
+  --wfn-hud-inset: var(--zollybot-space-2);
 
   height: 100%;
   background: transparent;
@@ -1272,7 +1272,7 @@
 
 .wfn-canvas[data-frame="window"] .wfn-viewport {
   border-radius: var(--wfn-card-inner-radius);
-  background: var(--openbot-bg-frame);
+  background: var(--zollybot-bg-frame);
 }
 
 /* The follow frame holds the card, not the top row. */
@@ -1289,8 +1289,8 @@
 /* The server menu keeps the start of the top row, so the bar starts after it. */
 .wfn-canvas[data-frame="window"] .wfn-hud-top {
   top: 0;
-  inset-inline-end: var(--openbot-space-3);
-  inset-inline-start: calc(var(--left-panel-width) + var(--openbot-space-3));
+  inset-inline-end: var(--zollybot-space-3);
+  inset-inline-start: calc(var(--left-panel-width) + var(--zollybot-space-3));
   height: var(--left-header-height);
   align-items: center;
 }
@@ -1306,14 +1306,14 @@
 
 /* The buttons of the top row have the size of the buttons in the other pages' top rows, such as Run now in Routines. */
 .wfn-canvas[data-frame="window"] .wfn-hud-top .wfn-hud-button {
-  height: var(--openbot-control-xs);
-  padding-inline: var(--openbot-space-2);
-  font-size: var(--openbot-text-lg);
+  height: var(--zollybot-control-xs);
+  padding-inline: var(--zollybot-space-2);
+  font-size: var(--zollybot-text-lg);
 }
 
 .wfn-canvas[data-frame="window"] .wfn-hud-top .wfn-hud-button svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
 /* The window's top row stays when the interface is hidden: only the bars on the canvas go. */
@@ -1334,7 +1334,7 @@
   --ui-menu-panel-shadow: inset 0 1px 0 var(--ui-menu-highlight), 0 0 0 1px var(--ui-menu-edge);
 
   min-width: 260px;
-  max-width: min(320px, calc(100vw - var(--openbot-space-4)));
+  max-width: min(320px, calc(100vw - var(--zollybot-space-4)));
   max-height: min(520px, var(--kb-popper-content-available-height, 520px));
   overflow-y: auto;
 }

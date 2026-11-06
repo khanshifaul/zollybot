@@ -1,4 +1,4 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
 import type {
   EventActivity,
   EventRoutine,
@@ -13,8 +13,8 @@ import type {
   SetWebhookSecretInput,
   WebhookSecret,
   WebhookTestResult,
-} from "@openbot/contracts/ipc-events";
-import { runTeamEffect } from "@openbot/team-client";
+} from "@zollybot/contracts/ipc-events";
+import { runTeamEffect } from "@zollybot/team-client";
 import {
   deleteEventRoutine,
   getEventStatus,
@@ -26,8 +26,8 @@ import {
   sendEventRoutineTestEvent,
   setEventRoutineSecret,
   testEventRoutine,
-} from "@openbot/team-client/team-admin-requests";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
+} from "@zollybot/team-client/team-admin-requests";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
 import { Effect } from "effect";
 import {
   remoteRoutineRecovery,
@@ -90,7 +90,7 @@ export function desktopEventRoutinesApi(
   tests = false,
   senderSecret = false,
 ): EventRoutinesApi {
-  const events = window.openbot.events;
+  const events = window.zollybot.events;
   return {
     ...(recovery ? { listRuns: (input: ListEventRoutineRunsInput) => events.listRoutineRuns(input, serverId) } : {}),
     ...(tests ? { sendTestEvent: (input: EventRoutineRef) => events.sendTestEvent(input, serverId) } : {}),

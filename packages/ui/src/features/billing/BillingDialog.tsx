@@ -1,5 +1,5 @@
-import { Dialog, IconButton, Text, X } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Dialog, IconButton, Text, X } from "@zollybot/ui";
 import { useText } from "../../text";
 import type { SettingsHostedServersStore } from "../settings/stores/hosted-servers-store";
 import { BillingPanel } from "./BillingPanel";

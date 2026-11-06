@@ -29,7 +29,7 @@ export const messages = {
   "marketplace.description.skills": "Bir ajana bir görevi veya aracı öğreten talimatlar.",
 
   // A plugin link.
-  "marketplace.plugins.missing": "Bu eklenti OpenBot kataloğunda yok.",
+  "marketplace.plugins.missing": "Bu eklenti ZollyBot kataloğunda yok.",
 
   // The agent page.
   "marketplace.agents.loadingDetail": "Ajan ayrıntıları yükleniyor…",
@@ -42,17 +42,17 @@ export const messages = {
   "marketplace.agents.all": "Tüm ajanlar",
   "marketplace.agents.missing": "Bu ajan Pazaryerinde yok.",
   "marketplace.agents.trust.reviewed":
-    "Başka bir OpenBot kullanıcısı tarafından yapıldı. OpenBot yayınlanmadan önce inceledi.",
+    "Başka bir ZollyBot kullanıcısı tarafından yapıldı. ZollyBot yayınlanmadan önce inceledi.",
   "marketplace.agents.trust.reviewedBeforeAdd":
-    "Başka bir OpenBot kullanıcısı tarafından yapıldı. OpenBot yayınlanmadan önce inceledi. Eklendiğinde sizin adınıza işlem yapabilir.",
-  "marketplace.agents.trust.pending": "OpenBot incelemeden önce yapan kişi tarafından paylaşıldı.",
+    "Başka bir ZollyBot kullanıcısı tarafından yapıldı. ZollyBot yayınlanmadan önce inceledi. Eklendiğinde sizin adınıza işlem yapabilir.",
+  "marketplace.agents.trust.pending": "ZollyBot incelemeden önce yapan kişi tarafından paylaşıldı.",
   "marketplace.agents.trust.pendingBeforeAdd":
-    "OpenBot incelemeden önce yapan kişi tarafından paylaşıldı. Eklendiğinde sizin adınıza işlem yapabilir.",
+    "ZollyBot incelemeden önce yapan kişi tarafından paylaşıldı. Eklendiğinde sizin adınıza işlem yapabilir.",
   "marketplace.agents.source.pending": "Henüz incelenmedi",
 
   // The skill page, and why Try is off.
   "marketplace.skill.loading": "Beceri yükleniyor",
-  "marketplace.try.readFailed": "OpenBot bu ajanın becerilerini okuyamadı. Tekrar deneyin.",
+  "marketplace.try.readFailed": "ZollyBot bu ajanın becerilerini okuyamadı. Tekrar deneyin.",
   "marketplace.try.enable": "Bu beceriyi denemek için ajan ayarlarından etkinleştirin.",
   "marketplace.try.repair": "Bu beceriyi denemek için ajan ayarlarından onarın.",
   "marketplace.try.update": "Bu sürümü denemek için bu beceriyi güncelleyin.",
@@ -140,7 +140,7 @@ export const messages = {
   "marketplace.app.setup.account": "Tarayıcıda {name} hesabınızla oturum açın.",
   "marketplace.app.setup.key": "{name} hesabınızdan bir API anahtarı gerekir.",
   "marketplace.app.setup.keySaved": "{field}, {host} üzerinde kayıtlı.",
-  "marketplace.app.account.removeDescription": "OpenBot bu hesabın oturum bilgilerini {host} üzerinde siler.",
+  "marketplace.app.account.removeDescription": "ZollyBot bu hesabın oturum bilgilerini {host} üzerinde siler.",
   "marketplace.app.setup.desktop": "{name} masaüstü uygulamasında {address} adresinde çalışır.",
   "marketplace.app.setup.desktopConnected": "{address} adresine bağlı.",
   "marketplace.app.setup.open": "Oturum açma veya anahtar gerekmez.",
@@ -150,10 +150,10 @@ export const messages = {
   "marketplace.app.automation.description":
     "macOS her uygulama için bir istem gösterir. Kapalı bir uygulama kısa bir süre açılır, sonra kapanır.",
   "marketplace.app.automation.request": "Erişim iste",
-  "marketplace.app.automation.allowed": "OpenBot artık tüm Apple uygulamalarını kontrol edebilir.",
+  "marketplace.app.automation.allowed": "ZollyBot artık tüm Apple uygulamalarını kontrol edebilir.",
   "marketplace.app.automation.refused":
-    "macOS şu uygulamalara erişim vermedi: {apps}. Sistem Ayarları › Gizlilik ve Güvenlik › Otomasyon'da OpenBot'a izin verin.",
-  "marketplace.app.automation.failed": "OpenBot, şu uygulamalar için macOS'e soramadı: {apps}. Tekrar deneyin.",
+    "macOS şu uygulamalara erişim vermedi: {apps}. Sistem Ayarları › Gizlilik ve Güvenlik › Otomasyon'da ZollyBot'a izin verin.",
+  "marketplace.app.automation.failed": "ZollyBot, şu uygulamalar için macOS'e soramadı: {apps}. Tekrar deneyin.",
   "marketplace.app.automation.app.calendar": "Takvim",
   "marketplace.app.automation.app.contacts": "Kişiler",
   "marketplace.app.automation.app.mail": "Mail",
@@ -226,7 +226,7 @@ export const messages = {
   "marketplace.plugin.figma.prompt.assets": "Pazarlama simgelerini uygulama paketi için 2x boyutunda dışa aktar.",
   "marketplace.plugin.paper.tagline": "HTML ve CSS üzerine kurulu tasarım tuvali",
   "marketplace.plugin.paper.description":
-    "Paper, ajanların Paper Desktop'ta açık olan tasarım dosyasını okuyup yazmasına olanak tanır: çizim yüzeylerini, seçimleri, hesaplanan stilleri, JSX'i ve token'ları inceler; çerçeveler, metinler ve stiller oluşturur veya değiştirir. Başlamadan önce Paper Desktop'u yükleyin, bir kez açın ve bir dosya açın. OpenBot, Paper Desktop'un yüklediği Paper CLI'yi başlatır. Paper anahtar gerektirmez. Yazma araçları açık dosyayı değiştirir, bu yüzden her yazmayı onaylamadan önce inceleyin.",
+    "Paper, ajanların Paper Desktop'ta açık olan tasarım dosyasını okuyup yazmasına olanak tanır: çizim yüzeylerini, seçimleri, hesaplanan stilleri, JSX'i ve token'ları inceler; çerçeveler, metinler ve stiller oluşturur veya değiştirir. Başlamadan önce Paper Desktop'u yükleyin, bir kez açın ve bir dosya açın. ZollyBot, Paper Desktop'un yüklediği Paper CLI'yi başlatır. Paper anahtar gerektirmez. Yazma araçları açık dosyayı değiştirir, bu yüzden her yazmayı onaylamadan önce inceleyin.",
   "marketplace.plugin.paper.app":
     "Açık Paper Desktop dosyasını, Paper CLI'nin aktardığı yerel MCP sunucusu üzerinden okur ve yazar. Bir dosyası açık Paper Desktop gerektirir.",
   "marketplace.plugin.paper.prompt.implement":
@@ -246,7 +246,7 @@ export const messages = {
   "marketplace.plugin.higgsfield.prompt.clip": "Higgsfield ile gün batımında dalgaların 5 saniyelik bir videosunu yap.",
   "marketplace.plugin.appleApps.tagline": "Mac'inizde Mail, Takvim ve daha fazlası",
   "marketplace.plugin.appleApps.description":
-    "Apple apps, ajanların bu Mac'te Mail, Takvim, Kişiler, Anımsatıcılar, Notlar, Mesajlar ve Safari'yi kullanmasını sağlar. Yalnızca macOS'te çalışır. OpenBot, Apple veya OpenBot tarafından yapılmamış bir topluluk sunucusu olan mcp-icloud'u başlatır. Sunucu uygulamaları bu bilgisayarda AppleScript ile kontrol eder ve hesap ya da anahtar gerektirmez. Yükleme sırasında OpenBot, macOS'ten bu uygulamaların tümüne tek seferde erişim isteyebilir; her uygulama için bir istem gösterilir. İstemezseniz, bir ajan bir uygulamayı ilk kez kullandığında macOS sorar. Bunu daha sonra değiştirmek için Sistem Ayarları › Gizlilik ve Güvenlik › Otomasyon'u açın. Ajanlar e-posta ve iMessage gönderebilir, etkinlikleri, kişileri ve anımsatıcıları değiştirebilir veya silebilir; bu yüzden her yazma işlemini onaylamadan önce gözden geçirin. Araçların okuduğu içerik, örneğin e-posta metni, ajanın model sağlayıcısına gider.",
+    "Apple apps, ajanların bu Mac'te Mail, Takvim, Kişiler, Anımsatıcılar, Notlar, Mesajlar ve Safari'yi kullanmasını sağlar. Yalnızca macOS'te çalışır. ZollyBot, Apple veya ZollyBot tarafından yapılmamış bir topluluk sunucusu olan mcp-icloud'u başlatır. Sunucu uygulamaları bu bilgisayarda AppleScript ile kontrol eder ve hesap ya da anahtar gerektirmez. Yükleme sırasında ZollyBot, macOS'ten bu uygulamaların tümüne tek seferde erişim isteyebilir; her uygulama için bir istem gösterilir. İstemezseniz, bir ajan bir uygulamayı ilk kez kullandığında macOS sorar. Bunu daha sonra değiştirmek için Sistem Ayarları › Gizlilik ve Güvenlik › Otomasyon'u açın. Ajanlar e-posta ve iMessage gönderebilir, etkinlikleri, kişileri ve anımsatıcıları değiştirebilir veya silebilir; bu yüzden her yazma işlemini onaylamadan önce gözden geçirin. Araçların okuduğu içerik, örneğin e-posta metni, ajanın model sağlayıcısına gider.",
   "marketplace.plugin.appleApps.app":
     "Yerel mcp-icloud sunucusu üzerinden Mail, Takvim, Kişiler, Anımsatıcılar, Notlar, Mesajlar ve Safari. macOS ve Otomasyon izni gerekir.",
   "marketplace.plugin.appleApps.prompt.unread": "Apple Mail'deki bugünkü okunmamış e-postalarımı özetle.",
@@ -502,8 +502,8 @@ export const messages = {
   "marketplace.skills.source.all": "Tümü",
   "marketplace.skills.source.verified": "Doğrulanmış",
   "marketplace.skills.source.public": "Herkese açık",
-  "marketplace.skills.source.verifiedLong": "OpenBot tarafından doğrulandı",
-  "marketplace.skills.source.publicLong": "OpenBot tarafından incelendi",
+  "marketplace.skills.source.verifiedLong": "ZollyBot tarafından doğrulandı",
+  "marketplace.skills.source.publicLong": "ZollyBot tarafından incelendi",
   "marketplace.skills.sortLabel": "Sırala",
   "marketplace.skills.sortName": "Sırala: {name}",
   "marketplace.skills.sort.installs": "En çok kullanılan",

@@ -1,11 +1,11 @@
 .restart-server-steps {
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   margin: 0;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
   list-style: none;
 }
 
@@ -13,29 +13,29 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: var(--openbot-space-3);
-  padding-block: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-3);
+  padding-block: var(--zollybot-space-1-5);
 }
 
 .restart-server-step-icon {
   display: grid;
   place-items: center;
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-leading-md);
-  color: var(--openbot-text-dim);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-leading-md);
+  color: var(--zollybot-text-dim);
 }
 
 .restart-server-step-icon svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 .restart-server-step[data-status="done"] .restart-server-step-icon {
-  color: var(--openbot-success-text);
+  color: var(--zollybot-success-text);
 }
 
 .restart-server-step[data-status="failed"] .restart-server-step-icon {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .restart-server-step-text {
@@ -45,20 +45,20 @@
 
 .restart-server-step-label {
   overflow-wrap: anywhere;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
 }
 
 .restart-server-step[data-status="pending"] .restart-server-step-label,
 .restart-server-step-detail {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .restart-server-step-detail {
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .server-status-meta {
@@ -66,9 +66,9 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-2);
-  margin: var(--openbot-space-3) 0 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  gap: var(--zollybot-space-2);
+  margin: var(--zollybot-space-3) 0 0;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
 }

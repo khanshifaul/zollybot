@@ -1,11 +1,12 @@
+import type { JSX } from "@solidjs/web";
 import {
   type InstalledSkill,
   type MarketplaceSkillSort,
   type MarketplaceSkillSummary,
   SKILL_CATEGORIES,
   type SkillCategory,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   buttonVariants,
@@ -21,10 +22,9 @@ import {
   ShieldCheck,
   SlidingTabs,
   Text,
-} from "@openbot/ui";
-import { SkillGradient } from "@openbot/ui/skill-gradient";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { SkillGradient } from "@zollybot/ui/skill-gradient";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createStore, For, onCleanup, Show, untrack } from "solid-js";
 import { DialogAgents, type DialogSkill } from "./MarketplaceAgentsDialog";
 import { useInstalls } from "./MarketplaceCards";

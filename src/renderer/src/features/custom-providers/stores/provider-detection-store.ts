@@ -9,21 +9,21 @@ import {
   detectedModelServerKey,
   type ProviderDetectionDesktopApi,
   type ProviderDetectionSettings,
-} from "@openbot/contracts/ipc";
-import { checkResult } from "@openbot/ui/features/custom-providers/CustomAgentSettings";
+} from "@zollybot/contracts/ipc";
+import { checkResult } from "@zollybot/ui/features/custom-providers/CustomAgentSettings";
 import {
   customAgentCheckInput,
   customAgentInput,
   formatAgentArgs,
-} from "@openbot/ui/features/custom-providers/custom-acp-agent-form";
-import { customProviderUpdate } from "@openbot/ui/features/custom-providers/custom-provider-form";
+} from "@zollybot/ui/features/custom-providers/custom-acp-agent-form";
+import { customProviderUpdate } from "@zollybot/ui/features/custom-providers/custom-provider-form";
 import type {
   DetectedProvider,
   DetectedProviderApi,
   ProviderDetection,
-} from "@openbot/ui/features/custom-providers/detected-providers";
-import type { ProviderDetectionSettingsValue } from "@openbot/ui/features/custom-providers/ProviderDetectionSettings";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/custom-providers/detected-providers";
+import type { ProviderDetectionSettingsValue } from "@zollybot/ui/features/custom-providers/ProviderDetectionSettings";
+import { currentText } from "@zollybot/ui/text";
 import { createStore } from "solid-js";
 import type { createCustomAgentsStore } from "../../custom-agents/stores/custom-agents-store";
 import type { createCustomProvidersStore } from "./custom-providers-store";

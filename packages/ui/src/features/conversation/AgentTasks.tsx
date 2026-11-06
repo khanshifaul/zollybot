@@ -1,7 +1,7 @@
-import type { AgentTask, AgentTaskOutcome } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { TaskMark, type TaskMarkState } from "@openbot/ui/features/conversation/TaskList";
-import { type TextValue, useText } from "@openbot/ui/text";
+import type { AgentTask, AgentTaskOutcome } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { TaskMark, type TaskMarkState } from "@zollybot/ui/features/conversation/TaskList";
+import { type TextValue, useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 
 const OUTCOME_TEXT = {

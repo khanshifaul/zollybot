@@ -1,7 +1,7 @@
 /** An output: the end of a branch, which sends the result. */
 
-import type { AppTranslate } from "@openbot/i18n";
-import { Bell, Button, CircleCheck, FileText, Hash, Play, Send, Skeleton } from "@openbot/ui";
+import type { AppTranslate } from "@zollybot/i18n";
+import { Bell, Button, CircleCheck, FileText, Hash, Play, Send, Skeleton } from "@zollybot/ui";
 import { Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import { resultValue, useBoard, type WfnPortType } from "./workflow-board";

@@ -1,11 +1,11 @@
+import type { JSX } from "@solidjs/web";
 import {
   APP_LANGUAGE_OPTIONS,
   type AppLanguage,
   type AppLanguageOption,
   appLanguageOption,
-} from "@openbot/i18n/languages";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/i18n/languages";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@zollybot/ui";
 import { useText } from "../../text";
 
 /** Kobalte takes a mutable array. The exported catalog stays read-only, so copy it once here. */

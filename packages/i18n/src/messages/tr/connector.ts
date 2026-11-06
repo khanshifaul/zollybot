@@ -17,11 +17,11 @@ export const messages = {
   "connector.github.connectedAs": "@{login} olarak bağlandı",
   "connector.github.repositoriesTitle": "Depolar",
   "connector.github.repositoriesDescription":
-    "Ajanlar yalnızca OpenBot GitHub Uygulamasının yüklü olduğu depoları kullanabilir.",
+    "Ajanlar yalnızca ZollyBot GitHub Uygulamasının yüklü olduğu depoları kullanabilir.",
   "connector.github.chooseRepositories": "Depoları seç",
   "connector.github.repositoriesLoading": "Depolar GitHub'dan okunuyor",
-  "connector.github.repositoriesFailed": "OpenBot depoları GitHub'dan okuyamadı.",
-  "connector.github.noRepositories": "OpenBot GitHub Uygulaması henüz bir depoya yüklenmedi.",
+  "connector.github.repositoriesFailed": "ZollyBot depoları GitHub'dan okuyamadı.",
+  "connector.github.noRepositories": "ZollyBot GitHub Uygulaması henüz bir depoya yüklenmedi.",
   // {count} bir sayıdır (örneğin 12).
   "connector.github.moreRepositories": {
     one: "Ve {count} depo daha",
@@ -35,7 +35,7 @@ export const messages = {
   "connector.github.expiredTitle": "GitHub bağlantısının süresi doldu",
   "connector.github.expiredDescription": "Ajanlara yeniden GitHub erişimi vermek için @{login} olarak tekrar bağlanın.",
   "connector.github.reconnect": "Yeniden bağlan",
-  "connector.github.actionFailed": "OpenBot GitHub bağlantısını değiştiremedi.",
+  "connector.github.actionFailed": "ZollyBot GitHub bağlantısını değiştiremedi.",
   // GitHub sayfasının üst kısmındaki adın yanındaki durum.
   "connector.github.statusConnected": "Bağlandı",
   "connector.github.statusConnecting": "Bağlanıyor",
@@ -52,7 +52,7 @@ export const messages = {
   // Bağlanma iletişim kutusu. Adımlar sayı olarak gösterilir; ekran okuyucular adları okur.
   "connector.github.stepSignIn": "Oturum aç",
   "connector.github.stepConnected": "Bağlandı",
-  "connector.github.requestingCode": "OpenBot GitHub'dan bir kod istiyor.",
+  "connector.github.requestingCode": "ZollyBot GitHub'dan bir kod istiyor.",
   // {code} GitHub'a yazılacak koddur (örneğin WDJB-MJHT).
   "connector.github.codeLabel": "Kod {code}",
   "connector.github.failedTitle": "GitHub bağlanamadı",
@@ -68,7 +68,7 @@ export const messages = {
   "connector.github.disconnectConfirmTitle": "GitHub bağlantısı kesilsin mi?",
   "connector.github.disconnectConfirmDescription": "Bağlantıyı kesmek @{login} oturumunu bu bilgisayardan kaldırır.",
   "connector.github.disconnectEffectTools": "Tüm ajanlar GitHub araçlarını, gh ve git erişimini kaybeder.",
-  "connector.github.disconnectEffectRevoke": "Ardından OpenBot yetkisini kaldırabileceğiniz GitHub açılır.",
+  "connector.github.disconnectEffectRevoke": "Ardından ZollyBot yetkisini kaldırabileceğiniz GitHub açılır.",
   "connector.github.disconnectEffectKept": "Sohbetler, dosyalar ve ajan belleği bu bilgisayarda kalır.",
   // The same text for the connection of a joined server. {host} is the server name, such as Studio.
   "connector.github.descriptionHost":
@@ -85,15 +85,15 @@ export const messages = {
   // Bir entegrasyon sayfasının onu kaldıran eylemi içeren son bölümü.
   "connector.dangerZone": "Tehlikeli bölge",
   "connector.statusUnknown": "Bilinmiyor",
-  "connector.readFailed": "OpenBot bu bağlantının durumunu okuyamadı.",
+  "connector.readFailed": "ZollyBot bu bağlantının durumunu okuyamadı.",
 
   // Sunucu ayarları > Bağlayıcılar: entegrasyonlar listesi. Her satır kendi sayfasını açar.
 
-  // Sunucu ayarları > Bağlayıcılar > Slack: bir çalışma alanı tek OpenBot uygulamasını yükler ve Slack
+  // Sunucu ayarları > Bağlayıcılar > Slack: bir çalışma alanı tek ZollyBot uygulamasını yükler ve Slack
   // Düzenleyicisi ajanı her isteği alır, ekibe sorar ve yanıtlar.
   "connector.slack.title": "Slack",
   "connector.slack.description":
-    "Kullanıcılar Slack'te @OpenBot'tan bahseder veya doğrudan mesaj gönderir. Slack Düzenleyicisi doğru ajana sorar ve yanıtlar.",
+    "Kullanıcılar Slack'te @ZollyBot'tan bahseder veya doğrudan mesaj gönderir. Slack Düzenleyicisi doğru ajana sorar ve yanıtlar.",
   "connector.slack.statusConnected": "Bağlandı",
   "connector.slack.statusAttention": "Dikkat gerekiyor",
   // {workspace} Slack çalışma alanı adıdır.
@@ -108,16 +108,16 @@ export const messages = {
   "connector.slack.addAgent": "Ajan ekle",
   "connector.slack.actionFailed": "Slack değişikliği kabul etmedi",
   "connector.slack.workspaceTitle": "Çalışma alanları",
-  "connector.slack.workspaceDescription": "Kullanıcılar @OpenBot'tan bahseder veya doğrudan mesaj gönderir.",
+  "connector.slack.workspaceDescription": "Kullanıcılar @ZollyBot'tan bahseder veya doğrudan mesaj gönderir.",
   "connector.slack.disconnectWorkspace": "Bağlantıyı kes",
   "connector.slack.disconnectAllTitle": "Slack bağlantısını kes",
   "connector.slack.disconnectAllSummary":
-    "Tüm çalışma alanlarının bağlantısı kesilir. Kimse ajanlarınıza artık @OpenBot üzerinden ulaşamaz.",
+    "Tüm çalışma alanlarının bağlantısı kesilir. Kimse ajanlarınıza artık @ZollyBot üzerinden ulaşamaz.",
   "connector.slack.disconnectAllSummaryOrchestrator":
-    "Tüm çalışma alanlarının bağlantısı kesilir. Slack Düzenleyicisi ve sohbetleri OpenBot'tan silinir.",
+    "Tüm çalışma alanlarının bağlantısı kesilir. Slack Düzenleyicisi ve sohbetleri ZollyBot'tan silinir.",
   "connector.slack.missingScopes":
-    "OpenBot Slack'te şu izinlere sahip değil: {scopes}. Çalışma alanı bağlantısını kesin, ardından tekrar bağlayın.",
-  "connector.slack.retryAt": "Slack OpenBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
+    "ZollyBot Slack'te şu izinlere sahip değil: {scopes}. Çalışma alanı bağlantısını kesin, ardından tekrar bağlayın.",
+  "connector.slack.retryAt": "Slack ZollyBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
   "connector.slack.reconnect": "Yeniden bağlan",
   "connector.slack.pause": "Duraklat",
   "connector.slack.resume": "Sürdür",
@@ -129,13 +129,13 @@ export const messages = {
   "connector.slack.orchestratorNone": "Henüz yanıt veren bir ajan yok",
   "connector.slack.orchestratorNoneDescription": "Slack Düzenleyicisini ekleyin, aksi takdirde Slack yanıt alamaz.",
   "connector.slack.inviteNote":
-    "OpenBot her genel kanala ve her yeni kanala kendiliğinden katılır. Özel bir kanal için onu davet edin: /invite @OpenBot.",
+    "ZollyBot her genel kanala ve her yeni kanala kendiliğinden katılır. Özel bir kanal için onu davet edin: /invite @ZollyBot.",
   // Bağlanma iletişim kutusu. Adımlar sayı olarak gösterilir; ekran okuyucular adları okur.
   "connector.slack.stepWorkspace": "Çalışma alanı",
   "connector.slack.stepAgent": "Ajan",
   "connector.slack.connectTitle": "Bir Slack çalışma alanına bağlanın",
   "connector.slack.connectDescription":
-    "OpenBot çalışma alanına OpenBot adında bir uygulama yükler ve her genel kanala katılır.",
+    "ZollyBot çalışma alanına ZollyBot adında bir uygulama yükler ve her genel kanala katılır.",
   "connector.slack.connectStepBrowser": "Slack tarayıcınızda açılır",
   "connector.slack.connectStepAllow": "Sağ üst köşeden çalışma alanını seçin, ardından İzin Ver'e tıklayın",
   "connector.slack.connectStepReturn": "Slack işlemi tamamlandığında bu iletişim kutusu devam eder",
@@ -143,24 +143,25 @@ export const messages = {
   "connector.slack.connectWaiting": "Slack bekleniyor. Kurulumu tarayıcınızda tamamlayın.",
   "connector.slack.agentStepTitle": "Slack Düzenleyicisini ekleyin",
   // {workspace} Slack çalışma alanı adıdır.
-  "connector.slack.agentStepDescription": "Bu yeni ajan, {workspace} içinde @OpenBot'a gönderilen her şeyi yanıtlar.",
+  "connector.slack.agentStepDescription": "Bu yeni ajan, {workspace} içinde @ZollyBot'a gönderilen her şeyi yanıtlar.",
   "connector.slack.orchestratorName": "Slack Düzenleyicisi",
   "connector.slack.orchestratorRole": "Slack'te yanıt verir ve ekibe sorar",
   "connector.slack.orchestratorDoesReceive": "Her Slack isteğini ilk olarak alır",
   "connector.slack.orchestratorDoesDelegate": "Her görevi en uygun ajana iletir",
   "connector.slack.orchestratorDoesAnswer": "Yanıtı Slack ileti dizisinde paylaşır",
   "connector.slack.orchestratorModel": "Model",
-  "connector.slack.doneTitle": "OpenBot {workspace} içinde",
-  "connector.slack.doneDescription": "Herhangi bir genel kanalda @OpenBot'tan bahsedin veya doğrudan mesaj gönderin.",
+  "connector.slack.doneTitle": "ZollyBot {workspace} içinde",
+  "connector.slack.doneDescription": "Herhangi bir genel kanalda @ZollyBot'tan bahsedin veya doğrudan mesaj gönderin.",
   "connector.slack.done": "Bitti",
   "connector.slack.disconnectTitle": "{workspace} bağlantısı kesilsin mi?",
   "connector.slack.disconnectDescription":
-    "OpenBot {workspace} içinde yanıt vermeyi durdurur ve Slack belirtecini bu bilgisayardan kaldırır.",
+    "ZollyBot {workspace} içinde yanıt vermeyi durdurur ve Slack belirtecini bu bilgisayardan kaldırır.",
   "connector.slack.disconnectDescriptionHost":
-    "OpenBot {workspace} içinde yanıt vermeyi durdurur ve Slack belirtecini {host} sunucusundan kaldırır.",
-  "connector.slack.disconnectEffect": "{workspace} içindeki kişiler artık @OpenBot aracılığıyla ajanlarınıza ulaşamaz.",
-  "connector.slack.removeEffectKept": "Konuşmalar ve Slack Düzenleyicisi OpenBot'ta kalır.",
-  "connector.slack.removeEffectDeleted": "Slack Düzenleyicisi ve konuşmaları OpenBot'tan silinir.",
+    "ZollyBot {workspace} içinde yanıt vermeyi durdurur ve Slack belirtecini {host} sunucusundan kaldırır.",
+  "connector.slack.disconnectEffect":
+    "{workspace} içindeki kişiler artık @ZollyBot aracılığıyla ajanlarınıza ulaşamaz.",
+  "connector.slack.removeEffectKept": "Konuşmalar ve Slack Düzenleyicisi ZollyBot'ta kalır.",
+  "connector.slack.removeEffectDeleted": "Slack Düzenleyicisi ve konuşmaları ZollyBot'tan silinir.",
   "connector.slack.keep": "Bağlı tut",
   "connector.slack.close": "Kapat",
   "connector.slack.addWorkspace": "Çalışma alanı ekle",
@@ -173,11 +174,11 @@ export const messages = {
     other: "{count} çalışma alanı · Slack Düzenleyicisi yanıtlıyor",
   },
 
-  // Sunucu ayarları > Bağlayıcılar > Discord: bir Discord sunucusu tek OpenBot botunu ekler ve Discord
+  // Sunucu ayarları > Bağlayıcılar > Discord: bir Discord sunucusu tek ZollyBot botunu ekler ve Discord
   // Düzenleyicisi ajanı her isteği alır, ekibe sorar ve yanıtlar. Her zaman "Discord sunucusu" yazın.
   "connector.discord.title": "Discord",
   "connector.discord.description":
-    "Kullanıcılar bir Discord sunucusunun kanalında @OpenBot'tan bahseder. Discord Düzenleyicisi doğru ajana sorar ve yanıtlar.",
+    "Kullanıcılar bir Discord sunucusunun kanalında @ZollyBot'tan bahseder. Discord Düzenleyicisi doğru ajana sorar ve yanıtlar.",
   "connector.discord.statusConnected": "Bağlandı",
   "connector.discord.statusAttention": "Dikkat gerekiyor",
   // {workspace} Discord sunucusunun adıdır.
@@ -193,16 +194,16 @@ export const messages = {
   "connector.discord.actionFailed": "Discord değişikliği kabul etmedi",
   "connector.discord.workspaceTitle": "Discord sunucuları",
   "connector.discord.workspaceDescription":
-    "Bir kanalda @OpenBot'tan bahsedin. Devam etmek için OpenBot'a yanıt verin.",
+    "Bir kanalda @ZollyBot'tan bahsedin. Devam etmek için ZollyBot'a yanıt verin.",
   "connector.discord.disconnectWorkspace": "Bağlantıyı kes",
   "connector.discord.disconnectAllTitle": "Discord bağlantısını kes",
   "connector.discord.disconnectAllSummary":
-    "Tüm sunucuların bağlantısı kesilir. Kimse ajanlarınıza artık @OpenBot üzerinden ulaşamaz.",
+    "Tüm sunucuların bağlantısı kesilir. Kimse ajanlarınıza artık @ZollyBot üzerinden ulaşamaz.",
   "connector.discord.disconnectAllSummaryOrchestrator":
-    "Tüm sunucuların bağlantısı kesilir. Discord Düzenleyicisi ve sohbetleri OpenBot'tan silinir.",
+    "Tüm sunucuların bağlantısı kesilir. Discord Düzenleyicisi ve sohbetleri ZollyBot'tan silinir.",
   "connector.discord.missingScopes":
-    "OpenBot Discord'da şu izinlere sahip değil: {scopes}. Discord sunucusu bağlantısını kesin, ardından tekrar bağlayın.",
-  "connector.discord.retryAt": "Discord OpenBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
+    "ZollyBot Discord'da şu izinlere sahip değil: {scopes}. Discord sunucusu bağlantısını kesin, ardından tekrar bağlayın.",
+  "connector.discord.retryAt": "Discord ZollyBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
   "connector.discord.reconnect": "Yeniden bağlan",
   "connector.discord.pause": "Duraklat",
   "connector.discord.resume": "Sürdür",
@@ -214,12 +215,12 @@ export const messages = {
   "connector.discord.orchestratorNone": "Henüz yanıt veren bir ajan yok",
   "connector.discord.orchestratorNoneDescription":
     "Discord Düzenleyicisini ekleyin, aksi takdirde Discord yanıt alamaz.",
-  "connector.discord.channelsNote": "OpenBot, rolünün görebildiği kanalları görür.",
+  "connector.discord.channelsNote": "ZollyBot, rolünün görebildiği kanalları görür.",
   // Bağlanma iletişim kutusu. Adımlar sayı olarak gösterilir; ekran okuyucular adları okur.
   "connector.discord.stepWorkspace": "Discord sunucusu",
   "connector.discord.stepAgent": "Ajan",
   "connector.discord.connectTitle": "Bir Discord sunucusuna bağlanın",
-  "connector.discord.connectDescription": "OpenBot, Discord sunucusuna OpenBot adında bir bot ekler.",
+  "connector.discord.connectDescription": "ZollyBot, Discord sunucusuna ZollyBot adında bir bot ekler.",
   "connector.discord.connectStepBrowser": "Discord tarayıcınızda açılır",
   "connector.discord.connectStepAllow": "Sunucuyu seçin, ardından Yetkilendir'e tıklayın",
   "connector.discord.connectStepReturn": "Discord işlemi tamamlandığında bu iletişim kutusu devam eder",
@@ -227,25 +228,26 @@ export const messages = {
   "connector.discord.connectWaiting": "Discord bekleniyor. Yetkilendirmeyi tarayıcınızda tamamlayın.",
   "connector.discord.agentStepTitle": "Discord Düzenleyicisini ekleyin",
   // {workspace} Discord sunucusunun adıdır.
-  "connector.discord.agentStepDescription": "Bu yeni ajan, {workspace} içinde @OpenBot'a gönderilen her şeyi yanıtlar.",
+  "connector.discord.agentStepDescription":
+    "Bu yeni ajan, {workspace} içinde @ZollyBot'a gönderilen her şeyi yanıtlar.",
   "connector.discord.orchestratorName": "Discord Düzenleyicisi",
   "connector.discord.orchestratorRole": "Discord'da yanıt verir ve ekibe sorar",
   "connector.discord.orchestratorDoesReceive": "Her Discord isteğini ilk olarak alır",
   "connector.discord.orchestratorDoesDelegate": "Her görevi en uygun ajana iletir",
   "connector.discord.orchestratorDoesAnswer": "Yanıtı Discord kanalında verir",
   "connector.discord.orchestratorModel": "Model",
-  "connector.discord.doneTitle": "OpenBot {workspace} içinde",
-  "connector.discord.doneDescription": "Bir kanalda @OpenBot'tan bahsedin. Devam etmek için OpenBot'a yanıt verin.",
+  "connector.discord.doneTitle": "ZollyBot {workspace} içinde",
+  "connector.discord.doneDescription": "Bir kanalda @ZollyBot'tan bahsedin. Devam etmek için ZollyBot'a yanıt verin.",
   "connector.discord.done": "Bitti",
   "connector.discord.disconnectTitle": "{workspace} bağlantısı kesilsin mi?",
   "connector.discord.disconnectDescription":
-    "OpenBot {workspace} içinde yanıt vermeyi bırakır ve Discord bağlantısını bu bilgisayardan kaldırır.",
+    "ZollyBot {workspace} içinde yanıt vermeyi bırakır ve Discord bağlantısını bu bilgisayardan kaldırır.",
   "connector.discord.disconnectDescriptionHost":
-    "OpenBot {workspace} içinde yanıt vermeyi bırakır ve Discord bağlantısını {host} sunucusundan kaldırır.",
+    "ZollyBot {workspace} içinde yanıt vermeyi bırakır ve Discord bağlantısını {host} sunucusundan kaldırır.",
   "connector.discord.disconnectEffect":
-    "{workspace} içindeki kişiler artık @OpenBot aracılığıyla ajanlarınıza ulaşamaz.",
-  "connector.discord.removeEffectKept": "Konuşmalar ve Discord Düzenleyicisi OpenBot'ta kalır.",
-  "connector.discord.removeEffectDeleted": "Discord Düzenleyicisi ve konuşmaları OpenBot'tan silinir.",
+    "{workspace} içindeki kişiler artık @ZollyBot aracılığıyla ajanlarınıza ulaşamaz.",
+  "connector.discord.removeEffectKept": "Konuşmalar ve Discord Düzenleyicisi ZollyBot'ta kalır.",
+  "connector.discord.removeEffectDeleted": "Discord Düzenleyicisi ve konuşmaları ZollyBot'tan silinir.",
   "connector.discord.keep": "Bağlı tut",
   "connector.discord.close": "Kapat",
   "connector.discord.addWorkspace": "Discord sunucusu ekle",
@@ -257,26 +259,26 @@ export const messages = {
     one: "{count} Discord sunucusu · Discord Düzenleyicisi yanıtlıyor",
     other: "{count} Discord sunucusu · Discord Düzenleyicisi yanıtlıyor",
   },
-  "connector.discord.accessTitle": "OpenBot'u kimler kullanabilir",
+  "connector.discord.accessTitle": "ZollyBot'u kimler kullanabilir",
   "connector.discord.accessDescription":
-    "OpenBot yalnızca bu kişilere yanıt verir. Diğerlerinin bahsetmelerini yok sayar.",
+    "ZollyBot yalnızca bu kişilere yanıt verir. Diğerlerinin bahsetmelerini yok sayar.",
   "connector.discord.accessEveryone": "Sunucudaki herkes",
-  "connector.discord.accessEveryoneDescription": "OpenBot'un gördüğü bir kanala yazabilen herkes ondan bahsedebilir.",
+  "connector.discord.accessEveryoneDescription": "ZollyBot'un gördüğü bir kanala yazabilen herkes ondan bahsedebilir.",
   "connector.discord.accessRoles": "{roles} rolüne sahip üyeler",
   "connector.discord.accessChoose": "Rolleri seç",
-  "connector.discord.accessDialogTitle": "{workspace} içinde OpenBot'u kimler kullanabilir?",
-  "connector.discord.accessDialogDescription": "Hiçbir rol seçilmezse herkes OpenBot'tan bahsedebilir.",
+  "connector.discord.accessDialogTitle": "{workspace} içinde ZollyBot'u kimler kullanabilir?",
+  "connector.discord.accessDialogDescription": "Hiçbir rol seçilmezse herkes ZollyBot'tan bahsedebilir.",
   "connector.discord.accessLoading": "Roller yükleniyor…",
   "connector.discord.accessLoadFailed": "Discord rolleri yüklenmedi",
   "connector.discord.accessNoRoles": "Bu sunucuda seçilecek rol yok.",
   "connector.discord.accessRoleDeleted": "{role} (silindi)",
   "connector.discord.accessSave": "Kaydet",
-  "connector.discord.accessHostUpdate": "Rol seçmek için {host} üzerindeki OpenBot'u güncelleyin.",
-  // Sunucu ayarları > Bağlayıcılar > Telegram: her sohbet tek OpenBot botunu ekler ve Telegram
+  "connector.discord.accessHostUpdate": "Rol seçmek için {host} üzerindeki ZollyBot'u güncelleyin.",
+  // Sunucu ayarları > Bağlayıcılar > Telegram: her sohbet tek ZollyBot botunu ekler ve Telegram
   // Düzenleyicisi ajanı tüm sohbetlerin mesajlarını alır, ekibe sorar ve yanıtlar.
   "connector.telegram.title": "Telegram",
   "connector.telegram.description":
-    "OpenBot botunu bir Telegram grubuna ekleyin veya botla doğrudan bir sohbet açın. Telegram Düzenleyicisi doğru ajana sorar ve yanıtlar.",
+    "ZollyBot botunu bir Telegram grubuna ekleyin veya botla doğrudan bir sohbet açın. Telegram Düzenleyicisi doğru ajana sorar ve yanıtlar.",
   "connector.telegram.statusConnected": "Bağlandı",
   "connector.telegram.statusAttention": "Dikkat gerekiyor",
   // {count} bağlı Telegram sohbetlerinin sayısıdır.
@@ -300,22 +302,22 @@ export const messages = {
   "connector.telegram.groupDescription": "Kullanıcılar bottan bahseder veya mesajlarını yanıtlar.",
   "connector.telegram.directDescription": "Bu sohbetteki her mesaj Telegram Düzenleyicisine gider.",
   "connector.telegram.helpRemoved":
-    "OpenBot botu artık bu sohbette değil. Sohbetin bağlantısını kesin, sonra botu yeniden ekleyin.",
+    "ZollyBot botu artık bu sohbette değil. Sohbetin bağlantısını kesin, sonra botu yeniden ekleyin.",
   "connector.telegram.helpRelayUnavailable":
-    "OpenBot bu bilgisayarda Telegram mesajlarını alamıyor. Oturum açın, Sunucu ayarlarında bu bilgisayara bir ad verin ve OpenBot'u açık tutun.",
+    "ZollyBot bu bilgisayarda Telegram mesajlarını alamıyor. Oturum açın, Sunucu ayarlarında bu bilgisayara bir ad verin ve ZollyBot'u açık tutun.",
   "connector.telegram.helpRelayUnavailableHost":
-    "{host} üzerindeki OpenBot Telegram mesajlarını alamıyor. {host} üzerinde oturum açın, Sunucu ayarlarında sunucuya bir ad verin ve OpenBot'u açık tutun.",
-  "connector.telegram.helpError": "OpenBot bu sohbete ulaşamıyor. Yeniden bağlanın veya sohbetin bağlantısını kesin.",
-  "connector.telegram.retryAt": "Telegram OpenBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
+    "{host} üzerindeki ZollyBot Telegram mesajlarını alamıyor. {host} üzerinde oturum açın, Sunucu ayarlarında sunucuya bir ad verin ve ZollyBot'u açık tutun.",
+  "connector.telegram.helpError": "ZollyBot bu sohbete ulaşamıyor. Yeniden bağlanın veya sohbetin bağlantısını kesin.",
+  "connector.telegram.retryAt": "Telegram ZollyBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
   "connector.telegram.pause": "Duraklat",
   "connector.telegram.resume": "Sürdür",
   "connector.telegram.reconnect": "Yeniden bağlan",
   "connector.telegram.disconnectChat": "Bağlantıyı kes",
   "connector.telegram.disconnectAllTitle": "Telegram bağlantısını kes",
   "connector.telegram.disconnectAllSummary":
-    "Tüm sohbetlerin bağlantısı kesilir. Kimse ajanlarınıza artık OpenBot botu üzerinden ulaşamaz.",
+    "Tüm sohbetlerin bağlantısı kesilir. Kimse ajanlarınıza artık ZollyBot botu üzerinden ulaşamaz.",
   "connector.telegram.disconnectAllSummaryOrchestrator":
-    "Tüm sohbetlerin bağlantısı kesilir. Telegram Düzenleyicisi ve sohbetleri OpenBot'tan silinir.",
+    "Tüm sohbetlerin bağlantısı kesilir. Telegram Düzenleyicisi ve sohbetleri ZollyBot'tan silinir.",
   // {action} Pause gibi bir düğmedir; {name} sohbet adıdır.
   "connector.telegram.rowAction": "{action}: {name}",
   "connector.telegram.linkChat": "Sohbet bağla",
@@ -323,7 +325,7 @@ export const messages = {
   "connector.telegram.openDirectChat": "Doğrudan sohbet aç",
   "connector.telegram.orchestratorTitle": "Telegram Düzenleyicisi",
   "connector.telegram.orchestratorDescription":
-    "Bu ajan tüm Telegram sohbetlerinizden OpenBot'a gelen mesajları alır. Kısa olanları kendisi yanıtlar, diğer işleri doğru ajana iletir ve yanıtı sohbette paylaşır.",
+    "Bu ajan tüm Telegram sohbetlerinizden ZollyBot'a gelen mesajları alır. Kısa olanları kendisi yanıtlar, diğer işleri doğru ajana iletir ve yanıtı sohbette paylaşır.",
   "connector.telegram.orchestratorNone": "Henüz yanıt veren bir ajan yok",
   "connector.telegram.orchestratorNoneDescription":
     "Telegram Düzenleyicisini ekleyin, aksi takdirde Telegram yanıt alamaz.",
@@ -334,7 +336,7 @@ export const messages = {
   "connector.telegram.stepAgent": "Ajan",
   "connector.telegram.connectTitle": "Bir Telegram sohbeti bağlayın",
   "connector.telegram.connectDescription":
-    "OpenBot botunu bir gruba ekleyin veya botla doğrudan bir sohbet açın. Tek bir bot tüm sohbetlerinize hizmet eder.",
+    "ZollyBot botunu bir gruba ekleyin veya botla doğrudan bir sohbet açın. Tek bir bot tüm sohbetlerinize hizmet eder.",
   "connector.telegram.connectStepBrowser": "Telegram tarayıcınızda açılır",
   "connector.telegram.connectStepPick": "Grubu seçin veya doğrudan sohbette Başlat'a dokunun",
   "connector.telegram.connectStepReturn": "Sohbet bağlandığında bu iletişim kutusu devam eder",
@@ -342,23 +344,23 @@ export const messages = {
   "connector.telegram.agentStepTitle": "Telegram Düzenleyicisini ekleyin",
   // {chat} Telegram sohbetinin adıdır.
   "connector.telegram.agentStepDescription":
-    "Bu yeni ajan, {chat} içinde ve daha sonra bağladığınız her sohbette OpenBot'a gelen mesajları yanıtlar.",
+    "Bu yeni ajan, {chat} içinde ve daha sonra bağladığınız her sohbette ZollyBot'a gelen mesajları yanıtlar.",
   "connector.telegram.orchestratorName": "Telegram Düzenleyicisi",
   "connector.telegram.orchestratorRole": "Telegram'da yanıt verir ve ekibe sorar",
-  "connector.telegram.orchestratorDoesReceive": "OpenBot'a gelen her Telegram mesajını ilk olarak alır",
+  "connector.telegram.orchestratorDoesReceive": "ZollyBot'a gelen her Telegram mesajını ilk olarak alır",
   "connector.telegram.orchestratorDoesDelegate": "Her görevi en uygun ajana iletir",
   "connector.telegram.orchestratorDoesAnswer": "Yanıtı Telegram sohbetinde paylaşır",
   "connector.telegram.orchestratorModel": "Model",
-  "connector.telegram.doneTitle": "OpenBot {chat} içinde",
+  "connector.telegram.doneTitle": "ZollyBot {chat} içinde",
   "connector.telegram.done": "Bitti",
   "connector.telegram.disconnectTitle": "{chat} bağlantısı kesilsin mi?",
   "connector.telegram.leaveDescription":
-    "OpenBot botu {chat} sohbetinden ayrılır ve OpenBot orada yanıt vermeyi bırakır.",
+    "ZollyBot botu {chat} sohbetinden ayrılır ve ZollyBot orada yanıt vermeyi bırakır.",
   "connector.telegram.disconnectEffect":
-    "{chat} içindeki kişiler artık OpenBot botu aracılığıyla ajanlarınıza ulaşamaz.",
-  "connector.telegram.removeEffectKept": "Konuşmalar ve Telegram Düzenleyicisi OpenBot'ta kalır.",
+    "{chat} içindeki kişiler artık ZollyBot botu aracılığıyla ajanlarınıza ulaşamaz.",
+  "connector.telegram.removeEffectKept": "Konuşmalar ve Telegram Düzenleyicisi ZollyBot'ta kalır.",
   "connector.telegram.removeEffectDeleted":
-    "Bu son sohbet olduğundan Telegram Düzenleyicisi ve konuşmaları OpenBot'tan silinir.",
+    "Bu son sohbet olduğundan Telegram Düzenleyicisi ve konuşmaları ZollyBot'tan silinir.",
   "connector.telegram.keep": "Bağlı tut",
   "connector.telegram.close": "Kapat",
   // Market > Uygulamalar > WhatsApp: bir WhatsApp numarası bu bilgisayarı cihaz olarak bağlar ve WhatsApp
@@ -389,14 +391,14 @@ export const messages = {
   "connector.whatsapp.actionFailed": "WhatsApp değişikliği kabul etmedi",
   "connector.whatsapp.numbersTitle": "Numaralar",
   "connector.whatsapp.linkNumber": "Numara bağla",
-  "connector.whatsapp.ownNumberNote": "“Kendine mesaj gönder” sohbetiniz ve izin verdiğiniz kişiler OpenBot'a ulaşır.",
+  "connector.whatsapp.ownNumberNote": "“Kendine mesaj gönder” sohbetiniz ve izin verdiğiniz kişiler ZollyBot'a ulaşır.",
   "connector.whatsapp.dedicatedNote":
-    "İzin verdiğiniz kişiler OpenBot'a ulaşır. Diğer kişiler size iletmeleri için bir kod alır.",
+    "İzin verdiğiniz kişiler ZollyBot'a ulaşır. Diğer kişiler size iletmeleri için bir kod alır.",
   "connector.whatsapp.helpLoggedOut": "WhatsApp bu bilgisayarı bağlı cihazlardan kaldırdı. Numarayı yeniden bağlayın.",
   "connector.whatsapp.helpLoggedOutHost": "WhatsApp bu sunucuyu bağlı cihazlardan kaldırdı. Numarayı yeniden bağlayın.",
   "connector.whatsapp.helpError":
-    "OpenBot bu numarada WhatsApp'a ulaşamıyor. Yeniden bağlanın veya numaranın bağlantısını kesin.",
-  "connector.whatsapp.retryAt": "WhatsApp OpenBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
+    "ZollyBot bu numarada WhatsApp'a ulaşamıyor. Yeniden bağlanın veya numaranın bağlantısını kesin.",
+  "connector.whatsapp.retryAt": "WhatsApp ZollyBot'tan beklemesini istedi. {time} saatinde tekrar deneyecek.",
   "connector.whatsapp.pause": "Duraklat",
   "connector.whatsapp.resume": "Sürdür",
   "connector.whatsapp.reconnect": "Yeniden bağlan",
@@ -406,15 +408,15 @@ export const messages = {
   "connector.whatsapp.disconnectAllSummary":
     "Tüm numaraların bağlantısı kesilir. Kimse ajanlarınıza artık WhatsApp üzerinden ulaşamaz.",
   "connector.whatsapp.disconnectAllSummaryOrchestrator":
-    "Tüm numaraların bağlantısı kesilir. WhatsApp Düzenleyicisi ve sohbetleri OpenBot'tan silinir.",
+    "Tüm numaraların bağlantısı kesilir. WhatsApp Düzenleyicisi ve sohbetleri ZollyBot'tan silinir.",
   // {action} Pause gibi bir düğmedir; {name} WhatsApp numarası veya bir kişinin adıdır.
   "connector.whatsapp.rowAction": "{action}: {name}",
   "connector.whatsapp.ownNumber": "Kişisel numara",
   "connector.whatsapp.ownNumberDescription":
-    "Yalnızca “Kendine mesaj gönder” sohbetiniz ve izin verdiğiniz kişiler yazabilir. Yalnızca OpenBot için olan bir numarada kapatın.",
+    "Yalnızca “Kendine mesaj gönder” sohbetiniz ve izin verdiğiniz kişiler yazabilir. Yalnızca ZollyBot için olan bir numarada kapatın.",
   "connector.whatsapp.orchestratorTitle": "WhatsApp Düzenleyicisi",
   "connector.whatsapp.orchestratorDescription":
-    "Bu ajan bağlı tüm numaralarınızdan OpenBot'a gelen mesajları alır. Kısa olanları kendisi yanıtlar, diğer işleri doğru ajana iletir ve WhatsApp'ta yanıt verir.",
+    "Bu ajan bağlı tüm numaralarınızdan ZollyBot'a gelen mesajları alır. Kısa olanları kendisi yanıtlar, diğer işleri doğru ajana iletir ve WhatsApp'ta yanıt verir.",
   "connector.whatsapp.orchestratorNone": "Henüz yanıt veren bir ajan yok",
   "connector.whatsapp.orchestratorNoneDescription":
     "WhatsApp Düzenleyicisini ekleyin, aksi takdirde WhatsApp yanıt alamaz.",
@@ -431,8 +433,8 @@ export const messages = {
   "connector.whatsapp.kindLabel": "Numara",
   "connector.whatsapp.kindPersonal": "Kişisel numaram",
   "connector.whatsapp.kindPersonalDescription":
-    "OpenBot yalnızca “Kendine mesaj gönder” sohbetinizi ve izin verdiğiniz kişileri yanıtlar.",
-  "connector.whatsapp.kindDedicated": "Yalnızca OpenBot için bir numara",
+    "ZollyBot yalnızca “Kendine mesaj gönder” sohbetinizi ve izin verdiğiniz kişileri yanıtlar.",
+  "connector.whatsapp.kindDedicated": "Yalnızca ZollyBot için bir numara",
   "connector.whatsapp.kindDedicatedDescription":
     "Tanımadığınız kişiler size iletmeleri için bir kod alır. Onları burada onaylarsınız.",
   "connector.whatsapp.methodLabel": "Bağlama yöntemi",
@@ -460,27 +462,27 @@ export const messages = {
   "connector.whatsapp.failedTimeout": "Telefon kullanmadan önce kodun süresi doldu.",
   "connector.whatsapp.failedRefused": "WhatsApp bağlantıyı reddetti. Birkaç dakika bekleyin, sonra tekrar deneyin.",
   "connector.whatsapp.failedBusy": "Başka bir bağlama işlemi sürüyor. Bitmesini bekleyin, sonra tekrar deneyin.",
-  "connector.whatsapp.failedUnavailable": "OpenBot WhatsApp'a ulaşamıyor. İnternet bağlantısını kontrol edin.",
+  "connector.whatsapp.failedUnavailable": "ZollyBot WhatsApp'a ulaşamıyor. İnternet bağlantısını kontrol edin.",
   "connector.whatsapp.tryAgain": "Tekrar dene",
   "connector.whatsapp.agentStepTitle": "WhatsApp Düzenleyicisini ekleyin",
   // {number} WhatsApp numarası veya adıdır.
   "connector.whatsapp.agentStepDescription":
-    "Bu yeni ajan, {number} üzerinde ve daha sonra bağladığınız her numarada OpenBot'a gelen mesajları yanıtlar.",
+    "Bu yeni ajan, {number} üzerinde ve daha sonra bağladığınız her numarada ZollyBot'a gelen mesajları yanıtlar.",
   "connector.whatsapp.orchestratorName": "WhatsApp Düzenleyicisi",
   "connector.whatsapp.orchestratorRole": "WhatsApp'ta yanıt verir ve ekibe sorar",
-  "connector.whatsapp.orchestratorDoesReceive": "OpenBot'a gelen her WhatsApp mesajını ilk olarak alır",
+  "connector.whatsapp.orchestratorDoesReceive": "ZollyBot'a gelen her WhatsApp mesajını ilk olarak alır",
   "connector.whatsapp.orchestratorDoesDelegate": "Her görevi en uygun ajana iletir",
   "connector.whatsapp.orchestratorDoesAnswer": "Yanıtı WhatsApp sohbetinde paylaşır",
   "connector.whatsapp.orchestratorModel": "Model",
-  "connector.whatsapp.doneTitle": "OpenBot {number} ile bağlandı",
+  "connector.whatsapp.doneTitle": "ZollyBot {number} ile bağlandı",
   "connector.whatsapp.done": "Bitti",
   "connector.whatsapp.disconnectTitle": "{number} bağlantısı kesilsin mi?",
   "connector.whatsapp.disconnectDescription":
-    "OpenBot {number} üzerinde WhatsApp oturumunu kapatır. OpenBot kapalıysa cihazı WhatsApp > Bağlı cihazlar bölümünden de kaldırın.",
+    "ZollyBot {number} üzerinde WhatsApp oturumunu kapatır. ZollyBot kapalıysa cihazı WhatsApp > Bağlı cihazlar bölümünden de kaldırın.",
   "connector.whatsapp.disconnectEffect": "Kişiler artık {number} üzerinden ajanlarınıza ulaşamaz.",
-  "connector.whatsapp.removeEffectKept": "Konuşmalar ve WhatsApp Düzenleyicisi OpenBot'ta kalır.",
+  "connector.whatsapp.removeEffectKept": "Konuşmalar ve WhatsApp Düzenleyicisi ZollyBot'ta kalır.",
   "connector.whatsapp.removeEffectDeleted":
-    "Bu son numara olduğundan WhatsApp Düzenleyicisi ve konuşmaları OpenBot'tan silinir.",
+    "Bu son numara olduğundan WhatsApp Düzenleyicisi ve konuşmaları ZollyBot'tan silinir.",
   "connector.whatsapp.keep": "Bağlı tut",
   "connector.whatsapp.close": "Kapat",
   // Bir numara üzerinden iş verebilecek kişiler: telefon numarasıyla kişiler ve gruplar.
@@ -501,11 +503,11 @@ export const messages = {
   "connector.whatsapp.groupDescription": "Bu gruptaki kişiler ajanlarınıza iş verebilir.",
   "connector.whatsapp.groupSearch": "Grup ara",
   "connector.whatsapp.groupsLoading": "Gruplar okunuyor…",
-  "connector.whatsapp.groupsLoadFailed": "OpenBot grupları okuyamadı",
+  "connector.whatsapp.groupsLoadFailed": "ZollyBot grupları okuyamadı",
   "connector.whatsapp.groupsEmpty": "Bu numara hiçbir grupta değil.",
   "connector.whatsapp.groupsNoMatch": "Bu adda bir grup yok.",
   "connector.whatsapp.groupAdded": "Eklendi",
-  // Yalnızca OpenBot için olan bir numaraya yazan ve sahibine vermek için kod alan kişiler.
+  // Yalnızca ZollyBot için olan bir numaraya yazan ve sahibine vermek için kod alan kişiler.
   "connector.whatsapp.requestsTitle": "{number} için istekler",
   "connector.whatsapp.requestsDescription":
     "Bu kişiler numaraya yazdı ve bir kod aldı. Bir kişiyi yalnızca size aynı kodu verdiyse onaylayın.",
@@ -516,9 +518,9 @@ export const messages = {
   "connector.whatsapp.deny": "Reddet",
   "connector.onePassword.title": "1Password",
   "connector.onePassword.description":
-    "Ajanların OpenBot tarayıcısında sitelere oturum açabilmesi için özel bir 1Password kasasını bir hizmet hesabı aracılığıyla OpenBot ile paylaşın.",
+    "Ajanların ZollyBot tarayıcısında sitelere oturum açabilmesi için özel bir 1Password kasasını bir hizmet hesabı aracılığıyla ZollyBot ile paylaşın.",
   "connector.onePassword.howItWorks":
-    "Bağlanma, 1Password hesabınızda “Shared with OpenBot” adlı bir kasa ve yalnızca bu kasayı okuyabilen bir hizmet hesabı oluşturur. OpenBot kayıtlı girişleri bu bilgisayardaki kendi tarayıcısında doldurur; bu nedenle yalnızca o kasaya taşıdığınız öğeler paylaşılır. Ajanlar hiçbir zaman parola görmez.",
+    "Bağlanma, 1Password hesabınızda “Shared with ZollyBot” adlı bir kasa ve yalnızca bu kasayı okuyabilen bir hizmet hesabı oluşturur. ZollyBot kayıtlı girişleri bu bilgisayardaki kendi tarayıcısında doldurur; bu nedenle yalnızca o kasaya taşıdığınız öğeler paylaşılır. Ajanlar hiçbir zaman parola görmez.",
   "connector.onePassword.connect": "1Password'e bağlan",
   "connector.onePassword.setupTitle": "Kurulum",
   "connector.onePassword.stepCliTitle": "1Password CLI'yi yükleyin",
@@ -526,20 +528,20 @@ export const messages = {
   "connector.onePassword.stepCliInstalling": "1Password CLI, 1Password'den indiriliyor",
   "connector.onePassword.stepCliReady": "{version} sürümü yüklü.",
   "connector.onePassword.stepCliMissing":
-    "OpenBot bunu 1Password'den kendi klasörüne indirir. Yönetici parolası gerekmez.",
+    "ZollyBot bunu 1Password'den kendi klasörüne indirir. Yönetici parolası gerekmez.",
   "connector.onePassword.stepCliManual":
-    "OpenBot bunu bu bilgisayara yükleyemiyor. 1Password'den yükleyin, ardından bu sayfaya dönün.",
+    "ZollyBot bunu bu bilgisayara yükleyemiyor. 1Password'den yükleyin, ardından bu sayfaya dönün.",
   "connector.onePassword.installCli": "Yükle",
   "connector.onePassword.stepAppTitle": "CLI entegrasyonunu açın",
   "connector.onePassword.stepAppDescription":
     "1Password uygulamasında Settings > Developer bölümünü açın ve “Integrate with 1Password CLI” seçeneğini açın.",
   "connector.onePassword.stepAppReady": "1Password uygulaması, CLI'nin paylaşılan kasayı oluşturmasına izin veriyor.",
   "connector.onePassword.openApp": "1Password'ü aç",
-  "connector.onePassword.openAppFailed": "OpenBot, 1Password'ü açamadı.",
+  "connector.onePassword.openAppFailed": "ZollyBot, 1Password'ü açamadı.",
   "connector.onePassword.checkAgain": "Tekrar denetle",
   "connector.onePassword.stepVaultTitle": "Paylaşılan kasayı oluşturun",
   "connector.onePassword.stepVaultDescription":
-    "OpenBot, “Shared with OpenBot” kasasını ve yalnızca onu okuyabilen bir hizmet hesabı oluşturur. 1Password sizden onay ister.",
+    "ZollyBot, “Shared with ZollyBot” kasasını ve yalnızca onu okuyabilen bir hizmet hesabı oluşturur. 1Password sizden onay ister.",
   "connector.onePassword.useTokenDescription":
     "Bu adımlar yerine 1Password.com'dan bir hizmet hesabı belirteci yapıştırın.",
   "connector.onePassword.useTokenAction": "Belirteç kullan",
@@ -549,7 +551,7 @@ export const messages = {
   "connector.onePassword.approveInApp": "İsteği 1Password uygulamasında onaylayın",
   "connector.onePassword.cancel": "İptal",
   "connector.onePassword.chooseAccountTitle": "Bir hesap seçin",
-  "connector.onePassword.chooseAccountDescription": "OpenBot paylaşılan kasayı seçtiğiniz hesapta oluşturur.",
+  "connector.onePassword.chooseAccountDescription": "ZollyBot paylaşılan kasayı seçtiğiniz hesapta oluşturur.",
   "connector.onePassword.useAccount": "Bu hesabı kullan",
   "connector.onePassword.vaultTitle": "Paylaşılan kasa",
   "connector.onePassword.vaultDescription":
@@ -562,47 +564,47 @@ export const messages = {
   "connector.onePassword.disconnect": "Bağlantıyı kes",
   "connector.onePassword.disconnectTitle": "1Password bağlantısını kes",
   "connector.onePassword.disconnectSummary":
-    "OpenBot belirteci unutur. Kasa ve hizmet hesabı 1Password'de kalır; artık gerekmiyorsa onları orada kaldırın.",
-  "connector.onePassword.actionFailed": "OpenBot 1Password bağlantısını değiştiremedi.",
+    "ZollyBot belirteci unutur. Kasa ve hizmet hesabı 1Password'de kalır; artık gerekmiyorsa onları orada kaldırın.",
+  "connector.onePassword.actionFailed": "ZollyBot 1Password bağlantısını değiştiremedi.",
   "connector.onePassword.statusConnected": "Bağlandı",
   "connector.onePassword.statusConnecting": "Bağlanıyor",
   "connector.onePassword.descriptionHost":
-    "Ayrı bir 1Password kasasını bir hizmet hesabıyla {host} üzerindeki OpenBot ile paylaşın; böylece {host} üzerindeki ajanlar onun tarayıcısında sitelere oturum açabilir.",
+    "Ayrı bir 1Password kasasını bir hizmet hesabıyla {host} üzerindeki ZollyBot ile paylaşın; böylece {host} üzerindeki ajanlar onun tarayıcısında sitelere oturum açabilir.",
   "connector.onePassword.howItWorksHost":
-    "{host} bir hizmet hesabı belirteciyle bağlanır. 1Password.com'da yalnızca OpenBot ile paylaştığınız kasayı okuyabilen bir hizmet hesabı oluşturun ve belirtecini buraya yapıştırın. {host} belirteci denetler ve saklar; bu bilgisayar saklamaz. Ajanlar hiçbir zaman parola görmez.",
+    "{host} bir hizmet hesabı belirteciyle bağlanır. 1Password.com'da yalnızca ZollyBot ile paylaştığınız kasayı okuyabilen bir hizmet hesabı oluşturun ve belirtecini buraya yapıştırın. {host} belirteci denetler ve saklar; bu bilgisayar saklamaz. Ajanlar hiçbir zaman parola görmez.",
   "connector.onePassword.disconnectSummaryHost":
     "{host} belirteci unutur. Kasa ve hizmet hesabı 1Password'de kalır; artık gerekmiyorsa onları orada kaldırın.",
   "connector.bitwarden.title": "Bitwarden",
   "connector.bitwarden.description": "Tarayıcı girişlerini Bitwarden'dan doldurun.",
   "connector.bitwarden.setup":
-    "Bitwarden CLI'yi yükleyin ve bw login ile oturum açın. Shared with OpenBot adlı bir klasör oluşturun ve içine yalnızca ajanların kullanabileceği girişleri koyun. bw unlock --raw komutunu çalıştırın ve oturum anahtarını aşağıya yapıştırın. Ana parolanızı yapıştırmayın.",
+    "Bitwarden CLI'yi yükleyin ve bw login ile oturum açın. Shared with ZollyBot adlı bir klasör oluşturun ve içine yalnızca ajanların kullanabileceği girişleri koyun. bw unlock --raw komutunu çalıştırın ve oturum anahtarını aşağıya yapıştırın. Ana parolanızı yapıştırmayın.",
   "connector.bitwarden.scope":
-    "Bu bilgisayardaki tüm ajanlar Shared with OpenBot içindeki eşleşen girişleri kullanabilir. OpenBot tam HTTPS kaynaklarını kullanır. Ana parola istemi veya özel URI eşleştirme kuralı gerektiren öğeleri kullanmaz.",
+    "Bu bilgisayardaki tüm ajanlar Shared with ZollyBot içindeki eşleşen girişleri kullanabilir. ZollyBot tam HTTPS kaynaklarını kullanır. Ana parola istemi veya özel URI eşleştirme kuralı gerektiren öğeleri kullanmaz.",
   "connector.bitwarden.session":
-    "Oturum anahtarı bellekte kalır. Kasa 8 saat kullanılmazsa veya OpenBot kapanırsa tekrar bağlanın. Bağlantıyı kesmek OpenBot erişimini durdurur; diğer Bitwarden istemcilerini kilitlemez.",
+    "Oturum anahtarı bellekte kalır. Kasa 8 saat kullanılmazsa veya ZollyBot kapanırsa tekrar bağlanın. Bağlantıyı kesmek ZollyBot erişimini durdurur; diğer Bitwarden istemcilerini kilitlemez.",
   "connector.bitwarden.sessionKey": "Bitwarden oturum anahtarı",
   "connector.bitwarden.connect": "Bitwarden'a bağlan",
   "connector.bitwarden.disconnect": "Bitwarden bağlantısını kes",
   "connector.bitwarden.disconnectAction": "Bağlantıyı kes",
   "connector.bitwarden.disconnectSummary":
-    "OpenBot oturum anahtarını unutur. Ajanlar artık Bitwarden'dan giriş bilgisi dolduramaz. Diğer Bitwarden istemcilerinin kilidi açık kalır.",
+    "ZollyBot oturum anahtarını unutur. Ajanlar artık Bitwarden'dan giriş bilgisi dolduramaz. Diğer Bitwarden istemcilerinin kilidi açık kalır.",
   "connector.bitwarden.disconnectSummaryHost":
     "{host} API anahtarını ve ana parolayı kaldırır. {host} üzerindeki ajanlar artık Bitwarden'dan giriş bilgisi dolduramaz.",
   "connector.bitwarden.connected": "Bağlandı",
-  "connector.bitwarden.actionFailed": "OpenBot Bitwarden bağlantısını değiştiremedi.",
+  "connector.bitwarden.actionFailed": "ZollyBot Bitwarden bağlantısını değiştiremedi.",
   "connector.bitwarden.descriptionHost":
     "{host} üzerindeki tarayıcı girişlerini Bitwarden veya Vaultwarden'dan doldurun.",
   "connector.bitwarden.setupHost":
-    "{host} kendi Bitwarden CLI'si ile oturum açar. Kasanızda Shared with OpenBot adlı bir klasör oluşturun ve içine yalnızca ajanların kullanabileceği girişleri koyun. Web kasasında Ayarlar › Güvenlik › Anahtarlar'ı açın ve API anahtarınızı görüntüleyin. Aşağıya sunucu adresini, client_id, client_secret ve ana parolanızı girin.",
+    "{host} kendi Bitwarden CLI'si ile oturum açar. Kasanızda Shared with ZollyBot adlı bir klasör oluşturun ve içine yalnızca ajanların kullanabileceği girişleri koyun. Web kasasında Ayarlar › Güvenlik › Anahtarlar'ı açın ve API anahtarınızı görüntüleyin. Aşağıya sunucu adresini, client_id, client_secret ve ana parolanızı girin.",
   "connector.bitwarden.scopeHost":
-    "{host} üzerindeki tüm ajanlar Shared with OpenBot içindeki eşleşen girişleri kullanabilir. OpenBot tam HTTPS kaynaklarını kullanır. Ana parola isteyen öğeleri veya özel URI eşleşme kuralı olan öğeleri kullanmaz.",
+    "{host} üzerindeki tüm ajanlar Shared with ZollyBot içindeki eşleşen girişleri kullanabilir. ZollyBot tam HTTPS kaynaklarını kullanır. Ana parola isteyen öğeleri veya özel URI eşleşme kuralı olan öğeleri kullanmaz.",
   "connector.bitwarden.sessionHost":
     "{host}, yeniden başlatmadan sonra kilidi tekrar açabilmek için API anahtarını ve ana parolayı şifreli olarak saklar. Bu bilgisayar bunları saklamaz. Bağlantıyı kesmek bunları {host} üzerinden kaldırır. {host} sunucu adresine HTTPS ile ulaşabilmelidir.",
   "connector.bitwarden.serverUrl": "Sunucu adresi",
   "connector.bitwarden.folderTitle": "Paylaşılan klasör",
   "connector.bitwarden.folderDescription":
     "Ajanların bir girişle oturum açmasına izin vermek için girişi Bitwarden'da bu klasöre taşıyın. Durdurmak için kaldırın.",
-  "connector.bitwarden.folderName": "Shared with OpenBot",
+  "connector.bitwarden.folderName": "Shared with ZollyBot",
   "connector.bitwarden.folderKind": "Bitwarden'daki klasör",
   "connector.bitwarden.clientId": "API anahtarı client_id",
   "connector.bitwarden.clientSecret": "API anahtarı client_secret",
@@ -620,19 +622,19 @@ export const messages = {
   "connector.protonPass.keyPlaceholder": "pst_…",
   "connector.protonPass.setupTitle": "Kurulum",
   "connector.protonPass.setupDescription":
-    "Bağla, Proton oturum açma sayfasını tarayıcınızda açar. Sonra OpenBot paylaşılan kasayı oluşturur ve yalnızca salt okunur bir anahtar saklar.",
+    "Bağla, Proton oturum açma sayfasını tarayıcınızda açar. Sonra ZollyBot paylaşılan kasayı oluşturur ve yalnızca salt okunur bir anahtar saklar.",
   "connector.protonPass.setupDescriptionHost":
     "Bağla, Proton oturum açma sayfasını tarayıcınızda açar. Sonra {host} paylaşılan kasayı oluşturur ve yalnızca salt okunur bir anahtar saklar.",
-  "connector.protonPass.vaultName": "Shared with OpenBot",
+  "connector.protonPass.vaultName": "Shared with ZollyBot",
   "connector.protonPass.vaultSetup":
-    "OpenBot bu kasayı bağlandığınızda oluşturur. Paylaşmak için oturum bilgilerini buraya taşıyın.",
+    "ZollyBot bu kasayı bağlandığınızda oluşturur. Paylaşmak için oturum bilgilerini buraya taşıyın.",
   "connector.protonPass.showSteps": "Adımları göster",
   "connector.protonPass.stepsLabel": "Bağlantı adımları",
   "connector.protonPass.stepSignIn": "Oturum aç",
   "connector.protonPass.stepVault": "Paylaşılan kasayı oluştur",
   "connector.protonPass.stepDone": "Bitti",
   "connector.protonPass.signInTitle": "Proton’da oturum açın",
-  "connector.protonPass.signInStarting": "OpenBot oturum açmayı başlatıyor. Proton sayfası tarayıcınızda açılır.",
+  "connector.protonPass.signInStarting": "ZollyBot oturum açmayı başlatıyor. Proton sayfası tarayıcınızda açılır.",
   "connector.protonPass.signInDescription":
     "Oturum açma tarayıcınızda açık. Proton parolanızı ve ikinci faktörünüzü ister.",
   "connector.protonPass.signInDescriptionHost":
@@ -643,7 +645,7 @@ export const messages = {
   "connector.protonPass.continue": "Devam",
   "connector.protonPass.setupStepTitle": "Paylaşılan kasa oluşturuluyor",
   "connector.protonPass.setupStepDescription":
-    "OpenBot “{vault}” kasasını ve onun için salt okunur bir anahtar oluşturur. Sonra Proton oturumunuzu kapatır.",
+    "ZollyBot “{vault}” kasasını ve onun için salt okunur bir anahtar oluşturur. Sonra Proton oturumunuzu kapatır.",
   "connector.protonPass.doneTitle": "Proton Pass bağlandı",
   "connector.protonPass.doneDescription":
     "Ajanların oturum açabilmesi için oturum bilgilerini “{vault}” kasasına taşıyın.",
@@ -673,9 +675,9 @@ export const messages = {
   "connector.protonPass.keyNoExpiry": "Salt okunur. Süresi dolmaz.",
   "connector.protonPass.disconnectTitle": "Proton Pass bağlantısını kes",
   "connector.protonPass.disconnectSummary":
-    "OpenBot bu bilgisayardaki erişim anahtarını siler. Kasa ve içindeki oturum bilgileri Proton hesabınızda kalır.",
+    "ZollyBot bu bilgisayardaki erişim anahtarını siler. Kasa ve içindeki oturum bilgileri Proton hesabınızda kalır.",
   "connector.protonPass.disconnectSummaryHost":
-    "OpenBot {host} üzerindeki erişim anahtarını siler. Kasa ve içindeki oturum bilgileri Proton hesabınızda kalır.",
+    "ZollyBot {host} üzerindeki erişim anahtarını siler. Kasa ve içindeki oturum bilgileri Proton hesabınızda kalır.",
   "connector.protonPass.disconnect": "Bağlantıyı kes",
-  "connector.protonPass.actionFailed": "OpenBot, Proton Pass bağlantısını değiştiremedi.",
+  "connector.protonPass.actionFailed": "ZollyBot, Proton Pass bağlantısını değiştiremedi.",
 } as const satisfies PartialTranslation<typeof source>;

@@ -1,5 +1,5 @@
-import type { DynamicIslandStateChangeReason, DynamicIslandViewState } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { DynamicIslandStateChangeReason, DynamicIslandViewState } from "@zollybot/ui";
 import { BatteryFull, Bot, Wifi } from "lucide-solid";
 import { type Accessor, createSignal, untrack } from "solid-js";
 
@@ -90,7 +90,7 @@ function StoryMenuBar(): JSX.Element {
     <div class="dynamic-island-story-menubar" aria-hidden="true">
       <span class="dynamic-island-story-menu-left">
         <Bot />
-        <strong>OpenBot</strong>
+        <strong>ZollyBot</strong>
         <span>File</span>
         <span>Edit</span>
         <span>View</span>

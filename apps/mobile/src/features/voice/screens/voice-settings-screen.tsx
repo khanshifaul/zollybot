@@ -1,5 +1,5 @@
-import { SPEECH_SPEEDS, type SpeechVoice } from "@openbot/contracts/ipc";
-import type { MobileTranslate } from "@openbot/i18n/mobile";
+import { SPEECH_SPEEDS, type SpeechVoice } from "@zollybot/contracts/ipc";
+import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import { isRunningInExpoGo } from "expo";
 import { router } from "expo-router";
 import { Button, Typography } from "heroui-native";
@@ -79,7 +79,7 @@ function useSupertonicStatus(): string {
 
 /** The check mark of the chosen row, in the accent colour, as in the other settings lists. */
 function useCheckMark() {
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   return (checked: boolean) => (checked ? <Check size={18} color={accent} strokeWidth={2} /> : null);
 }
 

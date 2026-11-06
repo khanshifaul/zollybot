@@ -1,4 +1,4 @@
-import type { AppFormat, MobileTranslate } from "@openbot/i18n/mobile";
+import type { AppFormat, MobileTranslate } from "@zollybot/i18n/mobile";
 
 /**
  * The separators of the chat, as on desktop (`packages/ui/src/features/conversation/chat-day-markers.ts`):

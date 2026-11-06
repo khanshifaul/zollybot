@@ -3,8 +3,8 @@ import type {
   AttachmentSummary,
   FileAction,
   OpenAttachmentInput,
-} from "@openbot/contracts/ipc";
-import type { AttachmentDownloadState, AttachmentDownloads } from "@openbot/ui/features/conversation/AttachmentCards";
+} from "@zollybot/contracts/ipc";
+import type { AttachmentDownloadState, AttachmentDownloads } from "@zollybot/ui/features/conversation/AttachmentCards";
 import { createStore, onCleanup } from "solid-js";
 
 /** The bridge calls of attachment downloads. Without `stop` and `subscribe`, a card shows no download state. */

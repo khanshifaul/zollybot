@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "openbot-site-router",
+  "name": "zollybot-site-router",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-18",
   "compatibility_flags": ["nodejs_compat"],
@@ -8,19 +8,19 @@
   "preview_urls": false,
   "routes": [
     {
-      "pattern": "*.openbot.site/*",
-      "zone_name": "openbot.site"
+      "pattern": "*.zollybot.site/*",
+      "zone_name": "zollybot.site"
     }
   ],
   "vars": {
-    // The account service origin. The report route `/_openbot/report` and the links on error pages use it.
+    // The account service origin. The report route `/_zollybot/report` and the links on error pages use it.
     "ACCOUNT_ORIGIN": "https://openbot.run"
   },
   "r2_buckets": [
     {
       "binding": "SITES",
-      "bucket_name": "openbot-sites",
-      "preview_bucket_name": "openbot-sites-test"
+      "bucket_name": "zollybot-sites",
+      "preview_bucket_name": "zollybot-sites-test"
     }
   ]
 }

@@ -20,7 +20,7 @@
 
 .question-prompt-bubble > .ui-bubble-content {
   width: 100%;
-  padding: var(--openbot-space-4) var(--openbot-space-2) var(--openbot-space-2);
+  padding: var(--zollybot-space-4) var(--zollybot-space-2) var(--zollybot-space-2);
 }
 
 .question-prompt-form.ui-questionnaire {
@@ -31,9 +31,9 @@
 .question-prompt-cancel.ui-button {
   position: absolute;
   z-index: 2;
-  inset-block-start: calc(-1 * var(--openbot-space-2));
+  inset-block-start: calc(-1 * var(--zollybot-space-2));
   inset-inline-end: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .question-prompt-stage {
@@ -115,31 +115,31 @@
 
 .question-prompt-header {
   display: grid;
-  gap: var(--openbot-space-0-5);
-  padding: 0 var(--openbot-space-2) var(--openbot-space-2);
+  gap: var(--zollybot-space-0-5);
+  padding: 0 var(--zollybot-space-2) var(--zollybot-space-2);
 }
 
 .question-prompt-page:not(.question-prompt-summary) .question-prompt-header {
-  padding-inline-end: var(--openbot-space-8);
+  padding-inline-end: var(--zollybot-space-8);
 }
 
 .question-prompt-title {
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-lg);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-lg);
-  letter-spacing: var(--openbot-tracking-tight);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-lg);
+  letter-spacing: var(--zollybot-tracking-tight);
   overflow-wrap: anywhere;
 }
 
 .question-prompt-detail {
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 
 .question-prompt-options {
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .question-prompt-options > .question-prompt-option {
@@ -149,27 +149,27 @@
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: center;
-  gap: var(--openbot-space-3);
-  border-radius: var(--openbot-radius-md);
-  padding: var(--openbot-space-2);
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  gap: var(--zollybot-space-3);
+  border-radius: var(--zollybot-radius-md);
+  padding: var(--zollybot-space-2);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
   cursor: pointer;
-  transition: background-color var(--openbot-duration-fast) ease-out;
+  transition: background-color var(--zollybot-duration-fast) ease-out;
 }
 
 .question-prompt-option:hover:not([data-disabled]),
 .question-prompt-custom:focus-within {
-  background: var(--openbot-question-option-soft);
+  background: var(--zollybot-question-option-soft);
 }
 
 .question-prompt-option[data-checked] {
-  background: var(--openbot-question-option-hover);
+  background: var(--zollybot-question-option-hover);
 }
 
 .question-prompt-option:active:not([data-disabled]) {
-  background: var(--openbot-question-option-pressed);
+  background: var(--zollybot-question-option-pressed);
 }
 
 /* The stage clips, so the keyboard ring sits inside the row. */
@@ -178,8 +178,8 @@
 }
 
 .question-prompt-option:has(.ui-questionnaire-choice-input:focus-visible) {
-  background: var(--openbot-question-option-soft);
-  box-shadow: inset 0 0 0 1px var(--openbot-question-option);
+  background: var(--zollybot-question-option-soft);
+  box-shadow: inset 0 0 0 1px var(--zollybot-question-option);
 }
 
 .question-prompt-option-text {
@@ -192,9 +192,9 @@
 }
 
 .question-prompt-option-description {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   overflow-wrap: anywhere;
 }
 
@@ -204,35 +204,35 @@
   min-width: 22px;
   height: 22px;
   border-color: transparent;
-  border-radius: var(--openbot-radius-xs);
-  background: var(--openbot-question-badge-soft);
-  color: var(--openbot-question-badge-text);
-  font-family: var(--openbot-font-sans);
-  font-weight: var(--openbot-weight-semibold);
+  border-radius: var(--zollybot-radius-xs);
+  background: var(--zollybot-question-badge-soft);
+  color: var(--zollybot-question-badge-text);
+  font-family: var(--zollybot-font-sans);
+  font-weight: var(--zollybot-weight-semibold);
   transition:
-    background-color var(--openbot-duration-fast) ease-out,
-    color var(--openbot-duration-fast) ease-out;
+    background-color var(--zollybot-duration-fast) ease-out,
+    color var(--zollybot-duration-fast) ease-out;
 }
 
 .question-prompt-answer-skipped .question-prompt-letter.ui-kbd {
-  background: var(--openbot-bg-control-active);
-  color: var(--openbot-text-muted);
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-muted);
 }
 
 .question-prompt-option[data-checked] .question-prompt-letter.ui-kbd {
-  background: var(--openbot-question-option);
-  color: var(--openbot-text-on-status);
-  animation: question-prompt-badge-pop var(--openbot-duration-slow) var(--openbot-ease-out);
+  background: var(--zollybot-question-option);
+  color: var(--zollybot-text-on-status);
+  animation: question-prompt-badge-pop var(--zollybot-duration-slow) var(--zollybot-ease-out);
 }
 
 .question-prompt-letter[data-answered].ui-kbd {
-  background: var(--openbot-success);
-  color: var(--openbot-text-on-status);
+  background: var(--zollybot-success);
+  color: var(--zollybot-text-on-status);
 }
 
 .question-prompt-bubble[data-entrance][data-state="done"] .question-prompt-letter[data-answered].ui-kbd {
-  animation: question-prompt-badge-pop var(--openbot-duration-slow) var(--openbot-ease-out) var(--openbot-duration-fast)
-    both;
+  animation: question-prompt-badge-pop var(--zollybot-duration-slow) var(--zollybot-ease-out)
+    var(--zollybot-duration-fast) both;
 }
 
 @keyframes question-prompt-badge-pop {
@@ -254,12 +254,12 @@
   background: transparent;
   box-shadow: none;
   padding: 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
 }
 
 .question-prompt-custom-input.ui-input::placeholder {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .question-prompt-custom-input.ui-input:focus,
@@ -273,22 +273,22 @@
 .question-prompt-footer {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding-block: var(--openbot-space-3) var(--openbot-space-1);
-  padding-inline: var(--openbot-space-2) var(--openbot-space-1);
+  gap: var(--zollybot-space-2);
+  padding-block: var(--zollybot-space-3) var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-1);
 }
 
 .question-prompt-progress.ui-questionnaire-progress {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .question-prompt-dot {
   width: 6px;
   height: 6px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-text-dim);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-text-dim);
   transition:
     width var(--page-slide-dur) var(--page-slide-ease),
     background-color var(--page-slide-dur) var(--page-slide-ease),
@@ -296,27 +296,27 @@
 }
 
 .question-prompt-dot[data-state="done"] {
-  background: var(--openbot-question-badge-text);
+  background: var(--zollybot-question-badge-text);
   opacity: 0.55;
 }
 
 /* The current question is a wide pill. It moves along as the questions open. */
 .question-prompt-dot[data-state="current"] {
   width: 18px;
-  background: var(--openbot-question-option);
+  background: var(--zollybot-question-option);
 }
 
 .question-prompt-actions {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   margin-inline-start: auto;
 }
 
 .question-prompt-pill.ui-button {
-  border-radius: var(--openbot-radius-pill);
-  padding-inline: var(--openbot-space-4);
-  font-size: var(--openbot-text-md);
+  border-radius: var(--zollybot-radius-pill);
+  padding-inline: var(--zollybot-space-4);
+  font-size: var(--zollybot-text-md);
 }
 
 /* Summary ------------------------------------------------------------------------------------- */
@@ -326,53 +326,53 @@
 }
 
 .question-prompt-section .question-prompt-title {
-  padding: 0 var(--openbot-space-2) var(--openbot-space-1);
-  color: var(--openbot-text-muted);
+  padding: 0 var(--zollybot-space-2) var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
 }
 
 .question-prompt-section + .question-prompt-section {
-  margin-top: var(--openbot-space-2);
-  border-top: 1px solid var(--openbot-border);
-  padding-top: var(--openbot-space-3);
+  margin-top: var(--zollybot-space-2);
+  border-top: 1px solid var(--zollybot-border);
+  padding-top: var(--zollybot-space-3);
 }
 
 .question-prompt-answers {
   display: grid;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   margin: 0;
   list-style: none;
 }
 
 .question-prompt-answers,
 .question-prompt-answer-skipped {
-  padding: var(--openbot-space-0-5) var(--openbot-space-2) var(--openbot-space-2);
+  padding: var(--zollybot-space-0-5) var(--zollybot-space-2) var(--zollybot-space-2);
 }
 
 .question-prompt-answer {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
   overflow-wrap: anywhere;
 }
 
 .question-prompt-answer-skipped {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .question-prompt-closed {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   margin: 0;
-  padding: 0 var(--openbot-space-2) var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  padding: 0 var(--zollybot-space-2) var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 
 .question-prompt-closed svg {
@@ -384,20 +384,20 @@
 .question-prompt-empty {
   min-width: 0;
   display: grid;
-  gap: var(--openbot-space-0-5);
-  padding: var(--openbot-space-1);
+  gap: var(--zollybot-space-0-5);
+  padding: var(--zollybot-space-1);
 }
 
 .question-prompt-empty strong {
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
-  line-height: var(--openbot-leading-md);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-md);
 }
 
 .question-prompt-empty > span {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .question-prompt-history-entry {
@@ -414,7 +414,7 @@
   }
 
   .question-prompt-pill.ui-button {
-    padding-inline: var(--openbot-space-3);
+    padding-inline: var(--zollybot-space-3);
   }
 }
 

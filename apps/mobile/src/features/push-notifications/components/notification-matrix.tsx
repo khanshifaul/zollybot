@@ -2,7 +2,7 @@ import {
   type AgentNotificationLevelsSnapshot,
   agentNotificationLevelMap,
   type ServerNotificationLevel,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
 import Plus from "lucide-react-native/icons/plus";

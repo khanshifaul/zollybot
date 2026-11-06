@@ -1,6 +1,6 @@
-import { isAgentTemplateId } from "@openbot/contracts/agent-template-links";
-import type { AgentTemplateDetail } from "@openbot/contracts/ipc";
 import { createServerFn } from "@tanstack/solid-start";
+import { isAgentTemplateId } from "@zollybot/contracts/agent-template-links";
+import type { AgentTemplateDetail } from "@zollybot/contracts/ipc";
 import { runApiEffect } from "../server/effect-runtime";
 
 /**

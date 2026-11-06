@@ -1,4 +1,4 @@
-// The `openbot-transfer.json` manifest at the root of an instance transfer file. OpenBot writes it
+// The `zollybot-transfer.json` manifest at the root of an instance transfer file. ZollyBot writes it
 // on one computer and reads it on another, so the format is a contract between app versions: add
 // optional fields only, and a change of meaning needs a new `version`. The format is described in
 // `docs/architecture/instance-transfer.md`.
@@ -6,8 +6,8 @@
 // A file with an invalid structure is refused. One invalid agent is reported and the others are
 // still offered, and invalid settings are left out with a warning.
 
-import { isAgentProvider } from "@openbot/contracts/agent-providers";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { isAgentProvider } from "@zollybot/contracts/agent-providers";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   isAgentImportKey,
   isAgentTaskLimit,
@@ -19,15 +19,15 @@ import {
   ROUTINE_LIMIT_POLICIES,
   ROUTINE_MISSED_POLICIES,
   ROUTINE_RUN_PLACES,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Result, Schema } from "effect";
 import { isUnsafeArchivePath } from "./skill-package";
 
-export const INSTANCE_TRANSFER_MANIFEST = "openbot-transfer.json";
-export const INSTANCE_TRANSFER_FORMAT = "openbot-instance-transfer";
+export const INSTANCE_TRANSFER_MANIFEST = "zollybot-transfer.json";
+export const INSTANCE_TRANSFER_FORMAT = "zollybot-instance-transfer";
 export const INSTANCE_TRANSFER_VERSION = 1;
-/** Where the files of `~/OpenBot/Shared` are in the archive. */
+/** Where the files of `~/ZollyBot/Shared` are in the archive. */
 export const SHARED_FOLDER = "shared";
 
 const text = (limit: number) => Schema.String.check(Schema.isMaxLength(limit));

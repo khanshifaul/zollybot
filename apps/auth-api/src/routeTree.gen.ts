@@ -50,7 +50,7 @@ import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index
 import { Route as MarketplaceAppsRouteImport } from './routes/marketplace/apps'
 import { Route as NewsIndexRouteImport } from './routes/news/index'
 import { Route as NewsSlugRouteImport } from './routes/news/$slug'
-import { Route as NewsOpenbotVsGrokbotRouteImport } from './routes/news/openbot-vs-grokbot'
+import { Route as NewsOpenbotVsGrokbotRouteImport } from './routes/news/zollybot-vs-grokbot'
 import { Route as NewsRssDotxmlRouteImport } from './routes/news/rss[.]xml'
 import { Route as PluginsIndexRouteImport } from './routes/plugins/index'
 import { Route as PluginsSlugRouteImport } from './routes/plugins/$slug'
@@ -65,7 +65,7 @@ import { Route as DownloadPlatformLatestRouteImport } from './routes/download/$p
 import { Route as MarketplaceAgentsAgentIdRouteImport } from './routes/marketplace/agents/$agentId'
 import { Route as MarketplaceSkillsIndexRouteImport } from './routes/marketplace/skills/index'
 import { Route as MarketplaceSkillsSlugRouteImport } from './routes/marketplace/skills/$slug'
-import { Route as NewsOgOpenbotVsGrokbotDotpngRouteImport } from './routes/news/og/openbot-vs-grokbot[.]png'
+import { Route as NewsOgOpenbotVsGrokbotDotpngRouteImport } from './routes/news/og/zollybot-vs-grokbot[.]png'
 import { Route as PluginsIconSlugRouteImport } from './routes/plugins/icon/$slug'
 import { Route as V1AgentTemplatesIndexRouteImport } from './routes/v1/agent-templates/index'
 import { Route as V1AgentTemplatesTemplateIdRouteImport } from './routes/v1/agent-templates/$templateId'
@@ -406,8 +406,8 @@ const NewsSlugRoute = NewsSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsOpenbotVsGrokbotRoute = NewsOpenbotVsGrokbotRouteImport.update({
-  id: '/news/openbot-vs-grokbot',
-  path: '/news/openbot-vs-grokbot',
+  id: '/news/zollybot-vs-grokbot',
+  path: '/news/zollybot-vs-grokbot',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRssDotxmlRoute = NewsRssDotxmlRouteImport.update({
@@ -483,8 +483,8 @@ const MarketplaceSkillsSlugRoute = MarketplaceSkillsSlugRouteImport.update({
 } as any)
 const NewsOgOpenbotVsGrokbotDotpngRoute =
   NewsOgOpenbotVsGrokbotDotpngRouteImport.update({
-    id: '/news/og/openbot-vs-grokbot.png',
-    path: '/news/og/openbot-vs-grokbot.png',
+    id: '/news/og/zollybot-vs-grokbot.png',
+    path: '/news/og/zollybot-vs-grokbot.png',
     getParentRoute: () => rootRouteImport,
   } as any)
 const PluginsIconSlugRoute = PluginsIconSlugRouteImport.update({
@@ -1247,7 +1247,7 @@ export interface FileRoutesByFullPath {
   '/health/ready': typeof HealthReadyRoute
   '/marketplace/apps': typeof MarketplaceAppsRoute
   '/news/$slug': typeof NewsSlugRoute
-  '/news/openbot-vs-grokbot': typeof NewsOpenbotVsGrokbotRoute
+  '/news/zollybot-vs-grokbot': typeof NewsOpenbotVsGrokbotRoute
   '/news/rss.xml': typeof NewsRssDotxmlRoute
   '/plugins/$slug': typeof PluginsSlugRoute
   '/providers/$slug': typeof ProvidersSlugRoute
@@ -1267,7 +1267,7 @@ export interface FileRoutesByFullPath {
   '/download/$platform/latest': typeof DownloadPlatformLatestRoute
   '/marketplace/agents/$agentId': typeof MarketplaceAgentsAgentIdRoute
   '/marketplace/skills/$slug': typeof MarketplaceSkillsSlugRoute
-  '/news/og/openbot-vs-grokbot.png': typeof NewsOgOpenbotVsGrokbotDotpngRoute
+  '/news/og/zollybot-vs-grokbot.png': typeof NewsOgOpenbotVsGrokbotDotpngRoute
   '/plugins/icon/$slug': typeof PluginsIconSlugRoute
   '/v1/agent-templates/$templateId': typeof V1AgentTemplatesTemplateIdRouteWithChildren
   '/v1/agent-templates/mine': typeof V1AgentTemplatesMineRoute
@@ -1438,7 +1438,7 @@ export interface FileRoutesByTo {
   '/health/ready': typeof HealthReadyRoute
   '/marketplace/apps': typeof MarketplaceAppsRoute
   '/news/$slug': typeof NewsSlugRoute
-  '/news/openbot-vs-grokbot': typeof NewsOpenbotVsGrokbotRoute
+  '/news/zollybot-vs-grokbot': typeof NewsOpenbotVsGrokbotRoute
   '/news/rss.xml': typeof NewsRssDotxmlRoute
   '/plugins/$slug': typeof PluginsSlugRoute
   '/providers/$slug': typeof ProvidersSlugRoute
@@ -1458,7 +1458,7 @@ export interface FileRoutesByTo {
   '/download/$platform/latest': typeof DownloadPlatformLatestRoute
   '/marketplace/agents/$agentId': typeof MarketplaceAgentsAgentIdRoute
   '/marketplace/skills/$slug': typeof MarketplaceSkillsSlugRoute
-  '/news/og/openbot-vs-grokbot.png': typeof NewsOgOpenbotVsGrokbotDotpngRoute
+  '/news/og/zollybot-vs-grokbot.png': typeof NewsOgOpenbotVsGrokbotDotpngRoute
   '/plugins/icon/$slug': typeof PluginsIconSlugRoute
   '/v1/agent-templates/$templateId': typeof V1AgentTemplatesTemplateIdRouteWithChildren
   '/v1/agent-templates/mine': typeof V1AgentTemplatesMineRoute
@@ -1630,7 +1630,7 @@ export interface FileRoutesById {
   '/health/ready': typeof HealthReadyRoute
   '/marketplace/apps': typeof MarketplaceAppsRoute
   '/news/$slug': typeof NewsSlugRoute
-  '/news/openbot-vs-grokbot': typeof NewsOpenbotVsGrokbotRoute
+  '/news/zollybot-vs-grokbot': typeof NewsOpenbotVsGrokbotRoute
   '/news/rss.xml': typeof NewsRssDotxmlRoute
   '/plugins/$slug': typeof PluginsSlugRoute
   '/providers/$slug': typeof ProvidersSlugRoute
@@ -1650,7 +1650,7 @@ export interface FileRoutesById {
   '/download/$platform_/latest': typeof DownloadPlatformLatestRoute
   '/marketplace/agents/$agentId': typeof MarketplaceAgentsAgentIdRoute
   '/marketplace/skills/$slug': typeof MarketplaceSkillsSlugRoute
-  '/news/og/openbot-vs-grokbot.png': typeof NewsOgOpenbotVsGrokbotDotpngRoute
+  '/news/og/zollybot-vs-grokbot.png': typeof NewsOgOpenbotVsGrokbotDotpngRoute
   '/plugins/icon/$slug': typeof PluginsIconSlugRoute
   '/v1/agent-templates/$templateId': typeof V1AgentTemplatesTemplateIdRouteWithChildren
   '/v1/agent-templates/mine': typeof V1AgentTemplatesMineRoute
@@ -1823,7 +1823,7 @@ export interface FileRouteTypes {
     | '/health/ready'
     | '/marketplace/apps'
     | '/news/$slug'
-    | '/news/openbot-vs-grokbot'
+    | '/news/zollybot-vs-grokbot'
     | '/news/rss.xml'
     | '/plugins/$slug'
     | '/providers/$slug'
@@ -1843,7 +1843,7 @@ export interface FileRouteTypes {
     | '/download/$platform/latest'
     | '/marketplace/agents/$agentId'
     | '/marketplace/skills/$slug'
-    | '/news/og/openbot-vs-grokbot.png'
+    | '/news/og/zollybot-vs-grokbot.png'
     | '/plugins/icon/$slug'
     | '/v1/agent-templates/$templateId'
     | '/v1/agent-templates/mine'
@@ -2014,7 +2014,7 @@ export interface FileRouteTypes {
     | '/health/ready'
     | '/marketplace/apps'
     | '/news/$slug'
-    | '/news/openbot-vs-grokbot'
+    | '/news/zollybot-vs-grokbot'
     | '/news/rss.xml'
     | '/plugins/$slug'
     | '/providers/$slug'
@@ -2034,7 +2034,7 @@ export interface FileRouteTypes {
     | '/download/$platform/latest'
     | '/marketplace/agents/$agentId'
     | '/marketplace/skills/$slug'
-    | '/news/og/openbot-vs-grokbot.png'
+    | '/news/og/zollybot-vs-grokbot.png'
     | '/plugins/icon/$slug'
     | '/v1/agent-templates/$templateId'
     | '/v1/agent-templates/mine'
@@ -2205,7 +2205,7 @@ export interface FileRouteTypes {
     | '/health/ready'
     | '/marketplace/apps'
     | '/news/$slug'
-    | '/news/openbot-vs-grokbot'
+    | '/news/zollybot-vs-grokbot'
     | '/news/rss.xml'
     | '/plugins/$slug'
     | '/providers/$slug'
@@ -2225,7 +2225,7 @@ export interface FileRouteTypes {
     | '/download/$platform_/latest'
     | '/marketplace/agents/$agentId'
     | '/marketplace/skills/$slug'
-    | '/news/og/openbot-vs-grokbot.png'
+    | '/news/og/zollybot-vs-grokbot.png'
     | '/plugins/icon/$slug'
     | '/v1/agent-templates/$templateId'
     | '/v1/agent-templates/mine'
@@ -2816,10 +2816,10 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof NewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/news/openbot-vs-grokbot': {
-      id: '/news/openbot-vs-grokbot'
-      path: '/news/openbot-vs-grokbot'
-      fullPath: '/news/openbot-vs-grokbot'
+    '/news/zollybot-vs-grokbot': {
+      id: '/news/zollybot-vs-grokbot'
+      path: '/news/zollybot-vs-grokbot'
+      fullPath: '/news/zollybot-vs-grokbot'
       preLoaderRoute: typeof NewsOpenbotVsGrokbotRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -2921,10 +2921,10 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof MarketplaceSkillsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/news/og/openbot-vs-grokbot.png': {
-      id: '/news/og/openbot-vs-grokbot.png'
-      path: '/news/og/openbot-vs-grokbot.png'
-      fullPath: '/news/og/openbot-vs-grokbot.png'
+    '/news/og/zollybot-vs-grokbot.png': {
+      id: '/news/og/zollybot-vs-grokbot.png'
+      path: '/news/og/zollybot-vs-grokbot.png'
+      fullPath: '/news/og/zollybot-vs-grokbot.png'
       preLoaderRoute: typeof NewsOgOpenbotVsGrokbotDotpngRouteImport
       parentRoute: typeof rootRouteImport
     }

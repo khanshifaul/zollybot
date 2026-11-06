@@ -5,19 +5,19 @@
  * other. A run in these stories uses the preview mock, not a provider.
  */
 
-import { Toaster } from "@openbot/ui";
-import { AgentNode } from "@openbot/ui/features/workflows/WorkflowAgentNode";
-import { ApprovalNode } from "@openbot/ui/features/workflows/WorkflowApprovalNode";
-import { AssetNode } from "@openbot/ui/features/workflows/WorkflowAssetNode";
-import { ConditionNode } from "@openbot/ui/features/workflows/WorkflowConditionNode";
-import { ImageNode } from "@openbot/ui/features/workflows/WorkflowImageNode";
-import { LlmNode } from "@openbot/ui/features/workflows/WorkflowLlmNode";
-import { NoteNode } from "@openbot/ui/features/workflows/WorkflowNoteNode";
-import { OutputNode } from "@openbot/ui/features/workflows/WorkflowOutputNode";
-import { PromptNode } from "@openbot/ui/features/workflows/WorkflowPromptNode";
-import { TextNode } from "@openbot/ui/features/workflows/WorkflowTextNode";
-import { TriggerNode } from "@openbot/ui/features/workflows/WorkflowTriggerNode";
-import type { WorkflowCatalogs } from "@openbot/ui/features/workflows/workflow-model";
+import { Toaster } from "@zollybot/ui";
+import { AgentNode } from "@zollybot/ui/features/workflows/WorkflowAgentNode";
+import { ApprovalNode } from "@zollybot/ui/features/workflows/WorkflowApprovalNode";
+import { AssetNode } from "@zollybot/ui/features/workflows/WorkflowAssetNode";
+import { ConditionNode } from "@zollybot/ui/features/workflows/WorkflowConditionNode";
+import { ImageNode } from "@zollybot/ui/features/workflows/WorkflowImageNode";
+import { LlmNode } from "@zollybot/ui/features/workflows/WorkflowLlmNode";
+import { NoteNode } from "@zollybot/ui/features/workflows/WorkflowNoteNode";
+import { OutputNode } from "@zollybot/ui/features/workflows/WorkflowOutputNode";
+import { PromptNode } from "@zollybot/ui/features/workflows/WorkflowPromptNode";
+import { TextNode } from "@zollybot/ui/features/workflows/WorkflowTextNode";
+import { TriggerNode } from "@zollybot/ui/features/workflows/WorkflowTriggerNode";
+import type { WorkflowCatalogs } from "@zollybot/ui/features/workflows/workflow-model";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { NodeGallery } from "./workflow-node-gallery";
 import { createStoryPresence } from "./workflow-presence-story";
@@ -227,15 +227,15 @@ export const Trigger: Story = {
       selected="schedule"
       github={STORY_GITHUB}
       fields={{
-        github: { trigger: "github", repository: "openbot-preview/app", event: "issue.opened", filters: "notBot" },
+        github: { trigger: "github", repository: "zollybot-preview/app", event: "issue.opened", filters: "notBot" },
         "github-empty": { trigger: "github", event: "issue.opened", filters: "notBot" },
         "github-many": {
           trigger: "github",
-          repository: "openbot-preview/app",
+          repository: "zollybot-preview/app",
           repositories: [
-            "openbot-preview/app",
-            "openbot-preview/desktop-release-pipeline-and-installers",
-            "openbot-preview-labs/team-api-gateway",
+            "zollybot-preview/app",
+            "zollybot-preview/desktop-release-pipeline-and-installers",
+            "zollybot-preview-labs/team-api-gateway",
           ].join("\n"),
           event: "issue.opened",
           filters: "notBot",
@@ -286,8 +286,8 @@ export const Output: Story = {
         { id: "docs>review:text", from: "docs", to: "review", type: "text" },
       ]}
       fields={{
-        issue: { trigger: "github", repository: "openbot-preview/app", event: "issue.opened", filters: "notBot" },
-        docs: { trigger: "github", repository: "openbot-preview/docs", event: "pr.opened", filters: "notBot" },
+        issue: { trigger: "github", repository: "zollybot-preview/app", event: "issue.opened", filters: "notBot" },
+        docs: { trigger: "github", repository: "zollybot-preview/docs", event: "pr.opened", filters: "notBot" },
         comment: { target: "github", action: "comment" },
         label: { target: "github", action: "label.add", labelsFrom: "agent", labels: "bug\nenhancement" },
         review: { target: "github", action: "review.approve" },

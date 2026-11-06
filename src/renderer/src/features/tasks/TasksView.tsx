@@ -2,8 +2,8 @@ import {
   expandAttachmentReferences,
   removeAttachmentReferences,
   serializeAttachmentReference,
-} from "@openbot/contracts/attachment-references";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+} from "@zollybot/contracts/attachment-references";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentApproval,
   AgentTask,
@@ -13,18 +13,18 @@ import type {
   AttachmentSummary,
   ConversationSnapshot,
   DraftAttachment,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { plainTaskTitle, taskApproval } from "@openbot/team-client/agent-tasks";
-import type { AgentMessage, AgentProfile } from "@openbot/ui/data";
-import type { AgentTaskWait } from "@openbot/ui/features/conversation/AgentTasks";
-import type { AttachmentDownloads, AttachmentMediaSource } from "@openbot/ui/features/conversation/AttachmentCards";
-import type { ComposerPasteResult, ComposerSelection } from "@openbot/ui/features/conversation/ComposerEditor";
-import type { SendShortcut } from "@openbot/ui/features/conversation/send-shortcut";
-import { AgentThreadView } from "@openbot/ui/features/conversation/threads/AgentThreadView";
-import { TaskAnswerCard, TaskPanel } from "@openbot/ui/features/tasks/TaskPanel";
-import { TasksPage, type TasksVoice } from "@openbot/ui/features/tasks/TasksPage";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { plainTaskTitle, taskApproval } from "@zollybot/team-client/agent-tasks";
+import type { AgentMessage, AgentProfile } from "@zollybot/ui/data";
+import type { AgentTaskWait } from "@zollybot/ui/features/conversation/AgentTasks";
+import type { AttachmentDownloads, AttachmentMediaSource } from "@zollybot/ui/features/conversation/AttachmentCards";
+import type { ComposerPasteResult, ComposerSelection } from "@zollybot/ui/features/conversation/ComposerEditor";
+import type { SendShortcut } from "@zollybot/ui/features/conversation/send-shortcut";
+import { AgentThreadView } from "@zollybot/ui/features/conversation/threads/AgentThreadView";
+import { TaskAnswerCard, TaskPanel } from "@zollybot/ui/features/tasks/TaskPanel";
+import { TasksPage, type TasksVoice } from "@zollybot/ui/features/tasks/TasksPage";
+import { currentText } from "@zollybot/ui/text";
 import {
   createEffect,
   createMemo,
@@ -49,7 +49,7 @@ import type { TaskEvent, TasksSource } from "./tasks-port";
 /** How long a start waits before it reaches the agent. Undo cancels it in this time. */
 const UNDO_MS = 6_000;
 /** The agent last chosen on this page for each server, kept apart from the chat agent. */
-const TASK_AGENT_STORAGE_KEY = "openbot:task-agent:v1";
+const TASK_AGENT_STORAGE_KEY = "zollybot:task-agent:v1";
 
 /** What the voice of the composer can do on the page: read and change the draft, and start a task. */
 export interface TasksVoiceControls {

@@ -53,9 +53,9 @@ export function createProviderAwareCodec(profile: ProviderAwareProfile) {
 /** A provider id or auth kind of an open profile: lower case, as `provider-accounts-v1` bounds it. */
 export const OPEN_PROVIDER_ID = PROVIDER_ID_PATTERN;
 
-export const TEAM_PROTOCOL_VERSION_HEADER = "OpenBot-Protocol-Version";
-export const TEAM_APP_VERSION_HEADER = "OpenBot-App-Version";
-export const TEAM_CAPABILITIES_HEADER = "OpenBot-Capabilities";
+export const TEAM_PROTOCOL_VERSION_HEADER = "ZollyBot-Protocol-Version";
+export const TEAM_APP_VERSION_HEADER = "ZollyBot-App-Version";
+export const TEAM_CAPABILITIES_HEADER = "ZollyBot-Capabilities";
 
 export const TEAM_PROTOCOL_ProviderAware_CAPABILITIES = [
   "agent-runtime-snapshots",
@@ -2074,7 +2074,7 @@ export function teamProtocolProviderAwareHttpRoute(
   method: string,
   path: string,
 ): TeamProtocolProviderAwareHttpRoute | null {
-  const pathname = new URL(path, "http://openbot.invalid").pathname;
+  const pathname = new URL(path, "http://zollybot.invalid").pathname;
   const exact: Record<string, TeamProtocolProviderAwareHttpRoute> = {
     "GET /v1/compatibility": "GET compatibility",
     "GET /v1/identity": "GET identity",

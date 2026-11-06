@@ -1,6 +1,6 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import { readHostAnalytics, runTeamEffect } from "@openbot/team-client";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import { readHostAnalytics, runTeamEffect } from "@zollybot/team-client";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
 import { Effect } from "effect";
 import { type Accessor, createEffect, untrack } from "solid-js";
 import type { UsagePort } from "../usage/usage-port";

@@ -20,7 +20,7 @@ final class ShareSender: NSObject, WKNavigationDelegate, WKScriptMessageHandlerW
     case failed(unconfirmed: Bool, detail: String)
   }
 
-  private static let handlerName = "openbot"
+  private static let handlerName = "zollybot"
   private let webView: WKWebView
   private let pageURL: URL?
   private let apiOrigin: URLComponents?
@@ -56,7 +56,7 @@ final class ShareSender: NSObject, WKNavigationDelegate, WKScriptMessageHandlerW
         webView.loadFileURL(pageURL, allowingReadAccessTo: pageURL.deletingLastPathComponent())
       }
       let value = try await webView.callAsyncJavaScript(
-        "return await window.openbotShareSend(request);",
+        "return await window.zollybotShareSend(request);",
         arguments: ["request": request],
         contentWorld: .page
       )

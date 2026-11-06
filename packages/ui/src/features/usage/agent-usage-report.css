@@ -1,50 +1,50 @@
 .agent-usage-secondary,
 .agent-usage-footer {
-  font-size: var(--openbot-text-sm);
-  color: var(--openbot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  color: var(--zollybot-text-muted);
 }
 .agent-usage-overview {
   display: grid;
-  gap: var(--openbot-space-8);
+  gap: var(--zollybot-space-8);
 }
 .agent-usage-summary {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-8);
+  gap: var(--zollybot-space-8);
 }
 .agent-usage-hero {
-  font-size: var(--openbot-text-usage-total);
+  font-size: var(--zollybot-text-usage-total);
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
   /* A total too wide for the column breaks after the currency, never inside the number. */
   overflow-wrap: normal;
-  margin-bottom: var(--openbot-space-3);
+  margin-bottom: var(--zollybot-space-3);
 }
 .agent-usage-providers {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-6);
+  gap: var(--zollybot-space-6);
 }
 .agent-usage-provider-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-4);
-  font-size: var(--openbot-text-lg);
+  gap: var(--zollybot-space-4);
+  font-size: var(--zollybot-text-lg);
 }
 .agent-usage-provider-heading > span {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 /* The legend mark for the row's series. Its colour is an inline style, because it is the
    provider that decides it rather than the stylesheet. */
 .agent-usage-series-dot {
-  width: var(--openbot-space-2);
-  height: var(--openbot-space-2);
-  border-radius: var(--openbot-radius-pill);
+  width: var(--zollybot-space-2);
+  height: var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-pill);
   flex-shrink: 0;
 }
 .agent-usage-provider-heading strong {
@@ -52,14 +52,14 @@
   font-variant-numeric: tabular-nums;
 }
 .agent-usage-provider p {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  margin-top: var(--openbot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  margin-top: var(--zollybot-space-2);
 }
 .agent-usage-provider-icon {
-  fill: var(--openbot-provider-current);
-  width: var(--openbot-space-4);
-  height: var(--openbot-space-4);
+  fill: var(--zollybot-provider-current);
+  width: var(--zollybot-space-4);
+  height: var(--zollybot-space-4);
   flex-shrink: 0;
 }
 .agent-usage-trend {
@@ -69,8 +69,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-4);
-  margin-bottom: var(--openbot-space-4);
+  gap: var(--zollybot-space-4);
+  margin-bottom: var(--zollybot-space-4);
 }
 
 /* One line, never two. A wrapped second row put two entries under five and read as a
@@ -81,22 +81,22 @@
 .agent-usage-totals {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--openbot-space-4) calc(var(--openbot-space-6) * 2);
-  max-height: calc(var(--openbot-leading-sm) + var(--openbot-space-1) + var(--openbot-leading-xl));
-  margin-top: var(--openbot-space-4);
+  gap: var(--zollybot-space-4) calc(var(--zollybot-space-6) * 2);
+  max-height: calc(var(--zollybot-leading-sm) + var(--zollybot-space-1) + var(--zollybot-leading-xl));
+  margin-top: var(--zollybot-space-4);
   overflow: hidden;
 }
 .agent-usage-totals dt {
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
-  color: var(--openbot-text-muted);
-  margin-bottom: var(--openbot-space-1);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+  color: var(--zollybot-text-muted);
+  margin-bottom: var(--zollybot-space-1);
   white-space: nowrap;
 }
 .agent-usage-totals dd {
   margin: 0;
-  font-size: var(--openbot-text-xl);
-  line-height: var(--openbot-leading-xl);
+  font-size: var(--zollybot-text-xl);
+  line-height: var(--zollybot-leading-xl);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -106,14 +106,14 @@
 .agent-usage-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
   font-variant-numeric: tabular-nums;
 }
 .agent-usage-table th,
 .agent-usage-table td {
   text-align: end;
-  padding: var(--openbot-space-2) var(--openbot-space-3);
-  border-bottom: 1px solid var(--openbot-border-strong);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  border-bottom: 1px solid var(--zollybot-border-strong);
   white-space: nowrap;
   font-weight: 400;
 }
@@ -126,17 +126,17 @@
   padding-inline-end: 0;
 }
 .agent-usage-table thead th {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 .agent-usage-table td {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 .agent-usage-table td.agent-usage-table-empty {
   padding-inline-start: 0;
   text-align: start;
   white-space: normal;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 /* The open table alone sets the height. A hidden table, such as the 30 rows of Day, adds no
    empty space under a short one, and it still fades out over the open one. */
@@ -151,22 +151,22 @@
 .agent-usage-model-name {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   overflow-wrap: anywhere;
   min-width: 10rem;
 }
 .agent-usage-footer {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-3);
-  padding-bottom: var(--openbot-space-6);
+  gap: var(--zollybot-space-3);
+  padding-bottom: var(--zollybot-space-6);
 }
 .agent-usage-footer summary {
   cursor: pointer;
   width: fit-content;
 }
 .agent-usage-footer details p {
-  margin-top: var(--openbot-space-3);
+  margin-top: var(--zollybot-space-3);
   max-width: 72ch;
   line-height: 1.6;
 }

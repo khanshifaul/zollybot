@@ -1,5 +1,5 @@
-import { PlatformLogo } from "@openbot/brand";
-import type { MobileConnectedDevice } from "@openbot/contracts/ipc";
+import { PlatformLogo } from "@zollybot/brand";
+import type { MobileConnectedDevice } from "@zollybot/contracts/ipc";
 import {
   Button,
   buttonVariants,
@@ -18,7 +18,7 @@ import {
   Smartphone,
   Text,
   Trash2,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createSignal, For, Show } from "solid-js";
 import { useText } from "../../text";
 import { MobileConnectAddPhoneDialog, MobileConnectLinkDialog } from "./MobileConnectDialogs";
@@ -306,7 +306,7 @@ function RouteChip(props: { store: SettingsMobileConnectStore; disabled: boolean
         const title = () =>
           current().route === "private"
             ? t("settings.mobileConnect.route.private.title")
-            : t("settings.mobileConnect.route.openbot.title");
+            : t("settings.mobileConnect.route.zollybot.title");
         return (
           <Popover.Root placement="bottom-end" gutter={6}>
             <Popover.Trigger

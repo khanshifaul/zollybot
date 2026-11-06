@@ -15,7 +15,7 @@ import { Effect, Option, Schema } from "effect";
  * that lands late must not replace a later state. Each write is about 200 bytes.
  */
 
-export const RUN_MARKER_FILE = "openbot-run-marker-v1.json";
+export const RUN_MARKER_FILE = "zollybot-run-marker-v1.json";
 /** How often a live run writes its last sign of life. */
 const RUN_HEARTBEAT_MS = 60_000;
 /** More dumps than this are sent as this count. */
@@ -144,7 +144,7 @@ export class RunMarker {
     this.#update({ state: "quitting", quitReason: reason });
   }
 
-  /** The teardown did not end within its deadline, and OpenBot exits itself. */
+  /** The teardown did not end within its deadline, and ZollyBot exits itself. */
   quitTimedOut(): void {
     if (this.#record.state === "clean") return;
     this.#stopHeartbeat();

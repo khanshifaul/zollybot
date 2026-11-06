@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves a table or its
 // marker; a newer or incomplete history is accepted; a task can point to no thread, or two tasks to one
@@ -40,15 +40,15 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
 /** The agent's own chat and a second thread, in the columns every release has. */
 function seed(db: DatabaseSync): void {
   const insert = db.prepare("INSERT INTO projection_threads VALUES (?, 'chief', ?, NULL, ?, ?, 1)");
-  insert.run("openbot-thread-chief", 'Chief 界"\\', "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
-  insert.run("openbot-thread-task", "Billing export", "2026-10-01T08:00:00.000Z", "2026-10-01T08:00:00.000Z");
+  insert.run("zollybot-thread-chief", 'Chief 界"\\', "2026-10-01T07:00:00.000Z", "2026-10-01T07:00:00.000Z");
+  insert.run("zollybot-thread-task", "Billing export", "2026-10-01T08:00:00.000Z", "2026-10-01T08:00:00.000Z");
 }
 
 /** Every row of every table, by table name. */
@@ -81,7 +81,7 @@ function insertTask(
     (task_id, agent_id, thread_id, origin, title, outcome, created_at, updated_at, closed_at, last_event_sequence)
     VALUES (?, 'chief', ?, ?, 'Billing export', ?, '2026-10-01', '2026-10-01', NULL, 2)`).run(
     values.taskId ?? "task-1",
-    values.threadId ?? "openbot-thread-task",
+    values.threadId ?? "zollybot-thread-task",
     values.origin ?? "user",
     values.outcome ?? null,
   );
@@ -109,7 +109,7 @@ describe("agent task migration", () => {
     const before = contents(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=38
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 38 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 38 failed");
     expect(contents(db)).toEqual(before);
     expect(taskTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=38").all()).toEqual([]);
@@ -123,9 +123,9 @@ describe("agent task migration", () => {
     const db = databaseAtWithSeed(37);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
     expect(taskTables(db)).toEqual([]);
   });
@@ -133,7 +133,7 @@ describe("agent task migration", () => {
   it("refuses a task of no thread, a second task of one thread, and an unknown value", () => {
     const db = databaseAtWithSeed(37);
     migrateUpTo(db, 46);
-    expect(() => insertTask(db, { threadId: "openbot-thread-unknown" })).toThrow("FOREIGN KEY constraint failed");
+    expect(() => insertTask(db, { threadId: "zollybot-thread-unknown" })).toThrow("FOREIGN KEY constraint failed");
     expect(() => insertTask(db, { origin: "routine" })).toThrow("CHECK constraint failed");
     expect(() => insertTask(db, { outcome: "cancelled" })).toThrow("CHECK constraint failed");
     insertTask(db, { outcome: "completed" });
@@ -147,10 +147,10 @@ describe("agent task migration", () => {
     const db = databaseAtWithSeed(37);
     migrateUpTo(db, 46);
     insertTask(db);
-    db.prepare("DELETE FROM projection_threads WHERE thread_id='openbot-thread-task'").run();
+    db.prepare("DELETE FROM projection_threads WHERE thread_id='zollybot-thread-task'").run();
     expect(db.prepare("SELECT task_id FROM projection_agent_tasks").all()).toEqual([]);
     expect(db.prepare("SELECT thread_id FROM projection_threads").all()).toEqual([
-      { thread_id: "openbot-thread-chief" },
+      { thread_id: "zollybot-thread-chief" },
     ]);
     expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   });

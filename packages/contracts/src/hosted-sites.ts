@@ -49,8 +49,8 @@ export function parseHostedSiteLimitReason(value: unknown): HostedSiteLimitReaso
 }
 
 /** The request headers that tie a site request to a registered server: its host id and machine token. */
-export const HOSTED_SITE_HOST_ID_HEADER = "OpenBot-Host-Id";
-export const HOSTED_SITE_HOST_TOKEN_HEADER = "OpenBot-Host-Token";
+export const HOSTED_SITE_HOST_ID_HEADER = "ZollyBot-Host-Id";
+export const HOSTED_SITE_HOST_TOKEN_HEADER = "ZollyBot-Host-Token";
 
 /** The MIME types allowed for each file extension. The desktop sends the first one. */
 export const HOSTED_SITE_MIME_TYPES: Readonly<Record<string, readonly [string, ...string[]]>> = {

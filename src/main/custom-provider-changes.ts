@@ -15,7 +15,7 @@ import {
   DEFAULT_CUSTOM_PROVIDER_HARNESS,
   type SaveCustomProviderInput,
   type UpdateCustomProviderInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { AgentLifecycleFailed, type AgentService } from "../backend/agent-service";
 import type { CustomProviderStore } from "./custom-provider-store";
 import type { ProviderRuntimeManager } from "./provider-runtime-manager";

@@ -7,8 +7,8 @@ import type {
   VoiceLiveEvent,
   VoiceLiveSession,
   VoiceLiveStart,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Deferred, Effect, Fiber, Schema } from "effect";
 import type { AgentClient } from "../agent-client";
 import {
@@ -99,10 +99,10 @@ interface PendingAsk {
 /**
  * Live voice: OpenAI realtime voice through Codex, for an agent of any provider. The renderer sends a
  * WebRTC offer, and a separate Codex process connects it to OpenAI with the user's own Codex sign-in.
- * Audio goes between the renderer and OpenAI. OpenBot never reads the Codex credentials.
+ * Audio goes between the renderer and OpenAI. ZollyBot never reads the Codex credentials.
  *
  * The voice runs on a relay thread of that process, not on the agent's thread. When the voice model
- * hands a request off, the relay calls `ask_agent`, and OpenBot sends the request to the agent as the
+ * hands a request off, the relay calls `ask_agent`, and ZollyBot sends the request to the agent as the
  * user's message. The agent's answer goes back to the voice, which speaks it. So the voice does not
  * depend on the agent's provider or model, and a model change does not end it. The chat shows each
  * request and answer as usual.

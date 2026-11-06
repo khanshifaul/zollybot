@@ -1,4 +1,4 @@
-// Checks that an agent creates a webhook routine from its chat with `openbot.create_webhook_routine`.
+// Checks that an agent creates a webhook routine from its chat with `zollybot.create_webhook_routine`.
 // Runs the real agent service, tool router and events service on a temporary profile with a fake
 // Codex app-server. The fake calls the tool through `tool_call`, as a model does, and logs the tool
 // result that it gets. The relay is a fake that gives a URL, or fails while it is "down".
@@ -9,26 +9,26 @@
 // Routines settings, and that delete_routine deletes it. It also checks Standard Webhooks requests, as
 // Composio sends them: the sender's own secret (raw, and `whsec_` base64), the `v1,` signature, and
 // a filter on `/metadata/trigger_slug`, which matches because the whole body is the event data.
-// `bun scripts/agent-webhook-routine-e2e.ts`. Writes .openbot-build/agent-webhook-routine-e2e/report.json.
+// `bun scripts/agent-webhook-routine-e2e.ts`. Writes .zollybot-build/agent-webhook-routine-e2e/report.json.
 import assert from "node:assert/strict";
 import { createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS, type AgentEvent, routineConversationEvent } from "@openbot/contracts/ipc";
-import type { EventActivity, EventRoutine } from "@openbot/contracts/ipc-events";
+import { AGENT_PROVIDERS, type AgentEvent, routineConversationEvent } from "@zollybot/contracts/ipc";
+import type { EventActivity, EventRoutine } from "@zollybot/contracts/ipc-events";
 import {
   STANDARD_WEBHOOKS_FORMAT,
   WEBHOOK_DELIVERY_ID_HEADER,
   WEBHOOK_SIGNATURE_HEADER,
   WEBHOOK_TIMESTAMP_HEADER,
-} from "@openbot/contracts/signal-protocol/webhook-route";
+} from "@zollybot/contracts/signal-protocol/webhook-route";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-webhook-routine-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-webhook-tool-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-webhook-routine-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-webhook-tool-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -37,14 +37,14 @@ const fakeLog = join(root, "codex.jsonl");
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 const { agentWebhookRoutineWriter, HostEventsService } = await import("../src/main/host-events-service");
 
 const RELAY_ORIGIN = "https://signal.example.test";
@@ -52,7 +52,7 @@ const CALL_MARK = "WEBHOOK-CALL";
 
 /**
  * A Codex app-server with the methods that the service calls. A turn whose input has
- * `WEBHOOK-CALL <<ARGS{json}ARGS>>` calls `openbot.create_webhook_routine` with that JSON through
+ * `WEBHOOK-CALL <<ARGS{json}ARGS>>` calls `zollybot.create_webhook_routine` with that JSON through
  * `tool_call`, logs the result, and ends. Other turns answer "Done.".
  */
 const FAKE_CODEX = `#!/usr/bin/env node
@@ -111,11 +111,11 @@ const answer = (message) => {
           threadId: params.threadId,
           turnId,
           callId: "call-" + turnId,
-          namespace: "openbot",
+          namespace: "zollybot",
           tool: "tool_call",
           arguments: (() => {
             const { __tool = "create_webhook_routine", ...args } = JSON.parse(match[1]);
-            return { name: "openbot." + __tool, arguments: args };
+            return { name: "zollybot." + __tool, arguments: args };
           })(),
         },
       });
@@ -246,7 +246,7 @@ function pass(name: string, condition: boolean, detail?: string) {
 }
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 let relayUp = true;

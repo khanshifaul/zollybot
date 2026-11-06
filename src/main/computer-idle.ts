@@ -9,7 +9,7 @@ export interface ComputerIdle {
  * Chromium reads the idle time of Linux from the X11 screen saver extension. A native Wayland session
  * has none, and Chromium gives 0 there (electron/electron#34826): the owner always looked to be at the
  * computer, so their phones never got a notification. In a Wayland session the time counts from the
- * last input in an OpenBot window, until Chromium gives a time above 0, which shows that it can
+ * last input in an ZollyBot window, until Chromium gives a time above 0, which shows that it can
  * measure the time of this compositor. `ownWindow` names the windows of the user: an agent sends input
  * to the browser views and hidden windows, and that input is not the user's.
  */

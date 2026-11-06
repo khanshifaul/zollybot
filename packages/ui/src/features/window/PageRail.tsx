@@ -1,4 +1,5 @@
-import { AppLogo, type AppLogoVariant, ProviderLogo } from "@openbot/brand";
+import { Dynamic, type JSX } from "@solidjs/web";
+import { AppLogo, type AppLogoVariant, ProviderLogo } from "@zollybot/brand";
 import {
   Bot,
   Button,
@@ -13,11 +14,10 @@ import {
   Store,
   Waypoints,
   Workflow,
-} from "@openbot/ui";
-import { AccountUsageDetails } from "@openbot/ui/features/account/AccountUsageDetails";
-import { type AccountUsageProviderRow, accountUsageRowKey } from "@openbot/ui/features/account/account-usage-view";
-import { useText } from "@openbot/ui/text";
-import { Dynamic, type JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { AccountUsageDetails } from "@zollybot/ui/features/account/AccountUsageDetails";
+import { type AccountUsageProviderRow, accountUsageRowKey } from "@zollybot/ui/features/account/account-usage-view";
+import { useText } from "@zollybot/ui/text";
 import { createMemo, createSignal, For, Show } from "solid-js";
 
 /** One rail button. Its name shows as a tooltip, unless it has a `card`: the card shows instead. */
@@ -138,7 +138,7 @@ function UsageRings(props: {
   );
 }
 
-/** The answer of one custom agent to its usage prompt. OpenBot cannot read a percent from it. */
+/** The answer of one custom agent to its usage prompt. ZollyBot cannot read a percent from it. */
 export interface CustomAgentUsageRailRow {
   id: string;
   name: string;
@@ -218,8 +218,8 @@ export interface PageRailProps {
   /** The Help menu, between Marketplace and Settings. */
   help: JSX.Element;
   /**
-   * The OpenBot logo in the top row, for a window that has no macOS window buttons there. With
-   * `href`, the logo is a link to the OpenBot site.
+   * The ZollyBot logo in the top row, for a window that has no macOS window buttons there. With
+   * `href`, the logo is a link to the ZollyBot site.
    */
   logo?: { variant: AppLogoVariant; href?: string | undefined } | undefined;
 }

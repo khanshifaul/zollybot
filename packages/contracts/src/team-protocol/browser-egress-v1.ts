@@ -17,7 +17,7 @@
 import { isDynamicRecord, isNumber, isString } from "../runtime-values";
 
 export const BROWSER_EGRESS_CAPABILITY = "browser-egress-v1";
-export const BROWSER_EGRESS_CHANNEL = "openbot.browser-egress.v1";
+export const BROWSER_EGRESS_CHANNEL = "zollybot.browser-egress.v1";
 
 /** The open streams of one channel. */
 export const BROWSER_EGRESS_MAX_STREAMS = 256;

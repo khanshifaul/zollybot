@@ -13,7 +13,7 @@ import {
   type SetBrowserProfileProxyInput,
   type UpdateAgentBrowserProfileInput,
   type UpdateBrowserProfileInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 /** The saved proxies of one server, and the proxy of each named profile (`browser-proxies-v1`). */
 interface BrowserProxyCalls {
@@ -59,9 +59,9 @@ export interface BrowserProfileCalls {
   onChanged?(listener: () => void): () => void;
 }
 
-/** The desktop calls for one server. Reads `window.openbot` on each call: stories replace it per case. */
+/** The desktop calls for one server. Reads `window.zollybot` on each call: stories replace it per case. */
 export function desktopBrowserProfileCalls(serverId?: string): BrowserProfileCalls {
-  const agent = () => window.openbot.agent;
+  const agent = () => window.zollybot.agent;
   const eventServerId = serverId ?? LOCAL_SERVER_ID;
   return {
     list: () => agent().listBrowserProfiles(serverId),

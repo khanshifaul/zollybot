@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
   BROWSER_PROXY_ADDRESS_MAX,
   type BrowserProxyComputer,
@@ -5,7 +6,7 @@ import {
   type BrowserProxySummary,
   browserProxyAddressText,
   parseBrowserProxyAddress,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   Badge,
   Button,
@@ -31,8 +32,7 @@ import {
   Text,
   Trash2,
   Waypoints,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createStore, For, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 
@@ -53,7 +53,7 @@ export interface BrowserProxyDraft {
 /** The proxy choice of the named profiles, for a server with proxy routes. */
 export interface BrowserProfileProxies {
   list: readonly BrowserProxySummary[];
-  /** The computers of members. Each one sends pages through the OpenBot app of its member. */
+  /** The computers of members. Each one sends pages through the ZollyBot app of its member. */
   computers: readonly BrowserProxyComputer[];
   /**
    * Whether this app shares its connection with the server. Undefined: this app cannot share it,
@@ -155,7 +155,7 @@ const AUTOMATIC = "automatic";
 
 /**
  * Runs `next` after a menu closes. The menu gives the focus back to its trigger two frames after it
- * closes (focusRestoreHandler in @openbot/ui complex.tsx), so a dialog opens after that.
+ * closes (focusRestoreHandler in @zollybot/ui complex.tsx), so a dialog opens after that.
  */
 export function createAfterMenuClose() {
   let afterClose: (() => void) | undefined;

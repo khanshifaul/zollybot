@@ -1,9 +1,9 @@
-import SharedFilePreviewPanel from "@openbot/ui/features/conversation/FilePreviewPanel";
 import type { ComponentProps } from "@solidjs/web";
+import SharedFilePreviewPanel from "@zollybot/ui/features/conversation/FilePreviewPanel";
 import { readPanelWidth, savePanelWidth } from "../../components/panel-width-storage";
 
-const PANEL_STORAGE_KEY = "openbot:browser-panel-width";
-const WRAP_LINES_STORAGE_KEY = "openbot:file-preview-wrap-lines";
+const PANEL_STORAGE_KEY = "zollybot:browser-panel-width";
+const WRAP_LINES_STORAGE_KEY = "zollybot:file-preview-wrap-lines";
 
 export default function FilePreviewPanel(
   props: Omit<

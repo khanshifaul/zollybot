@@ -13,7 +13,7 @@
    rules are in `app-shell.css`; the doubled class wins over its active row border. */
 
 .agent-row-agent-status:is(.agent-row-agent-status-unread, .agent-row-agent-status-routine-failed) {
-  --sidebar-felt-ring: var(--agent-avatar-outline, var(--openbot-bg-sidebar));
+  --sidebar-felt-ring: var(--agent-avatar-outline, var(--zollybot-bg-sidebar));
   --sidebar-felt-ring-width: 3.5px;
   --sidebar-felt-ring-border: 3px;
   --sidebar-felt-box: 16px;
@@ -26,21 +26,21 @@
   height: calc(var(--sidebar-felt-box) + 2 * var(--sidebar-felt-ring-border));
   isolation: isolate;
   border: var(--sidebar-felt-ring-border) solid var(--sidebar-felt-ring);
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: var(--sidebar-felt-under) padding-box;
   box-shadow: 0 0 0 calc(var(--sidebar-felt-ring-width) - var(--sidebar-felt-ring-border)) var(--sidebar-felt-ring);
 }
 
 .agent-row-agent-status-unread {
-  --sidebar-felt-under: linear-gradient(to bottom, var(--openbot-felt-plum-top), var(--openbot-felt-plum-bottom));
+  --sidebar-felt-under: linear-gradient(to bottom, var(--zollybot-felt-plum-top), var(--zollybot-felt-plum-bottom));
   --felt-box: var(--sidebar-felt-box);
 
   /* The digits roll in and out inside the felt, as on a counter. The clip is the rounded padding box,
      so it cuts no part of the ring or the felt. */
   overflow: clip;
   padding: 0 3px;
-  color: var(--openbot-felt-cream);
-  font-size: var(--openbot-text-lg);
+  color: var(--zollybot-felt-cream);
+  font-size: var(--zollybot-text-lg);
   line-height: 16px;
 }
 
@@ -63,8 +63,8 @@
 .agent-row-agent-status.agent-row-agent-status-routine-failed {
   --sidebar-felt-under: linear-gradient(
     to bottom,
-    var(--openbot-felt-raspberry-top),
-    var(--openbot-felt-raspberry-bottom)
+    var(--zollybot-felt-raspberry-top),
+    var(--zollybot-felt-raspberry-bottom)
   );
 
   inset-inline-end: calc(-1px - var(--sidebar-felt-ring-border));
@@ -111,7 +111,7 @@
     .agent-row-agent-status-unread,
     .agent-row-agent-status-routine-failed
   ).agent-row-agent-status-entering {
-    animation: sidebar-felt-in var(--openbot-duration-slow) cubic-bezier(0.2, 0, 0, 1) both;
+    animation: sidebar-felt-in var(--zollybot-duration-slow) cubic-bezier(0.2, 0, 0, 1) both;
   }
 
   .agent-row-agent-status-unread.agent-row-agent-status-bumping {
@@ -126,7 +126,7 @@
     .agent-row-agent-status-unread,
     .agent-row-agent-status-routine-failed
   ).agent-row-agent-status-leaving {
-    animation: sidebar-felt-out var(--openbot-duration-overlay) cubic-bezier(0.5, 0, 0.75, 0) both;
+    animation: sidebar-felt-out var(--zollybot-duration-overlay) cubic-bezier(0.5, 0, 0.75, 0) both;
   }
 
   .agent-row-unread-count.agent-row-unread-count-roll-in {

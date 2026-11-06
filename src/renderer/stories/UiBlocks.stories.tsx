@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import type {
   UiBlockResponse,
   UiBlockSpec,
@@ -6,13 +7,12 @@ import type {
   UiConfirmBlock as UiConfirmSpec,
   UiFormBlock as UiFormSpec,
   UiQuickRepliesBlock as UiQuickRepliesSpec,
-} from "@openbot/contracts/ui-blocks";
-import { uiBlockOutcomeText } from "@openbot/contracts/ui-blocks";
-import { UiChoiceBlock } from "@openbot/ui/features/conversation/ui-blocks/UiChoiceBlock";
-import { UiConfirmBlock } from "@openbot/ui/features/conversation/ui-blocks/UiConfirmBlock";
-import { UiFormBlock } from "@openbot/ui/features/conversation/ui-blocks/UiFormBlock";
-import { UiQuickReplies } from "@openbot/ui/features/conversation/ui-blocks/UiQuickReplies";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/contracts/ui-blocks";
+import { uiBlockOutcomeText } from "@zollybot/contracts/ui-blocks";
+import { UiChoiceBlock } from "@zollybot/ui/features/conversation/ui-blocks/UiChoiceBlock";
+import { UiConfirmBlock } from "@zollybot/ui/features/conversation/ui-blocks/UiConfirmBlock";
+import { UiFormBlock } from "@zollybot/ui/features/conversation/ui-blocks/UiFormBlock";
+import { UiQuickReplies } from "@zollybot/ui/features/conversation/ui-blocks/UiQuickReplies";
 import { createSignal } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

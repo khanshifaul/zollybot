@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
   type AppVariant,
   DEFAULT_DYNAMIC_ISLAND_PREFERENCE,
@@ -7,7 +8,7 @@ import {
   IDLE_DYNAMIC_ISLAND_PRESENTATION,
   isDynamicIslandServerVisible,
   type ServerSummary,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   Button,
   Item,
@@ -21,14 +22,13 @@ import {
   SliderField,
   Switch,
   SwitchField,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import {
-  OpenBotDynamicIsland,
   openBotIdleCompactWidth,
-} from "@openbot/ui/features/dynamic-island/OpenBotDynamicIsland";
-import { ServerMark, serverStatusLabels } from "@openbot/ui/features/servers/ServerRail";
-import type { GeneralSettingsValue } from "@openbot/ui/features/settings/app-settings";
-import type { JSX } from "@solidjs/web";
+  ZollyBotDynamicIsland,
+} from "@zollybot/ui/features/dynamic-island/ZollyBotDynamicIsland";
+import { ServerMark, serverStatusLabels } from "@zollybot/ui/features/servers/ServerRail";
+import type { GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
 import { createSignal, createUniqueId, For, onSettled, Show } from "solid-js";
 import { useI18n } from "../../i18n-context";
 
@@ -181,7 +181,7 @@ export function SettingsDynamicIslandTab(props: SettingsDynamicIslandTabProps) {
           <div class="settings-dynamic-island-preview">
             <figure class="settings-dynamic-island-preview-display">
               <PreviewFit widestWidth={widestBuiltInWidth()}>
-                <OpenBotDynamicIsland
+                <ZollyBotDynamicIsland
                   presentation={IDLE_DYNAMIC_ISLAND_PRESENTATION}
                   state="compact"
                   displayMode="notch"
@@ -199,7 +199,7 @@ export function SettingsDynamicIslandTab(props: SettingsDynamicIslandTabProps) {
             </figure>
             <figure class="settings-dynamic-island-preview-display">
               <PreviewFit widestWidth={widestExternalWidth}>
-                <OpenBotDynamicIsland
+                <ZollyBotDynamicIsland
                   presentation={IDLE_DYNAMIC_ISLAND_PRESENTATION}
                   state="compact"
                   displayMode="island"

@@ -33,7 +33,7 @@ import {
   type TeamPresenceSnapshot,
   type TeamRole,
   type TeamSessionSummary,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   decodeList,
   decodeRecord,
@@ -43,8 +43,8 @@ import {
   requiredBoolean,
   requiredNumber,
   requiredString,
-} from "@openbot/contracts/ipc-decoding";
-import { type DynamicRecord, isBoolean, isNumber, isOneOf, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc-decoding";
+import { type DynamicRecord, isBoolean, isNumber, isOneOf, isString } from "@zollybot/contracts/runtime-values";
 
 const HOST_PHASES = ["unconfigured", "idle", "starting", "online", "stopping", "error"] as const;
 const TEAM_ROLES = ["owner", "admin", "member"] as const;
@@ -464,6 +464,6 @@ function decodeHostedStart(value: unknown): HostedServerStart | null {
   if (value === null) return null;
   const start = decodeRecord(value, "hosted start");
   const { step } = start;
-  if (step !== "machine" && step !== "openbot" && step !== "provider_limit") throw new Error("Invalid hostedStart.");
+  if (step !== "machine" && step !== "zollybot" && step !== "provider_limit") throw new Error("Invalid hostedStart.");
   return { step, startedAt: requiredNumber(start, "startedAt") };
 }

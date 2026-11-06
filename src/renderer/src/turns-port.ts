@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What turn state reaches in main: the queue, the routine ids, and the answers to prompts,
@@ -6,7 +6,7 @@ import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
  */
 export interface TurnsPort {
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     | "cancelQueuedMessage"
     | "cancelWait"
     | "clearContext"
@@ -25,7 +25,7 @@ export interface TurnsPort {
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function turnsPort(): TurnsPort {
-  return window.openbot;
+  return window.zollybot;
 }

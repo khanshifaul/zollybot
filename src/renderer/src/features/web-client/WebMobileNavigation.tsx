@@ -1,7 +1,7 @@
-import type { AppTextKey } from "@openbot/i18n";
-import { Button, Globe2, MessageCircle, Workflow } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
 import { Dynamic } from "@solidjs/web";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Button, Globe2, MessageCircle, Workflow } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { For } from "solid-js";
 
 export type WebMobilePane = "conversation" | "workspace";

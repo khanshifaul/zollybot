@@ -9,7 +9,7 @@ import type {
   MobileConnectedDevice,
   NotificationOpenedEvent,
   UpdateStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { describe, expect, it } from "vitest";
 import {
   decodeAccountSessions,
@@ -123,13 +123,13 @@ const valid: [string, (value: unknown) => unknown, unknown][] = [
   [
     "app info",
     decodeAppInfo,
-    { name: "OpenBot", version: "1.0.0", platform: "darwin", variant: "dev" } satisfies AppInfo,
+    { name: "ZollyBot", version: "1.0.0", platform: "darwin", variant: "dev" } satisfies AppInfo,
   ],
   [
     "app info with an install ID",
     decodeAppInfo,
     {
-      name: "OpenBot",
+      name: "ZollyBot",
       version: "1.0.0",
       platform: "darwin",
       variant: "production",
@@ -140,7 +140,7 @@ const valid: [string, (value: unknown) => unknown, unknown][] = [
     "app info drawn on the CPU",
     decodeAppInfo,
     {
-      name: "OpenBot",
+      name: "ZollyBot",
       version: "1.0.0",
       platform: "linux",
       variant: "production",
@@ -227,7 +227,7 @@ const valid: [string, (value: unknown) => unknown, unknown][] = [
     decodeCentralAuthState,
     { status: "error", issue: { code: "offline", message: "No network." } } satisfies CentralAuthState,
   ],
-  ["Mobile Connect ticket", decodeMobileConnectTicket, { qrData: "openbot://mobile-connect", expiresAt: 1 }],
+  ["Mobile Connect ticket", decodeMobileConnectTicket, { qrData: "zollybot://mobile-connect", expiresAt: 1 }],
   [
     "connected devices",
     decodeMobileConnectedDevices,
@@ -283,12 +283,12 @@ const malformed: [string, (value: unknown) => unknown, unknown][] = [
   [
     "app info with an install ID that is not text",
     decodeAppInfo,
-    { name: "OpenBot", version: "1.0.0", platform: "darwin", variant: "production", analyticsInstallId: 1 },
+    { name: "ZollyBot", version: "1.0.0", platform: "darwin", variant: "production", analyticsInstallId: 1 },
   ],
   [
     "app info with a software rendering flag that is not a boolean",
     decodeAppInfo,
-    { name: "OpenBot", version: "1.0.0", platform: "linux", variant: "production", softwareRendering: "yes" },
+    { name: "ZollyBot", version: "1.0.0", platform: "linux", variant: "production", softwareRendering: "yes" },
   ],
   // The key never comes back to the renderer, so a record that carries one fails closed.
   ["a voice server with its key", decodeVoiceServerSettings, { ...voiceServer, apiKey: "sk-secret" }],
@@ -311,7 +311,7 @@ const malformed: [string, (value: unknown) => unknown, unknown][] = [
   [
     "app info on an unknown platform",
     decodeAppInfo,
-    { name: "OpenBot", version: "1", platform: "aix", variant: "dev" },
+    { name: "ZollyBot", version: "1", platform: "aix", variant: "dev" },
   ],
   [
     "setup state with an unknown provider",

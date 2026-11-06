@@ -1,4 +1,4 @@
-import { currentText } from "@openbot/ui/text";
+import { currentText } from "@zollybot/ui/text";
 import { createSignal, onCleanup } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { appPort } from "../../app-port";
@@ -44,9 +44,9 @@ export function TasksPanel(props: TasksPanelProps) {
   const attachmentFiles = createAttachmentDownloads({
     serverId: () => props.serverId,
     calls: () => ({
-      open: (input) => window.openbot.agent.openAttachment(input, props.serverId),
-      stop: (attachmentId) => window.openbot.agent.stopAttachmentDownload(attachmentId, props.serverId),
-      subscribe: window.openbot.agent.onAttachmentDownload,
+      open: (input) => window.zollybot.agent.openAttachment(input, props.serverId),
+      stop: (attachmentId) => window.zollybot.agent.stopAttachmentDownload(attachmentId, props.serverId),
+      subscribe: window.zollybot.agent.onAttachmentDownload,
     }),
     // A toast has no target.
     target: () => undefined,
@@ -67,8 +67,8 @@ export function TasksPanel(props: TasksPanelProps) {
       downloads={attachmentFiles.downloads}
       files={{
         accepted: threads.filesAccepted,
-        import: (data, serverId) => window.openbot.agent.importAttachmentData(data, serverId),
-        discard: (id, serverId) => window.openbot.agent.discardDraftAttachment(id, serverId),
+        import: (data, serverId) => window.zollybot.agent.importAttachmentData(data, serverId),
+        discard: (id, serverId) => window.zollybot.agent.discardDraftAttachment(id, serverId),
       }}
       approvals={approvals()}
       // A question and a browser takeover wait by thread, as the thread tab reads them.

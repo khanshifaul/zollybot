@@ -13,11 +13,11 @@ import type {
   WorkflowRunDetail,
   WorkflowStep,
   WorkflowVersion,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { EMPTY_GITHUB_HISTORY, type WorkflowGitHubCanvas } from "@openbot/ui/features/workflows/workflow-github";
-import type { WorkflowCatalogs } from "@openbot/ui/features/workflows/workflow-model";
-import type { WorkflowRunView } from "@openbot/ui/features/workflows/workflow-run-view";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { EMPTY_GITHUB_HISTORY, type WorkflowGitHubCanvas } from "@zollybot/ui/features/workflows/workflow-github";
+import type { WorkflowCatalogs } from "@zollybot/ui/features/workflows/workflow-model";
+import type { WorkflowRunView } from "@zollybot/ui/features/workflows/workflow-run-view";
 import { FILES_ROWS } from "./files-fixtures";
 import { STORY_AGENT_STATUS, STORY_AGENTS, STORY_MODELS, STORY_TEAM_MEMBERS } from "./fixtures";
 
@@ -482,7 +482,7 @@ export const newCompetitorAlert = (): StoryWorkflow => ({
 
 /* ------------------------------------------------------------ GitHub */
 
-const TRIAGE_REPOSITORY = "openbot-preview/app";
+const TRIAGE_REPOSITORY = "zollybot-preview/app";
 
 /** Issue help: a new comment on an issue goes to an agent, which answers on the issue and labels it. */
 const GITHUB_TRIAGE: WorkflowGraph = {
@@ -628,14 +628,14 @@ export const STORY_GITHUB: WorkflowGitHubCanvas = {
     connected: true,
     repositories: [
       { fullName: TRIAGE_REPOSITORY, private: false, canWrite: true, events: true },
-      { fullName: "openbot-preview/docs", private: true, canWrite: false, events: true },
+      { fullName: "zollybot-preview/docs", private: true, canWrite: false, events: true },
       {
-        fullName: "openbot-preview/desktop-release-pipeline-and-installers",
+        fullName: "zollybot-preview/desktop-release-pipeline-and-installers",
         private: true,
         canWrite: true,
         events: true,
       },
-      { fullName: "openbot-preview-labs/team-api-gateway", private: true, canWrite: true, events: false },
+      { fullName: "zollybot-preview-labs/team-api-gateway", private: true, canWrite: true, events: false },
     ],
   }),
   history: () => EMPTY_GITHUB_HISTORY,

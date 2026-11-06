@@ -2,12 +2,12 @@
  * Builds the boat named snapshot that hosted servers are created from:
  *
  *   BOAT_TEMPLATE_API_KEY=... bun scripts/hosting/build-boat-template.ts --version=0.9.0 \
- *     --appimage-url=https://.../OpenBot-0.9.0-x86_64.AppImage --appimage-sha256=<hex> \
+ *     --appimage-url=https://.../ZollyBot-0.9.0-x86_64.AppImage --appimage-sha256=<hex> \
  *     --auth-api-url=https://<test worker origin>
  *
  * It creates a builder sandbox with no account env, runs provision.sh there, checks the install,
- * saves the builder as `openbot-server-<version>`, and deletes the builder. The builder never starts
- * OpenBot, so the template holds no host identity and no session. The key needs sandbox, files,
+ * saves the builder as `zollybot-server-<version>`, and deletes the builder. The builder never starts
+ * ZollyBot, so the template holds no host identity and no session. The key needs sandbox, files,
  * commands, and named snapshot access; the Worker's key must not have that access.
  *
  * The release job adds `--keep-releases=<n> --in-use=<names>`: before the build, it removes the
@@ -18,29 +18,29 @@ import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
-import { type DynamicRecord, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, registerSecretValue, toLogValue } from "@openbot/logging";
+import { type DynamicRecord, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
 
-const logger = createOpenBotLogger("build-boat-template");
+const logger = createZollyBotLogger("build-boat-template");
 const BOAT_API_URL = "https://boat.dev/api/v1";
 const TEMPLATE_FILES = [
   "provision.sh",
   "packages.txt",
-  "openbot-hosted-server",
-  "openbot-hosted-env",
-  "openbot-hosted-update",
-  "openbot",
-  "openbot-boat-pre-stop",
-  "openbot-hosted.apparmor",
-  "openbot.service",
-  "openbot-update.service",
-  "openbot-update.timer",
-  "openbot-update-apply.service",
-  "openbot-update-request.path",
-  "openbot-update-request.service",
+  "zollybot-hosted-server",
+  "zollybot-hosted-env",
+  "zollybot-hosted-update",
+  "zollybot",
+  "zollybot-boat-pre-stop",
+  "zollybot-hosted.apparmor",
+  "zollybot.service",
+  "zollybot-update.service",
+  "zollybot-update.timer",
+  "zollybot-update-apply.service",
+  "zollybot-update-request.path",
+  "zollybot-update-request.service",
 ];
-const REMOTE_DIRECTORY = "/tmp/openbot-template";
-const PRODUCTION_PREFIX = "openbot-server-production-";
+const REMOTE_DIRECTORY = "/tmp/zollybot-template";
+const PRODUCTION_PREFIX = "zollybot-server-production-";
 const SNAPSHOT_NAME = /^[a-z0-9][a-z0-9-]{0,62}$/u;
 const READY_STATES = new Set(["ready", "idle", "running"]);
 const FAILED_STATES = new Set(["error", "cancelled", "archived"]);
@@ -119,18 +119,18 @@ async function main(): Promise<void> {
       boat,
       builderId,
       [
-        "test -x /opt/OpenBot/app/openbot",
-        `test "$(sed -n 's/^X-AppImage-Version=//p' /opt/OpenBot/app/*.desktop)" = ${shellQuote(options.version)}`,
-        "systemctl is-enabled --quiet openbot.service",
-        "! systemctl is-active --quiet openbot.service",
+        "test -x /opt/ZollyBot/app/zollybot",
+        `test "$(sed -n 's/^X-AppImage-Version=//p' /opt/ZollyBot/app/*.desktop)" = ${shellQuote(options.version)}`,
+        "systemctl is-enabled --quiet zollybot.service",
+        "! systemctl is-active --quiet zollybot.service",
         // With more than one unit, `is-enabled` passes when one of them is enabled.
-        "systemctl is-enabled --quiet openbot-update.timer",
-        "systemctl is-enabled --quiet openbot-update-apply.service",
-        "systemctl is-enabled --quiet openbot-update-request.path",
-        "! systemctl is-active --quiet openbot-update.timer",
-        'test ! -e "$HOME/.config/OpenBot"',
-        'test ! -e "$HOME/.config/openbot-hosted"',
-        'test -z "$(ls -A /srv/openbot-hosted)"',
+        "systemctl is-enabled --quiet zollybot-update.timer",
+        "systemctl is-enabled --quiet zollybot-update-apply.service",
+        "systemctl is-enabled --quiet zollybot-update-request.path",
+        "! systemctl is-active --quiet zollybot-update.timer",
+        'test ! -e "$HOME/.config/ZollyBot"',
+        'test ! -e "$HOME/.config/zollybot-hosted"',
+        'test -z "$(ls -A /srv/zollybot-hosted)"',
         `rm -rf ${REMOTE_DIRECTORY}`,
       ].join(" && "),
     );
@@ -352,7 +352,7 @@ function parseOptions(args: string[]): TemplateOptions {
   if (authApiUrl.protocol !== "https:") throw new Error("--auth-api-url must use HTTPS.");
   const name =
     args.find((argument) => argument.startsWith("--name="))?.slice(7) ??
-    `openbot-server-${version.replaceAll(".", "-")}`;
+    `zollybot-server-${version.replaceAll(".", "-")}`;
   if (!SNAPSHOT_NAME.test(name)) throw new Error("--name must be a boat snapshot name.");
   const keepArgument = args.find((argument) => argument.startsWith("--keep-releases="))?.slice(16);
   const keepReleases = keepArgument === undefined ? null : Number(keepArgument);

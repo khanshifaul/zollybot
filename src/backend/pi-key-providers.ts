@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { KeyOnlyProviderId } from "@openbot/contracts/agent-providers";
+import type { KeyOnlyProviderId } from "@zollybot/contracts/agent-providers";
 import { Effect } from "effect";
 import type { PiMcpExtension } from "./pi-mcp";
 import { providerCall } from "./provider-client-effects";
@@ -12,7 +12,7 @@ import { providerCall } from "./provider-client-effects";
 // that starts with `$` or `!` as an environment reference or a shell command, so the key is escaped
 // to stay a literal. A header value reads `$` in the same way, but not a `!` after the start.
 const readKey = (provider: KeyOnlyProviderId, variable: string) => `
-  const slot = Symbol.for("openbot.pi.${provider}ApiKey");
+  const slot = Symbol.for("zollybot.pi.${provider}ApiKey");
   globalThis[slot] ??= process.env.${variable};
   delete process.env.${variable};
   const key = globalThis[slot];
@@ -24,8 +24,8 @@ const KEY_EXTENSIONS = {
   // Inception serves Mercury through OpenAI chat completions. Pi has no built-in Inception provider,
   // so this extension registers one for this process only.
   inception: {
-    variable: "OPENBOT_PI_INCEPTION_API_KEY",
-    source: `export default function (pi) {${readKey("inception", "OPENBOT_PI_INCEPTION_API_KEY")}
+    variable: "ZOLLYBOT_PI_INCEPTION_API_KEY",
+    source: `export default function (pi) {${readKey("inception", "ZOLLYBOT_PI_INCEPTION_API_KEY")}
   const levels = { off: "instant", minimal: null, low: "low", medium: "medium", high: "high", xhigh: null, max: null };
   const model = (id, name, contextWindow, maxTokens, cost) => ({
     id, name, reasoning: true, input: ["text"], contextWindow, maxTokens, cost, thinkingLevelMap: levels,
@@ -52,8 +52,8 @@ const KEY_EXTENSIONS = {
   // Values in `const`, `default`, `enum` and `examples` are data, and the keys of `properties` are names,
   // so they stay as they are.
   deepseek: {
-    variable: "OPENBOT_PI_DEEPSEEK_API_KEY",
-    source: String.raw`export default function (pi) {${readKey("deepseek", "OPENBOT_PI_DEEPSEEK_API_KEY")}
+    variable: "ZOLLYBOT_PI_DEEPSEEK_API_KEY",
+    source: String.raw`export default function (pi) {${readKey("deepseek", "ZOLLYBOT_PI_DEEPSEEK_API_KEY")}
   pi.registerProvider("deepseek", { apiKey, headers: { Authorization: "Bearer " + literal } });
   const nestsClass = (pattern) => {
     let inClass = false;
@@ -90,8 +90,8 @@ const KEY_EXTENSIONS = {
   // key from Pi's auth.json or OPENROUTER_API_KEY. Pi sends Anthropic models to OpenRouter's Anthropic
   // Messages endpoint, which also gets the auth.json key as `x-api-key`, so that header is replaced too.
   openrouter: {
-    variable: "OPENBOT_PI_OPENROUTER_API_KEY",
-    source: `export default function (pi) {${readKey("openrouter", "OPENBOT_PI_OPENROUTER_API_KEY")}
+    variable: "ZOLLYBOT_PI_OPENROUTER_API_KEY",
+    source: `export default function (pi) {${readKey("openrouter", "ZOLLYBOT_PI_OPENROUTER_API_KEY")}
   pi.registerProvider("openrouter", { apiKey, headers: { Authorization: "Bearer " + literal, "x-api-key": literal } });
 }
 `,
@@ -107,7 +107,7 @@ export const createPiKeyExtension = Effect.fn("PiKeyProviders.createExtension")(
   const { variable, source } = KEY_EXTENSIONS[provider];
   const root = directory ?? tmpdir();
   yield* providerCall(() => mkdir(root, { recursive: true, mode: 0o700 }));
-  const folder = yield* providerCall(() => mkdtemp(join(root, "openbot-pi-")));
+  const folder = yield* providerCall(() => mkdtemp(join(root, "zollybot-pi-")));
   const path = join(folder, `${provider}.mjs`);
   yield* providerCall(() => writeFile(path, source, { mode: 0o600 })).pipe(
     Effect.onError(() => providerCall(() => rm(folder, { recursive: true, force: true })).pipe(Effect.orDie)),

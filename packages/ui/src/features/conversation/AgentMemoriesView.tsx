@@ -1,13 +1,13 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { MemoryEntry } from "@openbot/contracts/ipc";
-import type { AppMessages, AppTextKey } from "@openbot/i18n";
-import { Button, Input, Plus, Search, Switch, Textarea } from "@openbot/ui";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { MemoryEntry } from "@zollybot/contracts/ipc";
+import type { AppMessages, AppTextKey } from "@zollybot/i18n";
+import { Button, Input, Plus, Search, Switch, Textarea } from "@zollybot/ui";
 import {
   SettingsLinkGroup,
   SettingsLinkRow,
   SettingsPanelContent,
   SettingsPanelHeader,
-} from "@openbot/ui/components/SettingsPanel";
+} from "@zollybot/ui/components/SettingsPanel";
 import { createMemo, createSignal, For, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import { AgentMemoriesEmpty } from "./AgentMemoriesEmpty";

@@ -4,9 +4,9 @@ import type {
   MarketplaceSkillPage,
   MarketplaceSkillQuery,
   MarketplaceSkillSummary,
-  OpenBotDesktopApi,
   SkillSubmission,
-} from "@openbot/contracts/ipc";
+  ZollyBotDesktopApi,
+} from "@zollybot/contracts/ipc";
 import {
   STORY_INSTALLED_SKILLS,
   STORY_MARKETPLACE_SKILL_DETAILS,
@@ -90,7 +90,7 @@ export function createMockSkills(options: MockSkillsOptions, onChanged: (agentId
     onChanged(agentId);
   }
 
-  const skills: OpenBotDesktopApi["skills"] = {
+  const skills: ZollyBotDesktopApi["skills"] = {
     localList: async () => clone(localSkills),
     localGet: async ({ skillId, revision }) => {
       const skill = revision
@@ -217,7 +217,7 @@ export function createMockSkills(options: MockSkillsOptions, onChanged: (agentId
     },
     uninstall: async ({ agentId, skillId }) => {
       const skill = readInstalledSkills(agentId).find((item) => item.skillId === skillId);
-      if (skill?.origin === "managed") throw new Error("This skill is managed by OpenBot.");
+      if (skill?.origin === "managed") throw new Error("This skill is managed by ZollyBot.");
       writeInstalled(
         agentId,
         readInstalledSkills(agentId).filter((item) => item.skillId !== skillId),
@@ -227,7 +227,7 @@ export function createMockSkills(options: MockSkillsOptions, onChanged: (agentId
       const current = readInstalledSkills(agentId);
       const skill = current.find((item) => item.skillId === skillId);
       if (!skill) throw new Error("Skill not found.");
-      if (skill.origin === "managed") throw new Error("This skill is managed by OpenBot.");
+      if (skill.origin === "managed") throw new Error("This skill is managed by ZollyBot.");
       const next: InstalledSkill = { ...skill, enabled };
       writeInstalled(
         agentId,

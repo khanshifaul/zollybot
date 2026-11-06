@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { basename } from "node:path";
-import { isValidAvatarImage } from "@openbot/contracts/avatar-images";
-import { type InviteLinkOptions, type InviteLinkPayload, parseInviteUrl } from "@openbot/contracts/invite-links";
+import { isValidAvatarImage } from "@zollybot/contracts/avatar-images";
+import { type InviteLinkOptions, type InviteLinkPayload, parseInviteUrl } from "@zollybot/contracts/invite-links";
 import type {
   AgentEvent,
   AgentImportPreview,
@@ -50,7 +50,7 @@ import type {
   TeamRealtimeEvent,
   TeamRole,
   UpdateTeamMemberInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   type AgentNotificationLevelsSnapshot,
   type BrowserComputerSharing,
@@ -61,39 +61,39 @@ import {
   LOCAL_SERVER_ID,
   REMOTE_DESKTOP_SETUP_CAPABILITY,
   type RemoteDesktopTestInput,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { AGENT_COLORS_CAPABILITY, AGENT_COLORS_ROUTES } from "@openbot/contracts/team-protocol/agent-colors-v1";
-import { AGENT_IMPORT_ROUTES } from "@openbot/contracts/team-protocol/agent-import-v1";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { AGENT_COLORS_CAPABILITY, AGENT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/agent-colors-v1";
+import { AGENT_IMPORT_ROUTES } from "@zollybot/contracts/team-protocol/agent-import-v1";
 import {
   AGENT_NOTIFICATION_LEVELS_CAPABILITY,
   AGENT_NOTIFICATION_LEVELS_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-notification-levels-v1";
-import { BROWSER_EGRESS_CAPABILITY } from "@openbot/contracts/team-protocol/browser-egress-v1";
-import { BROWSER_PROXIES_ROUTES } from "@openbot/contracts/team-protocol/browser-proxies-v1";
-import { decodeBrowserViewSessionResponse } from "@openbot/contracts/team-protocol/browser-view-v1";
-import { CHAT_COLORS_CAPABILITY, CHAT_COLORS_ROUTES } from "@openbot/contracts/team-protocol/chat-colors-v1";
+} from "@zollybot/contracts/team-protocol/agent-notification-levels-v1";
+import { BROWSER_EGRESS_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-egress-v1";
+import { BROWSER_PROXIES_ROUTES } from "@zollybot/contracts/team-protocol/browser-proxies-v1";
+import { decodeBrowserViewSessionResponse } from "@zollybot/contracts/team-protocol/browser-view-v1";
+import { CHAT_COLORS_CAPABILITY, CHAT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/chat-colors-v1";
 import {
   COMPUTER_ACTIVITY_CAPABILITY,
   COMPUTER_ACTIVITY_ROUTES,
-} from "@openbot/contracts/team-protocol/computer-activity-v1";
-import { TEAM_MEMBER_LEAVE_CAPABILITY, type TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { FOCUS_USE_CAPABILITY, FOCUS_USE_ROUTES } from "@openbot/contracts/team-protocol/focus-use-v1";
-import type { HostRestartEvent } from "@openbot/contracts/team-protocol/host-update-v1";
-import { INSTANCE_TRANSFER_ROUTES } from "@openbot/contracts/team-protocol/instance-transfer-v1";
-import type { MachineAlertEvent } from "@openbot/contracts/team-protocol/machine-resources-v1";
-import { decodeTeamProtocolV1CurrentHttpResponse } from "@openbot/contracts/team-protocol/v1-adapter";
-import { sourceText } from "@openbot/i18n/source";
-import { createFocusUsePing } from "@openbot/team-client/focus-use";
-import { followHostKeyHandovers } from "@openbot/team-client/host-key-handover";
+} from "@zollybot/contracts/team-protocol/computer-activity-v1";
+import { TEAM_MEMBER_LEAVE_CAPABILITY, type TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { FOCUS_USE_CAPABILITY, FOCUS_USE_ROUTES } from "@zollybot/contracts/team-protocol/focus-use-v1";
+import type { HostRestartEvent } from "@zollybot/contracts/team-protocol/host-update-v1";
+import { INSTANCE_TRANSFER_ROUTES } from "@zollybot/contracts/team-protocol/instance-transfer-v1";
+import type { MachineAlertEvent } from "@zollybot/contracts/team-protocol/machine-resources-v1";
+import { decodeTeamProtocolV1CurrentHttpResponse } from "@zollybot/contracts/team-protocol/v1-adapter";
+import { sourceText } from "@zollybot/i18n/source";
+import { createFocusUsePing } from "@zollybot/team-client/focus-use";
+import { followHostKeyHandovers } from "@zollybot/team-client/host-key-handover";
 import {
   HOSTED_HOST_READY_LIMIT_MS,
   HOSTED_START_FAILED_READS,
   HOSTED_START_POLL_MS,
   hostedStartStep,
   WAKE_RECONNECT_STATES,
-} from "@openbot/team-client/hosted-server-wake";
+} from "@zollybot/team-client/hosted-server-wake";
 import { Deferred, Effect, Exit, Layer, Result, Scope, Semaphore } from "effect";
 import type { CentralAuthOperationError } from "./central-auth-effects";
 import { ComputerActivityReport } from "./computer-activity-report";
@@ -319,7 +319,7 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
   readonly #hostedServers: HostedServerWakeHooks | null;
   /** When each hosted server that starts after a wake request started. */
   readonly #hostedStartAt = new Map<string, number>();
-  /** When the account server first reported each starting server `running`: OpenBot on it starts. */
+  /** When the account server first reported each starting server `running`: ZollyBot on it starts. */
   readonly #hostedRunningSince = new Map<string, number>();
   /** The status reads in a row that failed, for each starting server. */
   readonly #hostedFailedReads = new Map<string, number>();
@@ -1543,13 +1543,13 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
   }
 
   /**
-   * The client waits while the account server reports that the server starts. Only OpenBot on a running
+   * The client waits while the account server reports that the server starts. Only ZollyBot on a running
    * machine has a time limit, `HOSTED_HOST_READY_LIMIT_MS`. Answers whether the visible step changed.
    */
   #applyHostedStartStep(serverId: string, step: HostedServerStartStep): boolean {
     const startedAt = this.#hostedStartAt.get(serverId);
     if (startedAt === undefined) return false;
-    if (step !== "openbot") this.#hostedRunningSince.delete(serverId);
+    if (step !== "zollybot") this.#hostedRunningSince.delete(serverId);
     else if (!this.#hostedRunningSince.has(serverId)) this.#hostedRunningSince.set(serverId, Date.now());
     const runningSince = this.#hostedRunningSince.get(serverId);
     if (runningSince !== undefined && Date.now() - runningSince >= HOSTED_HOST_READY_LIMIT_MS) {
@@ -2098,7 +2098,7 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
       return {
         sessionId: session.id,
         url: url.toString(),
-        protocols: [`openbot-token.${this.#store.token(server)}`],
+        protocols: [`zollybot-token.${this.#store.token(server)}`],
       };
     },
     (operation) => this.#owned(operation),
@@ -2182,7 +2182,7 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
     (operation) => this.#owned(operation),
   ).bind(this);
 
-  /** Sends an OpenBot transfer file to the host with `instance-transfer-v1` and answers its preview. */
+  /** Sends an ZollyBot transfer file to the host with `instance-transfer-v1` and answers its preview. */
   readonly stageInstanceTransfer = Effect.fn("RemoteManager.stageInstanceTransfer")(
     function* (
       this: RemoteServerManager,

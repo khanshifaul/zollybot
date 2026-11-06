@@ -1,4 +1,4 @@
-import type { PlanLimitRow, PlanLimitTone } from "@openbot/team-client/plan-limits";
+import type { PlanLimitRow, PlanLimitTone } from "@zollybot/team-client/plan-limits";
 import { useThemeColor } from "heroui-native/hooks";
 import { useEffect, useId } from "react";
 import { View } from "react-native";
@@ -67,7 +67,7 @@ function RingArc({
 }
 
 function useToneColors(): Record<PlanLimitTone, string> {
-  const [success, warning, danger] = useCSSVariable(["--openbot-success", "--openbot-warning", "--openbot-danger"]);
+  const [success, warning, danger] = useCSSVariable(["--zollybot-success", "--zollybot-warning", "--zollybot-danger"]);
   return { neutral: String(success), warning: String(warning), critical: String(danger) };
 }
 

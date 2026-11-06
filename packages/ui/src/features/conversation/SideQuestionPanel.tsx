@@ -1,12 +1,12 @@
-import type { InstalledSkill } from "@openbot/contracts/ipc";
-import { ArrowUp, Button, MessageCircleQuestionMark, X } from "@openbot/ui";
-import type { AgentMessage, AgentProfile, ComposerMcpServer } from "@openbot/ui/data";
-import { AgentActivityIndicator, nextAgentActivityLabel } from "@openbot/ui/features/conversation/AgentActivity";
-import { ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
-import { ComposerEditor } from "@openbot/ui/features/conversation/ComposerEditor";
-import { ComposerNotice } from "@openbot/ui/features/conversation/ComposerNotice";
-import { formatChatTimestamp } from "@openbot/ui/features/conversation/chat-timestamp";
-import { useText } from "@openbot/ui/text";
+import type { InstalledSkill } from "@zollybot/contracts/ipc";
+import { ArrowUp, Button, MessageCircleQuestionMark, X } from "@zollybot/ui";
+import type { AgentMessage, AgentProfile, ComposerMcpServer } from "@zollybot/ui/data";
+import { AgentActivityIndicator, nextAgentActivityLabel } from "@zollybot/ui/features/conversation/AgentActivity";
+import { ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
+import { ComposerEditor } from "@zollybot/ui/features/conversation/ComposerEditor";
+import { ComposerNotice } from "@zollybot/ui/features/conversation/ComposerNotice";
+import { formatChatTimestamp } from "@zollybot/ui/features/conversation/chat-timestamp";
+import { useText } from "@zollybot/ui/text";
 import { For, onSettled, Show } from "solid-js";
 import { createScrollFades } from "../../components/createScrollFades";
 

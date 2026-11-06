@@ -2,37 +2,37 @@
 // real SQLite, the real workflow service and the real GitHub REST client on a temporary profile. Only
 // GitHub's API and Discord's CDN are stand-ins, so no Signal, provider, account or network is started.
 // The trigger step gives agents the files; a new issue links the files that the client copied to the
-// `openbot-attachments` branch (an orphan commit with `[skip ci]`), and a file that is too large or that
+// `zollybot-attachments` branch (an orphan commit with `[skip ci]`), and a file that is too large or that
 // does not download keeps its Discord link; a second mention builds on the branch and tries once more
 // when another output moved it; a file that GitHub refuses keeps its Discord link, the other files still
 // copy, and the issue is still made; a mention with no files makes no Git call.
 //
 // Run: bun scripts/discord-github-files-e2e.ts
-// Writes .openbot-build/discord-github-files-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/discord-github-files-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { WorkflowGraph, WorkflowNode, WorkflowRunDetail } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
+import type { WorkflowGraph, WorkflowNode, WorkflowRunDetail } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import type { MessagingDiscordMention } from "../src/backend/messaging/messaging-threads";
 import { type InboundFile, MessagingAdapterError } from "../src/backend/messaging/messaging-types";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
 import { WorkflowRunStore } from "../src/backend/workflows/workflow-run-store";
 import { WorkflowStore } from "../src/backend/workflows/workflow-store";
 import { workflowScheduleDueAt } from "../src/backend/workflows/workflow-triggers";
 import { createWorkflows, type WorkflowsHandle } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import { createGitHubRest } from "../src/main/github-rest";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/discord-github-files-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/discord-github-files-e2e");
 const CONNECTION = "messaging-discord-files-e2e";
 const CHANNEL = "110000000000000001";
 const REPOSITORY = "acme/files";
-const BRANCH = "openbot-attachments";
+const BRANCH = "zollybot-attachments";
 const CDN = "https://cdn.discordapp.com/attachments/110000000000000001";
 const WAIT_MS = 5_000;
 
@@ -66,7 +66,7 @@ const cdnFile = (name: string, mimeType: string, bytes: Uint8Array | null, size 
   return { id, name, mimeType, size, url } satisfies InboundFile;
 };
 
-// The fake GitHub API: one repository with no `openbot-attachments` branch at the start.
+// The fake GitHub API: one repository with no `zollybot-attachments` branch at the start.
 const calls: GitCall[] = [];
 const blobs = new Map<string, string>();
 const commits = new Map<string, { tree: string; message: string; parents: string[] }>();
@@ -213,8 +213,8 @@ const mentionOf = (text: string, files: InboundFile[]): MessagingDiscordMention 
   };
 };
 
-const directory = await mkdtemp(join(tmpdir(), "openbot-discord-github-files-"));
-const database = new OpenBotDatabase(directory);
+const directory = await mkdtemp(join(tmpdir(), "zollybot-discord-github-files-"));
+const database = new ZollyBotDatabase(directory);
 let service: WorkflowsHandle | null = null;
 
 /** Waits for the newest run of a workflow to end. */
@@ -247,7 +247,7 @@ try {
       store: new WorkflowStore({ database, nextDueAt: workflowScheduleDueAt(() => "UTC") }),
       runs: new WorkflowRunStore({ database }),
       github: new WorkflowGitHubStore({ database }),
-      githubApp: () => "openbotgit",
+      githubApp: () => "zollybotgit",
       githubApi,
       delivery: () => null,
       turnAnswer: () => null,

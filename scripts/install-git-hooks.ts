@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 
-const logger = createOpenBotLogger("install-git-hooks");
+const logger = createZollyBotLogger("install-git-hooks");
 
 const repositoryRoot = runGit(["rev-parse", "--show-toplevel"], false);
 if (repositoryRoot === undefined) {

@@ -1,6 +1,6 @@
-import { avatarHeadColor } from "@openbot/brand/bloub-avatar";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { useQuery } from "@tanstack/react-query";
+import { avatarHeadColor } from "@zollybot/brand/bloub-avatar";
 import { Image } from "expo-image";
 import { Typography } from "heroui-native";
 import Monitor from "lucide-react-native/icons/monitor";
@@ -79,10 +79,10 @@ export function ServerAvatar({
   const logo = logoUri === undefined ? (saved.data ?? null) : logoUri;
   const [failedUri, setFailedUri] = useState<string | null>(null);
   const logoFailed = logo === failedUri;
-  const success = String(useCSSVariable("--openbot-success"));
-  const warning = String(useCSSVariable("--openbot-warning"));
-  const danger = String(useCSSVariable("--openbot-danger"));
-  const offline = String(useCSSVariable("--openbot-text-dim"));
+  const success = String(useCSSVariable("--zollybot-success"));
+  const warning = String(useCSSVariable("--zollybot-warning"));
+  const danger = String(useCSSVariable("--zollybot-danger"));
+  const offline = String(useCSSVariable("--zollybot-text-dim"));
   const online = showsOnline(server);
   const dot = online
     ? success

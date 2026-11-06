@@ -1,4 +1,4 @@
-import { BROWSER_PROFILE_LIMIT } from "@openbot/contracts/ipc";
+import { BROWSER_PROFILE_LIMIT } from "@zollybot/contracts/ipc";
 import { useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { BrowserProfileDot } from "@/features/servers/components/browser-profile-dot";

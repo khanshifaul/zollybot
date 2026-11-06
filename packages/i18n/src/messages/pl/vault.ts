@@ -4,7 +4,7 @@ import type { messages as source } from "../en/vault";
 export const messages = {
   "vault.items.title": "Zapisane elementy",
   "vault.items.description":
-    "Każdy agent na tym serwerze może używać tych elementów. OpenBot sam wpisuje na stronie hasła, numery kart i kody zabezpieczające, więc agenci nigdy ich nie widzą. Agenci odczytują klucze API z prywatnego pliku, a nie z czatu.",
+    "Każdy agent na tym serwerze może używać tych elementów. ZollyBot sam wpisuje na stronie hasła, numery kart i kody zabezpieczające, więc agenci nigdy ich nie widzą. Agenci odczytują klucze API z prywatnego pliku, a nie z czatu.",
   "vault.newItem": "Nowy element",
   "vault.kind.login": "Login",
   "vault.kind.card": "Karta",
@@ -95,15 +95,15 @@ export const messages = {
   "vault.importMenu": "Importuj z pliku CSV",
   "vault.importTitle": "Importuj z pliku CSV",
   "vault.importDescription":
-    "Importuj loginy z pliku CSV wyeksportowanego z 1Password, Bitwarden, Chrome, Edge, Firefox, Safari, Apple Passwords, LastPass lub Proton Pass. OpenBot odczytuje plik na tym komputerze i go nie wysyła.",
+    "Importuj loginy z pliku CSV wyeksportowanego z 1Password, Bitwarden, Chrome, Edge, Firefox, Safari, Apple Passwords, LastPass lub Proton Pass. ZollyBot odczytuje plik na tym komputerze i go nie wysyła.",
   "vault.importChoose": "Wybierz plik CSV",
   "vault.importDone": "Zaimportowano: {imported}. Pominięto: {skipped}.",
   "vault.unavailableTitle": "Ten komputer nie może przechowywać sekretów",
   "vault.unavailableDescription":
-    "OpenBot szyfruje Sejf za pomocą systemowego magazynu sekretów. Skonfiguruj pęk kluczy, a potem otwórz tę stronę ponownie.",
-  "vault.unreadableTitle": "OpenBot nie może odczytać Sejfu",
+    "ZollyBot szyfruje Sejf za pomocą systemowego magazynu sekretów. Skonfiguruj pęk kluczy, a potem otwórz tę stronę ponownie.",
+  "vault.unreadableTitle": "ZollyBot nie może odczytać Sejfu",
   "vault.unreadableDescription":
-    "Plik Sejfu jest na tym komputerze, ale OpenBot nie może go odszyfrować. Może się tak zdarzyć po zmianie systemowego pęku kluczy. Zresetuj Sejf, aby zacząć od nowa bez żadnych elementów.",
+    "Plik Sejfu jest na tym komputerze, ale ZollyBot nie może go odszyfrować. Może się tak zdarzyć po zmianie systemowego pęku kluczy. Zresetuj Sejf, aby zacząć od nowa bez żadnych elementów.",
   "vault.link.group": "Konta płatności",
   "vault.link.name": "Link",
   "vault.link.connect": "Połącz",
@@ -117,7 +117,7 @@ export const messages = {
     "Agenci nie będą już mogli prosić o płatność przez Link. Twoje konto Link i jego karty pozostaną bez zmian.",
   "vault.reset": "Resetuj Sejf",
   "vault.resetTitle": "Zresetować Sejf?",
-  "vault.resetDescription": "OpenBot usunie plik Sejfu i wszystkie zapisane w nim elementy. Nie możesz tego cofnąć.",
+  "vault.resetDescription": "ZollyBot usunie plik Sejfu i wszystkie zapisane w nim elementy. Nie możesz tego cofnąć.",
   "vault.request.private": "Trafi do twojego Sejfu. {agent} nigdy tego nie zobaczy.",
   "vault.request.privateUnnamed": "Trafi do twojego Sejfu. Agent nigdy tego nie zobaczy.",
   "vault.request.addLogin": "Dodaj login",

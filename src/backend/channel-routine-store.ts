@@ -4,8 +4,7 @@ import type {
   ChannelRoutineRunStatus,
   CreateChannelRoutineInput,
   UpdateChannelRoutineInput,
-} from "@openbot/contracts/ipc";
-import type { OpenBotDatabase } from "./openbot-database";
+} from "@zollybot/contracts/ipc";
 import {
   type DueRoutine,
   type OwnedRoutine,
@@ -16,6 +15,7 @@ import {
   type WebhookReceiveResult,
 } from "./routine-store";
 import { ROUTINE_TABLES } from "./routine-tables";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 export interface DueChannelRoutine {
   routine: ChannelRoutine;
@@ -30,7 +30,7 @@ export interface DueChannelRoutine {
  * joins a run to the tasks it produced.
  */
 export class ChannelRoutineStore extends RoutineStore {
-  constructor(database: OpenBotDatabase) {
+  constructor(database: ZollyBotDatabase) {
     super(database, ROUTINE_TABLES.channel);
   }
 

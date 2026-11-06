@@ -4,20 +4,20 @@ import {
   LOCAL_SERVER_LIMIT,
   type RoutineFields,
   type ServerSummary,
-} from "@openbot/contracts/ipc";
-import { BROWSER_PROFILES_CAPABILITY } from "@openbot/contracts/team-protocol/browser-profiles-v1";
-import { VAULT_CAPABILITY } from "@openbot/contracts/team-protocol/vault-v1";
-import { VAULT_V2_CAPABILITY } from "@openbot/contracts/team-protocol/vault-v2";
-import { classifyFailure } from "@openbot/telemetry";
-import { isAgentAccount } from "@openbot/ui/components/provider-accounts";
-import type { AcpRegistrySettingsApi } from "@openbot/ui/features/custom-providers/AcpRegistrySettings";
-import type { CustomAgentSettingsApi } from "@openbot/ui/features/custom-providers/CustomAgentSettings";
-import { providerDiagnosticsText } from "@openbot/ui/features/provider-diagnostics/provider-diagnostics";
-import { LeaveServerDialog } from "@openbot/ui/features/servers/LeaveServerDialog";
-import { RestartServerDialog } from "@openbot/ui/features/servers/RestartServerDialog";
-import type { HostedSiteDeleteResult } from "@openbot/ui/features/settings/stores/hosted-sites-store";
-import { sidebarAgentOrder } from "@openbot/ui/features/sidebar/sidebar-agent-order";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import { BROWSER_PROFILES_CAPABILITY } from "@zollybot/contracts/team-protocol/browser-profiles-v1";
+import { VAULT_CAPABILITY } from "@zollybot/contracts/team-protocol/vault-v1";
+import { VAULT_V2_CAPABILITY } from "@zollybot/contracts/team-protocol/vault-v2";
+import { classifyFailure } from "@zollybot/telemetry";
+import { isAgentAccount } from "@zollybot/ui/components/provider-accounts";
+import type { AcpRegistrySettingsApi } from "@zollybot/ui/features/custom-providers/AcpRegistrySettings";
+import type { CustomAgentSettingsApi } from "@zollybot/ui/features/custom-providers/CustomAgentSettings";
+import { providerDiagnosticsText } from "@zollybot/ui/features/provider-diagnostics/provider-diagnostics";
+import { LeaveServerDialog } from "@zollybot/ui/features/servers/LeaveServerDialog";
+import { RestartServerDialog } from "@zollybot/ui/features/servers/RestartServerDialog";
+import type { HostedSiteDeleteResult } from "@zollybot/ui/features/settings/stores/hosted-sites-store";
+import { sidebarAgentOrder } from "@zollybot/ui/features/sidebar/sidebar-agent-order";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createMemo, Loading, Show, untrack } from "solid-js";
 import { actionToast } from "./action-toast";
 import { desktopAnalytics } from "./analytics";
@@ -185,7 +185,7 @@ export function SkillsMarketplace() {
 }
 
 /**
- * A shared agent from an `openbot://agents/<id>` link. It is added where a marketplace agent is: on
+ * A shared agent from an `zollybot://agents/<id>` link. It is added where a marketplace agent is: on
  * the selected joined server when this account administers it, otherwise on this computer.
  */
 function SharedAgentInstall() {

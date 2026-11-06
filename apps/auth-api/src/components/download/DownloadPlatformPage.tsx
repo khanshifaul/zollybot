@@ -1,5 +1,5 @@
-import { PlatformLogo } from "@openbot/brand";
 import { Link } from "@tanstack/solid-router";
+import { PlatformLogo } from "@zollybot/brand";
 import { createTrackedEffect, For, Show } from "solid-js";
 import { landingAnalytics } from "../../lib/analytics";
 import {

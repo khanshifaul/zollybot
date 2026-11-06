@@ -1,5 +1,5 @@
-import type { InstalledSkill } from "@openbot/contracts/ipc";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import type { InstalledSkill } from "@zollybot/contracts/ipc";
 import { useEffect, useMemo, useState } from "react";
 import { agentSkillsQuery } from "@/features/agents/model/agent-skills-query";
 import { useMobileSession, useQueryScope } from "@/features/auth/context/mobile-session-context";

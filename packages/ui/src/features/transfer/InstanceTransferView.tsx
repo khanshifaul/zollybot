@@ -1,11 +1,12 @@
-import { type AgentProviderId, agentProviderName } from "@openbot/contracts/agent-providers";
+import type { JSX } from "@solidjs/web";
+import { type AgentProviderId, agentProviderName } from "@zollybot/contracts/agent-providers";
 import type {
   AgentImportPreviewAgent,
   InstanceTransferPreview,
   InstanceTransferResult,
   InstanceTransferSummary,
-} from "@openbot/contracts/ipc";
-import type { AppFormat, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppFormat, AppTranslate } from "@zollybot/i18n";
 import {
   ArrowRight,
   Bot,
@@ -25,8 +26,7 @@ import {
   SwitchField,
   TriangleAlert,
   Upload,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createMemo, createSignal, createUniqueId, For, Show } from "solid-js";
 import { useText } from "../../text";
 import { AgentAvatar } from "../agents/AgentAvatar";
@@ -68,7 +68,7 @@ export interface InstanceTransferViewProps {
 }
 
 /**
- * Settings > Transfer: move this computer's agents and app settings to another OpenBot computer.
+ * Settings > Transfer: move this computer's agents and app settings to another ZollyBot computer.
  * The first screen asks which computer this is, so each direction is one focused screen.
  */
 export function InstanceTransferView(props: InstanceTransferViewProps) {

@@ -8,7 +8,7 @@ import {
   SLACK_MARK_PATH,
   TELEGRAM_MARK_PATH,
   WHATSAPP_MARK_PATH,
-} from "@openbot/brand/connector-mark-shape";
+} from "@zollybot/brand/connector-mark-shape";
 
 /** GitHub's mark. Lucide has no brand icons, so the path is GitHub's own. */
 export function GitHubMark(props: { class?: string | undefined }) {

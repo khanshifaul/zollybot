@@ -1,4 +1,4 @@
-import { isWorkflowStepKind, type WorkflowNode } from "@openbot/contracts/ipc";
+import { isWorkflowStepKind, type WorkflowNode } from "@zollybot/contracts/ipc";
 import * as Clipboard from "expo-clipboard";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Button, Typography } from "heroui-native";

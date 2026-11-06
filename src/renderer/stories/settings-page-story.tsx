@@ -1,6 +1,6 @@
-import type { SettingsPagePlacement } from "@openbot/ui/features/settings/SettingsDialogShell";
-import { cx } from "@openbot/ui/utils";
 import type { JSX } from "@solidjs/web";
+import type { SettingsPagePlacement } from "@zollybot/ui/features/settings/SettingsDialogShell";
+import { cx } from "@zollybot/ui/utils";
 import { createSignal } from "solid-js";
 import { SettingsPageFrame } from "../src/features/window/SettingsPageFrame";
 import "./settings-page-story.css";

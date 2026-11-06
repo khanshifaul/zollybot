@@ -1,5 +1,5 @@
-import type { MobileTextKey } from "@openbot/i18n/mobile";
 import { skipToken, useQuery } from "@tanstack/react-query";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { useMobileSession, useQueryScope } from "@/features/auth/context/mobile-session-context";
 import { hostedServerCalls } from "@/features/servers/api/hosted-servers";
 import { useServerUpdate } from "@/features/servers/model/use-server-update";

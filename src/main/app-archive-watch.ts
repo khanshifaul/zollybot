@@ -1,20 +1,20 @@
-// The release build turns on Electron's ASAR integrity fuse: before any OpenBot code runs, Electron
+// The release build turns on Electron's ASAR integrity fuse: before any ZollyBot code runs, Electron
 // compares the SHA-256 of the `app.asar` header with a hash in the executable (Windows) or in
 // `Info.plist` (macOS), and stops with no message when they differ. Electron opens the archive with
-// write sharing, so another program, such as an agent that rebuilds OpenBot, can change it while
-// OpenBot runs. The next start then fails silently (#4488). This watch tells the user while OpenBot
+// write sharing, so another program, such as an agent that rebuilds ZollyBot, can change it while
+// ZollyBot runs. The next start then fails silently (#4488). This watch tells the user while ZollyBot
 // can still show a message.
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { closeSync, type FSWatcher, fstatSync, openSync, readSync, watch } from "node:fs";
 import { join } from "node:path";
 import { promisify } from "node:util";
-import type { AppTranslate } from "@openbot/i18n";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import type { AppTranslate } from "@zollybot/i18n";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Option, Schema } from "effect";
 import { dialog, shell } from "electron";
 
-const logger = createOpenBotLogger("app-archive");
+const logger = createZollyBotLogger("app-archive");
 export const DOWNLOAD_URL = "https://openbot.run/download";
 // A copy of the archive writes for some seconds. Check once the writes stop.
 const SETTLE_MS = 2_000;
@@ -106,7 +106,7 @@ export function watchAppArchive(resourcesPath: string, translate: AppTranslate):
     const expected = process.platform === "darwin" ? ((await readPlistHash(resourcesPath)) ?? startHash) : startHash;
     if (stopped || current === expected) return;
     stop();
-    logger.error("app.asar changed while OpenBot runs; the next start fails the integrity check.");
+    logger.error("app.asar changed while ZollyBot runs; the next start fails the integrity check.");
     await showArchiveChanged(translate);
   };
 

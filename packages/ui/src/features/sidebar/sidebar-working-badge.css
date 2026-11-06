@@ -4,8 +4,8 @@
 .agent-row-agent-status-working {
   width: 30px;
   height: 16px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   /* A shadow makes a halo on the dark sidebar. */
   box-shadow: none;
 }
@@ -20,7 +20,7 @@
 .agent-row-agent-status-working .agent-row-thinking-dots i {
   width: 7px;
   height: 7px;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: url("../../assets/plush/ball-lilac.webp") center / contain no-repeat;
   transform-origin: 50% 100%;
   animation: none;

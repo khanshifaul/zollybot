@@ -6,9 +6,9 @@ import {
   type WorkflowNode,
   type WorkflowSlackAction,
   type WorkflowSlackEmoji,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import type { MessagingSlackMention, MessagingSlackSend } from "../messaging/messaging-threads";
 import { EXTERNAL_EVENT_END, EXTERNAL_EVENT_START } from "../webhook-trigger";
 import { withoutEvents } from "./github-output";

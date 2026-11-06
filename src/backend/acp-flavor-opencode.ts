@@ -1,6 +1,6 @@
 import { RequestError } from "@agentclientprotocol/sdk";
-import { type SourceMessages, sourceText } from "@openbot/i18n/source";
-import type { CauseCode } from "@openbot/telemetry";
+import { type SourceMessages, sourceText } from "@zollybot/i18n/source";
+import type { CauseCode } from "@zollybot/telemetry";
 import { type AcpCustomEndpoint, type AcpFlavor, shownFailureDetail } from "./acp-flavor";
 import { isUsageLimitDiagnostic } from "./agent/provider-diagnostics";
 import { isRecord } from "./protocol";
@@ -42,8 +42,8 @@ export function isOpenCodeInternalFailure(error: unknown): boolean {
  * a paid or third-party model, and met that text with no next step (#2746). The model ID names the
  * provider before its first `/`.
  *
- * OpenCode 2.2.5 answers an HTTP 401 from a custom endpoint the same way, whether OpenBot sent no
- * key or the endpoint refused the key. Its key is in OpenBot's endpoint settings, so the text for an
+ * OpenCode 2.2.5 answers an HTTP 401 from a custom endpoint the same way, whether ZollyBot sent no
+ * key or the endpoint refused the key. Its key is in ZollyBot's endpoint settings, so the text for an
  * OpenCode sign-in sent the user to the wrong place.
  */
 function openCodeAuthRequired(error: unknown, model: string | null, endpoint: AcpCustomEndpoint | null): string | null {
@@ -94,7 +94,7 @@ const OPENCODE_REQUEST_FAILURES = [
 /**
  * OpenCode retries a rate limit or a provider failure by itself. When it stops, it fails the prompt
  * with the provider's text behind `Internal error:`, so a billing refusal, a rate limit and an
- * offline computer all read as one failure of OpenBot, and the user could not tell whether
+ * offline computer all read as one failure of ZollyBot, and the user could not tell whether
  * waiting helps (#1163). The kind comes first; the provider's own text follows it.
  */
 function openCodeRequestFailure(
@@ -206,7 +206,7 @@ export const OPENCODE_ACP_FLAVOR: AcpFlavor = {
   // OpenCode 2.2.0 gives each step's message its own ID. Text of two steps was joined into one line.
   messagePerId: true,
   // OpenCode 2.1.4 adds each session's MCP servers to the session's directory under their names. A
-  // second chat of the agent replaced the `openbot` token, and closing it left the first refused.
+  // second chat of the agent replaced the `zollybot` token, and closing it left the first refused.
   mcpServersPerDirectory: true,
   // OpenCode 2.2.5 sends each subagent's session as `opencode/session/child_update` when the client
   // asks. Without it, the subagent's tool calls showed as the parent's, and nothing told when it ended.

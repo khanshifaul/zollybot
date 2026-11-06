@@ -1,6 +1,6 @@
 /**
  * Messaging connections: a chat platform workspace, such as a Slack workspace or a Discord guild that
- * installed the OpenBot app, a Telegram chat that added the OpenBot bot, or a WhatsApp number linked as
+ * installed the ZollyBot app, a Telegram chat that added the ZollyBot bot, or a WhatsApp number linked as
  * a device of this computer, where the agents of this computer answer. Each new conversation goes to the
  * workspace's orchestrator agent, which asks its teammates and answers. The connection belongs to the
  * computer that runs the agents. Tokens travel only towards that host; no result carries one.
@@ -34,7 +34,7 @@ export const MESSAGING_CONNECTION_STATES = [
   // Slack, Discord and Telegram send their events through Signal, and this host cannot reach it: it
   // is signed out, has no name yet, or Signal is down.
   "relay_unavailable",
-  // The OpenBot bot is no longer in the Telegram chat.
+  // The ZollyBot bot is no longer in the Telegram chat.
   "removed",
 ] as const;
 export type MessagingConnectionState = (typeof MESSAGING_CONNECTION_STATES)[number];
@@ -67,7 +67,7 @@ export interface MessagingConnection {
   enabled: boolean;
   state: MessagingConnectionState;
   workspaceName: string;
-  /** The platform user that OpenBot posts as. */
+  /** The platform user that ZollyBot posts as. */
   botUserId: string | null;
   missingScopes: string[];
   /** When the connection tries again after a rate limit, as an ISO time. */
@@ -113,8 +113,8 @@ export interface MessagingRole {
 }
 
 /**
- * Who can use OpenBot in one Discord server: the members with one of these roles. Empty lets everyone.
- * OpenBot ignores a mention from anyone else.
+ * Who can use ZollyBot in one Discord server: the members with one of these roles. Empty lets everyone.
+ * ZollyBot ignores a mention from anyone else.
  */
 export interface DiscordAccess {
   allowedRoles: MessagingRole[];
@@ -149,7 +149,7 @@ export type TelegramOverview = MessagingOverview;
 export type TelegramChatInput = MessagingWorkspaceInput;
 export type SetTelegramEnabledInput = SetMessagingEnabledInput;
 
-/** Where the user adds the OpenBot bot: a group, or a direct chat with the bot. */
+/** Where the user adds the ZollyBot bot: a group, or a direct chat with the bot. */
 export interface ConnectTelegramChatInput {
   place: "group" | "direct";
 }
@@ -330,7 +330,7 @@ export interface WhatsAppAccount {
   workspaceId: string;
   /**
    * The owner's personal number: only the owner's "Message yourself" chat and the allowed senders reach
-   * the agents, and OpenBot never writes to anyone else first. False for a number used only by OpenBot,
+   * the agents, and ZollyBot never writes to anyone else first. False for a number used only by ZollyBot,
    * where an unknown person gets a pairing code.
    */
   ownNumber: boolean;

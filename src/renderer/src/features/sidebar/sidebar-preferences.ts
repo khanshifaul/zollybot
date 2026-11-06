@@ -1,10 +1,10 @@
-import type { SidebarPin, SidebarPinsSnapshot } from "@openbot/contracts/ipc";
+import type { SidebarPin, SidebarPinsSnapshot } from "@zollybot/contracts/ipc";
 import {
   normalizeSidebarPinnedItems,
   reownSidebarPinnedItems,
   type SidebarPinnedItem,
   sidebarPinnedItemKey,
-} from "@openbot/ui/features/sidebar/sidebar-pins";
+} from "@zollybot/ui/features/sidebar/sidebar-pins";
 import { createMemo, createSignal } from "solid-js";
 import {
   readPendingSidebarPinScopes,
@@ -64,7 +64,7 @@ export function createSidebarPreferences(options: { scope: () => string; sync?: 
     });
   }
 
-  /** Collapses one section of the active scope, such as the Integrations section OpenBot just made. */
+  /** Collapses one section of the active scope, such as the Integrations section ZollyBot just made. */
   function collapseSidebarSection(sectionId: string): void {
     if (collapsedSidebarSectionIds().includes(sectionId)) return;
     toggleSidebarSection(sectionId);

@@ -5,13 +5,13 @@
 // time older than the limit sends none. Then it checks the OpenPanel body of the event.
 //
 // Run: bun run test:hosted-start-time
-// It writes .openbot-build/hosted-start-time-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/hosted-start-time-e2e/report.json and exits non-zero on a failure.
 import { createHmac } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import {
   type AccountAnalyticsEvent,
@@ -22,7 +22,7 @@ import { HostedServerService } from "../src/server/hosted-server-service";
 import { sqliteD1 } from "./sqlite-d1";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
-const OUT = join(ROOT, ".openbot-build", "hosted-start-time-e2e");
+const OUT = join(ROOT, ".zollybot-build", "hosted-start-time-e2e");
 const MIGRATIONS = join(ROOT, "apps", "auth-api", "migrations");
 const SERVER_ID = "server-1";
 const SANDBOX_ID = "bx_1";

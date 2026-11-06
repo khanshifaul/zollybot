@@ -3,7 +3,7 @@ import solidPlugin from "@solidjs/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 
-const rendererPort = readRendererPort(process.env.OPENBOT_DEV_RENDERER_PORT);
+const rendererPort = readRendererPort(process.env.ZOLLYBOT_DEV_RENDERER_PORT);
 
 export default defineConfig({
   main: {
@@ -11,21 +11,21 @@ export default defineConfig({
     plugins: [
       externalizeDepsPlugin({
         exclude: [
-          "@openbot/brand",
-          "@openbot/contracts",
-          "@openbot/i18n",
-          "@openbot/logging",
-          "@openbot/team-client",
-          "@openbot/telemetry",
-          "@openbot/user-errors",
+          "@zollybot/brand",
+          "@zollybot/contracts",
+          "@zollybot/i18n",
+          "@zollybot/logging",
+          "@zollybot/team-client",
+          "@zollybot/telemetry",
+          "@zollybot/user-errors",
           // Its vendored Baileys source is TypeScript too. Baileys' own dependencies stay external.
-          "@openbot/whatsapp",
+          "@zollybot/whatsapp",
         ],
       }),
     ],
     build: {
       rollupOptions: {
-        // Optional peers of the vendored Baileys that OpenBot does not install: Baileys imports them
+        // Optional peers of the vendored Baileys that ZollyBot does not install: Baileys imports them
         // when it runs and goes on without them (no thumbnails, link previews or audio waveforms).
         external: ["jimp", "sharp", "audio-decode", "link-preview-js"],
         input: {
@@ -42,7 +42,7 @@ export default defineConfig({
     },
   },
   preload: {
-    plugins: [externalizeDepsPlugin({ exclude: ["@openbot/contracts"] })],
+    plugins: [externalizeDepsPlugin({ exclude: ["@zollybot/contracts"] })],
     build: {
       rollupOptions: {
         input: {
@@ -85,7 +85,7 @@ function readRendererPort(value: string | undefined): number | undefined {
   if (value === undefined) return undefined;
   const port = Number(value);
   if (!Number.isInteger(port) || port < 1_024 || port > 65_535) {
-    throw new Error("OPENBOT_DEV_RENDERER_PORT must be an integer from 1024 to 65535.");
+    throw new Error("ZOLLYBOT_DEV_RENDERER_PORT must be an integer from 1024 to 65535.");
   }
   return port;
 }

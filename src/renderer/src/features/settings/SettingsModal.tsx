@@ -16,7 +16,7 @@ import type {
   ServerNotificationLevel,
   ServerSummary,
   UpdateStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   Alert,
   AlertActions,
@@ -26,20 +26,20 @@ import {
   Button,
   Tabs,
   TriangleAlert,
-} from "@openbot/ui";
-import { BillingPanel } from "@openbot/ui/features/billing/BillingPanel";
-import { createBillingStore } from "@openbot/ui/features/billing/billing-store";
-import { LicenseSection } from "@openbot/ui/features/billing/LicenseSection";
-import { createLicenseStore } from "@openbot/ui/features/billing/license-store";
-import type { GeneralSettingsValue } from "@openbot/ui/features/settings/app-settings";
-import { SettingsDialogShell, type SettingsPagePlacement } from "@openbot/ui/features/settings/SettingsDialogShell";
-import { SettingsMobileConnectTab } from "@openbot/ui/features/settings/SettingsMobileConnectTab";
-import { SettingsProfileTab } from "@openbot/ui/features/settings/SettingsProfileTab";
-import { SettingsUpdatesTab } from "@openbot/ui/features/settings/SettingsUpdatesTab";
-import { createSettingsHostedServersStore } from "@openbot/ui/features/settings/stores/hosted-servers-store";
-import { createSettingsMobileConnectStore } from "@openbot/ui/features/settings/stores/mobile-connect-store";
-import { createSettingsProfileStore } from "@openbot/ui/features/settings/stores/profile-store";
-import { createSettingsUpdatesStore } from "@openbot/ui/features/settings/stores/updates-store";
+} from "@zollybot/ui";
+import { BillingPanel } from "@zollybot/ui/features/billing/BillingPanel";
+import { createBillingStore } from "@zollybot/ui/features/billing/billing-store";
+import { LicenseSection } from "@zollybot/ui/features/billing/LicenseSection";
+import { createLicenseStore } from "@zollybot/ui/features/billing/license-store";
+import type { GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
+import { SettingsDialogShell, type SettingsPagePlacement } from "@zollybot/ui/features/settings/SettingsDialogShell";
+import { SettingsMobileConnectTab } from "@zollybot/ui/features/settings/SettingsMobileConnectTab";
+import { SettingsProfileTab } from "@zollybot/ui/features/settings/SettingsProfileTab";
+import { SettingsUpdatesTab } from "@zollybot/ui/features/settings/SettingsUpdatesTab";
+import { createSettingsHostedServersStore } from "@zollybot/ui/features/settings/stores/hosted-servers-store";
+import { createSettingsMobileConnectStore } from "@zollybot/ui/features/settings/stores/mobile-connect-store";
+import { createSettingsProfileStore } from "@zollybot/ui/features/settings/stores/profile-store";
+import { createSettingsUpdatesStore } from "@zollybot/ui/features/settings/stores/updates-store";
 import { createEffect, createSignal, Show, untrack } from "solid-js";
 import { useI18n } from "../../i18n-context";
 import { ComputerUseSetup } from "../computer-use/ComputerUseSetup";

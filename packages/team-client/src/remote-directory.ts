@@ -1,19 +1,19 @@
-import { type HostKeyHandover, optionalHostKeyHandovers } from "@openbot/contracts/host-key-handover";
+import { type HostKeyHandover, optionalHostKeyHandovers } from "@zollybot/contracts/host-key-handover";
 import {
   createInviteUrl,
   type InviteLinkOptions,
   inviteUseCount,
   isPermanentInvite,
-  OPENBOT_CONTROL_PLANE_ORIGIN,
-  OPENBOT_INVITE_ORIGIN,
   parseInviteUrl,
   selfHostedApiOrigin,
-} from "@openbot/contracts/invite-links";
-import type { MobileConnectHostBinding } from "@openbot/contracts/mobile-connect";
-import { decodeRemoteSession, decodeRemoteSessionTicket } from "@openbot/contracts/remote-control-plane";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { referenceFrom, safeReference } from "@openbot/user-errors/reference";
+  ZOLLYBOT_CONTROL_PLANE_ORIGIN,
+  ZOLLYBOT_INVITE_ORIGIN,
+} from "@zollybot/contracts/invite-links";
+import type { MobileConnectHostBinding } from "@zollybot/contracts/mobile-connect";
+import { decodeRemoteSession, decodeRemoteSessionTicket } from "@zollybot/contracts/remote-control-plane";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { referenceFrom, safeReference } from "@zollybot/user-errors/reference";
 import { Deferred, Effect, Schema, Semaphore } from "effect";
 import { runTeamEffect } from "./effect-boundary";
 import {
@@ -437,8 +437,8 @@ export class RemoteTeamDirectoryClient {
    */
   #inviteApiUrl(): string {
     const url = new URL(this.#apiUrl);
-    return this.#authentication.kind === "browser" && url.origin === OPENBOT_INVITE_ORIGIN
-      ? new URL(OPENBOT_CONTROL_PLANE_ORIGIN).toString()
+    return this.#authentication.kind === "browser" && url.origin === ZOLLYBOT_INVITE_ORIGIN
+      ? new URL(ZOLLYBOT_CONTROL_PLANE_ORIGIN).toString()
       : url.toString();
   }
 
@@ -597,7 +597,7 @@ export class RemoteTeamDirectoryClient {
                     ? { Authorization: `Bearer ${this.#authentication.token}` }
                     : {}),
                   ...(browser
-                    ? { "X-OpenBot-Browser": "1", "Content-Type": "application/json" }
+                    ? { "X-ZollyBot-Browser": "1", "Content-Type": "application/json" }
                     : options.body
                       ? { "Content-Type": "application/json" }
                       : {}),

@@ -1,4 +1,4 @@
-import type { ChannelSummary, SidebarLayoutSnapshot } from "@openbot/contracts/ipc";
+import type { ChannelSummary, SidebarLayoutSnapshot } from "@zollybot/contracts/ipc";
 import { BlurTargetView } from "expo-blur";
 import { GlassView } from "expo-glass-effect";
 import { type Href, router, Stack } from "expo-router";

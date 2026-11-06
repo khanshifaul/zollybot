@@ -1,7 +1,7 @@
-import { Alert, AlertContent, AlertDescription, AlertTitle, Button, Minimize2, Tabs } from "@openbot/ui";
-import { CloseIcon, PlusIcon } from "@openbot/ui/features/conversation/ConversationIcons";
-import { useText } from "@openbot/ui/text";
-import { clamp } from "@openbot/ui/utils";
+import { Alert, AlertContent, AlertDescription, AlertTitle, Button, Minimize2, Tabs } from "@zollybot/ui";
+import { CloseIcon, PlusIcon } from "@zollybot/ui/features/conversation/ConversationIcons";
+import { useText } from "@zollybot/ui/text";
+import { clamp } from "@zollybot/ui/utils";
 import { createEffect, createSignal, flush, onSettled, Show } from "solid-js";
 import { BrowserAddressRow } from "./BrowserAddressRow";
 import BrowserLiveView from "./BrowserLiveView";

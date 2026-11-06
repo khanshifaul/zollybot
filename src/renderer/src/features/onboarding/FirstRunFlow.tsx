@@ -1,7 +1,7 @@
-import type { AppLogoVariant } from "@openbot/brand";
-import type { AgentModelId, AgentProviderId, AppSetupState, DesktopPlatform } from "@openbot/contracts/ipc";
-import { Button, ErrorReference } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import type { AppLogoVariant } from "@zollybot/brand";
+import type { AgentModelId, AgentProviderId, AppSetupState, DesktopPlatform } from "@zollybot/contracts/ipc";
+import { Button, ErrorReference } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createSignal, createStore, createUniqueId, For, Match, Show, Switch, untrack } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
 import { ComputerUseSetup } from "../computer-use/ComputerUseSetup";
@@ -49,7 +49,7 @@ interface FirstRunState {
   step: FirstRunStep;
   path: FirstRunPath;
   saving: boolean;
-  /** The user asked to open OpenBot before the provider was ready, so setup ends when it is. */
+  /** The user asked to open ZollyBot before the provider was ready, so setup ends when it is. */
   finishWhenReady: boolean;
   /** The user left the plan step with "Use free models instead". */
   skipped: boolean;

@@ -1,4 +1,4 @@
-import { AttachmentCards, type AttachmentDownloadState } from "@openbot/ui/features/conversation/AttachmentCards";
+import { AttachmentCards, type AttachmentDownloadState } from "@zollybot/ui/features/conversation/AttachmentCards";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { AUDIO_PREVIEW } from "./file-previews";

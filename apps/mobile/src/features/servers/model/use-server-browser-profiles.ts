@@ -1,5 +1,10 @@
-import type { AgentBrowserProfile, AvatarHue, BrowserProfileList, BrowserProfileSummary } from "@openbot/contracts/ipc";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type {
+  AgentBrowserProfile,
+  AvatarHue,
+  BrowserProfileList,
+  BrowserProfileSummary,
+} from "@zollybot/contracts/ipc";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import {
   useMobileWorkspaceActions,

@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the browser domain reaches in main: the tabs, the display and control state, and the
@@ -6,7 +6,7 @@ import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
  */
 export interface BrowserPort {
   browser: Pick<
-    OpenBotDesktopApi["browser"],
+    ZollyBotDesktopApi["browser"],
     | "activate"
     | "close"
     | "dockPictureInPicture"
@@ -22,7 +22,7 @@ export interface BrowserPort {
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function browserPort(): BrowserPort {
-  return window.openbot;
+  return window.zollybot;
 }

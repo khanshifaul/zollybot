@@ -16,7 +16,7 @@ description: "Score a company against the user's ideal customer profile with a f
 1. **The ICP.** Industry, company size, region, the problem the user's product solves, buying triggers, and
    disqualifiers. If there is none, ask once with `ask_user` and offer to `remember` it for later briefs.
 2. **The company.** A name or a site address.
-3. **Tool path.** Call `openbot_browser.list_tabs`, then use a new tab. Read public company pages: home, product,
+3. **Tool path.** Call `zollybot_browser.list_tabs`, then use a new tab. Read public company pages: home, product,
    pricing, careers, press, customers, documentation, and public filings. For existing relationship facts, read the
    user's CRM in a signed-in tab or an installed plugin found with `tool_search`. Read only.
 4. **Paste path.** Notes, CRM exports or lists that the user gives.

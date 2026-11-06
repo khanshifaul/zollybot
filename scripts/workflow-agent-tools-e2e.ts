@@ -1,4 +1,4 @@
-// Checks the `openbot` workflow tools that agents use, on the real SQLite and the real workflow
+// Checks the `zollybot` workflow tools that agents use, on the real SQLite and the real workflow
 // service, on a temporary profile. Each call goes through `tool_search` and the `tool_call`
 // envelope as an agent sends it. Only the agent mailbox is a stand-in that keeps each delivery
 // running, so no provider, app, account or network is started.
@@ -11,7 +11,7 @@
 // user and a decline keeps the workflow, and that the change event names the agent that built it.
 //
 // Run: bun scripts/workflow-agent-tools-e2e.ts
-// Writes .openbot-build/workflow-agent-tools-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/workflow-agent-tools-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
@@ -21,7 +21,6 @@ import { Effect } from "effect";
 import { z } from "zod";
 import { discoverTools, resolveDeferredTool } from "../src/backend/agent/tool-catalog";
 import { runCauseEffect } from "../src/backend/effect-boundary";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import type { DynamicToolCallParams } from "../src/backend/protocol";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
 import { WorkflowRunStore } from "../src/backend/workflows/workflow-run-store";
@@ -29,8 +28,9 @@ import { WorkflowStore } from "../src/backend/workflows/workflow-store";
 import { handleWorkflowTool } from "../src/backend/workflows/workflow-tools";
 import { workflowScheduleDueAt } from "../src/backend/workflows/workflow-triggers";
 import { createWorkflows, type WorkflowsHandle } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/workflow-agent-tools-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/workflow-agent-tools-e2e");
 const WAIT_MS = 5_000;
 const AGENTS = new Set(["agent-research"]);
 /** The agent that calls the tools. */
@@ -91,13 +91,13 @@ const params = (tool: string, args: unknown): DynamicToolCallParams => ({
   threadId: "thread-e2e",
   turnId: "turn-e2e",
   callId: crypto.randomUUID(),
-  namespace: "openbot",
+  namespace: "zollybot",
   tool,
   arguments: args,
 });
 
-const directory = await mkdtemp(join(tmpdir(), "openbot-workflow-agent-tools-"));
-const database = new OpenBotDatabase(directory);
+const directory = await mkdtemp(join(tmpdir(), "zollybot-workflow-agent-tools-"));
+const database = new ZollyBotDatabase(directory);
 let workflows: WorkflowsHandle | null = null;
 
 /** The titles that a delete asked the user about, and the user's next answer. */
@@ -150,8 +150,8 @@ async function call(
   callKey = `call-${++calls}`,
 ): Promise<{ ok: boolean; value: unknown }> {
   assert.ok(workflows);
-  const resolved = resolveDeferredTool(params("tool_call", { name: `openbot.${name}`, arguments: args }));
-  assert.ok(resolved, `tool_call refused openbot.${name}`);
+  const resolved = resolveDeferredTool(params("tool_call", { name: `zollybot.${name}`, arguments: args }));
+  assert.ok(resolved, `tool_call refused zollybot.${name}`);
   const response = await runCauseEffect(
     handleWorkflowTool(resolved.tool, resolved.arguments, workflows, CALLER, callKey, AGENTS, confirmDelete),
   );
@@ -203,10 +203,10 @@ try {
       !(search.guidance ?? []).some((text) => text.includes("Manage scheduled work")),
     { ready, guidance: search.guidance },
   );
-  const mixed = discoverTools(params("tool_search", { queries: ["workflow", "openbot_browser.snapshot"] }));
+  const mixed = discoverTools(params("tool_search", { queries: ["workflow", "zollybot_browser.snapshot"] }));
   check(
     "a workflow search keeps the schema of a tool that another query names exactly",
-    mixed.tools.some((tool) => tool.name === "openbot_browser.snapshot" && "inputSchema" in tool),
+    mixed.tools.some((tool) => tool.name === "zollybot_browser.snapshot" && "inputSchema" in tool),
     mixed.tools.map((tool) => tool.name),
   );
   // Claude called a found tool directly, and then sent its name as `tool`. Each refusal cost a model step.
@@ -215,7 +215,7 @@ try {
     search.call?.includes("tool_call") === true && !("note" in search),
     search,
   );
-  const alias = resolveDeferredTool(params("tool_call", { tool: "openbot.list_workflows", arguments: {} }));
+  const alias = resolveDeferredTool(params("tool_call", { tool: "zollybot.list_workflows", arguments: {} }));
   check("tool_call accepts the qualified name as tool", alias?.tool === "list_workflows", alias);
 
   // 2. One call builds a workflow with refs.

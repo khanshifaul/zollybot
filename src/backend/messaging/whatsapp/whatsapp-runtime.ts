@@ -1,7 +1,7 @@
 import { rmSync } from "node:fs";
 import { join } from "node:path";
-import { WhatsAppAuthStore } from "@openbot/whatsapp/auth-store";
-import type { SocketConfig, WAVersion } from "@openbot/whatsapp/baileys";
+import { WhatsAppAuthStore } from "@zollybot/whatsapp/auth-store";
+import type { SocketConfig, WAVersion } from "@zollybot/whatsapp/baileys";
 import { WhatsAppChatState } from "./whatsapp-chats";
 import type { WhatsAppSenderRules } from "./whatsapp-senders";
 import { WhatsAppSession, type WhatsAppSocketFactory } from "./whatsapp-session";

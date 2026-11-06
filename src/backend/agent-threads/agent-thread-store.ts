@@ -1,12 +1,12 @@
 import { randomUUID } from "node:crypto";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   AGENT_TASK_OUTCOMES,
   type AgentTaskOutcome,
   type AttachmentSummary,
   type ConversationMessage,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isOneOf, isString } from "@zollybot/contracts/runtime-values";
 import { ORDER_KEY_DESC } from "../database/conversation-queries";
 import { deleteAggregateHistory, deleteThreadAttachments } from "../database/database-core";
 import {
@@ -17,7 +17,7 @@ import {
   requiredStringColumn,
 } from "../database/database-rows";
 import { refreshThreadOrder } from "../database/thread-message-order";
-import type { OpenBotDatabase } from "../openbot-database";
+import type { ZollyBotDatabase } from "../zollybot-database";
 
 const AGENT_THREAD_ORIGINS = ["user", "agent"] as const;
 export type AgentThreadOrigin = (typeof AGENT_THREAD_ORIGINS)[number];
@@ -30,7 +30,7 @@ type AgentThreadTitleSource = (typeof AGENT_THREAD_TITLE_SOURCES)[number];
  *
  * `taskId` is the id that mailbox records, the drain's lanes and `agent-tasks-v1` clients use: the task id
  * of a thread from before migration 47, else the thread id. The two never collide: task ids start with
- * `agent-task-` and thread ids with `openbot-thread-`.
+ * `agent-task-` and thread ids with `zollybot-thread-`.
  */
 export interface AgentThreadRecord {
   taskId: string;
@@ -93,9 +93,9 @@ const SELECT_THREAD = "SELECT *, COALESCE(legacy_task_id, thread_id) AS task_id 
  * does. Its event payload holds ids only: the event log is append-only and must not keep the title.
  */
 export class AgentThreadStore {
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
 
-  constructor(database: OpenBotDatabase) {
+  constructor(database: ZollyBotDatabase) {
     this.#database = database;
   }
 
@@ -354,7 +354,7 @@ export class AgentThreadStore {
 
   /** Creates the side thread and its conversation in one transaction. */
   create(input: AgentThreadInput): AgentThreadRecord {
-    const threadId = `openbot-thread-${randomUUID()}`;
+    const threadId = `zollybot-thread-${randomUUID()}`;
     this.#database.dispatch(
       `agent-thread:${threadId}`,
       [
@@ -415,7 +415,7 @@ export class AgentThreadStore {
     );
   }
 
-  /** A title that OpenBot gave, such as the name of a renamed routine. A person's title stays. */
+  /** A title that ZollyBot gave, such as the name of a renamed routine. A person's title stays. */
   retitle(threadId: string, title: string): void {
     this.#database.dispatch(
       `agent-thread-retitled:${threadId}:${randomUUID()}`,
@@ -550,7 +550,7 @@ export function copyBranchMessages(
 
 const BY_TASK_ID = "(legacy_task_id = ? OR (legacy_task_id IS NULL AND thread_id = ?))";
 
-type Connection = OpenBotDatabase["connection"];
+type Connection = ZollyBotDatabase["connection"];
 
 /** The history of a migrated thread is also under its old task aggregate. The thread row takes the side-thread row. */
 function deleteThreadRows(db: Connection, threads: readonly AgentThreadRecord[]): void {

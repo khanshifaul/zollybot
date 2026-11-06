@@ -14,10 +14,10 @@
 // exception -- a mutation whose write is somebody else's job is the hazard this module exists to end.
 
 import { readFile } from "node:fs/promises";
-import type { ServerNotificationLevel, TeamRole } from "@openbot/contracts/ipc";
-import { LOCAL_SERVER_ID } from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+import type { ServerNotificationLevel, TeamRole } from "@zollybot/contracts/ipc";
+import { LOCAL_SERVER_ID } from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result, Semaphore } from "effect";
 import {
   isEmptyStoredFile,

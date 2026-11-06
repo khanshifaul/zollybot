@@ -1,25 +1,25 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { agentThreadTitle } from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { agentThreadTitle } from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
 import {
   AGENT_THREAD_BRANCHES_CAPABILITY,
   AGENT_THREAD_BRANCHES_LIMIT,
   AGENT_THREAD_BRANCHES_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-thread-branches-v1";
+} from "@zollybot/contracts/team-protocol/agent-thread-branches-v1";
 import {
   AGENT_THREAD_FILES_CAPABILITY,
   AGENT_THREAD_FILES_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-thread-files-v1";
+} from "@zollybot/contracts/team-protocol/agent-thread-files-v1";
 import {
   AGENT_THREAD_READS_CAPABILITY,
   AGENT_THREAD_READS_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-thread-reads-v1";
+} from "@zollybot/contracts/team-protocol/agent-thread-reads-v1";
 import {
   AGENT_THREAD_REPLIES_CAPABILITY,
   AGENT_THREAD_REPLIES_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-thread-replies-v1";
-import { AGENT_THREADS_CAPABILITY, AGENT_THREADS_ROUTES } from "@openbot/contracts/team-protocol/agent-threads-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/agent-thread-replies-v1";
+import { AGENT_THREADS_CAPABILITY, AGENT_THREADS_ROUTES } from "@zollybot/contracts/team-protocol/agent-threads-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result } from "effect";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAgentTasks } from "./dependencies";

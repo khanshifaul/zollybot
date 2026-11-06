@@ -217,7 +217,7 @@ const agentRuntimeLockSchema = z.object({
     }),
   }),
   /**
-   * The JavaScript runtime OpenBot downloads for the MCP servers, not for a provider CLI.
+   * The JavaScript runtime ZollyBot downloads for the MCP servers, not for a provider CLI.
    *
    * `tag` is the source tag the licence is read from; `version` is what `bun --version` prints and
    * what the npm packages carry. Bun states both as the same number, and the schema keeps them
@@ -255,7 +255,7 @@ const agentRuntimeLockSchema = z.object({
     }),
   }),
   /**
-   * The server that signs in with a Google AI Pro or Ultra plan. It is proprietary, so OpenBot
+   * The server that signs in with a Google AI Pro or Ultra plan. It is proprietary, so ZollyBot
    * downloads it on the user's computer and does not ship it in a release. The archive has no licence
    * file: the terms are at `licenseUrl`.
    */
@@ -276,7 +276,7 @@ const agentRuntimeLockSchema = z.object({
     }),
   }),
   /**
-   * The Cursor CLI, which signs in with a Cursor plan. It is proprietary, so OpenBot downloads it on
+   * The Cursor CLI, which signs in with a Cursor plan. It is proprietary, so ZollyBot downloads it on
    * the user's computer and does not ship it in a release. The terms are at `licenseUrl`. A version is
    * a date and a commit, which is also the folder of the download.
    */
@@ -301,13 +301,13 @@ const agentRuntimeLockSchema = z.object({
   pi: nativeProviderLockSchema,
   muse: nativeProviderLockSchema,
   /**
-   * Cognition's Devin CLI, from its own download site. The licence is proprietary, so OpenBot
+   * Cognition's Devin CLI, from its own download site. The licence is proprietary, so ZollyBot
    * downloads the CLI on the user's computer and does not ship it in a release.
    */
   devin: nativeProviderLockSchema,
   /**
    * GitHub's Copilot CLI, from the GitHub releases of `github/copilot-cli`. Its licence lets an app
-   * include it only unchanged, so OpenBot downloads the CLI on the user's computer and does not ship
+   * include it only unchanged, so ZollyBot downloads the CLI on the user's computer and does not ship
    * it in a release.
    */
   copilot: nativeProviderLockSchema,

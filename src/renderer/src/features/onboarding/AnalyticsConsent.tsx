@@ -1,6 +1,6 @@
-import { Button, Checkbox, toast } from "@openbot/ui";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
+import { Button, Checkbox, toast } from "@zollybot/ui";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, createUniqueId, For, Match, onCleanup, Show, Switch } from "solid-js";
 import type { OnboardingAvatarVariant } from "./onboarding-avatars";
 
@@ -28,7 +28,7 @@ const MARKER_PATTERN = /(|)/;
 const THANKS_MS = 2400;
 
 /**
- * The "Help make OpenBot better" box of first run and of the web sign-in. A tick by the user thanks
+ * The "Help make ZollyBot better" box of first run and of the web sign-in. A tick by the user thanks
  * them: three of the team pop out of the row, and the first tick also shows a toast. A box that
  * starts ticked says nothing, and clearing it never asks why.
  */

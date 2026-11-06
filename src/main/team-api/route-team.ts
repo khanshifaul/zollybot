@@ -7,11 +7,11 @@ import type { TeamApiOptions } from "./dependencies";
 // first line for exactly that reason.
 
 import { readFile } from "node:fs/promises";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { TeamPresenceSnapshot } from "@openbot/contracts/ipc";
-import { isBoolean } from "@openbot/contracts/runtime-values";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { sourceText } from "@openbot/i18n/source";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { TeamPresenceSnapshot } from "@zollybot/contracts/ipc";
+import { isBoolean } from "@zollybot/contracts/runtime-values";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import { memberAuditName } from "../server-audit-store";
 import type { TeamStore } from "../team-store";

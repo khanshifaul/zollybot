@@ -1,5 +1,5 @@
-import { isUuidV4 } from "@openbot/contracts/validation";
 import { createFileRoute } from "@tanstack/solid-router";
+import { isUuidV4 } from "@zollybot/contracts/validation";
 import { Effect } from "effect";
 import { avatarObjectKey } from "../../../server/avatar-storage";
 import { runApiResponse } from "../../../server/effect-runtime";

@@ -9,7 +9,7 @@ import { Effect } from "effect";
 import { AttachmentFiles } from "../src/backend/attachment-files";
 
 const workspace = dirname(dirname(import.meta.filename));
-const artifactPath = join(workspace, ".openbot-build", "attachment-collision-e2e.json");
+const artifactPath = join(workspace, ".zollybot-build", "attachment-collision-e2e.json");
 
 interface AttachmentSource {
   name: string;
@@ -37,7 +37,7 @@ async function filenameCollision(root: string, first: string, second: string): P
 }
 
 async function run() {
-  const root = await mkdtemp(join(tmpdir(), "openbot-attachment-collision-"));
+  const root = await mkdtemp(join(tmpdir(), "zollybot-attachment-collision-"));
   try {
     const sharedRoot = join(root, "shared");
     const files = new AttachmentFiles({ userDataPath: join(root, "user-data"), sharedRoot });
@@ -104,8 +104,8 @@ async function run() {
     const transferRoot = files.transferRoot(transferId);
     const storedNames = attachments.map((attachment) => attachment.name);
     assert.equal(new Set(storedNames).size, sources.length);
-    assert.deepEqual((await readdir(transferRoot)).sort(), [".openbot-transfer.json", ...storedNames].sort());
-    const manifest = JSON.parse(await readFile(join(transferRoot, ".openbot-transfer.json"), "utf8"));
+    assert.deepEqual((await readdir(transferRoot)).sort(), [".zollybot-transfer.json", ...storedNames].sort());
+    const manifest = JSON.parse(await readFile(join(transferRoot, ".zollybot-transfer.json"), "utf8"));
     assert.deepEqual(manifest, {
       version: 2,
       kind: "message-transfer",

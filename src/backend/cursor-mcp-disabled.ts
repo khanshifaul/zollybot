@@ -6,8 +6,8 @@ import { cursorDataHome } from "./process-confinement";
 /**
  * Cursor 2026.10.22-27dcf5f does not load a server whose name is in the project's
  * `mcp-disabled.json`, also a server that an ACP session gives it, and does not report it (#3058).
- * The list has names only, so an `openbot` entry from the user's own Cursor CLI takes OpenBot's
- * tools from each agent in that project. This removes OpenBot's names and keeps the other entries.
+ * The list has names only, so an `zollybot` entry from the user's own Cursor CLI takes ZollyBot's
+ * tools from each agent in that project. This removes ZollyBot's names and keeps the other entries.
  */
 export function enableCursorMcpServers(cwd: string, names: readonly string[]): void {
   const file = join(cursorDataHome(), "projects", cursorProjectSlug(cursorProjectRoot(cwd)), "mcp-disabled.json");

@@ -1,4 +1,4 @@
-import { isAgentModel } from "@openbot/contracts/ipc";
+import { isAgentModel } from "@zollybot/contracts/ipc";
 
 /** The start of a model value that `encodedModelId` encoded, because the contract charset refuses it. */
 const ENCODED_MODEL = "b64:";

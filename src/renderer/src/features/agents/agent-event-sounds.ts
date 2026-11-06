@@ -1,4 +1,4 @@
-import type { AgentEvent, TeamRealtimeEvent } from "@openbot/contracts/ipc";
+import type { AgentEvent, TeamRealtimeEvent } from "@zollybot/contracts/ipc";
 import { playActionSound } from "../../action-sounds";
 
 /**

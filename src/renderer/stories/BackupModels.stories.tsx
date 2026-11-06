@@ -1,10 +1,10 @@
-import type { AgentBackupModels, AgentModelChoice } from "@openbot/contracts/ipc";
+import type { AgentBackupModels, AgentModelChoice } from "@zollybot/contracts/ipc";
 import {
   type BackupModelSource,
   BackupModelsPage,
   UsageLimitAskCard,
   usageLimitAskOptions,
-} from "@openbot/ui/features/conversation/BackupModels";
+} from "@zollybot/ui/features/conversation/BackupModels";
 import { createSignal } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

@@ -2,13 +2,13 @@ import {
   DEFAULT_REMOTE_NETWORK_ROUTE,
   isRemoteNetworkRoute,
   type RemoteNetworkRoutePreference,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { PreferenceStore } from "./preference-file";
 
 /**
  * The network that devices use to connect to this computer. The host reads it each time it connects
- * to Signal. A file that names an unknown route reads as `openbot`, which is how every connection
+ * to Signal. A file that names an unknown route reads as `zollybot`, which is how every connection
  * worked before the setting existed.
  */
 export type RemoteNetworkRoutePreferenceStore = PreferenceStore<RemoteNetworkRoutePreference>;

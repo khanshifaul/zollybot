@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import { type IngressRoute, ROUTE_HOST_STATES } from "@openbot/contracts/signal-protocol/ingress-queue";
+import { type IngressRoute, ROUTE_HOST_STATES } from "@zollybot/contracts/signal-protocol/ingress-queue";
 import { Context, Effect, Layer, ManagedRuntime, Schema, Semaphore } from "effect";
 import { createRemoteApiApp, prometheusMetrics } from "./app";
 import { readRemoteApiConfig } from "./config";
@@ -59,13 +59,13 @@ class ControlPlane extends Context.Service<
     validateResume(claims: import("./protocol").RemoteTicketClaims): Effect.Effect<boolean, ControlPlaneError>;
     validateSlackRoute(
       hostId: string,
-      teams: import("@openbot/contracts/signal-protocol/slack-route").SlackRouteTeam[],
+      teams: import("@zollybot/contracts/signal-protocol/slack-route").SlackRouteTeam[],
     ): Effect.Effect<string[], ControlPlaneError>;
     validateTelegramRoute(
       hostId: string,
-      chats: import("@openbot/contracts/signal-protocol/telegram-route").TelegramRouteChat[],
+      chats: import("@zollybot/contracts/signal-protocol/telegram-route").TelegramRouteChat[],
     ): Effect.Effect<
-      import("@openbot/contracts/signal-protocol/telegram-route").TelegramRouteChat[],
+      import("@zollybot/contracts/signal-protocol/telegram-route").TelegramRouteChat[],
       ControlPlaneError
     >;
     // `null` when the code is not valid (404) or the chat is linked to another host (409).
@@ -76,11 +76,11 @@ class ControlPlane extends Context.Service<
     ): Effect.Effect<TelegramChatLink | null, ControlPlaneError>;
     validateDiscordRoute(
       hostId: string,
-      guilds: import("@openbot/contracts/signal-protocol/discord-route").DiscordRouteGuild[],
+      guilds: import("@zollybot/contracts/signal-protocol/discord-route").DiscordRouteGuild[],
     ): Effect.Effect<string[], ControlPlaneError>;
     validateWebhookRoute(
       hostId: string,
-      routes: import("@openbot/contracts/signal-protocol/webhook-route").WebhookRoute[],
+      routes: import("@zollybot/contracts/signal-protocol/webhook-route").WebhookRoute[],
     ): Effect.Effect<string[], ControlPlaneError>;
     discordGuildRemoved(guildId: string): Effect.Effect<void, ControlPlaneError>;
     // An account service without the route answers 404: no host starts and nothing is kept.
@@ -89,7 +89,7 @@ class ControlPlane extends Context.Service<
     supportsRouteWake(): Effect.Effect<boolean>;
     reconcileDiscordGuilds(guildIds: string[], before: number): Effect.Effect<void, ControlPlaneError>;
   }
->()("@openbot/remote-api/ControlPlane") {
+>()("@zollybot/remote-api/ControlPlane") {
   static layer = Layer.sync(ControlPlane, () => {
     const ask = Effect.fn("ControlPlane.request")((path: string, payload: unknown, timeoutMilliseconds = 5_000) =>
       Effect.tryPromise({
@@ -100,8 +100,8 @@ class ControlPlane extends Context.Service<
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "OpenBot-Timestamp": timestamp,
-              "OpenBot-Signature": signServiceRequest(body, timestamp, config.authWebhookSecret),
+              "ZollyBot-Timestamp": timestamp,
+              "ZollyBot-Signature": signServiceRequest(body, timestamp, config.authWebhookSecret),
             },
             body,
             signal: AbortSignal.any([signal, AbortSignal.timeout(timeoutMilliseconds)]),
@@ -362,7 +362,7 @@ const tlsPaths =
 const signalRuntime = ManagedRuntime.make(signal.dependencies);
 const discordConfig = config.discord;
 if (!discordConfig) {
-  console.log("OpenBot Discord is off: DISCORD_BOT_TOKEN and DISCORD_APPLICATION_ID are not both set and valid.");
+  console.log("ZollyBot Discord is off: DISCORD_BOT_TOKEN and DISCORD_APPLICATION_ID are not both set and valid.");
 }
 // Null while the Gateway is stopped.
 let discordApi: DiscordApi | null = null;
@@ -427,8 +427,9 @@ const healthServer = Bun.serve({
   hostname: config.healthHost,
   port: config.healthPort,
   routes: {
-    "/health/live": () => Response.json({ service: "openbot-remote-api", status: "live", commit: config.sourceCommit }),
-    "/health/ready": () => Response.json({ service: "openbot-remote-api", status: "ready" }),
+    "/health/live": () =>
+      Response.json({ service: "zollybot-remote-api", status: "live", commit: config.sourceCommit }),
+    "/health/ready": () => Response.json({ service: "zollybot-remote-api", status: "ready" }),
     "/metrics": (request) => {
       const authorization = request.headers.get("Authorization");
       if (!config.metricsToken || authorization !== `Bearer ${config.metricsToken}`)
@@ -442,7 +443,7 @@ const healthServer = Bun.serve({
 });
 
 const protocol = tlsPaths ? "https" : "http";
-console.log(`OpenBot Remote API is ready at ${protocol}://${config.host}:${config.port}`);
+console.log(`ZollyBot Remote API is ready at ${protocol}://${config.host}:${config.port}`);
 
 const readCertificateFile = (path: string) =>
   Effect.tryPromise({
@@ -461,7 +462,7 @@ function reloadTlsWhenChanged(): Promise<void> {
     .runPromise(reloadTlsEffect())
     .catch(() => {
       // TLS paths and provider causes must not enter diagnostics.
-      console.error("OpenBot Remote API could not reload its TLS certificate.");
+      console.error("ZollyBot Remote API could not reload its TLS certificate.");
     })
     .finally(() => {
       pendingReload = null;
@@ -482,7 +483,7 @@ const reloadTlsEffect = Effect.fn("Signal.reloadTls")(function* () {
     catch: () => new ControlPlaneError({ message: "The Signal listener could not be restarted." }),
   });
   certificateHash = nextHash;
-  console.log("OpenBot Remote API reloaded its TLS certificate.");
+  console.log("ZollyBot Remote API reloaded its TLS certificate.");
 });
 
 function tlsCertificateHash(): Effect.Effect<string | null> {

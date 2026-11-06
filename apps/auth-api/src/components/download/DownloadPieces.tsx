@@ -1,5 +1,5 @@
-import { PlatformLogo } from "@openbot/brand";
 import { Link } from "@tanstack/solid-router";
+import { PlatformLogo } from "@zollybot/brand";
 import { createSignal, onCleanup } from "solid-js";
 import { DOWNLOAD_PAGES, type DownloadInstaller, type DownloadPagePlatform } from "../../lib/download-pages";
 import { EXTERNAL_LINK_REL } from "../../lib/landing-links";

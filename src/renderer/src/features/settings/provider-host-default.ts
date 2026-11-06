@@ -1,14 +1,14 @@
-import type { AgentModelId, AgentProviderId, HostDefaultProvider, OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { AgentModelId, AgentProviderId, HostDefaultProvider, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 import { createEffect, createSignal, untrack } from "solid-js";
 
 /** The default provider calls of a joined server's host. The desktop reaches them through main. */
 type HostDefaultProviderCalls = Pick<
-  OpenBotDesktopApi["providerAdmin"],
+  ZollyBotDesktopApi["providerAdmin"],
   "hostDefaultProvider" | "setHostDefaultProvider"
 >;
 
 export interface HostDefaultProviderOptions {
-  /** The calls of a client with no `window.openbot`, such as the web client. */
+  /** The calls of a client with no `window.zollybot`, such as the web client. */
   calls?: HostDefaultProviderCalls;
 }
 
@@ -27,7 +27,7 @@ export interface HostDefaultProviderSetting extends HostDefaultProvider {
 export function createHostDefaultProvider(
   source: () => HostDefaultProviderSource | undefined,
 ): () => HostDefaultProviderSetting | undefined {
-  const calls = (): HostDefaultProviderCalls => source()?.calls ?? window.openbot.providerAdmin;
+  const calls = (): HostDefaultProviderCalls => source()?.calls ?? window.zollybot.providerAdmin;
   const [value, setValue] = createSignal<HostDefaultProvider | null>(null);
   /** Bumped for each server, so an answer for an earlier one is dropped. */
   let generation = 0;

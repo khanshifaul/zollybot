@@ -1,11 +1,11 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   type AgentAccessChange,
   type AgentAccessLevel,
   type AgentAccessLevels,
   type AgentAccessRole,
   canAdministerServer,
-} from "@openbot/contracts/ipc";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { useRef } from "react";
 import { useQueryScope } from "@/features/auth/context/mobile-session-context";
 import {

@@ -1,5 +1,5 @@
-import type { AgentTask } from "@openbot/contracts/ipc";
-import type { SidebarWaitReason } from "@openbot/ui/features/sidebar/sidebar-types";
+import type { AgentTask } from "@zollybot/contracts/ipc";
+import type { SidebarWaitReason } from "@zollybot/ui/features/sidebar/sidebar-types";
 import { DRAFT_THREAD_ID, MAIN_THREAD_ID, type ThreadItem, type ThreadStatus } from "./thread-types";
 
 /** What a side thread does now. A turn that waits for an approval or an answer waits for the user. */

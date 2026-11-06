@@ -5,7 +5,7 @@
 // the socket is down, and the disconnect. Runs the real agent service, messaging service, WhatsApp
 // driver, runtime, session and store on a temporary profile. Only the Baileys socket is fake: no
 // message leaves this computer. `bun scripts/messaging-whatsapp-e2e.ts`.
-// Writes .openbot-build/messaging-whatsapp-e2e/report.json.
+// Writes .zollybot-build/messaging-whatsapp-e2e/report.json.
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -13,13 +13,13 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Boom } from "@hapi/boom";
-import type { MessagingConnection, WhatsAppLinkState } from "@openbot/contracts/ipc";
+import type { MessagingConnection, WhatsAppLinkState } from "@zollybot/contracts/ipc";
 import {
   newStoreKey,
   WhatsAppAuthStore,
   WhatsAppStoreLocked,
   WhatsAppStoreUnreadable,
-} from "@openbot/whatsapp/auth-store";
+} from "@zollybot/whatsapp/auth-store";
 import {
   type AnyMessageContent,
   type BaileysEventMap,
@@ -28,7 +28,7 @@ import {
   proto,
   type UserFacingSocketConfig,
   type WAMessage,
-} from "@openbot/whatsapp/baileys";
+} from "@zollybot/whatsapp/baileys";
 import { gc } from "bun";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
@@ -43,13 +43,13 @@ import { whatsAppInbound } from "../src/backend/messaging/whatsapp/whatsapp-even
 import { WHATSAPP_TEXT_LIMIT, whatsAppChunks } from "../src/backend/messaging/whatsapp/whatsapp-render";
 import { WhatsAppRuntime } from "../src/backend/messaging/whatsapp/whatsapp-runtime";
 import { backoffDelay, closeDecision, type WhatsAppSocket } from "../src/backend/messaging/whatsapp/whatsapp-session";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { SidebarLayoutStore } from "../src/backend/sidebar-layout-store";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import { parseStartWhatsAppLinkInput, parseWhatsAppSenderInput } from "../src/main/ipc/messaging-inputs";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/messaging-whatsapp-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/messaging-whatsapp-e2e");
 const REPORT = join(OUT, "report.json");
-const root = await mkdtemp(join(tmpdir(), "openbot-whatsapp-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-whatsapp-e2e-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const whatsappRoot = join(userData, "whatsapp");
@@ -115,7 +115,7 @@ interface Sent {
   quotedId: string | null;
 }
 
-/** One Baileys socket as OpenBot sees it. The phone drives it from the steps. */
+/** One Baileys socket as ZollyBot sees it. The phone drives it from the steps. */
 class FakeSocket implements WhatsAppSocket {
   readonly #events = new EventEmitter();
   readonly #frames = new Set<() => void>();
@@ -264,7 +264,7 @@ class FakePhone {
     );
   }
 
-  /** True once OpenBot reacted to the message: 👀 when it took it, 💔 when the queue was full. */
+  /** True once ZollyBot reacted to the message: 👀 when it took it, 💔 when the queue was full. */
   reactedTo(messageId: string | null | undefined): boolean {
     return this.sent.some((sent) => "react" in sent.content && sent.content.react.key?.id === messageId);
   }
@@ -370,7 +370,7 @@ interface Booted {
 }
 
 async function boot<T>(use: (services: Booted) => Promise<T>): Promise<T> {
-  const database = new OpenBotDatabase(userData);
+  const database = new ZollyBotDatabase(userData);
   const store = new AgentStore(userData, home, database);
   const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
   const sidebar = new SidebarLayoutStore(join(userData, "sidebar-layout.json"));
@@ -539,7 +539,7 @@ try {
       assert.equal(started.status, "waiting");
       const waiting = await linkState(messaging, (state) => state.qr !== null, "a QR code");
       assert.match(waiting.qr ?? "", /^2@fake-qr-/u);
-      assert.equal(phone.current().config.browser?.[1], "OpenBot", "A QR link does not show as OpenBot.");
+      assert.equal(phone.current().config.browser?.[1], "ZollyBot", "A QR link does not show as ZollyBot.");
       // The phone's first message comes the moment the device opens, before the transport listens.
       const early = message({ chat: OWNER_JID, fromMe: true, text: "first message after the link" });
       phone.onOpen = early;
@@ -591,7 +591,7 @@ try {
       return { linkId: link.linkId };
     });
 
-    await step("echo guard: OpenBot's own post in the owner's chat is not a new request", async () => {
+    await step("echo guard: ZollyBot's own post in the owner's chat is not a new request", async () => {
       const own = phone.sent.at(-1);
       assert.ok(own);
       phone.current().receive([message({ chat: OWNER_JID, fromMe: true, text: "👀", id: own.id })]);
@@ -623,9 +623,9 @@ try {
         await until(() => phone.reactedTo(marker.key.id), "the marker");
         assert.equal(received(agents, `${STRANGER}@s.whatsapp.net`, personal.key.id ?? ""), false);
         assert.equal(received(agents, GROUP, groupChat.key.id ?? ""), false);
-        assert.equal(phone.textsTo(`${STRANGER}@s.whatsapp.net`).length, 0, "OpenBot wrote to a personal contact.");
+        assert.equal(phone.textsTo(`${STRANGER}@s.whatsapp.net`).length, 0, "ZollyBot wrote to a personal contact.");
         assert.equal(messaging.whatsappOverview().accounts[0]?.pendingRequests.length, 0);
-        assert.equal(elsewhere(), before, "OpenBot posted outside the owner's own chat.");
+        assert.equal(elsewhere(), before, "ZollyBot posted outside the owner's own chat.");
         return { ignored: 3 };
       },
     );
@@ -978,7 +978,7 @@ try {
         await until(() => connection(messaging)?.state === "connected", "connected after the second link");
         await until(
           () => phone.textsTo(OWNER_JID).some((text) => text.includes("can now write to this number")),
-          "the welcome message of a number only for OpenBot",
+          "the welcome message of a number only for ZollyBot",
         );
         const account = messaging.whatsappOverview().accounts[0];
         assert.ok(

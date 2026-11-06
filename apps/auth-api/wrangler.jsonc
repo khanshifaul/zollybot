@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "openbot-auth-api",
+  "name": "zollybot-auth-api",
   "compatibility_date": "2026-08-18",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/worker-entry.ts",
@@ -55,7 +55,7 @@
     "EMAIL_SMTP_USERNAME": "hello@openbot.run",
     "EMAIL_FROM": "hello@openbot.run",
     "EMAIL_LICENSE_FROM": "licenses@openbot.run",
-    "REMOTE_TICKET_KEY_ID": "openbot-remote-1",
+    "REMOTE_TICKET_KEY_ID": "zollybot-remote-1",
     "REMOTE_SIGNAL_URL": "wss://signal.openbot.run/v1/signal",
     // Two active Signal machines (docs/remote-session-deployment.md): a is sui-alexandria, b is signal2.
     // Set both lists together, so that a revoke reaches each home. An empty REMOTE_SIGNAL_HOMES rolls back.
@@ -73,11 +73,11 @@
     // A license bought before this time is free until then: Stripe charges its first payment at this time.
     // Local development reads it too; set LICENSE_TRIAL_END= in the shell to sell licenses with no trial.
     "LICENSE_TRIAL_END": "2026-12-01T00:00:00Z",
-    // The public Client ID of the OpenBotGit GitHub App. Its private key is the optional secret
+    // The public Client ID of the ZollyBotGit GitHub App. Its private key is the optional secret
     // GITHUB_APP_PRIVATE_KEY (PKCS #8). Without the key, agents act on GitHub as the signed-in user.
     "GITHUB_APP_CLIENT_ID": "Iv23lik5pzHz70cb0RUL",
     "APNS_TEAM_ID": "8A47NKRZSJ",
-    "APNS_TOPIC": "run.openbot.mobile"
+    "APNS_TOPIC": "run.zollybot.mobile"
   },
   // Email leaves through the relay Worker (`wrangler.email-relay.jsonc`), which runs near the mail
   // host. Only production has it: the preview and test Workers and `vite dev` send from their own
@@ -85,7 +85,7 @@
   "services": [
     {
       "binding": "EMAIL_RELAY",
-      "service": "openbot-email-relay"
+      "service": "zollybot-email-relay"
     }
   ],
   // Cloudflare Email Service sends when the SMTP mailbox surely did not, such as when its hourly limit
@@ -100,7 +100,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "openbot-auth",
+      "database_name": "zollybot-auth",
       "database_id": "0cf7e5c1-63ad-4089-810a-e9eb67dd863d",
       "migrations_dir": "migrations"
     }
@@ -108,18 +108,18 @@
   "r2_buckets": [
     {
       "binding": "AVATARS",
-      "bucket_name": "openbot-avatars",
-      "preview_bucket_name": "openbot-avatars-test"
+      "bucket_name": "zollybot-avatars",
+      "preview_bucket_name": "zollybot-avatars-test"
     },
     {
       "binding": "SKILLS",
-      "bucket_name": "openbot-skills",
-      "preview_bucket_name": "openbot-skills-test"
+      "bucket_name": "zollybot-skills",
+      "preview_bucket_name": "zollybot-skills-test"
     },
     {
       "binding": "SITES",
-      "bucket_name": "openbot-sites",
-      "preview_bucket_name": "openbot-sites-test"
+      "bucket_name": "zollybot-sites",
+      "preview_bucket_name": "zollybot-sites-test"
     }
   ],
   "ratelimits": [
@@ -156,7 +156,7 @@
   ],
   "env": {
     "preview": {
-      "name": "openbot-landing-preview",
+      "name": "zollybot-landing-preview",
       "workers_dev": true,
       "preview_urls": true,
       "routes": [],
@@ -175,7 +175,7 @@
         "EMAIL_LICENSE_FROM": "licenses@openbot.run",
         "SITE_PUBLISH_ENABLED": "false",
         "SITE_COOKIE_ISOLATION_READY": "false",
-        "REMOTE_TICKET_KEY_ID": "openbot-remote-1",
+        "REMOTE_TICKET_KEY_ID": "zollybot-remote-1",
         "REMOTE_SIGNAL_URL": "ws://127.0.0.1:8081/v1/signal",
         "REMOTE_SIGNAL_HOMES": "",
         "REMOTE_AUTH_WEBHOOK_URL": "http://127.0.0.1:8081/internal/auth-events",
@@ -185,7 +185,7 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "openbot-auth-test",
+          "database_name": "zollybot-auth-test",
           "database_id": "38f1a836-6c70-44bb-bbf3-f0bbc5b766b3",
           "migrations_dir": "migrations"
         }
@@ -193,15 +193,15 @@
       "r2_buckets": [
         {
           "binding": "AVATARS",
-          "bucket_name": "openbot-avatars-test"
+          "bucket_name": "zollybot-avatars-test"
         },
         {
           "binding": "SKILLS",
-          "bucket_name": "openbot-skills-test"
+          "bucket_name": "zollybot-skills-test"
         },
         {
           "binding": "SITES",
-          "bucket_name": "openbot-sites-test"
+          "bucket_name": "zollybot-sites-test"
         }
       ],
       "ratelimits": [
@@ -238,7 +238,7 @@
       ]
     },
     "test": {
-      "name": "openbot-auth-api-test",
+      "name": "zollybot-auth-api-test",
       "workers_dev": true,
       "preview_urls": false,
       "routes": [],
@@ -270,7 +270,7 @@
         "EMAIL_LICENSE_FROM": "licenses@openbot.run",
         "SITE_PUBLISH_ENABLED": "false",
         "SITE_COOKIE_ISOLATION_READY": "false",
-        "REMOTE_TICKET_KEY_ID": "openbot-remote-1",
+        "REMOTE_TICKET_KEY_ID": "zollybot-remote-1",
         "REMOTE_SIGNAL_URL": "wss://signal.openbot.run/v1/signal",
         "REMOTE_SIGNAL_HOMES": "",
         "REMOTE_AUTH_WEBHOOK_URL": "https://signal.openbot.run/internal/auth-events",
@@ -280,12 +280,12 @@
         "HOSTED_SERVERS_ENABLED": "true",
         "GITHUB_APP_CLIENT_ID": "Iv23lik5pzHz70cb0RUL",
         "APNS_TEAM_ID": "8A47NKRZSJ",
-        "APNS_TOPIC": "run.openbot.mobile"
+        "APNS_TOPIC": "run.zollybot.mobile"
       },
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "openbot-auth-test",
+          "database_name": "zollybot-auth-test",
           "database_id": "38f1a836-6c70-44bb-bbf3-f0bbc5b766b3",
           "migrations_dir": "migrations"
         }
@@ -293,15 +293,15 @@
       "r2_buckets": [
         {
           "binding": "AVATARS",
-          "bucket_name": "openbot-avatars-test"
+          "bucket_name": "zollybot-avatars-test"
         },
         {
           "binding": "SKILLS",
-          "bucket_name": "openbot-skills-test"
+          "bucket_name": "zollybot-skills-test"
         },
         {
           "binding": "SITES",
-          "bucket_name": "openbot-sites-test"
+          "bucket_name": "zollybot-sites-test"
         }
       ],
       "ratelimits": [

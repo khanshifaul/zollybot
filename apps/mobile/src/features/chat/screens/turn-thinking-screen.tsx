@@ -1,5 +1,5 @@
-import type { AgentTasksSnapshot, ConversationSnapshot } from "@openbot/contracts/ipc";
 import { skipToken, useQuery } from "@tanstack/react-query";
+import type { AgentTasksSnapshot, ConversationSnapshot } from "@zollybot/contracts/ipc";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { HeaderHeightContext } from "expo-router/react-navigation";
 import { Button, Typography } from "heroui-native";

@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import { isBrowserEgressTargetHost } from "@openbot/contracts/team-protocol/browser-egress-v1";
+import { isBrowserEgressTargetHost } from "@zollybot/contracts/team-protocol/browser-egress-v1";
 import { Effect } from "effect";
 import type { RelayExit } from "../backend/browser-profiles/browser-proxy-relay";
 import { BrowserEgressMux, BrowserEgressRefusedError } from "./browser-egress-mux";

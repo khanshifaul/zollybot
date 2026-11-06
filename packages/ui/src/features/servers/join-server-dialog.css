@@ -13,18 +13,18 @@
   max-height: calc(100dvh - 48px);
   overflow: hidden;
   outline: 0;
-  border-radius: var(--openbot-radius-xl);
-  background: var(--openbot-bg-sidebar);
-  color: var(--openbot-text-primary);
-  box-shadow: 0 0 0 1px var(--openbot-border-strong);
+  border-radius: var(--zollybot-radius-xl);
+  background: var(--zollybot-bg-sidebar);
+  color: var(--zollybot-text-primary);
+  box-shadow: 0 0 0 1px var(--zollybot-border-strong);
 }
 
 .join-server-close {
   position: absolute;
-  top: var(--openbot-space-6);
-  inset-inline-end: var(--openbot-space-6);
+  top: var(--zollybot-space-6);
+  inset-inline-end: var(--zollybot-space-6);
   z-index: 2;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .join-server-content {
@@ -44,7 +44,7 @@
 }
 
 .join-server-pages[data-reference] {
-  --join-server-reference: calc(var(--openbot-control-xs) + var(--openbot-space-0-5));
+  --join-server-reference: calc(var(--zollybot-control-xs) + var(--zollybot-space-0-5));
 }
 
 .join-server-pages[data-page="1"][data-preview-error] {
@@ -63,7 +63,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--openbot-space-4) + var(--openbot-space-1));
+  gap: calc(var(--zollybot-space-4) + var(--zollybot-space-1));
   margin: 0;
 }
 
@@ -76,51 +76,51 @@
 }
 
 .join-server-header-entry {
-  gap: var(--openbot-space-2);
-  padding-inline: calc(var(--openbot-space-4) + var(--openbot-space-1));
+  gap: var(--zollybot-space-2);
+  padding-inline: calc(var(--zollybot-space-4) + var(--zollybot-space-1));
 }
 
 .join-server-header-entry .ui-heading {
-  font-size: var(--openbot-text-3xl);
-  font-weight: var(--openbot-weight-bold);
-  line-height: var(--openbot-leading-3xl);
+  font-size: var(--zollybot-text-3xl);
+  font-weight: var(--zollybot-weight-bold);
+  line-height: var(--zollybot-leading-3xl);
 }
 
 .join-server-header-entry .ui-text {
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
 }
 
 .join-server-header-verified {
-  gap: var(--openbot-space-2);
-  padding-inline: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
+  padding-inline: var(--zollybot-space-2);
 }
 
 .join-server-header .ui-text {
   max-width: 296px;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .join-server-entry-logo {
-  --app-logo-background: var(--openbot-surface-light);
+  --app-logo-background: var(--zollybot-surface-light);
   width: 64px;
   height: 64px;
   flex: 0 0 auto;
-  margin-bottom: var(--openbot-space-4);
-  border-radius: var(--openbot-radius-xl);
+  margin-bottom: var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-xl);
   box-shadow:
-    0 12px 28px var(--openbot-shadow-dialog),
-    inset 0 1px 0 var(--openbot-border-strong);
+    0 12px 28px var(--zollybot-shadow-dialog),
+    inset 0 1px 0 var(--zollybot-border-strong);
 }
 
 .join-server-field {
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .join-server-link-input.ui-input {
-  height: var(--openbot-control-xl);
-  background: var(--openbot-bg-control);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-sm);
+  height: var(--zollybot-control-xl);
+  background: var(--zollybot-bg-control);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-sm);
 }
 
 .join-server-link-input.ui-input:focus-visible {
@@ -129,46 +129,46 @@
 }
 
 .join-server-link-input.ui-input.is-error {
-  border-color: var(--openbot-danger);
+  border-color: var(--zollybot-danger);
 }
 
 .join-server-field .ui-field-error {
-  min-height: var(--openbot-leading-sm);
+  min-height: var(--zollybot-leading-sm);
 }
 
 .join-server-identity-logo {
-  --app-logo-background: var(--openbot-surface-light);
+  --app-logo-background: var(--zollybot-surface-light);
   width: 88px;
   height: 88px;
   flex: 0 0 auto;
-  margin-bottom: var(--openbot-space-6);
-  border-radius: var(--openbot-radius-modal);
+  margin-bottom: var(--zollybot-space-6);
+  border-radius: var(--zollybot-radius-modal);
   box-shadow:
-    0 16px 36px var(--openbot-shadow-dialog),
-    inset 0 1px 0 var(--openbot-border-strong);
+    0 16px 36px var(--zollybot-shadow-dialog),
+    inset 0 1px 0 var(--zollybot-border-strong);
 }
 
 .join-server-invite-eyebrow {
   margin-bottom: 2px;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
 }
 
 .join-server-header-verified .ui-heading {
-  font-size: var(--openbot-text-3xl);
-  font-weight: var(--openbot-weight-bold);
-  line-height: var(--openbot-leading-3xl);
+  font-size: var(--zollybot-text-3xl);
+  font-weight: var(--zollybot-weight-bold);
+  line-height: var(--zollybot-leading-3xl);
 }
 
 .join-server-hostname.ui-text {
   max-width: 260px;
-  color: var(--openbot-text-muted);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-lg);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-lg);
 }
 
 .join-server-alert.ui-alert {
   align-self: start;
-  padding-block: var(--openbot-space-2);
+  padding-block: var(--zollybot-space-2);
 }
 
 .join-server-alert .ui-alert-description {
@@ -179,7 +179,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   margin-top: auto;
 }
 
@@ -188,35 +188,35 @@
 }
 
 .join-server-actions-verified {
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .join-server-preview {
   display: grid;
-  gap: var(--openbot-space-3);
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
-  padding: var(--openbot-space-4);
+  gap: var(--zollybot-space-3);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
+  padding: var(--zollybot-space-4);
 }
 
 .join-server-preview-signal {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .join-server-preview-signal i,
 .join-server-preview-signal span {
   display: block;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-success);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-success);
 }
 
 .join-server-preview-signal i {
   width: 8px;
   height: 8px;
-  box-shadow: 0 0 0 4px var(--openbot-success-soft);
+  box-shadow: 0 0 0 4px var(--zollybot-success-soft);
 }
 
 .join-server-preview-signal span {
@@ -232,9 +232,9 @@
 }
 
 .join-server-verified {
-  color: var(--openbot-success);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-success);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .join-server-preview-heading strong,
@@ -246,19 +246,19 @@
 }
 
 .join-server-preview-heading strong {
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
 }
 
 .join-server-preview-heading small,
 .join-server-preview dt,
 .join-server-preview p {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .join-server-preview dl {
   display: grid;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   margin: 0;
 }
 
@@ -266,18 +266,18 @@
   min-width: 0;
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr);
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .join-server-preview dd {
   margin: 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .join-server-preview p {
   margin: 0;
-  line-height: var(--openbot-leading-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 @keyframes join-server-backdrop-in {
@@ -294,7 +294,7 @@
 
 @media (max-width: 560px) {
   .join-server-backdrop {
-    padding: var(--openbot-space-3);
+    padding: var(--zollybot-space-3);
   }
 
   .join-server-dialog {
@@ -303,12 +303,12 @@
   }
 
   .join-server-close {
-    top: var(--openbot-space-3);
-    inset-inline-end: var(--openbot-space-3);
+    top: var(--zollybot-space-3);
+    inset-inline-end: var(--zollybot-space-3);
   }
 
   .join-server-content {
-    padding: var(--openbot-space-6);
+    padding: var(--zollybot-space-6);
   }
 
   .join-server-pages {

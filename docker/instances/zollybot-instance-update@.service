@@ -1,0 +1,10 @@
+# Pulls the image of instance %i, and for an install makes the container again. `setup` replaces
+# /opt/zollybot-docker/instances/ with the folder of zollybot-instance.
+[Unit]
+Description=Update ZollyBot instance %i
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/zollybot-docker/instances/zollybot-instance update-request %i
+TimeoutStartSec=45min

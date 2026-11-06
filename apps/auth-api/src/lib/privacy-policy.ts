@@ -8,7 +8,7 @@ export const PRIVACY_POLICY_ROUTE = "/privacy-policy";
 export const PRIVACY_POLICY_UPDATED_AT = "2026-11-04";
 
 export const PRIVACY_POLICY_META = {
-  title: "OpenBot Privacy Policy",
+  title: "ZollyBot Privacy Policy",
   description:
-    "How Synthetify Labs processes personal data when you use OpenBot: what we collect, why, who receives it, how long we keep it, and your rights.",
+    "How Synthetify Labs processes personal data when you use ZollyBot: what we collect, why, who receives it, how long we keep it, and your rights.",
 } as const;

@@ -3,7 +3,7 @@ import {
   type MarketplaceAgentSummary,
   type MarketplaceSkillSummary,
   type SkillCategory,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { runApiEffect } from "./effect-runtime";
 
 /*

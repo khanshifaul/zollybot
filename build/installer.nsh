@@ -1,9 +1,9 @@
 ; electron-builder includes this file in the NSIS installer. Its `protocols` setting registers the
-; openbot:// scheme only on macOS and Linux, so the installer writes the Windows key itself.
+; zollybot:// scheme only on macOS and Linux, so the installer writes the Windows key itself.
 ; The application writes the same key at each start (`src/main/index.ts`).
 
-; A chosen folder such as D:\OpenBot inherits Modify rights for "Authenticated Users" from the drive
-; root, so another account could replace OpenBot.exe. Give access only to this user, SYSTEM and
+; A chosen folder such as D:\ZollyBot inherits Modify rights for "Authenticated Users" from the drive
+; root, so another account could replace ZollyBot.exe. Give access only to this user, SYSTEM and
 ; Administrators, as %LOCALAPPDATA% does, and reset the files to inherit it. This runs before the
 ; files are copied at each install and update, because an update deletes the folder. The installer
 ; makes the folder, so this user owns it and icacls can change it. On a drive with no ACLs, such as
@@ -38,15 +38,15 @@
 !macroend
 
 !macro customInstall
-  WriteRegStr SHCTX "Software\Classes\openbot" "" "URL:OpenBot invitations"
-  WriteRegStr SHCTX "Software\Classes\openbot" "URL Protocol" ""
-  WriteRegStr SHCTX "Software\Classes\openbot\DefaultIcon" "" "$appExe,0"
-  WriteRegStr SHCTX "Software\Classes\openbot\shell\open\command" "" '"$appExe" "%1"'
+  WriteRegStr SHCTX "Software\Classes\zollybot" "" "URL:ZollyBot invitations"
+  WriteRegStr SHCTX "Software\Classes\zollybot" "URL Protocol" ""
+  WriteRegStr SHCTX "Software\Classes\zollybot\DefaultIcon" "" "$appExe,0"
+  WriteRegStr SHCTX "Software\Classes\zollybot\shell\open\command" "" '"$appExe" "%1"'
   !insertmacro openBotRemoveAppFromDataFolder
 !macroend
 
-; OpenBot keeps the agent workspaces in %USERPROFILE%\OpenBot (`src/backend/agent-store.ts`) and its
-; user data in %APPDATA%\OpenBot (`app.setName` in `src/main/index.ts`). The uninstaller deletes the
+; ZollyBot keeps the agent workspaces in %USERPROFILE%\ZollyBot (`src/backend/agent-store.ts`) and its
+; user data in %APPDATA%\ZollyBot (`app.setName` in `src/main/index.ts`). The uninstaller deletes the
 ; installation folder, and an update moves each file in it to a temporary folder that it then
 ; deletes. An installation folder must not be one of these folders or a folder that holds one.
 ; Sets OUT to "1" when the folder in the variable PATH is such a folder, otherwise to "0". A
@@ -60,8 +60,8 @@
     StrCpy ${PATH} ${PATH} -1
   ${endIf}
   ${if} ${PATH} != ""
-    !insertmacro openBotHolds ${PATH} "$PROFILE\OpenBot" ${OUT}
-    !insertmacro openBotHolds ${PATH} "$APPDATA\OpenBot" ${OUT}
+    !insertmacro openBotHolds ${PATH} "$PROFILE\ZollyBot" ${OUT}
+    !insertmacro openBotHolds ${PATH} "$APPDATA\ZollyBot" ${OUT}
   ${endIf}
   Pop $R9
   Pop $R8
@@ -82,11 +82,11 @@
 !ifndef BUILD_UNINSTALLER
   ; "1" when the registry names an earlier installation in a folder with user data.
   Var openBotRegisteredInDataFolder
-  ; The folder with user data that holds an earlier OpenBot.exe. The update removes that copy.
+  ; The folder with user data that holds an earlier ZollyBot.exe. The update removes that copy.
   Var openBotDataFolderInstall
 
   ; The assisted installer accepted a folder that did not exist yet, so a first installation could go
-  ; to %USERPROFILE%\OpenBot, and the app then made the agent folders in it. The earlier uninstaller
+  ; to %USERPROFILE%\ZollyBot, and the app then made the agent folders in it. The earlier uninstaller
   ; would move them with the app files and delete them, or it stops the update with "Failed to
   ; uninstall old application files". Do not run that uninstaller: `customCheckAppRunning` removes its
   ; registry entry, and `customInstall` removes only the app files. A copy whose registry entry is
@@ -100,10 +100,10 @@
       ${if} ${FileExists} "$1\${APP_EXECUTABLE_FILENAME}"
         StrCpy $openBotDataFolderInstall $1
       ${endIf}
-    ${elseIf} ${FileExists} "$PROFILE\OpenBot\${APP_EXECUTABLE_FILENAME}"
-      StrCpy $openBotDataFolderInstall "$PROFILE\OpenBot"
-    ${elseIf} ${FileExists} "$APPDATA\OpenBot\${APP_EXECUTABLE_FILENAME}"
-      StrCpy $openBotDataFolderInstall "$APPDATA\OpenBot"
+    ${elseIf} ${FileExists} "$PROFILE\ZollyBot\${APP_EXECUTABLE_FILENAME}"
+      StrCpy $openBotDataFolderInstall "$PROFILE\ZollyBot"
+    ${elseIf} ${FileExists} "$APPDATA\ZollyBot\${APP_EXECUTABLE_FILENAME}"
+      StrCpy $openBotDataFolderInstall "$APPDATA\ZollyBot"
     ${endIf}
     !insertmacro openBotHoldsUserData $INSTDIR $0
     ${if} $0 == "1"
@@ -113,7 +113,7 @@
 
   ; The installer runs this check before it removes the earlier version. It is the default check.
   ; When the registry names a folder with user data, the update closes the app there, so the check
-  ; looks for the earlier OpenBot.exe only: a match on the folder would also stop the programs that
+  ; looks for the earlier ZollyBot.exe only: a match on the folder would also stop the programs that
   ; agents run from their workspaces. Then the registry no longer names that installation, so
   ; `uninstallOldVersion` does not run its uninstaller. The uninstaller keeps the default check.
   !macro customCheckAppRunning
@@ -142,10 +142,10 @@
 !endif
 
 ; After the new copy is installed, delete the earlier app from the folder with user data. Only the
-; files and folders that an OpenBot installation has are deleted, so the agent folders stay. A file
+; files and folders that an ZollyBot installation has are deleted, so the agent folders stay. A file
 ; that Windows still holds stays too; it does not stop the update. The login item names the
 ; executable (`src/main/login-item.ts`), and Electron calls it by the AppUserModelId: point it at
-; the new copy, or OpenBot no longer opens at sign-in.
+; the new copy, or ZollyBot no longer opens at sign-in.
 !macro openBotRemoveAppFromDataFolder
   ${if} $openBotDataFolderInstall != ""
     Push $0
@@ -190,26 +190,26 @@
 !macro customUnInstall
   ${ifNot} ${isUpdated}
     Push $0
-    ReadRegStr $0 SHCTX "Software\Classes\openbot\shell\open\command" ""
+    ReadRegStr $0 SHCTX "Software\Classes\zollybot\shell\open\command" ""
     ${if} $0 == '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" "%1"'
-      DeleteRegKey SHCTX "Software\Classes\openbot"
+      DeleteRegKey SHCTX "Software\Classes\zollybot"
     ${endIf}
     Pop $0
   ${endIf}
 !macroend
 
-; OpenBot installs for the current user only. The application writes the openbot:// key in HKCU at
+; ZollyBot installs for the current user only. The application writes the zollybot:// key in HKCU at
 ; each start, and an update finds only one installation. This skips the "All users" page.
 !macro customInstallMode
   StrCpy $isForceCurrentInstall "1"
 !macroend
 
 ; The uninstaller and each update delete the whole installation folder. electron-builder adds an
-; OpenBot subfolder only when the chosen path does not contain "OpenBot", so a choice such as
-; %USERPROFILE%\OpenBot (the agent workspaces) or %APPDATA%\OpenBot (the user data) would be
+; ZollyBot subfolder only when the chosen path does not contain "ZollyBot", so a choice such as
+; %USERPROFILE%\ZollyBot (the agent workspaces) or %APPDATA%\ZollyBot (the user data) would be
 ; deleted. Another account can also make a folder first and keep its rights on it. Use only a folder
-; that does not exist or that holds this user's earlier installation. Until then, add an OpenBot
-; subfolder. The app makes %USERPROFILE%\OpenBot only at its first start, so that folder can also not
+; that does not exist or that holds this user's earlier installation. Until then, add an ZollyBot
+; subfolder. The app makes %USERPROFILE%\ZollyBot only at its first start, so that folder can also not
 ; exist yet: use the default folder for it and for a folder that holds it. The page shows nothing;
 ; Abort skips it.
 !macro customPageAfterChangeDir

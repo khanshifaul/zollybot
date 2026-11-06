@@ -12,39 +12,39 @@
 // the client shows a workflow with such a node read-only; a member reads the graph of an old version.
 // Agent steps answer through stand-ins, so no provider CLI starts and no model turn is sent.
 // Run: `bun scripts/workflow-team-api-e2e.ts`.
-// Writes .openbot-build/workflow-team-api-e2e/report.json.
+// Writes .zollybot-build/workflow-team-api-e2e/report.json.
 
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { AgentAccessChange, WorkflowDetail, WorkflowGraph, WorkflowNode } from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
+import type { AgentAccessChange, WorkflowDetail, WorkflowGraph, WorkflowNode } from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import {
   TEAM_APP_VERSION_HEADER,
   TEAM_CAPABILITIES_HEADER,
   TEAM_PROTOCOL_V1_WEBSOCKET,
   TEAM_PROTOCOL_VERSION_HEADER,
-} from "@openbot/contracts/team-protocol";
-import { AGENT_ACCESS_CODECS, AGENT_ACCESS_ROUTES } from "@openbot/contracts/team-protocol/agent-access-v1";
-import { teamCapabilitiesForProtocol } from "@openbot/contracts/team-protocol/current";
-import { TEAM_PROTOCOL_V7 } from "@openbot/contracts/team-protocol/v7";
-import { TEAM_PROTOCOL_V9 } from "@openbot/contracts/team-protocol/v9";
-import { WORKFLOWS_CHATS_CAPABILITY } from "@openbot/contracts/team-protocol/workflows-chats-v1";
+} from "@zollybot/contracts/team-protocol";
+import { AGENT_ACCESS_CODECS, AGENT_ACCESS_ROUTES } from "@zollybot/contracts/team-protocol/agent-access-v1";
+import { teamCapabilitiesForProtocol } from "@zollybot/contracts/team-protocol/current";
+import { TEAM_PROTOCOL_V7 } from "@zollybot/contracts/team-protocol/v7";
+import { TEAM_PROTOCOL_V9 } from "@zollybot/contracts/team-protocol/v9";
+import { WORKFLOWS_CHATS_CAPABILITY } from "@zollybot/contracts/team-protocol/workflows-chats-v1";
 import {
   WORKFLOW_STEP_TEXT_LIMIT,
   WORKFLOWS_CAPABILITY,
   WORKFLOWS_CODECS,
   WORKFLOWS_ROUTES,
   workflowsEvent,
-} from "@openbot/contracts/team-protocol/workflows-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/workflows-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import {
   decodeRemoteWorkflowDetail,
   decodeRemoteWorkflowRunDetail,
   decodeRemoteWorkflowVersions,
-} from "@openbot/team-client/workflow-decoding";
+} from "@zollybot/team-client/workflow-decoding";
 import { plugin } from "bun";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
@@ -52,16 +52,16 @@ import { AgentService } from "../src/backend/agent-service";
 import { AgentStore } from "../src/backend/agent-store";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { MailboxStore } from "../src/backend/mailbox-store";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { SidebarLayoutStore } from "../src/backend/sidebar-layout-store";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
 import { WorkflowRunStore } from "../src/backend/workflows/workflow-run-store";
 import { WorkflowStore } from "../src/backend/workflows/workflow-store";
 import { workflowScheduleDueAt } from "../src/backend/workflows/workflow-triggers";
 import { createWorkflows, type WorkflowsHandle } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import type { TeamApiBrowser } from "../src/main/team-api/dependencies";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/workflow-team-api-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/workflow-team-api-e2e");
 const HOST_VERSION = "0.0.0-e2e";
 const OWNER = { username: "owner-user", password: "owner-password-123" };
 const MEMBER = { username: "member-user", password: "member-password-123" };
@@ -212,12 +212,12 @@ const teamBrowser: TeamApiBrowser = {
   importSignIn: unused,
 };
 
-const root = await mkdtemp(join(tmpdir(), "openbot-workflow-team-api-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-workflow-team-api-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 
 interface Host {
-  database: OpenBotDatabase;
+  database: ZollyBotDatabase;
   agents: AgentService;
   workflows: WorkflowsHandle;
   server: InstanceType<typeof TeamApiServer>;
@@ -232,11 +232,11 @@ let failingAgent = "";
 
 /** Starts the host on the profile, as the app does at each launch, with stand-ins for agent turns. */
 async function startHost(): Promise<Host> {
-  const database = new OpenBotDatabase(userData);
+  const database = new ZollyBotDatabase(userData);
   const agentStore = new AgentStore(userData, home, database);
   const mailbox = new MailboxStore(userData, agentStore.sharedRoot, agentStore.database);
   const sidebar = new SidebarLayoutStore(join(userData, "sidebar-layout.json"));
-  const team = new TeamStore(join(userData, "openbot-team-server-v2.json"));
+  const team = new TeamStore(join(userData, "zollybot-team-server-v2.json"));
   const access = new AgentAccessStore(join(userData, AGENT_ACCESS_FILE));
   await runCauseEffect(sidebar.initialize());
   // The stores only: `AgentService.initialize` would start the provider CLIs, which no step needs.
@@ -419,7 +419,7 @@ async function setLevels(ownerToken: string, everyone: AgentAccessChange["everyo
 async function openEvents(token: string): Promise<WebSocket> {
   const socket = new WebSocket(`ws://127.0.0.1:${current().port}${TEAM_API_ROUTES.events}`, [
     TEAM_PROTOCOL_V1_WEBSOCKET,
-    `openbot-token.${token}`,
+    `zollybot-token.${token}`,
   ]);
   sockets.push(socket);
   await new Promise<void>((resolveOpen, reject) => {

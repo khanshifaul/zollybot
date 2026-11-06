@@ -1,11 +1,12 @@
+import type { JSX } from "@solidjs/web";
 import {
   BILLING_CURRENCIES,
   BILLING_INTERVALS,
   type BillingCurrency,
   type BillingInterval,
   type BillingPlanId,
-} from "@openbot/contracts/billing";
-import type { HostedServerCatalogPlan } from "@openbot/contracts/hosted-servers";
+} from "@zollybot/contracts/billing";
+import type { HostedServerCatalogPlan } from "@zollybot/contracts/hosted-servers";
 import {
   LICENSE_BUNDLE_DISCOUNT_PERCENT,
   LICENSE_INCLUDED_USERS,
@@ -18,11 +19,10 @@ import {
   licenseMonthlyPrice,
   licenseOrderMonthly,
   type PricingOrder,
-} from "@openbot/contracts/license";
-import type { AppTextKey } from "@openbot/i18n";
-import { Button } from "@openbot/ui/button";
-import { RadioGroup } from "@openbot/ui/complex";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/contracts/license";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Button } from "@zollybot/ui/button";
+import { RadioGroup } from "@zollybot/ui/complex";
 import { type Accessor, createEffect, createMemo, createSignal, createUniqueId, For, Show, untrack } from "solid-js";
 import { RollingPrice } from "../../rolling-price";
 import { useText } from "../../text";

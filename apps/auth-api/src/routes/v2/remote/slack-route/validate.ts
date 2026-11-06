@@ -1,5 +1,5 @@
-import { SLACK_ROUTE_TEAMS_LIMIT } from "@openbot/contracts/signal-protocol/slack-route";
 import { createFileRoute } from "@tanstack/solid-router";
+import { SLACK_ROUTE_TEAMS_LIMIT } from "@zollybot/contracts/signal-protocol/slack-route";
 import { Effect } from "effect";
 import { z } from "zod";
 import { runApiResponse } from "../../../../server/effect-runtime";

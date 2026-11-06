@@ -3,15 +3,18 @@ import {
   eventFilterDraft,
   eventFilterDraftsValid,
   eventFiltersFromDrafts,
-} from "@openbot/contracts/event-filter-value";
+} from "@zollybot/contracts/event-filter-value";
 import type {
   EventFilter,
   EventRoutine,
   EventRoutineOwner,
   RoutineWebhookTrigger,
-} from "@openbot/contracts/ipc-events";
-import { RoutineWebhookCard, type RoutineWebhookCardState } from "@openbot/ui/features/conversation/RoutineWebhookCard";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc-events";
+import {
+  RoutineWebhookCard,
+  type RoutineWebhookCardState,
+} from "@zollybot/ui/features/conversation/RoutineWebhookCard";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createStore } from "solid-js";
 import type { EventRoutinesApi } from "./routine-webhooks-api";
 import { agentRoutinesPort } from "./routines-port";

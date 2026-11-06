@@ -12,37 +12,37 @@
   min-height: 56px;
   align-items: center;
   gap: 6px;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface-raised);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
   padding: 7px;
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    border-color var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    border-color var(--zollybot-duration-hover) ease;
 }
 
 [data-slot="bubble"]:not([data-variant="ghost"]) > [data-slot="bubble-content"] > .message-attachments:last-child {
-  margin-bottom: var(--openbot-space-1);
+  margin-bottom: var(--zollybot-space-1);
 }
 
 [data-slot="bubble"]:not([data-variant="ghost"])
   > [data-slot="bubble-content"]
   > .message-attachments-group:last-child {
-  margin-bottom: var(--openbot-space-1);
+  margin-bottom: var(--zollybot-space-1);
 }
 
 [data-slot="bubble"]:not([data-variant="ghost"])
   > [data-slot="bubble-content"]
   > .message-attachments:last-child
   .message-attachment {
-  border-radius: var(--openbot-radius-bubble-inset);
+  border-radius: var(--zollybot-radius-bubble-inset);
 }
 
 .message-attachments-group {
   display: grid;
   width: min(100%, 256px);
-  margin-top: var(--openbot-space-2);
-  gap: var(--openbot-space-1-5);
+  margin-top: var(--zollybot-space-2);
+  gap: var(--zollybot-space-1-5);
 }
 
 .message-attachments-group .message-attachments {
@@ -83,8 +83,8 @@
 
 .message-attachment strong {
   overflow: hidden;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
   font-weight: 560;
   line-height: 17px;
   text-overflow: ellipsis;
@@ -92,8 +92,8 @@
 }
 
 .message-attachment small {
-  color: var(--openbot-text-readable);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-readable);
+  font-size: var(--zollybot-text-sm);
   line-height: 15px;
 }
 
@@ -103,29 +103,29 @@
   height: 40px;
   place-items: center;
   border: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
   background: transparent;
   padding: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease,
-    transform var(--openbot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1);
+    background-color var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease,
+    transform var(--zollybot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .attachment-open-button svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .attachment-open-button:focus-visible,
 .attachment-preview-button:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
@@ -135,21 +135,21 @@
 
 @media (hover: hover) and (pointer: fine) {
   .message-attachment:hover {
-    border-color: var(--openbot-border-strong);
-    background: var(--openbot-bg-control-hover);
+    border-color: var(--zollybot-border-strong);
+    background: var(--zollybot-bg-control-hover);
   }
 
   .attachment-open-button:hover {
-    background: var(--openbot-bg-control-active);
-    color: var(--openbot-text-primary);
+    background: var(--zollybot-bg-control-active);
+    color: var(--zollybot-text-primary);
   }
 }
 
 /* While a file from a joined server downloads, its download button shows the progress and stops it. */
 .attachment-download-ring {
-  --ui-radial-progress-color: var(--openbot-text-primary);
+  --ui-radial-progress-color: var(--zollybot-text-primary);
 
-  width: var(--openbot-control-xs);
+  width: var(--zollybot-control-xs);
 }
 
 /* The card sizes every button icon; the ring chart fills its own box instead. */
@@ -163,8 +163,8 @@
 }
 
 .attachment-download-stop .ui-radial-progress-content svg {
-  width: var(--openbot-glyph-sm);
-  height: var(--openbot-glyph-sm);
+  width: var(--zollybot-glyph-sm);
+  height: var(--zollybot-glyph-sm);
   fill: currentcolor;
   stroke: none;
 }
@@ -177,7 +177,7 @@
 }
 
 .message-attachment[data-download="failed"] small {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .agent-queue-panel {
@@ -194,18 +194,18 @@
   z-index: 10;
   overflow: visible;
   margin: 0 12px calc(-1 * var(--queue-composer-overlap));
-  border: 1px solid var(--openbot-queue-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-queue-surface);
+  border: 1px solid var(--zollybot-queue-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-queue-surface);
   padding-bottom: var(--queue-composer-overlap);
   box-shadow: none;
-  animation: queue-panel-in var(--openbot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: queue-panel-in var(--zollybot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .agent-queue-slot {
   display: grid;
   grid-template-rows: 1fr;
-  transition: grid-template-rows var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: grid-template-rows var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .agent-queue-slot[data-open="false"] {
@@ -229,8 +229,8 @@
   margin: 0;
   padding-block: var(--queue-row-gutter) 0;
   padding-inline: var(--queue-row-inset-start) var(--queue-row-inset-end);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -247,37 +247,37 @@
   display: block;
   width: 100%;
   min-width: 0;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .message-attachment[data-media] {
-  grid-template-columns: minmax(0, 1fr) var(--openbot-control-sm) var(--openbot-control-sm);
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-3);
+  grid-template-columns: minmax(0, 1fr) var(--zollybot-control-sm) var(--zollybot-control-sm);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-3);
 }
 
 .message-attachment[data-media] .attachment-file-visual {
-  width: var(--openbot-control-md);
-  height: var(--openbot-control-md);
-  background: var(--openbot-bg-control);
-  color: var(--openbot-text-muted);
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-muted);
 }
 
 .message-attachment[data-media] .attachment-file-visual svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 .message-attachment[data-media] .attachment-open-button {
-  width: var(--openbot-control-sm);
-  height: var(--openbot-control-sm);
+  width: var(--zollybot-control-sm);
+  height: var(--zollybot-control-sm);
 }
 
 .message-attachment[data-media] .attachment-open-button svg {
-  width: var(--openbot-icon-md);
-  height: var(--openbot-icon-md);
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
 }
 
 .message-attachment[data-media="audio"] .attachment-media-player {
-  height: var(--openbot-control-xl);
+  height: var(--zollybot-control-xl);
 }

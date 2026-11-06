@@ -1,16 +1,16 @@
-import type { RoutineSchedule } from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
-import { routineOnceInstant } from "@openbot/team-client/routine-schedule";
+import type { RoutineSchedule } from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
+import { routineOnceInstant } from "@zollybot/team-client/routine-schedule";
 import {
   type RoutineDraftProblem,
   type RoutineScheduleDraft,
   routineDraftProblemCode,
-} from "@openbot/team-client/routine-schedule-draft";
+} from "@zollybot/team-client/routine-schedule-draft";
 import { currentText } from "../../text";
 import { ROUTINE_DRAFT_KINDS } from "./routine-schedule-draft";
 
 // The conversion between a draft and a saved schedule is shared with the phone.
-export { routineScheduleFromDraft, routineScheduleToDraft } from "@openbot/team-client/routine-schedule-draft";
+export { routineScheduleFromDraft, routineScheduleToDraft } from "@zollybot/team-client/routine-schedule-draft";
 
 /**
  * The kinds every host saves. Only this computer's host saves `once`: the released Team API

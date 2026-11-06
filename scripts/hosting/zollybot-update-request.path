@@ -1,0 +1,11 @@
+# ZollyBot asks for an update now with an empty file in its runtime directory. This starts
+# zollybot-update-request.service as root, which removes the file and never reads it.
+[Unit]
+Description=Watch for an ZollyBot update request
+
+[Path]
+PathExists=/run/zollybot/update-stage
+PathExists=/run/zollybot/update-install
+
+[Install]
+WantedBy=paths.target

@@ -1,4 +1,4 @@
-import type { AttachmentImportFile } from "@openbot/contracts/ipc";
+import type { AttachmentImportFile } from "@zollybot/contracts/ipc";
 import { createStore } from "solid-js";
 import { composerDraftKey } from "../conversation-keys";
 import type { ConversationTarget } from "../conversation-types";

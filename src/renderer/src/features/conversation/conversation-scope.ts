@@ -1,24 +1,24 @@
-import { isKnownAgentProvider, providerDisplayName } from "@openbot/contracts/agent-providers";
+import { isKnownAgentProvider, providerDisplayName } from "@zollybot/contracts/agent-providers";
 import {
   type FileQuoteTarget,
   fileQuoteId,
   fileQuoteTarget,
   limitedQuoteText,
-} from "@openbot/contracts/chat-tag-references";
+} from "@zollybot/contracts/chat-tag-references";
 import {
   customProviderOfModel,
   isCustomProviderHarness,
   type McpSignInRelayPage,
   relayableSignInLink,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { AGENT_FAST_MODE_CAPABILITY } from "@openbot/contracts/team-protocol/agent-fast-mode-v1";
-import { toast } from "@openbot/ui";
-import type { QuestionPromptComposerAnswer } from "@openbot/ui/components/QuestionPromptBubble";
-import type { QuoteRequest } from "@openbot/ui/features/conversation/ComposerEditor";
-import { currentText } from "@openbot/ui/text";
-import { usesTouchLayout } from "@openbot/ui/utils";
-import { errorReference } from "@openbot/user-errors";
+} from "@zollybot/contracts/ipc";
+import { AGENT_FAST_MODE_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-fast-mode-v1";
+import { toast } from "@zollybot/ui";
+import type { QuestionPromptComposerAnswer } from "@zollybot/ui/components/QuestionPromptBubble";
+import type { QuoteRequest } from "@zollybot/ui/features/conversation/ComposerEditor";
+import { currentText } from "@zollybot/ui/text";
+import { usesTouchLayout } from "@zollybot/ui/utils";
+import { errorReference } from "@zollybot/user-errors";
 import {
   createContext,
   createEffect,

@@ -55,8 +55,8 @@ export const messages = defineMessages("browser", {
   "browser.pip.reattach": "Reattach browser to right sidebar",
   "browser.pip.reattachTitle": "Reattach browser",
   "browser.pip.close": "Close browser popup",
-  "browser.pip.reattachFailed": "OpenBot could not reattach the browser.",
-  "browser.pip.closeFailed": "OpenBot could not close the browser popup.",
+  "browser.pip.reattachFailed": "ZollyBot could not reattach the browser.",
+  "browser.pip.closeFailed": "ZollyBot could not close the browser popup.",
   "browser.popupBlocked.title": "Popup blocked",
   "browser.popupBlocked.dismiss": "Dismiss popup message",
   "browser.liveView.label": "Live view of the page on the server",
@@ -88,7 +88,7 @@ export const messages = defineMessages("browser", {
   "browser.secret.saveHintLocal": "Agents on this computer can then sign in without asking you.",
   "browser.secret.saveHintRemote": "It is kept on {server}. Its agents can then sign in without asking you.",
   "browser.secret.saveBlockedRole": "Only the owner or an admin of {server} can save to its Vault.",
-  "browser.secret.saveBlockedVersion": "Update OpenBot on {server} to save passwords to its Vault.",
+  "browser.secret.saveBlockedVersion": "Update ZollyBot on {server} to save passwords to its Vault.",
   "browser.secret.signInPage": "Sign-in page",
   "browser.secret.openSignInPage": "Open sign-in page in browser",
   "browser.secret.openInBrowser": "Open in browser",
@@ -135,20 +135,20 @@ export const messages = defineMessages("browser", {
   "browser.signIn.local": "Sign in on this computer",
   "browser.signIn.title": "Sign in to {site}",
   "browser.signIn.description":
-    "Some sites refuse a sign-in from a server. Sign in on this computer, and OpenBot sends the sign-in for {site} to {server}. All agents and members on {server} can then use it in the browser.",
+    "Some sites refuse a sign-in from a server. Sign in on this computer, and ZollyBot sends the sign-in for {site} to {server}. All agents and members on {server} can then use it in the browser.",
   "browser.signIn.windowOpen":
-    "Sign in in the window that opened. OpenBot sends the sign-in when it is complete. If the window stays open, select Done.",
+    "Sign in in the window that opened. ZollyBot sends the sign-in when it is complete. If the window stays open, select Done.",
   "browser.signIn.windowClosed":
     "The sign-in window is closed. Select Done to send the sign-in, or open the window again.",
   "browser.signIn.reopen": "Open the sign-in window",
   "browser.signIn.sending": "Sending to {server}…",
   "browser.signIn.sent": "Signed in to {site} on {server}",
-  "browser.signIn.notFound": "OpenBot found no sign-in for {site}. Sign in in the window, then select Done.",
+  "browser.signIn.notFound": "ZollyBot found no sign-in for {site}. Sign in in the window, then select Done.",
   "browser.signIn.stillSignedOut": "{server} still shows a sign-in page for {site}. Finish the sign-in in the window.",
-  "browser.signIn.failed": "OpenBot could not send the sign-in.",
+  "browser.signIn.failed": "ZollyBot could not send the sign-in.",
   "browser.profiles.title": "Browser profiles",
   "browser.profiles.subtitle":
-    "Each profile keeps its own sign-ins, cookies and site data on the computer that runs OpenBot.",
+    "Each profile keeps its own sign-ins, cookies and site data on the computer that runs ZollyBot.",
   "browser.profiles.label": "Browser profiles",
   "browser.profiles.newName": "Profile name",
   "browser.profiles.create": "Add",
@@ -167,8 +167,8 @@ export const messages = defineMessages("browser", {
   "browser.profiles.deleteDescription":
     "This deletes the sign-ins, cookies and site data of the profile. Its open tabs close.",
   "browser.profiles.deleteAgents": "These agents change to the shared profile: {agents}.",
-  "browser.profiles.failed": "OpenBot could not change the browser profiles.",
-  "browser.profiles.loadFailed": "OpenBot could not load the browser profiles.",
+  "browser.profiles.failed": "ZollyBot could not change the browser profiles.",
+  "browser.profiles.loadFailed": "ZollyBot could not load the browser profiles.",
   "browser.profiles.tabLabel": "Profile: {name}",
   "browser.profiles.tabLabelProxy": "Profile: {name} · Proxy: {proxy}",
   "browser.profiles.agentTabLabel": "Own profile of the agent",
@@ -183,7 +183,7 @@ export const messages = defineMessages("browser", {
   "browser.proxies.addTitle": "Add proxy",
   "browser.proxies.editTitle": "Edit {name}",
   "browser.proxies.dialogDescription":
-    "Use socks5, http or https. A user name and a password are optional, for each type. The password stays encrypted on the computer that runs OpenBot.",
+    "Use socks5, http or https. A user name and a password are optional, for each type. The password stays encrypted on the computer that runs ZollyBot.",
   "browser.proxies.address": "Address",
   "browser.proxies.addressPlaceholder": "socks5://user:password@host:1080",
   "browser.proxies.deleteUsed": {
@@ -193,7 +193,7 @@ export const messages = defineMessages("browser", {
   "browser.proxies.deleteUnused": "No profile uses this proxy.",
   "browser.proxies.failing": "{name} does not answer",
   "browser.proxies.signInRefused": "{name} refused the sign-in",
-  "browser.proxies.unsupported": "This server cannot use proxies. Update OpenBot on it.",
+  "browser.proxies.unsupported": "This server cannot use proxies. Update ZollyBot on it.",
   "browser.proxies.yourComputer": "Your computer",
   "browser.proxies.memberComputer": "{name}'s computer",
   "browser.proxies.unknownComputer": "A member's computer",
@@ -204,7 +204,7 @@ export const messages = defineMessages("browser", {
   "browser.proxies.offlineBadge": "{name} is offline",
   "browser.proxies.shareTitle": "Share the connection of this computer?",
   "browser.proxies.shareDescription":
-    "The profiles that use your computer open public sites through the internet connection of this computer. This works only while OpenBot is open here. The server cannot open addresses on your local network.",
+    "The profiles that use your computer open public sites through the internet connection of this computer. This works only while ZollyBot is open here. The server cannot open addresses on your local network.",
   "browser.proxies.share": "Share",
   "browser.proxies.stopSharing": "Stop sharing",
   "browser.proxies.closesTabs": {

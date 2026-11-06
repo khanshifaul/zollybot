@@ -1,8 +1,8 @@
-import type { AvatarColorChoice, AvatarColorPresetId } from "@openbot/brand/bloub-avatar";
-import type { AvatarHue } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import type { AvatarColorChoice, AvatarColorPresetId } from "@zollybot/brand/bloub-avatar";
+import type { AvatarHue } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 
-/** The name of each avatar hue. `AVATAR_HUE_CHOICES` in `@openbot/brand` keeps English labels. */
+/** The name of each avatar hue. `AVATAR_HUE_CHOICES` in `@zollybot/brand` keeps English labels. */
 export const AVATAR_HUE_LABEL = {
   0: "agent.color.red",
   30: "agent.color.orange",

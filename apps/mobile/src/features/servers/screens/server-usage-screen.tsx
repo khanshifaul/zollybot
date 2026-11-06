@@ -1,5 +1,5 @@
-import type { AnalyticsAgent } from "@openbot/contracts/ipc";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import type { AnalyticsAgent } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button, Typography } from "heroui-native";
 import { useEffect, useState } from "react";

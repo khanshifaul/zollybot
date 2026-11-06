@@ -3,17 +3,17 @@ import type { messages as source } from "../../en/error/provider";
 
 export const messages = {
   "error.provider.mcpConfig":
-    "Nie udało się zarejestrować serwerów MCP w konfiguracji Codex. Sprawdź, czy plik config.toml Codex jest poprawny i zapisywalny, a potem uruchom ponownie OpenBot.",
+    "Nie udało się zarejestrować serwerów MCP w konfiguracji Codex. Sprawdź, czy plik config.toml Codex jest poprawny i zapisywalny, a potem uruchom ponownie ZollyBot.",
   "error.provider.computerUseConfig":
-    "Nie udało się zarejestrować Sterowania komputerem w konfiguracji Codex. Sprawdź, czy plik config.toml Codex jest poprawny i zapisywalny, a potem uruchom ponownie OpenBot. Aby kontynuować bez tej funkcji, wyłącz Sterowanie komputerem w ustawieniach członka zespołu.",
-  "error.provider.codexUnresponsive": "Codex przestał odpowiadać, więc OpenBot zakończył jego proces.",
-  "error.provider.acpUnresponsive": "{provider} nie odpowiedział na czas, więc OpenBot zakończył jego proces.",
+    "Nie udało się zarejestrować Sterowania komputerem w konfiguracji Codex. Sprawdź, czy plik config.toml Codex jest poprawny i zapisywalny, a potem uruchom ponownie ZollyBot. Aby kontynuować bez tej funkcji, wyłącz Sterowanie komputerem w ustawieniach członka zespołu.",
+  "error.provider.codexUnresponsive": "Codex przestał odpowiadać, więc ZollyBot zakończył jego proces.",
+  "error.provider.acpUnresponsive": "{provider} nie odpowiedział na czas, więc ZollyBot zakończył jego proces.",
   "error.provider.acpSignInLost":
-    "{provider} utracił logowanie, więc OpenBot zakończył jego proces. Wyślij wiadomość ponownie.",
+    "{provider} utracił logowanie, więc ZollyBot zakończył jego proces. Wyślij wiadomość ponownie.",
   "error.provider.acpMcpNotLoaded":
-    "{provider} nie załadował narzędzi OpenBot, więc ten agent nie może ich używać ani kontaktować się z członkami zespołu. Zasady zespołu {provider} mogą blokować lokalne serwery MCP. Poproś administratora zespołu o ich dopuszczenie, a potem spróbuj ponownie.",
+    "{provider} nie załadował narzędzi ZollyBot, więc ten agent nie może ich używać ani kontaktować się z członkami zespołu. Zasady zespołu {provider} mogą blokować lokalne serwery MCP. Poproś administratora zespołu o ich dopuszczenie, a potem spróbuj ponownie.",
   "error.provider.endpointsReadOnly":
-    "Zapisane endpointy zapisała nowsza wersja OpenBot albo nie można odczytać pliku. Zaktualizuj OpenBot, aby je zmienić.",
+    "Zapisane endpointy zapisała nowsza wersja ZollyBot albo nie można odczytać pliku. Zaktualizuj ZollyBot, aby je zmienić.",
   "error.provider.endpointNoSecureStorage":
     "Ten komputer nie ma bezpiecznego magazynu, więc nie można zapisać klucza API ani nagłówka. Usuń je albo użyj endpointu, który nie wymaga danych logowania.",
   "error.provider.endpointDuplicate":
@@ -31,7 +31,7 @@ export const messages = {
   "error.provider.discoveryTooLarge": "Lista modeli z {host} jest za duża.",
   "error.provider.discoveryInvalid": "{host} nie wysłał listy modeli zgodnej z OpenAI.",
   "error.provider.detectionSettingsReadOnly":
-    "Ustawienia wykrywania zapisała nowsza wersja OpenBot albo nie można odczytać pliku. Zaktualizuj OpenBot, aby je zmienić.",
+    "Ustawienia wykrywania zapisała nowsza wersja ZollyBot albo nie można odczytać pliku. Zaktualizuj ZollyBot, aby je zmienić.",
   "error.provider.detectionEntryInvalid":
     "Adres musi być URL-em http:// lub https:// bez hasła, a folder musi być ścieżką bezwzględną.",
   "error.provider.detectionEntriesTooMany": "Jest za dużo adresów lub folderów.",
@@ -61,12 +61,12 @@ export const messages = {
   "error.provider.releaseSourcesUnreachable":
     "Nie udało się połączyć ze źródłami wydań dostawców. Sprawdź połączenie i spróbuj ponownie.",
   "error.provider.runtimesUnsupported": "Środowiska uruchomieniowe dostawców nie są dostępne na tej platformie.",
-  "error.provider.closing": "OpenBot się zamyka.",
+  "error.provider.closing": "ZollyBot się zamyka.",
   "error.provider.removeWhileOn": "Wyłącz dostawcę, zanim usuniesz jego pobrane pliki.",
   "error.provider.removeWhileDownloading": "Poczekaj na koniec pobierania, a potem je usuń.",
   "error.provider.removeIncomplete": "Program używa plików tego CLI. Zamknij go i spróbuj ponownie.",
   "error.provider.removeDownloadsFailed": "Nie udało się usunąć pobranych CLI: {providers}.",
-  "error.provider.cliOverride": "Usuń jawnie ustawioną ścieżkę CLI, zanim zaktualizujesz CLI w OpenBot.",
+  "error.provider.cliOverride": "Usuń jawnie ustawioną ścieżkę CLI, zanim zaktualizujesz CLI w ZollyBot.",
   "error.provider.runtimeUpdateIncomplete": "Aktualizacja środowiska uruchomieniowego nie została ukończona.",
   "error.provider.downloadHttp": "Pobieranie środowiska uruchomieniowego nie powiodło się (HTTP {status}).",
   "error.provider.downloadNoData": "Pobieranie środowiska uruchomieniowego nie zwróciło danych.",
@@ -120,29 +120,29 @@ export const messages = {
   "error.provider.keyInvalidCharacters": "Klucz dostawcy zawiera spację lub znak, którego klucz nie może zawierać.",
   "error.provider.noModel": "Wybrany dostawca nie ma dostępnego modelu.",
   "error.provider.noModelNamed": "Dostawca {provider} nie ma dostępnego modelu.",
-  "error.provider.acpNoModels": "ACP CLI nie udostępnił żadnych modeli ACP. OpenBot nie zgaduje modelu zastępczego.",
+  "error.provider.acpNoModels": "ACP CLI nie udostępnił żadnych modeli ACP. ZollyBot nie zgaduje modelu zastępczego.",
   "error.provider.endpointRemoveBusy": "Zaczekaj na zakończenie aktywnej tury i kolejki, zanim usuniesz ten endpoint.",
-  "error.provider.codexOutdated": "Codex CLI {version} jest za stary. OpenBot wymaga wersji 0.156.0 lub nowszej.",
+  "error.provider.codexOutdated": "Codex CLI {version} jest za stary. ZollyBot wymaga wersji 0.156.0 lub nowszej.",
   "error.provider.codexNotStarted": "Znaleziono Codex CLI, ale nie udało się go uruchomić.",
   "error.provider.codexNotStartedHint":
     "Znaleziono Codex CLI, ale nie udało się go uruchomić. Uruchom `codex --version` w nowym terminalu.",
   "error.provider.codexManagedNotStarted":
-    "ChatGPT został pobrany, ale nie udało się go uruchomić. Pobierz go ponownie w OpenBot.",
-  "error.provider.codexMissing": "ChatGPT nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
-  "error.provider.claudeOutdated": "Claude Code {version} jest za stary. OpenBot wymaga wersji 2.1.232 lub nowszej.",
+    "ChatGPT został pobrany, ale nie udało się go uruchomić. Pobierz go ponownie w ZollyBot.",
+  "error.provider.codexMissing": "ChatGPT nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
+  "error.provider.claudeOutdated": "Claude Code {version} jest za stary. ZollyBot wymaga wersji 2.1.232 lub nowszej.",
   "error.provider.claudeNotStarted": "Znaleziono Claude CLI, ale nie udało się go uruchomić.",
   "error.provider.claudeNotStartedHint":
     "Znaleziono Claude CLI, ale nie udało się go uruchomić. Uruchom `claude --version` w nowym terminalu.",
   "error.provider.claudeManagedNotStarted":
-    "Claude został pobrany, ale nie udało się go uruchomić. Pobierz go ponownie w OpenBot.",
-  "error.provider.claudeMissing": "Claude nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
-  "error.provider.grokOutdated": "Grok CLI {version} jest za stary. OpenBot wymaga wersji 1.0.5 lub nowszej.",
+    "Claude został pobrany, ale nie udało się go uruchomić. Pobierz go ponownie w ZollyBot.",
+  "error.provider.claudeMissing": "Claude nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
+  "error.provider.grokOutdated": "Grok CLI {version} jest za stary. ZollyBot wymaga wersji 1.0.5 lub nowszej.",
   "error.provider.grokNotStarted": "Znaleziono Grok CLI, ale nie udało się go uruchomić.",
   "error.provider.grokNotStartedHint":
     "Znaleziono Grok CLI, ale nie udało się go uruchomić. Uruchom `grok --version` w nowym terminalu.",
-  "error.provider.grokMissing": "Grok nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
+  "error.provider.grokMissing": "Grok nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
   "error.provider.opencodeNotStarted": "Nie udało się uruchomić OpenCode. Uruchom `opencode --version` w terminalu.",
-  "error.provider.opencodeMissing": "OpenCode nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
+  "error.provider.opencodeMissing": "OpenCode nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
   "error.provider.codexVersionUnreadable": "Nie można odczytać wersji Codex CLI.",
   "error.provider.claudeVersionUnreadable": "Nie można odczytać wersji Claude CLI.",
   "error.provider.grokVersionUnreadable": "Nie można odczytać wersji Grok CLI.",
@@ -151,7 +151,7 @@ export const messages = {
   "error.provider.connectBeforeProfile": "Połącz wybranego dostawcę, zanim wygenerujesz profil.",
   "error.provider.cliNotReady": "{provider} CLI nie jest gotowy ani zalogowany.",
   "error.provider.cliTimedOut":
-    "{provider} nie odpowiedział na czas. Komputer może być zajęty. OpenBot spróbuje ponownie.",
+    "{provider} nie odpowiedział na czas. Komputer może być zajęty. ZollyBot spróbuje ponownie.",
   "error.provider.cliTimedOutRefresh":
     "{provider} nie odpowiedział na czas. Komputer może być zajęty. Odśwież dostawców, aby spróbować ponownie.",
   "error.provider.acpStartTimedOut":
@@ -159,7 +159,7 @@ export const messages = {
   "error.provider.acpModelsTimedOut":
     "{provider} nie podał listy modeli w ciągu {seconds} s. Komputer może być zajęty.",
   "error.provider.startStopped":
-    "{provider} kilka razy z rzędu się nie uruchomił, więc OpenBot przestał próbować. Odśwież dostawców, aby spróbować ponownie.",
+    "{provider} kilka razy z rzędu się nie uruchomił, więc ZollyBot przestał próbować. Odśwież dostawców, aby spróbować ponownie.",
   "error.provider.tempDiskSpace":
     "{provider} potrzebuje do uruchomienia co najmniej 1 GB wolnego miejsca na dysku. Zwolnij miejsce, a potem odśwież dostawców.",
   "error.provider.noCodeSignIn": "Dostawca {provider} nie obsługuje logowania kodem.",
@@ -208,11 +208,11 @@ export const messages = {
   "error.provider.opencodeProviderFailed":
     "Wystąpił błąd po stronie dostawcy modelu. Twoje połączenie nie jest przyczyną. Spróbuj ponownie później lub wybierz inny model.\n{detail}",
   "error.provider.opencodeNetwork":
-    "OpenCode nie połączył się z dostawcą modelu. Sprawdź połączenie sieciowe komputera, na którym działa OpenBot, a potem spróbuj ponownie.\n{detail}",
+    "OpenCode nie połączył się z dostawcą modelu. Sprawdź połączenie sieciowe komputera, na którym działa ZollyBot, a potem spróbuj ponownie.\n{detail}",
   "error.provider.codexStateBusy":
     "ChatGPT nadal przygotowuje swoją lokalną historię po wcześniejszym uruchomieniu. Poczekaj kilka minut, a potem spróbuj ponownie.",
   "error.provider.realtimeLimitZero":
-    "Linux zatrzymał dostawcę, ponieważ OpenBot ma limit czasu procesora w czasie rzeczywistym równy 0. Ten limit pochodzi z Twojego systemu. Zainstaluj i uruchom rtkit (`rtkit-daemon`), uruchom `systemctl --user restart xdg-desktop-portal`, a potem uruchom ponownie OpenBot. Sam restart xdg-desktop-portal nie pomoże, dopóki brakuje rtkit.",
+    "Linux zatrzymał dostawcę, ponieważ ZollyBot ma limit czasu procesora w czasie rzeczywistym równy 0. Ten limit pochodzi z Twojego systemu. Zainstaluj i uruchom rtkit (`rtkit-daemon`), uruchom `systemctl --user restart xdg-desktop-portal`, a potem uruchom ponownie ZollyBot. Sam restart xdg-desktop-portal nie pomoże, dopóki brakuje rtkit.",
   "error.provider.opencodeDatabaseNewer":
     "OpenCode nie może otworzyć swojej bazy danych, ponieważ zmieniła ją nowsza wersja OpenCode. Zaktualizuj OpenCode do wersji 2 lub nowszej, a potem spróbuj ponownie.",
   "error.provider.opencodeNoAnswer":
@@ -232,10 +232,10 @@ export const messages = {
   "error.provider.antigravityArchivePath": "Archiwum Gemini zawiera nieoczekiwany plik.",
   "error.provider.antigravityChecksum": "Niezgodna suma kontrolna środowiska uruchomieniowego Gemini.",
   "error.provider.antigravityReleaseShape": "Wydanie Gemini ma nieoczekiwaną strukturę.",
-  "error.provider.antigravityMissing": "Gemini nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
+  "error.provider.antigravityMissing": "Gemini nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
   "error.provider.antigravityNotStarted": "Znaleziono serwer Gemini, ale nie można odczytać jego wersji.",
   "error.provider.antigravityOverrideInvalid":
-    "Serwer Gemini z OPENBOT_ANTIGRAVITY_PATH nie istnieje lub nie jest wykonywalny. Popraw ścieżkę lub usuń zmienną, a potem uruchom ponownie OpenBot.",
+    "Serwer Gemini z ZOLLYBOT_ANTIGRAVITY_PATH nie istnieje lub nie jest wykonywalny. Popraw ścieżkę lub usuń zmienną, a potem uruchom ponownie ZollyBot.",
   "error.provider.antigravityVersionUnreadable": "Nie można odczytać wersji serwera Gemini.",
   "error.provider.antigravitySignIn": "Zaloguj się przez Google, aby używać Gemini.",
   "error.provider.antigravityRateLimited":
@@ -249,7 +249,7 @@ export const messages = {
   "error.provider.cursorArchivePath": "Archiwum Cursor zawiera nieoczekiwany plik.",
   "error.provider.cursorChecksum": "Niezgodna suma kontrolna środowiska uruchomieniowego Cursor.",
   "error.provider.cursorReleaseShape": "Wydanie Cursor ma nieoczekiwaną strukturę.",
-  "error.provider.cursorMissing": "Cursor nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
+  "error.provider.cursorMissing": "Cursor nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
   "error.provider.cursorNotStarted": "Znaleziono agenta Cursor, ale nie można odczytać jego wersji.",
   "error.provider.cursorVersionUnreadable": "Nie można odczytać wersji agenta Cursor.",
   "error.provider.cursorSignIn": "Zaloguj się przez Cursor lub ustaw CURSOR_API_KEY, aby używać Cursor.",
@@ -257,16 +257,16 @@ export const messages = {
   "error.provider.clinePackageMismatch": "Pakiet Cline nie pasuje do katalogu środowisk uruchomieniowych.",
   "error.provider.clineChecksum": "Niezgodna suma kontrolna środowiska uruchomieniowego Cline.",
   "error.provider.clineLicenseChecksum": "Niezgodna suma kontrolna licencji Cline.",
-  "error.provider.clineMissing": "Cline nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
-  "error.provider.clineOutdated": "Cline CLI {version} jest za stary. OpenBot wymaga wersji 3.0.68 lub nowszej.",
+  "error.provider.clineMissing": "Cline nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
+  "error.provider.clineOutdated": "Cline CLI {version} jest za stary. ZollyBot wymaga wersji 3.0.68 lub nowszej.",
   "error.provider.clineNotStarted": "Nie udało się uruchomić Cline. Uruchom `cline --version` w terminalu.",
   "error.provider.clineVersionUnreadable": "Nie można odczytać wersji Cline CLI.",
   "error.provider.clineSignIn": "Zaloguj się przez Cline lub ustaw CLINE_API_KEY, aby używać Cline.",
   "error.provider.kimiArchivePath": "Archiwum Kimi ma nieoczekiwaną ścieżkę.",
   "error.provider.kimiChecksum": "Niezgodna suma kontrolna środowiska uruchomieniowego Kimi.",
   "error.provider.kimiLicenseChecksum": "Niezgodna suma kontrolna licencji Kimi.",
-  "error.provider.kimiMissing": "Kimi nie jest pobrany. Pobierz go w OpenBot, aby kontynuować.",
-  "error.provider.kimiOutdated": "Kimi CLI {version} jest za stary. OpenBot wymaga wersji 1.52.0 lub nowszej.",
+  "error.provider.kimiMissing": "Kimi nie jest pobrany. Pobierz go w ZollyBot, aby kontynuować.",
+  "error.provider.kimiOutdated": "Kimi CLI {version} jest za stary. ZollyBot wymaga wersji 1.52.0 lub nowszej.",
   "error.provider.kimiNotStarted": "Nie udało się uruchomić Kimi. Uruchom `kimi --version` w terminalu.",
   "error.provider.kimiVersionUnreadable": "Nie można odczytać wersji Kimi CLI.",
   "error.provider.kimiSignIn": "Zaloguj się przez Kimi Code, aby używać Kimi.",
@@ -279,11 +279,11 @@ export const messages = {
     "Zaloguj się przez Nous Portal lub uruchom `hermes setup` w terminalu, aby używać Hermes.",
   "error.provider.usageLimitReached": "Konto osiągnęło limit użycia.",
   "error.provider.foreignReasoning":
-    "Dostawca {provider} nie przyjął wcześniejszego rozumowania z tego czatu, ponieważ otrzymało je inne konto lub inny klucz API. OpenBot rozpoczął nową sesję {provider} z historią czatu. Spróbuj ponownie.",
+    "Dostawca {provider} nie przyjął wcześniejszego rozumowania z tego czatu, ponieważ otrzymało je inne konto lub inny klucz API. ZollyBot rozpoczął nową sesję {provider} z historią czatu. Spróbuj ponownie.",
   "error.provider.opencodeSessionRejected":
-    "OpenCode odrzucił żądanie i nie podał przyczyny. Może się to zdarzyć w długim czacie lub po zmianie modelu. OpenBot rozpoczął nową sesję OpenCode z historią czatu. Spróbuj ponownie. Jeśli błąd się powtarza, wybierz inny model lub niższy wysiłek.",
+    "OpenCode odrzucił żądanie i nie podał przyczyny. Może się to zdarzyć w długim czacie lub po zmianie modelu. ZollyBot rozpoczął nową sesję OpenCode z historią czatu. Spróbuj ponownie. Jeśli błąd się powtarza, wybierz inny model lub niższy wysiłek.",
   "error.provider.museMcpStartupFault":
-    "Muse nie mógł uruchomić serwera MCP i zablokował MCP w tej sesji. OpenBot rozpoczął nową sesję Muse z historią czatu. Spróbuj ponownie. Jeśli błąd się powtarza, wyłącz Sterowanie komputerem lub serwer MCP, który zawiódł, dla tego agenta.",
+    "Muse nie mógł uruchomić serwera MCP i zablokował MCP w tej sesji. ZollyBot rozpoczął nową sesję Muse z historią czatu. Spróbuj ponownie. Jeśli błąd się powtarza, wyłącz Sterowanie komputerem lub serwer MCP, który zawiódł, dla tego agenta.",
   "error.provider.grokSignIn": "Uruchom `grok login` lub ustaw XAI_API_KEY, aby używać Grok.",
   "error.provider.acpSignInTimedOut": "Upłynął limit czasu logowania.",
   "error.provider.acpSignInStopped": "Logowanie zatrzymało się przed zakończeniem.",
@@ -305,7 +305,7 @@ export const messages = {
   "error.provider.keyProviderNoBalance":
     "Konto {provider} zapisanego klucza API nie ma środków. Doładuj konto, a następnie spróbuj ponownie.",
   "error.provider.messageTooLarge":
-    "OpenBot zatrzymał {provider}, ponieważ wysłał on wiadomość większą niż {limit} MB.",
+    "ZollyBot zatrzymał {provider}, ponieważ wysłał on wiadomość większą niż {limit} MB.",
   "error.provider.customAgentIdInvalid":
     "ID agenta może zawierać tylko małe litery, cyfry lub `-` i nie może być ID wbudowanego dostawcy.",
   "error.provider.customAgentEnvInvalid":
@@ -318,10 +318,10 @@ export const messages = {
     "Argument nie może zawierać podziału wiersza. Użyj maksymalnie 32 argumentów.",
   "error.provider.customAgentWindowsScript":
     "Polecenie .cmd lub .bat może mieć w argumentach tylko litery, cyfry i - _ . , : = @ + / \\.",
-  "error.provider.customAgentNotFound": "OpenBot nie może znaleźć {command}. Wpisz pełną ścieżkę polecenia.",
+  "error.provider.customAgentNotFound": "ZollyBot nie może znaleźć {command}. Wpisz pełną ścieżkę polecenia.",
   "error.provider.customAgentCheckTimedOut": "Agent nie odpowiedział w ciągu 20 sekund.",
   "error.provider.customAgentCheckStopped": "Agent zatrzymał się, zanim odpowiedział.",
-  "error.provider.customAgentProtocolVersion": "Agent używa ACP w wersji {version}. OpenBot używa wersji 1.",
+  "error.provider.customAgentProtocolVersion": "Agent używa ACP w wersji {version}. ZollyBot używa wersji 1.",
   "error.provider.customAgentCheckFailed": "Agent nie odpowiedział jak agent ACP.",
   "error.provider.customAgentRemoveBusy":
     "Zaczekaj na zakończenie aktywnej tury i kolejki, zanim usuniesz tego własnego agenta.",
@@ -329,7 +329,7 @@ export const messages = {
   "error.provider.customAgentMissing": "Ten własny agent nie jest już zapisany. Wybierz inny model.",
   "error.provider.customAgentSignIn": "Zaloguj się własnym poleceniem agenta, a potem spróbuj ponownie.",
   "error.provider.customAgentsReadOnly":
-    "Zapisanych własnych agentów zapisała nowsza wersja OpenBot albo nie można odczytać pliku. Zaktualizuj OpenBot, aby ich zmienić.",
+    "Zapisanych własnych agentów zapisała nowsza wersja ZollyBot albo nie można odczytać pliku. Zaktualizuj ZollyBot, aby ich zmienić.",
   "error.provider.customAgentNoSecureStorage":
     "Ten komputer nie ma bezpiecznego magazynu, więc nie można zapisać wartości środowiskowych. Usuń je i spróbuj ponownie.",
   "error.provider.customAgentNotSaved": "Ten własny agent nie jest zapisany. Odśwież listę i spróbuj ponownie.",
@@ -337,16 +337,16 @@ export const messages = {
     "{reason}. Blokuje to tryb „Tylko obszar roboczy”. Wybierz „Pełny dostęp”.",
   "error.provider.customAgentTooMany": "Możesz zapisać maksymalnie {count} własnych agentów.",
   "error.provider.customAgentEnvValueMissing": "Wpisz wartość dla {name}.",
-  "error.provider.off": "Dostawca {provider} jest wyłączony w OpenBot. Najpierw włącz go w ustawieniach dostawców.",
+  "error.provider.off": "Dostawca {provider} jest wyłączony w ZollyBot. Najpierw włącz go w ustawieniach dostawców.",
   "error.provider.inUse": "Agent używa dostawcy {provider}. Zmień jego model, zanim wyłączysz tego dostawcę.",
   "error.provider.useBusy": "Zaczekaj na zakończenie sprawdzania dostawcy lub logowania, a potem spróbuj ponownie.",
   "error.provider.useSettingsReadOnly":
-    "Nie można odczytać zapisanych ustawień dostawców. Zaktualizuj OpenBot, zanim je zmienisz.",
+    "Nie można odczytać zapisanych ustawień dostawców. Zaktualizuj ZollyBot, zanim je zmienisz.",
   "error.provider.useChangeFailed": "Nie udało się zmienić ustawienia dostawcy.",
   "error.provider.accountsUnsupported": "{provider} obsługuje tylko jedno konto.",
   "error.provider.accountNeedsConnection": "Połącz {provider}, zanim dodasz kolejne konto.",
   "error.provider.usageResetUnsupported": "{provider} nie może resetować limitów użycia.",
-  "error.provider.signOutUnsupported": "OpenBot nie może odłączyć logowania {provider}.",
+  "error.provider.signOutUnsupported": "ZollyBot nie może odłączyć logowania {provider}.",
   "error.provider.usageResetNotConnected":
     "Zaloguj się ponownie do tego konta {provider}, zanim zresetujesz jego użycie.",
   "error.provider.accountLimit": "Maksymalna liczba kont dla {provider} to {limit}.",
@@ -357,7 +357,7 @@ export const messages = {
     "To konto {provider} używa zapisanego klucza API i nie ma logowania. Zmień klucz w Ustawienia serwera → Dostawcy.",
   "error.provider.accountInUse": "Agent korzystający z tego konta pracuje. Spróbuj ponownie, gdy agent się zatrzyma.",
   "error.provider.accountsReadOnly":
-    "Nie można odczytać zapisanych kont dostawców. Zaktualizuj OpenBot, zanim je zmienisz.",
+    "Nie można odczytać zapisanych kont dostawców. Zaktualizuj ZollyBot, zanim je zmienisz.",
   "error.provider.accountSignedOut": "To konto {provider} jest wylogowane. Zaloguj się ponownie.",
   "error.provider.sessionSettingUnavailable": "To ustawienie nie jest dostępne w bieżącej sesji dostawcy.",
   "error.provider.sessionSettingInvalid": "Ta wartość nie jest dostępna dla tego ustawienia.",
@@ -390,7 +390,7 @@ export const messages = {
   "error.provider.museConnectionFailed":
     "Połączenie z Muse nie powiodło się. Wznów rozmowę, aby odzyskać jej zapisaną historię.",
   "error.provider.museUnknownSession": "Nieznana sesja Muse.",
-  "error.provider.museInvalidToolResult": "Nieprawidłowy wynik narzędzia OpenBot.",
+  "error.provider.museInvalidToolResult": "Nieprawidłowy wynik narzędzia ZollyBot.",
   "error.provider.museMcpRequired": "Muse musi obsługiwać serwery MCP sesji.",
   "error.provider.museSessionMismatch": "Muse zwrócił inną sesję.",
   "error.provider.museCompactRejected": "Muse nie przyjął kompaktowania.",

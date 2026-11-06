@@ -6,26 +6,26 @@ import {
   type ServerNotificationLevel,
   type SetAgentNotificationLevelInput,
   type TeamRealtimeEvent,
-} from "@openbot/contracts/ipc";
-import { guardedListDecoder } from "@openbot/contracts/ipc-decoding";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-notification-levels-v1";
-import { teamProtocolUpdateDirection } from "@openbot/contracts/team-protocol/v1";
-import { TEAM_PROTOCOL_V3 } from "@openbot/contracts/team-protocol/v3";
-import { decodeTeamProtocolSupportV9 } from "@openbot/contracts/team-protocol/v9";
-import { runTeamEffect } from "@openbot/team-client";
-import { agentEventCanNotify } from "@openbot/team-client/agent-notifications";
-import type { RemoteTeamHost } from "@openbot/team-client/remote-directory";
-import type { createRemoteTeamPeer, RemoteTeamPeerActions } from "@openbot/team-client/remote-peer";
-import { createRemoteConnectionRecovery } from "@openbot/team-client/remote-recovery";
+} from "@zollybot/contracts/ipc";
+import { guardedListDecoder } from "@zollybot/contracts/ipc-decoding";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-notification-levels-v1";
+import { teamProtocolUpdateDirection } from "@zollybot/contracts/team-protocol/v1";
+import { TEAM_PROTOCOL_V3 } from "@zollybot/contracts/team-protocol/v3";
+import { decodeTeamProtocolSupportV9 } from "@zollybot/contracts/team-protocol/v9";
+import { runTeamEffect } from "@zollybot/team-client";
+import { agentEventCanNotify } from "@zollybot/team-client/agent-notifications";
+import type { RemoteTeamHost } from "@zollybot/team-client/remote-directory";
+import type { createRemoteTeamPeer, RemoteTeamPeerActions } from "@zollybot/team-client/remote-peer";
+import { createRemoteConnectionRecovery } from "@zollybot/team-client/remote-recovery";
 import {
   listAgentNotificationLevels,
   setAgentNotificationLevel,
   setOwnServerNotificationLevel,
-} from "@openbot/team-client/team-admin-requests";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
-import { currentText } from "@openbot/ui/text";
-import { referenceFrom } from "@openbot/user-errors";
+} from "@zollybot/team-client/team-admin-requests";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
+import { currentText } from "@zollybot/ui/text";
+import { referenceFrom } from "@zollybot/user-errors";
 import { Effect } from "effect";
 import {
   type acquireWebHostLock,

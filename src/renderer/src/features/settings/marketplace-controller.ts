@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AddedAgent,
   ClientAgentSummary,
@@ -15,17 +15,17 @@ import type {
   McpServerConfig,
   McpSignInRelayPage,
   McpSignInState,
-} from "@openbot/contracts/ipc";
-import { assignedSkillCount, isRemovableSkill, isSkillEnabled, mcpConfigErrors } from "@openbot/contracts/ipc";
-import { createMarketplaceShareUrl, type MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
-import { mcpAccountFragment, mcpAccountUrl } from "@openbot/contracts/mcp-accounts";
-import { type McpConnectFlow, mcpFlowFields } from "@openbot/contracts/mcp-connect-flows";
-import { createPluginShareUrl } from "@openbot/contracts/plugin-links";
-import { TOAST_DURATION, toast } from "@openbot/ui";
-import { connectorSummary } from "@openbot/ui/features/connectors/ConnectorDetailPanel";
-import { CONNECTOR_LISTINGS } from "@openbot/ui/features/connectors/connector-catalog";
-import { isConnectorId } from "@openbot/ui/features/connectors/connectors";
-import { safeBrowserUrl } from "@openbot/ui/features/conversation/RichMessageText";
+} from "@zollybot/contracts/ipc";
+import { assignedSkillCount, isRemovableSkill, isSkillEnabled, mcpConfigErrors } from "@zollybot/contracts/ipc";
+import { createMarketplaceShareUrl, type MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
+import { mcpAccountFragment, mcpAccountUrl } from "@zollybot/contracts/mcp-accounts";
+import { type McpConnectFlow, mcpFlowFields } from "@zollybot/contracts/mcp-connect-flows";
+import { createPluginShareUrl } from "@zollybot/contracts/plugin-links";
+import { TOAST_DURATION, toast } from "@zollybot/ui";
+import { connectorSummary } from "@zollybot/ui/features/connectors/ConnectorDetailPanel";
+import { CONNECTOR_LISTINGS } from "@zollybot/ui/features/connectors/connector-catalog";
+import { isConnectorId } from "@zollybot/ui/features/connectors/connectors";
+import { safeBrowserUrl } from "@zollybot/ui/features/conversation/RichMessageText";
 import type {
   AgentListingState,
   MarketplaceApp,
@@ -36,18 +36,18 @@ import type {
   MarketplaceSkillChange,
   MarketplaceSkillRef,
   SkillRead,
-} from "@openbot/ui/features/marketplace/marketplace-model";
-import { serverAddress } from "@openbot/ui/features/marketplace/marketplace-view";
-import type { McpConnectSubject } from "@openbot/ui/features/settings/McpConnectShell";
+} from "@zollybot/ui/features/marketplace/marketplace-model";
+import { serverAddress } from "@zollybot/ui/features/marketplace/marketplace-view";
+import type { McpConnectSubject } from "@zollybot/ui/features/settings/McpConnectShell";
 import {
   isPluginAppConfig,
   type MarketplacePluginApp,
   type MarketplacePluginDetail,
   type MarketplacePluginPrompt,
-} from "@openbot/ui/features/settings/marketplace-plugins";
-import type { PluginUninstallPlan } from "@openbot/ui/features/settings/PluginUninstallDialog";
-import { currentText, useText } from "@openbot/ui/text";
-import { errorReference } from "@openbot/user-errors";
+} from "@zollybot/ui/features/settings/marketplace-plugins";
+import type { PluginUninstallPlan } from "@zollybot/ui/features/settings/PluginUninstallDialog";
+import { currentText, useText } from "@zollybot/ui/text";
+import { errorReference } from "@zollybot/user-errors";
 import { createEffect, createMemo, createSignal, createStore, onCleanup, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { desktopAnalytics } from "../../analytics";
@@ -518,7 +518,7 @@ export function createMarketplaceController(props: MarketplaceControllerProps) {
    * window shows the skill as removed, and the host removes it when the toast closes, also after the
    * window closed. Undo takes back the waiting removes and removes what this change installed. An
    * agent that refuses is named in one partial error: at its skill limit, or with a skill that
-   * OpenBot cannot remove.
+   * ZollyBot cannot remove.
    */
   async function changeSkill(skill: MarketplaceSkillRef, change: MarketplaceSkillChange) {
     const key = `skill:${skill.id}`;

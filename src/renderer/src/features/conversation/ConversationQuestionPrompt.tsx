@@ -1,4 +1,4 @@
-import type { QuestionPromptComposerAnswer } from "@openbot/ui/components/QuestionPromptBubble";
+import type { QuestionPromptComposerAnswer } from "@zollybot/ui/components/QuestionPromptBubble";
 import { createMemo, Loading, lazy, Show } from "solid-js";
 import { deviceSendShortcut } from "../../send-shortcut-preference";
 import { useConversationViewScope } from "./conversation-scope";
@@ -76,6 +76,6 @@ export function ConversationQuestionPrompt(props: {
 }
 
 const QuestionPromptBubble = lazy(() =>
-  import("@openbot/ui/components/QuestionPromptBubble").then((module) => ({ default: module.QuestionPromptBubble })),
+  import("@zollybot/ui/components/QuestionPromptBubble").then((module) => ({ default: module.QuestionPromptBubble })),
 );
 const UiBlockPrompt = lazy(() => import("./UiBlockPrompt").then((module) => ({ default: module.UiBlockPrompt })));

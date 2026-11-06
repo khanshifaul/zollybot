@@ -1,6 +1,6 @@
-import type { EventRoutineOwner, WebhookReceiptReason } from "@openbot/contracts/ipc-events";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
 import { useQuery } from "@tanstack/react-query";
+import type { EventRoutineOwner, WebhookReceiptReason } from "@zollybot/contracts/ipc-events";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { Typography } from "heroui-native";
 import { View } from "react-native";
 import { SettingsNote, SettingsRow, SettingsSection } from "@/features/settings/components/settings-content";

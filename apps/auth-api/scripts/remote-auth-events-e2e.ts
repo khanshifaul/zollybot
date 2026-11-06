@@ -6,7 +6,7 @@
 // each one gets each event once, and only the Signal that failed gets it again.
 //
 // Run: bun run test:remote-auth-events
-// It writes .openbot-build/remote-auth-events-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/remote-auth-events-e2e/report.json and exits non-zero on a failure.
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
@@ -16,7 +16,7 @@ import { createWorkerHandler } from "../src/server/worker-handler";
 import { sqliteD1 } from "./sqlite-d1";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
-const OUT = join(ROOT, ".openbot-build", "remote-auth-events-e2e");
+const OUT = join(ROOT, ".zollybot-build", "remote-auth-events-e2e");
 const MIGRATIONS = join(ROOT, "apps", "auth-api", "migrations");
 const SIGNAL_URL = "https://signal.test/internal/auth-events";
 const SECOND_SIGNAL_URL = "https://signal-b.test/internal/auth-events";
@@ -75,8 +75,8 @@ function fakeSignal(now: number, answer: (body: string) => number = () => 204) {
       verifyRemoteServiceSignature(
         SECRET,
         body,
-        headers.get("OpenBot-Timestamp") ?? "",
-        headers.get("OpenBot-Signature") ?? "",
+        headers.get("ZollyBot-Timestamp") ?? "",
+        headers.get("ZollyBot-Signature") ?? "",
         now,
       ),
     );
@@ -358,8 +358,8 @@ async function eachSignalGetsEachEventAndOnlyTheFailedOneRetries() {
       verifyRemoteServiceSignature(
         SECRET,
         body,
-        headers.get("OpenBot-Timestamp") ?? "",
-        headers.get("OpenBot-Signature") ?? "",
+        headers.get("ZollyBot-Timestamp") ?? "",
+        headers.get("ZollyBot-Signature") ?? "",
         state.sentAt,
       ),
     );

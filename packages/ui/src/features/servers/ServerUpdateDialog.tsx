@@ -1,6 +1,6 @@
-import type { UpdateRestartMode } from "@openbot/contracts/ipc";
-import { Button, ConfirmDialog, Progress, Spinner, SwitchField } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { UpdateRestartMode } from "@zollybot/contracts/ipc";
+import { Button, ConfirmDialog, Progress, Spinner, SwitchField } from "@zollybot/ui";
 import { createEffect, createSignal, For, Show } from "solid-js";
 import { CircleCheck, CircleDot, RotateCcw, TriangleAlert } from "../../icons";
 import { useText } from "../../text";
@@ -33,7 +33,7 @@ export interface ServerUpdateView {
 type StepStatus = "done" | "active" | "failed" | "pending";
 
 /**
- * The OpenBot update of a joined server: the download, the restart, and the server back online. One
+ * The ZollyBot update of a joined server: the download, the restart, and the server back online. One
  * confirm starts the download and the restart, because `host-update-v1` does both in one call. The
  * user can hide the dialog while the host works.
  */

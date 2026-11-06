@@ -1,5 +1,5 @@
-import { CustomProviderDialog } from "@openbot/ui/features/custom-providers/CustomProviderDialog";
-import type { CustomProviderDraft } from "@openbot/ui/features/custom-providers/custom-provider-form";
+import { CustomProviderDialog } from "@zollybot/ui/features/custom-providers/CustomProviderDialog";
+import type { CustomProviderDraft } from "@zollybot/ui/features/custom-providers/custom-provider-form";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 
@@ -149,7 +149,7 @@ export const DialogBusy: Story = {
 };
 
 export const DialogSubmitError: Story = {
-  args: { draft: localEndpoint, submitError: "OpenBot could not reach http://127.0.0.1:11434/v1." },
+  args: { draft: localEndpoint, submitError: "ZollyBot could not reach http://127.0.0.1:11434/v1." },
 };
 
 /** Long enough to scroll, which is the only way to see the top and bottom fades. */
@@ -202,6 +202,6 @@ export const DiscoveryFailed: Story = {
   args: {
     draft: ollama,
     onDiscoverModels: fn(),
-    discovery: { status: "failed", message: "OpenBot could not reach http://127.0.0.1:11434/v1/models." },
+    discovery: { status: "failed", message: "ZollyBot could not reach http://127.0.0.1:11434/v1/models." },
   },
 };

@@ -5,8 +5,8 @@
   grid-row: 1;
   min-width: 0;
   flex-direction: column;
-  background: var(--openbot-bg-canvas);
-  transition: padding-inline-end var(--panel-resize-duration, var(--openbot-duration-overlay))
+  background: var(--zollybot-bg-canvas);
+  transition: padding-inline-end var(--panel-resize-duration, var(--zollybot-duration-overlay))
     cubic-bezier(0.22, 1, 0.36, 1);
   --conversation-column-width: clamp(1440px, 65vw, 1920px);
 }
@@ -31,12 +31,12 @@
  * padding is relative to the panel, so the settings panel width is subtracted where it shows.
  */
 .conversation-panel > .composer-wrap {
-  padding-inline: max(var(--openbot-space-1-5), calc((100% - var(--conversation-column-width) - 12px) / 2));
+  padding-inline: max(var(--zollybot-space-1-5), calc((100% - var(--conversation-column-width) - 12px) / 2));
 }
 
 .conversation-panel:has(.settings-panel) > .composer-wrap {
   padding-inline: max(
-    var(--openbot-space-1-5),
+    var(--zollybot-space-1-5),
     calc((100% - var(--settings-panel-width, 360px) - var(--conversation-column-width) - 12px) / 2)
   );
 }
@@ -72,7 +72,7 @@
  */
 .conversation-panel > .composer-wrap .mention-picker {
   --mention-picker-side-inset: max(
-    calc(var(--openbot-space-1-5) + 12px),
+    calc(var(--zollybot-space-1-5) + 12px),
     calc((100% - var(--conversation-column-width) + 12px) / 2)
   );
 }
@@ -85,8 +85,8 @@
   grid-column: 3;
   grid-row: 1;
   flex-direction: column;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
 }
 
 .app-frame-with-server-rail .direct-conversation {
@@ -99,7 +99,7 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--openbot-hover);
+  border-bottom: 1px solid var(--zollybot-hover);
   padding: 0 14px;
 }
 
@@ -115,14 +115,14 @@
 
   width: 30px;
   height: 30px;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .direct-conversation-person h1 {
   overflow: hidden;
   margin: 0;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md);
   font-weight: 560;
   line-height: 17px;
   text-overflow: ellipsis;
@@ -133,32 +133,32 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 11px;
 }
 
 .direct-conversation-person div > span i {
   width: 5px;
   height: 5px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-control-hover);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-control-hover);
 }
 
 .direct-conversation-person div > span.online {
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 .direct-conversation-person div > span.online i {
-  background: var(--openbot-success);
+  background: var(--zollybot-success);
 }
 
 .direct-private-label {
   display: flex;
   align-items: center;
   gap: 5px;
-  color: var(--openbot-text-readable);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-readable);
+  font-size: var(--zollybot-text-sm);
 }
 
 .direct-private-label svg {
@@ -168,7 +168,7 @@
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: var(--openbot-icon-stroke);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .direct-message-list {
@@ -184,21 +184,21 @@
   min-height: 100%;
   place-content: center;
   justify-items: center;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   text-align: center;
 }
 
 .direct-conversation-empty h2 {
   margin: 14px 0 4px;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-xl);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-xl);
   font-weight: 560;
 }
 
 .direct-conversation-empty p {
   max-width: 290px;
   margin: 0;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   line-height: 17px;
 }
 
@@ -215,14 +215,14 @@
 }
 
 .direct-message .ui-bubble-content {
-  font-size: var(--openbot-text-md);
+  font-size: var(--zollybot-text-md);
   line-height: 19px;
   white-space: pre-wrap;
 }
 
 .direct-message time {
-  color: var(--openbot-text-readable);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-readable);
+  font-size: var(--zollybot-text-sm);
 }
 
 .direct-message .ui-message-footer {
@@ -240,14 +240,14 @@
   align-items: center;
   gap: 7px;
   padding: 0 10px 4px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .direct-message-error {
   margin: 0 8px 6px;
-  color: var(--openbot-danger);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-danger);
+  font-size: var(--zollybot-text-sm);
 }
 
 .direct-composer {
@@ -255,16 +255,16 @@
   min-height: 46px;
   align-items: flex-end;
   gap: 8px;
-  border: 1px solid var(--openbot-border);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
   padding-block: 6px;
   padding-inline: 13px 7px;
-  box-shadow: 0 8px 25px var(--openbot-shadow-popover-ambient);
+  box-shadow: 0 8px 25px var(--zollybot-shadow-popover-ambient);
 }
 
 .direct-composer:focus-within {
-  border-color: var(--openbot-border-strong);
+  border-color: var(--zollybot-border-strong);
 }
 
 .direct-composer textarea {
@@ -277,14 +277,14 @@
   outline: 0;
   background: transparent;
   padding: 6px 0;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   font: inherit;
-  font-size: var(--openbot-text-md);
+  font-size: var(--zollybot-text-md);
   line-height: 20px;
 }
 
 .direct-composer textarea::placeholder {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .direct-composer > button {
@@ -294,16 +294,16 @@
   flex: 0 0 auto;
   place-items: center;
   border: 0;
-  border-radius: var(--openbot-radius-md);
-  background: var(--openbot-success);
-  color: var(--openbot-success);
-  font-size: var(--openbot-text-xl);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-success);
+  color: var(--zollybot-success);
+  font-size: var(--zollybot-text-xl);
   font-weight: 650;
 }
 
 .direct-composer > button:disabled {
-  background: var(--openbot-border);
-  color: var(--openbot-text-dim);
+  background: var(--zollybot-border);
+  color: var(--zollybot-text-dim);
 }
 
 .app-frame-with-server-rail .conversation-panel {

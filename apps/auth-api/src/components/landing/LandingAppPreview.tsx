@@ -1,8 +1,8 @@
 import {
   LANDING_PREVIEW_READY_MESSAGE,
   LANDING_PREVIEW_START_MESSAGE,
-} from "@openbot/contracts/landing-preview-messages";
-import { prefersReducedMotion } from "@openbot/ui/utils";
+} from "@zollybot/contracts/landing-preview-messages";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { onSettled } from "solid-js";
 
 const LANDING_PREVIEW_URL = "/app-preview";
@@ -10,9 +10,9 @@ const LANDING_PREVIEW_LOAD_DELAY_MS = 300;
 const LANDING_PREVIEW_REVEAL_FALLBACK_MS = 240;
 
 const LANDING_PREVIEW_MARKS = {
-  ready: "openbot:landing-preview:ready",
-  shown: "openbot:landing-preview:shown",
-  src: "openbot:landing-preview:src",
+  ready: "zollybot:landing-preview:ready",
+  shown: "zollybot:landing-preview:shown",
+  src: "zollybot:landing-preview:src",
 } as const;
 
 function readDuration(name: string, fallback: number): number {
@@ -123,7 +123,7 @@ export function LandingAppPreview(props: LandingAppPreviewProps) {
       data-preview-state="idle"
     >
       <h2 id="app-preview-title" class="landing-visually-hidden">
-        Interactive OpenBot application preview
+        Interactive ZollyBot application preview
       </h2>
       <span class="landing-preview-window-controls" aria-hidden="true">
         <i />
@@ -134,12 +134,12 @@ export function LandingAppPreview(props: LandingAppPreviewProps) {
         ref={placeholder}
         class="landing-preview-placeholder t-skel-skeleton"
         role="status"
-        aria-label="Loading OpenBot preview"
+        aria-label="Loading ZollyBot preview"
       />
       <div class="landing-preview-stage t-skel-content">
         <iframe
           ref={iframe}
-          title="Interactive OpenBot application preview"
+          title="Interactive ZollyBot application preview"
           sandbox="allow-forms allow-same-origin allow-scripts"
         />
       </div>

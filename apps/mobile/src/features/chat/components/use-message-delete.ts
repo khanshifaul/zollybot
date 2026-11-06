@@ -1,4 +1,4 @@
-import { canAdministerServer } from "@openbot/contracts/ipc";
+import { canAdministerServer } from "@zollybot/contracts/ipc";
 import { useCallback } from "react";
 import { useAgentAccessLevel } from "@/features/servers/model/use-server-roles";
 import {

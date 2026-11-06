@@ -8,19 +8,19 @@
 // returns a decoded value or throws one of `remote-server-errors.ts`. Deciding what a throw means for
 // the user is `remote-server-connection-status.ts`; deciding which server to ask is the caller's.
 
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { teamHttpCodec } from "@openbot/contracts/team-protocol/http-codecs";
-import { teamSideRouteCodec } from "@openbot/contracts/team-protocol/side-routes";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { teamHttpCodec } from "@zollybot/contracts/team-protocol/http-codecs";
+import { teamSideRouteCodec } from "@zollybot/contracts/team-protocol/side-routes";
 import {
   TEAM_APP_VERSION_HEADER,
   TEAM_CAPABILITIES_HEADER,
   TEAM_PROTOCOL_VERSION_HEADER,
-} from "@openbot/contracts/team-protocol/v1";
-import { decodeTeamProtocolV1CurrentHttpResponse } from "@openbot/contracts/team-protocol/v1-adapter";
-import { decodeTeamProtocolV2Json, type TeamProtocolV2Json } from "@openbot/contracts/team-protocol/v2";
-import { sourceText } from "@openbot/i18n/source";
-import { startRemoteRequest } from "@openbot/team-client/sync-profile";
+} from "@zollybot/contracts/team-protocol/v1";
+import { decodeTeamProtocolV1CurrentHttpResponse } from "@zollybot/contracts/team-protocol/v1-adapter";
+import { decodeTeamProtocolV2Json, type TeamProtocolV2Json } from "@zollybot/contracts/team-protocol/v2";
+import { sourceText } from "@zollybot/i18n/source";
+import { startRemoteRequest } from "@zollybot/team-client/sync-profile";
 import { Effect, Result, Schema } from "effect";
 import type { ResponseDecoder } from "./remote-host-decoding";
 import { RemoteProtocolError, RemoteRequestError } from "./remote-server-errors";

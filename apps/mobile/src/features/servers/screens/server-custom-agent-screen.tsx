@@ -1,5 +1,5 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { ACP_AGENT_PRESETS, CUSTOM_AGENT_LIMITS, type CustomAgentSummary } from "@openbot/contracts/ipc";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { ACP_AGENT_PRESETS, CUSTOM_AGENT_LIMITS, type CustomAgentSummary } from "@zollybot/contracts/ipc";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";

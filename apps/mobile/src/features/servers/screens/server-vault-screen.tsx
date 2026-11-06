@@ -4,8 +4,8 @@ import type {
   VaultContactSummary,
   VaultHostImportResult,
   VaultLoginSummary,
-} from "@openbot/contracts/ipc";
-import { VAULT_IMPORT_CSV_LIMIT } from "@openbot/contracts/team-protocol/vault-import-v1";
+} from "@zollybot/contracts/ipc";
+import { VAULT_IMPORT_CSV_LIMIT } from "@zollybot/contracts/team-protocol/vault-import-v1";
 import * as DocumentPicker from "expo-document-picker";
 import { File } from "expo-file-system";
 import { router, useLocalSearchParams } from "expo-router";

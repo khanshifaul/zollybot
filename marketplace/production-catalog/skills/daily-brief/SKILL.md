@@ -13,12 +13,12 @@ description: "Write a one-screen morning brief from the signed-in calendar and i
 
 ## Inputs
 
-1. **Calendar.** Call `openbot_browser.list_tabs` and read today's view in the signed-in calendar tab.
+1. **Calendar.** Call `zollybot_browser.list_tabs` and read today's view in the signed-in calendar tab.
 2. **Inbox.** Read the signed-in mail tab: unread threads and threads from the last 3 days.
 3. **Tasks.** Search `tool_search` for an installed task plugin (Todoist, Linear, Trello, Atlassian, Notion).
    Read only tasks assigned to the user and due today or overdue. If none is installed and the user wants
    tasks in the brief, use `suggest_marketplace_app`.
-4. **Commitments.** Read the shared data table `commitments` with `openbot.query_data`: rows owned by the
+4. **Commitments.** Read the shared data table `commitments` with `zollybot.query_data`: rows owned by the
    user with status not done and a due date today or earlier. The table may not exist yet; then skip it.
 5. **Setup.** The saved setup (with `remember`): which calendar and inbox, the user's name and email address
    as they appear in mail, working hours, and senders to always include.

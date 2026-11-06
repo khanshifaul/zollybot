@@ -1,5 +1,5 @@
-import { Button } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Button } from "@zollybot/ui";
 import { createSignal, onSettled, Show } from "solid-js";
 
 interface SplashPlaygroundProps {
@@ -29,7 +29,7 @@ export function SplashPlayground(props: SplashPlaygroundProps) {
   });
 
   return (
-    <div class="relative grid min-h-screen place-items-center" style={{ background: "var(--openbot-bg-canvas)" }}>
+    <div class="relative grid min-h-screen place-items-center" style={{ background: "var(--zollybot-bg-canvas)" }}>
       <Button variant="outline" onClick={start}>
         Replay
       </Button>

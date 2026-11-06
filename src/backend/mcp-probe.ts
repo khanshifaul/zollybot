@@ -10,10 +10,10 @@ import {
 } from "@modelcontextprotocol/sdk/server/auth/errors.js";
 import type { FetchLike, Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { McpServerConfig } from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { McpServerConfig } from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Result, Schema } from "effect";
 import { causeHelpers } from "./effect-boundary";
 import {
@@ -70,7 +70,7 @@ export interface McpProbeOutcome extends McpProbeResult {
 /**
  * Tests one configuration, saved or not: connects, counts the tools, and disconnects.
  *
- * Only a user asking for it starts this. OpenBot does not test by itself, because a connection is
+ * Only a user asking for it starts this. ZollyBot does not test by itself, because a connection is
  * not free - an http server can want an OAuth sign-in, a cold `npx` can download for most of the
  * stdio deadline, and a server can do real work at startup. The answer is reported once and not
  * stored.
@@ -303,7 +303,7 @@ const connectAndCountEffect = Effect.fnUntraced(function* (
   return yield* Effect.acquireUseRelease(
     Effect.try({
       try: () => ({
-        client: new Client({ name: "openbot-probe", version: "1" }, { capabilities: {} }),
+        client: new Client({ name: "zollybot-probe", version: "1" }, { capabilities: {} }),
         transport: createTransport(server, signIn, onChallenge),
       }),
       catch: (cause) => new McpProbeFailure({ cause }),
@@ -402,7 +402,7 @@ function createTransport(
     // which the form's own example uses.
     ...(server.workingDirectory ? { cwd: server.workingDirectory } : {}),
     // The SDK default first, then this user's own `PATH`, the names the user asked to pass through,
-    // and the user's own pairs. `envPassthrough` has no other meaning anywhere in OpenBot; this is
+    // and the user's own pairs. `envPassthrough` has no other meaning anywhere in ZollyBot; this is
     // where it is spent. The launch environment is the providers' as well, so what the panel tests
     // is what an agent starts.
     env: {
@@ -599,7 +599,7 @@ function isAccessRefusal(status: number | null): boolean {
 }
 
 /**
- * Whether the server refused to register OpenBot. Only an error from a registration counts: the
+ * Whether the server refused to register ZollyBot. Only an error from a registration counts: the
  * same error classes from the token endpoint mean that the server refused a client it issued.
  *
  * The SDK keeps the status only when the refusal body is not an OAuth error. A body such as

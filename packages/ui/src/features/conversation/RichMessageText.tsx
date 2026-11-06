@@ -1,10 +1,10 @@
-import { type ChatTagKind, chatTagReferences } from "@openbot/contracts/chat-tag-references";
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { AppWindow, Blocks, Button, Puzzle, Split, TextQuote } from "@openbot/ui";
-import { ReferenceChip } from "@openbot/ui/reference-chip";
-import { usesTouchLayout } from "@openbot/ui/utils";
 import type { JSX } from "@solidjs/web";
+import { type ChatTagKind, chatTagReferences } from "@zollybot/contracts/chat-tag-references";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { AppWindow, Blocks, Button, Puzzle, Split, TextQuote } from "@zollybot/ui";
+import { ReferenceChip } from "@zollybot/ui/reference-chip";
+import { usesTouchLayout } from "@zollybot/ui/utils";
 import { createMemo, createSignal, createUniqueId, For, Show, untrack } from "solid-js";
 import type { ComposerAgent, ComposerSkill, MessageCitation } from "../../data";
 import { useText } from "../../text";

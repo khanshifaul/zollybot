@@ -3,7 +3,7 @@ import { isBoolean, isDynamicRecord, isNumber, isOneOf, isString } from "./runti
 import { GITHUB_REPOSITORY_NAME_PATTERN } from "./signal-protocol/github-route";
 
 /**
- * GitHub triggers and outputs of workflows. A GitHub trigger starts a run when the OpenBot GitHub App
+ * GitHub triggers and outputs of workflows. A GitHub trigger starts a run when the ZollyBot GitHub App
  * sends an event of a repository; a GitHub output acts on GitHub as the App's bot. The node fields are
  * in `WorkflowFields`. These types cross the Team API only through `workflows-github-v1`.
  */

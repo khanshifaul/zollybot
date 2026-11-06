@@ -13,7 +13,7 @@ export const messages = {
   "skill.loadingDetails": "جارٍ تحميل التفاصيل…",
   "skill.emptyEnabled": "لا توجد مهارات مفعّلة لهذا الوكيل.",
   "skill.emptyAssigned": "لا توجد مهارات معيّنة لهذا الوكيل بعد.",
-  "skill.folderSkill": "لم يثبّت OpenBot هذه المهارة. عدّلها أو أزلها في {location}.",
+  "skill.folderSkill": "لم يثبّت ZollyBot هذه المهارة. عدّلها أو أزلها في {location}.",
   "skill.moreFor": "المزيد لـ {name}",
   "skill.update": "تحديث",
   "skill.updateName": "تحديث {name}",
@@ -36,7 +36,7 @@ export const messages = {
     "يستبدل تحديث هذه المهارة الملفات المحلية بأحدث حزمة للمهارة. ستفقد تعديلاتك في مجلد هذه المهارة.",
   "skill.confirm.removeModifiedBody":
     "لهذه المهارة تغييرات محلية في مساحة عمل الوكيل. تحذف الإزالة تلك الملفات. تبقى رسائل الدردشة الأصلية.",
-  "skill.confirm.removeBody": "سيزيل OpenBot هذه المهارة من الوكيل. يبقى سجل الدردشة.",
+  "skill.confirm.removeBody": "سيزيل ZollyBot هذه المهارة من الوكيل. يبقى سجل الدردشة.",
   "skill.confirm.replace": "استبدال المهارة",
   "skill.confirm.remove": "إزالة المهارة",
 
@@ -88,5 +88,5 @@ export const messages = {
   "skill.marketplace.undone": "تم التراجع عن التغيير على {name}.",
   "skill.marketplace.confirmAgents": "الوكلاء: {agents}.",
   "skill.marketplace.limitReason": "يمكن أن يملك الوكيل حتى {limit} مهارة.",
-  "skill.marketplace.cannotRemove": "لا يمكن لـ OpenBot إزالة مهارة مدمجة أو مهارة لم يثبّتها.",
+  "skill.marketplace.cannotRemove": "لا يمكن لـ ZollyBot إزالة مهارة مدمجة أو مهارة لم يثبّتها.",
 } as const satisfies PartialTranslation<typeof source>;

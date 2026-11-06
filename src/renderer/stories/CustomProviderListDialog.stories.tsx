@@ -3,9 +3,9 @@
  * last removal; the stories make it from the same keys as the app.
  */
 
-import type { CustomProviderSummary } from "@openbot/contracts/ipc";
-import { CustomProviderListDialog } from "@openbot/ui/features/custom-providers/CustomProviderListDialog";
-import { useText } from "@openbot/ui/text";
+import type { CustomProviderSummary } from "@zollybot/contracts/ipc";
+import { CustomProviderListDialog } from "@zollybot/ui/features/custom-providers/CustomProviderListDialog";
+import { useText } from "@zollybot/ui/text";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 

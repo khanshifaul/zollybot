@@ -1,6 +1,5 @@
-import type { AgentEvent, ConversationMessage, ConversationPage } from "@openbot/contracts/ipc";
-
 import { replaceEqualDeep } from "@tanstack/react-query";
+import type { AgentEvent, ConversationMessage, ConversationPage } from "@zollybot/contracts/ipc";
 
 type Delta = Extract<AgentEvent, { type: "conversation-delta" }>;
 export interface MobileConversation extends ConversationPage {

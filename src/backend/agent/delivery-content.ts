@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { join } from "node:path";
-import { expandAttachmentReferences } from "@openbot/contracts/attachment-references";
-import { expandChatTagReferences } from "@openbot/contracts/chat-tag-references";
+import { expandAttachmentReferences } from "@zollybot/contracts/attachment-references";
+import { expandChatTagReferences } from "@zollybot/contracts/chat-tag-references";
 import type {
   AgentSummary,
   AgentWait,
@@ -9,8 +9,8 @@ import type {
   ConversationSnapshot,
   QueueDelivery,
   RoutineRun,
-} from "@openbot/contracts/ipc";
-import { redactText } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { redactText } from "@zollybot/logging";
 import { wokenWaitsPromptText } from "../agent-waits/agent-waits";
 import { homeSkillRoot, homeSkillTagSlug } from "../home-skills";
 import type { DeliveryContext } from "../mailbox-store";
@@ -128,7 +128,7 @@ function tagUrl(url: string): string {
 
 /**
  * The provider text of a tab or a thread tag: its id under the name of the tool parameter that takes
- * it (`tabId` of openbot_browser, `taskId` of history_read), and its current state in one line. The
+ * it (`tabId` of zollybot_browser, `taskId` of history_read), and its current state in one line. The
  * names say how to use the id, so the instructions need no rule for tags. A tag that repeats in the message gives the title only. Without a source
  * (a provider handoff of an older message) the id alone follows the title.
  */
@@ -156,14 +156,14 @@ function taggedReference(
   return `${title} (thread taskId ${reference.id}${thread.state ? `, ${thread.state}${detail}` : ""})`;
 }
 
-const TEAMMATE_HEADER = "Message from OpenBot teammate";
+const TEAMMATE_HEADER = "Message from ZollyBot teammate";
 const NO_ANSWER_LINE = "The sender does not want an answer. This message passes information to you.";
 const COLLABORATOR_SEPARATOR = "--- collaborator message ---";
 const ATTACHED_FILES_HEADER = "\n\nAttached local files:\n";
 const NO_ANSWER_FROM = "No answer comes from ";
 const NO_ANSWER_REASON = ": the request to them ended before they answered. Do not wait for them.";
 /** The first words of a provider handoff. */
-export const HANDOFF_START = "Continue this OpenBot conversation.";
+export const HANDOFF_START = "Continue this ZollyBot conversation.";
 /** The last line of a provider handoff. */
 export const HANDOFF_END = "--- end previous transcript ---";
 /** Between a provider handoff and the prompt of the turn that takes it. */
@@ -272,8 +272,8 @@ export function deliveryPromptInput(context: DeliveryContext, sources: DeliveryP
   // Only `start_task` sends an agent's message to itself: it is the brief of a task.
   if (delivery.sender.kind === "agent" && delivery.sender.agentId === delivery.recipientAgentId) {
     text = [
-      "You started this task with openbot.start_task from your own chat. It is a separate conversation beside that chat, with this brief as its first message.",
-      "Do the work in the brief here, and end with the result for the user: the user reads it in this task. Do not send it with openbot.send_message.",
+      "You started this task with zollybot.start_task from your own chat. It is a separate conversation beside that chat, with this brief as its first message.",
+      "Do the work in the brief here, and end with the result for the user: the user reads it in this task. Do not send it with zollybot.send_message.",
       COLLABORATOR_SEPARATOR,
       displayText,
     ].join("\n");
@@ -284,20 +284,20 @@ export function deliveryPromptInput(context: DeliveryContext, sources: DeliveryP
       ? [
           "This is a reply to a message you sent earlier.",
           "Surface or summarize the result naturally for the user, and start with the name of the teammate.",
-          "When the reply reports partial or blocked work, you still own the request: finish the rest yourself, with a follow-up, or with a better teammate, and do not repeat a failed call unchanged. Give the user the blocker and the action from its Unblock line only when the user must act. When OpenBot has a plugin for the service and that plugin is not in your tools, call openbot.suggest_marketplace_app and end your answer with the next field of its result.",
+          "When the reply reports partial or blocked work, you still own the request: finish the rest yourself, with a follow-up, or with a better teammate, and do not repeat a failed call unchanged. Give the user the blocker and the action from its Unblock line only when the user must act. When ZollyBot has a plugin for the service and that plugin is not in your tools, call zollybot.suggest_marketplace_app and end your answer with the next field of its result.",
           "Reply to the teammate only when the message requests another action, or when you have new information that unblocks its work. Do not send it the same request again. Otherwise do not send an acknowledgement and avoid reply loops.",
         ]
       : delivery.expectsReply === false
         ? [
             NO_ANSWER_LINE,
             "Use it if it changes your work, and continue with what you were doing.",
-            "Do not send a reply, an acknowledgement, or a result for it. OpenBot sends the sender nothing back.",
+            "Do not send a reply, an acknowledgement, or a result for it. ZollyBot sends the sender nothing back.",
           ]
         : [
-            `Finish the whole request, then send a concise result back to ${senderName} with openbot.send_message.`,
+            `Finish the whole request, then send a concise result back to ${senderName} with zollybot.send_message.`,
             "When something fails, find the cause and try other ways before you report it. Use Status: blocked only when the sender or the user must act.",
             `Use recipientAgentIds ["${senderAgentId}"], replyToMessageId "${delivery.messageId}", and expectsReply false.`,
-            "Format the reply as three lines: Status: done | partial | blocked, Result: <concrete outcome>, Evidence: <file, test, command, or none>. When Status is blocked, add a fourth line, Unblock: <the one action that unblocks the task>. When OpenBot has a plugin for the service and that plugin is not in your tools, call openbot.suggest_marketplace_app, and that action is the next field of its result.",
+            "Format the reply as three lines: Status: done | partial | blocked, Result: <concrete outcome>, Evidence: <file, test, command, or none>. When Status is blocked, add a fourth line, Unblock: <the one action that unblocks the task>. When ZollyBot has a plugin for the service and that plugin is not in your tools, call zollybot.suggest_marketplace_app, and that action is the next field of its result.",
             "Do not acknowledge without a Status line. Do not leave the sender waiting for a result.",
           ];
     text = [
@@ -317,14 +317,14 @@ export function deliveryPromptInput(context: DeliveryContext, sources: DeliveryP
     const testRun = run !== null && !quietRoutineRun(run);
     const runKind = testRun ? "manual Test run" : run?.source ? `${run.source} run` : "scheduled run";
     text = [
-      "Execute one run of an existing OpenBot routine now.",
+      "Execute one run of an existing ZollyBot routine now.",
       `Routine name: ${delivery.sender.routineName}`,
       `Run type: ${runKind}`,
       `Scheduled for: ${delivery.sender.scheduledFor}`,
       "The routine already exists, and its schedule is already configured.",
       "Do not create, update, delete, list, or test routines during this run.",
       "Perform the task below now. Do not answer only that the routine or monitoring is active.",
-      "A task can tell you to remind the user or to send the user a message. When it names no other place, write that message as your final answer. OpenBot shows your final answer to the user in this chat. openbot.send_message sends to other agents, not to the user.",
+      "A task can tell you to remind the user or to send the user a message. When it names no other place, write that message as your final answer. ZollyBot shows your final answer to the user in this chat. zollybot.send_message sends to other agents, not to the user.",
       testRun
         ? "This is a manual Test run. Report the action and result even when a normal scheduled run would suppress a notification because there is no change."
         : `This is a ${runKind}. Follow the notification conditions in the routine task. When they give nothing to report, call the ${ROUTINE_NO_UPDATE_TOOL} tool instead of a written answer. A requested reminder or message is a report, also when there is no new information. Do not call ${ROUTINE_NO_UPDATE_TOOL} for it unless the notification conditions of the task say to send nothing.`,
@@ -383,7 +383,7 @@ export function deliveryPromptInput(context: DeliveryContext, sources: DeliveryP
  */
 export function planContinuationPrompt(steps: readonly ConversationPlanStep[], count: number, limit: number): string {
   return [
-    "OpenBot note, not a message from the user. Your last turn ended while your plan still had open steps:",
+    "ZollyBot note, not a message from the user. Your last turn ended while your plan still had open steps:",
     ...steps.map((step) => `- [${step.status === "inProgress" ? "in progress" : "pending"}] ${step.text}`),
     "Continue the work now, from where you stopped. Do not repeat finished work or restate the plan. Keep the plan current and mark each step done when you finish it. If a step is already done, mark it done; if it no longer applies, remove it. Do not ask whether to continue. This note does not approve a risky action. If you must wait, need the user's input or approval, or are blocked, say so in one short line and end your turn.",
     `Automatic continuation ${count} of ${limit}.`,
@@ -393,7 +393,7 @@ export function planContinuationPrompt(steps: readonly ConversationPlanStep[], c
 /** The note for a turn that ended before the next step: it named the step, or asked whether to continue. */
 export function nextStepContinuationPrompt(count: number, limit: number): string {
   return [
-    "OpenBot note, not a message from the user. Your last turn ended before the next step: you named the step or asked whether to continue, but you did not do it.",
+    "ZollyBot note, not a message from the user. Your last turn ended before the next step: you named the step or asked whether to continue, but you did not do it.",
     "Do the next step now, and continue until the request is done. Do not repeat finished work or restate earlier answers. Do not ask whether to continue. This note does not approve a risky action. If the request is already done, say so in one short line and end your turn. If you must wait, need the user's input or approval, or are blocked, say so in one short line and end your turn.",
     `Automatic continuation ${count} of ${limit}.`,
   ].join("\n");

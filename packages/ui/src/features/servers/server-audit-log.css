@@ -1,7 +1,7 @@
 .server-audit-controls {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .server-audit-time {
@@ -10,34 +10,34 @@
 
 /* The words between keywords step back, so the keywords carry the line. */
 .server-audit-row .server-audit-title {
-  color: var(--openbot-text-secondary);
-  font-weight: var(--openbot-weight-regular);
+  color: var(--zollybot-text-secondary);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .server-audit-key {
-  color: var(--openbot-text-primary);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 /* The danger tone takes access away, success lets the member chat, warning gives full control. */
 .server-audit-key[data-level="none"] {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .server-audit-key[data-level="chat"] {
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 .server-audit-key[data-level="manage"] {
-  color: var(--openbot-warning);
+  color: var(--zollybot-warning);
 }
 
 .server-audit-arrow svg {
   display: inline-block;
   width: 14px;
   height: 14px;
-  margin-inline: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
+  margin-inline: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
   vertical-align: -2px;
 }
 
@@ -53,7 +53,7 @@
   height: 32px;
   align-items: center;
   justify-content: center;
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 .server-audit-mark svg {
@@ -62,16 +62,16 @@
 }
 
 .server-audit-mark[data-tone="success"] {
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success);
 }
 
 .server-audit-mark[data-tone="danger"] {
-  background: var(--openbot-danger-soft);
-  color: var(--openbot-danger);
+  background: var(--zollybot-danger-soft);
+  color: var(--zollybot-danger);
 }
 
 .server-audit-mark[data-tone="accent"] {
-  background: var(--openbot-accent-soft);
-  color: var(--openbot-accent-text);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }

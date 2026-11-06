@@ -10,12 +10,12 @@
  * listing installs, behind the same connect attempt, so "never answers" is what waiting looks like.
  */
 
-import type { McpServerConfig, McpTestResult } from "@openbot/contracts/ipc";
-import type { McpKeyFlow } from "@openbot/contracts/mcp-connect-flows";
-import { Button, Text } from "@openbot/ui";
-import type { McpConnectSubject } from "@openbot/ui/features/settings/McpConnectShell";
-import type { MarketplacePluginApp } from "@openbot/ui/features/settings/marketplace-plugins";
 import type { JSX } from "@solidjs/web";
+import type { McpServerConfig, McpTestResult } from "@zollybot/contracts/ipc";
+import type { McpKeyFlow } from "@zollybot/contracts/mcp-connect-flows";
+import { Button, Text } from "@zollybot/ui";
+import type { McpConnectSubject } from "@zollybot/ui/features/settings/McpConnectShell";
+import type { MarketplacePluginApp } from "@zollybot/ui/features/settings/marketplace-plugins";
 import { createSignal, Show } from "solid-js";
 import { createPluginAppConfig } from "../src/features/settings/marketplace-plugin-catalog";
 import { STORY_MARKETPLACE_PLUGINS } from "../src/preview/fixtures";

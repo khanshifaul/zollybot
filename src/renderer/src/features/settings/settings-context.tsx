@@ -4,10 +4,10 @@ import {
   agentAutoApprovalEnabled,
   type DynamicIslandGeometry,
   type ExternalLinkTarget,
-} from "@openbot/contracts/ipc";
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
-import { DEFAULT_GENERAL_SETTINGS, type GeneralSettingsValue } from "@openbot/ui/features/settings/app-settings";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
+import { DEFAULT_GENERAL_SETTINGS, type GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createSignal, flush, onSettled } from "solid-js";
 import { isActionSoundEnabled, readActionSoundTheme, setActionSoundChoice } from "../../action-sounds";
 import { actionToast } from "../../action-toast";
@@ -23,7 +23,7 @@ import { settingsPort } from "./settings-port";
 import { isOpenSettingsShortcut } from "./settings-shortcut";
 import type { SettingsTab } from "./settings-tabs";
 
-const ANALYTICS_APP_VERSION_STORAGE_KEY = "openbot:analytics-app-version";
+const ANALYTICS_APP_VERSION_STORAGE_KEY = "zollybot:analytics-app-version";
 
 function sameExternalLinkTarget(left: ExternalLinkTarget, right: ExternalLinkTarget): boolean {
   return left.kind === right.kind && (left.kind !== "app" || right.kind !== "app" || left.path === right.path);
@@ -73,7 +73,7 @@ const Settings = createSimpleContext({
     // Undefined until main answers. The Settings preview then draws the notch it had before.
     const [builtInDisplayGeometry, setBuiltInDisplayGeometry] = createSignal<DynamicIslandGeometry | undefined>();
     /**
-     * The plugin an `openbot://plugins/<slug>` link asked for, held beside the open flag because the
+     * The plugin an `zollybot://plugins/<slug>` link asked for, held beside the open flag because the
      * marketplace is loaded lazily: the slug has to outlive the chunk load that shows it. It is a
      * slug and never a listing, so the link cannot describe what the user is about to install.
      */
@@ -89,7 +89,7 @@ const Settings = createSimpleContext({
      */
     const [pendingMarketplaceListing, setPendingMarketplaceListing] = createSignal<MarketplaceListingLink | null>(null);
     /**
-     * The template an `openbot://agents/<id>` link named. The install dialog reads the template by
+     * The template an `zollybot://agents/<id>` link named. The install dialog reads the template by
      * this id and installs only after the user presses Add agent.
      */
     const [pendingAgentTemplateId, setPendingAgentTemplateId] = createSignal<string | null>(null);

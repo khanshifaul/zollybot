@@ -5,17 +5,17 @@
 // 3. ends the subagent with a `wait` call whose `agentsStates` holds its report,
 // 4. sends one more child item, which the ended subagent does not take.
 // The stored `<turn>:subagents` message must hold the child's steps in order and the report.
-// `bun run test:codex-subagent-steps`. Writes .openbot-build/codex-subagent-steps-e2e/report.json.
+// `bun run test:codex-subagent-steps`. Writes .zollybot-build/codex-subagent-steps-e2e/report.json.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS, type ConversationSubagent } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS, type ConversationSubagent } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/codex-subagent-steps-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-codex-subagent-steps-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/codex-subagent-steps-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-codex-subagent-steps-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -23,14 +23,14 @@ const fakeCodex = join(root, "codex");
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 const FAKE_CODEX = `#!/usr/bin/env node
 if (process.argv.includes("--version")) {
@@ -170,7 +170,7 @@ async function waitFor<T>(label: string, read: () => T | null | undefined | fals
 }
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 const agents = new AgentService({

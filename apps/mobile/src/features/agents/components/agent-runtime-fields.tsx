@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   type AgentProviderId,
   type AgentReasoningEffort,
@@ -7,11 +8,10 @@ import {
   type ProviderAccountStatus,
   providerDisplayName,
   type UpdateAgentInput,
-} from "@openbot/contracts/ipc";
-import { CLAUDE_API_KEY_ACCOUNT_ID } from "@openbot/contracts/team-protocol/claude-api-key-v1";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
-import { planLimitWindowKind, spentUsageWindow } from "@openbot/team-client/plan-limits";
-import { useQuery } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
+import { CLAUDE_API_KEY_ACCOUNT_ID } from "@zollybot/contracts/team-protocol/claude-api-key-v1";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
+import { planLimitWindowKind, spentUsageWindow } from "@zollybot/team-client/plan-limits";
 import { Button, Typography } from "heroui-native";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";

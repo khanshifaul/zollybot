@@ -1,11 +1,12 @@
+import type { JSX } from "@solidjs/web";
 import {
   analyticsRange,
   type ClientAgentSummary,
   type HostAnalytics,
   type HostAnalyticsInput,
   WORKFLOWS_USAGE_ID,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   ArrowLeft,
   Button,
@@ -17,8 +18,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@openbot/ui";
-import { AgentUsageReport } from "@openbot/ui/features/usage/AgentUsageReport";
+} from "@zollybot/ui";
+import { AgentUsageReport } from "@zollybot/ui/features/usage/AgentUsageReport";
 import {
   type UsageAgentLabel,
   type UsageMetric,
@@ -28,10 +29,9 @@ import {
   usagePeriodDays,
   usagePeriodLabels,
   usagePeriods,
-} from "@openbot/ui/features/usage/usage-format";
-import { useText } from "@openbot/ui/text";
-import { errorReference } from "@openbot/user-errors";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/usage/usage-format";
+import { useText } from "@zollybot/ui/text";
+import { errorReference } from "@zollybot/user-errors";
 import { createEffect, createStore, onSettled, Show } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
 import { type UsagePort, usagePort } from "./usage-port";

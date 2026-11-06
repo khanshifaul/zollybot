@@ -1,8 +1,8 @@
 import {
   SIDEBAR_FOLDERS_CAPABILITY,
   SIDEBAR_FOLDERS_ROUTES,
-} from "@openbot/contracts/team-protocol/sidebar-folders-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/sidebar-folders-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import { parseSidebarFolderAction } from "../ipc/agent-inputs";
 import type { TeamApiAgents, TeamApiSidebarLayout } from "./dependencies";

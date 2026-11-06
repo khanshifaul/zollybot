@@ -13,7 +13,7 @@ description: "Turn meeting notes or a transcript into decisions, commitments wit
 
 ## Inputs
 
-1. **Notes or transcript.** First look for a signed-in document tab: call `openbot_browser.list_tabs` and read the
+1. **Notes or transcript.** First look for a signed-in document tab: call `zollybot_browser.list_tabs` and read the
    notes or transcript page that the user names. An installed plugin such as Notion also works; find it with
    `tool_search`. Else ask the user to paste the text or upload the file.
 2. **Meeting date and time zone.** Take them from the document header or the calendar entry. If they are missing
@@ -38,7 +38,7 @@ If the transcript has no speaker labels, say so at the top of the output. Then d
 7. Merge exact duplicates. Keep two commitments apart when the deliverable or the owner is different.
 8. List the open questions that block a commitment, and name the commitment they block.
 9. When the user confirms the list, save the commitments to the shared data table `commitments` with
-   `openbot.execute_data`: owner, task, due date, status, meeting, evidence. Use one row per owner and task from one
+   `zollybot.execute_data`: owner, task, due date, status, meeting, evidence. Use one row per owner and task from one
    meeting, and update the row when it exists. Daily Brief reads this table.
 10. Draft follow-up messages only when the user asks. Write them in the chat.
 

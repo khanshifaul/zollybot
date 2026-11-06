@@ -130,7 +130,7 @@ export const messages = {
   "diagram.routine.recent": "التشغيلات الأخيرة",
   "diagram.routine.runLabel": "{status}، {time}",
   "diagram.routine.manual": "يدويًا",
-  "diagram.flows.unsupported": "لا يدعم هذا الخادم تدفقات المهام الدورية. حدّث OpenBot على الحاسوب الذي يشغّله.",
+  "diagram.flows.unsupported": "لا يدعم هذا الخادم تدفقات المهام الدورية. حدّث ZollyBot على الحاسوب الذي يشغّله.",
   "diagram.flows.webhookAdminOnly": "يمكن لمالك هذا الخادم أو مسؤوله فقط تغيير مهمة Webhook الدورية أو تشغيلها.",
   "diagram.flows.loadFailed": "تعذّر تحميل المهام الدورية لهذا الوكيل.",
   "diagram.flows.saveFailed": "تعذّر حفظ هذا التغيير على المهام الدورية.",

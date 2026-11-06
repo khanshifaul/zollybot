@@ -16,7 +16,7 @@
 // did not fail. A change of it sends
 // `browser-profiles-changed` (`browser-profiles-events-v1`), as each change through these routes
 // does. A list also has the computers of members (`computers`): each one sends the pages of its
-// profiles through the OpenBot desktop app of that member (`browser-egress-v1`). `online` is true
+// profiles through the ZollyBot desktop app of that member (`browser-egress-v1`). `online` is true
 // while that app shares its connection, and `mine` is true for the computer of the member who asks.
 // Only `computer` adds one, and only the computer of the member who sends it: no member can add
 // the computer of another. The delete and profile routes take a computer id as they take a proxy

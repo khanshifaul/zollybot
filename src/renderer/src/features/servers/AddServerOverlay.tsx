@@ -3,24 +3,24 @@ import {
   type BillingInterval,
   type BillingPlanId,
   isOpenBillingStatus,
-} from "@openbot/contracts/billing";
-import type { HostedServerEntryPoint, HostedServerList, HostedServerSummary } from "@openbot/contracts/hosted-servers";
-import type { HostedServersDesktopApi, LicenseDesktopApi, ServerSummary } from "@openbot/contracts/ipc";
-import type { LicenseOrder, LicenseState, PricingOrder } from "@openbot/contracts/license";
-import { classifyFailure } from "@openbot/telemetry";
+} from "@zollybot/contracts/billing";
+import type { HostedServerEntryPoint, HostedServerList, HostedServerSummary } from "@zollybot/contracts/hosted-servers";
+import type { HostedServersDesktopApi, LicenseDesktopApi, ServerSummary } from "@zollybot/contracts/ipc";
+import type { LicenseOrder, LicenseState, PricingOrder } from "@zollybot/contracts/license";
+import { classifyFailure } from "@zollybot/telemetry";
 import type {
   CreatedHostedServer,
   CreateHostedServerInput,
   HostedServerSetupStatus,
-} from "@openbot/ui/features/servers/AddServerDialog";
+} from "@zollybot/ui/features/servers/AddServerDialog";
 import {
   HOSTED_BILLING_CURRENCY,
   HOSTED_CURRENCIES,
   type HostedCurrency,
   type HostedServerPlan,
   hostedServerPlansFromCatalog,
-} from "@openbot/ui/features/servers/HostedServerPricing";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/servers/HostedServerPricing";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createStore, Loading, Show, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { type DesktopAnalyticsProperties, desktopAnalytics } from "../../analytics";

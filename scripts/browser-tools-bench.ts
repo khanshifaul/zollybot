@@ -3,9 +3,9 @@
 // developer's Claude quota and real public sites.
 //
 // Variants:
-// - A: `openbot_browser` single action tools only.
-// - C: `openbot_browser` with `run_script`, named in the prompt.
-// - S: `openbot_browser` with its shipped guidance only.
+// - A: `zollybot_browser` single action tools only.
+// - C: `zollybot_browser` with `run_script`, named in the prompt.
+// - S: `zollybot_browser` with its shipped guidance only.
 // - D: Browser Harness (`browser-harness` on PATH, through Bash), attached to the app's CDP port.
 // - E: Playwright MCP (`npx --offline @playwright/mcp`), attached to the app's CDP port.
 // - F: Chrome DevTools MCP (`npx --offline chrome-devtools-mcp`), attached to the app's CDP port.
@@ -17,7 +17,7 @@
 // Ground truth is read from the sites at run time. The calendar tasks use a loopback lesson
 // calendar instead (#4264): their score is the registration the server recorded, not the reply.
 //
-// Everything runs on the bench's own profile (`OpenBot Dev wt-<hash>#browser-tools-bench`) and the
+// Everything runs on the bench's own profile (`ZollyBot Dev wt-<hash>#browser-tools-bench`) and the
 // process group it started. It never reaches a dev instance or the developer's own profile.
 
 import { execFileSync } from "node:child_process";
@@ -27,9 +27,9 @@ import { createServer } from "node:http";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { type AgentAnalytics, analyticsRange } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { type AgentAnalytics, analyticsRange } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { type Browser, chromium, type Page } from "playwright-core";
 import { developmentInstanceIdForWorktree, developmentUserDataName } from "../src/main/development-profile";
 import { LessonCalendar, TARGET_LESSON } from "./browser-lesson-calendar-fixture";
@@ -41,24 +41,24 @@ import { readScriptArguments } from "./script-arguments";
 import { NO_SCALE } from "./seed-dev-scale";
 import { seedDevelopmentState } from "./seed-dev-state";
 
-const logger = createOpenBotLogger("browser-tools-bench", (line) => process.stderr.write(`${line}\n`), "info");
+const logger = createZollyBotLogger("browser-tools-bench", (line) => process.stderr.write(`${line}\n`), "info");
 
 const PROJECT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const OUTPUT_ROOT = join(PROJECT_ROOT, ".openbot-build", "browser-tools-bench");
+const OUTPUT_ROOT = join(PROJECT_ROOT, ".zollybot-build", "browser-tools-bench");
 const INSTANCE_ID = developmentInstanceIdForWorktree(`${PROJECT_ROOT}#browser-tools-bench`);
-const CENTRAL_AUTH_FILE = "openbot-central-auth-v1.bin";
+const CENTRAL_AUTH_FILE = "zollybot-central-auth-v1.bin";
 const MODEL = "claude-haiku-5-5";
 const SECOND = 1_000;
 const MINUTE = 60 * SECOND;
 const READY_TIMEOUT_MS = 90 * SECOND;
 const TURN_TIMEOUT_MS = 10 * MINUTE;
-const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) OpenBotBench/1.0";
+const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ZollyBotBench/1.0";
 const PLAYWRIGHT_MCP_NAME = "bench_playwright";
 const DEVTOOLS_MCP_NAME = "bench_devtools";
 // A named Browser Harness daemon opens its own tab with `Target.createTarget`, which Electron does not
 // support, so the bench uses the default daemon in its own directory. The daemon outlives the bench, so
 // each bench gets a new directory and stops the daemon at the end. The path stays short for the socket.
-const HARNESS_DIR = `/tmp/openbot-bench-harness-${process.pid}`;
+const HARNESS_DIR = `/tmp/zollybot-bench-harness-${process.pid}`;
 
 const wait = (milliseconds: number) => new Promise<void>((resolveWait) => setTimeout(resolveWait, milliseconds));
 const json = (value: unknown) => JSON.stringify(value);
@@ -166,7 +166,7 @@ const TASKS: BenchTask[] = [
     get startUrl() {
       return lessonCalendarUrl;
     },
-    question: `${CALENDAR_REQUEST} Make your first browser action this click: openbot_browser.click with target {"kind":"css","selector":"div[data-mh=\\"event-7\\"] button"}.`,
+    question: `${CALENDAR_REQUEST} Make your first browser action this click: zollybot_browser.click with target {"kind":"css","selector":"div[data-mh=\\"event-7\\"] button"}.`,
     truth: async () => TARGET_LESSON.id,
     score: registeredOnce,
     calendar: true,
@@ -313,13 +313,13 @@ const TASKS: BenchTask[] = [
 
 // --- variants ----------------------------------------------------------------------------------
 
-type Family = "openbot_browser" | "harness" | "playwright" | "devtools" | "web" | "bash" | "catalog" | "other";
+type Family = "zollybot_browser" | "harness" | "playwright" | "devtools" | "web" | "bash" | "catalog" | "other";
 
 interface Variant {
   id: string;
   description: string;
   families: Family[];
-  /** `openbot_browser` tools the variant must not call. */
+  /** `zollybot_browser` tools the variant must not call. */
   forbiddenBrowserTools?: string[];
   mcp?: typeof PLAYWRIGHT_MCP_NAME | typeof DEVTOOLS_MCP_NAME;
   instructions: (tab: { id: string; url: string }, cdpUrl: string) => string;
@@ -327,37 +327,37 @@ interface Variant {
 
 const EXTERNAL_TAB = (tab: { url: string }) =>
   `The page is already open in a tab whose URL is ${tab.url}. Select that tab first. ` +
-  "Never use or change a page whose URL starts with openbot-app://: it is the OpenBot app window.";
+  "Never use or change a page whose URL starts with zollybot-app://: it is the ZollyBot app window.";
 
 const VARIANTS: Variant[] = [
   {
     id: "A",
-    description: "openbot_browser, single actions",
-    families: ["openbot_browser", "catalog"],
+    description: "zollybot_browser, single actions",
+    families: ["zollybot_browser", "catalog"],
     forbiddenBrowserTools: ["run_script"],
     instructions: (tab) =>
-      `Use only the openbot_browser tools, one action per call. Do not use openbot_browser.run_script. The page is already open in tab ${tab.id} at ${tab.url}; use that tab.`,
+      `Use only the zollybot_browser tools, one action per call. Do not use zollybot_browser.run_script. The page is already open in tab ${tab.id} at ${tab.url}; use that tab.`,
   },
   {
     id: "C",
-    description: "openbot_browser + run_script",
-    families: ["openbot_browser", "catalog"],
+    description: "zollybot_browser + run_script",
+    families: ["zollybot_browser", "catalog"],
     instructions: (tab) =>
-      `Use only the openbot_browser tools. For paging, loops, and data collection, use one openbot_browser.run_script call and return only the data you need. The page is already open in tab ${tab.id} at ${tab.url}; use that tab.`,
+      `Use only the zollybot_browser tools. For paging, loops, and data collection, use one zollybot_browser.run_script call and return only the data you need. The page is already open in tab ${tab.id} at ${tab.url}; use that tab.`,
   },
   {
     id: "S",
-    description: "openbot_browser, shipped guidance",
-    families: ["openbot_browser", "catalog"],
+    description: "zollybot_browser, shipped guidance",
+    families: ["zollybot_browser", "catalog"],
     instructions: (tab) =>
-      `Use only the openbot_browser tools. The page is already open in tab ${tab.id} at ${tab.url}; use that tab.`,
+      `Use only the zollybot_browser tools. The page is already open in tab ${tab.id} at ${tab.url}; use that tab.`,
   },
   {
     id: "D",
     description: "Browser Harness (Bash)",
     families: ["harness", "catalog"],
     instructions: (tab, cdpUrl) =>
-      "Do not use the openbot_browser tools. Drive the browser only with Browser Harness from Bash. Run Python with its helpers like this:\n" +
+      "Do not use the zollybot_browser tools. Drive the browser only with Browser Harness from Bash. Run Python with its helpers like this:\n" +
       `BH_TMP_DIR=${HARNESS_DIR} BU_CDP_URL=${cdpUrl} BH_TAB_MARKER=0 BH_TELEMETRY=0 browser-harness <<'PY'\nprint(list_tabs())\nPY\n` +
       "Run `browser-harness --help` if you need its usage. " +
       EXTERNAL_TAB(tab),
@@ -368,7 +368,7 @@ const VARIANTS: Variant[] = [
     families: ["playwright", "catalog"],
     mcp: PLAYWRIGHT_MCP_NAME,
     instructions: (tab) =>
-      `Do not use the openbot_browser tools. Use only the ${PLAYWRIGHT_MCP_NAME} MCP tools. ${EXTERNAL_TAB(tab)}`,
+      `Do not use the zollybot_browser tools. Use only the ${PLAYWRIGHT_MCP_NAME} MCP tools. ${EXTERNAL_TAB(tab)}`,
   },
   {
     id: "F",
@@ -376,7 +376,7 @@ const VARIANTS: Variant[] = [
     families: ["devtools", "catalog"],
     mcp: DEVTOOLS_MCP_NAME,
     instructions: (tab) =>
-      `Do not use the openbot_browser tools. Use only the ${DEVTOOLS_MCP_NAME} MCP tools. ${EXTERNAL_TAB(tab)}`,
+      `Do not use the zollybot_browser tools. Use only the ${DEVTOOLS_MCP_NAME} MCP tools. ${EXTERNAL_TAB(tab)}`,
   },
 ];
 
@@ -405,15 +405,15 @@ interface ToolUse {
 
 function classifyTool(name: string, input: unknown): ToolUse {
   const record = isDynamicRecord(input) ? input : {};
-  if (name === "mcp__openbot__tool_call" && typeof record.name === "string") {
+  if (name === "mcp__zollybot__tool_call" && typeof record.name === "string") {
     const called = record.name;
-    if (called.startsWith("openbot_browser.")) return { family: "openbot_browser", name: called };
+    if (called.startsWith("zollybot_browser.")) return { family: "zollybot_browser", name: called };
     return { family: "other", name: called };
   }
-  if (name.includes("openbot_browser")) {
-    return { family: "openbot_browser", name: `openbot_browser.${name.split("__").at(-1) ?? name}` };
+  if (name.includes("zollybot_browser")) {
+    return { family: "zollybot_browser", name: `zollybot_browser.${name.split("__").at(-1) ?? name}` };
   }
-  if (name === "mcp__openbot__tool_search" || name === "mcp__openbot__tool_describe" || name === "ToolSearch") {
+  if (name === "mcp__zollybot__tool_search" || name === "mcp__zollybot__tool_describe" || name === "ToolSearch") {
     return { family: "catalog", name };
   }
   if (name.startsWith(`mcp__${PLAYWRIGHT_MCP_NAME}__`)) return { family: "playwright", name };
@@ -508,8 +508,8 @@ function violations(variant: Variant, uses: ToolUse[]): string[] {
     else if (use.family === "bash" || use.family === "other") continue;
     else if (!variant.families.includes(use.family)) found.add(use.name);
     else if (
-      use.family === "openbot_browser" &&
-      variant.forbiddenBrowserTools?.some((tool) => use.name === `openbot_browser.${tool}`)
+      use.family === "zollybot_browser" &&
+      variant.forbiddenBrowserTools?.some((tool) => use.name === `zollybot_browser.${tool}`)
     )
       found.add(use.name);
   }
@@ -560,7 +560,7 @@ async function waitFor<T>(what: string, timeoutMs: number, probe: () => Promise<
 }
 
 function isAppWindowUrl(url: string): boolean {
-  return url.startsWith("openbot-app://app/index.html") && !url.includes("surface=");
+  return url.startsWith("zollybot-app://app/index.html") && !url.includes("surface=");
 }
 
 async function connect(app: BenchApp): Promise<{ browser: Browser; page: Page }> {
@@ -582,12 +582,12 @@ async function connect(app: BenchApp): Promise<{ browser: Browser; page: Page }>
   const page = await waitFor("the app window", READY_TIMEOUT_MS, async () => {
     for (const candidate of browser.contexts().flatMap((context) => context.pages())) {
       if (!isAppWindowUrl(candidate.url())) continue;
-      if ((await candidate.evaluate("typeof window.openbot").catch(() => "")) === "object") return candidate;
+      if ((await candidate.evaluate("typeof window.zollybot").catch(() => "")) === "object") return candidate;
     }
     return null;
   });
   await waitFor("the agent list", READY_TIMEOUT_MS, () =>
-    page.evaluate<number>("window.openbot.agent.listAgents().then((agents) => agents.length)"),
+    page.evaluate<number>("window.zollybot.agent.listAgents().then((agents) => agents.length)"),
   );
   await signInBenchAccount(page, logger);
   return { browser, page };
@@ -604,7 +604,7 @@ interface Usage {
 
 async function readUsage(page: Page, agentId: string): Promise<Usage> {
   const analytics = await page.evaluate<AgentAnalytics | null>(
-    `window.openbot.agent.getAnalytics(${json(analyticsRange(agentId, 2))}, "local")`,
+    `window.zollybot.agent.getAnalytics(${json(analyticsRange(agentId, 2))}, "local")`,
   );
   const totals = analytics?.totals;
   return {
@@ -620,10 +620,10 @@ async function readUsage(page: Page, agentId: string): Promise<Usage> {
 /** True when the agent has no queued or running work and its last message is a finished reply. */
 async function agentIdle(page: Page, agentId: string): Promise<boolean> {
   return page.evaluate<boolean>(`(async (agentId) => {
-    const queue = await window.openbot.agent.listQueue(agentId);
+    const queue = await window.zollybot.agent.listQueue(agentId);
     if (queue.deliveries.length === 0) return false;
     if (queue.deliveries.some((one) => ["queued", "starting", "running"].includes(one.status))) return false;
-    const page = await window.openbot.agent.readConversationPage({ agentId, limit: 1 });
+    const page = await window.zollybot.agent.readConversationPage({ agentId, limit: 1 });
     const last = page.messages[page.messages.length - 1];
     return Boolean(last && last.source !== "user" && last.status !== "streaming");
   })(${json(agentId)})`);
@@ -635,7 +635,7 @@ interface Reply {
 }
 
 async function readReply(page: Page, agentId: string): Promise<Reply> {
-  return page.evaluate<Reply>(`window.openbot.agent
+  return page.evaluate<Reply>(`window.zollybot.agent
     .readConversationPage({ agentId: ${json(agentId)}, limit: 20 })
     .then((page) => {
       const messages = page.messages;
@@ -684,7 +684,7 @@ async function saveMcpServers(page: Page, cdpUrl: string): Promise<Map<string, s
   const ids = new Map<string, string>();
   for (const config of configs) {
     const saved = await page.evaluate<{ id: string; name: string }[]>(
-      `window.openbot.agent.saveMcpServer(${json({ config })}, "local")`,
+      `window.zollybot.agent.saveMcpServer(${json({ config })}, "local")`,
     );
     const id = saved.find((server) => server.name === config.name)?.id;
     if (!id) throw new Error(`The ${config.name} MCP server was not saved.`);
@@ -696,7 +696,7 @@ async function saveMcpServers(page: Page, cdpUrl: string): Promise<Map<string, s
 async function enableOnly(page: Page, servers: Map<string, string>, name: string | undefined): Promise<void> {
   for (const [serverName, mcpServerId] of servers) {
     await page.evaluate(
-      `window.openbot.agent.setMcpServerEnabled(${json({ mcpServerId, enabled: serverName === name })}, "local").then(() => null)`,
+      `window.zollybot.agent.setMcpServerEnabled(${json({ mcpServerId, enabled: serverName === name })}, "local").then(() => null)`,
     );
   }
 }
@@ -762,7 +762,7 @@ async function runOnce(
     durationMs: 0,
   };
   const agent = await page.evaluate<{ id: string }>(
-    `window.openbot.agent.createAgent(${json({
+    `window.zollybot.agent.createAgent(${json({
       name: `Bench ${variant.id} ${task.id} ${repeat}`,
       description: "Browser tools benchmark agent.",
       avatarSeed: `bench-${variant.id.toLowerCase()}-${repeat}`,
@@ -783,11 +783,11 @@ async function runOnce(
     );
     // The agent gets its thread with its first turn, and a tool sees only a tab of the agent's thread.
     const threadId = await page.evaluate<string | null>(
-      `window.openbot.agent.listAgents().then((agents) => agents.find((one) => one.id === ${json(agent.id)})?.threadId ?? null)`,
+      `window.zollybot.agent.listAgents().then((agents) => agents.find((one) => one.id === ${json(agent.id)})?.threadId ?? null)`,
     );
     if (threadId === null) throw new Error("The bench agent has no thread after its warm-up turn.");
     const tab = await page.evaluate<{ id: string }>(
-      `window.openbot.browser.open(${json({ url: task.startUrl, ownerThreadId: threadId, ownerAgentId: agent.id, focus: false })})`,
+      `window.zollybot.browser.open(${json({ url: task.startUrl, ownerThreadId: threadId, ownerAgentId: agent.id, focus: false })})`,
     );
     tabId = tab.id;
     await waitFor(
@@ -795,14 +795,14 @@ async function runOnce(
       60 * SECOND,
       () =>
         page.evaluate<boolean | null>(
-          `window.openbot.browser.listTabs().then((tabs) => tabs.find((one) => one.id === ${json(tab.id)})?.loading === false || null)`,
+          `window.zollybot.browser.listTabs().then((tabs) => tabs.find((one) => one.id === ${json(tab.id)})?.loading === false || null)`,
         ),
       500,
     );
     const before = await readUsage(page, agent.id);
     const started = Date.now();
     await page.evaluate(
-      `window.openbot.agent.sendMessage(${json({ agentId: agent.id, text: taskPrompt(variant, task, { id: tab.id, url: task.startUrl }, cdpUrl, marker) })}).then(() => null)`,
+      `window.zollybot.agent.sendMessage(${json({ agentId: agent.id, text: taskPrompt(variant, task, { id: tab.id, url: task.startUrl }, cdpUrl, marker) })}).then(() => null)`,
     );
     // The message is queued first; wait until its turn has started before idle can mean "done".
     await waitFor(
@@ -850,8 +850,8 @@ async function runOnce(
   } catch (error) {
     row.error = error instanceof Error ? error.message : String(error);
   } finally {
-    if (tabId !== null) await page.evaluate(`window.openbot.browser.close(${json(tabId)})`).catch(() => undefined);
-    await page.evaluate(`window.openbot.agent.deleteAgent(${json(agent.id)}, "local")`).catch(() => undefined);
+    if (tabId !== null) await page.evaluate(`window.zollybot.browser.close(${json(tabId)})`).catch(() => undefined);
+    await page.evaluate(`window.zollybot.agent.deleteAgent(${json(agent.id)}, "local")`).catch(() => undefined);
   }
   return row;
 }
@@ -1001,7 +1001,7 @@ async function main(): Promise<void> {
     projectRoot: PROJECT_ROOT,
     instanceId: INSTANCE_ID,
     logger,
-    environment: { OPENBOT_AUTH_API_URL: authApi.url },
+    environment: { ZOLLYBOT_AUTH_API_URL: authApi.url },
     logPath: join(OUTPUT_ROOT, "app.log"),
   });
   const rows: RunRow[] = [];

@@ -1,45 +1,45 @@
-import { isKnownAgentProvider, providerSteersTurns } from "@openbot/contracts/agent-providers";
-import { supportedAttachmentExtensions } from "@openbot/contracts/attachment-files";
+import { isKnownAgentProvider, providerSteersTurns } from "@zollybot/contracts/agent-providers";
+import { supportedAttachmentExtensions } from "@zollybot/contracts/attachment-files";
 import {
   type AccountUsageLimit,
   type AgentWait,
   canPreviewAttachment,
   DEFAULT_PROVIDER_ACCOUNT_ID,
   type QueueSnapshot,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   TEAM_EML_ATTACHMENTS_CAPABILITY,
   TEAM_MEDIA_ATTACHMENTS_CAPABILITY,
   TEAM_MP4_ATTACHMENTS_CAPABILITY,
   TEAM_SVG_ATTACHMENTS_CAPABILITY,
   TEAM_ZIP_ATTACHMENTS_CAPABILITY,
-} from "@openbot/contracts/team-protocol/current";
-import { sourceText } from "@openbot/i18n/source";
-import { spentUsageWindow } from "@openbot/team-client/plan-limits";
-import { Button, Input } from "@openbot/ui";
-import { AwaitingReplies } from "@openbot/ui/features/conversation/AwaitingReplies";
-import { ComposerAddMenu } from "@openbot/ui/features/conversation/ComposerAddMenu";
-import { ComposerAttachmentRow } from "@openbot/ui/features/conversation/ComposerAttachmentRow";
-import { ComposerEditor } from "@openbot/ui/features/conversation/ComposerEditor";
-import { ComposerErrorBanner } from "@openbot/ui/features/conversation/ComposerErrorBanner";
+} from "@zollybot/contracts/team-protocol/current";
+import { sourceText } from "@zollybot/i18n/source";
+import { spentUsageWindow } from "@zollybot/team-client/plan-limits";
+import { Button, Input } from "@zollybot/ui";
+import { AwaitingReplies } from "@zollybot/ui/features/conversation/AwaitingReplies";
+import { ComposerAddMenu } from "@zollybot/ui/features/conversation/ComposerAddMenu";
+import { ComposerAttachmentRow } from "@zollybot/ui/features/conversation/ComposerAttachmentRow";
+import { ComposerEditor } from "@zollybot/ui/features/conversation/ComposerEditor";
+import { ComposerErrorBanner } from "@zollybot/ui/features/conversation/ComposerErrorBanner";
 import {
   ComposerNotice,
   ComposerSignInNotice,
   ComposerUpdateNotice,
   ComposerUsageLimitNotice,
-} from "@openbot/ui/features/conversation/ComposerNotice";
-import { ComposerReplyPreview } from "@openbot/ui/features/conversation/ComposerReplyPreview";
-import { ComposerSendControl } from "@openbot/ui/features/conversation/ComposerSendControl";
+} from "@zollybot/ui/features/conversation/ComposerNotice";
+import { ComposerReplyPreview } from "@zollybot/ui/features/conversation/ComposerReplyPreview";
+import { ComposerSendControl } from "@zollybot/ui/features/conversation/ComposerSendControl";
 import {
   ComposerCompactionNotice,
   ComposerNewChatButton,
   ContextUsageMeter,
   contextUsageView,
-} from "@openbot/ui/features/conversation/ContextUsage";
-import { type OpenWaitItem, OpenWaits } from "@openbot/ui/features/conversation/OpenWaits";
-import { SpeakingBar } from "@openbot/ui/features/conversation/SpeakingBar";
-import { ComposerVoiceControls } from "@openbot/ui/features/conversation/VoiceRecordingMorph";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/ContextUsage";
+import { type OpenWaitItem, OpenWaits } from "@zollybot/ui/features/conversation/OpenWaits";
+import { SpeakingBar } from "@zollybot/ui/features/conversation/SpeakingBar";
+import { ComposerVoiceControls } from "@zollybot/ui/features/conversation/VoiceRecordingMorph";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, createStore, Loading, lazy, Show } from "solid-js";
 import { reportErrorBanner, reportNotification } from "../../error-reports";
 import { deviceSendShortcut, sendShortcutAriaKey, sendShortcutHintKey } from "../../send-shortcut-preference";
@@ -704,7 +704,7 @@ export function ConversationComposer() {
               multiple
               hidden
               tabindex={-1}
-              data-openbot-attachment-picker={props.runtime ? undefined : "true"}
+              data-zollybot-attachment-picker={props.runtime ? undefined : "true"}
               onChange={(event) => {
                 if (props.runtime?.importFiles)
                   void props.runtime.importFiles(Array.from(event.currentTarget.files ?? []));
@@ -791,5 +791,5 @@ function openWaitItems(waits: readonly AgentWait[], queue: QueueSnapshot | undef
 }
 
 const QueuePanel = lazy(() =>
-  import("@openbot/ui/features/conversation/QueuePanel").then((module) => ({ default: module.QueuePanel })),
+  import("@zollybot/ui/features/conversation/QueuePanel").then((module) => ({ default: module.QueuePanel })),
 );

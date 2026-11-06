@@ -1,5 +1,5 @@
-import { isSpeechSpeed, isSpeechVoice, type SpeechSpeed, type SpeechVoice } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { isSpeechSpeed, isSpeechVoice, type SpeechSpeed, type SpeechVoice } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 
@@ -56,9 +56,9 @@ const DEFAULT_SETTINGS: VoiceSettings = {
   turnPauseMs: 1_500,
 };
 
-const SETTINGS_KEY = "openbot.mobile.voice-settings.v1";
+const SETTINGS_KEY = "zollybot.mobile.voice-settings.v1";
 /** The key stays in the keychain only: no state, log or analytics event holds it. */
-const ELEVENLABS_KEY = "openbot.mobile.elevenlabs-key.v1";
+const ELEVENLABS_KEY = "zollybot.mobile.elevenlabs-key.v1";
 
 export const useVoiceSettings = create<VoiceSettings & { ready: boolean; hasElevenLabsKey: boolean }>(() => ({
   ...DEFAULT_SETTINGS,

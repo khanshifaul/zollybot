@@ -1,4 +1,4 @@
-// The child process that is the only thing in OpenBot allowed to open the shared agent database.
+// The child process that is the only thing in ZollyBot allowed to open the shared agent database.
 //
 // It is separate from the main process for one measured reason: a runaway statement cannot be
 // interrupted. `sqlite3_step` never returns to JavaScript, so V8 never reaches an interrupt point,
@@ -6,7 +6,7 @@
 // sent SIGKILL. That is the whole argument for this file existing.
 //
 // Runtime imports are limited to node:* and Effect. Repository shapes remain type-only, so this
-// process cannot load Electron or the openbot.db facade. Effect does not replace process deadlines.
+// process cannot load Electron or the zollybot.db facade. Effect does not replace process deadlines.
 
 import { existsSync } from "node:fs";
 import { basename } from "node:path";
@@ -27,7 +27,7 @@ import type {
 } from "./agent-database-protocol";
 
 /** Mirrors `AGENT_DATABASE_METADATA_TABLE`; inlined because the protocol module must stay type-only here. */
-const METADATA_TABLE = "openbot_metadata";
+const METADATA_TABLE = "zollybot_metadata";
 
 const MAX_OPEN_DATABASES = 8;
 
@@ -313,7 +313,7 @@ function databaseCall<A>(request: AgentDatabaseStatement, operation: () => A): E
 class AgentDatabaseHost extends Context.Service<
   AgentDatabaseHost,
   { execute(request: AgentDatabaseRequest): Effect.Effect<AgentDatabaseRows, HostFailure> }
->()("openbot/agent-data/AgentDatabaseHost") {
+>()("zollybot/agent-data/AgentDatabaseHost") {
   static readonly layer = Layer.effect(
     AgentDatabaseHost,
     Effect.gen(function* () {

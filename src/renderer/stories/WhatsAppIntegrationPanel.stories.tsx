@@ -1,10 +1,10 @@
-import type { MessagingConnection, WhatsAppAccount, WhatsAppLinkState } from "@openbot/contracts/ipc";
+import type { MessagingConnection, WhatsAppAccount, WhatsAppLinkState } from "@zollybot/contracts/ipc";
 import {
   WHATSAPP_LINK_IDLE,
   type WhatsAppIntegrationAgent,
   WhatsAppIntegrationPanel,
   WhatsAppLinkDialog,
-} from "@openbot/ui/features/settings/WhatsAppIntegrationPanel";
+} from "@zollybot/ui/features/settings/WhatsAppIntegrationPanel";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { STORY_AGENT_SUMMARIES } from "./fixtures";
@@ -102,7 +102,7 @@ const args = (connections: MessagingConnection[], accounts: WhatsAppAccount[], l
 /** No number yet: the warning, and Link WhatsApp opens the dialog. */
 export const NotSetUp: Story = { args: args([], []) };
 
-/** A personal number with two allowed senders, and a number only for OpenBot with two requests. */
+/** A personal number with two allowed senders, and a number only for ZollyBot with two requests. */
 export const Linked: Story = { args: args([number(), DEDICATED_NUMBER], [PERSONAL, DEDICATED]) };
 
 /** A number is linked, and no agent answers yet. */
@@ -119,7 +119,7 @@ type DialogStory = StoryObj<typeof WhatsAppLinkDialog>;
 
 const LINK_QR: WhatsAppLinkState = {
   status: "waiting",
-  qr: "2@openbot-story-ref,openbot-story-noise-key,openbot-story-identity-key,story",
+  qr: "2@zollybot-story-ref,zollybot-story-noise-key,zollybot-story-identity-key,story",
   code: null,
   workspaceId: null,
   error: null,

@@ -1,6 +1,6 @@
-import { Blocks, BookOpen, Bot, Button, TriangleAlert } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
 import { Dynamic } from "@solidjs/web";
+import { Blocks, BookOpen, Bot, Button, TriangleAlert } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { For, Show } from "solid-js";
 import type { BrowseLists } from "./MarketplaceBrowse";
 import { AppMark } from "./MarketplaceParts";

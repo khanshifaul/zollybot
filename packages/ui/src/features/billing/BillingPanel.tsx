@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
   BILLING_PLANS,
   type BillingInterval,
@@ -5,8 +6,8 @@ import {
   type BillingPortalRequest,
   type BillingServerPlan,
   type BillingSubscriptionStatus,
-} from "@openbot/contracts/billing";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/billing";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertActions,
@@ -34,8 +35,7 @@ import {
   Spinner,
   Text,
   TriangleAlert,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { For, Match, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { SettingsHostedServersTab } from "../settings/SettingsHostedServersTab";

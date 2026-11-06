@@ -1,7 +1,7 @@
 // Linux: a keyring that is locked at start, that is not running yet, or that keeps its items only in
-// memory gives `safeStorage` another key after a restart, or no key. Every secret that OpenBot
+// memory gives `safeStorage` another key after a restart, or no key. Every secret that ZollyBot
 // stored is then lost, the account session too, so the user must sign in after each restart.
-// After the first such failure on this computer, OpenBot encrypts its secrets with its own key in a
+// After the first such failure on this computer, ZollyBot encrypts its secrets with its own key in a
 // 0600 file in userData. That is file-permission protection, as on a self-hosted server. A keyring
 // that works keeps the secrets. macOS and Windows always use `safeStorage`.
 import { createCipheriv, createDecipheriv, randomBytes, randomUUID } from "node:crypto";
@@ -17,7 +17,7 @@ import {
   writeSync,
 } from "node:fs";
 import { dirname } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { app, safeStorage } from "electron";
 import { isMissingFileError } from "../backend/file-errors";
 
@@ -29,7 +29,7 @@ const KEY_BYTES = 32;
 const IV_BYTES = 12;
 const TAG_BYTES = 16;
 
-const logger = createOpenBotLogger("secret-storage");
+const logger = createZollyBotLogger("secret-storage");
 
 export interface SecretStorageCipher {
   canPersist: () => boolean;
@@ -40,7 +40,7 @@ export interface SecretStorageCipher {
 export interface SecretStorage {
   /** A cipher that throws `unavailableMessage()` when nothing can encrypt. */
   cipher: (unavailableMessage: () => string) => SecretStorageCipher;
-  /** True when the keyring failed in this process and OpenBot made the key file for it. */
+  /** True when the keyring failed in this process and ZollyBot made the key file for it. */
   madeKeyFile: () => boolean;
 }
 
@@ -108,7 +108,7 @@ export function createSecretStorage(options: { keyPath: string; platform?: NodeJ
     if (!created) throw new Error("The secret storage key file was not made.");
     madeKeyFile = true;
     // The backend name only: it tells a locked keyring from a missing one in a report.
-    logger.warn("The system keyring did not keep the secrets. OpenBot keeps new secrets in its own key file.", {
+    logger.warn("The system keyring did not keep the secrets. ZollyBot keeps new secrets in its own key file.", {
       reason,
       backend: safeStorage.getSelectedStorageBackend(),
     });

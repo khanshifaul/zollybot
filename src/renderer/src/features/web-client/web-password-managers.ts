@@ -2,15 +2,15 @@
 // runs the sign-in and opens no page; this browser opens the sign-in page that the host names. An access
 // key or an extra password goes to the host once, in the connect request; no answer carries them.
 
-import type { PasswordManagerId, PasswordManagerStatus } from "@openbot/contracts/ipc";
-import { runTeamEffect } from "@openbot/team-client";
+import type { PasswordManagerId, PasswordManagerStatus } from "@zollybot/contracts/ipc";
+import { runTeamEffect } from "@zollybot/team-client";
 import {
   connectPasswordManager,
   listPasswordManagers,
   passwordManagerRequest,
   type TeamAdminRequestError,
-} from "@openbot/team-client/team-admin-requests";
-import type { TeamApiRequest } from "@openbot/team-client/team-api-requests";
+} from "@zollybot/team-client/team-admin-requests";
+import type { TeamApiRequest } from "@zollybot/team-client/team-api-requests";
 import { Effect } from "effect";
 import { type PasswordManagerPort, polledPasswordManagerPort } from "../connectors/password-manager-port";
 

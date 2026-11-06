@@ -16,7 +16,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
-import { createOpenBotLogger, registerSecretValue } from "@openbot/logging";
+import { createZollyBotLogger, registerSecretValue } from "@zollybot/logging";
 import { Schema } from "effect";
 import {
   type CheckDay,
@@ -37,7 +37,7 @@ import {
   statusDates,
 } from "../src/model";
 
-const logger = createOpenBotLogger("status-update");
+const logger = createZollyBotLogger("status-update");
 
 const { values: args } = parseArgs({
   options: {
@@ -147,7 +147,7 @@ async function attempt(probe: Probe): Promise<Attempt> {
     probe.paths.map(async (path): Promise<string | null> => {
       try {
         const response = await fetch(probeUrl(probe, path), {
-          headers: { "User-Agent": "openbot-status-check" },
+          headers: { "User-Agent": "zollybot-status-check" },
           signal: AbortSignal.timeout(TIMEOUT_MS),
         });
         const body = await response.text();
@@ -300,7 +300,7 @@ async function github<A>(method: string, path: string, decode: (value: unknown) 
     method,
     headers: {
       Accept: "application/vnd.github+json",
-      "User-Agent": "openbot-status-check",
+      "User-Agent": "zollybot-status-check",
       "X-GitHub-Api-Version": "2022-11-28",
       ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
       ...(body === undefined ? {} : { "Content-Type": "application/json" }),
@@ -598,12 +598,12 @@ function atomFeed(incidents: readonly Incident[]): string {
   const lines = [
     '<?xml version="1.0" encoding="utf-8"?>',
     '<feed xmlns="http://www.w3.org/2005/Atom">',
-    "  <title>OpenBot status</title>",
+    "  <title>ZollyBot status</title>",
     `  <id>${SITE_URL}/</id>`,
     `  <link href="${SITE_URL}/"/>`,
     `  <link rel="self" href="${SITE_URL}/feed.xml"/>`,
     `  <updated>${updated}</updated>`,
-    "  <author><name>OpenBot</name></author>",
+    "  <author><name>ZollyBot</name></author>",
   ];
   for (const { incident, update } of entries) {
     const stage = update.stage.charAt(0).toUpperCase() + update.stage.slice(1);

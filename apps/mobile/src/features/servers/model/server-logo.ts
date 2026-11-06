@@ -1,4 +1,4 @@
-import { isAvatarMimeType } from "@openbot/contracts/avatar-images";
+import { isAvatarMimeType } from "@zollybot/contracts/avatar-images";
 import { fetch } from "@/features/support/model/logged-fetch";
 
 /**

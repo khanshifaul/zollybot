@@ -4,7 +4,7 @@
 // model the process already runs on sends no model set, that each turn still runs on its own model
 // after another thread changed it, that a set is sent again after a set failed, and that two sets
 // that overlap leave the model unknown, because they can apply in another order than they answer.
-// `bun run test:cursor-model-set`. Writes .openbot-build/cursor-model-set-e2e/report.json.
+// `bun run test:cursor-model-set`. Writes .zollybot-build/cursor-model-set-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -14,7 +14,7 @@ import type { AgentCliInfo } from "../src/backend/cli";
 import { NO_PROVIDER_CREDENTIALS, requireProviderDriver } from "../src/backend/provider-drivers";
 import { installFakeAgent, readJsonl, runTurn, startThread, stopClients, type TurnResult } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/cursor-model-set-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/cursor-model-set-e2e");
 const MEDIUM = "gpt-5.6-sol[context=272k,reasoning=medium,fast=false]";
 const HIGH = "gpt-5.6-sol[context=272k,reasoning=high,fast=false]";
 
@@ -35,7 +35,7 @@ interface Report {
   steps: Step[];
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-cursor-model-set-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-cursor-model-set-e2e-"));
 const report: Report = { passed: false, steps: [] };
 const clients: AgentClient[] = [];
 

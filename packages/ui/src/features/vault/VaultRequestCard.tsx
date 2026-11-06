@@ -1,7 +1,7 @@
-import type { VaultSaveInput } from "@openbot/contracts/ipc";
-import type { UiBlockStatus, UiBlockValue, UiVaultRequestKind, UiVaultSavedItem } from "@openbot/contracts/ui-blocks";
-import type { AppTextKey } from "@openbot/i18n";
-import { Button, CircleCheck, CreditCard, IconButton, KeyRound, UserRound, X } from "@openbot/ui";
+import type { VaultSaveInput } from "@zollybot/contracts/ipc";
+import type { UiBlockStatus, UiBlockValue, UiVaultRequestKind, UiVaultSavedItem } from "@zollybot/contracts/ui-blocks";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Button, CircleCheck, CreditCard, IconButton, KeyRound, UserRound, X } from "@zollybot/ui";
 import { createSignal, createUniqueId, Match, onCleanup, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { UiBlockOutcome } from "../conversation/ui-blocks/UiBlockCard";

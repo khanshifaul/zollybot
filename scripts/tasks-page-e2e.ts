@@ -6,16 +6,16 @@
 // Undo line. After the turn it checks that the task is in Needs you, that the panel shows the answer,
 // and that a follow-up from the panel runs a second turn. Then Archive moves the task to Archived,
 // Restore moves it back, Escape closes the panel, and Open in chat opens the task as a thread tab.
-// At the end it deletes the task. Writes .openbot-build/tasks-page-e2e/report.json and screenshots.
+// At the end it deletes the task. Writes .zollybot-build/tasks-page-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
-import type { AgentTask } from "@openbot/contracts/ipc";
-import { translateFor } from "@openbot/i18n";
+import type { AgentTask } from "@zollybot/contracts/ipc";
+import { translateFor } from "@zollybot/i18n";
 import { argument, connectChannelE2e, waitFor, writeReport } from "./channel-e2e-support";
 
 const NAME = "tasks-page-e2e";
-const OUT = resolve(import.meta.dirname, `../.openbot-build/${NAME}`);
+const OUT = resolve(import.meta.dirname, `../.zollybot-build/${NAME}`);
 mkdirSync(OUT, { recursive: true });
 const UI_WAIT_MS = 15_000;
 const english = translateFor("en");
@@ -66,20 +66,20 @@ async function screenshot(name: string): Promise<void> {
 }
 
 async function readTask(): Promise<AgentTask | undefined> {
-  const snapshot = await page.evaluate((id) => window.openbot.agent.listTasks(id), agentId);
+  const snapshot = await page.evaluate((id) => window.zollybot.agent.listTasks(id), agentId);
   return snapshot.tasks.find((task) => (taskId ? task.id === taskId : task.title.includes(tag)));
 }
 
 async function assistantReplies(): Promise<number> {
   const id = taskId;
   if (!id) return 0;
-  const conversation = await page.evaluate((input) => window.openbot.agent.readTask(input), { agentId, taskId: id });
+  const conversation = await page.evaluate((input) => window.zollybot.agent.readTask(input), { agentId, taskId: id });
   return conversation.messages.filter((message) => message.author === "assistant" && message.status !== "streaming")
     .length;
 }
 
 const agent = await page.evaluate(async (id) => {
-  const found = (await window.openbot.agent.listAgents()).find((candidate) => candidate.id === id);
+  const found = (await window.zollybot.agent.listAgents()).find((candidate) => candidate.id === id);
   if (!found) throw new Error(`Unknown agent: ${id}`);
   return { name: found.name };
 }, agentId);
@@ -188,11 +188,11 @@ try {
   const id = taskId ?? (await readTask().catch(() => undefined))?.id;
   if (id) {
     await page
-      .evaluate((input) => window.openbot.agent.stopTask(input), { agentId, taskId: id })
+      .evaluate((input) => window.zollybot.agent.stopTask(input), { agentId, taskId: id })
       .catch(() => undefined);
     await waitFor(page, "the cleanup stop", readTask, (current) => current?.state !== "running").catch(() => undefined);
     await page
-      .evaluate((input) => window.openbot.agent.deleteTask(input), { agentId, taskId: id })
+      .evaluate((input) => window.zollybot.agent.deleteTask(input), { agentId, taskId: id })
       .catch(() => undefined);
   }
   writeReport(NAME, report);

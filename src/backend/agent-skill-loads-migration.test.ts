@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves the table,
 // its indexes or its marker; a newer or incomplete history is accepted; a load has no skill name, a
@@ -24,7 +24,7 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
@@ -98,7 +98,7 @@ describe("agent skill loads migration", () => {
       // The earlier migrations run first; the rows after them are what v58 must keep.
       if (version < 57) migrateUpTo(db, 57);
       const before = contents(db);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(contents(db)).toEqual({ ...before, ...SKILL_TABLES });
       expectHealthy(db);
     },
@@ -110,13 +110,13 @@ describe("agent skill loads migration", () => {
     const before = contents(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=58
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 58 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 58 failed");
     expect(contents(db)).toEqual(before);
     expect(skillObjects(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=58").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(contents(db)).toEqual({ ...before, ...SKILL_TABLES });
     expect(skillObjects(db)).toEqual([
       { type: "table", name: "agent_usage_skill_loads" },
@@ -131,9 +131,9 @@ describe("agent skill loads migration", () => {
     seed(db, 57);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
     expect(skillObjects(db)).toEqual([]);
   });
@@ -141,7 +141,7 @@ describe("agent skill loads migration", () => {
   it("refuses a bad load, and keeps one row for a repeated load", () => {
     const db = databaseAt(57);
     seed(db, 57);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(() => insertLoad(db, { skill: "" })).toThrow("CHECK constraint failed");
     expect(() => insertLoad(db, { skill: "s".repeat(129) })).toThrow("CHECK constraint failed");
     expect(() => insertLoad(db, { tokens: -1 })).toThrow("CHECK constraint failed");

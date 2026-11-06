@@ -2,7 +2,7 @@ import {
   type RoutineResultConnectionOption,
   WORKFLOW_SLACK_TRIGGER_WORKSPACE,
   WORKFLOW_TELEGRAM_TRIGGER_CHAT,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 /**
  * The fields that a new Telegram or Slack trigger or output stores, as the desktop cards do. The host reads

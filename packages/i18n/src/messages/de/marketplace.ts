@@ -24,7 +24,7 @@ export const messages = {
   "marketplace.description.apps": "Verbinden Sie die Tools und Dienste, mit denen Ihre Agenten arbeiten.",
   "marketplace.description.agents": "Fertige Agenten mit eigenen Anweisungen und Fähigkeiten.",
   "marketplace.description.skills": "Anweisungen, die einem Agenten eine Aufgabe oder ein Tool beibringen.",
-  "marketplace.plugins.missing": "Dieses Plugin ist nicht im OpenBot-Katalog.",
+  "marketplace.plugins.missing": "Dieses Plugin ist nicht im ZollyBot-Katalog.",
   "marketplace.agents.loadingDetail": "Agentendetails werden geladen…",
   "marketplace.agents.skills": "Fähigkeiten",
   "marketplace.agents.routines": "Routinen",
@@ -35,15 +35,15 @@ export const messages = {
   "marketplace.agents.all": "Alle Agenten",
   "marketplace.agents.missing": "Dieser Agent ist nicht im Marketplace.",
   "marketplace.agents.trust.reviewed":
-    "Von einer anderen OpenBot-Person erstellt. OpenBot hat ihn vor der Veröffentlichung geprüft.",
+    "Von einer anderen ZollyBot-Person erstellt. ZollyBot hat ihn vor der Veröffentlichung geprüft.",
   "marketplace.agents.trust.reviewedBeforeAdd":
-    "Von einer anderen OpenBot-Person erstellt. OpenBot hat ihn vor der Veröffentlichung geprüft. Nach dem Hinzufügen kann er in deinem Namen handeln.",
-  "marketplace.agents.trust.pending": "Von seiner erstellenden Person geteilt, bevor OpenBot ihn geprüft hat.",
+    "Von einer anderen ZollyBot-Person erstellt. ZollyBot hat ihn vor der Veröffentlichung geprüft. Nach dem Hinzufügen kann er in deinem Namen handeln.",
+  "marketplace.agents.trust.pending": "Von seiner erstellenden Person geteilt, bevor ZollyBot ihn geprüft hat.",
   "marketplace.agents.trust.pendingBeforeAdd":
-    "Von seiner erstellenden Person geteilt, bevor OpenBot ihn geprüft hat. Nach dem Hinzufügen kann er in deinem Namen handeln.",
+    "Von seiner erstellenden Person geteilt, bevor ZollyBot ihn geprüft hat. Nach dem Hinzufügen kann er in deinem Namen handeln.",
   "marketplace.agents.source.pending": "Noch nicht geprüft",
   "marketplace.skill.loading": "Fähigkeit wird geladen",
-  "marketplace.try.readFailed": "OpenBot konnte die Fähigkeiten dieses Agenten nicht lesen. Versuche es erneut.",
+  "marketplace.try.readFailed": "ZollyBot konnte die Fähigkeiten dieses Agenten nicht lesen. Versuche es erneut.",
   "marketplace.try.enable": "Aktiviere diese Fähigkeit in den Agenteneinstellungen, um sie auszuprobieren.",
   "marketplace.try.repair": "Repariere diese Fähigkeit in den Agenteneinstellungen, um sie auszuprobieren.",
   "marketplace.try.update": "Aktualisiere diese Fähigkeit, um diese Version auszuprobieren.",
@@ -126,7 +126,7 @@ export const messages = {
   "marketplace.app.setup.account": "Melde dich im Browser mit deinem {name}-Konto an.",
   "marketplace.app.setup.key": "Benötigt einen API-Schlüssel aus deinem {name}-Konto.",
   "marketplace.app.setup.keySaved": "{field} auf {host} gespeichert.",
-  "marketplace.app.account.removeDescription": "OpenBot löscht die Anmeldung dieses Kontos auf {host}.",
+  "marketplace.app.account.removeDescription": "ZollyBot löscht die Anmeldung dieses Kontos auf {host}.",
   "marketplace.app.setup.desktop": "Läuft in der Desktop-App von {name} unter {address}.",
   "marketplace.app.setup.desktopConnected": "Verbunden mit {address}.",
   "marketplace.app.setup.open": "Keine Anmeldung und kein Schlüssel nötig.",
@@ -136,10 +136,10 @@ export const messages = {
   "marketplace.app.automation.description":
     "macOS zeigt für jede App eine Abfrage. Eine geschlossene App öffnet sich kurz und wird dann beendet.",
   "marketplace.app.automation.request": "Zugriff anfragen",
-  "marketplace.app.automation.allowed": "OpenBot kann jetzt alle Apple-Apps steuern.",
+  "marketplace.app.automation.allowed": "ZollyBot kann jetzt alle Apple-Apps steuern.",
   "marketplace.app.automation.refused":
-    "macOS hat keinen Zugriff auf {apps} gegeben. Erlaube OpenBot unter Systemeinstellungen › Datenschutz & Sicherheit › Automation.",
-  "marketplace.app.automation.failed": "OpenBot konnte macOS nicht nach {apps} fragen. Versuche es erneut.",
+    "macOS hat keinen Zugriff auf {apps} gegeben. Erlaube ZollyBot unter Systemeinstellungen › Datenschutz & Sicherheit › Automation.",
+  "marketplace.app.automation.failed": "ZollyBot konnte macOS nicht nach {apps} fragen. Versuche es erneut.",
   "marketplace.app.automation.app.calendar": "Kalender",
   "marketplace.app.automation.app.contacts": "Kontakte",
   "marketplace.app.automation.app.mail": "Mail",
@@ -211,7 +211,7 @@ export const messages = {
   "marketplace.plugin.figma.prompt.assets": "Exportiere die Marketing-Icons in 2x für das App-Bundle.",
   "marketplace.plugin.paper.tagline": "Design-Canvas auf Basis von HTML und CSS",
   "marketplace.plugin.paper.description":
-    "Mit Paper lesen und schreiben Agenten die Designdatei, die in Paper Desktop geöffnet ist: Sie prüfen Artboards, Auswahlen, berechnete Stile, JSX und Tokens und erstellen oder ändern Frames, Text und Stile. Installiere Paper Desktop, öffne es einmal und öffne eine Datei, bevor du beginnst. OpenBot startet die Paper CLI, die Paper Desktop installiert. Paper braucht keinen Schlüssel. Schreibwerkzeuge ändern die geöffnete Datei, prüfe also jeden Schreibvorgang, bevor du ihn genehmigst.",
+    "Mit Paper lesen und schreiben Agenten die Designdatei, die in Paper Desktop geöffnet ist: Sie prüfen Artboards, Auswahlen, berechnete Stile, JSX und Tokens und erstellen oder ändern Frames, Text und Stile. Installiere Paper Desktop, öffne es einmal und öffne eine Datei, bevor du beginnst. ZollyBot startet die Paper CLI, die Paper Desktop installiert. Paper braucht keinen Schlüssel. Schreibwerkzeuge ändern die geöffnete Datei, prüfe also jeden Schreibvorgang, bevor du ihn genehmigst.",
   "marketplace.plugin.paper.app":
     "Liest und schreibt die geöffnete Paper-Desktop-Datei über den lokalen MCP-Server, den die Paper CLI weiterleitet. Benötigt Paper Desktop mit einer geöffneten Datei.",
   "marketplace.plugin.paper.prompt.implement":
@@ -232,7 +232,7 @@ export const messages = {
     "Erstelle mit Higgsfield ein 5-Sekunden-Video von Wellen bei Sonnenuntergang.",
   "marketplace.plugin.appleApps.tagline": "Mail, Kalender und mehr auf deinem Mac",
   "marketplace.plugin.appleApps.description":
-    "Mit Apple apps nutzen Agenten Mail, Kalender, Kontakte, Erinnerungen, Notizen, Nachrichten und Safari auf diesem Mac. Es funktioniert nur unter macOS. OpenBot startet mcp-icloud, einen Community-Server, der nicht von Apple oder OpenBot stammt. Der Server steuert die Apps über AppleScript auf diesem Computer und braucht kein Konto und keinen Schlüssel. Bei der Installation kann OpenBot macOS auf einmal um Zugriff auf alle diese Apps bitten, mit einer Abfrage pro App. Sonst fragt macOS, wenn ein Agent eine App zum ersten Mal nutzt. Um das später zu ändern, öffne Systemeinstellungen › Datenschutz & Sicherheit › Automation. Agenten können E-Mails und iMessages senden und Termine, Kontakte und Erinnerungen ändern oder löschen, prüfe also jeden Schreibvorgang, bevor du ihn genehmigst. Was die Werkzeuge lesen, etwa E-Mail-Text, geht an den Modellanbieter des Agenten.",
+    "Mit Apple apps nutzen Agenten Mail, Kalender, Kontakte, Erinnerungen, Notizen, Nachrichten und Safari auf diesem Mac. Es funktioniert nur unter macOS. ZollyBot startet mcp-icloud, einen Community-Server, der nicht von Apple oder ZollyBot stammt. Der Server steuert die Apps über AppleScript auf diesem Computer und braucht kein Konto und keinen Schlüssel. Bei der Installation kann ZollyBot macOS auf einmal um Zugriff auf alle diese Apps bitten, mit einer Abfrage pro App. Sonst fragt macOS, wenn ein Agent eine App zum ersten Mal nutzt. Um das später zu ändern, öffne Systemeinstellungen › Datenschutz & Sicherheit › Automation. Agenten können E-Mails und iMessages senden und Termine, Kontakte und Erinnerungen ändern oder löschen, prüfe also jeden Schreibvorgang, bevor du ihn genehmigst. Was die Werkzeuge lesen, etwa E-Mail-Text, geht an den Modellanbieter des Agenten.",
   "marketplace.plugin.appleApps.app":
     "Mail, Kalender, Kontakte, Erinnerungen, Notizen, Nachrichten und Safari über den lokalen Server mcp-icloud. Benötigt macOS und Zugriff unter Automation.",
   "marketplace.plugin.appleApps.prompt.unread": "Fasse meine ungelesenen E-Mails von heute in Apple Mail zusammen.",
@@ -501,8 +501,8 @@ export const messages = {
   "marketplace.skills.source.all": "Alle",
   "marketplace.skills.source.verified": "Geprüft",
   "marketplace.skills.source.public": "Öffentlich",
-  "marketplace.skills.source.verifiedLong": "Von OpenBot geprüft",
-  "marketplace.skills.source.publicLong": "Von OpenBot freigegeben",
+  "marketplace.skills.source.verifiedLong": "Von ZollyBot geprüft",
+  "marketplace.skills.source.publicLong": "Von ZollyBot freigegeben",
   "marketplace.skills.sortLabel": "Sortieren",
   "marketplace.skills.sortName": "Sortieren: {name}",
   "marketplace.skills.sort.installs": "Meistgenutzt",

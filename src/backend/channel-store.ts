@@ -14,10 +14,10 @@ import {
   isChannelMessage,
   isChannelTask,
   SIGNED_OUT_CHANNEL_MEMBER_ID,
-} from "@openbot/contracts/ipc";
-import { markdownPreviewText } from "@openbot/contracts/markdown-preview-text";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { markdownPreviewText } from "@zollybot/contracts/markdown-preview-text";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { changesModelContent } from "./channel-history";
 import { deleteAggregateHistory, deleteThreadAttachments } from "./database/database-core";
 import {
@@ -27,8 +27,8 @@ import {
   requiredNumberColumn,
   requiredStringColumn,
 } from "./database/database-rows";
-import type { OpenBotDatabase } from "./openbot-database";
 import { revokeRoutineWebhooks } from "./webhook-route-store";
+import type { ZollyBotDatabase } from "./zollybot-database";
 
 /**
  * A message that a person deleted keeps its row, with its id, sequence and author but no content,
@@ -115,7 +115,7 @@ export class ChannelStore {
   /** By channel: how many times a message changed in place after it was complete, in this process. */
   readonly #completedMessageChanges = new Map<string, number>();
 
-  constructor(readonly database: OpenBotDatabase) {}
+  constructor(readonly database: ZollyBotDatabase) {}
 
   /** A packet built before this count changed can show a message as it was before. */
   completedMessageChanges(channelId: string): number {
@@ -580,7 +580,7 @@ export class ChannelStore {
         throughSequence: requiredNumberColumn(row, "through_sequence"),
         summaryVersion: requiredNumberColumn(row, "summary_version"),
       };
-    const threadId = `openbot-thread-${randomUUID()}`;
+    const threadId = `zollybot-thread-${randomUUID()}`;
     return this.database.dispatch(
       `channel-context:${channelId}:${agentId}`,
       [

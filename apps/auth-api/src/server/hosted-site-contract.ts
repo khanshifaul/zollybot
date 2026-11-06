@@ -4,9 +4,9 @@ import {
   HOSTED_SITE_MIME_TYPES,
   HOSTED_SITE_UPLOAD_LIMITS,
   type HostedSitePathProblem,
-} from "@openbot/contracts/hosted-sites";
-import type { HostedSiteFramework } from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/hosted-sites";
+import type { HostedSiteFramework } from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import { Schema } from "effect";
 
 export const HOSTED_SITE_LIMITS = {

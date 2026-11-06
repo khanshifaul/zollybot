@@ -1,9 +1,9 @@
 // Runs the real `grok` provider driver and the real Grok binary against a fake xAI Responses server,
 // to check which tools each request declares. Grok must not declare `send_feedback`, which sends
-// feedback to xAI, or `workflow`, a background agent fleet that OpenBot does not show. The image and
+// feedback to xAI, or `workflow`, a background agent fleet that ZollyBot does not show. The image and
 // video tools stay: an agent can attach the files they make. Grok runs with a temporary `GROK_HOME`
 // and a fake key, so no account, quota or user setting is used.
-// `bun scripts/grok-tool-trim-e2e.ts`. Writes .openbot-build/grok-tool-trim-e2e/report.json.
+// `bun scripts/grok-tool-trim-e2e.ts`. Writes .zollybot-build/grok-tool-trim-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
@@ -15,7 +15,7 @@ import { runCauseEffect } from "../src/backend/effect-boundary";
 import { NO_PROVIDER_CREDENTIALS, requireProviderDriver } from "../src/backend/provider-drivers";
 import { runTurn, startThread, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/grok-tool-trim-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/grok-tool-trim-e2e");
 const NL = String.fromCharCode(10);
 const REMOVED = ["send_feedback", "workflow"];
 const KEPT = ["run_terminal_command", "image_gen", "image_to_video"];
@@ -30,7 +30,7 @@ interface Report {
 }
 
 const report: Report = { passed: false, requests: [] };
-const root = await realpath(await mkdtemp(join(tmpdir(), "openbot-grok-trim-e2e-")));
+const root = await realpath(await mkdtemp(join(tmpdir(), "zollybot-grok-trim-e2e-")));
 const clients: AgentClient[] = [];
 const saved = { ...process.env };
 

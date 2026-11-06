@@ -1,4 +1,4 @@
-import type { FilePreview } from "@openbot/contracts/ipc";
+import type { FilePreview } from "@zollybot/contracts/ipc";
 import { strToU8, zipSync } from "fflate";
 import { INLINE_SVG_CHART } from "./chat-visual-fixtures";
 
@@ -21,7 +21,7 @@ const filePreview = (
 
 const MARKDOWN = `# Release notes
 
-OpenBot keeps workspaces, conversations, and attachments on **your** computer.
+ZollyBot keeps workspaces, conversations, and attachments on **your** computer.
 
 ## What is new
 
@@ -31,16 +31,16 @@ OpenBot keeps workspaces, conversations, and attachments on **your** computer.
 
 ## Configuration
 
-Set the provider in \`~/OpenBot/config.json\`:
+Set the provider in \`~/ZollyBot/config.json\`:
 
 \`\`\`json
 {
   "provider": "claude-code",
-  "workspace": "~/OpenBot/Agents"
+  "workspace": "~/ZollyBot/Agents"
 }
 \`\`\`
 
-> Migrations are irreversible. No backup of \`openbot.db\` is made before an upgrade.
+> Migrations are irreversible. No backup of \`zollybot.db\` is made before an upgrade.
 
 | Kind | Rendered as |
 | --- | --- |
@@ -94,7 +94,7 @@ const SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width
 // the cross-reference table must give the byte position of its object, so the table
 // is built after the objects. All bytes are ASCII: a string index is a byte offset.
 const buildPdf = () => {
-  const stream = "BT /F1 18 Tf 24 150 Td (OpenBot file preview) Tj ET";
+  const stream = "BT /F1 18 Tf 24 150 Td (ZollyBot file preview) Tj ET";
   const objects = [
     "<< /Type /Catalog /Pages 2 0 R >>",
     "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",

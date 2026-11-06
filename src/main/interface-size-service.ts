@@ -3,13 +3,13 @@ import {
   type AppInterfaceSizePreference,
   DEFAULT_APP_INTERFACE_SIZE,
   isAppInterfaceSize,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect, Semaphore } from "effect";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";
 
-const logger = createOpenBotLogger("interface-size");
+const logger = createZollyBotLogger("interface-size");
 
 const DEFAULT_PREFERENCE: AppInterfaceSizePreference = { percent: DEFAULT_APP_INTERFACE_SIZE };
 

@@ -1,7 +1,7 @@
 // The auth state of one linked WhatsApp device, and the small records the connector keeps beside it.
 //
 // One SQLite file per connection (`<userData>/whatsapp/<connectionId>.db`). It holds secrets — the
-// device's identity, prekeys, Signal sessions and sender keys — not user data: `openbot.db` stays the
+// device's identity, prekeys, Signal sessions and sender keys — not user data: `zollybot.db` stays the
 // source of truth for connections, threads and memories. Every value is sealed with AES-256-GCM under a
 // 32-byte store key that the main process keeps in its safeStorage credential file. The additional data
 // of each value names its table and row, so a value moved to another row does not open.
@@ -25,7 +25,7 @@ import {
   proto,
   type SignalDataSet,
   type SignalDataTypeMap,
-} from "@openbot/whatsapp/baileys";
+} from "@zollybot/whatsapp/baileys";
 import { Schema } from "effect";
 
 const SCHEMA_VERSION = 1;
@@ -55,7 +55,7 @@ export interface InboxEntry {
   receivedAt: number;
 }
 
-/** Where a post of OpenBot belongs: its chat and the conversation it answers. */
+/** Where a post of ZollyBot belongs: its chat and the conversation it answers. */
 export interface PostRecord {
   chatJid: string;
   threadKey: string;

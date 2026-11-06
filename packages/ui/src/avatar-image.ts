@@ -1,7 +1,7 @@
-import { AVATAR_MIME_TYPES } from "@openbot/contracts/avatar-images";
-import { AVATAR_IMAGE_LIMITS } from "@openbot/contracts/input-limits";
-import type { AvatarImageInput } from "@openbot/contracts/ipc";
-import { isOneOf } from "@openbot/contracts/runtime-values";
+import { AVATAR_MIME_TYPES } from "@zollybot/contracts/avatar-images";
+import { AVATAR_IMAGE_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AvatarImageInput } from "@zollybot/contracts/ipc";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
 import { currentText } from "./text";
 
 const OUTPUT_SIZES = [512, 448, 384, 320] as const;

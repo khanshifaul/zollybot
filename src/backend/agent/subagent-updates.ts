@@ -6,8 +6,8 @@ import {
   type ConversationSubagentStepKind,
   clampConversationSubagents,
   isConversationSubagents,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { isRecord } from "../protocol";
 
 /**
@@ -160,7 +160,7 @@ export function startSubagent(
   return subagentChange(state, turnId);
 }
 
-/** Removes a subagent that turned out not to be one that OpenBot can follow. */
+/** Removes a subagent that turned out not to be one that ZollyBot can follow. */
 export function dropSubagent(state: SubagentState, id: string): SubagentChange | null {
   const turnId = state.turnOf.get(id);
   const turn = turnId ? state.turns.get(turnId) : undefined;

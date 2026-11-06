@@ -53,7 +53,7 @@
 .otp-input-focus-ring {
   width: var(--otp-slot-size);
   height: var(--otp-slot-height);
-  border-radius: var(--openbot-radius-md);
+  border-radius: var(--zollybot-radius-md);
 }
 
 /* A surface can set the slots with `--otp-slot-border`, `--otp-slot-background`,
@@ -63,22 +63,22 @@
   display: grid;
   flex: 0 0 var(--otp-slot-size);
   place-items: center;
-  border: 1px solid var(--otp-slot-border, var(--openbot-border-strong));
-  background: var(--otp-slot-background, var(--openbot-bg-control));
+  border: 1px solid var(--otp-slot-border, var(--zollybot-border-strong));
+  background: var(--otp-slot-background, var(--zollybot-bg-control));
   box-shadow: var(--otp-slot-shadow, none);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-mono);
-  font-size: var(--openbot-text-xl);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-mono);
+  font-size: var(--zollybot-text-xl);
+  font-weight: var(--zollybot-weight-semibold);
   line-height: 1;
   transition:
-    border-color var(--openbot-duration-hover) ease,
-    background-color var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease;
+    border-color var(--zollybot-duration-hover) ease,
+    background-color var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease;
 }
 
 .otp-input-slot[data-filled="true"] {
-  background: var(--otp-slot-filled-background, var(--otp-slot-background, var(--openbot-bg-control)));
+  background: var(--otp-slot-filled-background, var(--otp-slot-background, var(--zollybot-bg-control)));
 }
 
 .otp-input-slot[data-group-start="true"] {
@@ -90,16 +90,16 @@
   z-index: 1;
   top: 0;
   left: 0;
-  border: 1px solid var(--openbot-border-focus);
-  box-shadow: var(--openbot-focus-ring);
+  border: 1px solid var(--zollybot-border-focus);
+  box-shadow: var(--zollybot-focus-ring);
   opacity: 0;
   pointer-events: none;
   transform: translateX(
     calc(var(--otp-active-index) * (var(--otp-slot-size) + var(--otp-slot-gap)) + var(--otp-group-offset))
   );
   transition:
-    transform var(--openbot-duration-hover) var(--openbot-ease-out),
-    opacity var(--openbot-duration-hover) ease;
+    transform var(--zollybot-duration-hover) var(--zollybot-ease-out),
+    opacity var(--zollybot-duration-hover) ease;
 }
 
 .otp-input-focus-ring[data-visible="true"] {
@@ -109,7 +109,7 @@
 .otp-input-character {
   position: relative;
   z-index: 1;
-  animation: otp-character-enter var(--openbot-duration-overlay) var(--openbot-ease-out);
+  animation: otp-character-enter var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .otp-input-caret {
@@ -120,7 +120,7 @@
   left: 50%;
   width: 1px;
   height: 24px;
-  background: var(--openbot-text-primary);
+  background: var(--zollybot-text-primary);
   animation: otp-caret-blink 1s steps(1, end) infinite;
   transform: translateX(-50%);
 }
@@ -137,32 +137,32 @@
 
 .otp-input[data-size="compact"] .otp-input-slots {
   --otp-slot-height: 48px;
-  --otp-slot-gap: var(--openbot-space-2);
+  --otp-slot-gap: var(--zollybot-space-2);
   --otp-group-gap: 14px;
   --otp-slot-size: min(
-    var(--openbot-control-xl),
+    var(--zollybot-control-xl),
     calc((100cqw - (var(--otp-length) - 1) * var(--otp-slot-gap) - var(--otp-group-gap)) / var(--otp-length))
   );
 }
 
 .otp-input[data-status="verifying"] .otp-input-slot {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .otp-input[data-status="error"] .otp-input-slot {
-  border-color: var(--openbot-danger);
-  background: var(--openbot-danger-soft);
+  border-color: var(--zollybot-danger);
+  background: var(--zollybot-danger-soft);
 }
 
 .otp-input[data-status="error"] .otp-input-focus-ring {
-  border-color: var(--openbot-danger);
-  box-shadow: 0 0 0 3px var(--openbot-danger-soft);
+  border-color: var(--zollybot-danger);
+  box-shadow: 0 0 0 3px var(--zollybot-danger-soft);
 }
 
 .otp-input[data-status="success"] .otp-input-slot {
-  border-color: var(--openbot-success);
-  background: var(--openbot-success-soft);
-  color: var(--openbot-success);
+  border-color: var(--zollybot-success);
+  background: var(--zollybot-success-soft);
+  color: var(--zollybot-success);
 }
 
 .otp-input-success {
@@ -170,7 +170,7 @@
   height: 16px;
   flex: 0 0 auto;
   overflow: visible;
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 .otp-input-success path {
@@ -183,7 +183,7 @@
   /* Heavier than the shared glyph scale on purpose: this tick is drawn by animation and
    * reads as a confirmation, the same exception the badge tick takes. */
   stroke-width: 2;
-  animation: otp-check-draw 350ms var(--openbot-duration-fast) var(--openbot-ease-out) forwards;
+  animation: otp-check-draw 350ms var(--zollybot-duration-fast) var(--zollybot-ease-out) forwards;
 }
 
 .otp-input-message {
@@ -193,18 +193,18 @@
   justify-content: center;
   gap: 5px;
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   line-height: 17px;
   text-align: center;
 }
 
 .otp-input[data-status="error"] .otp-input-message {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .otp-input[data-status="success"] .otp-input-message {
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 .otp-input[data-size="compact"] .otp-input-message {

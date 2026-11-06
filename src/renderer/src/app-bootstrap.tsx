@@ -1,4 +1,4 @@
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
 import { createEffect, flush, onSettled } from "solid-js";
 import { appPort } from "./app-port";
 import { useAuth } from "./features/account/account-context";

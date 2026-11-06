@@ -1,6 +1,6 @@
 // A live check of the WhatsApp client against WhatsApp's real servers. It needs the network.
 //
-// Stage 1 (always): a new device opens a socket with OpenBot's Signal code and the vendored Baileys,
+// Stage 1 (always): a new device opens a socket with ZollyBot's Signal code and the vendored Baileys,
 // and WhatsApp sends a QR code. That proves the Noise handshake, X25519 and the check of WhatsApp's
 // server certificate (XEdDSA) against the real servers. No phone is needed and nothing is linked.
 //
@@ -10,25 +10,25 @@
 // message, which proves that the Signal sessions survive a restart. Use test numbers only.
 //
 // `bun scripts/whatsapp-live-smoke.ts [--link 48600100200]`
-// Writes .openbot-build/whatsapp-live-smoke/report.json. The store is deleted at the end.
+// Writes .zollybot-build/whatsapp-live-smoke/report.json. The store is deleted at the end.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { createOpenBotLogger } from "@openbot/logging";
-import { newStoreKey } from "@openbot/whatsapp/auth-store";
-import { makeWASocket, type WAMessage } from "@openbot/whatsapp/baileys";
-import { makeOpenBotSignalRepository } from "@openbot/whatsapp/signal-repository";
+import { createZollyBotLogger } from "@zollybot/logging";
+import { newStoreKey } from "@zollybot/whatsapp/auth-store";
+import { makeWASocket, type WAMessage } from "@zollybot/whatsapp/baileys";
+import { makeZollyBotSignalRepository } from "@zollybot/whatsapp/signal-repository";
 import { Effect } from "effect";
 import QRCode from "qrcode";
 import { WhatsAppRuntime } from "../src/backend/messaging/whatsapp/whatsapp-runtime";
 
-const logger = createOpenBotLogger("whatsapp-live-smoke");
-const OUT = resolve(import.meta.dirname, "../.openbot-build/whatsapp-live-smoke");
+const logger = createZollyBotLogger("whatsapp-live-smoke");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/whatsapp-live-smoke");
 const linkIndex = process.argv.indexOf("--link");
 const peer = linkIndex > 0 ? (process.argv[linkIndex + 1] ?? "").replace(/[^0-9]/gu, "") : null;
-const root = await mkdtemp(join(tmpdir(), "openbot-whatsapp-live-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-whatsapp-live-"));
 interface LiveReport {
   stages: {
     handshake?: { qr: boolean };
@@ -44,7 +44,7 @@ const report: LiveReport = { stages: {}, passed: false };
 const runtime = new WhatsAppRuntime({
   root,
   createSocket: (config) => makeWASocket(config),
-  makeSignalRepository: makeOpenBotSignalRepository,
+  makeSignalRepository: makeZollyBotSignalRepository,
 });
 
 function waitFor<T>(subscribe: (done: (value: T) => void) => () => void, label: string, timeoutMs: number) {
@@ -101,8 +101,8 @@ try {
       300_000,
     );
     report.stages.decrypt = { text: textOf(first).length > 0 };
-    await Effect.runPromise(handle.session.send(peerJid, { text: "OpenBot live smoke: your message arrived." }));
-    const image = Buffer.from(await QRCode.toBuffer("OpenBot live smoke"));
+    await Effect.runPromise(handle.session.send(peerJid, { text: "ZollyBot live smoke: your message arrived." }));
+    const image = Buffer.from(await QRCode.toBuffer("ZollyBot live smoke"));
     await Effect.runPromise(handle.session.send(peerJid, { image, mimetype: "image/png", caption: "Image check" }));
     report.stages.send = { text: true, image: true };
     logger.info("Sent a text and an image. Check them on the peer phone.");

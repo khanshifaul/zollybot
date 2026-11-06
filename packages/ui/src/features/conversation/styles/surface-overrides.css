@@ -1,44 +1,44 @@
 .settings-panel,
 .browser-panel,
 .remote-desktop-workspace {
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
 }
 
 .composer-reply-preview {
-  border-color: var(--openbot-border);
-  background: var(--openbot-bg-surface);
-  color: var(--openbot-text-primary);
+  border-color: var(--zollybot-border);
+  background: var(--zollybot-bg-surface);
+  color: var(--zollybot-text-primary);
 }
 
 .message-reaction-pill {
-  border-color: var(--openbot-border);
+  border-color: var(--zollybot-border);
   background: transparent;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .message-reaction-pill:not(.message-reaction-pill-readonly):hover {
-    background: var(--openbot-hover);
+    background: var(--zollybot-hover);
   }
 }
 
 .composer,
 .direct-composer {
-  background: var(--openbot-bg-surface);
+  background: var(--zollybot-bg-surface);
 }
 
 .direct-composer > button:hover:not(:disabled) {
-  background: var(--openbot-accent-hover);
+  background: var(--zollybot-accent-hover);
 }
 
 .remote-desktop-stage,
 .remote-desktop-viewer {
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-secondary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-secondary);
 }
 
 .remote-desktop-header {
-  background: var(--openbot-bg-sidebar);
+  background: var(--zollybot-bg-sidebar);
 }
 
 .voice-button:active,
@@ -48,14 +48,14 @@
 
 /* A filled field with no border, in the menu item shape. */
 .provider-model-search {
-  height: var(--openbot-control-md);
+  height: var(--zollybot-control-md);
   flex-shrink: 0;
   margin-bottom: var(--ui-menu-padding);
   border-color: transparent;
   border-radius: var(--ui-menu-item-radius);
   background: var(--ui-menu-item-hover);
   padding-inline: var(--ui-menu-inset);
-  font-size: var(--openbot-text-md);
+  font-size: var(--zollybot-text-md);
 }
 
 .provider-model-search:focus-visible {
@@ -71,8 +71,8 @@
 }
 
 .provider-model-group {
-  padding: var(--openbot-space-2) var(--ui-menu-inset) var(--openbot-space-1);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  padding: var(--zollybot-space-2) var(--ui-menu-inset) var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   font-weight: 500;
 }

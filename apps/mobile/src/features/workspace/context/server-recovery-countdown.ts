@@ -1,4 +1,4 @@
-import type { RemoteRecoveryStatus } from "@openbot/team-client";
+import type { RemoteRecoveryStatus } from "@zollybot/team-client";
 import { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from "react";
 import type { MobileServer } from "../model/workspace-types";
 

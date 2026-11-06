@@ -13,9 +13,9 @@
  * would take.
  */
 
-import type { AvatarHue, ChannelIcon, ChannelIconName, ChannelMember } from "@openbot/contracts/ipc";
-import { UsersRound } from "@openbot/ui";
-import { avatarHueSwatch } from "@openbot/ui/bloub-avatar";
+import type { AvatarHue, ChannelIcon, ChannelIconName, ChannelMember } from "@zollybot/contracts/ipc";
+import { UsersRound } from "@zollybot/ui";
+import { avatarHueSwatch } from "@zollybot/ui/bloub-avatar";
 import { createSignal, For, Show } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { AgentAvatar } from "../agents/AgentAvatar";

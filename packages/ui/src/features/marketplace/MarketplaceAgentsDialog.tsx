@@ -1,10 +1,10 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { assignedSkillCount } from "@openbot/contracts/ipc";
-import { Button, Checkbox, Dialog, IconButton, Input, Plus, Search, Text, X } from "@openbot/ui";
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { assignedSkillCount } from "@zollybot/contracts/ipc";
+import { Button, Checkbox, Dialog, IconButton, Input, Plus, Search, Text, X } from "@zollybot/ui";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, createStore, createUniqueId, For, onCleanup, onSettled, Show, untrack } from "solid-js";
 import { SkillMark } from "./MarketplaceParts";
 import type { MarketplaceAgent, MarketplaceModel, MarketplaceSkillRef } from "./marketplace-model";

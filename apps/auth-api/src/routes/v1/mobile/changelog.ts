@@ -1,5 +1,5 @@
-import { isNewerMobileVersion, type MobileReleaseNotes } from "@openbot/contracts/mobile-features";
 import { createFileRoute } from "@tanstack/solid-router";
+import { isNewerMobileVersion, type MobileReleaseNotes } from "@zollybot/contracts/mobile-features";
 import { parseInline } from "../../../lib/changelog";
 import { CHANGELOG_RELEASES } from "../../../lib/changelog-releases";
 import { json } from "../../../server/request-auth";

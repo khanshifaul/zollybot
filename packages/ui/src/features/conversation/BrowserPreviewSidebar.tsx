@@ -1,7 +1,7 @@
-import type { BrowserPreview, BrowserTab } from "@openbot/contracts/ipc";
-import { Button, Maximize2, Monitor, Skeleton, X } from "@openbot/ui";
-import { PanelResizer } from "@openbot/ui/components/PanelResizer";
-import { useText } from "@openbot/ui/text";
+import type { BrowserPreview, BrowserTab } from "@zollybot/contracts/ipc";
+import { Button, Maximize2, Monitor, Skeleton, X } from "@zollybot/ui";
+import { PanelResizer } from "@zollybot/ui/components/PanelResizer";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, createStore, For, onSettled, Show, untrack } from "solid-js";
 
 const BROWSER_PANEL_MIN = 220;

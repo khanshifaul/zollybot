@@ -1,13 +1,13 @@
-import { agentProviderName, decodeHostProviderAccounts, isAccountUsage } from "@openbot/contracts/ipc";
-import { CLAUDE_API_KEY_ACCOUNT_ID } from "@openbot/contracts/team-protocol/claude-api-key-v1";
+import { useQuery } from "@tanstack/react-query";
+import { agentProviderName, decodeHostProviderAccounts, isAccountUsage } from "@zollybot/contracts/ipc";
+import { CLAUDE_API_KEY_ACCOUNT_ID } from "@zollybot/contracts/team-protocol/claude-api-key-v1";
 import {
   type PlanLimitRow,
   type PlanLimits,
   type PlanLimitWindow,
   planLimitRows,
   planLimitWindowKind,
-} from "@openbot/team-client/plan-limits";
-import { useQuery } from "@tanstack/react-query";
+} from "@zollybot/team-client/plan-limits";
 import { File, Paths } from "expo-file-system";
 import { useEffect, useMemo } from "react";
 import { useMobileSession, useQueryScope } from "@/features/auth/context/mobile-session-context";

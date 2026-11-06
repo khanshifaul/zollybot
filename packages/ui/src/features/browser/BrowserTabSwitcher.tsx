@@ -1,6 +1,6 @@
-import { Button, buttonVariants, Globe2, Popover, X } from "@openbot/ui";
-import { PlusIcon } from "@openbot/ui/features/conversation/ConversationIcons";
-import { useText } from "@openbot/ui/text";
+import { Button, buttonVariants, Globe2, Popover, X } from "@zollybot/ui";
+import { PlusIcon } from "@zollybot/ui/features/conversation/ConversationIcons";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, For, Show } from "solid-js";
 import { BrowserTabIcon, useBrowserTabTitle } from "./BrowserTabIcon";
 import type { BrowserFullViewProps } from "./browser-full-view-types";

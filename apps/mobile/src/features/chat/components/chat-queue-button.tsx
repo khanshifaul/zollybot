@@ -1,4 +1,4 @@
-import type { QueueDelivery } from "@openbot/contracts/ipc";
+import type { QueueDelivery } from "@zollybot/contracts/ipc";
 import { GlassView } from "expo-glass-effect";
 import { router } from "expo-router";
 import { Typography } from "heroui-native";
@@ -133,7 +133,7 @@ function ChatQueueCard({
   const reducedMotion = useReducedMotion();
   const muted = String(useThemeColor("muted"));
   const foreground = String(useThemeColor("foreground"));
-  const danger = String(useCSSVariable("--openbot-danger-text"));
+  const danger = String(useCSSVariable("--zollybot-danger-text"));
   const held = queue.edit?.delivery ?? null;
   const locks = next ? queuedMessageLocks(next, { busy: queue.busy, online: queue.online, held }) : null;
   const locked = locks?.locked ?? true;

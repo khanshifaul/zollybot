@@ -5,14 +5,14 @@
 // `list` writes them to files for every agent and that a Vault change rewrites or removes the files.
 // With a Vault, the form saves the key there by default, and "Only this agent" keeps it for the agent.
 // No provider or account is used.
-// `bun scripts/agent-api-keys-e2e.ts`. Writes .openbot-build/agent-api-keys-e2e/report.json.
+// `bun scripts/agent-api-keys-e2e.ts`. Writes .zollybot-build/agent-api-keys-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { AgentEvent, ConversationSnapshot } from "@openbot/contracts/ipc";
-import { type UiBlockSpec, uiBlockAnswersFromResponse } from "@openbot/contracts/ui-blocks";
-import { redactText } from "@openbot/logging";
+import type { AgentEvent, ConversationSnapshot } from "@zollybot/contracts/ipc";
+import { type UiBlockSpec, uiBlockAnswersFromResponse } from "@zollybot/contracts/ui-blocks";
+import { redactText } from "@zollybot/logging";
 import { Effect } from "effect";
 import { AttentionRegistry, type PromptResponder } from "../src/backend/agent/attention-registry";
 import {
@@ -24,12 +24,12 @@ import {
 import { AgentApiKeys } from "../src/backend/agent-api-keys";
 import { CodexAppServerClient } from "../src/backend/app-server-client";
 import { runCauseEffect } from "../src/backend/effect-boundary";
-import { requestApiKeyToolSchema } from "../src/backend/openbot-tools";
 import type { RequestId } from "../src/backend/protocol";
+import { requestApiKeyToolSchema } from "../src/backend/zollybot-tools";
 import { VaultService } from "../src/main/vault-service";
 import { VaultStore } from "../src/main/vault-store";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/agent-api-keys-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/agent-api-keys-e2e");
 const AGENT = "agent-1";
 const THREAD = "thread-1";
 const KEY = "e2e-key-value-4be1c0d7";
@@ -44,7 +44,7 @@ const REVERSING_CIPHER = {
 const MEMBER: PromptResponder = { sender: { id: "member-1", name: "Mia" }, privileged: false };
 const ADMIN: PromptResponder = { sender: { id: "admin-1", name: "Ada" }, privileged: true };
 
-/** Records what OpenBot answers to the agent, as raw JSON. The process never starts. */
+/** Records what ZollyBot answers to the agent, as raw JSON. The process never starts. */
 class RecordingClient extends CodexAppServerClient {
   readonly answers = new Map<RequestId, string>();
 
@@ -69,14 +69,14 @@ interface AgentAnswer {
 
 /** The JSON that the agent reads in a tool result. */
 function agentAnswer(raw: string | undefined): AgentAnswer {
-  assert.ok(raw, "OpenBot did not answer the agent");
+  assert.ok(raw, "ZollyBot did not answer the agent");
   const parsed: { contentItems?: Array<{ text?: string }> } = JSON.parse(raw);
   const text = parsed.contentItems?.[0]?.text;
   assert.ok(text, "the answer has no text");
   return JSON.parse(text);
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-api-keys-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-api-keys-e2e-"));
 const apiKeys = new AgentApiKeys(join(root, "agent-api-keys"));
 const client = new RecordingClient("/nonexistent/codex");
 const snapshot: ConversationSnapshot = {
@@ -106,10 +106,10 @@ const registryHost = {
 };
 const registry = new AttentionRegistry({ ...registryHost, apiKeys });
 
-/** A registry with its own key folder and a real Vault, as OpenBot wires them when the Vault is ready. */
+/** A registry with its own key folder and a real Vault, as ZollyBot wires them when the Vault is ready. */
 async function vaultRegistry(name: string) {
   const vault = new VaultService({
-    store: new VaultStore(join(root, `openbot-vault-${name}.json`), REVERSING_CIPHER),
+    store: new VaultStore(join(root, `zollybot-vault-${name}.json`), REVERSING_CIPHER),
     canPersist: () => true,
   });
   await Effect.runPromise(vault.load());
@@ -252,7 +252,7 @@ try {
     assert.deepEqual(names, ["OPENAI_API_KEY"]);
   });
 
-  await step("a key saved before a restart is masked once OpenBot registers the saved keys", async () => {
+  await step("a key saved before a restart is masked once ZollyBot registers the saved keys", async () => {
     const earlier = "e2e-key-saved-before-restart-91d2";
     await mkdir(join(root, "agent-api-keys", "agent-2"), { recursive: true, mode: 0o700 });
     await writeFile(join(root, "agent-api-keys", "agent-2", "ANTHROPIC_API_KEY"), earlier, { mode: 0o600 });
@@ -274,12 +274,12 @@ try {
     "a Vault key reaches every agent as a file, the agent's own key wins, and a Vault change follows",
     async () => {
       const vault = new VaultService({
-        store: new VaultStore(join(root, "openbot-vault-v1.json"), REVERSING_CIPHER),
+        store: new VaultStore(join(root, "zollybot-vault-v1.json"), REVERSING_CIPHER),
         canPersist: () => true,
       });
       await Effect.runPromise(vault.load());
       const keys = new AgentApiKeys(join(root, "agent-api-keys"), () => vault.items.apiKeys());
-      // As OpenBot wires it: each Vault change brings the written files in line.
+      // As ZollyBot wires it: each Vault change brings the written files in line.
       let synced: Promise<void> = Promise.resolve();
       vault.onChanged(() => {
         synced = Effect.runPromise(keys.syncVault());
@@ -323,7 +323,7 @@ try {
       await assert.rejects(stat(join(vaultFolder, "GITHUB_TOKEN")));
       assert.equal(await readFile(join(vaultFolder, "OPENAI_API_KEY"), "utf8"), "e2e-vault-openai-key-31b0");
       // A Vault that cannot be read leaves no key file behind after the next sync.
-      await writeFile(join(root, "openbot-vault-v1.json"), "not json");
+      await writeFile(join(root, "zollybot-vault-v1.json"), "not json");
       await Effect.runPromise(vault.load());
       await Effect.runPromise(keys.syncVault());
       await assert.rejects(stat(join(vaultFolder, "OPENAI_API_KEY")));

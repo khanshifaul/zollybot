@@ -8,8 +8,8 @@ import {
   type VoiceServerProbeField,
   type VoiceServerRoutes,
   type VoiceServerSettings,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   Dialog,
@@ -27,8 +27,8 @@ import {
   Switch,
   Text,
   X,
-} from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, createStore, For, onSettled, Show, untrack } from "solid-js";
 
 const NO_ROUTES: VoiceServerRoutes = {

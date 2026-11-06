@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import type {
   AccountUsage,
   AgentApproval,
@@ -28,18 +29,17 @@ import type {
   UpdateAgentAdminSettingsInput,
   UpdateAgentInput,
   WorkspaceDirectory,
-} from "@openbot/contracts/ipc";
-import type { ConversationUiBlock } from "@openbot/contracts/ui-blocks";
-import type { AgentMessage, AgentProfile } from "@openbot/ui/data";
-import type { BrowserViewRuntime } from "@openbot/ui/features/browser/BrowserLiveView";
-import type { ChannelWorker } from "@openbot/ui/features/channels/ChannelActivityIndicator";
-import type { AwaitingReplyItem } from "@openbot/ui/features/conversation/AwaitingReplies";
-import type { UsageLimitAskCardProps } from "@openbot/ui/features/conversation/BackupModels";
-import type { ChatMessageAuthor } from "@openbot/ui/features/conversation/ChatMessageRow";
-import type { UnloadedHistory } from "@openbot/ui/features/conversation/ChatScrollRail";
-import type { ThreadHeaderProps, ThreadItem } from "@openbot/ui/features/conversation/threads/thread-types";
-import type { SidebarAgentWait } from "@openbot/ui/features/sidebar/sidebar-agent-states";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/contracts/ipc";
+import type { ConversationUiBlock } from "@zollybot/contracts/ui-blocks";
+import type { AgentMessage, AgentProfile } from "@zollybot/ui/data";
+import type { BrowserViewRuntime } from "@zollybot/ui/features/browser/BrowserLiveView";
+import type { ChannelWorker } from "@zollybot/ui/features/channels/ChannelActivityIndicator";
+import type { AwaitingReplyItem } from "@zollybot/ui/features/conversation/AwaitingReplies";
+import type { UsageLimitAskCardProps } from "@zollybot/ui/features/conversation/BackupModels";
+import type { ChatMessageAuthor } from "@zollybot/ui/features/conversation/ChatMessageRow";
+import type { UnloadedHistory } from "@zollybot/ui/features/conversation/ChatScrollRail";
+import type { ThreadHeaderProps, ThreadItem } from "@zollybot/ui/features/conversation/threads/thread-types";
+import type { SidebarAgentWait } from "@zollybot/ui/features/sidebar/sidebar-agent-states";
 import type { ConnectorRegistry } from "../connectors/connector-registry";
 import type { ConversationRuntime } from "./conversation-runtime";
 import type { TurnStepLines } from "./turn-step-lines";
@@ -151,7 +151,7 @@ export interface ConversationProps {
   onOpenMcpSignIn?: ((mcpServerId: string, trigger: HTMLElement | null) => void) | undefined;
   /** Whether the server on screen holds a sign-in for an MCP row, as Server settings last read it. */
   mcpSignedIn?: ((mcpServerId: string) => boolean) | undefined;
-  platform?: import("@openbot/contracts/ipc").AppInfo["platform"] | undefined;
+  platform?: import("@zollybot/contracts/ipc").AppInfo["platform"] | undefined;
 
   agentStatus: AgentStatus;
   /** A joined server's agents are still on their way, so the composer says that it connects. */
@@ -178,7 +178,7 @@ export interface ConversationProps {
   /**
    * Take the user to the provider's sign-in. Separate from `onConnectProvider`, which is the
    * managed-download path and is withheld when downloads are unavailable: a signed-out provider
-   * needs a way in whether or not OpenBot manages its CLI.
+   * needs a way in whether or not ZollyBot manages its CLI.
    */
   onSignInProvider?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
   /** The code sign-in, for a provider that has one, when the browser sign-in is slow or fails. */
@@ -356,7 +356,7 @@ export interface ConversationProps {
   onUpdateAgentPermissions?: ((input: UpdateAgentAdminSettingsInput) => Promise<void>) | undefined;
   /** Starts a new chat with the agent. Absent when its host does not serve `context-reset-v1`. */
   onClearAgentContext?: (() => Promise<void>) | undefined;
-  /** Compacts the agent's context now. The context ring offers it only where OpenBot compacts. */
+  /** Compacts the agent's context now. The context ring offers it only where ZollyBot compacts. */
   onCompactAgentContext?: (() => Promise<void>) | undefined;
   /** Answers `browserTakeover`. */
   onRespondToBrowserTakeover: (decision: "complete" | "cancel", options?: PromptAnswerOptions) => Promise<boolean>;
@@ -426,7 +426,7 @@ export type RightPanelMode =
   /** A side thread in the side panel, beside the agent's own chat. */
   | "thread";
 
-export type { SidePanelPane } from "@openbot/ui/features/conversation/SidePanel";
+export type { SidePanelPane } from "@zollybot/ui/features/conversation/SidePanel";
 
 /**
  * The threads of the active agent. A side thread is a task of the host; the agent's own chat is the

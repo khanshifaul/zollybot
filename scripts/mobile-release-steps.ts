@@ -5,7 +5,7 @@
 
 import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { isNewerMobileVersion } from "../packages/contracts/src/mobile-features";
 import { MOBILE_ANNOUNCEMENT_FILE, mobileAnnouncementProblems } from "./discord-mobile-release-announcement";
 import {

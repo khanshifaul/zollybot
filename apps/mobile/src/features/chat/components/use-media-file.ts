@@ -1,6 +1,6 @@
-import { attachmentFileExtension } from "@openbot/contracts/attachment-files";
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
 import { useQuery } from "@tanstack/react-query";
+import { attachmentFileExtension } from "@zollybot/contracts/attachment-files";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
 import { Directory, File, Paths } from "expo-file-system";
 import { useMobileWorkspaceActions } from "@/features/workspace/context/mobile-workspace-context";
 import { queryKeys } from "@/features/workspace/model/query-keys";

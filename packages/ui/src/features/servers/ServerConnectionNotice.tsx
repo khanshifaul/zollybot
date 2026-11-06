@@ -1,4 +1,4 @@
-import type { HostedServerIssue, HostedServerSleep, HostedServerStart } from "@openbot/contracts/ipc";
+import type { HostedServerIssue, HostedServerSleep, HostedServerStart } from "@zollybot/contracts/ipc";
 import { createEffect, createMemo, createSignal, onCleanup, Show, untrack } from "solid-js";
 import { Button, IconButton } from "../../button";
 import { ErrorReference } from "../../error-reference";
@@ -56,7 +56,7 @@ export interface ServerConnectionNoticeProps {
   detail?: string | null;
   /** The code of the failure in `detail`, for a user to copy into a report. */
   reference?: string | null;
-  /** The OpenBot version that the server restarts into, while it updates. */
+  /** The ZollyBot version that the server restarts into, while it updates. */
   updateVersion?: string | null;
   /** The first load ended: the full-window screen hops its crew out. Remove the notice in `onExited`. */
   ready?: boolean | undefined;
@@ -151,7 +151,7 @@ export function ServerConnectionNotice(props: ServerConnectionNoticeProps) {
     const step =
       start.step === "provider_limit"
         ? t("server.connection.providerLimit")
-        : t(start.step === "openbot" ? "server.hosted.detail.start.app" : "server.hosted.detail.start.boot");
+        : t(start.step === "zollybot" ? "server.hosted.detail.start.app" : "server.hosted.detail.start.boot");
     const seconds = Math.max(0, Math.floor((now() - start.startedAt) / 1000));
     return t("server.connection.startProgress", { step, time: formatElapsed(seconds) });
   };

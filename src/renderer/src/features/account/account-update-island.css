@@ -1,40 +1,40 @@
 .account-update-island {
-  --panel-open-dur: calc(var(--openbot-duration-slow) + var(--openbot-duration-slow));
-  --panel-close-dur: calc(var(--openbot-duration-slow) + var(--openbot-duration-normal));
-  --panel-translate-y: calc(100% - var(--openbot-space-3));
-  --panel-blur: var(--openbot-space-0-5);
-  --panel-ease: var(--openbot-ease-out);
-  --text-swap-dur: var(--openbot-duration-normal);
-  --text-swap-translate-y: var(--openbot-space-1);
-  --text-swap-blur: var(--openbot-space-0-5);
-  --text-swap-ease: var(--openbot-ease-in-out);
-  --digit-dur: var(--openbot-duration-slow);
-  --digit-distance: var(--openbot-space-1);
-  --digit-stagger: calc(var(--openbot-duration-fast) - var(--openbot-duration-dialog));
-  --digit-blur: var(--openbot-space-0-5);
-  --digit-ease: var(--openbot-ease-out);
+  --panel-open-dur: calc(var(--zollybot-duration-slow) + var(--zollybot-duration-slow));
+  --panel-close-dur: calc(var(--zollybot-duration-slow) + var(--zollybot-duration-normal));
+  --panel-translate-y: calc(100% - var(--zollybot-space-3));
+  --panel-blur: var(--zollybot-space-0-5);
+  --panel-ease: var(--zollybot-ease-out);
+  --text-swap-dur: var(--zollybot-duration-normal);
+  --text-swap-translate-y: var(--zollybot-space-1);
+  --text-swap-blur: var(--zollybot-space-0-5);
+  --text-swap-ease: var(--zollybot-ease-in-out);
+  --digit-dur: var(--zollybot-duration-slow);
+  --digit-distance: var(--zollybot-space-1);
+  --digit-stagger: calc(var(--zollybot-duration-fast) - var(--zollybot-duration-dialog));
+  --digit-blur: var(--zollybot-space-0-5);
+  --digit-ease: var(--zollybot-ease-out);
   --digit-dir-x: 0;
   --digit-dir-y: 1;
 
   position: absolute;
   z-index: 0;
-  right: var(--openbot-space-4);
-  bottom: var(--openbot-control-xl);
-  left: var(--openbot-space-4);
+  right: var(--zollybot-space-4);
+  bottom: var(--zollybot-control-xl);
+  left: var(--zollybot-space-4);
   display: grid;
-  min-height: calc(var(--openbot-control-xl) + var(--openbot-radius-card));
+  min-height: calc(var(--zollybot-control-xl) + var(--zollybot-radius-card));
   align-items: center;
   border: 0;
-  border-radius: var(--openbot-radius-lg) var(--openbot-radius-lg) var(--openbot-radius-md) var(--openbot-radius-md);
-  background: var(--openbot-accent-strong);
-  box-shadow: 0 0 0 1px var(--openbot-accent-soft);
-  -webkit-backdrop-filter: blur(var(--openbot-space-3));
-  backdrop-filter: blur(var(--openbot-space-3));
-  padding: calc(var(--openbot-space-1) + 1px) var(--openbot-space-1-5)
-    calc(var(--openbot-space-4) + var(--openbot-space-1) - 1px);
+  border-radius: var(--zollybot-radius-lg) var(--zollybot-radius-lg) var(--zollybot-radius-md) var(--zollybot-radius-md);
+  background: var(--zollybot-accent-strong);
+  box-shadow: 0 0 0 1px var(--zollybot-accent-soft);
+  -webkit-backdrop-filter: blur(var(--zollybot-space-3));
+  backdrop-filter: blur(var(--zollybot-space-3));
+  padding: calc(var(--zollybot-space-1) + 1px) var(--zollybot-space-1-5)
+    calc(var(--zollybot-space-4) + var(--zollybot-space-1) - 1px);
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--openbot-space-2);
-  color: var(--openbot-accent-text);
+  gap: var(--zollybot-space-2);
+  color: var(--zollybot-accent-text);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -80,10 +80,10 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--openbot-accent-text);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-semibold);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-accent-text);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-sm);
   white-space: nowrap;
 }
 
@@ -131,36 +131,36 @@
   /* A floor, not a fixed width: translated labels such as "Uruchom ponownie" are wider than the
      English ones, and the button grows to hold them while the status text gives way. */
   min-width: calc(
-    var(--openbot-control-xl) +
-    var(--openbot-control-xl) +
-    var(--openbot-space-6) +
-    var(--openbot-space-1)
+    var(--zollybot-control-xl) +
+    var(--zollybot-control-xl) +
+    var(--zollybot-space-6) +
+    var(--zollybot-space-1)
   );
   flex-shrink: 0;
 }
 
 .account-update-island__action.ui-button {
   width: 100%;
-  height: var(--openbot-control-sm);
-  min-height: var(--openbot-control-sm);
-  border-radius: var(--openbot-radius-sm);
-  background: var(--openbot-surface-light);
-  box-shadow: 0 1px 2px var(--openbot-shadow-popover-ambient);
+  height: var(--zollybot-control-sm);
+  min-height: var(--zollybot-control-sm);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-surface-light);
+  box-shadow: 0 1px 2px var(--zollybot-shadow-popover-ambient);
   padding-block: 0;
-  padding-inline: var(--openbot-space-2) var(--openbot-space-3);
-  color: var(--openbot-text-on-light);
+  padding-inline: var(--zollybot-space-2) var(--zollybot-space-3);
+  color: var(--zollybot-text-on-light);
   transition:
-    box-shadow var(--openbot-duration-normal) var(--openbot-ease-out),
-    transform var(--openbot-duration-fast) var(--openbot-ease-out);
+    box-shadow var(--zollybot-duration-normal) var(--zollybot-ease-out),
+    transform var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 .account-update-island__action.ui-button::after {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: calc(100% + var(--openbot-space-4));
-  min-width: var(--openbot-control-xl);
-  height: var(--openbot-control-xl);
+  width: calc(100% + var(--zollybot-space-4));
+  min-width: var(--zollybot-control-xl);
+  height: var(--zollybot-control-xl);
   transform: translate(-50%, -50%);
   content: "";
 }
@@ -174,13 +174,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .account-update-island__action-label {
-  min-width: calc(var(--openbot-control-xl) + var(--openbot-space-3));
-  color: var(--openbot-text-on-light);
-  font-weight: var(--openbot-weight-semibold);
+  min-width: calc(var(--zollybot-control-xl) + var(--zollybot-space-3));
+  color: var(--zollybot-text-on-light);
+  font-weight: var(--zollybot-weight-semibold);
   text-align: start;
 }
 
@@ -190,8 +190,8 @@
   grid-template-columns: 3ch max-content;
   /* "45%" in every page direction, as the percent of the locale. */
   direction: ltr;
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-semibold);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
@@ -241,24 +241,24 @@
 }
 
 .account-update-island__action-shell[data-downloading="true"] .account-update-island__action-label {
-  min-width: var(--openbot-control-md);
+  min-width: var(--zollybot-control-md);
   text-align: center;
 }
 
 .account-update-island__action-shell[data-downloading="true"] .account-update-island__action.ui-button {
-  padding-inline: var(--openbot-space-2);
+  padding-inline: var(--zollybot-space-2);
 }
 
 .account-update-island__icon.t-icon-swap {
-  --icon-swap-dur: var(--openbot-duration-overlay);
-  --icon-swap-blur: var(--openbot-space-0-5);
+  --icon-swap-dur: var(--zollybot-duration-overlay);
+  --icon-swap-blur: var(--zollybot-space-0-5);
   --icon-swap-start-scale: 0.25;
-  --icon-swap-ease: var(--openbot-ease-in-out);
+  --icon-swap-ease: var(--zollybot-ease-in-out);
 
   position: relative;
   display: inline-grid;
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: 0 0 auto;
   place-items: center;
 }
@@ -277,13 +277,13 @@
 }
 
 .account-update-island__icon.t-icon-swap svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .account-update-island__icon.t-icon-swap .ui-spinner {
-  border-color: var(--openbot-text-dim-on-light);
+  border-color: var(--zollybot-text-dim-on-light);
   border-top-color: currentColor;
 }
 
@@ -307,11 +307,11 @@
 
 @media (hover: hover) and (pointer: fine) {
   .account-update-island__action.ui-button:hover:not(:disabled):not([data-disabled]) {
-    background: var(--openbot-surface-light);
+    background: var(--zollybot-surface-light);
     box-shadow:
-      0 0 0 1px var(--openbot-text-dim-on-light),
-      0 1px 2px var(--openbot-shadow-popover-ambient);
-    color: var(--openbot-text-on-light);
+      0 0 0 1px var(--zollybot-text-dim-on-light),
+      0 1px 2px var(--zollybot-shadow-popover-ambient);
+    color: var(--zollybot-text-on-light);
   }
 }
 
@@ -334,8 +334,8 @@
   position: relative;
   inset: auto;
   min-height: 0;
-  margin: var(--openbot-space-2) var(--openbot-space-3) var(--openbot-space-3);
-  border-radius: var(--openbot-radius-lg);
-  padding-block: var(--openbot-space-1-5);
-  padding-inline: var(--openbot-space-3) var(--openbot-space-1-5);
+  margin: var(--zollybot-space-2) var(--zollybot-space-3) var(--zollybot-space-3);
+  border-radius: var(--zollybot-radius-lg);
+  padding-block: var(--zollybot-space-1-5);
+  padding-inline: var(--zollybot-space-3) var(--zollybot-space-1-5);
 }

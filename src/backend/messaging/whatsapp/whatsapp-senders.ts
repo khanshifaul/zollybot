@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import { MESSAGING_LIMITS, type WhatsAppPairingRequest } from "@openbot/contracts/ipc";
+import { MESSAGING_LIMITS, type WhatsAppPairingRequest } from "@zollybot/contracts/ipc";
 
 /** How long a pairing request waits for the owner. */
 const PAIRING_REQUEST_TTL_MS = 60 * 60 * 1000;
@@ -38,7 +38,7 @@ export interface SenderFacts {
  * The OpenClaw sender model. The owner's own chat always counts. An allowed group counts (the
  * transport still needs a mention or a reply in it). An allowed contact counts in a direct chat. On a
  * dedicated number an unknown direct sender gets one pairing code; on the owner's own number nobody
- * else is ever answered, so OpenBot never writes to the owner's contacts by itself.
+ * else is ever answered, so ZollyBot never writes to the owner's contacts by itself.
  */
 export function senderDecision(rules: WhatsAppSenderRules, facts: SenderFacts): SenderDecision {
   if (facts.isSelfChat) return { type: "allow" };

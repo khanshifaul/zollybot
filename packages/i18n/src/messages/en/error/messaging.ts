@@ -5,19 +5,19 @@ export const messages = defineMessages("error.messaging", {
   "error.messaging.notConnected": "This Slack workspace is not connected.",
   "error.messaging.unsupported": "This computer cannot connect to Slack.",
   "error.messaging.relayUnavailable":
-    "OpenBot cannot receive Slack events on this computer. Sign in, give this computer a name, and try again.",
+    "ZollyBot cannot receive Slack events on this computer. Sign in, give this computer a name, and try again.",
   // Errors of a Discord server connection, which the host sends.
   "error.messaging.discordNotConnected": "This Discord server is not connected.",
   "error.messaging.discordUnsupported": "This computer cannot connect to Discord.",
   "error.messaging.discordRelayUnavailable":
-    "OpenBot cannot receive Discord events on this computer. Sign in, give this computer a name, and try again.",
-  "error.messaging.discordRolesUnsupported": "OpenBot cannot list Discord roles yet. Try again later.",
+    "ZollyBot cannot receive Discord events on this computer. Sign in, give this computer a name, and try again.",
+  "error.messaging.discordRolesUnsupported": "ZollyBot cannot list Discord roles yet. Try again later.",
   // Errors of a Telegram chat connection, which the host sends.
   "error.messaging.telegramNotConnected": "This Telegram chat is not connected.",
   "error.messaging.telegramUnsupported": "This computer cannot connect to Telegram.",
   "error.messaging.telegramRelayUnavailable":
-    "OpenBot cannot reach Telegram on this computer. Sign in, give this computer a name, and try again.",
-  "error.messaging.telegramServiceUnavailable": "OpenBot cannot connect Telegram now. Try again later.",
+    "ZollyBot cannot reach Telegram on this computer. Sign in, give this computer a name, and try again.",
+  "error.messaging.telegramServiceUnavailable": "ZollyBot cannot connect Telegram now. Try again later.",
   // Errors of a linked WhatsApp number, which the host sends.
   "error.messaging.whatsappNotConnected": "This WhatsApp number is not connected.",
   "error.messaging.whatsappUnsupported": "This computer cannot connect to WhatsApp.",

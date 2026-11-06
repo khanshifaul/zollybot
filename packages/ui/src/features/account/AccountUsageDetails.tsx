@@ -1,6 +1,6 @@
-import { ProviderLogo } from "@openbot/brand";
-import { Button, Gauge, RefreshCw } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { ProviderLogo } from "@zollybot/brand";
+import { Button, Gauge, RefreshCw } from "@zollybot/ui";
 import { createSignal, For, onCleanup, Show } from "solid-js";
 import { useText } from "../../text";
 import {

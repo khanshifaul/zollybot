@@ -1,6 +1,6 @@
-import type { DraftAttachment } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { Bot, File, Folder, Plug, type Puzzle, ShieldCheck, Store, UsersRound } from "@openbot/ui";
+import type { DraftAttachment } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { Bot, File, Folder, Plug, type Puzzle, ShieldCheck, Store, UsersRound } from "@zollybot/ui";
 import type { ComposerAgent, ComposerBrowserTab, ComposerMcpServer, ComposerSkill, ComposerThread } from "../../data";
 import type { TextValue } from "../../text";
 import { browserDisplayUrl } from "../browser/browser-suggestions";

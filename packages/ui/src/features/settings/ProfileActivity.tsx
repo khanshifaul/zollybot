@@ -1,5 +1,5 @@
-import { Button, ErrorReference, SettingsSection, Text } from "@openbot/ui";
 import { Portal } from "@solidjs/web";
+import { Button, ErrorReference, SettingsSection, Text } from "@zollybot/ui";
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { DigitRuns } from "../../digit-runs";
 import { useText } from "../../text";

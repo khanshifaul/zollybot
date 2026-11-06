@@ -1,5 +1,5 @@
-import { clamp } from "@openbot/ui/utils";
 import { Portal } from "@solidjs/web";
+import { clamp } from "@zollybot/ui/utils";
 import { createSignal, onSettled } from "solid-js";
 
 const TOOLTIP_GAP = 8;

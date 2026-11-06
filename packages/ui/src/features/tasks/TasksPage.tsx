@@ -1,12 +1,13 @@
-import type { AgentTask, DraftAttachment } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import type { AgentTask, DraftAttachment } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   plainTaskTitle,
   TASKS_CLOSED_SHOWN,
   type TasksSectionId,
   taskSections,
   taskTone,
-} from "@openbot/team-client/agent-tasks";
+} from "@zollybot/team-client/agent-tasks";
 import {
   ArrowLeft,
   ArrowUp,
@@ -20,30 +21,29 @@ import {
   Mic,
   PanelLeft,
   X,
-} from "@openbot/ui";
-import { SwapLabel, type SwapMotion } from "@openbot/ui/components/SwapLabel";
-import type { AgentProfile } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { AgentTaskMark, type AgentTaskWait, agentTaskStatus } from "@openbot/ui/features/conversation/AgentTasks";
+} from "@zollybot/ui";
+import { SwapLabel, type SwapMotion } from "@zollybot/ui/components/SwapLabel";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { AgentTaskMark, type AgentTaskWait, agentTaskStatus } from "@zollybot/ui/features/conversation/AgentTasks";
 import {
   ComposerAttachmentRow,
   type ComposerPendingImage,
-} from "@openbot/ui/features/conversation/ComposerAttachmentRow";
+} from "@zollybot/ui/features/conversation/ComposerAttachmentRow";
 import {
   ComposerEditor,
   type ComposerPasteResult,
   type ComposerSelection,
-} from "@openbot/ui/features/conversation/ComposerEditor";
-import { ComposerNotice } from "@openbot/ui/features/conversation/ComposerNotice";
-import type { SendShortcut } from "@openbot/ui/features/conversation/send-shortcut";
+} from "@zollybot/ui/features/conversation/ComposerEditor";
+import { ComposerNotice } from "@zollybot/ui/features/conversation/ComposerNotice";
+import type { SendShortcut } from "@zollybot/ui/features/conversation/send-shortcut";
 import {
   type VoicePhase,
   VoiceRecordingMorph,
   voiceButtonLabel,
-} from "@openbot/ui/features/conversation/VoiceRecordingMorph";
-import { useText } from "@openbot/ui/text";
-import { prefersReducedMotion } from "@openbot/ui/utils";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/conversation/VoiceRecordingMorph";
+import { useText } from "@zollybot/ui/text";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createEffect, createStore, createUniqueId, For, onCleanup, onSettled, Show, untrack } from "solid-js";
 import { TasksEmptyBoard, TasksEmptyPitch } from "./TasksEmpty";
 

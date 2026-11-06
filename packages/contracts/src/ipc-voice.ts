@@ -532,7 +532,7 @@ export const VOICE_SERVER_LIMITS = {
 } as const;
 
 /**
- * What the server does for OpenBot. Dictation uses `POST /audio/transcriptions` and spoken replies
+ * What the server does for ZollyBot. Dictation uses `POST /audio/transcriptions` and spoken replies
  * use `POST /audio/speech`. A route that is on has its model, and speech also has its voice.
  */
 export interface VoiceServerRoutes {

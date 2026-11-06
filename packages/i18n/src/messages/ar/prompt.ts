@@ -61,7 +61,7 @@ export const messages = {
   "prompt.browser.signInBlocked.title": "حظر {host} تسجيل الدخول من {server}",
   "prompt.browser.signInBlocked.cancelledTitle": "أُلغي تسجيل الدخول إلى {host}",
   "prompt.browser.signInBlocked.body":
-    "سجّل الدخول على هذا الحاسوب. يرسل OpenBot تسجيل الدخول إلى {host} فقط إلى {server}، ويتابع {name}.",
+    "سجّل الدخول على هذا الحاسوب. يرسل ZollyBot تسجيل الدخول إلى {host} فقط إلى {server}، ويتابع {name}.",
   "prompt.browser.signInBlocked.cancelledBody": "أُلغي تسجيل الدخول.",
   "prompt.browser.signInBlocked.waiting": "جارٍ انتظار تسجيل الدخول",
   "prompt.browser.signInBlocked.waitingButton": "جارٍ انتظار تسجيل الدخول…",

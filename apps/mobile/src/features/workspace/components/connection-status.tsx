@@ -1,4 +1,4 @@
-import { REMOTE_RETRY_LIMIT } from "@openbot/team-client";
+import { REMOTE_RETRY_LIMIT } from "@zollybot/team-client";
 import { Typography } from "heroui-native";
 import { View } from "react-native";
 

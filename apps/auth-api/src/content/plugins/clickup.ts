@@ -31,7 +31,7 @@ export const CLICKUP_PLUGIN_GUIDE: PluginGuide = {
     {
       question: "Does the ClickUp plugin need an API key?",
       answer:
-        "No. ClickUp supports only OAuth for MCP connections, not API keys or access tokens. You sign in to your own ClickUp account in the browser. OpenBot does the sign-in itself, keeps the tokens in encrypted storage, and adds the Authorization header. The plugin catalog holds no secret.",
+        "No. ClickUp supports only OAuth for MCP connections, not API keys or access tokens. You sign in to your own ClickUp account in the browser. ZollyBot does the sign-in itself, keeps the tokens in encrypted storage, and adds the Authorization header. The plugin catalog holds no secret.",
     },
     {
       question: "What can the agent see and change in ClickUp?",

@@ -26,7 +26,7 @@ account name, last result). Create the table on the first save. Never store pass
 
 ## Steps
 
-1. Call `openbot_browser.list_tabs`. Open a new tab for the test. Do not reuse a tab with a real session.
+1. Call `zollybot_browser.list_tabs`. Open a new tab for the test. Do not reuse a tab with a real session.
 2. Load the address. Record the final address after redirects, the page title and the time.
 3. For each checklist item, act as a user: click, type, submit. Do not call page scripts to skip steps.
 4. After each item, take one screenshot that shows the result. Name it `<item number>-<short name>.png`.

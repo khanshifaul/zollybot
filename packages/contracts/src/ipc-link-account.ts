@@ -6,7 +6,7 @@ import { isDynamicRecord, isString } from "./runtime-values";
  * renderer.
  *
  * - `disconnected`: no sign-in is stored.
- * - `pending`: Link's sign-in page is open in the browser, and OpenBot waits for the user to approve it.
+ * - `pending`: Link's sign-in page is open in the browser, and ZollyBot waits for the user to approve it.
  * - `connected`: agents can ask to pay with Link.
  * - `expired`: Link refused the stored sign-in. The user must connect again.
  */

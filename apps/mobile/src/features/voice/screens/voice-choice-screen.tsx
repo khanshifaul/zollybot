@@ -1,4 +1,4 @@
-import { SPEECH_VOICES } from "@openbot/contracts/ipc";
+import { SPEECH_VOICES } from "@zollybot/contracts/ipc";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Button, Spinner, Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
@@ -70,7 +70,7 @@ export function VoiceChoiceScreen() {
   const modelReady = useSupertonicModel((state) => state.phase === "ready");
   const voices = useElevenLabsVoices();
   const preview = useVoicePreview();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   useEffect(() => {
     if (elevenLabs && settings.hasElevenLabsKey && useElevenLabsVoices.getState().phase !== "ready")
       void loadElevenLabsVoices();

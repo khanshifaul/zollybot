@@ -4,8 +4,9 @@
  * its key, its runtime, its use and its deletion, each as a settings card with at most one button on a row.
  */
 
-import { ProviderLogo } from "@openbot/brand";
-import { isManagedRuntimeProvider } from "@openbot/contracts/agent-providers";
+import type { JSX } from "@solidjs/web";
+import { ProviderLogo } from "@zollybot/brand";
+import { isManagedRuntimeProvider } from "@zollybot/contracts/agent-providers";
 import {
   type AgentModelId,
   type AgentProviderId,
@@ -22,8 +23,8 @@ import {
   type ProviderRuntimeDownload,
   type ProviderUsageResetOutcome,
   type ProviderUsageResets,
-} from "@openbot/contracts/ipc";
-import type { AppFormat, AppMessages, AppTextKey, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppFormat, AppMessages, AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   Badge,
   Button,
@@ -68,8 +69,7 @@ import {
   Trash2,
   UserRoundPlus,
   X,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createEffect, createMemo, createSignal, createStore, For, onCleanup, Show } from "solid-js";
 import { ProviderAccountRenameField } from "../../components/ProviderAccountList";
 import type { ProviderPickerOption } from "../../components/ProviderPicker";
@@ -844,7 +844,7 @@ const ACCOUNT_STATE_TEXT = {
   error: "provider.account.failed",
 } as const satisfies Record<ProviderAccountState, AppTextKey>;
 
-/** The Version line names the CLI that runs: the one the user installed, or OpenBot's download. */
+/** The Version line names the CLI that runs: the one the user installed, or ZollyBot's download. */
 const VERSION_SOURCE = {
   system: "provider.settings.versionInstalledByUser",
   managed: "provider.settings.versionDownloaded",
@@ -1079,7 +1079,7 @@ function SignInSection(props: SectionProps & { keyShown: boolean }) {
   const { t, format, sourceText, errorMessage } = useText();
   const row = () => props.row;
   /**
-   * A saved OpenBot key keeps the provider connected; the key dialog removes it. Muse offers
+   * A saved ZollyBot key keeps the provider connected; the key dialog removes it. Muse offers
    * Disconnect only where its key status is known, on this computer.
    */
   const disconnectOffered = () =>
@@ -1336,7 +1336,7 @@ function RuntimeSection(props: SectionProps) {
     if (row().updatable() && installed) {
       return t("provider.settings.versionAvailable", { installed, available: props.option.availableVersion ?? "" });
     }
-    // Names the CLI that runs, so a failure of the user's own install does not read as OpenBot's (#4375).
+    // Names the CLI that runs, so a failure of the user's own install does not read as ZollyBot's (#4375).
     const source = props.option.cliSource;
     return installed && source ? t(VERSION_SOURCE[source], { version: installed }) : installed;
   };
@@ -1743,7 +1743,7 @@ function UseSection(props: SectionProps) {
 }
 
 /**
- * The last section: turns the provider off and deletes the CLI that OpenBot downloaded for it.
+ * The last section: turns the provider off and deletes the CLI that ZollyBot downloaded for it.
  * Accounts, sign-ins and agents stay, and turning the provider on downloads the CLI again. A provider
  * that an agent uses stays, and the button names the agents. This computer only.
  */
@@ -1754,7 +1754,7 @@ function DeleteSection(props: SectionProps) {
   const offered = () =>
     Boolean(props.onSetProviderOn && props.onRemoveProviderDownload) && isManagedRuntimeProvider(props.option.id);
   /**
-   * A provider that is on runs a CLI. Only one that OpenBot downloaded has a download to delete. Pi
+   * A provider that is on runs a CLI. Only one that ZollyBot downloaded has a download to delete. Pi
    * also runs the key-only providers, so the host can keep its CLI after Pi turns off; Pi offers
    * Delete only when it is off and the host measured a download.
    */

@@ -1,4 +1,4 @@
-import { type AcpRegistryEntry, CUSTOM_AGENT_LIMITS, isNewCustomAgentId } from "@openbot/contracts/ipc";
+import { type AcpRegistryEntry, CUSTOM_AGENT_LIMITS, isNewCustomAgentId } from "@zollybot/contracts/ipc";
 import { useLocalSearchParams } from "expo-router";
 import { Spinner, Typography } from "heroui-native";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -63,7 +63,7 @@ export function ServerAcpRegistryScreen() {
 
 function RegistryPage({ serverId, admin, registry }: { serverId: string; admin: ProviderAdmin; registry: Registry }) {
   const { t, errorMessage } = useText();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const [query, setQuery] = useState("");
   const [entries, setEntries] = useState<AcpRegistryEntry[] | null>(null);
   const [loading, setLoading] = useState(false);

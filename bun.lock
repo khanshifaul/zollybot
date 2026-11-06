@@ -19,20 +19,20 @@
         "@noble/curves": "catalog:",
         "@noble/hashes": "catalog:",
         "@norbert_bodziony/bloub": "catalog:",
-        "@openbot/brand": "workspace:*",
-        "@openbot/contracts": "workspace:*",
-        "@openbot/i18n": "workspace:*",
-        "@openbot/logging": "workspace:*",
-        "@openbot/team-client": "workspace:*",
-        "@openbot/telemetry": "workspace:*",
-        "@openbot/ui": "workspace:*",
-        "@openbot/user-errors": "workspace:*",
-        "@openbot/whatsapp": "workspace:*",
         "@openpanel/web": "catalog:",
         "@paper-design/shaders": "catalog:",
         "@solidjs/web": "catalog:",
         "@speed-highlight/core": "catalog:",
         "@tanstack/virtual-core": "catalog:",
+        "@zollybot/brand": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
+        "@zollybot/i18n": "workspace:*",
+        "@zollybot/logging": "workspace:*",
+        "@zollybot/team-client": "workspace:*",
+        "@zollybot/telemetry": "workspace:*",
+        "@zollybot/ui": "workspace:*",
+        "@zollybot/user-errors": "workspace:*",
+        "@zollybot/whatsapp": "workspace:*",
         "async-mutex": "catalog:",
         "class-variance-authority": "catalog:",
         "cuelume": "0.2.8",
@@ -90,20 +90,20 @@
       },
     },
     "apps/auth-api": {
-      "name": "@openbot/auth-api",
+      "name": "@zollybot/auth-api",
       "version": "0.0.0",
       "dependencies": {
         "@fontsource-variable/inter": "catalog:",
         "@kobalte/core": "catalog:",
-        "@openbot/brand": "workspace:*",
-        "@openbot/contracts": "workspace:*",
-        "@openbot/ui": "workspace:*",
         "@openpanel/web": "catalog:",
         "@paper-design/shaders": "catalog:",
         "@solidjs/signals": "catalog:",
         "@solidjs/web": "catalog:",
         "@tanstack/solid-router": "2.0.0-rc.9",
         "@tanstack/solid-start": "2.0.0-rc.9",
+        "@zollybot/brand": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
+        "@zollybot/ui": "workspace:*",
         "class-variance-authority": "catalog:",
         "effect": "catalog:",
         "fflate": "catalog:",
@@ -127,7 +127,7 @@
       },
     },
     "apps/mobile": {
-      "name": "@openbot/mobile",
+      "name": "@zollybot/mobile",
       "version": "1.4.7",
       "dependencies": {
         "@expo/metro-runtime": "~58.0.15",
@@ -135,18 +135,18 @@
         "@legendapp/list": "3.6.0",
         "@noble/hashes": "catalog:",
         "@norbert_bodziony/bloub": "catalog:",
-        "@openbot/brand": "workspace:*",
-        "@openbot/contracts": "workspace:*",
-        "@openbot/i18n": "workspace:*",
-        "@openbot/logging": "workspace:*",
-        "@openbot/team-client": "workspace:*",
-        "@openbot/telemetry": "workspace:*",
-        "@openbot/user-errors": "workspace:*",
         "@openpanel/react-native": "1.4.2",
         "@react-native-masked-view/masked-view": "0.3.2",
         "@shopify/react-native-skia": "2.14.0",
         "@speed-highlight/core": "catalog:",
         "@tanstack/react-query": "^5.104.5",
+        "@zollybot/brand": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
+        "@zollybot/i18n": "workspace:*",
+        "@zollybot/logging": "workspace:*",
+        "@zollybot/team-client": "workspace:*",
+        "@zollybot/telemetry": "workspace:*",
+        "@zollybot/user-errors": "workspace:*",
         "effect": "catalog:",
         "expo": "~58.0.17",
         "expo-application": "~58.1.2",
@@ -218,10 +218,10 @@
       },
     },
     "apps/site-router": {
-      "name": "@openbot/site-router",
+      "name": "@zollybot/site-router",
       "version": "0.0.0",
       "dependencies": {
-        "@openbot/contracts": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
         "effect": "catalog:",
       },
       "devDependencies": {
@@ -231,13 +231,13 @@
       },
     },
     "apps/status": {
-      "name": "@openbot/status",
+      "name": "@zollybot/status",
       "version": "0.0.0",
       "dependencies": {
         "@fontsource-variable/inter": "catalog:",
-        "@openbot/brand": "workspace:*",
-        "@openbot/logging": "workspace:*",
         "@solidjs/web": "catalog:",
+        "@zollybot/brand": "workspace:*",
+        "@zollybot/logging": "workspace:*",
         "effect": "catalog:",
         "lucide-solid": "catalog:",
         "solid-js": "2.0.0-rc.18",
@@ -250,11 +250,11 @@
       },
     },
     "packages/brand": {
-      "name": "@openbot/brand",
+      "name": "@zollybot/brand",
       "version": "0.0.0",
       "dependencies": {
         "@norbert_bodziony/bloub": "catalog:",
-        "@openbot/contracts": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
       },
       "devDependencies": {
         "typescript": "catalog:",
@@ -265,7 +265,7 @@
       },
     },
     "packages/contracts": {
-      "name": "@openbot/contracts",
+      "name": "@zollybot/contracts",
       "version": "0.0.0",
       "dependencies": {
         "emoji-regex": "10.6.0",
@@ -277,10 +277,10 @@
       },
     },
     "packages/i18n": {
-      "name": "@openbot/i18n",
+      "name": "@zollybot/i18n",
       "version": "0.0.0",
       "dependencies": {
-        "@openbot/contracts": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
       },
       "devDependencies": {
         "@types/node": "catalog:",
@@ -288,7 +288,7 @@
       },
     },
     "packages/logging": {
-      "name": "@openbot/logging",
+      "name": "@zollybot/logging",
       "version": "0.0.0",
       "dependencies": {
         "ts-log": "3.0.3",
@@ -299,14 +299,14 @@
       },
     },
     "packages/team-client": {
-      "name": "@openbot/team-client",
+      "name": "@zollybot/team-client",
       "version": "0.0.0",
       "dependencies": {
         "@noble/ed25519": "3.2.0",
         "@noble/hashes": "catalog:",
-        "@openbot/contracts": "workspace:*",
-        "@openbot/i18n": "workspace:*",
-        "@openbot/user-errors": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
+        "@zollybot/i18n": "workspace:*",
+        "@zollybot/user-errors": "workspace:*",
         "effect": "catalog:",
       },
       "devDependencies": {
@@ -314,10 +314,10 @@
       },
     },
     "packages/telemetry": {
-      "name": "@openbot/telemetry",
+      "name": "@zollybot/telemetry",
       "version": "0.0.0",
       "dependencies": {
-        "@openbot/contracts": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
         "effect": "catalog:",
       },
       "devDependencies": {
@@ -326,19 +326,19 @@
       },
     },
     "packages/ui": {
-      "name": "@openbot/ui",
+      "name": "@zollybot/ui",
       "version": "0.0.0",
       "dependencies": {
         "@kobalte/core": "catalog:",
         "@norbert_bodziony/bloub": "catalog:",
-        "@openbot/brand": "workspace:*",
-        "@openbot/contracts": "workspace:*",
-        "@openbot/i18n": "workspace:*",
-        "@openbot/team-client": "workspace:*",
-        "@openbot/telemetry": "workspace:*",
-        "@openbot/user-errors": "workspace:*",
         "@speed-highlight/core": "catalog:",
         "@tanstack/virtual-core": "catalog:",
+        "@zollybot/brand": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
+        "@zollybot/i18n": "workspace:*",
+        "@zollybot/team-client": "workspace:*",
+        "@zollybot/telemetry": "workspace:*",
+        "@zollybot/user-errors": "workspace:*",
         "class-variance-authority": "catalog:",
         "katex": "catalog:",
         "lucide-solid": "catalog:",
@@ -355,12 +355,12 @@
       },
     },
     "packages/user-errors": {
-      "name": "@openbot/user-errors",
+      "name": "@zollybot/user-errors",
       "version": "0.0.0",
       "dependencies": {
-        "@openbot/contracts": "workspace:*",
-        "@openbot/i18n": "workspace:*",
-        "@openbot/logging": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
+        "@zollybot/i18n": "workspace:*",
+        "@zollybot/logging": "workspace:*",
       },
       "devDependencies": {
         "@types/node": "catalog:",
@@ -368,7 +368,7 @@
       },
     },
     "packages/whatsapp": {
-      "name": "@openbot/whatsapp",
+      "name": "@zollybot/whatsapp",
       "version": "0.0.0",
       "dependencies": {
         "@cacheable/node-cache": "catalog:",
@@ -392,12 +392,12 @@
       },
     },
     "remote/api": {
-      "name": "@openbot/remote-api",
+      "name": "@zollybot/remote-api",
       "version": "0.0.0",
       "dependencies": {
         "@discordjs/rest": "2.6.3",
         "@discordjs/ws": "2.0.4",
-        "@openbot/contracts": "workspace:*",
+        "@zollybot/contracts": "workspace:*",
         "discord-api-types": "0.38.57",
         "effect": "catalog:",
         "elysia": "1.4.30",
@@ -1128,34 +1128,6 @@
 
     "@oozcitak/util": ["@oozcitak/util@10.0.0", "", {}, "sha512-hAX0pT/73190NLqBPPWSdBVGtbY6VOhWYK3qqHqtXQ1gK7kS2yz4+ivsN07hpJ6I3aeMtKP6J6npsEKOAzuTLA=="],
 
-    "@openbot/auth-api": ["@openbot/auth-api@workspace:apps/auth-api"],
-
-    "@openbot/brand": ["@openbot/brand@workspace:packages/brand"],
-
-    "@openbot/contracts": ["@openbot/contracts@workspace:packages/contracts"],
-
-    "@openbot/i18n": ["@openbot/i18n@workspace:packages/i18n"],
-
-    "@openbot/logging": ["@openbot/logging@workspace:packages/logging"],
-
-    "@openbot/mobile": ["@openbot/mobile@workspace:apps/mobile"],
-
-    "@openbot/remote-api": ["@openbot/remote-api@workspace:remote/api"],
-
-    "@openbot/site-router": ["@openbot/site-router@workspace:apps/site-router"],
-
-    "@openbot/status": ["@openbot/status@workspace:apps/status"],
-
-    "@openbot/team-client": ["@openbot/team-client@workspace:packages/team-client"],
-
-    "@openbot/telemetry": ["@openbot/telemetry@workspace:packages/telemetry"],
-
-    "@openbot/ui": ["@openbot/ui@workspace:packages/ui"],
-
-    "@openbot/user-errors": ["@openbot/user-errors@workspace:packages/user-errors"],
-
-    "@openbot/whatsapp": ["@openbot/whatsapp@workspace:packages/whatsapp"],
-
     "@openpanel/react-native": ["@openpanel/react-native@1.4.2", "", { "dependencies": { "@openpanel/sdk": "1.3.2" }, "peerDependencies": { "expo-application": "5 - 7", "expo-constants": "14 - 18", "react-native": "*" } }, "sha512-VC9axx2jcyTIuaAVpx2TTR3W7G31n3M2/yOjXLe7TY1Bqv73uyRw+4ZBoNM5OnbKjg/XFYx6sPKMT602omTxpA=="],
 
     "@openpanel/sdk": ["@openpanel/sdk@1.3.2", "", {}, "sha512-A8w6NkadrOUeMxKKvCbpyoGGjgsLZcn6pyrMT7tWI5vgWLKpZ9o/ieaF/WdfaFQTFvN9tqCW70JmuNCJKRBTbA=="],
@@ -1781,6 +1753,34 @@
     "@xmldom/xmldom": ["@xmldom/xmldom@0.8.13", "", {}, "sha512-KRYzxepc14G/CEpEGc3Yn+JKaAeT63smlDr+vjB8jRfgTBBI9wRj/nkQEO+ucV8p8I9bfKLWp37uHgFrbntPvw=="],
 
     "@xstate/fsm": ["@xstate/fsm@1.6.5", "", {}, "sha512-b5o1I6aLNeYlU/3CPlj/Z91ybk1gUsKT+5NAJI+2W4UjvS5KLG28K9v5UvNoFVjHV8PajVZ00RH3vnjyQO7ZAw=="],
+
+    "@zollybot/auth-api": ["@zollybot/auth-api@workspace:apps/auth-api"],
+
+    "@zollybot/brand": ["@zollybot/brand@workspace:packages/brand"],
+
+    "@zollybot/contracts": ["@zollybot/contracts@workspace:packages/contracts"],
+
+    "@zollybot/i18n": ["@zollybot/i18n@workspace:packages/i18n"],
+
+    "@zollybot/logging": ["@zollybot/logging@workspace:packages/logging"],
+
+    "@zollybot/mobile": ["@zollybot/mobile@workspace:apps/mobile"],
+
+    "@zollybot/remote-api": ["@zollybot/remote-api@workspace:remote/api"],
+
+    "@zollybot/site-router": ["@zollybot/site-router@workspace:apps/site-router"],
+
+    "@zollybot/status": ["@zollybot/status@workspace:apps/status"],
+
+    "@zollybot/team-client": ["@zollybot/team-client@workspace:packages/team-client"],
+
+    "@zollybot/telemetry": ["@zollybot/telemetry@workspace:packages/telemetry"],
+
+    "@zollybot/ui": ["@zollybot/ui@workspace:packages/ui"],
+
+    "@zollybot/user-errors": ["@zollybot/user-errors@workspace:packages/user-errors"],
+
+    "@zollybot/whatsapp": ["@zollybot/whatsapp@workspace:packages/whatsapp"],
 
     "abbrev": ["abbrev@4.0.0", "", {}, "sha512-a1wflyaL0tHtJSmLSOVybYhy22vRih4eduhhrkcjgrWGnRfrZtovJ2FRjxuTtkkj47O/baf0R86QU5OuYpz8fA=="],
 

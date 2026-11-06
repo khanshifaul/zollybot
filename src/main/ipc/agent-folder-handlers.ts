@@ -9,11 +9,11 @@ import {
   parseAgentFolderInput,
   parseBrowseAgentFoldersInput,
   parseChooseAgentFolderInput,
-} from "@openbot/contracts/ipc";
-import { AGENT_FOLDERS_CAPABILITY, AGENT_FOLDERS_ROUTES } from "@openbot/contracts/team-protocol/agent-folders-v1";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import type { AppTranslate } from "@openbot/i18n";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { AGENT_FOLDERS_CAPABILITY, AGENT_FOLDERS_ROUTES } from "@zollybot/contracts/team-protocol/agent-folders-v1";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import type { AppTranslate } from "@zollybot/i18n";
+import { sourceText } from "@zollybot/i18n/source";
 import type { Effect } from "effect";
 import { type BrowserWindow, dialog, type OpenDialogOptions } from "electron";
 import { runCauseEffect } from "../../backend/effect-boundary";

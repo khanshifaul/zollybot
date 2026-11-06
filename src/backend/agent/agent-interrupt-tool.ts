@@ -1,6 +1,6 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentSummary } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentSummary } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { z } from "zod";
 import type { AgentStore } from "../agent-store";
@@ -39,7 +39,7 @@ export interface AgentInterruptToolOptions {
 }
 
 /**
- * `openbot.interrupt_agent`: one agent stops work that it delegated to another agent.
+ * `zollybot.interrupt_agent`: one agent stops work that it delegated to another agent.
  *
  * Agents have no ownership of each other, so the only proof that the caller may stop a turn is that
  * every delivery the turn runs came from the caller. A turn that the user, a routine, a channel or
@@ -74,7 +74,7 @@ export class AgentInterruptTool {
     const { agentId, reason } = yield* toolStep(() => interruptAgentToolSchema.parse(params.arguments));
     if (agentId === callerAgentId) return openBotToolFailure(sourceText("error.backend.interruptSelf"));
     if (!this.#hooks.listAgents().some((agent) => agent.id === agentId)) {
-      return yield* new ToolOperationFailed({ cause: new Error(`Unknown OpenBot agent: ${agentId}`) });
+      return yield* new ToolOperationFailed({ cause: new Error(`Unknown ZollyBot agent: ${agentId}`) });
     }
 
     // A delivery on its way to a turn has no turn id yet. Wait for the drain that starts it, as

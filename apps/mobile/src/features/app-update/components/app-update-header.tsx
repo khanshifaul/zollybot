@@ -325,7 +325,7 @@ export function AppUpdateBlock({
             type="h4"
             align="center"
             accessibilityRole="header"
-            className="tracking-openbot-tight"
+            className="tracking-zollybot-tight"
             style={{ color: colors.eye }}
           >
             {ready ? t("mobile.app.update.readyTitle") : t("mobile.app.update.title", { version: update.version })}

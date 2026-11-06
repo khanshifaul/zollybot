@@ -1,9 +1,9 @@
 // Runs the real `codex app-server` against a fake Responses server, to check that a thread with the
-// features that OpenBot sets declares no goal tools. Codex sends each other tool and its permission
+// features that ZollyBot sets declares no goal tools. Codex sends each other tool and its permission
 // text as before: at Ask first Codex runs with no sandbox, and that text makes the model ask before a
 // destructive command. A local server stands in for the model and records the tools and the
 // instructions of each request, so no account or key is used.
-// `bun scripts/codex-prompt-trim-e2e.ts`. Writes .openbot-build/codex-prompt-trim-e2e/report.json.
+// `bun scripts/codex-prompt-trim-e2e.ts`. Writes .zollybot-build/codex-prompt-trim-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { createServer, type Server as HttpServer } from "node:http";
@@ -15,7 +15,7 @@ import { resolveCodexCli } from "../src/backend/cli";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { decodeRecordResponse, getRecord, getString } from "../src/backend/protocol";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/codex-prompt-trim-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/codex-prompt-trim-e2e");
 const NL = String.fromCharCode(10);
 const DEADLINE_MS = 60_000;
 
@@ -118,7 +118,7 @@ await rm(OUT, { recursive: true, force: true });
 await mkdir(OUT, { recursive: true });
 const cli = await runCauseEffect(resolveCodexCli());
 const model = await startFakeModel();
-const root = await mkdtemp(join(tmpdir(), "openbot-codex-trim-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-codex-trim-e2e-"));
 const results: Record<string, Recorded | undefined> = {};
 const report: {
   passed: boolean;
@@ -157,7 +157,7 @@ try {
       await runCauseEffect(
         client.request(
           "initialize",
-          { clientInfo: { name: "openbot_e2e", title: "OpenBot E2E", version: "0.0.0" }, capabilities: {} },
+          { clientInfo: { name: "zollybot_e2e", title: "ZollyBot E2E", version: "0.0.0" }, capabilities: {} },
           decodeRecordResponse,
         ),
       );

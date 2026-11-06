@@ -243,11 +243,11 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: signal-security-e2e
-          path: .openbot-build/signal-security-e2e/
+          path: .zollybot-build/signal-security-e2e/
           if-no-files-found: ignore
 
   automation-cli-e2e:
-    # Runs `openbot-cli` with Node against the real Local scripts server on a loopback port, with
+    # Runs `zollybot-cli` with Node against the real Local scripts server on a loopback port, with
     # an in-memory agent service. It needs no Electron, display or external service.
     name: Local scripts CLI E2E
     needs: detect
@@ -271,7 +271,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: automation-cli-e2e
-          path: .openbot-build/automation-cli-e2e/
+          path: .zollybot-build/automation-cli-e2e/
           if-no-files-found: ignore
 
   team-api-routes-e2e:
@@ -300,7 +300,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: team-api-routes-e2e
-          path: .openbot-build/team-api-routes-e2e/
+          path: .zollybot-build/team-api-routes-e2e/
           if-no-files-found: ignore
 
   reverse-actions-e2e:
@@ -578,7 +578,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: bun run test:opencode-go-usage
 
-      - name: Run the Pi sign-in outside OpenBot E2E test
+      - name: Run the Pi sign-in outside ZollyBot E2E test
         if: ${{ !cancelled() }}
         run: bun run test:pi-sign-in-watch
 
@@ -596,71 +596,71 @@ jobs:
         with:
           name: reverse-actions-e2e
           path: |
-            .openbot-build/team-api-legacy-clients-e2e/
-            .openbot-build/team-session-revoke-e2e/
-            .openbot-build/sign-in-relay-paste-e2e/
-            .openbot-build/sign-in-relay-replay-e2e/
-            .openbot-build/server-mute-e2e/
-            .openbot-build/desktop-notifications-e2e/
-            .openbot-build/push-notification-away-e2e/
-            .openbot-build/computer-activity-e2e/
-            .openbot-build/notification-summary-e2e/
-            .openbot-build/routine-pause-resume-e2e/
-            .openbot-build/routine-timezone-move-e2e/
-            .openbot-build/routine-overnight-window-e2e/
-            .openbot-build/agent-waits-tools-e2e/
-            .openbot-build/agent-hide-restore-e2e/
-            .openbot-build/messaging-pause-resume-e2e/
-            .openbot-build/messaging-discord-access-e2e/
-            .openbot-build/turn-input-e2e/
-            .openbot-build/zero-filled-settings-e2e/
-            .openbot-build/provider-update-busy-e2e/
-            .openbot-build/provider-update-after-app-upgrade-e2e/
-            .openbot-build/provider-runtime-remove-e2e/
-            .openbot-build/provider-exit-session-e2e/
-            .openbot-build/acp-subagents-e2e/
-            .openbot-build/codex-subagent-steps-e2e/
-            .openbot-build/subagent-status-e2e/
-            .openbot-build/codex-hung-app-server-e2e/
-            .openbot-build/codex-missing-rollout-e2e/
-            .openbot-build/codex-usage-metering-e2e/
-            .openbot-build/codex-usage-reset-e2e/
-            .openbot-build/usage-read-pacing-e2e/
-            .openbot-build/routine-fresh-session-e2e/
-            .openbot-build/routine-report-failure-e2e/
-            .openbot-build/agent-webhook-routine-e2e/
-            .openbot-build/agent-channel-manage-e2e/
-            .openbot-build/agent-channel-create-e2e/
-            .openbot-build/agent-workflow-gate-e2e/
-            .openbot-build/agent-profile-accounts-e2e/
-            .openbot-build/browser-profile-agents-e2e/
-            .openbot-build/claude-usage-resume-e2e/
-            .openbot-build/claude-late-steer-e2e/
-            .openbot-build/provider-session-reuse-e2e/
-            .openbot-build/backup-model-failover-e2e/
-            .openbot-build/zip-attachment-e2e/
-            .openbot-build/mp4-attachment-e2e/
-            .openbot-build/svg-attachment-e2e/
-            .openbot-build/agent-mcp-tools-e2e/
-            .openbot-build/mcp-server-unreadable-row-e2e/
-            .openbot-build/agent-update-agents-e2e/
-            .openbot-build/antigravity-usage-e2e/
-            .openbot-build/antigravity-accounts-e2e/
-            .openbot-build/antigravity-usage-metering-e2e/
-            .openbot-build/workflow-model-steps-e2e/
-            .openbot-build/workflow-discord-e2e/
-            .openbot-build/workflow-telegram-e2e/
-            .openbot-build/workflow-slack-e2e/
-            .openbot-build/workflow-agent-tools-e2e/
-            .openbot-build/discord-github-files-e2e/
-            .openbot-build/opencode-usage-metering-e2e/
-            .openbot-build/claude-api-key-e2e/
-            .openbot-build/claude-stored-sign-in-e2e/
-            .openbot-build/cursor-usage-e2e/
-            .openbot-build/opencode-go-usage-e2e/
-            .openbot-build/pi-sign-in-watch-e2e/
-            .openbot-build/agent-api-keys-e2e/
-            .openbot-build/remote-connect-analytics-e2e/
+            .zollybot-build/team-api-legacy-clients-e2e/
+            .zollybot-build/team-session-revoke-e2e/
+            .zollybot-build/sign-in-relay-paste-e2e/
+            .zollybot-build/sign-in-relay-replay-e2e/
+            .zollybot-build/server-mute-e2e/
+            .zollybot-build/desktop-notifications-e2e/
+            .zollybot-build/push-notification-away-e2e/
+            .zollybot-build/computer-activity-e2e/
+            .zollybot-build/notification-summary-e2e/
+            .zollybot-build/routine-pause-resume-e2e/
+            .zollybot-build/routine-timezone-move-e2e/
+            .zollybot-build/routine-overnight-window-e2e/
+            .zollybot-build/agent-waits-tools-e2e/
+            .zollybot-build/agent-hide-restore-e2e/
+            .zollybot-build/messaging-pause-resume-e2e/
+            .zollybot-build/messaging-discord-access-e2e/
+            .zollybot-build/turn-input-e2e/
+            .zollybot-build/zero-filled-settings-e2e/
+            .zollybot-build/provider-update-busy-e2e/
+            .zollybot-build/provider-update-after-app-upgrade-e2e/
+            .zollybot-build/provider-runtime-remove-e2e/
+            .zollybot-build/provider-exit-session-e2e/
+            .zollybot-build/acp-subagents-e2e/
+            .zollybot-build/codex-subagent-steps-e2e/
+            .zollybot-build/subagent-status-e2e/
+            .zollybot-build/codex-hung-app-server-e2e/
+            .zollybot-build/codex-missing-rollout-e2e/
+            .zollybot-build/codex-usage-metering-e2e/
+            .zollybot-build/codex-usage-reset-e2e/
+            .zollybot-build/usage-read-pacing-e2e/
+            .zollybot-build/routine-fresh-session-e2e/
+            .zollybot-build/routine-report-failure-e2e/
+            .zollybot-build/agent-webhook-routine-e2e/
+            .zollybot-build/agent-channel-manage-e2e/
+            .zollybot-build/agent-channel-create-e2e/
+            .zollybot-build/agent-workflow-gate-e2e/
+            .zollybot-build/agent-profile-accounts-e2e/
+            .zollybot-build/browser-profile-agents-e2e/
+            .zollybot-build/claude-usage-resume-e2e/
+            .zollybot-build/claude-late-steer-e2e/
+            .zollybot-build/provider-session-reuse-e2e/
+            .zollybot-build/backup-model-failover-e2e/
+            .zollybot-build/zip-attachment-e2e/
+            .zollybot-build/mp4-attachment-e2e/
+            .zollybot-build/svg-attachment-e2e/
+            .zollybot-build/agent-mcp-tools-e2e/
+            .zollybot-build/mcp-server-unreadable-row-e2e/
+            .zollybot-build/agent-update-agents-e2e/
+            .zollybot-build/antigravity-usage-e2e/
+            .zollybot-build/antigravity-accounts-e2e/
+            .zollybot-build/antigravity-usage-metering-e2e/
+            .zollybot-build/workflow-model-steps-e2e/
+            .zollybot-build/workflow-discord-e2e/
+            .zollybot-build/workflow-telegram-e2e/
+            .zollybot-build/workflow-slack-e2e/
+            .zollybot-build/workflow-agent-tools-e2e/
+            .zollybot-build/discord-github-files-e2e/
+            .zollybot-build/opencode-usage-metering-e2e/
+            .zollybot-build/claude-api-key-e2e/
+            .zollybot-build/claude-stored-sign-in-e2e/
+            .zollybot-build/cursor-usage-e2e/
+            .zollybot-build/opencode-go-usage-e2e/
+            .zollybot-build/pi-sign-in-watch-e2e/
+            .zollybot-build/agent-api-keys-e2e/
+            .zollybot-build/remote-connect-analytics-e2e/
           if-no-files-found: ignore
 
   provider-fakes-e2e:
@@ -796,33 +796,33 @@ jobs:
         with:
           name: provider-fakes-e2e
           path: |
-            .openbot-build/custom-acp-agent-e2e/
-            .openbot-build/custom-acp-agent-login-path-e2e/
-            .openbot-build/codex-login-path-e2e/
-            .openbot-build/antigravity-login-path-e2e/
-            .openbot-build/antigravity-mcp-load-failure-e2e/
-            .openbot-build/antigravity-expired-token-e2e/
-            .openbot-build/antigravity-tool-filter-e2e/
-            .openbot-build/acp-additional-directories-e2e/
-            .openbot-build/acp-flavor-e2e/
-            .openbot-build/acp-mcp-server-names-e2e/
-            .openbot-build/acp-turn-stall-e2e/
-            .openbot-build/agent-database-host-start-e2e/
-            .openbot-build/acp-instructions-once-e2e/
-            .openbot-build/acp-audio-input-e2e/
-            .openbot-build/grok-steer-e2e/
-            .openbot-build/pi-steer-e2e/
-            .openbot-build/muse-instructions-once-e2e/
-            .openbot-build/provider-conformance-e2e/
-            .openbot-build/opencode-expired-key-e2e/
-            .openbot-build/opencode-downgraded-session-e2e/
-            .openbot-build/opencode-service-failure-e2e/
-            .openbot-build/opencode-thought-interleave-e2e/
-            .openbot-build/opencode-background-turn-e2e/
-            .openbot-build/cursor-stream-closed-e2e/
-            .openbot-build/cursor-model-set-e2e/
-            .openbot-build/cline-free-models-e2e/
-            .openbot-build/provider-transcript-replay-e2e/
+            .zollybot-build/custom-acp-agent-e2e/
+            .zollybot-build/custom-acp-agent-login-path-e2e/
+            .zollybot-build/codex-login-path-e2e/
+            .zollybot-build/antigravity-login-path-e2e/
+            .zollybot-build/antigravity-mcp-load-failure-e2e/
+            .zollybot-build/antigravity-expired-token-e2e/
+            .zollybot-build/antigravity-tool-filter-e2e/
+            .zollybot-build/acp-additional-directories-e2e/
+            .zollybot-build/acp-flavor-e2e/
+            .zollybot-build/acp-mcp-server-names-e2e/
+            .zollybot-build/acp-turn-stall-e2e/
+            .zollybot-build/agent-database-host-start-e2e/
+            .zollybot-build/acp-instructions-once-e2e/
+            .zollybot-build/acp-audio-input-e2e/
+            .zollybot-build/grok-steer-e2e/
+            .zollybot-build/pi-steer-e2e/
+            .zollybot-build/muse-instructions-once-e2e/
+            .zollybot-build/provider-conformance-e2e/
+            .zollybot-build/opencode-expired-key-e2e/
+            .zollybot-build/opencode-downgraded-session-e2e/
+            .zollybot-build/opencode-service-failure-e2e/
+            .zollybot-build/opencode-thought-interleave-e2e/
+            .zollybot-build/opencode-background-turn-e2e/
+            .zollybot-build/cursor-stream-closed-e2e/
+            .zollybot-build/cursor-model-set-e2e/
+            .zollybot-build/cline-free-models-e2e/
+            .zollybot-build/provider-transcript-replay-e2e/
           if-no-files-found: ignore
 
   surfaces:
@@ -910,7 +910,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mobile-share-sender-e2e
-          path: .openbot-build/mobile-share-sender-e2e/report.json
+          path: .zollybot-build/mobile-share-sender-e2e/report.json
           if-no-files-found: ignore
 
   api:
@@ -987,7 +987,7 @@ jobs:
         run: bun run build-storybook
         env:
           # This output is not published. Skip Solid's per-component docgen analysis.
-          OPENBOT_STORYBOOK_CHECK: "true"
+          ZOLLYBOT_STORYBOOK_CHECK: "true"
 
   all-checks-pass:
     # A summary of every job. Branch protection requires `Check`, not this job. A lane that
@@ -1075,13 +1075,13 @@ jobs:
           BOAT_API_KEY: ${{ secrets.BOAT_API_KEY }}
           BOAT_WEBHOOK_SECRET: ${{ secrets.BOAT_WEBHOOK_SECRET }}
           # GitHub refuses an Actions secret name that starts with GITHUB_. The Worker name is GITHUB_APP_PRIVATE_KEY.
-          OPENBOT_GITHUB_APP_PRIVATE_KEY: ${{ secrets.OPENBOT_GITHUB_APP_PRIVATE_KEY }}
+          ZOLLYBOT_GITHUB_APP_PRIVATE_KEY: ${{ secrets.ZOLLYBOT_GITHUB_APP_PRIVATE_KEY }}
           APNS_PRIVATE_KEY: ${{ secrets.APNS_PRIVATE_KEY }}
           APNS_KEY_ID: ${{ secrets.APNS_KEY_ID }}
           FCM_SERVICE_ACCOUNT: ${{ secrets.FCM_SERVICE_ACCOUNT }}
           COMPANY_SIGN_IN_SECRET: ${{ secrets.COMPANY_SIGN_IN_SECRET }}
         run: |
-          secrets_path="$RUNNER_TEMP/openbot-worker-secrets.json"
+          secrets_path="$RUNNER_TEMP/zollybot-worker-secrets.json"
           umask 077
           SECRETS_PATH="$secrets_path" bun -e '
             const smtp = process.env.EMAIL_SMTP_PASSWORD;
@@ -1123,7 +1123,7 @@ jobs:
               if (present.length !== names.length) throw new Error(`Set ${names.join(" and ")} together.`);
               for (const name of names) optional[name] = process.env[name].trim();
             }
-            const githubAppKey = process.env.OPENBOT_GITHUB_APP_PRIVATE_KEY?.trim();
+            const githubAppKey = process.env.ZOLLYBOT_GITHUB_APP_PRIVATE_KEY?.trim();
             if (githubAppKey) optional.GITHUB_APP_PRIVATE_KEY = githubAppKey;
             // Company sign-in stays off until it is set. It encrypts the stored client secrets, so it never changes.
             const companySignInSecret = process.env.COMPANY_SIGN_IN_SECRET?.trim();
@@ -1239,7 +1239,7 @@ jobs:
             "$association_url")"
           require_status "$association_status" 200 "$association_url"
           require_header "$verification_dir/association.headers" '^content-type: application/json' "$association_url"
-          if ! jq -e '.applinks.details == [{"appID":"ZTRDTUL87R.app.openbot.desktop","paths":["/join"]},{"appID":"ZTRDTUL87R.run.openbot.mobile","paths":["/join","/agents/*"]},{"appID":"8A47NKRZSJ.run.openbot.mobile","paths":["/join","/agents/*"]}]' \
+          if ! jq -e '.applinks.details == [{"appID":"ZTRDTUL87R.app.zollybot.desktop","paths":["/join"]},{"appID":"ZTRDTUL87R.run.zollybot.mobile","paths":["/join","/agents/*"]},{"appID":"8A47NKRZSJ.run.zollybot.mobile","paths":["/join","/agents/*"]}]' \
             "$verification_dir/association.json" >/dev/null; then
             echo "Response headers of $association_url:"
             tr -d '\r' < "$verification_dir/association.headers"
@@ -1250,7 +1250,7 @@ jobs:
           fi
           curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.openbot.run/health/live >/dev/null
           curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.openbot.run/health/ready >/dev/null
-          site_url=https://deployment-smoke-check.openbot.site/
+          site_url=https://deployment-smoke-check.zollybot.site/
           site_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
             --max-redirs 0 --dump-header "$verification_dir/site-router.headers" \
             --output "$verification_dir/site-router.txt" --write-out '%{http_code}' \

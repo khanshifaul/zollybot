@@ -1,4 +1,4 @@
--- OpenBot checked the agent beyond the listing review, as `marketplace_skills.verified`. Only an admin
+-- ZollyBot checked the agent beyond the listing review, as `marketplace_skills.verified`. Only an admin
 -- sets it. The Worker that runs before this deploy does not read the column, and its inserts get the
 -- default 0.
 ALTER TABLE marketplace_agents ADD COLUMN verified INTEGER NOT NULL DEFAULT 0 CHECK(verified IN (0, 1));

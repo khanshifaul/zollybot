@@ -1,25 +1,28 @@
-import { agentTemplateIdFromWebAppSearch, WEB_APP_AGENT_TEMPLATE_PARAM } from "@openbot/contracts/agent-template-links";
-import { companySignInErrorKey, WEB_APP_COMPANY_SIGN_IN_ERROR_PARAM } from "@openbot/contracts/company-sign-in";
-import { type FirstTouch, readFirstTouch } from "@openbot/contracts/first-touch";
-import { inviteUrlFromWebAppSearch, WEB_APP_INVITE_FIELDS } from "@openbot/contracts/invite-links";
-import { type AppVariant, type CentralAuthState, type CentralAuthUser, isAvatarColor } from "@openbot/contracts/ipc";
+import { Dynamic } from "@solidjs/web";
+import {
+  agentTemplateIdFromWebAppSearch,
+  WEB_APP_AGENT_TEMPLATE_PARAM,
+} from "@zollybot/contracts/agent-template-links";
+import { companySignInErrorKey, WEB_APP_COMPANY_SIGN_IN_ERROR_PARAM } from "@zollybot/contracts/company-sign-in";
+import { type FirstTouch, readFirstTouch } from "@zollybot/contracts/first-touch";
+import { inviteUrlFromWebAppSearch, WEB_APP_INVITE_FIELDS } from "@zollybot/contracts/invite-links";
+import { type AppVariant, type CentralAuthState, type CentralAuthUser, isAvatarColor } from "@zollybot/contracts/ipc";
 import {
   type MarketplaceListingLink,
   marketplaceListingFromWebAppSearch,
   WEB_APP_MARKETPLACE_AGENT_PARAM,
   WEB_APP_MARKETPLACE_SKILL_PARAM,
-} from "@openbot/contracts/marketplace-links";
-import { pluginSlugFromWebAppSearch, WEB_APP_PLUGIN_PARAM } from "@openbot/contracts/plugin-links";
-import { isBoolean, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { formatLocale, resolveLocale } from "@openbot/i18n";
-import { sourceText } from "@openbot/i18n/source";
-import { markRemoteSync } from "@openbot/team-client/sync-profile";
-import { classifyFailure } from "@openbot/telemetry";
-import { NotificationObserver, Toaster, toast } from "@openbot/ui";
-import { AccountLogin } from "@openbot/ui/features/account/AccountLogin";
-import { AppLoadingScreen } from "@openbot/ui/features/account/AppLoadingScreen";
-import { currentText } from "@openbot/ui/text";
-import { Dynamic } from "@solidjs/web";
+} from "@zollybot/contracts/marketplace-links";
+import { pluginSlugFromWebAppSearch, WEB_APP_PLUGIN_PARAM } from "@zollybot/contracts/plugin-links";
+import { isBoolean, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { formatLocale, resolveLocale } from "@zollybot/i18n";
+import { sourceText } from "@zollybot/i18n/source";
+import { markRemoteSync } from "@zollybot/team-client/sync-profile";
+import { classifyFailure } from "@zollybot/telemetry";
+import { NotificationObserver, Toaster, toast } from "@zollybot/ui";
+import { AccountLogin } from "@zollybot/ui/features/account/AccountLogin";
+import { AppLoadingScreen } from "@zollybot/ui/features/account/AppLoadingScreen";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createSignal, createStore, onSettled, Show } from "solid-js";
 import type { DesktopAnalyticsProperties } from "../../analytics";
 import {
@@ -279,7 +282,7 @@ export function WebApp(props: { createRuntime?: WebRuntimeFactory } = {}) {
       method: body ? "POST" : "GET",
       credentials: "same-origin",
       cache: "no-store",
-      headers: body ? { "Content-Type": "application/json", "X-OpenBot-Browser": "1" } : {},
+      headers: body ? { "Content-Type": "application/json", "X-ZollyBot-Browser": "1" } : {},
       ...(body ? { body: JSON.stringify(body) } : {}),
     });
     const value = await response.json();
@@ -441,7 +444,7 @@ export function WebApp(props: { createRuntime?: WebRuntimeFactory } = {}) {
       method: "POST",
       credentials: "same-origin",
       cache: "no-store",
-      headers: { "Content-Type": "application/json", "X-OpenBot-Browser": "1" },
+      headers: { "Content-Type": "application/json", "X-ZollyBot-Browser": "1" },
       body: JSON.stringify({ email }),
     });
     const value = await response.json().catch(() => null);
@@ -489,7 +492,7 @@ export function WebApp(props: { createRuntime?: WebRuntimeFactory } = {}) {
     channel?.postMessage("session-changed");
   }
   onSettled(() => {
-    channel = new BroadcastChannel("openbot.web.session");
+    channel = new BroadcastChannel("zollybot.web.session");
     channel.onmessage = () => {
       clearSession();
       void checkSession();

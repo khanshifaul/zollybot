@@ -1,4 +1,4 @@
-import { APP_INTERFACE_SIZES, type AppInterfaceSize, type AppVariant, type AvatarColor } from "@openbot/contracts/ipc";
+import { APP_INTERFACE_SIZES, type AppInterfaceSize, type AppVariant, type AvatarColor } from "@zollybot/contracts/ipc";
 import {
   Item,
   ItemActions,
@@ -14,14 +14,14 @@ import {
   SettingsSection,
   SwitchField,
   toast,
-} from "@openbot/ui";
-import { AppearanceSelect } from "@openbot/ui/features/settings/AppearanceSelect";
-import type { GeneralSettingsValue } from "@openbot/ui/features/settings/app-settings";
-import { OwnChatColorTrigger } from "@openbot/ui/features/settings/ChatColorSetting";
-import { LanguageSelect } from "@openbot/ui/features/settings/LanguageSelect";
-import { LogoColorPicker } from "@openbot/ui/features/settings/LogoColorPicker";
-import { SendShortcutSelect } from "@openbot/ui/features/settings/SendShortcutSelect";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { AppearanceSelect } from "@zollybot/ui/features/settings/AppearanceSelect";
+import type { GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
+import { OwnChatColorTrigger } from "@zollybot/ui/features/settings/ChatColorSetting";
+import { LanguageSelect } from "@zollybot/ui/features/settings/LanguageSelect";
+import { LogoColorPicker } from "@zollybot/ui/features/settings/LogoColorPicker";
+import { SendShortcutSelect } from "@zollybot/ui/features/settings/SendShortcutSelect";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 import { useAppearanceChoice } from "../../appearance-choice";
 import { useI18n } from "../../i18n-context";
@@ -60,7 +60,7 @@ export function SettingsGeneralTab(props: SettingsGeneralTabProps) {
       );
   const interfaceSizeLabel = (value: AppInterfaceSize | undefined) =>
     value === undefined ? "" : format.percent(value / 100);
-  /** macOS always keeps running after the window closes. There the switch moves OpenBot from the Dock to the menu bar. */
+  /** macOS always keeps running after the window closes. There the switch moves ZollyBot from the Dock to the menu bar. */
   const backgroundRow = () =>
     props.platform === "darwin"
       ? ({ title: "settings.menuBar.title", description: "settings.menuBar.description" } as const)

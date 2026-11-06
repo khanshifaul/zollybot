@@ -12,11 +12,11 @@ import {
   type ChannelIcon,
   type ChannelIconName,
   type ChannelMember,
-} from "@openbot/contracts/ipc";
-import { Button, IconButton, Input, Pencil, Plus, Popover, RotateCcw, toast } from "@openbot/ui";
-import { normalizeAvatarFile } from "@openbot/ui/avatar-image";
-import { AVATAR_HUE_CHOICES, avatarHueSwatch } from "@openbot/ui/bloub-avatar";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import { Button, IconButton, Input, Pencil, Plus, Popover, RotateCcw, toast } from "@zollybot/ui";
+import { normalizeAvatarFile } from "@zollybot/ui/avatar-image";
+import { AVATAR_HUE_CHOICES, avatarHueSwatch } from "@zollybot/ui/bloub-avatar";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, For, Show } from "solid-js";
 import type { AgentProfile } from "../../data";
 import { AVATAR_HUE_LABEL } from "../agents/avatar-hue-label";

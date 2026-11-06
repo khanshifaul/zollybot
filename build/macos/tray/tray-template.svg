@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-14 -14 268 268">
-  <title>OpenBot menu bar icon</title>
-  <!-- The mark of @openbot/brand (app-logo-shape.ts) with the eyes cut out. macOS draws it in the menu bar color. -->
+  <title>ZollyBot menu bar icon</title>
+  <!-- The mark of @zollybot/brand (app-logo-shape.ts) with the eyes cut out. macOS draws it in the menu bar color. -->
   <defs>
     <mask id="eyes" maskUnits="userSpaceOnUse" x="-14" y="-14" width="268" height="268">
       <rect x="-14" y="-14" width="268" height="268" fill="#fff"/>

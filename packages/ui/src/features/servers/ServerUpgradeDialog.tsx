@@ -4,9 +4,9 @@ import {
   type BillingInterval,
   type BillingPlanId,
   billingListPrices,
-} from "@openbot/contracts/billing";
-import { HOSTED_PLAN_SIZE, HOSTED_SERVER_SIZES } from "@openbot/contracts/hosted-servers";
-import { Button, Dialog, Progress } from "@openbot/ui";
+} from "@zollybot/contracts/billing";
+import { HOSTED_PLAN_SIZE, HOSTED_SERVER_SIZES } from "@zollybot/contracts/hosted-servers";
+import { Button, Dialog, Progress } from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { useText } from "../../text";
 import { formatMinorMoney } from "../billing/money";
@@ -27,7 +27,7 @@ export interface ServerUpgradeDialogProps {
   nextPlan: BillingPlanId;
   interval: BillingInterval;
   currency: BillingCurrency;
-  /** The Stripe list price of one period of `plan`, in minor units. Null shows the OpenBot list price. */
+  /** The Stripe list price of one period of `plan`, in minor units. Null shows the ZollyBot list price. */
   amount: number | null;
   /** The plan change page of the Customer Portal is opening. */
   pending: boolean;

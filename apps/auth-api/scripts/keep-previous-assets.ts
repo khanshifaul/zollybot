@@ -9,10 +9,10 @@
 import { existsSync } from "node:fs";
 import { readdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Option, Schema } from "effect";
 
-const logger = createOpenBotLogger("keep-previous-assets");
+const logger = createZollyBotLogger("keep-previous-assets");
 
 const ASSET_HISTORY_FILE = "asset-history.json";
 const PRODUCTION_ORIGIN = "https://openbot.run";

@@ -1,4 +1,4 @@
-import type { GeneralSettingsValue } from "@openbot/ui/features/settings/app-settings";
+import type { GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
 import { play } from "cuelume";
 import { playSoundChoice } from "../src/completion-sound";
 

@@ -1,8 +1,8 @@
 import { readdir, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
-import { API_KEY_NAME_PATTERN } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { registerSecretValue } from "@openbot/logging";
+import { API_KEY_NAME_PATTERN } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { registerSecretValue } from "@zollybot/logging";
 import { Effect, Schema, Semaphore } from "effect";
 import { writeFileAtomically } from "./atomic-json-file";
 import { isMissingFileError } from "./file-errors";
@@ -18,7 +18,7 @@ export interface SavedApiKey {
   path: string;
   /**
    * Present for a key from the Vault, which every agent can read. The user changes it, or an agent with
-   * `save_api_key` when a person asked in the OpenBot chat.
+   * `save_api_key` when a person asked in the ZollyBot chat.
    */
   source?: "vault";
 }
@@ -37,7 +37,7 @@ const failed = () => new AgentApiKeyFailed({ cause: new Error(sourceText("error.
  * The API keys that the user entered for an agent through `request_api_key`. Each key is one file,
  * `<root>/<agentId>/<NAME>`, readable only by the user, outside every workspace. The agent gets the
  * path and reads the file in its own commands, so the value never travels in a tool argument or a
- * tool result. Each value is registered for redaction when it is saved and when OpenBot starts.
+ * tool result. Each value is registered for redaction when it is saved and when ZollyBot starts.
  *
  * The Vault's API keys are for every agent. The Vault keeps them encrypted; `list` writes each one to
  * `<root>/.vault/<NAME>` only when an agent asks for its keys, and `syncVault` rewrites or removes those

@@ -11,23 +11,23 @@
   display: flex;
   min-height: 24px;
   align-items: center;
-  gap: var(--openbot-space-1);
-  padding-inline: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
+  padding-inline: var(--zollybot-space-1);
 }
 
 /* Keep the face beside the bubble, independent of the author name and footer height. The face is a
    little shorter than a one-line bubble, so it reads at the size of the sidebar faces. */
 .message-entry-with-author,
 .message-author-gutter {
-  --message-author-face-size: var(--openbot-space-8);
-  --message-author-column: calc(var(--message-author-face-size) + var(--openbot-space-1));
+  --message-author-face-size: var(--zollybot-space-8);
+  --message-author-column: calc(var(--message-author-face-size) + var(--zollybot-space-1));
 }
 
 .message-entry-with-author {
   display: grid;
   grid-template-columns: var(--message-author-column) minmax(0, 1fr);
-  column-gap: var(--openbot-space-2);
-  row-gap: var(--openbot-space-1);
+  column-gap: var(--zollybot-space-2);
+  row-gap: var(--zollybot-space-1);
 }
 
 .message-entry-with-author > .ui-message-content {
@@ -85,10 +85,10 @@
 .message-author-name {
   grid-column: 2;
   grid-row: 1;
-  padding-inline: var(--openbot-space-3);
+  padding-inline: var(--zollybot-space-3);
   min-width: 0;
-  color: var(--message-author-color, var(--openbot-text-muted));
-  font-weight: var(--openbot-weight-regular);
+  color: var(--message-author-color, var(--zollybot-text-muted));
+  font-weight: var(--zollybot-weight-regular);
   /* A long name with no space wraps instead of widening the row. */
   overflow-wrap: anywhere;
 }
@@ -96,9 +96,9 @@
 .message-author-name-button {
   height: auto;
   min-width: 0;
-  margin-inline: calc(var(--openbot-space-1-5) * -1);
-  padding: 0 var(--openbot-space-1-5);
-  border-radius: var(--openbot-radius-md);
+  margin-inline: calc(var(--zollybot-space-1-5) * -1);
+  padding: 0 var(--zollybot-space-1-5);
+  border-radius: var(--zollybot-radius-md);
   color: inherit;
   font: inherit;
   white-space: normal;
@@ -107,7 +107,7 @@
 
 .message-author-name-button:hover:not(:disabled):not([data-disabled]),
 .message-author-name-button:focus-visible {
-  background: var(--openbot-hover);
+  background: var(--zollybot-hover);
   color: inherit;
 }
 
@@ -116,7 +116,7 @@
  * Windows reports while its animation effects are off) still shows.
  */
 .message-entry-animated {
-  animation: message-in var(--openbot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: message-in var(--zollybot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .message-entry-agent {
@@ -142,7 +142,7 @@
   width: 100%;
   min-width: 0;
   justify-items: end;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .message-media-before {
@@ -162,17 +162,17 @@
   gap: 2px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--openbot-duration-hover) ease;
+  transition: opacity var(--zollybot-duration-hover) ease;
 }
 
 .message-time {
-  padding-inline: var(--openbot-space-1);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  padding-inline: var(--zollybot-space-1);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   white-space: nowrap;
   opacity: 0;
-  transition: opacity var(--openbot-duration-hover) ease;
+  transition: opacity var(--zollybot-duration-hover) ease;
 }
 
 .message-author-name > .message-time {
@@ -200,7 +200,7 @@
    only when the line has no room, so only a long answer keeps space for them. */
 .message-entry-actions-beside .message-shell {
   flex-wrap: wrap;
-  row-gap: var(--openbot-space-1);
+  row-gap: var(--zollybot-space-1);
 }
 
 /* The face stays at the end of the bubble when the actions go under it. */
@@ -226,7 +226,7 @@
   min-width: 0;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--openbot-duration-hover) ease;
+  transition: opacity var(--zollybot-duration-hover) ease;
 }
 
 .message-steps > .agent-steps {
@@ -237,13 +237,13 @@
 .message-steps .agent-steps .agent-steps-header {
   margin-inline-start: 0;
   padding-block: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .message-steps .agent-steps-summary {
-  font-weight: var(--openbot-weight-regular);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .message-entry:hover .message-steps,
@@ -276,7 +276,7 @@
 
 /* Their bubble takes a tint of their name colour, so it does not read as the reader's own. */
 .ui-bubble.message-bubble-member {
-  --message-bubble-tint: var(--message-author-color, var(--openbot-accent));
+  --message-bubble-tint: var(--message-author-color, var(--zollybot-accent));
   --message-bubble-tint-amount: 22%;
 }
 
@@ -290,7 +290,7 @@
 }
 
 /* 22% of a color on the dark surface is dull, so the dark theme takes more of a chat color. */
-:root[data-openbot-color-scheme="light"] .ui-bubble.message-bubble-colored {
+:root[data-zollybot-color-scheme="light"] .ui-bubble.message-bubble-colored {
   --message-bubble-tint-amount: 22%;
 }
 
@@ -300,18 +300,18 @@
  * muted bubble mixes it into the surface.
  */
 .ui-bubble:is(.message-bubble-member, .message-bubble-colored) {
-  --message-plain-canvas: var(--openbot-bg-canvas);
-  --message-plain-sidebar: var(--openbot-bg-sidebar);
-  --message-plain-surface: var(--openbot-bg-surface);
-  --message-plain-surface-raised: var(--openbot-bg-surface-raised);
-  --message-plain-control: var(--openbot-bg-control);
-  --message-plain-control-hover: var(--openbot-bg-control-hover);
-  --message-plain-control-active: var(--openbot-bg-control-active);
-  --message-bubble-base: var(--openbot-bg-surface-raised);
+  --message-plain-canvas: var(--zollybot-bg-canvas);
+  --message-plain-sidebar: var(--zollybot-bg-sidebar);
+  --message-plain-surface: var(--zollybot-bg-surface);
+  --message-plain-surface-raised: var(--zollybot-bg-surface-raised);
+  --message-plain-control: var(--zollybot-bg-control);
+  --message-plain-control-hover: var(--zollybot-bg-control-hover);
+  --message-plain-control-active: var(--zollybot-bg-control-active);
+  --message-bubble-base: var(--zollybot-bg-surface-raised);
 }
 
 .message-entry-agent .ui-bubble-variant-muted.message-bubble-colored {
-  --message-bubble-base: var(--openbot-bg-surface);
+  --message-bubble-base: var(--zollybot-bg-surface);
 }
 
 .ui-bubble.message-bubble-member > .ui-bubble-content {
@@ -332,43 +332,43 @@
 .message-entry-user .ui-bubble.message-bubble-colored > .ui-bubble-content,
 .message-entry-agent .ui-bubble-variant-muted.message-bubble-colored > .ui-bubble-content {
   --message-surface-lift: 5%;
-  --openbot-bg-canvas: color-mix(
+  --zollybot-bg-canvas: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(in srgb, var(--message-bubble-tint) var(--message-bubble-tint-amount), var(--message-plain-canvas))
   );
-  --openbot-bg-sidebar: color-mix(
+  --zollybot-bg-sidebar: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(in srgb, var(--message-bubble-tint) var(--message-bubble-tint-amount), var(--message-plain-sidebar))
   );
-  --openbot-bg-surface: color-mix(
+  --zollybot-bg-surface: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(in srgb, var(--message-bubble-tint) var(--message-bubble-tint-amount), var(--message-plain-surface))
   );
-  --openbot-bg-surface-raised: color-mix(
+  --zollybot-bg-surface-raised: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(
       in srgb,
       var(--message-bubble-tint) var(--message-bubble-tint-amount),
       var(--message-plain-surface-raised)
     )
   );
-  --openbot-bg-control: color-mix(
+  --zollybot-bg-control: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(in srgb, var(--message-bubble-tint) var(--message-bubble-tint-amount), var(--message-plain-control))
   );
-  --openbot-bg-control-hover: color-mix(
+  --zollybot-bg-control-hover: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(in srgb, var(--message-bubble-tint) var(--message-bubble-tint-amount), var(--message-plain-control-hover))
   );
-  --openbot-bg-control-active: color-mix(
+  --zollybot-bg-control-active: color-mix(
     in srgb,
-    var(--openbot-text-primary) var(--message-surface-lift),
+    var(--zollybot-text-primary) var(--message-surface-lift),
     color-mix(
       in srgb,
       var(--message-bubble-tint) var(--message-bubble-tint-amount),
@@ -386,13 +386,13 @@
 /* A menu, a tooltip or a popover that opens in a bubble with a chat color covers the chat, so it stays plain. */
 .ui-bubble.message-bubble-colored
 :is([data-popper-positioner], [role="dialog"], [role="menu"], [role="listbox"], [role="tooltip"]) {
-  --openbot-bg-canvas: var(--message-plain-canvas);
-  --openbot-bg-sidebar: var(--message-plain-sidebar);
-  --openbot-bg-surface: var(--message-plain-surface);
-  --openbot-bg-surface-raised: var(--message-plain-surface-raised);
-  --openbot-bg-control: var(--message-plain-control);
-  --openbot-bg-control-hover: var(--message-plain-control-hover);
-  --openbot-bg-control-active: var(--message-plain-control-active);
+  --zollybot-bg-canvas: var(--message-plain-canvas);
+  --zollybot-bg-sidebar: var(--message-plain-sidebar);
+  --zollybot-bg-surface: var(--message-plain-surface);
+  --zollybot-bg-surface-raised: var(--message-plain-surface-raised);
+  --zollybot-bg-control: var(--message-plain-control);
+  --zollybot-bg-control-hover: var(--message-plain-control-hover);
+  --zollybot-bg-control-active: var(--message-plain-control-active);
 }
 
 /*
@@ -413,21 +413,21 @@
   height: 24px;
   place-items: center;
   border: 0;
-  border-radius: var(--openbot-radius-sm);
+  border-radius: var(--zollybot-radius-sm);
   background: transparent;
   padding: 0;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   transition:
-    background var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease;
+    background var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease;
 }
 
 /* Every button of the row, the reaction trigger too, takes the hover of a ghost button. */
 .message-action-button:hover,
 .message-action-button:focus-visible,
 .message-action-button[aria-expanded="true"] {
-  background: var(--openbot-bg-control-hover);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  color: var(--zollybot-text-primary);
   outline: none;
 }
 
@@ -472,7 +472,7 @@
 
 .reaction-picker-more {
   margin-top: 3px;
-  border-top: 1px solid var(--openbot-border);
+  border-top: 1px solid var(--zollybot-border);
   padding-top: 4px;
 }
 
@@ -496,28 +496,28 @@
   flex: 0 0 auto;
   place-items: center;
   border: 0;
-  border-radius: var(--openbot-radius-sm);
+  border-radius: var(--zollybot-radius-sm);
   background: transparent;
   padding: 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-xl);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-xl);
   line-height: 1;
   transition:
-    background var(--openbot-duration-hover) ease,
-    transform var(--openbot-duration-hover) ease;
+    background var(--zollybot-duration-hover) ease,
+    transform var(--zollybot-duration-hover) ease;
 }
 
 .reaction-picker-row :is([role="menuitem"], [role="menuitemradio"]):hover,
 .reaction-picker-row :is([role="menuitem"], [role="menuitemradio"]):focus-visible,
 .reaction-picker-row :is([role="menuitem"], [role="menuitemradio"])[data-highlighted],
 .reaction-picker-row [role="menuitemradio"][aria-checked="true"] {
-  background: var(--openbot-border);
+  background: var(--zollybot-border);
   outline: none;
   transform: scale(1.08);
 }
 
 .reaction-picker-row .reaction-more-button {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .reaction-more-button svg {
@@ -528,21 +528,21 @@
 .message-reaction-pill {
   display: flex;
   min-width: 0;
-  height: var(--openbot-icon-lg);
+  height: var(--zollybot-icon-lg);
   align-items: center;
   justify-content: center;
   border: 0;
-  border-radius: var(--openbot-radius-sm);
+  border-radius: var(--zollybot-radius-sm);
   background: transparent;
   padding: 0;
   color: inherit;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
   line-height: 1;
-  transition: background var(--openbot-duration-hover) ease;
+  transition: background var(--zollybot-duration-hover) ease;
 }
 
 .message-entry:has(.message-reaction-anchor) > .ui-message-content {
-  padding-bottom: var(--openbot-space-3);
+  padding-bottom: var(--zollybot-space-3);
 }
 
 .message-reaction-anchor .message-reaction-pill {
@@ -556,13 +556,13 @@
 }
 
 .ui-bubble-reactions.message-reaction-anchor:has(> .message-reaction-pill:only-child) {
-  width: var(--openbot-control-xs);
+  width: var(--zollybot-control-xs);
   padding-inline: 2px;
 }
 
 .ui-bubble-reactions.message-reaction-anchor:has(> .message-reaction-pill:only-child) > .message-reaction-pill {
-  width: var(--openbot-icon-lg);
-  border-radius: var(--openbot-radius-pill);
+  width: var(--zollybot-icon-lg);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .message-reaction-anchor .ui-bubble-reaction-overflow {
@@ -570,7 +570,7 @@
 }
 
 .message-reaction-pill:hover {
-  background: var(--openbot-hover);
+  background: var(--zollybot-hover);
 }
 
 .message-reaction-pill-readonly:hover {
@@ -579,8 +579,8 @@
 
 .message-reaction-anchor:has(.message-reaction-pill:focus-visible) {
   box-shadow:
-    0 0 0 3px var(--openbot-bg-canvas),
-    0 0 0 5px var(--openbot-border-focus);
+    0 0 0 3px var(--zollybot-bg-canvas),
+    0 0 0 5px var(--zollybot-border-focus);
 }
 
 .message-reaction-pill:focus-visible {
@@ -589,7 +589,7 @@
 
 .chat-action-entry-animated {
   width: 100%;
-  animation: message-in var(--openbot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: message-in var(--zollybot-duration-normal) cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 /* The line's padding, the 32px face, and its lower padding. */
@@ -602,7 +602,7 @@
   display: grid;
   grid-template-rows: 1fr;
   pointer-events: none;
-  transition: grid-template-rows var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: grid-template-rows var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 @starting-style {
@@ -621,18 +621,18 @@
   align-items: center;
   gap: 8px;
   overflow: clip;
-  overflow-clip-margin: var(--openbot-space-3);
+  overflow-clip-margin: var(--zollybot-space-3);
   /* The working face's felt dots reach about 10px above it. The top padding keeps them in this line,
      so they do not cover the message above. */
-  padding-block: var(--openbot-space-3) 8px;
+  padding-block: var(--zollybot-space-3) 8px;
   padding-inline: 8px 0;
   opacity: 1;
   filter: blur(0);
   transform: translateY(0);
   transition:
-    opacity var(--openbot-duration-overlay) var(--openbot-ease-out),
-    filter var(--openbot-duration-overlay) var(--openbot-ease-out),
-    transform var(--openbot-duration-overlay) var(--openbot-ease-out);
+    opacity var(--zollybot-duration-overlay) var(--zollybot-ease-out),
+    filter var(--zollybot-duration-overlay) var(--zollybot-ease-out),
+    transform var(--zollybot-duration-overlay) var(--zollybot-ease-out);
   will-change: opacity, filter, transform;
 }
 
@@ -658,7 +658,7 @@
   flex: 0 0 auto;
   align-self: center;
   transform: translateY(0) scale(1);
-  transition: transform var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: transform var(--zollybot-duration-overlay) var(--zollybot-ease-out);
   will-change: transform;
 }
 
@@ -679,17 +679,17 @@
   overflow: hidden;
   background: linear-gradient(
     90deg,
-    var(--openbot-text-primary) 0%,
-    var(--openbot-text-primary) 30%,
-    var(--openbot-text-muted) 45%,
-    var(--openbot-text-muted) 55%,
-    var(--openbot-text-primary) 70%,
-    var(--openbot-text-primary) 100%
+    var(--zollybot-text-primary) 0%,
+    var(--zollybot-text-primary) 30%,
+    var(--zollybot-text-muted) 45%,
+    var(--zollybot-text-muted) 55%,
+    var(--zollybot-text-primary) 70%,
+    var(--zollybot-text-primary) 100%
   );
   background-size: 300% 100%;
   background-clip: text;
   color: transparent;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   line-height: 20px;
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
@@ -703,41 +703,41 @@
 .agent-activity-entry[data-waiting="true"] .agent-activity-label {
   animation: none;
   background: none;
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
   -webkit-text-fill-color: currentColor;
 }
 
 .agent-activity-elapsed {
   flex: 0 0 auto;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   font-variant-numeric: tabular-nums;
   line-height: 20px;
 }
 
 .chat-action-marker {
-  width: min(var(--openbot-chat-marker-width), calc(100% - var(--openbot-space-6)));
-  min-height: var(--openbot-chat-marker-height);
+  width: min(var(--zollybot-chat-marker-width), calc(100% - var(--zollybot-space-6)));
+  min-height: var(--zollybot-chat-marker-height);
   justify-content: center;
   margin: 0 auto;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
-  letter-spacing: var(--openbot-tracking-normal);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+  letter-spacing: var(--zollybot-tracking-normal);
   text-align: center;
 }
 
 .chat-action-marker-content {
   max-width: 100%;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .chat-action-marker-summary {
-  /* The reveal's own timings. They sit above the `--openbot-duration-*` scale,
+  /* The reveal's own timings. They sit above the `--zollybot-duration-*` scale,
      which tops out at an overlay fade: this is a panel of rows that has to read
      as unrolling, and the palette has no token for that. */
   --chat-action-history-open: 340ms;
-  /* The shared eases are quint curves: `--openbot-ease-in-out` holds the panel
+  /* The shared eases are quint curves: `--zollybot-ease-in-out` holds the panel
      almost still for 50ms and then moves 25px in two frames, which reads as a
      lurch in everything below it. This one spreads the distance evenly and
      settles, so the messages under the marker travel at one speed. */
@@ -768,17 +768,17 @@
 
 .ui-button.chat-action-history-toggle {
   flex: 0 0 auto;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* The link to the routine's own thread, where the run's answer and work are. */
 .ui-button.chat-action-routine-thread {
   flex: 0 0 auto;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 .chat-action-history-toggle svg {
-  transition: transform var(--chat-action-history-close) var(--openbot-ease-out);
+  transition: transform var(--chat-action-history-close) var(--zollybot-ease-out);
 }
 
 .chat-action-history-toggle[aria-expanded="true"] svg {
@@ -823,14 +823,14 @@
 /* On the way in the box grows under rows that are still fading up, so its edge
    never cuts anything solid. */
 .chat-action-history-panel[data-state="open"] .chat-action-history {
-  animation: chat-action-history-settle var(--chat-action-history-open) var(--openbot-ease-out);
+  animation: chat-action-history-settle var(--chat-action-history-open) var(--zollybot-ease-out);
 }
 
 /* The rows fade out just before the box finishes closing, so the clip edge never
    cuts through anything solid and the panel is never an empty box shrinking on
    its own. The panel leaves the tree on the collapse's end, not on this one's. */
 .chat-action-history-panel[data-state="closed"] .chat-action-history {
-  animation: chat-action-history-lift var(--chat-action-history-lift) var(--openbot-ease-out) forwards;
+  animation: chat-action-history-lift var(--chat-action-history-lift) var(--zollybot-ease-out) forwards;
 }
 
 /* No fade on the way in: the rows already carry their own, and stacking a second
@@ -866,12 +866,12 @@
 .chat-action-history-panel[data-state="closed"] .chat-action-history-clip {
   -webkit-mask-image: linear-gradient(
     to bottom,
-    var(--openbot-text-primary) calc(100% - var(--chat-action-history-fade)),
+    var(--zollybot-text-primary) calc(100% - var(--chat-action-history-fade)),
     transparent
   );
   mask-image: linear-gradient(
     to bottom,
-    var(--openbot-text-primary) calc(100% - var(--chat-action-history-fade)),
+    var(--zollybot-text-primary) calc(100% - var(--chat-action-history-fade)),
     transparent
   );
 }
@@ -880,27 +880,27 @@
   box-sizing: border-box;
   display: grid;
   width: 100%;
-  gap: var(--openbot-space-1);
-  margin: var(--openbot-space-1) 0 0;
-  padding: var(--openbot-space-1-5) var(--openbot-space-2);
-  border-inline-start: 1px solid var(--openbot-border-grouped);
+  gap: var(--zollybot-space-1);
+  margin: var(--zollybot-space-1) 0 0;
+  padding: var(--zollybot-space-1-5) var(--zollybot-space-2);
+  border-inline-start: 1px solid var(--zollybot-border-grouped);
   list-style: none;
   text-align: start;
 }
 
 .chat-action-history-entry {
   display: grid;
-  grid-template-columns: var(--openbot-icon-xs) minmax(0, 1fr) auto;
+  grid-template-columns: var(--zollybot-icon-xs) minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  color: var(--openbot-text-secondary);
+  gap: var(--zollybot-space-1-5);
+  color: var(--zollybot-text-secondary);
 }
 
 /* `backwards` holds the entry hidden through its delay, so a late state never
    shows at full strength before its turn. The exit leaves the rows alone: the
    list fades as one piece. */
 .chat-action-history-panel[data-state="open"] .chat-action-history-entry {
-  animation: chat-action-history-entry-in var(--chat-action-history-entry) var(--openbot-ease-out) backwards;
+  animation: chat-action-history-entry-in var(--chat-action-history-entry) var(--zollybot-ease-out) backwards;
 }
 
 .chat-action-history-panel[data-state="open"] .chat-action-history-entry:nth-child(2) {
@@ -918,39 +918,39 @@
 
 @keyframes chat-action-history-entry-in {
   from {
-    transform: translateX(calc(var(--openbot-space-1) * -1));
+    transform: translateX(calc(var(--zollybot-space-1) * -1));
     opacity: 0;
     filter: blur(2px);
   }
 }
 
 .chat-action-history-entry time {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   white-space: nowrap;
 }
 
 .chat-action-history-icon,
 .chat-action-history-icon svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
 .chat-action-history-status-completed .chat-action-history-icon {
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 .chat-action-history-status-failed .chat-action-history-icon,
 .chat-action-history-status-interrupted .chat-action-history-icon,
 .chat-action-history-status-cancelled .chat-action-history-icon {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .chat-action-history-status-needs-attention .chat-action-history-icon {
-  color: var(--openbot-warning);
+  color: var(--zollybot-warning);
 }
 
 .chat-action-history-status-in-progress .chat-action-history-icon {
-  color: var(--openbot-accent);
+  color: var(--zollybot-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -972,8 +972,8 @@
 }
 
 .chat-action-marker-time {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
 }
 
 .chat-action-target {
@@ -982,50 +982,50 @@
   min-width: 0;
   max-width: min(280px, 100%);
   height: auto;
-  min-height: var(--openbot-chat-marker-height);
+  min-height: var(--zollybot-chat-marker-height);
   flex: 0 1 auto;
   align-items: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   border: 0;
-  border-radius: var(--openbot-radius-pill);
+  border-radius: var(--zollybot-radius-pill);
   background: transparent;
-  padding: 0 var(--openbot-space-1-5);
-  color: var(--openbot-text-secondary);
+  padding: 0 var(--zollybot-space-1-5);
+  color: var(--zollybot-text-secondary);
   font: inherit;
   line-height: inherit;
   outline: none;
   text-align: start;
   white-space: nowrap;
   transition:
-    background-color var(--openbot-duration-hover) var(--openbot-ease-out),
-    box-shadow var(--openbot-duration-hover) var(--openbot-ease-out),
-    color var(--openbot-duration-hover) var(--openbot-ease-out),
-    scale var(--openbot-duration-fast) var(--openbot-ease-out);
+    background-color var(--zollybot-duration-hover) var(--zollybot-ease-out),
+    box-shadow var(--zollybot-duration-hover) var(--zollybot-ease-out),
+    color var(--zollybot-duration-hover) var(--zollybot-ease-out),
+    scale var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
 button.chat-action-target:hover,
 .chat-action-agent-menu-trigger:hover,
 .chat-action-agent-menu-trigger[aria-expanded="true"] {
-  background: var(--openbot-bg-control-hover);
-  box-shadow: 0 0 0 1px var(--openbot-border-strong);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  box-shadow: 0 0 0 1px var(--zollybot-border-strong);
+  color: var(--zollybot-text-primary);
 }
 
 button.chat-action-target:focus-visible,
 .chat-action-agent-menu-trigger:focus-visible {
-  background: var(--openbot-bg-control-hover);
-  box-shadow: var(--openbot-focus-ring);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-control-hover);
+  box-shadow: var(--zollybot-focus-ring);
+  color: var(--zollybot-text-primary);
 }
 
 button.chat-action-target:active,
 .chat-action-agent-menu-trigger:active {
-  background: var(--openbot-bg-control-active);
+  background: var(--zollybot-bg-control-active);
   scale: 0.96;
 }
 
 .chat-action-target-unavailable {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* Markers without a target pill keep the same optical label-to-time rhythm. */
@@ -1033,7 +1033,7 @@ button.chat-action-target:active,
 .chat-action-marker-context-reset .chat-action-marker-label,
 .chat-action-marker-model-switch .chat-action-marker-label,
 .chat-action-marker-channel-change .chat-action-marker-label {
-  padding-inline-end: var(--openbot-space-1-5);
+  padding-inline-end: var(--zollybot-space-1-5);
 }
 
 .chat-action-target-name,
@@ -1045,9 +1045,9 @@ button.chat-action-target:active,
 
 .chat-action-target .ui-marker-icon,
 .chat-action-target .ui-marker-icon svg {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  flex: 0 0 var(--openbot-icon-xs);
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  flex: 0 0 var(--zollybot-icon-xs);
 }
 
 .chat-action-target .ui-marker-icon {
@@ -1058,16 +1058,16 @@ button.chat-action-target:active,
   --agent-avatar-optical-offset: -2px;
 
   position: relative;
-  width: var(--openbot-chat-marker-avatar);
-  height: var(--openbot-chat-marker-avatar);
-  flex: 0 0 var(--openbot-chat-marker-avatar);
+  width: var(--zollybot-chat-marker-avatar);
+  height: var(--zollybot-chat-marker-avatar);
+  flex: 0 0 var(--zollybot-chat-marker-avatar);
   border: 0;
   background: transparent;
   translate: 0 -0.5px;
 }
 
 .chat-action-marker-agent-message .chat-action-target {
-  --chat-action-agent-color: var(--openbot-accent);
+  --chat-action-agent-color: var(--zollybot-accent);
 }
 
 .chat-action-marker-agent-message button.chat-action-target:hover,
@@ -1081,39 +1081,39 @@ button.chat-action-target:active,
 .chat-action-marker-agent-message button.chat-action-target:focus-visible,
 .chat-action-marker-agent-message .chat-action-agent-menu-trigger:focus-visible {
   background: color-mix(in srgb, var(--chat-action-agent-color) 16%, transparent);
-  box-shadow: var(--openbot-focus-ring);
+  box-shadow: var(--zollybot-focus-ring);
   color: var(--chat-action-agent-color);
 }
 
 .chat-action-marker-agent-message button.chat-action-target:active,
 .chat-action-marker-agent-message .chat-action-agent-menu-trigger:active {
   background: color-mix(in srgb, var(--chat-action-agent-color) 34%, transparent);
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* The open text of an agent message reads as a chat message under its centred marker. */
 .chat-action-message-text {
   align-self: stretch;
-  margin-block: var(--openbot-space-2);
+  margin-block: var(--zollybot-space-2);
   text-align: start;
 }
 
 .chat-action-target-status-in-progress .ui-marker-icon {
-  color: var(--openbot-accent);
+  color: var(--zollybot-accent);
 }
 
 .chat-action-target-status-completed .ui-marker-icon {
-  color: var(--openbot-success);
+  color: var(--zollybot-success);
 }
 
 .chat-action-target-status-failed .ui-marker-icon,
 .chat-action-target-status-cancelled .ui-marker-icon,
 .chat-action-target-status-interrupted .ui-marker-icon {
-  color: var(--openbot-danger);
+  color: var(--zollybot-danger);
 }
 
 .chat-action-target-status-needs-attention .ui-marker-icon {
-  color: var(--openbot-warning);
+  color: var(--zollybot-warning);
 }
 
 .chat-action-target-status-in-progress .ui-marker-icon svg {
@@ -1123,7 +1123,7 @@ button.chat-action-target:active,
 .chat-action-avatar-stack {
   display: inline-flex;
   min-width: 0;
-  height: var(--openbot-chat-marker-avatar);
+  height: var(--zollybot-chat-marker-avatar);
   align-items: center;
 }
 
@@ -1159,27 +1159,27 @@ button.chat-action-target:active,
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .chat-action-run-group-count::before,
 .chat-action-run-group-time::before {
   content: "·" / "";
-  margin-inline-end: var(--openbot-space-1);
+  margin-inline-end: var(--zollybot-space-1);
 }
 
 /* The shared .ui-action-menu item rule outranks a single class, so the grid template and the
  * truncation below have to be compounded to reach the row. */
 .ui-action-menu.chat-action-agent-menu {
   min-width: 220px;
-  max-width: min(320px, calc(100vw - var(--openbot-space-4)));
+  max-width: min(320px, calc(100vw - var(--zollybot-space-4)));
 }
 
 .ui-action-menu.chat-action-agent-menu .chat-action-agent-menu-item[role="menuitem"] {
   display: grid;
   align-items: center;
   grid-template-columns: 18px minmax(0, 1fr) auto;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }
 
 .chat-action-agent-menu-name {
@@ -1195,21 +1195,21 @@ button.chat-action-target:active,
 }
 
 .chat-action-agent-menu-status {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   white-space: nowrap;
 }
 
 /* The files of an update sit at the start edge, where an agent's own files sit. */
 .chat-action-attachments {
-  margin-top: var(--openbot-space-2);
+  margin-top: var(--zollybot-space-2);
 }
 
 .chat-row-unavailable {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   text-align: center;
 }
 
@@ -1284,8 +1284,8 @@ button.chat-action-target:active,
   width: min(100%, 420px);
   overflow: hidden;
   aspect-ratio: var(--image-generation-ratio);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-control);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-control);
   isolation: isolate;
 }
 
@@ -1299,9 +1299,9 @@ button.chat-action-target:active,
 
 .image-generation-canvas {
   overflow: hidden;
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
   opacity: 1;
-  transition: opacity var(--openbot-duration-overlay) ease;
+  transition: opacity var(--zollybot-duration-overlay) ease;
 }
 
 .image-generation-canvas-failed {
@@ -1328,7 +1328,7 @@ button.chat-action-target:active,
 .image-generation-dots {
   position: absolute;
   inset: 2px;
-  background-image: radial-gradient(circle, var(--openbot-text-muted) 0.7px, transparent 1.3px);
+  background-image: radial-gradient(circle, var(--zollybot-text-muted) 0.7px, transparent 1.3px);
   background-repeat: space;
   background-size: 11px 11px;
   opacity: 0.22;
@@ -1339,33 +1339,33 @@ button.chat-action-target:active,
   width: 54px;
   height: 54px;
   place-items: center;
-  border: 2px solid var(--openbot-danger);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-danger-soft);
-  box-shadow: 0 0 0 5px var(--openbot-danger-soft);
-  color: var(--openbot-danger);
+  border: 2px solid var(--zollybot-danger);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-danger-soft);
+  box-shadow: 0 0 0 5px var(--zollybot-danger-soft);
+  color: var(--zollybot-danger);
 }
 
 /* Was a 40px U+00D7 sized off a type token, which is why the scale carried a step no
  * copy in the app used. */
 .image-generation-failure-mark > svg {
-  width: var(--openbot-control-xl);
-  height: var(--openbot-control-xl);
-  stroke-width: var(--openbot-icon-stroke);
+  width: var(--zollybot-control-xl);
+  height: var(--zollybot-control-xl);
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .image-generation-glow {
   position: absolute;
   inset: 2px;
-  background-image: radial-gradient(circle, var(--openbot-text-primary) 1.1px, transparent 1.6px);
+  background-image: radial-gradient(circle, var(--zollybot-text-primary) 1.1px, transparent 1.6px);
   background-repeat: space;
   background-size: 11px 11px;
   -webkit-mask-image:
-    radial-gradient(ellipse at center, var(--openbot-text-primary) 0%, transparent 60%),
-    radial-gradient(ellipse at center, var(--openbot-text-primary) 0%, transparent 62%);
+    radial-gradient(ellipse at center, var(--zollybot-text-primary) 0%, transparent 60%),
+    radial-gradient(ellipse at center, var(--zollybot-text-primary) 0%, transparent 62%);
   mask-image:
-    radial-gradient(ellipse at center, var(--openbot-text-primary) 0%, transparent 60%),
-    radial-gradient(ellipse at center, var(--openbot-text-primary) 0%, transparent 62%);
+    radial-gradient(ellipse at center, var(--zollybot-text-primary) 0%, transparent 60%),
+    radial-gradient(ellipse at center, var(--zollybot-text-primary) 0%, transparent 62%);
   -webkit-mask-repeat: no-repeat, no-repeat;
   mask-repeat: no-repeat, no-repeat;
   -webkit-mask-size:
@@ -1390,12 +1390,12 @@ button.chat-action-target:active,
   z-index: 1;
   top: 8px;
   inset-inline-end: 8px;
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-surface);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-surface);
   padding: 2px 7px;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   white-space: nowrap;
 }
 
@@ -1411,17 +1411,17 @@ button.chat-action-target:active,
 .image-generation-label {
   background: linear-gradient(
     90deg,
-    var(--openbot-text-primary) 0%,
-    var(--openbot-text-primary) 30%,
-    var(--openbot-text-muted) 45%,
-    var(--openbot-text-muted) 55%,
-    var(--openbot-text-primary) 70%,
-    var(--openbot-text-primary) 100%
+    var(--zollybot-text-primary) 0%,
+    var(--zollybot-text-primary) 30%,
+    var(--zollybot-text-muted) 45%,
+    var(--zollybot-text-muted) 55%,
+    var(--zollybot-text-primary) 70%,
+    var(--zollybot-text-primary) 100%
   );
   background-size: 300% 100%;
   background-clip: text;
   color: transparent;
-  font-size: var(--openbot-text-lg);
+  font-size: var(--zollybot-text-lg);
   font-weight: 550;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1438,8 +1438,8 @@ button.chat-action-target:active,
 
 .image-generation-prompt {
   overflow: hidden;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1447,19 +1447,19 @@ button.chat-action-target:active,
 
 .image-generation-error {
   max-width: 100%;
-  color: var(--openbot-danger);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-danger);
+  font-size: var(--zollybot-text-sm);
   line-height: 17px;
 }
 
 .image-generation-preview {
   display: block;
   border: 0;
-  background: var(--openbot-bg-control);
+  background: var(--zollybot-bg-control);
   cursor: pointer;
   opacity: 0;
   padding: 0;
-  transition: opacity var(--openbot-duration-overlay) ease;
+  transition: opacity var(--zollybot-duration-overlay) ease;
 }
 
 .image-generation-preview-visible {
@@ -1475,7 +1475,7 @@ button.chat-action-target:active,
 
 .image-generation-preview:focus-visible,
 .image-generation-hover-download:focus-visible {
-  outline: 2px solid var(--openbot-border-focus);
+  outline: 2px solid var(--zollybot-border-focus);
   outline-offset: 2px;
 }
 
@@ -1487,25 +1487,25 @@ button.chat-action-target:active,
   gap: 6px;
   inset-inline-end: 10px;
   bottom: 10px;
-  border: 1px solid var(--openbot-border-strong);
-  border-radius: var(--openbot-radius-pill);
-  background: var(--openbot-bg-glass);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-bg-glass);
   padding: 5px 10px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
   cursor: pointer;
   backdrop-filter: blur(12px) saturate(1.15);
   -webkit-backdrop-filter: blur(12px) saturate(1.15);
-  font-size: var(--openbot-text-sm);
+  font-size: var(--zollybot-text-sm);
   font-weight: 650;
   opacity: 0;
   pointer-events: none;
   transform: translateY(4px);
   transition:
-    background-color var(--openbot-duration-hover) ease,
-    color var(--openbot-duration-hover) ease,
-    border-color var(--openbot-duration-hover) ease,
-    opacity var(--openbot-duration-hover) ease,
-    transform var(--openbot-duration-hover) ease;
+    background-color var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease,
+    border-color var(--zollybot-duration-hover) ease,
+    opacity var(--zollybot-duration-hover) ease,
+    transform var(--zollybot-duration-hover) ease;
 }
 
 .image-generation-download-icon {
@@ -1522,9 +1522,9 @@ button.chat-action-target:active,
 }
 
 .image-generation-hover-download:hover {
-  border-color: var(--openbot-border-focus);
-  background: var(--openbot-bg-glass);
-  color: var(--openbot-text-primary);
+  border-color: var(--zollybot-border-focus);
+  background: var(--zollybot-bg-glass);
+  color: var(--zollybot-text-primary);
 }
 
 @keyframes image-generation-morph {
@@ -1628,34 +1628,34 @@ button.chat-action-target:active,
   align-items: center;
   justify-content: flex-end;
   gap: 2px;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
 }
 
 .pending-send-label {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1);
-  color: var(--openbot-danger-text);
+  gap: var(--zollybot-space-1);
+  color: var(--zollybot-danger-text);
 }
 
 .pending-send-label:not(:empty) {
-  margin-inline-end: var(--openbot-space-1);
+  margin-inline-end: var(--zollybot-space-1);
 }
 
 .pending-send-label > svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
   flex: none;
 }
 
 .pending-send-error {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   overflow-wrap: anywhere;
 }
 
 .pending-send-error::before {
   content: "·";
-  margin-inline-end: var(--openbot-space-1);
+  margin-inline-end: var(--zollybot-space-1);
 }

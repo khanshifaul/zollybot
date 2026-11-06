@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { registerSecretValue } from "@openbot/logging";
+import { registerSecretValue } from "@zollybot/logging";
 import { Effect } from "effect";
 import { describe, expect, it } from "vitest";
 import type { WorkflowGitHubChange } from "../backend/workflows/workflow-github-api";
@@ -13,7 +13,7 @@ const REGISTERED = `pass-${randomBytes(18).toString("hex")}`;
 
 const COMMENT: WorkflowGitHubChange = {
   action: "comment",
-  repository: "openbot-e2e/app",
+  repository: "zollybot-e2e/app",
   number: 42,
   body: "Thanks",
   title: "",

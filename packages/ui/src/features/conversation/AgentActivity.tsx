@@ -1,5 +1,5 @@
-import type { AppTextKey } from "@openbot/i18n";
 import type { JSX } from "@solidjs/web";
+import type { AppTextKey } from "@zollybot/i18n";
 import { createEffect, createMemo, createSignal, createUniqueId, Show } from "solid-js";
 import { Button } from "../../button";
 import type { AgentProfile } from "../../data";

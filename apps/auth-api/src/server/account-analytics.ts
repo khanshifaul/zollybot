@@ -6,8 +6,8 @@ import {
   type BillingInterval,
   type BillingPlanId,
   isBillingAmount,
-} from "@openbot/contracts/billing";
-import { FIRST_TOUCH_CAMPAIGN_FIELDS, type FirstTouch, parseFirstTouch } from "@openbot/contracts/first-touch";
+} from "@zollybot/contracts/billing";
+import { FIRST_TOUCH_CAMPAIGN_FIELDS, type FirstTouch, parseFirstTouch } from "@zollybot/contracts/first-touch";
 import {
   HOSTED_SERVER_ENTRY_POINTS,
   HOSTED_SERVER_ERRORS,
@@ -15,9 +15,9 @@ import {
   type HostedServerEntryPoint,
   type HostedServerError,
   type HostedServerSize,
-} from "@openbot/contracts/hosted-servers";
-import { isOneOf } from "@openbot/contracts/runtime-values";
-import { normalizeEmailAddress } from "@openbot/contracts/validation";
+} from "@zollybot/contracts/hosted-servers";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
+import { normalizeEmailAddress } from "@zollybot/contracts/validation";
 import { Effect, Schema } from "effect";
 
 /** The same OpenPanel project as the desktop app and the website. ANALYTICS.md is the contract. */

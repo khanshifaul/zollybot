@@ -47,7 +47,7 @@ export const messages = {
   "mobile.browser.status.ended": "انتهى العرض المباشر.",
   "mobile.browser.status.offline": "الخادم غير متصل.",
   "mobile.browser.status.noTab": "لا توجد علامة تبويب مفتوحة في متصفح {name}.",
-  "mobile.browser.status.unsupported": "لا يستطيع هذا الخادم عرض متصفحه على الهاتف. حدّث OpenBot على هذا الخادم.",
+  "mobile.browser.status.unsupported": "لا يستطيع هذا الخادم عرض متصفحه على الهاتف. حدّث ZollyBot على هذا الخادم.",
   "mobile.browser.status.off": "المتصفح غير متاح في هذا الإصدار من التطبيق.",
   "mobile.browser.notice.copied": "تم النسخ إلى هاتفك.",
   "mobile.browser.notice.nothingSelected": "لا يوجد تحديد في الصفحة.",

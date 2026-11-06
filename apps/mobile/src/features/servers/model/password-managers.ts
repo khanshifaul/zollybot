@@ -1,4 +1,4 @@
-import type { PasswordManagerId, PasswordManagerStatus } from "@openbot/contracts/ipc";
+import type { PasswordManagerId, PasswordManagerStatus } from "@zollybot/contracts/ipc";
 
 /**
  * The password managers that the phone connects through the shared engine of the host

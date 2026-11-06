@@ -2,9 +2,9 @@
 // temporary profile. The events go through `receiveGitHubDelivery`, as the ingress socket gives them: a
 // comment starts a run; a second comment on the same issue waits and starts when the first run ends; a
 // comment on another issue runs at the same time; the same delivery again records nothing; a bot that is
-// not OpenBot's and OpenBot's own bot are refused by "not a bot"; "not a bot" also refuses a person's
+// not ZollyBot's and ZollyBot's own bot are refused by "not a bot"; "not a bot" also refuses a person's
 // label on a bot's issue and a bot's label on a person's issue;
-// the fourth run of a chain that OpenBot's bot caused on one issue is skipped (`chain`); an event of a
+// the fourth run of a chain that ZollyBot's bot caused on one issue is skipped (`chain`); an event of a
 // repository that no trigger watches gets 404 and a body that is not JSON gets 400; two close times
 // offline are one gap. A fake GitHub API takes the changes of GitHub outputs: a comment output posts
 // once, with the text of the step before it and not the event, and the event of that comment is skipped
@@ -17,16 +17,15 @@
 // removed does not start. No app, provider, account, Signal or network is started.
 //
 // Run: bun scripts/github-workflow-e2e.ts
-// Writes .openbot-build/github-workflow-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/github-workflow-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { WorkflowGitHubHistory, WorkflowGraph, WorkflowNode } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+import type { WorkflowGitHubHistory, WorkflowGraph, WorkflowNode } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { EXTERNAL_EVENT_END } from "../src/backend/webhook-trigger";
 import type { WorkflowGitHubApi, WorkflowGitHubChange } from "../src/backend/workflows/workflow-github-api";
 import { WorkflowGitHubStore } from "../src/backend/workflows/workflow-github-store";
@@ -39,10 +38,11 @@ import {
   type WorkflowsDependencies,
   type WorkflowsHandle,
 } from "../src/backend/workflows/workflows";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import { receiveGitHubDelivery } from "../src/main/github-relay";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/github-workflow-e2e");
-const BOT = "openbotgit";
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/github-workflow-e2e");
+const BOT = "zollybotgit";
 
 interface Report {
   checks: string[];
@@ -140,8 +140,8 @@ const comment = (repository: string, number: number, login: string, type: "User"
   };
 };
 
-const directory = await mkdtemp(join(tmpdir(), "openbot-github-workflow-"));
-const database = new OpenBotDatabase(directory);
+const directory = await mkdtemp(join(tmpdir(), "zollybot-github-workflow-"));
+const database = new ZollyBotDatabase(directory);
 let service: WorkflowsHandle | null = null;
 
 try {
@@ -282,7 +282,7 @@ try {
   check('"not a bot" refuses another bot', dependabotRow?.reason === "filter", dependabotRow);
   const ownBot = await send(comment("acme/app", 4, `${BOT}[bot]`, "Bot").body);
   const ownBotRow = await delivery(queue.summary.id, ownBot.deliveryId);
-  check('"not a bot" refuses OpenBot\'s own bot', ownBotRow?.reason === "filter", ownBotRow);
+  check('"not a bot" refuses ZollyBot\'s own bot', ownBotRow?.reason === "filter", ownBotRow);
 
   const chainRows = [];
   for (let index = 0; index < 4; index += 1) {
@@ -290,7 +290,7 @@ try {
     chainRows.push(await delivery(chain.summary.id, sent.deliveryId));
   }
   check(
-    "OpenBot's bot starts runs until the chain is too long",
+    "ZollyBot's bot starts runs until the chain is too long",
     chainRows.slice(0, 3).every((row) => row?.outcome === "started") && chainRows[3]?.reason === "chain",
     chainRows,
   );

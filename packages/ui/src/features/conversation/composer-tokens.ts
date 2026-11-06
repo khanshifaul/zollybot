@@ -1,7 +1,7 @@
-import { chatTagReferences } from "@openbot/contracts/chat-tag-references";
-import type { DraftAttachment } from "@openbot/contracts/ipc";
-import { referenceChipClasses } from "@openbot/ui/reference-chip";
-import { usesTouchLayout } from "@openbot/ui/utils";
+import { chatTagReferences } from "@zollybot/contracts/chat-tag-references";
+import type { DraftAttachment } from "@zollybot/contracts/ipc";
+import { referenceChipClasses } from "@zollybot/ui/reference-chip";
+import { usesTouchLayout } from "@zollybot/ui/utils";
 import { createStaticAvatarSvg } from "../../bloub-avatar";
 import type { ComposerAgent, ComposerBrowserTab, ComposerMcpServer, ComposerSkill, ComposerThread } from "../../data";
 import { currentText } from "../../text";

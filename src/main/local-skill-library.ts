@@ -1,9 +1,9 @@
 import { createHash, randomUUID } from "node:crypto";
 import { lstat, mkdir, readdir, readFile, realpath, rename, rm, stat, writeFile } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
-import type { AgentSummary, MarketplaceSkillDetail } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+import type { AgentSummary, MarketplaceSkillDetail } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect, Schema, Semaphore } from "effect";
 import { parse as parseYaml } from "yaml";
 import { causeHelpers } from "../backend/effect-boundary";
@@ -29,7 +29,7 @@ export class LocalSkillLibrary {
         if (revisions.some((name) => /^[1-9]\d*$/u.test(name))) published.push(entry.name);
       }
       const results = yield* Effect.forEach(published, (id) => this.get(id), { concurrency: "unbounded" });
-      // An older version took a skill with the name of an OpenBot skill. It can never install, so it stays hidden.
+      // An older version took a skill with the name of an ZollyBot skill. It can never install, so it stays hidden.
       return results
         .filter((skill) => !MANAGED_SKILL_SLUGS.has(skill.slug))
         .sort((a, b) => a.name.localeCompare(b.name));

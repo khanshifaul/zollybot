@@ -10,7 +10,7 @@ import type { MachineAlertEvent } from "./team-protocol/machine-resources-v1";
 export const LOCAL_SERVER_ID = "local";
 
 // The most servers that a user can create on this computer, in addition to "Local". Each one is a
-// full OpenBot process that runs all the time, so main refuses one more and the dialog says why.
+// full ZollyBot process that runs all the time, so main refuses one more and the dialog says why.
 export const LOCAL_SERVER_LIMIT = 5;
 
 export type ServerConnectionState = "online" | "connecting" | "offline" | "error" | "incompatible";
@@ -121,10 +121,10 @@ export interface ServerSummary {
 export type HostedServerIssue = "plan_ended" | "wake_failed" | "start_timeout";
 
 /**
- * `machine`: the provider starts the machine. `openbot`: the machine runs and OpenBot on it starts.
+ * `machine`: the provider starts the machine. `zollybot`: the machine runs and ZollyBot on it starts.
  * `provider_limit`: the provider refused the start for a short time, and the account server tries again.
  */
-export type HostedServerStartStep = "machine" | "openbot" | "provider_limit";
+export type HostedServerStartStep = "machine" | "zollybot" | "provider_limit";
 
 export interface HostedServerStart {
   step: HostedServerStartStep;
@@ -168,7 +168,7 @@ export interface HostStatus {
   logoUrl: string | null;
   apiOnline: boolean;
   remoteDesktopReady: boolean;
-  // True once this host has refused a member because the operating system will not let OpenBot record
+  // True once this host has refused a member because the operating system will not let ZollyBot record
   // the screen. The member's error tells them to ask the host owner; this is what the host owner sees.
   remoteDesktopScreenRecordingDenied: boolean;
   remoteDesktopUnattended: boolean;
@@ -193,7 +193,7 @@ export interface TeamMemberSummary {
   email: string | null;
   name: string | null;
   avatarUrl?: string | null;
-  /** The chat colour from the member's OpenBot account. Absent means no chat colour. Peers read it through `chat-colors-v1`. */
+  /** The chat colour from the member's ZollyBot account. Absent means no chat colour. Peers read it through `chat-colors-v1`. */
   chatColor?: AvatarColor;
   role: TeamRole;
   createdAt: string;

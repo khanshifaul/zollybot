@@ -2,7 +2,7 @@ import {
   CONVERSATION_PLAN_ITEM_TYPE,
   CONVERSATION_SUBAGENTS_ITEM_TYPE,
   type ConversationMessage,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { type ChatMessage, sortedConversationMessages } from "./chat-messages";
 
 /** The stored message of a chat row: a marker row has the id of its message after a prefix. */

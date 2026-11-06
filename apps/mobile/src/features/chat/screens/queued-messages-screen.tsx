@@ -1,4 +1,4 @@
-import type { QueueDelivery } from "@openbot/contracts/ipc";
+import type { QueueDelivery } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { StackActions } from "expo-router/react-navigation";
 import { Button, Typography } from "heroui-native";
@@ -27,7 +27,7 @@ function QueuePosition({ label }: { label: string }) {
 
 function UploadRow({ pending }: { pending: QueuedUpload }) {
   const { t } = useText();
-  const muted = String(useCSSVariable("--openbot-text-grouped-secondary"));
+  const muted = String(useCSSVariable("--zollybot-text-grouped-secondary"));
   const uploading = pending.total > 0 && pending.progress < pending.total;
   return (
     <SettingsRow

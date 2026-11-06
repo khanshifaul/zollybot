@@ -3,19 +3,19 @@ import type {
   ConversationMessage,
   MessagingPlatform,
   RoutineResultConnectionOption,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   CONVERSATION_PLAN_ITEM_TYPE,
   CONVERSATION_SUBAGENTS_ITEM_TYPE,
   MESSAGING_LIMITS,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Deferred, Effect, Result, Schema, type Scope } from "effect";
-import { type OpenBotToolResponse, openBotToolFailure, openBotToolResult } from "../agent/routine-tools";
+import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "../agent/routine-tools";
 import type { AttachmentOperationError } from "../attachment-effects";
 import { causeHelpers } from "../effect-boundary";
 import type { DeliveryContext, MailboxStore, MessagingOrigin } from "../mailbox-store";
-import type { OpenBotDatabase } from "../openbot-database";
+import type { ZollyBotDatabase } from "../zollybot-database";
 import { MessagingMemoryStore } from "./messaging-memory-store";
 import { type MessagingContextMessage, messagingPromptText } from "./messaging-prompt";
 import type { MessagingOperationFailed } from "./messaging-service";
@@ -137,7 +137,7 @@ export type MessagingTelegramSend =
   | { action: "post"; text: string }
   | { action: "react"; messageId: string; emoji: string };
 
-/** A message in a Telegram group that starts a conversation with OpenBot, for the Telegram triggers of workflows. */
+/** A message in a Telegram group that starts a conversation with ZollyBot, for the Telegram triggers of workflows. */
 export interface MessagingTelegramMention {
   connectionId: string;
   chatName: string;
@@ -147,7 +147,7 @@ export interface MessagingTelegramMention {
   messageId: string;
   authorId: string;
   authorName: string;
-  /** The text without OpenBot's own mention. */
+  /** The text without ZollyBot's own mention. */
   text: string;
   /** ISO time. */
   receivedAt: string;
@@ -162,7 +162,7 @@ export type MessagingSlackSend =
   | { action: "post"; channelId: string; text: string }
   | { action: "react"; channelId: string; messageId: string; emoji: string };
 
-/** A message in a Slack channel that mentions OpenBot, for the Slack triggers of workflows. */
+/** A message in a Slack channel that mentions ZollyBot, for the Slack triggers of workflows. */
 export interface MessagingSlackMention {
   connectionId: string;
   workspaceName: string;
@@ -188,7 +188,7 @@ export type MessagingDiscordSend =
   | { action: "post"; channelId: string; text: string }
   | { action: "react"; channelId: string; messageId: string; emoji: string };
 
-/** A message in a Discord server that mentions OpenBot, for the Discord triggers of workflows. */
+/** A message in a Discord server that mentions ZollyBot, for the Discord triggers of workflows. */
 export interface MessagingDiscordMention {
   connectionId: string;
   serverName: string;
@@ -261,7 +261,7 @@ export class MessagingThreads {
   readonly store: MessagingStore;
   /** The facts of each connection, which every prompt of its conversations shows. */
   readonly memories: MessagingMemoryStore;
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
   readonly #mailbox: MailboxStore;
   readonly #hooks: MessagingThreadsHooks;
   readonly #listeners = new Set<(activity: MessagingActivity) => void>();
@@ -304,7 +304,7 @@ export class MessagingThreads {
   #telegramMentionHandler: ((mention: MessagingTelegramMention) => Effect.Effect<MessagingMentionResult>) | null = null;
   #slackMentionHandler: ((mention: MessagingSlackMention) => Effect.Effect<MessagingMentionResult>) | null = null;
 
-  constructor(database: OpenBotDatabase, mailbox: MailboxStore, hooks: MessagingThreadsHooks) {
+  constructor(database: ZollyBotDatabase, mailbox: MailboxStore, hooks: MessagingThreadsHooks) {
     this.store = new MessagingStore(database);
     this.memories = new MessagingMemoryStore(database);
     this.#database = database;
@@ -439,7 +439,7 @@ export class MessagingThreads {
     tool: string,
     args: unknown,
     openFiles: (paths: string[]) => Effect.Effect<MessagingAnswerFile[], AttachmentOperationError>,
-  ): Effect.fn.Return<OpenBotToolResponse, AttachmentOperationError> {
+  ): Effect.fn.Return<ZollyBotToolResponse, AttachmentOperationError> {
     const call = parseMessagingOutboundTool(tool, args);
     if ("error" in call) return openBotToolFailure(call.error);
     const enabled = this.store.connections().filter((record) => record.enabled);
@@ -453,7 +453,7 @@ export class MessagingThreads {
       });
     const record = enabled.find((candidate) => candidate.connectionId === call.connection);
     if (!record)
-      return openBotToolFailure("No enabled connection has that id. Call openbot.messaging_list_places for the ids.");
+      return openBotToolFailure("No enabled connection has that id. Call zollybot.messaging_list_places for the ids.");
     const outbound = this.#outbound;
     if (!outbound) return openBotToolFailure(MESSAGING_NOT_RUNNING);
     // No deadline on a post: one that ended late could be sent again by the agent.
@@ -473,7 +473,7 @@ export class MessagingThreads {
   });
 
   /**
-   * A post that OpenBot sends on its own, such as a routine's answer, to the top level of one place.
+   * A post that ZollyBot sends on its own, such as a routine's answer, to the top level of one place.
    * Only an enabled connection of this host can take it.
    */
   readonly deliver = Effect.fn("MessagingThreads.deliver")(function* (
@@ -535,7 +535,7 @@ export class MessagingThreads {
     callId: string,
     tool: string,
     args: unknown,
-  ): Effect.fn.Return<OpenBotToolResponse> {
+  ): Effect.fn.Return<ZollyBotToolResponse> {
     const call = parseMessagingTool(tool, args);
     if ("error" in call) return openBotToolFailure(call.error);
     switch (call.tool) {
@@ -694,7 +694,7 @@ export class MessagingThreads {
       workspaceName: prompt.workspaceName ?? connection?.workspaceName ?? null,
       isDirect: link.isDirect,
       // Only the "Message yourself" chat has the linked number as the author of a direct message:
-      // the owner's messages in other chats never reach OpenBot (`whatsapp-senders.ts`).
+      // the owner's messages in other chats never reach ZollyBot (`whatsapp-senders.ts`).
       fromOwner: connection?.platform === "whatsapp" && link.isDirect && origin.authorId === connection.workspaceId,
       place: prompt.place,
       authorName: origin.authorName,

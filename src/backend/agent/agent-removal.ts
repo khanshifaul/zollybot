@@ -1,6 +1,6 @@
-import type { AgentEvent, AgentSummary } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import type { Logger } from "@openbot/logging";
+import type { AgentEvent, AgentSummary } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import type { Logger } from "@zollybot/logging";
 import { Effect, Result, Schema } from "effect";
 import type { AgentApiKeys } from "../agent-api-keys";
 import type { AgentClient, AgentProvider } from "../agent-client";
@@ -265,7 +265,7 @@ export class AgentRemoval {
   /**
    * A deleted agent's tabs are reachable by nobody: no agent passes the host's owner check for them,
    * and the renderer lists tabs per agent, so they hold a view the user cannot even see to close.
-   * They also survive a restart, because the browser persists its tabs outside `openbot.db`.
+   * They also survive a restart, because the browser persists its tabs outside `zollybot.db`.
    *
    * The owner test matches the renderer's, so a tab the user could see under this agent is a tab this
    * closes -- including a legacy tab carrying only the thread id. Runs after the agent record is

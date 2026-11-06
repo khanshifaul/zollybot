@@ -1,5 +1,5 @@
-import type { ChannelMessage, ChannelTask } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import type { ChannelMessage, ChannelTask } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 
 /**
  * Member-to-member replies (#4847). `channel_reply` posts a short message from one member that

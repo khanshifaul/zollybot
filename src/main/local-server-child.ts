@@ -1,5 +1,5 @@
 /**
- * A local server: a second OpenBot server on this computer, which the desktop app starts as a
+ * A local server: a second ZollyBot server on this computer, which the desktop app starts as a
  * headless child process of itself (`local-servers/local-servers.ts`). It has its own user data
  * directory and its own agent root, so its database, agents, chats and files stay apart from the
  * app's own server. It shows no window and listens only on the loopback Team API.
@@ -29,9 +29,9 @@ import type { TeamStore } from "./team-store";
 /** The username of the one member of a local server. The desktop app logs in as it. */
 export const LOCAL_SERVER_OWNER_USERNAME = "owner";
 /** The prefix of the one stdout line that tells the parent where the Team API listens. */
-export const LOCAL_SERVER_READY_PREFIX = "OPENBOT_LOCAL_SERVER_READY ";
+export const LOCAL_SERVER_READY_PREFIX = "ZOLLYBOT_LOCAL_SERVER_READY ";
 /** The stdout line that asks the parent for this server's account directory. It holds no data. */
-export const LOCAL_SERVER_MEMBERS_REQUEST = "OPENBOT_LOCAL_SERVER_REQUEST members";
+export const LOCAL_SERVER_MEMBERS_REQUEST = "ZOLLYBOT_LOCAL_SERVER_REQUEST members";
 /** How long a read of the account directory waits for the parent's answer. */
 const LOCAL_SERVER_MEMBERS_TIMEOUT_MS = 30_000;
 
@@ -60,15 +60,15 @@ export function openLocalServerControl(
 }
 
 export const LOCAL_SERVER_ENVIRONMENT = {
-  child: "OPENBOT_LOCAL_SERVER_CHILD",
-  agentRoot: "OPENBOT_LOCAL_SERVER_ROOT",
-  name: "OPENBOT_LOCAL_SERVER_NAME",
-  secret: "OPENBOT_LOCAL_SERVER_SECRET",
-  runtimeRoot: "OPENBOT_LOCAL_SERVER_RUNTIMES",
+  child: "ZOLLYBOT_LOCAL_SERVER_CHILD",
+  agentRoot: "ZOLLYBOT_LOCAL_SERVER_ROOT",
+  name: "ZOLLYBOT_LOCAL_SERVER_NAME",
+  secret: "ZOLLYBOT_LOCAL_SERVER_SECRET",
+  runtimeRoot: "ZOLLYBOT_LOCAL_SERVER_RUNTIMES",
 } as const;
 
 export interface LocalServerChildEnvironment {
-  /** The folder that holds the agents of this server, in place of `~/OpenBot`. */
+  /** The folder that holds the agents of this server, in place of `~/ZollyBot`. */
   agentRoot: string;
   /** The name of the server when it is made. A rename later goes through the Team API. */
   serverName: string;

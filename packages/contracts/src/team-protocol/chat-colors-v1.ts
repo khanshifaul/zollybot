@@ -5,7 +5,7 @@
 // `agent-colors-v1`), and it does not change it. Any member reads the chat colour of each agent that
 // the member can see, and the chat colour of each member of the server. A member sets the chat colour
 // of an agent with manage access to it, as for its avatar on the released agent update route.
-// `color: null` removes it. A member's own chat colour comes from their OpenBot account; this route
+// `color: null` removes it. A member's own chat colour comes from their ZollyBot account; this route
 // cannot set it. An agent or a member that is not in the list has no chat colour. Each change sends
 // `chat-colors-changed` with the whole list. The members list has at most 100 entries, the bound of the
 // released presence snapshot. Bounds and meaning do not follow IPC changes; widening any of it needs a

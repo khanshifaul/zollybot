@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "Поиск по OpenBot",
+  "conversation.globalSearch.title": "Поиск по ZollyBot",
   "conversation.globalSearch.filter": "Фильтр результатов",
   "conversation.globalSearch.tab.all": "Все",
   "conversation.globalSearch.tab.messages": "Сообщения",
@@ -95,7 +95,7 @@ export const messages = {
   "conversation.threads.error.start": "Не удалось начать ветку.",
   "conversation.threads.error.branch": "Не удалось создать ответвление чата.",
   "conversation.threads.error.send": "Не удалось отправить сообщение в ветку.",
-  "conversation.threads.error.files": "Этот сервер не принимает файлы в ветках. Обновите на нём OpenBot.",
+  "conversation.threads.error.files": "Этот сервер не принимает файлы в ветках. Обновите на нём ZollyBot.",
   "conversation.threads.error.stop": "Не удалось остановить ветку.",
   "conversation.threads.error.archive": "Не удалось архивировать ветку.",
   "conversation.threads.error.restore": "Не удалось восстановить ветку.",

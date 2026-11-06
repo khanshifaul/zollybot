@@ -1,5 +1,5 @@
 import releaseSyncVariant from "@jitl/quickjs-wasmfile-release-sync";
-import type { BrowserJsonValue, BrowserSnapshot } from "@openbot/contracts/ipc";
+import type { BrowserJsonValue, BrowserSnapshot } from "@zollybot/contracts/ipc";
 import { Effect, Result } from "effect";
 import {
   newQuickJSWASMModuleFromVariant,

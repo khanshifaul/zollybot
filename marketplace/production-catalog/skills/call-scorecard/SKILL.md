@@ -14,7 +14,7 @@ description: "Score a sales call transcript from 1 to 5 on seven named criteria,
 ## Inputs
 
 1. **Transcript.** Paste path: text or an uploaded file (TXT, VTT, SRT, DOCX, PDF). Tool path: the transcript view
-   of a call recorder in a signed-in tab (`openbot_browser.list_tabs` first). You cannot transcribe audio. If the
+   of a call recorder in a signed-in tab (`zollybot_browser.list_tabs` first). You cannot transcribe audio. If the
    user has only a recording, ask for the transcript export from their recorder.
 2. **Speakers.** Which speaker is the rep. If labels are unclear, ask once with `ask_user`.
 3. **Call type.** Discovery, demo, or closing. It changes which fixes matter most.

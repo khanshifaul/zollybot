@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "Szukaj w OpenBot",
+  "conversation.globalSearch.title": "Szukaj w ZollyBot",
   "conversation.globalSearch.filter": "Filtruj wyniki",
   "conversation.globalSearch.tab.all": "Wszystko",
   "conversation.globalSearch.tab.messages": "Wiadomości",
@@ -95,7 +95,7 @@ export const messages = {
   "conversation.threads.error.start": "Nie udało się rozpocząć wątku.",
   "conversation.threads.error.branch": "Nie udało się utworzyć odgałęzienia czatu.",
   "conversation.threads.error.send": "Nie udało się wysłać wiadomości do wątku.",
-  "conversation.threads.error.files": "Ten serwer nie przyjmuje plików w wątkach. Zaktualizuj na nim OpenBot.",
+  "conversation.threads.error.files": "Ten serwer nie przyjmuje plików w wątkach. Zaktualizuj na nim ZollyBot.",
   "conversation.threads.error.stop": "Nie udało się zatrzymać wątku.",
   "conversation.threads.error.archive": "Nie udało się zarchiwizować wątku.",
   "conversation.threads.error.restore": "Nie udało się przywrócić wątku.",

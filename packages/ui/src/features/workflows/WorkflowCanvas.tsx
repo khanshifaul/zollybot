@@ -12,6 +12,7 @@
  * them goes back to the host.
  */
 
+import type { JSX } from "@solidjs/web";
 import {
   isWorkflowStepKind,
   type WorkflowDetail,
@@ -21,8 +22,8 @@ import {
   type WorkflowTriggerState,
   type WorkflowVersion,
   type WorkflowVersionKind,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   BringToFront,
   Button,
@@ -54,8 +55,7 @@ import {
   Type,
   Undo2,
   Zap,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import {
   createEffect,
   createMemo,

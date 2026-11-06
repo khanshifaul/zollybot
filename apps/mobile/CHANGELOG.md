@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the OpenBot iPhone app will be documented here. The project follows
+All notable changes to the ZollyBot iPhone app will be documented here. The project follows
 [Semantic Versioning](https://semver.org/). Notes for the next release are in
 [`changelog.d/`](changelog.d/README.md). The changes of the desktop app and the web client are in
 the [root changelog](../../CHANGELOG.md).
@@ -27,7 +27,7 @@ the [root changelog](../../CHANGELOG.md).
 - You can delete a message in a chat. Touch and hold the message, then select Delete. This works in
   agent chats, tasks and channels. The message goes from the chat for everyone. The agent can still
   remember it. You can delete your own messages. Admins, and members who can manage the agent, can
-  delete any message. The server must have the latest version of OpenBot.
+  delete any message. The server must have the latest version of ZollyBot.
 - You can send the text of a message in an agent chat to a channel. Touch and hold the message,
   select Send to channel, then select the channel. The channel opens with the text in its composer.
 - A task thread shows the name of each other member who wrote a message in it.
@@ -39,7 +39,7 @@ the [root changelog](../../CHANGELOG.md).
 - Add Download to the Hermes Agent page of a server. The server runs the official Hermes installer
   and shows its progress. Then Connect signs in with the Nous Portal code.
 - Connect TickTick from the Apps marketplace with browser sign-in to see and add tasks, organize lists and tags, and track habits and focus records.
-- **Settings → Support** has a link to open a ticket on the OpenBot Discord, the fastest way to get help.
+- **Settings → Support** has a link to open a ticket on the ZollyBot Discord, the fastest way to get help.
 - Add Mark unread to the actions of an agent's message. That message and the messages after it
   become unread, and the chat stays unread until you open it again. The server must have the
   latest version.
@@ -47,11 +47,11 @@ the [root changelog](../../CHANGELOG.md).
   With chat colors on, the line has the agent's color. The line grows in from the NEW label.
 - Owners and admins can add and change Telegram and Slack triggers and outputs in the workflow editor.
   Choose the chat, the Slack workspace and channel, the text filter, the action and the emoji, as on
-  the desktop. The server must run a new OpenBot version and have a linked Telegram chat or Slack
+  the desktop. The server must run a new ZollyBot version and have a linked Telegram chat or Slack
   workspace.
 - Owners and admins can link and manage the WhatsApp numbers of a server from the phone. Link a
   number with a pairing code, add the WhatsApp Orchestrator, choose the contacts and groups that can
-  write, and approve pairing requests. The server must run a new OpenBot version.
+  write, and approve pairing requests. The server must run a new ZollyBot version.
 - The Marketplace shows the connectors of the server under Apps, as on the desktop: Slack, Discord,
   Telegram, WhatsApp, GitHub, 1Password and Bitwarden, with the status of each. It also shows the MCP
   servers that you added. Owners and admins see them; a tap opens the settings of the connector or
@@ -61,7 +61,7 @@ the [root changelog](../../CHANGELOG.md).
   paste an access key. Agents on the server can then sign in to sites with the logins of one shared
   vault. The Proton Pass CLI needs a paid Proton plan.
 - Settings > Voice has a "Pause before sending" slider, from 1 to 10 seconds. A voice conversation sends your words when it recognizes no new words for this long. The default is 1.5 seconds. (#5006)
-- Settings > Voice > Speaking has a "Reply speed" choice for the replies that OpenBot reads aloud.
+- Settings > Voice > Speaking has a "Reply speed" choice for the replies that ZollyBot reads aloud.
 - Connect Higgsfield from the Apps marketplace with browser sign-in to generate images, videos and audio, and check credits and assets. Each generation uses Higgsfield credits.
 
 ### Changed
@@ -112,8 +112,8 @@ the [root changelog](../../CHANGELOG.md).
   frame rate. Before, it scrolled faster or slower when the frame rate changed.
 - With Reduce Motion on, the group of characters fades away when you continue from the welcome
   screen. Before, it flew off the screen.
-- The blinking OpenBot logo uses less battery: it draws no frames between blinks.
-- When another app, such as a keyboard or Safari, opens `openbot://` while OpenBot runs, the app
+- The blinking ZollyBot logo uses less battery: it draws no frames between blinks.
+- When another app, such as a keyboard or Safari, opens `zollybot://` while ZollyBot runs, the app
   comes back on the same screen. Before, every server connected again and again until the
   connection service stopped the app for 60 seconds.
 - Each chat and channel keeps its unsent text. Go to another agent and come back, and the text you typed is still in the message box.
@@ -193,12 +193,12 @@ the [root changelog](../../CHANGELOG.md).
 - A step of a workflow can run from that step, or alone. The workflow page shows the newest result of each step that ran alone.
 - A step that runs has a Stop step button.
 - Version history: open a saved version of a workflow, read its steps and make it current.
-- A workflow with a Discord trigger or a Discord output shows its settings. Change them in OpenBot on the computer that runs it.
+- A workflow with a Discord trigger or a Discord output shows its settings. Change them in ZollyBot on the computer that runs it.
 - Turn on Fast mode for an agent whose model has a fast tier, such as GPT-6.1-Sol, in the agent's Model page.
 - Owners and admins can edit an agent's instructions file (`AGENTS.md`) on its server. When the agent changes the file during your edit, the app tells you, and a second Save replaces the agent's version.
 - Compact the context of an agent's chat from the agent's Advanced page. The messages stay.
-- Create a server on a computer that runs OpenBot: tap + in the server list, then "New local server on the computer". The server has its own agents, chats and files. The servers that OpenBot runs on that computer now show in the server list, with notifications.
-- Hold a server that runs on a computer beside its own server and choose Delete server. OpenBot on that computer moves the server's data to its Trash. The server of the desktop app itself no longer shows Remove server.
+- Create a server on a computer that runs ZollyBot: tap + in the server list, then "New local server on the computer". The server has its own agents, chats and files. The servers that ZollyBot runs on that computer now show in the server list, with notifications.
+- Hold a server that runs on a computer beside its own server and choose Delete server. ZollyBot on that computer moves the server's data to its Trash. The server of the desktop app itself no longer shows Remove server.
 - Dictate in a chat with the mic to the left of the main button. The words go into the message box
   while you speak, and you can edit them before you send. A wave shows your voice next to the time.
   Tap the mic again, now Stop, to keep the text. With an empty message box, the main button starts a
@@ -212,16 +212,16 @@ the [root changelog](../../CHANGELOG.md).
   "Mon, Nov 1 9:12 AM", as on desktop.
 - Branch from here: touch and hold the last agent answer of a finished turn, in an agent chat or a
   thread, and choose Branch from here. A new thread opens with a copy of the conversation through
-  that turn, as on desktop. The server must have OpenBot with thread branches. While a turn runs, no
+  that turn, as on desktop. The server must have ZollyBot with thread branches. While a turn runs, no
   message shows the action.
 - A branch thread shows "Branched from …" after the copied messages, also for a branch made on
   another device. A tap opens the source chat or thread at the message that the branch came from.
-- Workflows show their Telegram triggers and outputs. Change them in OpenBot on the computer that runs them.
+- Workflows show their Telegram triggers and outputs. Change them in ZollyBot on the computer that runs them.
 
 ### Changed
 
 - An agent notification on iPhone, Apple Watch and Android now shows the agent picture, its photo
-  or its bloub, in place of the OpenBot app icon. A notification whose picture is not ready yet
+  or its bloub, in place of the ZollyBot app icon. A notification whose picture is not ready yet
   looks as before.
 - On iPhone, you can swipe right anywhere in a chat, a task or a channel to go back, and the chat
   follows your finger. Before, the swipe started only at the left edge of the screen. A swipe to the
@@ -313,7 +313,7 @@ the [root changelog](../../CHANGELOG.md).
 
 - The server plans show how many hosted sites each plan has.
 - Owners and admins can set how many threads of an agent run at the same time in **Agent info → Advanced → Parallel threads**, as on desktop. **Default (2)** uses the host default. When the provider runs one turn at a time, the control shows 1, and the threads of the agent wait for each other.
-- Agent info › Advanced now has **Agent starts new chats**, as on desktop. When it is on, the agent starts a new chat when its chat gets long, and saves notes first. Only an owner or admin of the server sees it, and the server's computer must have the latest OpenBot version. A change on the phone shows at once on the computer, and a change on the computer shows at once on the phone.
+- Agent info › Advanced now has **Agent starts new chats**, as on desktop. When it is on, the agent starts a new chat when its chat gets long, and saves notes first. Only an owner or admin of the server sees it, and the server's computer must have the latest ZollyBot version. A change on the phone shows at once on the computer, and a change on the computer shows at once on the phone.
 - Manage the browser profiles of a server in Server settings > Browser profiles: add a profile with
   its name and color, rename it, change the color, choose its agents, clear the data and delete it.
 - Choose the browser profile of an agent in Agent info > Advanced > Browser profile, or add a new
@@ -325,12 +325,12 @@ the [root changelog](../../CHANGELOG.md).
 - **Agent settings → Folders** shows the folders that the agent can change besides its workspace.
   An owner or admin can add a folder of the host computer, remove it, exclude a folder in it, or
   include it again. The folder browser goes to the home folder or to a disk in one step, and the
-  page opens Permissions. Changes from the desktop show at once. The host needs the latest OpenBot.
+  page opens Permissions. Changes from the desktop show at once. The host needs the latest ZollyBot.
 - **Server settings → Server key** shows when the server last changed its key. The owner can change
   the key there, after the app lock when it is on. The server signs the change with the current key
   and the new key, and the app uses the new key only after it checks both signatures.
 - Server settings has an Import agents page. Any member can bring agents from a Grok Bot or Hermes Agent export: the page shows how to make the export, sends the .zip file from your phone to the server, and lists its agents and channels before anything changes.
-- Server settings has a Transfer page for an owner or admin. Export the server's agents and server settings to a transfer file and share it from your phone, or import a transfer file from another OpenBot server. A file from a phone must be under 100 MB.
+- Server settings has a Transfer page for an owner or admin. Export the server's agents and server settings to a transfer file and share it from your phone, or import a transfer file from another ZollyBot server. A file from a phone must be under 100 MB.
 - A speaker button under each agent message reads the message aloud with the reply voice from Settings > Voice. Tap it again to stop. When another message starts or a voice conversation opens, the reading stops.
 - Show provider plan limits on the server Usage screen: how much of each limit window is left, when
   it resets, and the provider's rings.
@@ -338,7 +338,7 @@ the [root changelog](../../CHANGELOG.md).
 - Add a custom provider to a server from the mobile app: Server settings > Providers > Add custom provider. Start from Ollama, LM Studio or any OpenAI-compatible endpoint, then give its address, an optional API key, its models and headers. You can also see and remove the custom providers of the server.
 - Install, update and remove agents from the ACP registry on a server from the mobile app: Server settings > Providers > ACP registry.
 - Manage the accounts of a provider that can hold more than one: add an account, sign it in again, rename it or remove it on the provider's page in Server settings > Providers.
-- Add, change and remove the custom ACP agents of a server: Server settings > Providers > Agents. Start from Goose, Qwen Code, GitHub Copilot or Oh My Pi, or give your own command, arguments and environment variables. The server must run the newest OpenBot.
+- Add, change and remove the custom ACP agents of a server: Server settings > Providers > Agents. Start from Goose, Qwen Code, GitHub Copilot or Oh My Pi, or give your own command, arguments and environment variables. The server must run the newest ZollyBot.
 
 ### Changed
 
@@ -389,10 +389,10 @@ the [root changelog](../../CHANGELOG.md).
 - On a wide screen, such as iPad, an open iPhone Duo or an open Android foldable, the chat list stays beside the open chat.
 - On a wide screen, you can drag the edge of the chat list to make it wider or narrower. Drag it to the left to show only avatars.
 - iPhone Duo support. When you open iPhone Duo, the chat list and the chat show on each side of the fold. When you fold it, the open chat stays open.
-- When a new version of the app is available, home shows a header with the OpenBot eyes. Tap Update to open the store page, or Later to hide it until the next version.
-- An update that does not need the store installs in the app: Update restarts OpenBot with the new version.
+- When a new version of the app is available, home shows a header with the ZollyBot eyes. Tap Update to open the store page, or Later to hide it until the next version.
+- An update that does not need the store installs in the app: Update restarts ZollyBot with the new version.
 - Tap What's new under the update buttons to read the release notes of each new version. The notes slide down from under the header, over the chat list.
-- Settings › Notifications is now the one place for notifications: choose a server, then All, Needs me, or Off for the whole server and for each of its agents. These choices apply on all your devices, and a change shows at once on the others; a mute applies to this phone only. The agent screen shows the level and opens Settings › Notifications; the server settings no longer have a Notifications row. The agent screen no longer has its own Notifications switch, and "Notify me about" opens the Notifications view inside the agent sheet. An agent that was switched off for everyone shows "Turn on". The server needs the latest OpenBot.
+- Settings › Notifications is now the one place for notifications: choose a server, then All, Needs me, or Off for the whole server and for each of its agents. These choices apply on all your devices, and a change shows at once on the others; a mute applies to this phone only. The agent screen shows the level and opens Settings › Notifications; the server settings no longer have a Notifications row. The agent screen no longer has its own Notifications switch, and "Notify me about" opens the Notifications view inside the agent sheet. An agent that was switched off for everyone shows "Turn on". The server needs the latest ZollyBot.
 
 ### Changed
 
@@ -418,7 +418,7 @@ the [root changelog](../../CHANGELOG.md).
 - A sign-in code request waits up to 35 seconds for the account server, as on desktop. Before, the app showed that the account service was not reachable after 10 seconds while the server still sent the code.
 - The Live Activity in the Apple Watch Smart Stack fits its card: the agent photo, the name, two lines of text and the unread count, with a margin at each edge. Before, the watch showed the Lock Screen layout made smaller, with the content at the edges and the unread count outside the card.
 - The Live Activity starts again when you open the app after iOS or the computer ended it. Before, it could stay frozen on the Lock Screen and in the Dynamic Island for hours. An activity that is almost 8 hours old also starts again, so iOS does not stop it while you are away.
-- Notifications show the agent name and the text also after the app starts without network. Before, they showed only "OpenBot", and a tap opened nothing.
+- Notifications show the agent name and the text also after the app starts without network. Before, they showed only "ZollyBot", and a tap opened nothing.
 - Notifications start to work when Apple or Google gave no push token at the first try. Before, the phone got no notifications until you opened the app again.
 - Notifications and Live Activity updates reach an iPhone app that is not from the App Store, such as a build that Xcode installs or an ad hoc build. Before, the app could name the wrong Apple push environment, and Apple refused every notification and update for it.
 - Show the full names in the chat + menu. Before, a long name, such as "Use skill or app" in Polish, was cut off.
@@ -428,7 +428,7 @@ the [root changelog](../../CHANGELOG.md).
 ### Added
 
 - The Marketplace now lists Neon, Prisma, Netlify, Railway, Atlassian (Jira and Confluence), Todoist and Hugging Face.
-- Attach MP4 videos in chat when the host runs a version of OpenBot that accepts them.
+- Attach MP4 videos in chat when the host runs a version of ZollyBot that accepts them.
 - The sidebar has Workflows. See the workflows of a server, the status of each last run, and the runs that wait for you.
 - Pin a workflow to the sidebar. A pinned workflow shows its last run, and its button runs it or opens the run that waits for you.
 - Open a run to see the status and output of each step. Approve or decline a step that waits, retry a step that failed, or stop the run.
@@ -447,13 +447,13 @@ the [root changelog](../../CHANGELOG.md).
 - Server settings > Providers shows the mark of each provider, and a Default provider choice for
   the new agents of the server. The choice needs an updated server.
 - An owner or admin can add, change and delete the API keys in a server's Vault from the iPhone app,
-  when the server has the OpenBot version that keeps API keys. The phone sends a new key once and
+  when the server has the ZollyBot version that keeps API keys. The phone sends a new key once and
   cannot show a saved key.
 - An agent's chat has threads, as on desktop. Tap the agent's name in the chat header to open the thread menu: switch to the main chat or to an open thread, start a new thread, see all threads, or open the agent's info. A dot in the agent's color on the name, and beside each thread in the menu, shows a thread with messages that you have not read, on the phone or on desktop.
 - Start a new thread from the thread menu, or with + on an agent's Threads page. Your first message starts it, and the main chat does not change. The + on the Threads page of the server asks which agent starts the thread.
-- Send files in a thread, as in the agent's chat: tap + in the thread composer. The server must have the newest version of OpenBot.
+- Send files in a thread, as in the agent's chat: tap + in the thread composer. The server must have the newest version of ZollyBot.
 - Rename, archive, restore or delete a thread from its ⋯ menu, or touch and hold a row on the Threads page. A thread that runs cannot be deleted until you stop it.
-- On iPhone, you can send a share to an agent without opening the app. Tap Share in another app, tap OpenBot, choose the agent and tap Send. The iOS share sheet also shows the agents that you send messages to, so you can tap one of them directly. When the share cannot be sent, such as with the app lock on, OpenBot opens with the share as before.
+- On iPhone, you can send a share to an agent without opening the app. Tap Share in another app, tap ZollyBot, choose the agent and tap Send. The iOS share sheet also shows the agents that you send messages to, so you can tap one of them directly. When the share cannot be sent, such as with the app lock on, ZollyBot opens with the share as before.
 - You can now talk with an agent by voice, as on the desktop. In an agent chat or a channel, tap the microphone in the message field. The message field turns into a call bar with the agent's glow, and the chat stays in view. The agent listens until you stop speaking, sends what you said, and reads its answer aloud while it writes it. Then it listens again. In a channel, the call bar shows the leader. When the leader gives the task to a member, the bar changes to that member, and it reads the first agent that answers. The call bar mutes the microphone, interrupts the answer, and ends the conversation.
 - A new Voice page in Settings, with a Listening tab and a Speaking tab. Choose the voice that reads replies: Supertonic 3, the same voice as on the desktop, which you download once and which runs on your phone, or ElevenLabs with your own API key. You can choose a voice, listen to a sample, and remove the model or the key.
 - Speech recognition in more languages, as on the desktop. In Settings > Voice, choose what recognizes your speech: the phone recognizer, which hears one language; Parakeet v3, which you download once (670 MB), runs on your phone and finds the language you speak in 25 European languages; or ElevenLabs Scribe with your own API key, which finds more than 90 languages. The choice applies to voice conversations and to dictation. Parakeet needs a phone with 6 GB of memory or more.
@@ -549,7 +549,7 @@ the [root changelog](../../CHANGELOG.md).
 - A Markdown file in a chat opens in a preview that shows the formatted text. The menu shows the source, copies it, or shares the file. Before, you could only download it.
 - Tap any image in a chat to open it, then swipe left or right to see all the other images of the loaded conversation, in chat order. The top bar shows the position, such as "3 of 8". ([#2426](https://github.com/nightly-labs/openbot/issues/2426))
 - When an agent sends two or more images in one reply, the chat shows them together in a compact grid, as on desktop. Before, each image took the full width of the chat.
-- Channels are back in the mobile app, on a computer whose OpenBot has channels again. A channel
+- Channels are back in the mobile app, on a computer whose ZollyBot has channels again. A channel
   shows in the home list beside your agents, and you can pin it, hide it, put it in a section, and
   search it. It opens in the same chat as an agent, with the author of each message, plan cards,
   questions, approvals and browser steps of its work. To make one, open the menu at the top of the
@@ -612,18 +612,18 @@ the [root changelog](../../CHANGELOG.md).
   how it ended. A finished task stays until you close it with its close button. Tap a task to open
   it. A task opens as a chat, with the agent's messages, voice input and a text composer. In a
   task, you can answer the agent's questions and see what it does now.
-- Attach ZIP archives in chat when the host runs a version of OpenBot that accepts them.
-- Server settings has a General section for owners and admins: Timezone sets the zone of new routines when the message does not give one, and Memories per agent sets how many memories each agent can keep. The server must have an OpenBot version that supports these settings.
-- Server settings has a Storage page, as on desktop. A ring chart shows how much space OpenBot uses on the server by type, with the size and share of each type. Tap a type to highlight it in the chart. The page also shows the agents and the largest chats, and the free disk space. Tap All files to open, share or delete a stored file. Owners and admins can clear cached server files and logs. The server must have an OpenBot version that supports storage.
-- Server settings has a Sites page, as on desktop. It shows the sites that agents on the server published to openbot.site, the number of sites and the limit of your plan, and when each site expires. Tap a site to open it. Owners and admins can also delete a site. The server must have an OpenBot version that supports sites.
-- Server settings has an Updates page, as on the desktop. It shows the OpenBot version of the server and the update status. You can check for updates and start an update. Owners and admins can also restart the server now, cancel a scheduled restart, and turn automatic downloads and automatic installs on or off. Members can start an update that waits until the agents are idle, when the server permits it.
-- Server settings has Providers for owners and admins, as in OpenBot on the computer. It shows each AI provider of the computer that runs the server and its status. Tap a provider to connect it, download it, check for updates and update it, or save its API key. The server must have an OpenBot version that supports provider management.
-- Server settings has Connectors for owners and admins, as on the desktop. Connect Slack, Discord, Telegram, GitHub and 1Password on the server, see the status of each connection, pause or resume it, reconnect or disconnect it, and add the orchestrator agent that answers. GitHub shows the repositories that agents can use. Bitwarden shows as a desktop-only connector. The server must have an OpenBot version that supports connectors.
-- Server settings has MCP servers for owners and admins. Add an MCP server that runs a command or connects to a URL, change it, turn it on or off for the agents, test the connection, sign out, or remove it. Each argument, environment variable and header has its own field, as on desktop. The server must have an OpenBot version that supports MCP servers. To sign in to an MCP server, use OpenBot on a computer.
-- App lock: in Settings > App lock, turn on a 4-digit PIN, Face ID, Touch ID or the phone's unlock, or a PIN and one of the others. OpenBot then locks when you leave it for the time that you choose, from immediately to 1 hour, when the phone locks, and each time the app starts. A notification or a link that you open while the app is locked opens after you unlock it.
-- While the app lock is on, the app switcher shows the OpenBot logo instead of your chats. On Android this needs Android 13 or later.
-- After 4 incorrect PINs, each new attempt waits longer. After 10 incorrect PINs, OpenBot signs you out on the phone. If you forget the PIN, sign out from the lock screen and scan a new code from OpenBot on your desktop.
-- Server settings has Roles, below Members. An owner or admin creates roles, sets the access of Everyone and of each role to each agent (no access, view, chat or manage), and gives roles to members on the member page. The members list shows the roles of each member. The server must run an OpenBot version with roles.
+- Attach ZIP archives in chat when the host runs a version of ZollyBot that accepts them.
+- Server settings has a General section for owners and admins: Timezone sets the zone of new routines when the message does not give one, and Memories per agent sets how many memories each agent can keep. The server must have an ZollyBot version that supports these settings.
+- Server settings has a Storage page, as on desktop. A ring chart shows how much space ZollyBot uses on the server by type, with the size and share of each type. Tap a type to highlight it in the chart. The page also shows the agents and the largest chats, and the free disk space. Tap All files to open, share or delete a stored file. Owners and admins can clear cached server files and logs. The server must have an ZollyBot version that supports storage.
+- Server settings has a Sites page, as on desktop. It shows the sites that agents on the server published to zollybot.site, the number of sites and the limit of your plan, and when each site expires. Tap a site to open it. Owners and admins can also delete a site. The server must have an ZollyBot version that supports sites.
+- Server settings has an Updates page, as on the desktop. It shows the ZollyBot version of the server and the update status. You can check for updates and start an update. Owners and admins can also restart the server now, cancel a scheduled restart, and turn automatic downloads and automatic installs on or off. Members can start an update that waits until the agents are idle, when the server permits it.
+- Server settings has Providers for owners and admins, as in ZollyBot on the computer. It shows each AI provider of the computer that runs the server and its status. Tap a provider to connect it, download it, check for updates and update it, or save its API key. The server must have an ZollyBot version that supports provider management.
+- Server settings has Connectors for owners and admins, as on the desktop. Connect Slack, Discord, Telegram, GitHub and 1Password on the server, see the status of each connection, pause or resume it, reconnect or disconnect it, and add the orchestrator agent that answers. GitHub shows the repositories that agents can use. Bitwarden shows as a desktop-only connector. The server must have an ZollyBot version that supports connectors.
+- Server settings has MCP servers for owners and admins. Add an MCP server that runs a command or connects to a URL, change it, turn it on or off for the agents, test the connection, sign out, or remove it. Each argument, environment variable and header has its own field, as on desktop. The server must have an ZollyBot version that supports MCP servers. To sign in to an MCP server, use ZollyBot on a computer.
+- App lock: in Settings > App lock, turn on a 4-digit PIN, Face ID, Touch ID or the phone's unlock, or a PIN and one of the others. ZollyBot then locks when you leave it for the time that you choose, from immediately to 1 hour, when the phone locks, and each time the app starts. A notification or a link that you open while the app is locked opens after you unlock it.
+- While the app lock is on, the app switcher shows the ZollyBot logo instead of your chats. On Android this needs Android 13 or later.
+- After 4 incorrect PINs, each new attempt waits longer. After 10 incorrect PINs, ZollyBot signs you out on the phone. If you forget the PIN, sign out from the lock screen and scan a new code from ZollyBot on your desktop.
+- Server settings has Roles, below Members. An owner or admin creates roles, sets the access of Everyone and of each role to each agent (no access, view, chat or manage), and gives roles to members on the member page. The members list shows the roles of each member. The server must run an ZollyBot version with roles.
 
 ### Changed
 
@@ -676,7 +676,7 @@ the [root changelog](../../CHANGELOG.md).
 - The Live Activity now follows the notification choices of each server. Before, it showed the
   agents of a server that you muted or set to Nothing. Now it stops showing that server at once when
   you mute it or turn its notifications off, and it shows the server again when the mute ends.
-- The app can now read the queue of an agent with a long history. Before, after some weeks of use, the queue answer was too large for the connection, and the chat showed a "response too large" error. The server must also run the version of OpenBot with this fix (#2368).
+- The app can now read the queue of an agent with a long history. Before, after some weeks of use, the queue answer was too large for the connection, and the chat showed a "response too large" error. The server must also run the version of ZollyBot with this fix (#2368).
 - Live Activities show a link that an agent reply writes in angle brackets, such as
   `<https://example.com>`. Before, the Live Activity removed the link.
 - Agents and sections stay in the home list when you go back from a chat. Before, some or all
@@ -702,7 +702,7 @@ the [root changelog](../../CHANGELOG.md).
 - An open chat no longer renders again when another agent or server changes.
 - The server drawer, the chat header and the chat list no longer render again for workspace changes that they do not show, so the phone does less work while you use any screen.
 - The model list of an agent loads when the server has a provider that the app does not know. An
-  agent on that provider shows "Update OpenBot to use" and the provider name, and its provider
+  agent on that provider shows "Update ZollyBot to use" and the provider name, and its provider
   and model choices are disabled.
 - The phone screen stays on while voice mode listens, so the screen lock no longer stops the voice input when you do not touch the phone.
 - A task that has no messages yet, for example a task that waits for the provider usage limit to reset, now shows why it waits and its queued messages. Before, the task screen was empty. A new chat with no messages shows its starter card again.
@@ -710,7 +710,7 @@ the [root changelog](../../CHANGELOG.md).
 ### Security
 
 - Show the account service address on the Mobile Connect screen when a link uses a service that is
-  not the OpenBot account service. Before, the screen did not show where the phone connects.
+  not the ZollyBot account service. Before, the screen did not show where the phone connects.
 
 ## [1.3.2] - 2026-10-17
 
@@ -726,15 +726,15 @@ the [root changelog](../../CHANGELOG.md).
 - Hold the app icon to open a recent agent, Routines or Search. The recent agents are the chats that
   you opened last on this phone. Hidden chats do not show. The actions go away when you sign out, and
   a shortcut that you pinned on Android then opens only the sign-in screen.
-- Share a link, text, a photo or a file from another app to an agent. Choose OpenBot in the share
+- Share a link, text, a photo or a file from another app to an agent. Choose ZollyBot in the share
   sheet, then choose the agent. The agent that got your last share is selected first. The chat opens
   with the shared content in the message field, so you can add a message before you send it. This
-  works when OpenBot is closed and when it is open. A file that is too large or of a type that agents
+  works when ZollyBot is closed and when it is open. A file that is too large or of a type that agents
   cannot read shows an error with its name. An image that you share from a web page comes as an
   image, not as its link. iPhone photos in HEIC format are sent as JPEG.
 - Get agent notifications on Android: when an agent finishes, stops with an error, or needs your
   input, an approval, or a step in the browser. Choose them in Settings > Notifications, with a
-  sound and the events of each server. The server must run the newest OpenBot desktop app.
+  sound and the events of each server. The server must run the newest ZollyBot desktop app.
 - When you create an agent, you can select its provider, model and reasoning level. The choice shows when the server supports it. "Host default" keeps the provider that the server selects for new agents.
 
 ### Changed
@@ -742,7 +742,7 @@ the [root changelog](../../CHANGELOG.md).
 - Copy, React, Reply and the time are now in a row under each message. Before, they were in a sheet that opened only when you touched and held a message.
 - On iPhone, touch and hold a word in a message to select it, as in other apps. The formatting of the message stays while you select. Before, the text opened in a separate sheet as plain text. On Android, tap Select text under the message.
 - The home of a server with no agents now has the layout of the welcome: its group of characters, the text under it, and the Add agent button at the bottom. Before, smaller characters stood in a ring around the text and the button.
-- After you sign in, the OpenBot logo moves to the middle of the screen and turns into the loading animation, and your agents come in while it leaves. Before, the screen faded, the loader grew from a dot, and the list waited until the loader was gone.
+- After you sign in, the ZollyBot logo moves to the middle of the screen and turns into the loading animation, and your agents come in while it leaves. Before, the screen faded, the loader grew from a dot, and the list waited until the loader was gone.
 - When you open the app while signed in, the splash logo turns into the loading animation. Before, the loader showed on top of the splash logo.
 - Signing out now fades to the sign-in screen. Before, the sign-in screen slid in from the side.
 - While the app connects to a server, the home screen no longer shows the server, search and options buttons. They come in with your agents.
@@ -765,7 +765,7 @@ the [root changelog](../../CHANGELOG.md).
 - A long reply streams more smoothly. Before, the app read the full reply again for each new part of it.
 - While a server reconnects, the app does less work each second. Before, the countdown made all of the open screens draw again.
 - When the server supports it and you are an owner or an admin, an agent that you hide on the phone is hidden on each device that shows the server, and an agent that you hide on the computer is hidden on the phone. The server does not run the routines of a hidden agent and does not send new messages to it. Restore removes the hide on the phone and on the server. A member hides an agent on the phone only.
-- On Android, popup menus have the OpenBot design: rounded corners, app colors, and icons. Before, they used the default Android menu with the colors of the device wallpaper.
+- On Android, popup menus have the ZollyBot design: rounded corners, app colors, and icons. Before, they used the default Android menu with the colors of the device wallpaper.
 - The Android app is a smaller download.
 
 ### Fixed
@@ -782,12 +782,12 @@ the [root changelog](../../CHANGELOG.md).
 - On iPhone, agent avatars get their colors back when the server connects again. Before, some avatars stayed gray.
 - A hosted server no longer stops soon after it starts while you read it with the app in the foreground. Before, it stopped about 15 minutes after a wake when you did not type. The app in the foreground now keeps it on for at most 30 minutes after your last message, change or typing, or after you open the app again.
 - The app keeps starting a hosted server while the server starts. Before, it stopped after 5 minutes.
-  It now stops only when the machine runs and OpenBot on it does not connect in 15 minutes.
+  It now stops only when the machine runs and ZollyBot on it does not connect in 15 minutes.
 - On iPhone, a long agent reply shows word by word for one second. Then, if the full reply is available, all its text shows at once, with a strong, a light and a strong knock. Before, the words continued to show one by one for a long time after desktop showed the full reply.
 - On Android, a message that waits for the server stays at the right edge of the chat. Before, it moved to the left.
 - On Android, file names and code in a reply paragraph align with the text. Before, they were too high, and a long file path was cut at the edge of the message.
 - On Android, screens with animations scroll more smoothly. Before, scrolling could stutter after an animated item closed.
-- On Android, a share from another app that starts OpenBot shows the share sheet with its Close and Share buttons. Before, the sheet filled the screen and the status bar covered the buttons.
+- On Android, a share from another app that starts ZollyBot shows the share sheet with its Close and Share buttons. Before, the sheet filled the screen and the status bar covered the buttons.
 - When you swipe to close the server list, the agent list behind it does not respond. Before, the swipe could pin an agent, open a chat or press the server list button.
 
 ## [1.3.1] - 2026-10-14 (Android), 2026-10-15 (iOS)
@@ -799,15 +799,15 @@ the [root changelog](../../CHANGELOG.md).
 - Italian interface. Choose Italiano in Settings > App language, or keep System default on an
   iPhone that uses Italian.
 - Get a notification when an agent finishes, stops with an error, or needs your input, an approval,
-  or a step in the browser while OpenBot is not on screen. It shows the agent name and the start of
-  the reply, the question, or the action to approve, and a tap opens the chat. Apple and the OpenBot
+  or a step in the browser while ZollyBot is not on screen. It shows the agent name and the start of
+  the reply, the question, or the action to approve, and a tap opens the chat. Apple and the ZollyBot
   account service cannot read the text. An answer or an error does not come while you use the
   desktop app. While the Live Activity shows, no notification comes: the Live Activity shows the
   event, and with Play sound on it lights up the screen and plays the sound, also with notifications
-  off. The server must run an OpenBot version with this change.
+  off. The server must run an ZollyBot version with this change.
 - Settings > Notifications now has the notification and Live Activity settings on one screen. It
   turns notifications on or off, hides the reply preview, and sets the one sound of notifications
-  and the Live Activity: Play sound on or off, and the OpenBot sound of the desktop app, one of the
+  and the Live Activity: Play sound on or off, and the ZollyBot sound of the desktop app, one of the
   four sounds of the desktop sound themes, or the iOS sound. The app plays a sound when you choose
   it. For each server you can choose all activity, only the events that need you, or nothing, and
   mute the server for a time, as in the desktop app. Server settings have the same choices.
@@ -823,7 +823,7 @@ the [root changelog](../../CHANGELOG.md).
 
 ### Removed
 
-- The app no longer shows channels, with any version of OpenBot on your computer. You cannot make a new channel, and Settings no longer has Deleted channels. Search and the routine calendar show only agents. To make agents work together, put them in one sidebar section.
+- The app no longer shows channels, with any version of ZollyBot on your computer. You cannot make a new channel, and Settings no longer has Deleted channels. Search and the routine calendar show only agents. To make agents work together, put them in one sidebar section.
 
 ### Fixed
 
@@ -860,26 +860,26 @@ the [root changelog](../../CHANGELOG.md).
 - The arrows in the bottom bar of the browser go to the previous and the next page. Reload page is
   in the ··· menu. The tabs button shows the agent's tabs: select a tab to show it, or open a new
   tab or close the tab on screen.
-- The page in the browser keeps the same size on your phone when the window of OpenBot on the
-  server changes size. The server needs this version of OpenBot.
+- The page in the browser keeps the same size on your phone when the window of ZollyBot on the
+  server changes size. The server needs this version of ZollyBot.
 - When an agent asks you to take over its browser, the request has an Open browser button. In the
   browser, choose I'm done in the ··· menu to give control back to the agent.
 - You can allow or deny an agent's approval request in the chat. The card shows the command, files or permissions, and says what each answer does on the computer. Before, the chat only showed "Waiting for your input on desktop".
-- When a request is too long to show on the phone, the card lets you deny it and tells you to open OpenBot on the computer to allow it.
+- When a request is too long to show on the phone, the card lets you deny it and tells you to open ZollyBot on the computer to allow it.
 - Mark agents that wait for you in the agent list, with an icon for a question, an approval, or a browser takeover. A "Needs you" group shows them above the sections.
 - When an agent waits for you, the compact Dynamic Island shows an amber mark on the agent's photo, and the agent's name has the agent color.
 - Mark all agent chats and channels on a server as read from the home screen chat options menu. If a chat cannot be marked read, it stays unread and the app tells you.
 - Agent info groups the agent settings as the desktop app does: **Brain**, **Knows**, **Does**, and **Rules**. **Rules** has **Permissions**, **Notifications**, and **Advanced**.
 - **Advanced** shows the workspace folder of the agent and can start a **New chat**. A new chat shows a "New chat started" divider in the chat.
-- Owners and admins can turn **Computer Use** and **Local scripts** on or off for an agent, and select what a message does while the agent works (**Queue** or **Steer**). A change made on the computer or on another device shows at once. The computer that runs the agent must have the newest OpenBot desktop version.
-- Owners and admins can see and delete the **Tables** that the agents share, and **Publish** an agent as a link template. The link preview of a template that you publish from the phone shows the general OpenBot image, not an agent card.
+- Owners and admins can turn **Computer Use** and **Local scripts** on or off for an agent, and select what a message does while the agent works (**Queue** or **Steer**). A change made on the computer or on another device shows at once. The computer that runs the agent must have the newest ZollyBot desktop version.
+- Owners and admins can see and delete the **Tables** that the agents share, and **Publish** an agent as a link template. The link preview of a template that you publish from the phone shows the general ZollyBot image, not an agent card.
 - Support Pi and Muse agents on hosts with Team API v7.
 - Add provider session settings and reset on hosts that support this feature.
 - Choose which agent memories enter every prompt on updated hosts. Keep other memories saved for search, and let the agent manage the selection when needed.
 - Polish interface. Choose Polski in Settings > App language, or keep System default on an iPhone
   that uses Polish.
 - Write and send messages while your server is offline. Waiting messages are drawn lighter, one line under them says they send when the server is online, and you touch and hold a message to edit it or not send it. They send on their own when the server is back. The phone keeps waiting messages and their files when you close the app.
-- Search finds the same kinds of results as the desktop search: agents, channels, messages, files and routines. It also finds the settings pages of the app and of the server. The filter button next to the search field shows one kind of result. Files show when the computer has the latest OpenBot.
+- Search finds the same kinds of results as the desktop search: agents, channels, messages, files and routines. It also finds the settings pages of the app and of the server. The filter button next to the search field shows one kind of result. Files show when the computer has the latest ZollyBot.
 - A search result opens what it names. A message or a file opens the chat at its message. A channel opens the channel, a routine opens its settings, and a settings result opens its page.
 - Settings > Animations has "Animate search results". It turns off the blur when search results change.
 
@@ -889,7 +889,7 @@ the [root changelog](../../CHANGELOG.md).
 - The screen that creates an agent now has a soft glow in the color of the agent. When you select a different color, the glow and the avatar change to the new color smoothly.
 - Settings has no General page. Appearance, Animations, Language, Haptics, Live Activities and
   Privacy each have their own page. Hidden chats and deleted channels are on the Settings page.
-- Show what a hosted server gives at the top of the plans sheet: it runs OpenBot 24/7 on an external
+- Show what a hosted server gives at the top of the plans sheet: it runs ZollyBot 24/7 on an external
   server, keeps agents and routines running when the computer is off, and needs no technical setup.
 - Like on desktop, consecutive messages between agents show as one line in the chat, such as "3 messages with 2 agents". Tap it to see each message.
 - A message to several agents shows their avatars and the number of agents. Tap it to see their names.
@@ -923,7 +923,7 @@ the [root changelog](../../CHANGELOG.md).
 - The agent's browser follows the light or dark appearance of the app.
 - Live Activity answer buttons show as one capsule each and share the full width.
 - The owner of a server can now remove it from the account in server settings, also when its computer is offline or gone. Before, an owner could not remove such a server. The removal applies to all members and all devices. Members lose access, and connected Slack, Discord, Telegram and webhook routes stop. If you add the server again, invite its members again and set up its connections again. Old webhook URLs do not work again.
-- Open a chat of an agent on a connected server that is not the active one, for example from a Live Activity, and OpenBot now loads the messages, loads older messages and marks them read on the agent's own server. Before, it asked the active server.
+- Open a chat of an agent on a connected server that is not the active one, for example from a Live Activity, and ZollyBot now loads the messages, loads older messages and marks them read on the agent's own server. Before, it asked the active server.
 - Report failed browser Live View connections and input as failures instead of normal view termination. Release failed sessions so the view can be opened again.
 - Tasks card. The step in progress shows all its lines at each text size. Before, a larger text
   size cut off the bottom of the step, and the next step touched it.
@@ -935,7 +935,7 @@ the [root changelog](../../CHANGELOG.md).
 - A browser request in a chat stays visible, with the typed value, while Notification Center or another system overlay is open.
 - In Settings > Support, the recent log scrolls in its own box, so a long log does not make the page very long.
 - After 45 minutes on one server connection, and on each return to the app after that, the app asked the signalling service for new relay credentials many times a second, until the service closed the socket for a minute. A lost connection could not recover in that minute. The app now asks once every 45 minutes.
-- A remote connection that Signal refuses for a reason other than a rate limit, such as an invalid ticket, reconnects at once. Before, OpenBot waited 60 seconds as if Signal had limited its rate.
+- A remote connection that Signal refuses for a reason other than a rate limit, such as an invalid ticket, reconnects at once. Before, ZollyBot waited 60 seconds as if Signal had limited its rate.
 - A server is usable sooner after you return to the app. Before, "Reconnecting" stayed until every chat that you had opened before had loaded again, one after another. Now it ends when the agents and the unread counts load, and the chats load after it, the open chat first.
 - After more than 30 seconds away, the app waited 3 seconds for a dead connection before it connected again. Now it repairs the connection at once, or replaces it at once when the server has already dropped it. After more than about 3 minutes away, it shows at once that it connects, instead of a server that looked online but did not answer.
 - On a return to the app, the selected server connects first, and your other servers follow when it is online.
@@ -952,7 +952,7 @@ the [root changelog](../../CHANGELOG.md).
 - Routines for a server. Touch and hold a server in the server list, then select Routines. The week view shows the runs of each day with the agents that do them. Swipe the days to change the week. Select Day in the header to see one day; today also shows the next runs. Select a run to open its routine.
 - Buy a cloud server from the iPhone app. Tap + in the server list, choose a plan, and pay on a secure Stripe page. The app shows the setup until the server is ready, and the server shows on your computer too.
 - Usage for a server. Touch and hold a server in the server list, then select Usage. The report shows the processed tokens and the estimated cost of all agents on the server, with the share of each agent. Select an agent in the list, or in the Agent row at the top, to see the usage of one agent.
-- Settings → Support. It shows how to get help: report a problem on GitHub or message us on X. It also shows a support log of recent app events, connection steps, requests and errors. Select Save log file to save the log or attach it to a message. The log stays on your phone and OpenBot never sends it. It does not record messages or files, and it masks passwords and tokens. Select Clear log to remove it.
+- Settings → Support. It shows how to get help: report a problem on GitHub or message us on X. It also shows a support log of recent app events, connection steps, requests and errors. Select Save log file to save the log or attach it to a message. The log stays on your phone and ZollyBot never sends it. It does not record messages or files, and it masks passwords and tokens. Select Clear log to remove it.
 - Cursor and Cline agents on a server now show in the app. Before, the server kept them hidden.
 - HTML pages and Mermaid diagrams in a reply. A code block marked `html` or `mermaid` shows as a
   card with a header and a small picture of the page or the diagram. Tap the card to open it on its
@@ -967,7 +967,7 @@ the [root changelog](../../CHANGELOG.md).
 - A routine run in a chat shows as one short line with the routine name and its state. The chat no
   longer shows the routine instruction as your message.
 - The routine schedule is easier to set. Select how often it repeats (hourly, daily, weekly, monthly or yearly), then the days and the time, as on desktop. A cron expression is now the last choice, for advanced schedules only.
-- The OpenBot logo no longer turns when you turn your phone, and the app no longer uses motion access.
+- The ZollyBot logo no longer turns when you turn your phone, and the app no longer uses motion access.
 - Settings → About shows the build number after the version, such as "1.1.0 (17)".
 - The agent Usage page has a clearer period control. Select 7 days, 30 days, 90 days, 1 year or Custom. For Custom, set the start and end dates with the date pickers. The report changes at once. The daily chart is now the chart of the desktop app: one area for each provider, in its color, with the values on a grid. Touch or drag across the chart to see a day, with the value of each provider under it. When you change the period or the agent, the report stays on screen and its numbers and chart move to the new values.
 - On Android, the app no longer asks for access to all photos and videos. You still choose photos and files with the system picker, and you can still save images from a chat.
@@ -1045,7 +1045,7 @@ the [root changelog](../../CHANGELOG.md).
   logo.
 - Haptic feedback when you open and close screens, pick options, save, and when an action succeeds
   or fails. Turn it off with the Haptics setting.
-- Open a shared agent link (`https://openbot.run/agents/...` or `openbot://agents/...`) in the app.
+- Open a shared agent link (`https://openbot.run/agents/...` or `zollybot://agents/...`) in the app.
   You see the agent before you add it, and you choose the server where you are owner or admin.
   Before, the link opened Safari or showed "Link unavailable".
 - Manage the skills of an agent from Agent info > Skills. An owner or admin can turn a skill on or
@@ -1063,10 +1063,10 @@ the [root changelog](../../CHANGELOG.md).
 - When you open a hosted server that stopped after it was not in use, the app starts it again and connects when it is ready.
 - The Lock Screen and the Dynamic Island show what your agents do, as the desktop Dynamic Island
   does: work, new replies, questions, approvals, browser steps, and failed tasks. You can answer an
-  approval or a short question from the Lock Screen. OpenBot asks again before it approves a command.
+  approval or a short question from the Lock Screen. ZollyBot asks again before it approves a command.
   When several agents have new replies, the activity lists them. Settings > General > Live Activities
-  turns this off. When iOS stops OpenBot in the background, the host keeps the activity current
-  through Apple. The update is encrypted for your phone, so Apple and OpenBot cannot read it.
+  turns this off. When iOS stops ZollyBot in the background, the host keeps the activity current
+  through Apple. The update is encrypted for your phone, so Apple and ZollyBot cannot read it.
 
 ### Changed
 

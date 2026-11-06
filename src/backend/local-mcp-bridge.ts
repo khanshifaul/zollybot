@@ -12,7 +12,7 @@ import {
   type RequestId,
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
-import { isString } from "@openbot/contracts/runtime-values";
+import { isString } from "@zollybot/contracts/runtime-values";
 import { Deferred, Effect, Exit } from "effect";
 import { runCauseEffect } from "./effect-boundary";
 import { type McpOperationError, mcpCall, mcpFailure, mcpResult, mcpSync } from "./mcp-effects";
@@ -127,9 +127,9 @@ export class LocalMcpBridge {
     directory?: string,
   ): Effect.fn.Return<LocalMcpSession, McpOperationError> {
     const closes = this.#closes;
-    if (this.#closing) return yield* mcpFailure(new Error("The local OpenBot MCP bridge closed."));
+    if (this.#closing) return yield* mcpFailure(new Error("The local ZollyBot MCP bridge closed."));
     yield* this.#listen();
-    if (closes !== this.#closes) return yield* mcpFailure(new Error("The local OpenBot MCP bridge closed."));
+    if (closes !== this.#closes) return yield* mcpFailure(new Error("The local ZollyBot MCP bridge closed."));
     const member: BridgeMember = {
       threadId,
       activeTurnId,
@@ -243,7 +243,7 @@ export class LocalMcpBridge {
           ).pipe(Effect.uninterruptible);
           const address = server.address();
           if (!address || isString(address))
-            return yield* mcpFailure(new Error("Unable to bind the local OpenBot MCP bridge."));
+            return yield* mcpFailure(new Error("Unable to bind the local ZollyBot MCP bridge."));
           this.#server = server;
           this.#port = address.port;
           retained = true;

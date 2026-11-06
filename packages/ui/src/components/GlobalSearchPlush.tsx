@@ -1,4 +1,4 @@
-import { PlushMascot } from "@openbot/ui";
+import { PlushMascot } from "@zollybot/ui";
 import { createEffect, createSignal, onSettled } from "solid-js";
 import { prefersReducedMotion } from "../utils";
 

@@ -1,10 +1,10 @@
-import type { BrowserPreview } from "@openbot/contracts/ipc";
-import SharedBrowserPreviewSidebar from "@openbot/ui/features/conversation/BrowserPreviewSidebar";
 import type { ComponentProps } from "@solidjs/web";
+import type { BrowserPreview } from "@zollybot/contracts/ipc";
+import SharedBrowserPreviewSidebar from "@zollybot/ui/features/conversation/BrowserPreviewSidebar";
 import { readPanelWidth, savePanelWidth } from "../../components/panel-width-storage";
 import { conversationPort } from "./conversation-port";
 
-const STORAGE_KEY = "openbot:browser-preview-panel-width";
+const STORAGE_KEY = "zollybot:browser-preview-panel-width";
 
 export default function BrowserPreviewSidebar(
   props: Omit<

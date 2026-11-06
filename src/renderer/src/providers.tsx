@@ -6,19 +6,19 @@ import {
   isManagedRuntimeProvider,
   LOCAL_SERVER_ID,
   type ProviderRuntimeDownload,
-} from "@openbot/contracts/ipc";
-import { CLAUDE_API_KEY_CAPABILITY } from "@openbot/contracts/team-protocol/claude-api-key-v1";
+} from "@zollybot/contracts/ipc";
+import { CLAUDE_API_KEY_CAPABILITY } from "@zollybot/contracts/team-protocol/claude-api-key-v1";
 import {
   type ProviderAccountRelay,
   providerAccountRelay,
-} from "@openbot/contracts/team-protocol/provider-account-relays";
-import { PROVIDER_ACCOUNTS_CAPABILITY } from "@openbot/contracts/team-protocol/provider-accounts-v1";
-import { PROVIDER_SIGN_OUT_CAPABILITY } from "@openbot/contracts/team-protocol/provider-sign-out-v1";
-import { PROVIDER_USAGE_RESET_CAPABILITY } from "@openbot/contracts/team-protocol/provider-usage-reset-v1";
-import { classifyFailure } from "@openbot/telemetry";
-import { toast } from "@openbot/ui";
-import type { ProviderAccountActions } from "@openbot/ui/components/provider-accounts";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/team-protocol/provider-account-relays";
+import { PROVIDER_ACCOUNTS_CAPABILITY } from "@zollybot/contracts/team-protocol/provider-accounts-v1";
+import { PROVIDER_SIGN_OUT_CAPABILITY } from "@zollybot/contracts/team-protocol/provider-sign-out-v1";
+import { PROVIDER_USAGE_RESET_CAPABILITY } from "@zollybot/contracts/team-protocol/provider-usage-reset-v1";
+import { classifyFailure } from "@zollybot/telemetry";
+import { toast } from "@zollybot/ui";
+import type { ProviderAccountActions } from "@zollybot/ui/components/provider-accounts";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, flush, onSettled } from "solid-js";
 import { type DesktopAnalyticsProperties, desktopAnalytics } from "./analytics";
 import { appPort } from "./app-port";
@@ -242,7 +242,7 @@ const Providers = createSimpleContext({
       });
     }
 
-    /** `automatic`: the app asks, not the user, so a provider OpenBot stopped starting stays stopped. */
+    /** `automatic`: the app asks, not the user, so a provider ZollyBot stopped starting stays stopped. */
     async function refreshAgentProviders(options = { automatic: false }): Promise<void> {
       if (refreshingProviders() || agentStatus().phase === "starting" || agentStatus().phase === "restarting") {
         return;

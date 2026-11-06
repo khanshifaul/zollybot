@@ -1,4 +1,4 @@
-import type { MarketplaceNavigation } from "@openbot/ui/features/marketplace/marketplace-view";
+import type { MarketplaceNavigation } from "@zollybot/ui/features/marketplace/marketplace-view";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import {
   STORY_MARKETPLACE_AGENTS,

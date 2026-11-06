@@ -1,4 +1,4 @@
-import { currentText } from "@openbot/ui/text";
+import { currentText } from "@zollybot/ui/text";
 
 export function voiceCaptureError(error: unknown) {
   const { t } = currentText();

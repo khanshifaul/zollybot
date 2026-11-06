@@ -4,12 +4,12 @@ import {
   type ClientAgentSummary,
   type ServerNotificationLevel,
   type ServerSummary,
-} from "@openbot/contracts/ipc";
-import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-notification-levels-v1";
+} from "@zollybot/contracts/ipc";
+import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-notification-levels-v1";
 import type {
   NotificationMatrixAgents,
   NotificationMatrixServer,
-} from "@openbot/ui/features/settings/NotificationMatrix";
+} from "@zollybot/ui/features/settings/NotificationMatrix";
 import { createEffect, createMemo, createStore, onSettled } from "solid-js";
 import { serverSupportsCapability } from "../servers/server-capabilities";
 import { settingsPort } from "./settings-port";

@@ -3,10 +3,10 @@ import {
   DISCONNECTED_ONEPASSWORD_CONNECTOR,
   disconnectedPasswordManager,
   type MessagingConnection,
-} from "@openbot/contracts/ipc";
-import type { ConnectorDetail } from "@openbot/ui/features/connectors/ConnectorDetailPanel";
-import type { SlackIntegrationAgent } from "@openbot/ui/features/settings/SlackIntegrationPanel";
-import { WHATSAPP_LINK_IDLE } from "@openbot/ui/features/settings/WhatsAppIntegrationPanel";
+} from "@zollybot/contracts/ipc";
+import type { ConnectorDetail } from "@zollybot/ui/features/connectors/ConnectorDetailPanel";
+import type { SlackIntegrationAgent } from "@zollybot/ui/features/settings/SlackIntegrationPanel";
+import { WHATSAPP_LINK_IDLE } from "@zollybot/ui/features/settings/WhatsAppIntegrationPanel";
 import { fn } from "storybook/test";
 import type { ConnectorController } from "../src/features/connectors/connector-controller";
 import type { ConnectorSet } from "../src/features/connectors/connector-registry";
@@ -199,7 +199,7 @@ export const CONNECTED_CONNECTOR_DETAILS: readonly ConnectorDetail[] = STORY_CON
         ...detail,
         props: {
           ...detail.props,
-          status: { ...detail.props.status, state: "connected", vaultNames: ["Shared with OpenBot"], loginCount: 3 },
+          status: { ...detail.props.status, state: "connected", vaultNames: ["Shared with ZollyBot"], loginCount: 3 },
         },
       };
     case "bitwarden":
@@ -212,7 +212,7 @@ export const CONNECTED_CONNECTOR_DETAILS: readonly ConnectorDetail[] = STORY_CON
           status: {
             ...detail.props.status,
             state: "connected",
-            vaultNames: ["Shared with OpenBot"],
+            vaultNames: ["Shared with ZollyBot"],
             loginCount: 12,
             expiresAt: Date.UTC(2027, 10, 5),
           },

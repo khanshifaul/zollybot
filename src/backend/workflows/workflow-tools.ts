@@ -1,5 +1,5 @@
 /**
- * The `openbot` tools that let an agent build, change, move and run workflows, as the canvas does.
+ * The `zollybot` tools that let an agent build, change, move and run workflows, as the canvas does.
  *
  * Each text here goes into the agent's context, so the tools stay small. A read leaves out positions,
  * sizes, strokes and view-state fields, and an edit is a list of operations, not a full graph. The
@@ -8,7 +8,7 @@
  * reads; other errors are faults.
  */
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   isRoutineSchedule,
   isWorkflowGraph,
@@ -25,9 +25,9 @@ import {
   type WorkflowPoint,
   type WorkflowRunDetail,
   workflowGraphProblemAt,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
-import { RoutineInputError } from "@openbot/team-client/routine-schedule";
+import { RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import { Effect } from "effect";
 import { z } from "zod";
 import { openBotToolFailure, openBotToolResult } from "../agent/routine-tools";

@@ -1,6 +1,6 @@
 import type { DatabaseSync } from "node:sqlite";
-import type { ConversationMessage } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import type { ConversationMessage } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { ORDER_KEY_COLUMNS, ORDER_KEY_DESC, ORDERED_THREAD_MESSAGES } from "./conversation-queries";
 import { databaseRow, databaseRows, requiredNumberColumn, requiredStringColumn } from "./database-rows";
 

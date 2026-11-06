@@ -1,5 +1,7 @@
-import type { QueueDeliveryStatus } from "@openbot/contracts/ipc";
-import type { AppFormat, AppTextKey, AppTranslate } from "@openbot/i18n";
+import type { JSX } from "@solidjs/web";
+import { Dynamic } from "@solidjs/web";
+import type { QueueDeliveryStatus } from "@zollybot/contracts/ipc";
+import type { AppFormat, AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   Button,
   CalendarClock,
@@ -18,9 +20,7 @@ import {
   Puzzle,
   TriangleAlert,
   X,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
-import { Dynamic } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createSignal, createUniqueId, For, Show, untrack } from "solid-js";
 import { avatarHeadColor } from "../../bloub-avatar";
 import type {

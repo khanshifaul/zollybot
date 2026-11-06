@@ -1,5 +1,5 @@
-import type { HostUpdateSettingsChange, HostUpdateStatus, UpdateRestartMode } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+import type { HostUpdateSettingsChange, HostUpdateStatus, UpdateRestartMode } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { useLocalSearchParams } from "expo-router";
 import { Spinner, Typography } from "heroui-native";
 import { useState } from "react";
@@ -49,7 +49,7 @@ const RELEASE_PATH_KEYS = {
 } as const satisfies Record<string, MobileTextKey>;
 
 /**
- * Server settings > Updates: the OpenBot update of the server's host, as the Updates section of the
+ * Server settings > Updates: the ZollyBot update of the server's host, as the Updates section of the
  * desktop Server Settings shows it. Owners and admins also choose the restart, cancel it and change
  * the automatic updates. A member can only ask for an update that waits for idle agents.
  */
@@ -57,7 +57,7 @@ export function ServerUpdatesScreen() {
   const text = useText();
   const { t, errorMessage } = text;
   const { theme } = useUniwind();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const { serverId } = useLocalSearchParams<{ serverId: string }>();
   const { servers } = useMobileWorkspace();
   const { checkServerUpdate, startServerUpdate, cancelServerUpdate, setServerUpdateSettings, checkServerRelease } =

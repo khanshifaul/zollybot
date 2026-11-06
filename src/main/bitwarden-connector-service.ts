@@ -2,9 +2,9 @@ import { execFile } from "node:child_process";
 import { constants } from "node:fs";
 import { access, realpath, rm } from "node:fs/promises";
 import { delimiter, isAbsolute, join } from "node:path";
-import type { BitwardenConnectorStatus, BitwardenHostConnectInput } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, registerSecretValue, toLogValue } from "@openbot/logging";
+import type { BitwardenConnectorStatus, BitwardenHostConnectInput } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
 import { Effect, Exit, Schema, Scope, Semaphore } from "effect";
 import { causeHelpers } from "../backend/effect-boundary";
 import {
@@ -16,7 +16,7 @@ import {
 } from "../backend/password-vault";
 import type { BitwardenConnectorRecord, BitwardenConnectorStore } from "./bitwarden-connector-store";
 
-const logger = createOpenBotLogger("bitwarden-connector");
+const logger = createZollyBotLogger("bitwarden-connector");
 const { io: vaultCall } = causeHelpers(PasswordVaultError);
 
 const IDLE_MS = 8 * 60 * 60 * 1000;
@@ -73,7 +73,7 @@ export interface BitwardenHostOptions {
   store: BitwardenConnectorStore;
   /** The CLI data of the host connection, apart from the user's own `bw` configuration. */
   dataDirectory: string;
-  /** Installs OpenBot's copy of `bw` when none is on the PATH, or null when there is no build for this computer. */
+  /** Installs ZollyBot's copy of `bw` when none is on the PATH, or null when there is no build for this computer. */
   installCli: ((signal: AbortSignal) => Effect.Effect<string, PasswordVaultError>) | null;
 }
 
@@ -448,7 +448,7 @@ export class BitwardenConnectorService implements PasswordVault {
     );
   }).bind(this);
 
-  /** Syncs and finds the one folder named "Shared with OpenBot". */
+  /** Syncs and finds the one folder named "Shared with ZollyBot". */
   readonly #openFolder = Effect.fn("BitwardenConnector.openFolder")(function* (
     this: BitwardenConnectorService,
     session: Session,
@@ -459,7 +459,7 @@ export class BitwardenConnectorService implements PasswordVault {
       try: () => Schema.decodeUnknownSync(foldersSchema)(JSON.parse(output)),
       catch: failure,
     });
-    const shared = folders.filter((folder) => folder.name === "Shared with OpenBot");
+    const shared = folders.filter((folder) => folder.name === "Shared with ZollyBot");
     if (shared.length !== 1 || !shared[0]?.id) return yield* failure();
     session.folderId = shared[0].id;
     this.#error = null;

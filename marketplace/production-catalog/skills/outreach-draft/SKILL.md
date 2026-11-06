@@ -18,7 +18,7 @@ description: "Draft a first business message built on one verified reason to wri
 2. **The offer.** What the user sells and one result it gives. Use only facts that the user gives or that their
    public pages state.
 3. **The reason to write.** Tool path: an Account Brief in this chat, or a public company page read in
-   `openbot_browser`. Paste path: notes the user gives. If there is no reason with a source, write the honest
+   `zollybot_browser`. Paste path: notes the user gives. If there is no reason with a source, write the honest
    general draft.
 4. **Restrictions.** Opt-outs, "do not contact" notes, or company rules that the user states.
 

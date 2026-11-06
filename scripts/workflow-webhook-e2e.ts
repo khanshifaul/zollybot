@@ -7,18 +7,18 @@
 // provider, account or network is started.
 //
 // Run: bun scripts/workflow-webhook-e2e.ts
-// Writes .openbot-build/workflow-webhook-e2e/report.json and exits non-zero on a failure.
+// Writes .zollybot-build/workflow-webhook-e2e/report.json and exits non-zero on a failure.
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { AGENT_PROVIDERS, type WorkflowGraph, type WorkflowNode } from "@openbot/contracts/ipc";
+import { AGENT_PROVIDERS, type WorkflowGraph, type WorkflowNode } from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/workflow-webhook-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-workflow-webhook-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/workflow-webhook-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-workflow-webhook-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 // Before the service modules load: the stores read the home folder.
@@ -30,7 +30,7 @@ const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 const { WorkflowGitHubStore } = await import("../src/backend/workflows/workflow-github-store");
 const { WorkflowRunStore } = await import("../src/backend/workflows/workflow-run-store");
 const { WorkflowStore } = await import("../src/backend/workflows/workflow-store");
@@ -95,7 +95,7 @@ const graphOf = (type: "webhook" | "manual", step: "notify" | "approval"): Workf
   strokes: [],
 });
 
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 // No step talks to an agent, so no provider CLI starts.

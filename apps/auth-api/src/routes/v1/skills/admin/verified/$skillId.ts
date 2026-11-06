@@ -1,5 +1,5 @@
-import { isBoolean, isDynamicRecord } from "@openbot/contracts/runtime-values";
 import { createFileRoute } from "@tanstack/solid-router";
+import { isBoolean, isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../../../server/effect-runtime";
 import { readJsonObject } from "../../../../../server/json-body";

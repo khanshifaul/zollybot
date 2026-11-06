@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "OpenBot durchsuchen",
+  "conversation.globalSearch.title": "ZollyBot durchsuchen",
   "conversation.globalSearch.filter": "Ergebnisse filtern",
   "conversation.globalSearch.tab.all": "Alle",
   "conversation.globalSearch.tab.messages": "Nachrichten",
@@ -93,7 +93,7 @@ export const messages = {
   "conversation.threads.error.start": "Der Thread konnte nicht gestartet werden.",
   "conversation.threads.error.branch": "Der Chat konnte nicht abgezweigt werden.",
   "conversation.threads.error.send": "Die Nachricht konnte nicht an den Thread gesendet werden.",
-  "conversation.threads.error.files": "Dieser Server nimmt in Threads keine Dateien an. Aktualisiere OpenBot dort.",
+  "conversation.threads.error.files": "Dieser Server nimmt in Threads keine Dateien an. Aktualisiere ZollyBot dort.",
   "conversation.threads.error.stop": "Der Thread konnte nicht gestoppt werden.",
   "conversation.threads.error.archive": "Der Thread konnte nicht archiviert werden.",
   "conversation.threads.error.restore": "Der Thread konnte nicht wiederhergestellt werden.",

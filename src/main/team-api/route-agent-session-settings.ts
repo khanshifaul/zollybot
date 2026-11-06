@@ -1,9 +1,9 @@
-import { parseResetAgentSessionSetting, parseSetAgentSessionSetting } from "@openbot/contracts/ipc";
+import { parseResetAgentSessionSetting, parseSetAgentSessionSetting } from "@zollybot/contracts/ipc";
 import {
   AGENT_SESSION_SETTINGS_CAPABILITY,
   AGENT_SESSION_SETTINGS_ROUTES,
-} from "@openbot/contracts/team-protocol/agent-session-settings-v1";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/agent-session-settings-v1";
+import { sourceText } from "@zollybot/i18n/source";
 import { runCauseEffect } from "../../backend/effect-boundary";
 import type { TeamApiAdmin } from "./dependencies";
 import { HttpError } from "./http-error";

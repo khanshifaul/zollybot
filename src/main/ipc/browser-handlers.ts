@@ -1,29 +1,29 @@
 // The embedded browser and its picture-in-picture window.
 
-import { type BrowserDisplayState, type BrowserTab, LOCAL_SERVER_ID } from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
+import { type BrowserDisplayState, type BrowserTab, LOCAL_SERVER_ID } from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import {
   BROWSER_PAGE_STATE_CAPABILITY,
   BROWSER_PAGE_STATE_ROUTES,
   decodeBrowserPageStateSnapshot,
-} from "@openbot/contracts/team-protocol/browser-page-state-v1";
+} from "@zollybot/contracts/team-protocol/browser-page-state-v1";
 import {
   BROWSER_SIGN_IN_CAPABILITY,
   BROWSER_SIGN_IN_ROUTES,
   decodeBrowserSignInResult,
-} from "@openbot/contracts/team-protocol/browser-sign-in-v1";
+} from "@zollybot/contracts/team-protocol/browser-sign-in-v1";
 import {
   BROWSER_USER_CONTROL_CAPABILITY,
   BROWSER_USER_CONTROL_ROUTES,
   decodeBrowserUserControlSnapshot,
-} from "@openbot/contracts/team-protocol/browser-user-control-v1";
+} from "@zollybot/contracts/team-protocol/browser-user-control-v1";
 import {
   decodeBrowserViewInputValue,
   TEAM_BROWSER_VIEW_CAPABILITY,
   TEAM_BROWSER_VIEW_CLIPBOARD_CAPABILITY,
-} from "@openbot/contracts/team-protocol/browser-view-v1";
-import { TEAM_BROWSER_NAVIGATION_CAPABILITY } from "@openbot/contracts/team-protocol/current";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/browser-view-v1";
+import { TEAM_BROWSER_NAVIGATION_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
+import { sourceText } from "@zollybot/i18n/source";
 import type { WebContents } from "electron";
 import type { BrowserHost } from "../../backend/browser-host";
 import { runCauseEffect } from "../../backend/effect-boundary";

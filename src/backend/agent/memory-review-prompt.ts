@@ -1,6 +1,6 @@
-import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES } from "@openbot/contracts/agent-memory-context";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentSummary, ConversationMessage } from "@openbot/contracts/ipc";
+import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES } from "@zollybot/contracts/agent-memory-context";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentSummary, ConversationMessage } from "@zollybot/contracts/ipc";
 import { Schema } from "effect";
 import type { MemoryReviewBase } from "./agent-memories";
 import { chatTranscript, promptJson } from "./side-question";

@@ -190,7 +190,7 @@ export default function RootLayout() {
   const { theme: colorScheme } = useUniwind();
   const animations = useMotionPreferences((state) => state.allAnimations);
   const heroConfig = useMemo(() => (animations ? {} : { animation: "disable-all" as const }), [animations]);
-  const canvas = String(useCSSVariable("--openbot-bg-native-canvas"));
+  const canvas = String(useCSSVariable("--zollybot-bg-native-canvas"));
   const bloub = useBloubColors();
   // The reload screen of a direction restart has the color of the splash.
   const splashColor = useRef("");

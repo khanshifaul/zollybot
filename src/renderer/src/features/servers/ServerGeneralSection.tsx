@@ -1,5 +1,6 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AvatarImageInput } from "@openbot/contracts/ipc";
+import type { JSX } from "@solidjs/web";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AvatarImageInput } from "@zollybot/contracts/ipc";
 import {
   Button,
   ConfirmDialog,
@@ -14,12 +15,11 @@ import {
   ItemTitle,
   SettingsSection,
   Text,
-} from "@openbot/ui";
-import { avatarImageDataUrl, normalizeAvatarFile } from "@openbot/ui/avatar-image";
-import { LeaveServerDialog } from "@openbot/ui/features/servers/LeaveServerDialog";
-import { ServerLogo } from "@openbot/ui/features/servers/ServerLogo";
-import { useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { avatarImageDataUrl, normalizeAvatarFile } from "@zollybot/ui/avatar-image";
+import { LeaveServerDialog } from "@zollybot/ui/features/servers/LeaveServerDialog";
+import { ServerLogo } from "@zollybot/ui/features/servers/ServerLogo";
+import { useText } from "@zollybot/ui/text";
 import { type Accessor, createStore, Show, snapshot } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { ServerMemoryLimitSetting } from "./ServerMemoryLimitSetting";

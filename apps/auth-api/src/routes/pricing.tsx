@@ -4,7 +4,7 @@ import { pricingPageText } from "../components/pricing/pricing-page-text";
 import { loadPageText } from "../lib/page-text";
 import { readPricingOffer } from "../lib/pricing-offer";
 import { PRICING_ROUTE, PRICING_SOCIAL_IMAGE } from "../lib/pricing-page";
-import { OPENBOT_X_HANDLE, pageSocialImageMeta } from "../lib/site-metadata";
+import { pageSocialImageMeta, ZOLLYBOT_X_HANDLE } from "../lib/site-metadata";
 
 export const Route = createFileRoute("/pricing")({
   loader: async ({ context }) => {
@@ -23,14 +23,14 @@ export const Route = createFileRoute("/pricing")({
         { title: text.title },
         { name: "description", content: text.description },
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "OpenBot" },
+        { property: "og:site_name", content: "ZollyBot" },
         { property: "og:locale", content: "en_US" },
         { property: "og:url", content: url },
         { property: "og:title", content: text.title },
         { property: "og:description", content: text.description },
         ...image.openGraph,
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: OPENBOT_X_HANDLE },
+        { name: "twitter:site", content: ZOLLYBOT_X_HANDLE },
         { name: "twitter:title", content: text.title },
         { name: "twitter:description", content: text.description },
         ...image.twitter,

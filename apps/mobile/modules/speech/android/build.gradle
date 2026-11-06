@@ -5,7 +5,7 @@ plugins {
   id 'expo-module-gradle-plugin'
 }
 
-group = 'run.openbot'
+group = 'run.zollybot'
 version = '1.0.0'
 
 // The official sherpa-onnx Android build, the version that desktop pins in scripts/prepare-voice.ts.
@@ -22,7 +22,7 @@ repositories {
 }
 
 android {
-  namespace "run.openbot.speech"
+  namespace "run.zollybot.speech"
   defaultConfig {
     versionCode 1
     versionName '1.0.0'
@@ -48,7 +48,7 @@ def verifySherpaOnnx = tasks.register('verifySherpaOnnx') {
     }
     def actual = digest.digest().encodeHex().toString()
     if (actual != sherpaOnnxSha256) {
-      throw new GradleException("OpenBotSpeech: ${file.name} has SHA-256 ${actual}, expected ${sherpaOnnxSha256}")
+      throw new GradleException("ZollyBotSpeech: ${file.name} has SHA-256 ${actual}, expected ${sherpaOnnxSha256}")
     }
   }
 }

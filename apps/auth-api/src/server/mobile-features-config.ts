@@ -1,4 +1,4 @@
-import type { MobileFeatureConfig, MobileLatestVersions } from "@openbot/contracts/mobile-features";
+import type { MobileFeatureConfig, MobileLatestVersions } from "@zollybot/contracts/mobile-features";
 
 /**
  * The app versions of each platform that have each mobile feature. `upTo` is the last version that

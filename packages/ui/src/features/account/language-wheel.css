@@ -4,24 +4,24 @@
   width: min(100%, 360px);
   min-height: 100%;
   margin-inline: auto;
-  padding: var(--openbot-space-8) var(--openbot-space-4);
+  padding: var(--zollybot-space-8) var(--zollybot-space-4);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   -webkit-app-region: no-drag;
 }
 
 .language-wheel-shell .account-login-brand-lockup {
-  margin-bottom: var(--openbot-space-4);
+  margin-bottom: var(--zollybot-space-4);
 }
 
 .language-wheel-title {
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-medium);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .language-wheel-frame {
@@ -33,17 +33,17 @@
 .language-wheel-arrows {
   position: absolute;
   top: 50%;
-  inset-inline-start: calc(100% + var(--openbot-space-2));
+  inset-inline-start: calc(100% + var(--zollybot-space-2));
   translate: 0 -50%;
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
 }
 
 .language-wheel-arrows svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .language-wheel {
@@ -58,8 +58,8 @@
   user-select: none;
   mask-image: linear-gradient(
     transparent,
-    var(--openbot-text-primary) 30%,
-    var(--openbot-text-primary) 70%,
+    var(--zollybot-text-primary) 30%,
+    var(--zollybot-text-primary) 70%,
     transparent
   );
 }
@@ -75,14 +75,14 @@
   inset-inline: 0;
   top: calc(var(--row) * 2);
   height: var(--row);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-grouped);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-grouped);
 }
 
 .language-wheel:has(:focus-visible)::before {
   box-shadow:
-    inset 0 0 0 1px var(--openbot-border-focus),
-    var(--openbot-focus-ring);
+    inset 0 0 0 1px var(--zollybot-border-focus),
+    var(--zollybot-focus-ring);
 }
 
 .language-wheel-track {
@@ -100,8 +100,8 @@
   /* Gone by the third row, where the row on the far side of the loop changes ends. */
   opacity: max(0, 1 - var(--distance) * 0.35);
   transition:
-    translate var(--openbot-duration-overlay) var(--openbot-ease-out),
-    opacity var(--openbot-duration-overlay) var(--openbot-ease-out);
+    translate var(--zollybot-duration-overlay) var(--zollybot-ease-out),
+    opacity var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 /* The whole row selects its language, at every size. */
@@ -110,9 +110,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--openbot-text-primary);
-  font-size: var(--openbot-text-3xl);
-  font-weight: var(--openbot-weight-semibold);
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-3xl);
+  font-weight: var(--zollybot-weight-semibold);
   letter-spacing: -0.03em;
   line-height: 1;
   cursor: inherit;
@@ -124,7 +124,7 @@
   align-items: center;
   gap: 0.4em;
   scale: max(0.6, 1 - var(--distance) * 0.2);
-  transition: scale var(--openbot-duration-overlay) var(--openbot-ease-out);
+  transition: scale var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 /* Following the pointer: no easing, or the wheel lags behind the finger. */
@@ -141,27 +141,27 @@
 .language-wheel-continue {
   width: min(100%, 288px);
   min-height: 44px;
-  margin-top: var(--openbot-space-2);
-  border-radius: var(--openbot-radius-pill);
+  margin-top: var(--zollybot-space-2);
+  border-radius: var(--zollybot-radius-pill);
 }
 
 .language-wheel-continue svg {
-  width: var(--openbot-icon-lg);
-  height: var(--openbot-icon-lg);
-  transition: translate var(--openbot-duration-normal) var(--openbot-ease-out);
-  stroke-width: var(--openbot-icon-stroke-lg);
+  width: var(--zollybot-icon-lg);
+  height: var(--zollybot-icon-lg);
+  transition: translate var(--zollybot-duration-normal) var(--zollybot-ease-out);
+  stroke-width: var(--zollybot-icon-stroke-lg);
 }
 
 .language-wheel-continue:hover:not(:disabled) {
-  background: var(--openbot-surface-light);
+  background: var(--zollybot-surface-light);
 }
 
 .language-wheel-continue:is(:hover, :focus-visible):not(:disabled) svg {
-  translate: var(--openbot-space-1) 0;
+  translate: var(--zollybot-space-1) 0;
 }
 
 .language-wheel-continue:active:not(:disabled) svg {
-  translate: var(--openbot-space-2) 0;
+  translate: var(--zollybot-space-2) 0;
 }
 
 /* Right to left, the arrow points and moves the other way. */
@@ -170,11 +170,11 @@
 }
 
 .language-wheel-continue:is(:hover, :focus-visible):not(:disabled) svg:dir(rtl) {
-  translate: calc(var(--openbot-space-1) * -1) 0;
+  translate: calc(var(--zollybot-space-1) * -1) 0;
 }
 
 .language-wheel-continue:active:not(:disabled) svg:dir(rtl) {
-  translate: calc(var(--openbot-space-2) * -1) 0;
+  translate: calc(var(--zollybot-space-2) * -1) 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

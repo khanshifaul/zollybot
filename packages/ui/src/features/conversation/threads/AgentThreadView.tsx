@@ -1,4 +1,5 @@
-import { limitedQuoteText } from "@openbot/contracts/chat-tag-references";
+import type { JSX } from "@solidjs/web";
+import { limitedQuoteText } from "@zollybot/contracts/chat-tag-references";
 import type {
   AgentApproval,
   AgentTask,
@@ -7,54 +8,53 @@ import type {
   DraftAttachment,
   InstalledSkill,
   QueueDelivery,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
-import { isAgentTaskActive } from "@openbot/team-client/agent-tasks";
-import { Button } from "@openbot/ui";
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
+import { isAgentTaskActive } from "@zollybot/team-client/agent-tasks";
+import { Button } from "@zollybot/ui";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
 import type {
   AgentMessage,
   AgentProfile,
   ComposerBrowserTab,
   ComposerMcpServer,
   ComposerThread,
-} from "@openbot/ui/data";
-import { AgentActivityIndicator, nextAgentActivityLabel } from "@openbot/ui/features/conversation/AgentActivity";
+} from "@zollybot/ui/data";
+import { AgentActivityIndicator, nextAgentActivityLabel } from "@zollybot/ui/features/conversation/AgentActivity";
 import {
   type AgentStep,
   AgentStepsDisclosure,
   type AgentStepsFacts,
-} from "@openbot/ui/features/conversation/AgentSteps";
-import type { AttachmentDownloads, AttachmentMediaSource } from "@openbot/ui/features/conversation/AttachmentCards";
-import { agentActivityExitDuration } from "@openbot/ui/features/conversation/activity-timing";
-import { branchPointIds } from "@openbot/ui/features/conversation/branch-points";
-import { type ChatMessageAuthor, ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
-import { ComposerAddMenu } from "@openbot/ui/features/conversation/ComposerAddMenu";
+} from "@zollybot/ui/features/conversation/AgentSteps";
+import type { AttachmentDownloads, AttachmentMediaSource } from "@zollybot/ui/features/conversation/AttachmentCards";
+import { agentActivityExitDuration } from "@zollybot/ui/features/conversation/activity-timing";
+import { branchPointIds } from "@zollybot/ui/features/conversation/branch-points";
+import { type ChatMessageAuthor, ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
+import { ComposerAddMenu } from "@zollybot/ui/features/conversation/ComposerAddMenu";
 import {
   ComposerAttachmentRow,
   type ComposerPendingImage,
-} from "@openbot/ui/features/conversation/ComposerAttachmentRow";
+} from "@zollybot/ui/features/conversation/ComposerAttachmentRow";
 import {
   ComposerEditor,
   type ComposerPasteResult,
   type ComposerSelection,
   type QuoteRequest,
-} from "@openbot/ui/features/conversation/ComposerEditor";
-import { ComposerNotice } from "@openbot/ui/features/conversation/ComposerNotice";
-import { ComposerReplyPreview } from "@openbot/ui/features/conversation/ComposerReplyPreview";
-import { ComposerSendControl } from "@openbot/ui/features/conversation/ComposerSendControl";
-import { ContextUsageMeter, type ContextUsageView } from "@openbot/ui/features/conversation/ContextUsage";
-import { ApprovalCard } from "@openbot/ui/features/conversation/ConversationPrompts";
-import { DeleteMessageDialog, MessageActions, MessageMenu } from "@openbot/ui/features/conversation/MessageRendering";
-import { QueuePanel } from "@openbot/ui/features/conversation/QueuePanel";
+} from "@zollybot/ui/features/conversation/ComposerEditor";
+import { ComposerNotice } from "@zollybot/ui/features/conversation/ComposerNotice";
+import { ComposerReplyPreview } from "@zollybot/ui/features/conversation/ComposerReplyPreview";
+import { ComposerSendControl } from "@zollybot/ui/features/conversation/ComposerSendControl";
+import { ContextUsageMeter, type ContextUsageView } from "@zollybot/ui/features/conversation/ContextUsage";
+import { ApprovalCard } from "@zollybot/ui/features/conversation/ConversationPrompts";
+import { DeleteMessageDialog, MessageActions, MessageMenu } from "@zollybot/ui/features/conversation/MessageRendering";
+import { QueuePanel } from "@zollybot/ui/features/conversation/QueuePanel";
 import {
   MessageSelectionActions,
   type QuoteShortcutModifier,
-} from "@openbot/ui/features/conversation/SelectionActions";
-import type { SendShortcut } from "@openbot/ui/features/conversation/send-shortcut";
-import { ComposerVoiceControls, type VoicePhase } from "@openbot/ui/features/conversation/VoiceRecordingMorph";
-import { type TextValue, useText } from "@openbot/ui/text";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/conversation/SelectionActions";
+import type { SendShortcut } from "@zollybot/ui/features/conversation/send-shortcut";
+import { ComposerVoiceControls, type VoicePhase } from "@zollybot/ui/features/conversation/VoiceRecordingMorph";
+import { type TextValue, useText } from "@zollybot/ui/text";
 import { children, createEffect, createMemo, createSignal, For, onCleanup, onSettled, Show, untrack } from "solid-js";
 import { type AgentThreadBranchSource, BranchDivider } from "./BranchDivider";
 

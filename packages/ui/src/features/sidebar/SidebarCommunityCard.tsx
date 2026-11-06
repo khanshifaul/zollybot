@@ -1,9 +1,9 @@
-import { Button, IconButton, X } from "@openbot/ui";
+import { Button, IconButton, X } from "@zollybot/ui";
 import { useText } from "../../text";
 import { DiscordMark, XMark } from "../settings/brand-marks";
 
 /**
- * The invitation to the OpenBot community at the bottom of the sidebar. It uses the quiet card of
+ * The invitation to the ZollyBot community at the bottom of the sidebar. It uses the quiet card of
  * the mobile app announcement. Discord is the main action; X is an icon button beside it.
  */
 export function SidebarCommunityCard(props: {

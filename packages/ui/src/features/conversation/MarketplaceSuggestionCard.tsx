@@ -1,5 +1,5 @@
-import { Button, Check, IconButton, Lock, Spinner, X } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Button, Check, IconButton, Lock, Spinner, X } from "@zollybot/ui";
 import { createSignal, createStore, createUniqueId, onCleanup, onSettled, Show } from "solid-js";
 import { useText } from "../../text";
 import { PluginIcon } from "../marketplace/PluginIcon";

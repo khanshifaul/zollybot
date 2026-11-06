@@ -1,5 +1,5 @@
-import { type AvatarHue, type ChannelIcon, type ChannelIconName, isAvatarHue } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import { type AvatarHue, type ChannelIcon, type ChannelIconName, isAvatarHue } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   BookOpen,
   Brain,
@@ -21,7 +21,7 @@ import {
   Store,
   Workflow,
   Zap,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 
 /**
  * The glyph of each icon a reader can give a channel. `CHANNEL_ICON_NAMES` in the contracts owns the

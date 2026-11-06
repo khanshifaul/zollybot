@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { closeSync, existsSync, mkdirSync, openSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
-import { sourceText } from "@openbot/i18n/source";
+import { sourceText } from "@zollybot/i18n/source";
 import { workspaceTemporaryPaths } from "./agent/workspace-sandbox";
 import { isPathInside } from "./path-containment";
 
@@ -11,7 +11,7 @@ import { isPathInside } from "./path-containment";
  * folders and the provider's state are added to them.
  *
  * Grok, OpenCode, Antigravity, Cursor, Cline, Kimi and Devin take no sandbox per session, so a
- * Workspace only agent on them gets a provider process of its own, and OpenBot starts that process
+ * Workspace only agent on them gets a provider process of its own, and ZollyBot starts that process
  * inside an operating system sandbox. The whole process is confined: the file edit tools, the shell, and every
  * command and MCP server it starts. Nothing inside the process can take the sandbox away. Only macOS
  * has the sandbox now: on Linux and Windows the process does not start, and the user must choose
@@ -104,7 +104,7 @@ export function openCodeStatePaths(env: NodeJS.ProcessEnv = process.env, home = 
   };
 }
 
-const OPENCODE_CONFINED_CACHE = join(tmpdir(), "openbot-confined-cache");
+const OPENCODE_CONFINED_CACHE = join(tmpdir(), "zollybot-confined-cache");
 
 /** OpenCode's data folder: its sessions, its database (`opencode.db`) and its `auth.json`. */
 export function openCodeDataDirectory(env: NodeJS.ProcessEnv = process.env, home = homedir()): string {
@@ -177,7 +177,7 @@ export function cursorDataHome(env: NodeJS.ProcessEnv = process.env, home = home
   return env.CURSOR_DATA_DIR?.trim() || join(home, ".cursor");
 }
 
-const CURSOR_CONFINED_CACHE = join(tmpdir(), "openbot-confined-cursor-cache");
+const CURSOR_CONFINED_CACHE = join(tmpdir(), "zollybot-confined-cursor-cache");
 
 let keychainLockFile: string | undefined;
 
@@ -187,7 +187,7 @@ let keychainLockFile: string | undefined;
  * and Cursor 2026.10.22 answers each session with "Authentication required" although it is signed
  * in. Only the contents of the lock file are writable: the module directory beside it lists the
  * security modules that the user's other processes load. The confined process cannot create the
- * file, so OpenBot makes it when it is missing, as `security` would.
+ * file, so ZollyBot makes it when it is missing, as `security` would.
  */
 function keychainLockFiles(): string[] {
   if (process.platform !== "darwin") return [];
@@ -203,7 +203,7 @@ function keychainLockFiles(): string[] {
 
 /** The config folder of every confined Cursor process. Only confined processes read it. */
 function cursorConfinedConfig(home: string): string {
-  return join(home, ".cursor", "openbot-confined");
+  return join(home, ".cursor", "zollybot-confined");
 }
 
 /**
@@ -247,7 +247,7 @@ export function clineStatePaths(env: NodeJS.ProcessEnv = process.env, home = hom
 
 /**
  * The folder where Hermes Agent keeps its sign-ins, settings, sessions and memories: `HERMES_HOME`,
- * else `~/.hermes`, or `%LOCALAPPDATA%\hermes` on Windows. OpenBot shares it with the user's own Hermes.
+ * else `~/.hermes`, or `%LOCALAPPDATA%\hermes` on Windows. ZollyBot shares it with the user's own Hermes.
  * When the user selected a profile with `hermes profile use <name>`, it is `<root>/profiles/<name>`.
  */
 export function hermesHome(
@@ -363,7 +363,7 @@ export function devinStatePaths(env: NodeJS.ProcessEnv = process.env, home = hom
 }
 
 /**
- * A custom agent keeps its state where it wants, and OpenBot cannot know where. A Workspace only
+ * A custom agent keeps its state where it wants, and ZollyBot cannot know where. A Workspace only
  * custom agent gets no state folder: an agent that must write in its home folder to run needs Full
  * access.
  */
@@ -381,7 +381,7 @@ export function piAgentDirectory(env: NodeJS.ProcessEnv = process.env, home = ho
  * run loads. Pi 1.4.0 takes a lock folder beside `auth.json`, `settings.json` and `trust.json` each
  * time it reads one, and a read stops with EPERM when it cannot make that folder. Pi also locks its
  * saved model catalog, `models-store.json`, to read it. Without that lock Pi lists the catalog of
- * its release, which does not have the models that OpenBot's refresh saved (#4926). The catalog
+ * its release, which does not have the models that ZollyBot's refresh saved (#4926). The catalog
  * itself stays read-only.
  */
 export function piStatePaths(env: NodeJS.ProcessEnv = process.env, home = homedir()): ProviderStatePaths {
@@ -451,7 +451,7 @@ export function copilotStatePaths(env: NodeJS.ProcessEnv = process.env, home = h
 
 /**
  * At its first start, GitHub Copilot CLI 1.0.105 writes `firstLaunchAt` in `config.json`. When it
- * cannot, it stops with no message, and a confined process cannot write that file. Thus OpenBot makes
+ * cannot, it stops with no message, and a confined process cannot write that file. Thus ZollyBot makes
  * the file when it is missing, with the same value. The CLI keeps the other values in it.
  */
 function makeCopilotConfig(copilotHome: string): void {
@@ -467,7 +467,7 @@ function makeCopilotConfig(copilotHome: string): void {
   }
 }
 
-const COPILOT_CONFINED_CACHE = join(tmpdir(), "openbot-confined-copilot-cache");
+const COPILOT_CONFINED_CACHE = join(tmpdir(), "zollybot-confined-copilot-cache");
 
 /**
  * The environment of a confined Copilot process: its own cache, apart from the one outside. Both

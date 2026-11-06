@@ -1,12 +1,12 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type AccountUsage,
   type AccountUsageGroup,
   type AccountUsageLimit,
   type AccountUsageWindow,
   MAX_USAGE_GROUPS,
-} from "@openbot/contracts/ipc";
-import { isNumber } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isNumber } from "@zollybot/contracts/runtime-values";
 import type { AccountRateLimitGroupResult, AccountRateLimitResult, AccountRateLimitsReadResult } from "../protocol";
 
 export function normalizeAccountUsage(rateLimits: AccountRateLimitsReadResult | null, model?: string): AccountUsage {

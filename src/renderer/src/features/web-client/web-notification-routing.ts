@@ -5,16 +5,16 @@ import {
   type ChannelSummary,
   type ClientAgentSummary,
   type ServerNotificationLevel,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   type AgentNotificationChannel,
   agentEventAgentId,
   agentEventRequestThread,
   agentNotificationLevel,
   notificationRequestKey,
-} from "@openbot/team-client/agent-notifications";
-import { channelReplyNotifications } from "@openbot/team-client/channel-notifications";
-import type { TextValue } from "@openbot/ui/text";
+} from "@zollybot/team-client/agent-notifications";
+import { channelReplyNotifications } from "@zollybot/team-client/channel-notifications";
+import type { TextValue } from "@zollybot/ui/text";
 import { onCleanup, untrack } from "solid-js";
 import { startActionSounds } from "../../action-sounds";
 import { playCompletionSoundForAgentEvent, unlockCompletionSound } from "../../completion-sound";

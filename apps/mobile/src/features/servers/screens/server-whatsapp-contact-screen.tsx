@@ -1,4 +1,4 @@
-import { MESSAGING_LIMITS, parseWhatsAppPhoneNumber } from "@openbot/contracts/ipc";
+import { MESSAGING_LIMITS, parseWhatsAppPhoneNumber } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { useState } from "react";

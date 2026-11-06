@@ -4,10 +4,10 @@
  * notice. Webhook routines change only for an account that manages the server's events.
  */
 
-import { EVENTS_CAPABILITY } from "@openbot/contracts/team-protocol/events-v1";
-import { ROUTINE_FLOWS_CAPABILITY } from "@openbot/contracts/team-protocol/routine-flows-v1";
-import type { DiagramModelChoice } from "@openbot/ui/features/diagrams/DiagramNewAgentCard";
-import { useText } from "@openbot/ui/text";
+import { EVENTS_CAPABILITY } from "@zollybot/contracts/team-protocol/events-v1";
+import { ROUTINE_FLOWS_CAPABILITY } from "@zollybot/contracts/team-protocol/routine-flows-v1";
+import type { DiagramModelChoice } from "@zollybot/ui/features/diagrams/DiagramNewAgentCard";
+import { useText } from "@zollybot/ui/text";
 import { createMemo, Show } from "solid-js";
 import { useLayout } from "../../layout";
 import { useNavigation } from "../../navigation";

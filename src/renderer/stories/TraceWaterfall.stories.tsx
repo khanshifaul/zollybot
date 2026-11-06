@@ -1,7 +1,7 @@
-import { type AgentStep, AgentStepsDisclosure } from "@openbot/ui/features/conversation/AgentSteps";
-import { ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
-import { MessageActions } from "@openbot/ui/features/conversation/MessageRendering";
-import { type TraceSpan, TraceWaterfall } from "@openbot/ui/features/conversation/TraceWaterfall";
+import { type AgentStep, AgentStepsDisclosure } from "@zollybot/ui/features/conversation/AgentSteps";
+import { ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
+import { MessageActions } from "@zollybot/ui/features/conversation/MessageRendering";
+import { type TraceSpan, TraceWaterfall } from "@zollybot/ui/features/conversation/TraceWaterfall";
 import { createMemo, createSignal, onSettled } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";

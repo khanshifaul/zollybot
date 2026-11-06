@@ -5,7 +5,7 @@
  * runtime says when something changed.
  */
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   ROUTINE_FLOW_STEP_STATUSES,
   ROUTINE_RUN_SOURCES,
@@ -15,11 +15,11 @@ import {
   type RoutineFlowStepStatus,
   type RoutineRun,
   type RoutineRunStatus,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isOneOf } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isOneOf } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { databaseRow, databaseRows, placeholders } from "../database/database-rows";
-import type { OpenBotDatabase } from "../openbot-database";
+import type { ZollyBotDatabase } from "../zollybot-database";
 import { routineFlowConnectProblem, routineFlowDepths } from "./routine-flow-graph";
 
 /** A refusal the user reads: the text is already a sentence for them. */
@@ -40,7 +40,7 @@ export interface RoutineFlowRun extends Pick<RoutineRun, "kind" | "source"> {
 }
 
 export interface RoutineFlowStoreOptions {
-  database: OpenBotDatabase;
+  database: ZollyBotDatabase;
   createId?: () => string;
 }
 
@@ -61,7 +61,7 @@ const RUN_STATUSES = [
 ] as const satisfies readonly RoutineRunStatus[];
 
 export class RoutineFlowStore {
-  readonly #database: OpenBotDatabase;
+  readonly #database: ZollyBotDatabase;
   readonly #createId: () => string;
 
   constructor(options: RoutineFlowStoreOptions) {

@@ -1,5 +1,5 @@
-import { DISCORD_ROUTE_GUILDS_LIMIT } from "@openbot/contracts/signal-protocol/discord-route";
 import { createFileRoute } from "@tanstack/solid-router";
+import { DISCORD_ROUTE_GUILDS_LIMIT } from "@zollybot/contracts/signal-protocol/discord-route";
 import { Effect } from "effect";
 import { z } from "zod";
 import { runApiResponse } from "../../../../server/effect-runtime";

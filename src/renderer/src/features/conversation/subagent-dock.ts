@@ -1,6 +1,6 @@
-import type { ConversationSubagent } from "@openbot/contracts/ipc";
-import type { AgentMessage } from "@openbot/ui/data";
 import type { VirtualItem } from "@tanstack/virtual-core";
+import type { ConversationSubagent } from "@zollybot/contracts/ipc";
+import type { AgentMessage } from "@zollybot/ui/data";
 import { createEffect, createMemo, createSignal, untrack } from "solid-js";
 
 export interface SubagentDockDeps {

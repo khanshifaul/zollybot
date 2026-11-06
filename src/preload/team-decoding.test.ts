@@ -17,7 +17,7 @@ import type {
   TeamMemberSummary,
   TeamPresenceSnapshot,
   TeamSessionSummary,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { describe, expect, it } from "vitest";
 import {
   decodeDirectConversation,
@@ -91,7 +91,7 @@ const teamInvite = {
   useCount: 0,
 } satisfies TeamInviteSummary;
 
-const invite = { ...teamInvite, inviteUrl: "openbot://join/invite-1" } satisfies InviteSummary;
+const invite = { ...teamInvite, inviteUrl: "zollybot://join/invite-1" } satisfies InviteSummary;
 
 const session = {
   id: "session-1",
@@ -250,8 +250,8 @@ describe("team decoders", () => {
     ["server on this computer", decodeServer, { ...remoteServer, thisComputer: true }],
     ["server with a key change time", decodeServer, { ...remoteServer, keyChangedAt: 1_700_000_000_000 }],
     ["invite preview", decodeInvitePreview, invitePreview],
-    ["invite link", decodeInviteUrl, "openbot://join/invite-1"],
-    ["pending invite", decodePendingInvite, "openbot://join/invite-1"],
+    ["invite link", decodeInviteUrl, "zollybot://join/invite-1"],
+    ["pending invite", decodePendingInvite, "zollybot://join/invite-1"],
     ["missing pending invite", decodePendingInvite, null],
     [
       "server presence",

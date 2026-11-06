@@ -1,4 +1,4 @@
-import type { DeleteSharedTableInput, OpenBotDesktopApi, SharedTable } from "@openbot/contracts/ipc";
+import type { DeleteSharedTableInput, SharedTable, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the conversation domain reaches in main: agent and direct message pages, sends, reads,
@@ -6,7 +6,7 @@ import type { DeleteSharedTableInput, OpenBotDesktopApi, SharedTable } from "@op
  */
 export interface ConversationPort {
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     | "readAgentSessionSettings"
     | "listAgentNotificationLevels"
     | "askSideQuestion"
@@ -26,7 +26,7 @@ export interface ConversationPort {
     | "sendMessage"
   >;
   browser: Pick<
-    OpenBotDesktopApi["browser"],
+    ZollyBotDesktopApi["browser"],
     | "capturePreview"
     | "finishLocalSignIn"
     | "onLiveViewEvent"
@@ -36,7 +36,7 @@ export interface ConversationPort {
     | "stopLiveView"
   >;
   servers: Pick<
-    OpenBotDesktopApi["servers"],
+    ZollyBotDesktopApi["servers"],
     | "listDirectThreads"
     | "markDirectRead"
     | "onDirectMessage"
@@ -45,15 +45,15 @@ export interface ConversationPort {
     | "sendDirectMessage"
     | "setDirectTyping"
   >;
-  storage: Pick<OpenBotDesktopApi["storage"], "openLocation">;
+  storage: Pick<ZollyBotDesktopApi["storage"], "openLocation">;
   /** The reader's level for each agent of a joined server, which decides what Delete offers. */
-  hostAdmin: Pick<OpenBotDesktopApi["hostAdmin"], "getAgentAccess">;
-  browserDock: Pick<OpenBotDesktopApi["browserDock"], "publishPresentation" | "onAction" | "onShown">;
+  hostAdmin: Pick<ZollyBotDesktopApi["hostAdmin"], "getAgentAccess">;
+  browserDock: Pick<ZollyBotDesktopApi["browserDock"], "publishPresentation" | "onAction" | "onShown">;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function conversationPort(): ConversationPort {
-  return window.openbot;
+  return window.zollybot;
 }
 
 /** Cleanup can run after IPC shuts down; process shutdown also frees these in-memory pages. */

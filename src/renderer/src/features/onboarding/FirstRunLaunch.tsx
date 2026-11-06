@@ -1,6 +1,6 @@
-import type { AppLogoVariant } from "@openbot/brand";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
+import type { AppLogoVariant } from "@zollybot/brand";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import { For } from "solid-js";
 import type { OnboardingAvatarVariant } from "./onboarding-avatars";
 
@@ -14,7 +14,7 @@ interface FirstRunLaunchProps {
   team: readonly OnboardingAvatarVariant[];
   /** The build, for the color of the scribble. */
   variant: AppLogoVariant;
-  /** The free models are still downloading. Otherwise OpenBot is opening. */
+  /** The free models are still downloading. Otherwise ZollyBot is opening. */
   downloading: boolean;
   /** The download in percent, or null when it reports none. */
   progress: number | null;

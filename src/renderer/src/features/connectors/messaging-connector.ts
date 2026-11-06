@@ -6,17 +6,17 @@ import type {
   MessagingDesktopApi,
   MessagingOverview,
   MessagingRole,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import type { AgentProfile } from "@openbot/ui/data";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import type { AgentProfile } from "@zollybot/ui/data";
 import type {
   DiscordAccessControl,
   SlackOrchestratorChoice,
   SlackOrchestratorModels,
   WorkspacePlatform,
-} from "@openbot/ui/features/settings/SlackIntegrationPanel";
-import type { TelegramChatPlace } from "@openbot/ui/features/settings/TelegramIntegrationPanel";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/settings/SlackIntegrationPanel";
+import type { TelegramChatPlace } from "@zollybot/ui/features/settings/TelegramIntegrationPanel";
+import { currentText } from "@zollybot/ui/text";
 import { createSignal, createStore, untrack } from "solid-js";
 import {
   type ConnectorAnalyticsAction,
@@ -44,15 +44,17 @@ export interface MessagingApi {
     target: MessagingOrchestratorTarget,
     choice: SlackOrchestratorChoice | null,
   ) => Promise<AddMessagingOrchestratorResult>;
-  /** Who can use OpenBot in a Discord server. */
+  /** Who can use ZollyBot in a Discord server. */
   discordAccess: (workspaceId: string) => Promise<DiscordAccess>;
   /** The roles of a Discord server to choose from. */
   discordRoles: (workspaceId: string) => Promise<DiscordRoleList>;
   setDiscordAccess: (workspaceId: string, allowedRoles: MessagingRole[]) => Promise<DiscordAccess>;
 }
 
-/** The connections of this computer, through main. Read on each call: tests and stories replace `window.openbot`. */
-export function localMessagingApi(messaging: () => MessagingDesktopApi = () => window.openbot.messaging): MessagingApi {
+/** The connections of this computer, through main. Read on each call: tests and stories replace `window.zollybot`. */
+export function localMessagingApi(
+  messaging: () => MessagingDesktopApi = () => window.zollybot.messaging,
+): MessagingApi {
   return {
     overview: (platform) =>
       platform === "slack"
@@ -155,7 +157,7 @@ export function createMessagingConnector(
   /** Each read replaces the one before it, so a slow answer never overwrites a newer one. */
   let reads = 0;
 
-  /** Who can use OpenBot in each Discord server of one server. Discord only. */
+  /** Who can use ZollyBot in each Discord server of one server. Discord only. */
   const [access, setAccess] = createStore<{
     serverId: string | undefined;
     allowed: Record<string, MessagingRole[]>;

@@ -1,4 +1,4 @@
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { Skeleton, Typography } from "heroui-native";

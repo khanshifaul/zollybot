@@ -1,11 +1,11 @@
-import { BookMarked, Bot, CalendarClock, Hash, Server, Sparkles, Store, UsersRound } from "@openbot/ui";
+import { BookMarked, Bot, CalendarClock, Hash, Server, Sparkles, Store, UsersRound } from "@zollybot/ui";
 import type {
   GlobalSearchAction,
   GlobalSearchFile,
   GlobalSearchPage,
   GlobalSearchRoutine,
-} from "@openbot/ui/components/GlobalSearch";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui/components/GlobalSearch";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import { formatMessageTime } from "./app-message-projection";
 import { appPort } from "./app-port";

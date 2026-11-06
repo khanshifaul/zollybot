@@ -1,7 +1,7 @@
-import type { AddedAgent, AgentTemplateDetail, ServerSummary } from "@openbot/contracts/ipc";
-import { classifyFailure } from "@openbot/telemetry";
-import { AgentTemplateInstallDialog } from "@openbot/ui/features/agents/AgentTemplateInstallDialog";
-import { useText } from "@openbot/ui/text";
+import type { AddedAgent, AgentTemplateDetail, ServerSummary } from "@zollybot/contracts/ipc";
+import { classifyFailure } from "@zollybot/telemetry";
+import { AgentTemplateInstallDialog } from "@zollybot/ui/features/agents/AgentTemplateInstallDialog";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { desktopAnalytics } from "../../analytics";
@@ -13,7 +13,7 @@ interface InstallState {
 }
 
 /**
- * The dialog an `openbot://agents/<id>` link opens. It reads the template by the id the link named
+ * The dialog an `zollybot://agents/<id>` link opens. It reads the template by the id the link named
  * and installs it only when the user presses Add agent: on `server` when one is given, whose host
  * downloads the template itself, otherwise on this computer.
  */

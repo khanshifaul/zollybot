@@ -1,5 +1,5 @@
-import { TELEGRAM_BOT_ID_PATTERN, TELEGRAM_CHAT_ID_PATTERN } from "@openbot/contracts/signal-protocol/telegram-route";
 import { createFileRoute } from "@tanstack/solid-router";
+import { TELEGRAM_BOT_ID_PATTERN, TELEGRAM_CHAT_ID_PATTERN } from "@zollybot/contracts/signal-protocol/telegram-route";
 import { Effect } from "effect";
 import { z } from "zod";
 import { runApiResponse } from "../../../server/effect-runtime";

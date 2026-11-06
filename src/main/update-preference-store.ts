@@ -1,11 +1,11 @@
-import type { UpdatePreference, UpdatePreferenceChange } from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord } from "@openbot/contracts/runtime-values";
+import type { UpdatePreference, UpdatePreferenceChange } from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { readPreferenceFile, writePreferenceFile } from "./preference-file";
 
 /** The file name under the user data folder. */
-export const UPDATE_PREFERENCE_FILE = "openbot-update-preference-v1.json";
+export const UPDATE_PREFERENCE_FILE = "zollybot-update-preference-v1.json";
 
 const DEFAULT_PREFERENCE: UpdatePreference = { autoDownload: true, allowRemoteUpdates: true, autoInstall: false };
 

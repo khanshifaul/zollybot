@@ -1,9 +1,9 @@
-// Pairwise session states and the record that holds them for one remote address, with OpenBot's own
+// Pairwise session states and the record that holds them for one remote address, with ZollyBot's own
 // versioned binary format. A record has one current state and archived states (newest first).
 
 import { ProtoFields, ProtoWriter } from "./protobuf";
 
-/** OpenBot session record format 1. */
+/** ZollyBot session record format 1. */
 const RECORD_FORMAT = 1;
 /** Current state plus archived states. */
 const MAX_SESSION_STATES = 40;

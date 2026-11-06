@@ -1,5 +1,5 @@
-import { sourceText } from "@openbot/i18n/source";
-import { redactText } from "@openbot/logging";
+import { sourceText } from "@zollybot/i18n/source";
+import { redactText } from "@zollybot/logging";
 import { Effect } from "effect";
 import { z } from "zod";
 import type { AgentStore } from "../agent-store";

@@ -11,7 +11,7 @@ import type {
   WorkflowGitHubRepository,
   WorkflowGitHubRepositoryOptions,
   WorkflowRunStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import type { GitHubConnection } from "../settings/GitHubConnectorPanel";
 
 /** A run that the canvas has loaded. */

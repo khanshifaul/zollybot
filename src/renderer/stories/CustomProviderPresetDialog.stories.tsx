@@ -1,4 +1,4 @@
-import { CustomProviderPresetDialog } from "@openbot/ui/features/custom-providers/CustomProviderPresetDialog";
+import { CustomProviderPresetDialog } from "@zollybot/ui/features/custom-providers/CustomProviderPresetDialog";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 

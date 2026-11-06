@@ -18,7 +18,7 @@ import type {
   SetWhatsAppOwnNumberInput,
   StartWhatsAppLinkInput,
   WhatsAppSenderInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   CONNECTOR_MESSAGING_PLATFORMS,
   isAgentModel,
@@ -28,8 +28,8 @@ import {
   parseDiscordAllowedRoles,
   parseWhatsAppPhoneNumber,
   parseWhatsAppRequestCode,
-} from "@openbot/contracts/ipc";
-import { isBoolean, isOneOf } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isBoolean, isOneOf } from "@zollybot/contracts/runtime-values";
 import { isObject, requireString } from "./validation";
 
 export function parseMessagingWorkspaceInput(value: unknown): MessagingWorkspaceInput {

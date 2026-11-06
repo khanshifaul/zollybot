@@ -5,8 +5,8 @@
  * builds the workflow has the same cursor while the canvas plays its change.
  */
 
-import type { TeamPresenceMember } from "@openbot/contracts/ipc";
-import { Button, LabelTooltipTrigger } from "@openbot/ui";
+import type { TeamPresenceMember } from "@zollybot/contracts/ipc";
+import { Button, LabelTooltipTrigger } from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { avatarHeadColor } from "../../bloub-avatar";
 import { useText } from "../../text";
@@ -114,7 +114,7 @@ export function BuilderCursor(props: { spot: WorkflowBuilderSpot; glide: number 
       color={props.spot.color}
       at={props.spot.at}
       glide={props.glide}
-      ease="var(--openbot-ease-in-out)"
+      ease="var(--zollybot-ease-in-out)"
       leaving={props.spot.leaving}
     />
   );

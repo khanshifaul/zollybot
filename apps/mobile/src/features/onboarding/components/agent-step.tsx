@@ -440,7 +440,7 @@ export function AgentStep({
                 exiting={slideSwapExiting(motion)}
                 className="absolute inset-x-0 top-0"
               >
-                <Typography.Heading type="h2" align="center" numberOfLines={1} className="tracking-openbot-tight">
+                <Typography.Heading type="h2" align="center" numberOfLines={1} className="tracking-zollybot-tight">
                   {title}
                 </Typography.Heading>
               </Animated.View>

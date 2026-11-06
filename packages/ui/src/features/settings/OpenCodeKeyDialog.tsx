@@ -7,14 +7,14 @@
  * could show a key would carry it into every screenshot and crash report that follows.
  */
 
-import { isKeyOnlyProvider } from "@openbot/contracts/agent-providers";
+import { isKeyOnlyProvider } from "@zollybot/contracts/agent-providers";
 import type {
   AgentProviderId,
   ExternalDestination,
   ProviderApiKeyState,
   ProviderApiKeyStatus,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Alert,
   AlertContent,
@@ -26,13 +26,13 @@ import {
   Field,
   Input,
   OctagonX,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createSignal, onSettled, Show } from "solid-js";
 import { useText } from "../../text";
 
 /**
  * The text of each provider whose key this dialog saves. Muse, Gemini, Claude and Codex also sign in
- * without a key. Codex keeps its key in its own login, not in OpenBot's store.
+ * without a key. Codex keeps its key in its own login, not in ZollyBot's store.
  */
 const KEY_TEXT = {
   opencode: {
@@ -135,7 +135,7 @@ export function OpenCodeKeyDialog(props: OpenCodeKeyDialogProps) {
   });
 
   async function readState(): Promise<void> {
-    // Codex keeps its key in its own login, so OpenBot's store has no state for it. Disconnect removes it.
+    // Codex keeps its key in its own login, so ZollyBot's store has no state for it. Disconnect removes it.
     if (provider() === "codex") {
       setPhase("idle");
       return;

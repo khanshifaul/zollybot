@@ -1,9 +1,10 @@
+import type { JSX } from "@solidjs/web";
 import type {
   ConversationSubagent,
   ConversationSubagentStatus,
   ConversationSubagentStepKind,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 import {
   Badge,
   Brain,
@@ -22,10 +23,9 @@ import {
   Search,
   TriangleAlert,
   X,
-} from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
-import { prefersReducedMotion } from "@openbot/ui/utils";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createEffect, createMemo, createSignal, createUniqueId, For, Match, Show, Switch } from "solid-js";
 
 const STATE_LABEL = {

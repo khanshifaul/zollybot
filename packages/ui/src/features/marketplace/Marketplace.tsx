@@ -1,6 +1,6 @@
-import { Button, ChevronRight, ErrorReference, IconButton, X } from "@openbot/ui";
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
-import { useText } from "@openbot/ui/text";
+import { Button, ChevronRight, ErrorReference, IconButton, X } from "@zollybot/ui";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, For, Match, onCleanup, onSettled, Show, Switch } from "solid-js";
 import { MarketplaceAgentPage } from "./MarketplaceAgentPage";
 import { AgentGroupPage } from "./MarketplaceAgents";

@@ -1,6 +1,6 @@
-import { DEFAULT_TEAM_MEMBER_LIMIT } from "@openbot/contracts/input-limits";
-import { WAKE_RECONNECT_STATES } from "@openbot/team-client/hosted-server-wake";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { DEFAULT_TEAM_MEMBER_LIMIT } from "@zollybot/contracts/input-limits";
+import { WAKE_RECONNECT_STATES } from "@zollybot/team-client/hosted-server-wake";
 import { router, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { type ReactNode, useEffect, useRef, useState } from "react";
@@ -218,7 +218,7 @@ export function ServerSettingsDataScreen() {
   );
 }
 
-/** The OpenBot update of the host, and the refresh and restart actions. */
+/** The ZollyBot update of the host, and the refresh and restart actions. */
 export function ServerSettingsMaintenanceScreen() {
   return <ServerSettingsPage>{(server) => <ServerMaintenance server={server} />}</ServerSettingsPage>;
 }
@@ -494,7 +494,7 @@ function ServerKeySettings({ server }: { server: MobileServer }) {
   );
 }
 
-/** Opens the OpenBot update of the host. The value is the version that runs there, or a new one. */
+/** Opens the ZollyBot update of the host. The value is the version that runs there, or a new one. */
 function ServerUpdatesRow({ serverId, update }: { serverId: string; update: ReturnType<typeof useServerUpdate> }) {
   const { t } = useText();
   const status = update.query.data?.status;

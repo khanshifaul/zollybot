@@ -2,9 +2,9 @@ import {
   DISCONNECTED_GITHUB_CONNECTOR,
   type GitHubConnectorRepositories,
   type GitHubConnectorStatus,
-} from "@openbot/contracts/ipc";
-import type { GitHubConnectorPanelProps } from "@openbot/ui/features/settings/GitHubConnectorPanel";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/ipc";
+import type { GitHubConnectorPanelProps } from "@zollybot/ui/features/settings/GitHubConnectorPanel";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createSignal, onCleanup, onSettled } from "solid-js";
 import {
   type ConnectorAnalyticsAction,

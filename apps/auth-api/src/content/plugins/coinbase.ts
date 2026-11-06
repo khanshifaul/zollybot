@@ -31,7 +31,7 @@ export const COINBASE_PLUGIN_GUIDE: PluginGuide = {
     {
       question: "Does the Coinbase plugin need an API key?",
       answer:
-        "No. The MCP server uses OAuth. You sign in to your own Coinbase account in the browser. OpenBot does the sign-in itself, keeps the tokens in encrypted storage, and adds the Authorization header. The plugin catalog holds no secret.",
+        "No. The MCP server uses OAuth. You sign in to your own Coinbase account in the browser. ZollyBot does the sign-in itself, keeps the tokens in encrypted storage, and adds the Authorization header. The plugin catalog holds no secret.",
     },
     {
       question: "Can an agent spend my money on Coinbase?",

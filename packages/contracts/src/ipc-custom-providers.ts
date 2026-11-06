@@ -1,4 +1,4 @@
-// A custom provider is an OpenAI-compatible endpoint the user names themselves. OpenBot serves it
+// A custom provider is an OpenAI-compatible endpoint the user names themselves. ZollyBot serves it
 // through the harness the user chooses: OpenCode, which reads a `provider` entry merged into its
 // config, or Pi, which reads an extension that registers the endpoint. The wire identity stays the
 // harness, `opencode` or `pi`, and no new `AgentProviderId` exists. What makes this file a contract rather than renderer state is
@@ -13,9 +13,9 @@ import { isDynamicRecord, isNumber, isOneOf, isString } from "./runtime-values";
 
 /**
  * A custom provider is served by the OpenCode CLI, so its bounds are OpenCode's config shape rather
- * than an OpenBot object: the id becomes a `provider` key, and `<id>/<model id>` becomes the model id
+ * than an ZollyBot object: the id becomes a `provider` key, and `<id>/<model id>` becomes the model id
  * OpenCode reports back. `INPUT_LIMITS` has no entry for a key or an endpoint because no other
- * OpenBot payload has ever carried one.
+ * ZollyBot payload has ever carried one.
  */
 export const CUSTOM_PROVIDER_LIMITS = {
   apiKey: 4_096,
@@ -60,7 +60,7 @@ export interface CustomProviderModel {
    */
   contextWindow?: number;
   /**
-   * The largest completion the model returns, in tokens (#4234). Absent: OpenBot writes a guess of
+   * The largest completion the model returns, in tokens (#4234). Absent: ZollyBot writes a guess of
    * at most 16,384, or half a small window. The form asks for a `contextWindow` with it, because the
    * OpenCode entry writes no limit without a window. This computer only, like `contextWindow`.
    */
@@ -195,7 +195,7 @@ export interface CustomProviderSummary {
 
 /**
  * Why a saved endpoint's models may not have appeared yet. One `opencode acp` process serves every
- * OpenCode agent, and it reads the config only at spawn, so a change needs a respawn that OpenBot
+ * OpenCode agent, and it reads the config only at spawn, so a change needs a respawn that ZollyBot
  * will not force through a turn in progress.
  */
 export const CUSTOM_PROVIDER_RESTARTS = ["restarted", "skipped-busy", "not-running"] as const;

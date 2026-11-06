@@ -7,12 +7,12 @@ const compose = ["compose", "-f", "remote/compose.yaml"];
 await run("docker", [...compose, "build", "remote-api", "capacity-report", "coturn"], root);
 await run("docker", [...compose, "up", "-d", "--no-build", "--no-deps", "remote-api", "capacity-report"], root);
 
-const coturnExists = (await capture("docker", ["inspect", "openbot-coturn"], root)).code === 0;
+const coturnExists = (await capture("docker", ["inspect", "zollybot-coturn"], root)).code === 0;
 if (coturnExists) {
   console.log("Draining coturn. The update waits until all relay allocations end.");
-  await run("docker", ["update", "--restart=no", "openbot-coturn"], root);
-  await run("docker", ["kill", "--signal=SIGUSR1", "openbot-coturn"], root);
-  await run("docker", ["wait", "openbot-coturn"], root);
+  await run("docker", ["update", "--restart=no", "zollybot-coturn"], root);
+  await run("docker", ["kill", "--signal=SIGUSR1", "zollybot-coturn"], root);
+  await run("docker", ["wait", "zollybot-coturn"], root);
 }
 await run("docker", [...compose, "up", "-d", "--no-build", "--no-deps", "--force-recreate", "coturn"], root);
 await run("docker", [...compose, "ps"], root);

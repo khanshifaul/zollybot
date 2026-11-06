@@ -1,15 +1,15 @@
-import { parseBillingSessionUrl, parseBillingState } from "@openbot/contracts/billing";
+import { parseBillingSessionUrl, parseBillingState } from "@zollybot/contracts/billing";
 import {
   PRICING_ORDER_PARAMS,
   type PricingOrder,
   parseLicenseCheckoutUrl,
   parseLicenseState,
   parsePricingOrder,
-} from "@openbot/contracts/license";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import type { BillingCalls } from "@openbot/ui/features/billing/billing-store";
-import type { LicenseCalls } from "@openbot/ui/features/billing/license-store";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/contracts/license";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import type { BillingCalls } from "@zollybot/ui/features/billing/billing-store";
+import type { LicenseCalls } from "@zollybot/ui/features/billing/license-store";
+import { currentText } from "@zollybot/ui/text";
 
 const REQUEST_TIMEOUT_MS = 15_000;
 
@@ -77,7 +77,7 @@ function browserRequest(accountFetch: typeof fetch) {
       credentials: "same-origin",
       cache: "no-store",
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-      headers: post ? { "Content-Type": "application/json", "X-OpenBot-Browser": "1" } : {},
+      headers: post ? { "Content-Type": "application/json", "X-ZollyBot-Browser": "1" } : {},
       ...(post ? { body } : {}),
     }).catch(() => {
       throw new Error(errorMessage(null));

@@ -1,4 +1,4 @@
-import { AgentActivityIndicator } from "@openbot/ui/features/conversation/AgentActivity";
+import { AgentActivityIndicator } from "@zollybot/ui/features/conversation/AgentActivity";
 import { createSignal, onSettled } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { STORY_AGENTS } from "./fixtures";
@@ -65,7 +65,7 @@ export const CustomImage: IndicatorStory = {
  */
 export const CustomImageUnavailable: IndicatorStory = {
   args: {
-    agent: { ...STORY_AGENTS[0], avatarUrl: "openbot-avatar://agent/chief?v=missing" },
+    agent: { ...STORY_AGENTS[0], avatarUrl: "zollybot-avatar://agent/chief?v=missing" },
     label: "Connecting the dots…",
   },
 };

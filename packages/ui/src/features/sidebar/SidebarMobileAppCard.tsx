@@ -1,4 +1,4 @@
-import { Button, IconButton, Smartphone, X } from "@openbot/ui";
+import { Button, IconButton, Smartphone, X } from "@zollybot/ui";
 import { useText } from "../../text";
 
 /**

@@ -71,8 +71,8 @@ struct ShareSession: Decodable {
 
 enum ShareExtensionData {
   private static let directoryFile = "share-extension.json"
-  private static let lastTargetKey = "openbot.share-extension.last-target"
-  private static let keychainService = "openbot.share-extension"
+  private static let lastTargetKey = "zollybot.share-extension.last-target"
+  private static let keychainService = "zollybot.share-extension"
   private static let keychainAccount = "session"
   private static let avatarFolder = "share-extension-avatars"
 
@@ -107,7 +107,7 @@ enum ShareExtensionData {
   }
 
   private static func session() -> ShareSession? {
-    guard let accessGroup = Bundle.main.object(forInfoDictionaryKey: "OpenBotShareKeychainGroup") as? String else {
+    guard let accessGroup = Bundle.main.object(forInfoDictionaryKey: "ZollyBotShareKeychainGroup") as? String else {
       return nil
     }
     let query: [String: Any] = [

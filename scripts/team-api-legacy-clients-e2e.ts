@@ -16,7 +16,7 @@
 // - reasoning-efforts-v1: a protocol 9 client that asks for it gets `none`, `minimal` and `ultra`; a
 //   protocol 7 or 8 client gets the nearest released level, and the frozen v7 decoder reads it.
 // Run: `bun scripts/team-api-legacy-clients-e2e.ts`.
-// Writes .openbot-build/team-api-legacy-clients-e2e/report.json.
+// Writes .zollybot-build/team-api-legacy-clients-e2e/report.json.
 import assert from "node:assert/strict";
 import { generateKeyPairSync, randomBytes, randomUUID, sign, verify } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -28,7 +28,7 @@ import {
   type AgentModelOption,
   BROWSER_SECRET_RESPONSE_PATH,
   LEGACY_AGENT_REASONING_EFFORTS,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   createTeamProtocolV2Request,
   createTeamProtocolV8Event,
@@ -60,21 +60,21 @@ import {
   TEAM_PROTOCOL_VERSION_HEADER,
   teamCapabilitiesForProtocol,
   teamProtocolV2AuthenticationTranscript,
-} from "@openbot/contracts/team-protocol";
-import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@openbot/contracts/team-protocol/agent-notification-levels-v1";
+} from "@zollybot/contracts/team-protocol";
+import { AGENT_NOTIFICATION_LEVELS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-notification-levels-v1";
 import {
   TEAM_REASONING_EFFORTS,
   TEAM_REASONING_EFFORTS_CAPABILITY,
-} from "@openbot/contracts/team-protocol/reasoning-efforts-v1";
-import { decodeTeamProtocolSupportV8Base } from "@openbot/contracts/team-protocol/v8-base";
-import { decodeTeamProtocolV8BaseCurrentEvent } from "@openbot/contracts/team-protocol/v8-base-adapter";
+} from "@zollybot/contracts/team-protocol/reasoning-efforts-v1";
+import { decodeTeamProtocolSupportV8Base } from "@zollybot/contracts/team-protocol/v8-base";
+import { decodeTeamProtocolV8BaseCurrentEvent } from "@zollybot/contracts/team-protocol/v8-base-adapter";
 import {
   decodeTeamProtocolSupportV9,
   TEAM_LONG_CAPABILITY_LISTS_CAPABILITY,
   TEAM_PROTOCOL_V9,
   TEAM_PROTOCOL_V9_CAPABILITY_LIMIT,
-} from "@openbot/contracts/team-protocol/v9";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/team-protocol/v9";
+import { sourceText } from "@zollybot/i18n/source";
 import { plugin } from "bun";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
@@ -82,12 +82,12 @@ import { AgentService } from "../src/backend/agent-service";
 import { AgentStore } from "../src/backend/agent-store";
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { MailboxStore } from "../src/backend/mailbox-store";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
 import { SidebarLayoutStore } from "../src/backend/sidebar-layout-store";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 import type { TeamApiBrowser } from "../src/main/team-api/dependencies";
 import type { TeamWebRtcChannel } from "../src/main/team-webrtc-bridge";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/team-api-legacy-clients-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/team-api-legacy-clients-e2e");
 const FIXTURES = resolve(import.meta.dirname, "../packages/contracts/src/team-protocol/fixtures");
 const HOST_VERSION = "0.0.0-e2e";
 const STEP_DEADLINE_MS = 30_000;
@@ -369,14 +369,14 @@ class LoopbackBridge extends TeamWebRtcBridge {
   }
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-team-api-legacy-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-team-api-legacy-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const agentStore = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, agentStore.sharedRoot, agentStore.database);
 const sidebar = new SidebarLayoutStore(join(userData, "sidebar-layout.json"));
-const team = new TeamStore(join(userData, "openbot-team-server-v2.json"));
+const team = new TeamStore(join(userData, "zollybot-team-server-v2.json"));
 const access = new AgentAccessStore(join(userData, AGENT_ACCESS_FILE));
 let agents: AgentService | null = null;
 let server: InstanceType<typeof TeamApiServer> | null = null;
@@ -507,7 +507,7 @@ try {
   await step("v1 events: the released socket subprotocol, scope and `botId` events", async () => {
     const opened = new WebSocket(`ws://127.0.0.1:${port}/v1/events`, [
       TEAM_PROTOCOL_V1_WEBSOCKET,
-      `openbot-token.${member.token}`,
+      `zollybot-token.${member.token}`,
     ]);
     socket = opened;
     await new Promise<void>((resolveOpen, reject) => {
@@ -719,7 +719,7 @@ try {
   async function currentRuntimeSnapshot(capabilities: readonly string[]): Promise<JsonObject> {
     const opened = new WebSocket(`ws://127.0.0.1:${port}/v1/events`, [
       TEAM_PROTOCOL_V1_WEBSOCKET,
-      `openbot-token.${member.token}`,
+      `zollybot-token.${member.token}`,
     ]);
     await new Promise<void>((resolveOpen, reject) => {
       opened.addEventListener("open", () => resolveOpen(), { once: true });
@@ -1116,7 +1116,7 @@ try {
   await step("v8 RPC: a browser tab opened over WebRTC keeps its owner agent", async () => {
     // What a current desktop client sends when the user opens a tab in an agent's browser panel.
     const path = "/v1/browser/open";
-    const owners = { ownerThreadId: `openbot-thread-${source.id}`, ownerAgentId: source.id };
+    const owners = { ownerThreadId: `zollybot-thread-${source.id}`, ownerAgentId: source.id };
     const requestId = randomUUID();
     const from = v2.bridge.sent.length;
     openedTabOwners.length = 0;

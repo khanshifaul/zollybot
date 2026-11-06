@@ -1,5 +1,5 @@
-import { HOST_RELEASE_METHODS, HOST_RELEASE_PHASES, type HostReleaseStatus } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isOneOf, isString } from "@openbot/contracts/runtime-values";
+import { HOST_RELEASE_METHODS, HOST_RELEASE_PHASES, type HostReleaseStatus } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isOneOf, isString } from "@zollybot/contracts/runtime-values";
 
 /** Independent main-to-renderer boundary. Do not import the remote host decoder here. */
 export function decodeHostReleaseStatusFromMain(value: unknown): HostReleaseStatus {

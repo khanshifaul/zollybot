@@ -6,17 +6,17 @@
 // server plan totals do not include them.
 //
 // Run: bun apps/auth-api/scripts/billing-snapshot-e2e.ts
-// It writes .openbot-build/billing-snapshot-e2e/report.json and exits non-zero on a failure.
+// It writes .zollybot-build/billing-snapshot-e2e/report.json and exits non-zero on a failure.
 import { readdirSync, readFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
-import { LICENSE_METADATA, LICENSE_METADATA_KIND, licenseLookupKey } from "@openbot/contracts/license";
+import { LICENSE_METADATA, LICENSE_METADATA_KIND, licenseLookupKey } from "@zollybot/contracts/license";
 import { Effect, Exit, Schema } from "effect";
 import { captureBillingSnapshot } from "../src/server/billing-snapshots";
 
 const ROOT = resolve(import.meta.dirname, "../../..");
-const OUT = join(ROOT, ".openbot-build", "billing-snapshot-e2e");
+const OUT = join(ROOT, ".zollybot-build", "billing-snapshot-e2e");
 const MIGRATIONS = join(ROOT, "apps", "auth-api", "migrations");
 const NOW = Date.UTC(2026, 9, 16, 12);
 const DAY = "2026-10-16";

@@ -1,25 +1,25 @@
-import { createScrollFades } from "@openbot/ui/components/createScrollFades";
-import type { AgentMessage } from "@openbot/ui/data";
-import type { RoutineRunToggleMarkerModel } from "@openbot/ui/features/conversation/ChatActionMarker";
+import type { VirtualItem } from "@tanstack/virtual-core";
+import { createScrollFades } from "@zollybot/ui/components/createScrollFades";
+import type { AgentMessage } from "@zollybot/ui/data";
+import type { RoutineRunToggleMarkerModel } from "@zollybot/ui/features/conversation/ChatActionMarker";
 import {
   calculateChatScrollMargin,
   chatHistoryBoundaryReached,
   createChatVirtualizer,
-} from "@openbot/ui/features/conversation/createChatVirtualizer";
-import { scrollToLatestMessage } from "@openbot/ui/features/conversation/MessageNavigation";
+} from "@zollybot/ui/features/conversation/createChatVirtualizer";
+import { scrollToLatestMessage } from "@zollybot/ui/features/conversation/MessageNavigation";
 import {
   anchorNewMessages,
   countableTimelineMessage,
   type NewMessageTally,
   silentAgentAnswer,
   tallyNewMessages,
-} from "@openbot/ui/features/conversation/new-message-tally";
+} from "@zollybot/ui/features/conversation/new-message-tally";
 import {
   scrollToUnreadBoundary,
   unreadMessagesDividerIsVisible,
-} from "@openbot/ui/features/conversation/UnreadMessages";
-import { currentText } from "@openbot/ui/text";
-import type { VirtualItem } from "@tanstack/virtual-core";
+} from "@zollybot/ui/features/conversation/UnreadMessages";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, onCleanup, untrack } from "solid-js";
 import { formatMessageTime } from "../../../app-message-projection";
 import { groupAgentMessageMarkers, markOpenAgentMessages } from "../agent-message-timeline";

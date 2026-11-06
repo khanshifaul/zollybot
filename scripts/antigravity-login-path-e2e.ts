@@ -1,12 +1,12 @@
 // Adapted from the report in nightly-labs/openbot#3418: "Gemini MCP servers cannot find commands on
-// the login-shell PATH". OpenBot started the way Finder, the Dock or a login item starts it:
+// the login-shell PATH". ZollyBot started the way Finder, the Dock or a login item starts it:
 // PATH=/usr/bin:/bin:/usr/sbin:/sbin. The Antigravity server starts by its absolute path, but the
 // stdio MCP servers that it starts are commands such as bare `node`, which must be found on the
 // login shell's PATH. The stand-in server runs a stand-in MCP command that is only in that folder.
 // The login shell is bash, set in $SHELL, and only `~/.bash_profile` adds the folder.
 // Bun reads HOME once, at start, so the cases run in a second process that starts with the stand-in
 // home. `bun run test:antigravity:login-path`; exit 0 = every case passed. Writes
-// .openbot-build/antigravity-login-path-e2e/report.json.
+// .zollybot-build/antigravity-login-path-e2e/report.json.
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -17,13 +17,13 @@ import { ANTIGRAVITY_MANIFEST, type AntigravityCliInfo, resolveAntigravityCli } 
 import { runCauseEffect } from "../src/backend/effect-boundary";
 import { NO_PROVIDER_CREDENTIALS, requireProviderDriver } from "../src/backend/provider-drivers";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/antigravity-login-path-e2e");
-const ROOT_VARIABLE = "OPENBOT_ANTIGRAVITY_LOGIN_PATH_E2E_ROOT";
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/antigravity-login-path-e2e");
+const ROOT_VARIABLE = "ZOLLYBOT_ANTIGRAVITY_LOGIN_PATH_E2E_ROOT";
 // The command has a name no system folder holds, so the result does not depend on this computer.
-const MCP_COMMAND = "openbot-e2e-mcp-server";
+const MCP_COMMAND = "zollybot-e2e-mcp-server";
 
 if (process.env[ROOT_VARIABLE] === undefined) {
-  const root = await mkdtemp(join(tmpdir(), "openbot-antigravity-login-path-e2e-"));
+  const root = await mkdtemp(join(tmpdir(), "zollybot-antigravity-login-path-e2e-"));
   const home = join(root, "home");
   await mkdir(home, { recursive: true });
   // Only bash's login profile adds the folder, as for a user whose shell is bash.
@@ -34,7 +34,7 @@ if (process.env[ROOT_VARIABLE] === undefined) {
     [ROOT_VARIABLE]: root,
     HOME: home,
     SHELL: "/bin/bash",
-    // OpenBot started from Finder, the Dock or a login item.
+    // ZollyBot started from Finder, the Dock or a login item.
     PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
   };
   delete env.ZDOTDIR;
@@ -122,7 +122,7 @@ try {
   assert.ok(managedRun.split(":").includes(tools), "The MCP command starts with the login PATH.");
   assert.ok(!managedRun.split(":").includes(dirname(server)), "The managed server's folder is not on the PATH.");
 
-  // 2. The path in OPENBOT_ANTIGRAVITY_PATH. Its own folder is added, as for any CLI of the user.
+  // 2. The path in ZOLLYBOT_ANTIGRAVITY_PATH. Its own folder is added, as for any CLI of the user.
   const userPath = await runCauseEffect(resolveAntigravityCli({ systemCandidates: [server] }));
   assert.equal(userPath.source, "system");
   const userRun = await mcpServerRun(userPath, recorded);

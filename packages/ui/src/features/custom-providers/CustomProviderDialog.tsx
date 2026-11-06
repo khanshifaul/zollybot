@@ -1,17 +1,17 @@
-import { ProviderLogo } from "@openbot/brand";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { ProviderLogo } from "@zollybot/brand";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   CustomProviderHarness,
   CustomProviderReasoningEffort,
   ProviderRuntimeStatus,
   SaveCustomProviderInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   agentProviderName,
   CUSTOM_PROVIDER_LIMITS,
   CUSTOM_PROVIDER_REASONING_EFFORTS,
   DEFAULT_CUSTOM_PROVIDER_HARNESS,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   ArrowLeft,
   Button,
@@ -33,7 +33,7 @@ import {
   Spinner,
   Text,
   X,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import {
   createEffect,
   createSignal,
@@ -75,7 +75,7 @@ const HEADER_NAME_PLACEHOLDER = "Header-Name";
 export interface CustomProviderHarnessChoice {
   id: CustomProviderHarness;
   ready: boolean;
-  /** The download of a provider that is not ready, when OpenBot downloads it. */
+  /** The download of a provider that is not ready, when ZollyBot downloads it. */
   runtime?: ProviderRuntimeStatus | undefined;
 }
 
@@ -160,7 +160,7 @@ export function CustomProviderDialog(props: CustomProviderDialogProps) {
   const [draft, setDraft] = createStore<CustomProviderDraft>(
     untrack(() => (props.draft ? cloneDraft(props.draft) : emptyCustomProviderDraft())),
   );
-  // Nothing is red until the user has asked OpenBot to accept the form, so a blank form does not
+  // Nothing is red until the user has asked ZollyBot to accept the form, so a blank form does not
   // open covered in messages about fields nobody has reached yet.
   const [submitted, setSubmitted] = createSignal(untrack(() => Boolean(props.showErrors)));
 

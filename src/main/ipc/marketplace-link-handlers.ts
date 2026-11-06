@@ -1,4 +1,4 @@
-import type { MarketplaceListingLink } from "@openbot/contracts/marketplace-links";
+import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
 import { handler, type IpcGroupHandlers } from "./define-ipc-group";
 
 interface MarketplaceLinkIpcDependencies {

@@ -1,4 +1,4 @@
-import type { AgentMessage, ChatActionMarkerModel } from "@openbot/ui/data";
+import type { AgentMessage, ChatActionMarkerModel } from "@zollybot/ui/data";
 
 type HostedSiteMarker = Extract<ChatActionMarkerModel, { kind: "hosted-site" }>;
 

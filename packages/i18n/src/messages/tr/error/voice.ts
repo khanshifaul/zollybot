@@ -12,8 +12,8 @@ export const messages = {
   "error.voice.modelUnavailable": "Ses modeli kullanılamıyor.",
   "error.voice.transcriptionTimedOut": "Ses dökümü zaman aşımına uğradı.",
   "error.voice.prepareRequired":
-    "Yerel ses dökümü kullanılamıyor. `bun run voice:prepare` komutunu çalıştırın ve OpenBot'u yeniden başlatın.",
-  "error.voice.transcriptionFailed": "OpenBot bu kaydın dökümünü çıkaramadı.",
+    "Yerel ses dökümü kullanılamıyor. `bun run voice:prepare` komutunu çalıştırın ve ZollyBot'u yeniden başlatın.",
+  "error.voice.transcriptionFailed": "ZollyBot bu kaydın dökümünü çıkaramadı.",
   "error.voice.cloud.keyRequired": "ElevenLabs API anahtarınızı Ayarlar → Ses bölümünde ekleyin.",
   "error.voice.cloud.keyRejected":
     "ElevenLabs API anahtarını kabul etmedi. Anahtarı Ayarlar → Ses bölümünde kontrol edin.",
@@ -26,8 +26,8 @@ export const messages = {
   "error.voice.speech.runtimeUnavailable": "Yerel konuşma sentezi bu platformda kullanılamıyor.",
   "error.voice.speech.modelRequired": "Konuşma modelini Ayarlar → Ses bölümünden indirin.",
   "error.voice.speech.timedOut": "Yanıtı sesli okuma zaman aşımına uğradı.",
-  "error.voice.speech.failed": "OpenBot yanıtı sesli okuyamadı.",
-  "error.voice.recordingNotKept": "OpenBot ses kaydını saklayamadı.",
+  "error.voice.speech.failed": "ZollyBot yanıtı sesli okuyamadı.",
+  "error.voice.recordingNotKept": "ZollyBot ses kaydını saklayamadı.",
   "error.voice.live.timedOut": "Codex canlı ses zamanında başlamadı. Tekrar dene.",
   "error.voice.live.failed": "Canlı ses durdu: {reason}",
   "error.voice.live.disconnected": "Canlı ses bağlantısı kesildi.",

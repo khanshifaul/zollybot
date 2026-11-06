@@ -7,8 +7,8 @@
 .company-sign-in-copy-row {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  margin-top: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
+  margin-top: var(--zollybot-space-2);
 }
 
 .company-sign-in-copy-row > .ui-input,
@@ -20,17 +20,17 @@
 .company-sign-in-passed {
   display: inline-flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
 }
 
 .company-sign-in-passed svg {
-  width: var(--openbot-icon-sm);
-  height: var(--openbot-icon-sm);
-  color: var(--openbot-success);
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  color: var(--zollybot-success);
 }
 
 .company-sign-in-secondary {
   display: flex;
   justify-content: center;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
 }

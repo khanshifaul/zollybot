@@ -9,9 +9,9 @@
   overflow: hidden;
   width: 100%;
   aspect-ratio: 1200 / 630;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
   color: #fff;
-  font-family: var(--openbot-font-sans);
+  font-family: var(--zollybot-font-sans);
 }
 
 .marketplace-share-avatar {
@@ -95,7 +95,7 @@
 .marketplace-share-role,
 .marketplace-share-source,
 .marketplace-share-shield {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 /* The story page. */
@@ -103,12 +103,12 @@
   min-height: 100vh;
   background: #000;
   padding: 32px;
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 .marketplace-share-heading {
   margin: 0 0 12px;
-  color: var(--openbot-text-dim);
+  color: var(--zollybot-text-dim);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -139,7 +139,7 @@
   gap: 12px;
 }
 
-/* The frames, in each app's own dark colours: the frame is theirs, not OpenBot's. */
+/* The frames, in each app's own dark colours: the frame is theirs, not ZollyBot's. */
 .marketplace-share-x,
 .marketplace-share-messages,
 .marketplace-share-slack {

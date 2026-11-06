@@ -1,7 +1,7 @@
-import type { AppInfo } from "@openbot/contracts/ipc";
-import type { ServerView } from "@openbot/ui/features/servers/ServerMenu";
-import type { SidebarView } from "@openbot/ui/features/sidebar/sidebar-types";
-import { PAGE_RAIL_PINNABLE_PAGES, type PageRailPinnablePage } from "@openbot/ui/features/window/PageRail";
+import type { AppInfo } from "@zollybot/contracts/ipc";
+import type { ServerView } from "@zollybot/ui/features/servers/ServerMenu";
+import type { SidebarView } from "@zollybot/ui/features/sidebar/sidebar-types";
+import { PAGE_RAIL_PINNABLE_PAGES, type PageRailPinnablePage } from "@zollybot/ui/features/window/PageRail";
 import { createEffect, createMemo, createSignal, onSettled } from "solid-js";
 import { z } from "zod";
 import { readPanelWidth } from "./components/panel-width-storage";

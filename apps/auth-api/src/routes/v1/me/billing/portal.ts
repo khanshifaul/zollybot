@@ -1,5 +1,5 @@
-import { parseBillingPortalRequest } from "@openbot/contracts/billing";
 import { createFileRoute } from "@tanstack/solid-router";
+import { parseBillingPortalRequest } from "@zollybot/contracts/billing";
 import { Effect } from "effect";
 import { runApiResponse } from "../../../../server/effect-runtime";
 import { readJsonObject } from "../../../../server/json-body";

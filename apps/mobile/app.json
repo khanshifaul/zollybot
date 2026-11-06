@@ -1,19 +1,19 @@
 {
   "expo": {
-    "name": "OpenBot",
-    "slug": "openbot",
+    "name": "ZollyBot",
+    "slug": "zollybot",
     "platforms": ["ios", "android"],
     "version": "1.4.7",
     "orientation": "portrait",
     "icon": "./assets/icons/app-icon.png",
-    "scheme": "openbot",
+    "scheme": "zollybot",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "bundleIdentifier": "run.openbot.mobile",
+      "bundleIdentifier": "run.zollybot.mobile",
       "supportsTablet": true,
       "associatedDomains": ["applinks:openbot.run"],
       "infoPlist": {
-        "NSLocalNetworkUsageDescription": "Allow OpenBot to connect to your desktop during local development.",
+        "NSLocalNetworkUsageDescription": "Allow ZollyBot to connect to your desktop during local development.",
         "NSAppTransportSecurity": {
           "NSAllowsLocalNetworking": true
         },
@@ -22,7 +22,7 @@
       "icon": "./assets/icons/app-icon.icon"
     },
     "android": {
-      "package": "run.openbot.mobile",
+      "package": "run.zollybot.mobile",
       "icon": "./assets/icons/app-icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/android-adaptive-eyes.png",
@@ -62,8 +62,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow OpenBot to use your camera to scan QR codes.",
-          "microphonePermission": "Allow OpenBot to use the microphone to dictate messages.",
+          "cameraPermission": "Allow ZollyBot to use your camera to scan QR codes.",
+          "microphonePermission": "Allow ZollyBot to use the microphone to dictate messages.",
           "recordAudioAndroid": false,
           "barcodeScannerEnabled": true
         }
@@ -71,16 +71,16 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow OpenBot to access the photos you choose to share.",
-          "cameraPermission": "Allow OpenBot to use your camera to add photos.",
-          "microphonePermission": "Allow OpenBot to use the microphone to dictate messages."
+          "photosPermission": "Allow ZollyBot to access the photos you choose to share.",
+          "cameraPermission": "Allow ZollyBot to use your camera to add photos.",
+          "microphonePermission": "Allow ZollyBot to use the microphone to dictate messages."
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow OpenBot to access the photos you choose to share.",
-          "savePhotosPermission": "Allow OpenBot to save images and videos you download from a chat to your photo library.",
+          "photosPermission": "Allow ZollyBot to access the photos you choose to share.",
+          "savePhotosPermission": "Allow ZollyBot to save images and videos you download from a chat to your photo library.",
           "granularPermissions": ["photo"]
         }
       ],
@@ -95,11 +95,11 @@
         "./plugins/with-notification-sounds",
         {
           "sounds": [
-            "./assets/sounds/openbot-task.wav",
-            "./assets/sounds/openbot-warm.wav",
-            "./assets/sounds/openbot-mech.wav",
-            "./assets/sounds/openbot-bubble.wav",
-            "./assets/sounds/openbot-press.wav"
+            "./assets/sounds/zollybot-task.wav",
+            "./assets/sounds/zollybot-warm.wav",
+            "./assets/sounds/zollybot-mech.wav",
+            "./assets/sounds/zollybot-bubble.wav",
+            "./assets/sounds/zollybot-press.wav"
           ]
         }
       ],
@@ -107,7 +107,7 @@
       [
         "expo-local-authentication",
         {
-          "faceIDPermission": "Allow OpenBot to use Face ID to unlock the app."
+          "faceIDPermission": "Allow ZollyBot to use Face ID to unlock the app."
         }
       ],
       [
@@ -125,8 +125,8 @@
         {
           "ios": {
             "enabled": true,
-            "appGroupId": "group.run.openbot.mobile",
-            "extensionBundleIdentifier": "run.openbot.mobile.ShareExtension",
+            "appGroupId": "group.run.zollybot.mobile",
+            "extensionBundleIdentifier": "run.zollybot.mobile.ShareExtension",
             "activationRule": {
               "supportsText": true,
               "supportsWebUrlWithMaxCount": 1,
@@ -201,15 +201,15 @@
       [
         "expo-speech-recognition",
         {
-          "microphonePermission": "Allow OpenBot to use the microphone to dictate messages.",
-          "speechRecognitionPermission": "Allow OpenBot to turn your speech into message text."
+          "microphonePermission": "Allow ZollyBot to use the microphone to dictate messages.",
+          "speechRecognitionPermission": "Allow ZollyBot to turn your speech into message text."
         }
       ],
       [
         "expo-widgets",
         {
-          "bundleIdentifier": "run.openbot.mobile.ExpoWidgetsTarget",
-          "groupIdentifier": "group.run.openbot.mobile",
+          "bundleIdentifier": "run.zollybot.mobile.ExpoWidgetsTarget",
+          "groupIdentifier": "group.run.zollybot.mobile",
           "enablePushNotifications": true,
           "frequentUpdates": true
         }
@@ -217,9 +217,9 @@
       [
         "./plugins/with-notification-service",
         {
-          "targetName": "OpenBotNotificationService",
-          "bundleIdentifier": "run.openbot.mobile.NotificationService",
-          "groupIdentifier": "group.run.openbot.mobile"
+          "targetName": "ZollyBotNotificationService",
+          "bundleIdentifier": "run.zollybot.mobile.NotificationService",
+          "groupIdentifier": "group.run.zollybot.mobile"
         }
       ]
     ],
@@ -233,7 +233,7 @@
         "projectId": "eeec730f-c8f4-42c0-a750-64df8af14940"
       }
     },
-    "owner": "openbot",
+    "owner": "zollybot",
     "runtimeVersion": {
       "policy": "fingerprint"
     },

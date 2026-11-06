@@ -1,5 +1,5 @@
-import { parseWhatsAppPhoneNumber, type WhatsAppLinkState } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+import { parseWhatsAppPhoneNumber, type WhatsAppLinkState } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import * as Clipboard from "expo-clipboard";
 import { router, useLocalSearchParams } from "expo-router";
 import { Spinner, Typography } from "heroui-native";
@@ -50,7 +50,7 @@ export function ServerWhatsAppLinkScreen() {
   const { startWhatsAppLink, loadWhatsAppLinkState, cancelWhatsAppLink, addWhatsAppOrchestrator } =
     useMobileWorkspaceActions();
   const action = useConnectorAction(whatsapp.refetch);
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const [ownNumber, setOwnNumber] = useState(true);
   const [phone, setPhone] = useState("");
   const [invalid, setInvalid] = useState(false);

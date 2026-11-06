@@ -34,17 +34,17 @@ import type {
   TeamPresenceSnapshot,
   TeamSessionSummary,
   UpdateStatus,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   CONVERSATION_PLAN_ITEM_TYPE,
   conversationPlanText,
   isAgentStatus,
   isForeignProviderId,
   isKnownAgentProvider,
-} from "@openbot/contracts/ipc";
-import type { AgentProfile } from "@openbot/ui/data";
-import type { AgentRuntimeSettings } from "@openbot/ui/features/conversation/AgentSettingsPanel";
-import type { MarketplacePluginDetail } from "@openbot/ui/features/settings/marketplace-plugins";
+} from "@zollybot/contracts/ipc";
+import type { AgentProfile } from "@zollybot/ui/data";
+import type { AgentRuntimeSettings } from "@zollybot/ui/features/conversation/AgentSettingsPanel";
+import type { MarketplacePluginDetail } from "@zollybot/ui/features/settings/marketplace-plugins";
 import type { McpServerConfig } from "../features/servers/mcp-servers";
 
 const STORY_NOW = "2026-08-19T10:00:00.000Z";
@@ -61,7 +61,7 @@ export const STORY_AGENT_SUMMARIES: ClientAgentSummary[] = [
     reasoningEffort: "medium",
     access: "full",
     threadId: "thread-chief",
-    workspacePath: "/mock/OpenBot/Agents/chief",
+    workspacePath: "/mock/ZollyBot/Agents/chief",
     preview: "I pulled together the latest project notes and next steps.",
     updatedAt: STORY_NOW,
     avatarSeed: "chief",
@@ -79,7 +79,7 @@ export const STORY_AGENT_SUMMARIES: ClientAgentSummary[] = [
     reasoningEffort: "high",
     access: "full",
     threadId: "thread-research",
-    workspacePath: "/mock/OpenBot/Agents/research",
+    workspacePath: "/mock/ZollyBot/Agents/research",
     preview: "Three useful sources are ready for your review.",
     updatedAt: "2026-08-18T16:32:00.000Z",
     avatarSeed: "research",
@@ -97,7 +97,7 @@ export const STORY_AGENT_SUMMARIES: ClientAgentSummary[] = [
     reasoningEffort: "medium",
     access: "workspace",
     threadId: "thread-sales",
-    workspacePath: "/mock/OpenBot/Agents/sales",
+    workspacePath: "/mock/ZollyBot/Agents/sales",
     preview: "The follow-up draft is ready to send.",
     updatedAt: "2026-08-17T09:20:00.000Z",
     avatarSeed: "sales-outbound",
@@ -648,7 +648,7 @@ export const STORY_SERVERS: [ServerSummary, ...ServerSummary[]] = [
   },
   {
     id: "team",
-    name: "OpenBot team",
+    name: "ZollyBot team",
     logoUrl: null,
     notificationsMuted: false,
     notificationsMutedUntil: null,
@@ -683,7 +683,7 @@ export const STORY_SERVERS: [ServerSummary, ...ServerSummary[]] = [
 export const STORY_BROWSER_TABS: BrowserTab[] = [
   {
     id: "browser-tab-docs",
-    title: "OpenBot documentation",
+    title: "ZollyBot documentation",
     url: "https://openbot.run/docs",
     loading: false,
     ownerThreadId: "thread-chief",
@@ -724,7 +724,7 @@ export const STORY_HOST_STATUS: HostStatus = {
   configured: true,
   enabledOnLaunch: true,
   serverId: "team",
-  serverName: "OpenBot team",
+  serverName: "ZollyBot team",
   logoUrl: null,
   apiUrl: "https://team.example.com",
   apiOnline: true,
@@ -894,7 +894,7 @@ export const STORY_UPDATE_STATUS: UpdateStatus = {
 };
 
 export const STORY_APP_INFO = {
-  name: "OpenBot",
+  name: "ZollyBot",
   version: "0.1.11",
   platform: "darwin" as const,
   variant: "production" as const,
@@ -902,7 +902,7 @@ export const STORY_APP_INFO = {
 
 /**
  * The marketplace surfaces. Storybook and the preview both reach the modal through
- * `mock-openbot.ts`, so an empty list here reads as "the marketplace is empty" rather than "the
+ * `mock-zollybot.ts`, so an empty list here reads as "the marketplace is empty" rather than "the
  * preview never wired this up" — which is what the three stubs it replaced looked like.
  */
 // Self-contained sample artwork keeps preview icons available without network requests.
@@ -919,7 +919,7 @@ export const STORY_MARKETPLACE_SKILLS: MarketplaceSkillSummary[] = [
     name: "Release notes",
     description: "Turns a range of commits into a changelog a reader outside the team can follow.",
     category: "documents",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 4,
     installs: 1_284,
     featured: true,
@@ -975,7 +975,7 @@ export const STORY_MARKETPLACE_SKILLS: MarketplaceSkillSummary[] = [
     name: "Source check",
     description: "Follows every citation in a draft and flags the ones that do not say what is claimed.",
     category: "research",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 3,
     installs: 209,
     featured: false,
@@ -1039,10 +1039,10 @@ export const STORY_MARKETPLACE_SKILL_DETAILS: Record<string, MarketplaceSkillDet
 export const STORY_INSTALLED_SKILLS: Record<string, InstalledSkill[]> = {
   chief: [
     {
-      skillId: "openbot-skill-creator",
-      slug: "openbot-skill-creator",
-      name: "openbot-skill-creator",
-      description: "Create or revise a reusable local OpenBot skill.",
+      skillId: "zollybot-skill-creator",
+      slug: "zollybot-skill-creator",
+      name: "zollybot-skill-creator",
+      description: "Create or revise a reusable local ZollyBot skill.",
       installedVersion: 1,
       availableVersion: 1,
       state: "installed",
@@ -1050,9 +1050,9 @@ export const STORY_INSTALLED_SKILLS: Record<string, InstalledSkill[]> = {
       origin: "managed",
     },
     {
-      skillId: "openbot-site-hosting",
-      slug: "openbot-site-hosting",
-      name: "openbot-site-hosting",
+      skillId: "zollybot-site-hosting",
+      slug: "zollybot-site-hosting",
+      name: "zollybot-site-hosting",
       installedVersion: 1,
       availableVersion: 1,
       state: "installed",
@@ -1113,7 +1113,7 @@ export const STORY_MCP_SERVERS: McpServerConfig[] = [
     transport: "stdio",
     enabled: true,
     command: "openai-dev-mcp",
-    args: ["serve-sqlite", "--database", "./openbot.db"],
+    args: ["serve-sqlite", "--database", "./zollybot.db"],
     env: [{ key: "SQLITE_READONLY", value: "1" }],
     envPassthrough: ["HOME"],
     workingDirectory: "~/code",
@@ -1219,7 +1219,7 @@ export const STORY_MARKETPLACE_AGENTS: MarketplaceAgentSummary[] = [
     name: "Release Manager",
     title: "Ships the release",
     description: "Cuts the tag, writes the notes, and watches the rollout until it is green.",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 6,
     installs: 731,
     featured: true,
@@ -1417,7 +1417,7 @@ export const STORY_MARKETPLACE_AGENTS: MarketplaceAgentSummary[] = [
     name: "Contract Reader",
     title: "Finds the clause that matters",
     description: "Reads a long agreement and reports the dates, the duties, and the ways out.",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 3,
     installs: 245,
     featured: false,
@@ -2041,8 +2041,8 @@ export const STORY_AGENT_SUBMISSIONS: AgentSubmission[] = [
 export const STORY_HOSTED_SITES: HostedSiteSummary[] = [
   {
     id: "site-launch-notes",
-    hostname: "launch-notes.openbot.site",
-    url: "https://launch-notes.openbot.site",
+    hostname: "launch-notes.zollybot.site",
+    url: "https://launch-notes.zollybot.site",
     title: "Launch notes",
     description: "The public changelog for the 0.2 release.",
     framework: "astro",
@@ -2055,8 +2055,8 @@ export const STORY_HOSTED_SITES: HostedSiteSummary[] = [
   },
   {
     id: "site-design-review",
-    hostname: "design-review.openbot.site",
-    url: "https://design-review.openbot.site",
+    hostname: "design-review.zollybot.site",
+    url: "https://design-review.zollybot.site",
     title: "Design review",
     description: "A one-page mockup shared with the design studio.",
     framework: "vanilla",

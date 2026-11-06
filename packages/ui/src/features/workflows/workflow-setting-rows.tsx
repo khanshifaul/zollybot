@@ -4,8 +4,8 @@
  * row, and the settings of that type follow it, so a card keeps its layout when the type changes.
  */
 
-import { Bot, ChevronDown, DropdownMenu, Hash, Input } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { Bot, ChevronDown, DropdownMenu, Hash, Input } from "@zollybot/ui";
 import { For, Show, untrack } from "solid-js";
 import { useText } from "../../text";
 import { type PickerGroup, PickerHeading, PickerMenu, PickerRow } from "./WorkflowPicker";

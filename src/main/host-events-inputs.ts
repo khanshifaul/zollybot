@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   type EventRoutineOwner,
   type EventRoutineRef,
@@ -9,9 +9,9 @@ import {
   type ListEventRoutinesInput,
   type SaveEventRoutineInput,
   type SetWebhookSecretInput,
-} from "@openbot/contracts/ipc-events";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc-events";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 
 // Each parser decodes an untrusted renderer or Team API body. A failure has only catalog text.
 

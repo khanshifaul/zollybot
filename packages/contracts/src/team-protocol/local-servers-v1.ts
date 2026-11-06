@@ -1,7 +1,7 @@
 // Frozen optional local-servers-v1 wire contract.
 //
 // What it grants, recorded here because freezing it makes it permanent: the owner of the server that
-// the OpenBot desktop app runs can list the other servers that the app runs on the same computer, and
+// the ZollyBot desktop app runs can list the other servers that the app runs on the same computer, and
 // create one with a name, or delete one. Each one is a separate server with its own agents, chats and files. When the
 // desktop app is signed in, it registers each one for the owner's account, so the owner's devices list
 // it as any other server; `published` is false while it is not registered. `limit` is how many the

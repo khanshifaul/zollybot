@@ -58,8 +58,8 @@ export const messages = {
   "browser.pip.reattach": "Вернуть браузер в правую боковую панель",
   "browser.pip.reattachTitle": "Вернуть браузер",
   "browser.pip.close": "Закрыть окно браузера",
-  "browser.pip.reattachFailed": "OpenBot не удалось вернуть браузер в боковую панель.",
-  "browser.pip.closeFailed": "OpenBot не удалось закрыть окно браузера.",
+  "browser.pip.reattachFailed": "ZollyBot не удалось вернуть браузер в боковую панель.",
+  "browser.pip.closeFailed": "ZollyBot не удалось закрыть окно браузера.",
   "browser.popupBlocked.title": "Всплывающее окно заблокировано",
   "browser.popupBlocked.dismiss": "Скрыть сообщение о всплывающем окне",
   "browser.liveView.label": "Страница на сервере в реальном времени",
@@ -136,20 +136,20 @@ export const messages = {
   "browser.signIn.local": "Войти на этом компьютере",
   "browser.signIn.title": "Вход в {site}",
   "browser.signIn.description":
-    "Некоторые сайты отклоняют вход с сервера. Войдите на этом компьютере, и OpenBot отправит вход в {site} на {server}. Все агенты и участники на {server} смогут использовать его в браузере.",
+    "Некоторые сайты отклоняют вход с сервера. Войдите на этом компьютере, и ZollyBot отправит вход в {site} на {server}. Все агенты и участники на {server} смогут использовать его в браузере.",
   "browser.signIn.windowOpen":
-    "Войдите в открывшемся окне. OpenBot отправит вход, когда он будет выполнен. Если окно останется открытым, выберите «Готово».",
+    "Войдите в открывшемся окне. ZollyBot отправит вход, когда он будет выполнен. Если окно останется открытым, выберите «Готово».",
   "browser.signIn.windowClosed":
     "Окно входа закрыто. Выберите «Готово», чтобы отправить вход, или откройте окно снова.",
   "browser.signIn.reopen": "Открыть окно входа",
   "browser.signIn.sending": "Отправка на {server}…",
   "browser.signIn.sent": "Выполнен вход в {site} на {server}",
-  "browser.signIn.notFound": "OpenBot не нашёл вход в {site}. Войдите в окне, затем выберите «Готово».",
+  "browser.signIn.notFound": "ZollyBot не нашёл вход в {site}. Войдите в окне, затем выберите «Готово».",
   "browser.signIn.stillSignedOut": "{server} всё ещё показывает страницу входа в {site}. Завершите вход в окне.",
-  "browser.signIn.failed": "OpenBot не удалось отправить вход.",
+  "browser.signIn.failed": "ZollyBot не удалось отправить вход.",
   "browser.profiles.title": "Профили браузера",
   "browser.profiles.subtitle":
-    "Каждый профиль хранит свои входы в аккаунты, cookie и данные сайтов на компьютере, где работает OpenBot.",
+    "Каждый профиль хранит свои входы в аккаунты, cookie и данные сайтов на компьютере, где работает ZollyBot.",
   "browser.profiles.label": "Профили браузера",
   "browser.profiles.newName": "Имя профиля",
   "browser.profiles.create": "Добавить",
@@ -178,8 +178,8 @@ export const messages = {
   "browser.profiles.deleteDescription":
     "Это удалит входы в аккаунты, cookie и данные сайтов этого профиля. Его открытые вкладки закроются.",
   "browser.profiles.deleteAgents": "Эти агенты перейдут на общий профиль: {agents}.",
-  "browser.profiles.failed": "OpenBot не удалось изменить профили браузера.",
-  "browser.profiles.loadFailed": "OpenBot не удалось загрузить профили браузера.",
+  "browser.profiles.failed": "ZollyBot не удалось изменить профили браузера.",
+  "browser.profiles.loadFailed": "ZollyBot не удалось загрузить профили браузера.",
   "browser.profiles.tabLabel": "Профиль: {name}",
   "browser.profiles.tabLabelProxy": "Профиль: {name} · Прокси: {proxy}",
   "browser.profiles.agentTabLabel": "Собственный профиль агента",
@@ -199,7 +199,7 @@ export const messages = {
   "browser.proxies.addTitle": "Добавить прокси",
   "browser.proxies.editTitle": "Изменить «{name}»",
   "browser.proxies.dialogDescription":
-    "Используйте socks5, http или https. Имя пользователя и пароль необязательны для любого типа. Пароль хранится в зашифрованном виде на компьютере, где работает OpenBot.",
+    "Используйте socks5, http или https. Имя пользователя и пароль необязательны для любого типа. Пароль хранится в зашифрованном виде на компьютере, где работает ZollyBot.",
   "browser.proxies.address": "Адрес",
   "browser.proxies.addressPlaceholder": "socks5://user:password@host:1080",
   "browser.proxies.deleteUsed": {
@@ -211,7 +211,7 @@ export const messages = {
   "browser.proxies.deleteUnused": "Ни один профиль не использует этот прокси.",
   "browser.proxies.failing": "{name} не отвечает",
   "browser.proxies.signInRefused": "{name} отклонил вход",
-  "browser.proxies.unsupported": "Этот сервер не может использовать прокси. Обновите OpenBot на этом сервере.",
+  "browser.proxies.unsupported": "Этот сервер не может использовать прокси. Обновите ZollyBot на этом сервере.",
   "browser.proxies.yourComputer": "Ваш компьютер",
   "browser.proxies.memberComputer": "Компьютер участника {name}",
   "browser.proxies.unknownComputer": "Компьютер участника",
@@ -222,7 +222,7 @@ export const messages = {
   "browser.proxies.offlineBadge": "{name} не в сети",
   "browser.proxies.shareTitle": "Поделиться подключением этого компьютера?",
   "browser.proxies.shareDescription":
-    "Профили, которые используют ваш компьютер, открывают общедоступные сайты через интернет-подключение этого компьютера. Это работает, только пока OpenBot открыт здесь. Сервер не может открывать адреса в вашей локальной сети.",
+    "Профили, которые используют ваш компьютер, открывают общедоступные сайты через интернет-подключение этого компьютера. Это работает, только пока ZollyBot открыт здесь. Сервер не может открывать адреса в вашей локальной сети.",
   "browser.proxies.share": "Поделиться",
   "browser.proxies.stopSharing": "Перестать делиться",
   "browser.proxies.closesTabs": {

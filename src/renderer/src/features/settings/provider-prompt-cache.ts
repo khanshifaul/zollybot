@@ -1,13 +1,13 @@
-import type { OpenBotDesktopApi, PromptCacheTtl } from "@openbot/contracts/ipc";
-import type { ProviderPromptCache } from "@openbot/ui/features/settings/ProviderSettingsPage";
-import { useText } from "@openbot/ui/text";
+import type { PromptCacheTtl, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import type { ProviderPromptCache } from "@zollybot/ui/features/settings/ProviderSettingsPage";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore, untrack } from "solid-js";
 
 /** The prompt cache calls of one server's host. The desktop reaches them through main. */
-export type HostPromptCacheTtlCalls = Pick<OpenBotDesktopApi["hostAdmin"], "getPromptCacheTtl" | "setPromptCacheTtl">;
+export type HostPromptCacheTtlCalls = Pick<ZollyBotDesktopApi["hostAdmin"], "getPromptCacheTtl" | "setPromptCacheTtl">;
 
 export interface HostPromptCacheTtlOptions {
-  /** The calls of a client with no `window.openbot`, such as the web client. */
+  /** The calls of a client with no `window.zollybot`, such as the web client. */
   calls?: HostPromptCacheTtlCalls;
 }
 
@@ -23,7 +23,7 @@ export function createProviderPromptCache(
   source: () => ProviderPromptCacheSource | undefined,
 ): () => ProviderPromptCache | undefined {
   const { t, errorMessage } = useText();
-  const calls = (): HostPromptCacheTtlCalls => source()?.calls ?? window.openbot.hostAdmin;
+  const calls = (): HostPromptCacheTtlCalls => source()?.calls ?? window.zollybot.hostAdmin;
   const [state, setState] = createStore<{ value: PromptCacheTtl | null; pending: boolean; error: string | null }>({
     value: null,
     pending: false,

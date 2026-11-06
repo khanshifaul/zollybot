@@ -1,7 +1,8 @@
-import { ArrowUp, Button, Mic, Plus } from "@openbot/ui";
-import type { AgentMessage } from "@openbot/ui/data";
-import { ChatMessageRow } from "@openbot/ui/features/conversation/ChatMessageRow";
-import { ComposerEditor } from "@openbot/ui/features/conversation/ComposerEditor";
+import type { JSX } from "@solidjs/web";
+import { ArrowUp, Button, Mic, Plus } from "@zollybot/ui";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { ChatMessageRow } from "@zollybot/ui/features/conversation/ChatMessageRow";
+import { ComposerEditor } from "@zollybot/ui/features/conversation/ComposerEditor";
 import {
   ComposerCompactionNotice,
   ComposerNewChatButton,
@@ -9,8 +10,7 @@ import {
   type ContextCompactionView,
   ContextUsageMeter,
   type ContextUsageView,
-} from "@openbot/ui/features/conversation/ContextUsage";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui/features/conversation/ContextUsage";
 import { createSignal, For, Show } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -19,13 +19,13 @@ import { STORY_AGENT, STORY_AGENTS } from "./fixtures";
 /*
  * Context usage for an agent's provider thread. The data differs by provider:
  *
- * - Codex reports `tokenUsage.last.totalTokens` and `modelContextWindow`. OpenBot already asks Codex
+ * - Codex reports `tokenUsage.last.totalTokens` and `modelContextWindow`. ZollyBot already asks Codex
  *   to compact at 80% (`context-compaction.ts`) and holds the queue until it ends.
  * - Claude supplies local context estimates and native compaction events. Its compacted-message
  *   count excludes system/tools, so it cannot supply a full-context before/after comparison.
  * - ACP agents can send `usage_update` (`used`, `size`) and `compaction` updates, both unstable in
  *   the protocol. An agent that sends neither shows no ring. Gemini (Antigravity) sends
- *   `usage_update` only; OpenBot compacts it by starting a new session from the history handoff.
+ *   `usage_update` only; ZollyBot compacts it by starting a new session from the history handoff.
  */
 
 const MINUTE = 60_000;
@@ -143,7 +143,7 @@ function Composer(props: {
 function Row(props: { label: string; children: JSX.Element }) {
   return (
     <section style={{ display: "grid", gap: "8px" }} aria-label={props.label}>
-      <span style={{ color: "var(--openbot-text-muted)", "font-size": "var(--openbot-text-sm)" }}>{props.label}</span>
+      <span style={{ color: "var(--zollybot-text-muted)", "font-size": "var(--zollybot-text-sm)" }}>{props.label}</span>
       {props.children}
     </section>
   );
@@ -193,7 +193,7 @@ export const ClaudeEstimate: Story = {
   render: (args) => <Composer usage={args.usage} />,
 };
 
-/** Codex reports one total. OpenBot compacts at 80% and remembers the last result. */
+/** Codex reports one total. ZollyBot compacts at 80% and remembers the last result. */
 export const CodexTotal: Story = {
   args: { usage: { ...CODEX, usedTokens: 206_700 } },
   render: (args) => <Composer usage={args.usage} />,

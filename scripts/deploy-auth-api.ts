@@ -2,10 +2,10 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { readFcmServiceAccount } from "../apps/auth-api/src/server/android-notification-relay";
 
-const logger = createOpenBotLogger("deploy-auth-api");
+const logger = createZollyBotLogger("deploy-auth-api");
 
 const scriptsRoot = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(scriptsRoot, "..");
@@ -36,7 +36,7 @@ async function main(): Promise<void> {
   await putOptionalSecretSet("BOAT_API_KEY", "BOAT_WEBHOOK_SECRET");
   // Production releases own the template. Test deployments keep their separate setting.
   if (cloudflareEnvironment === "test") await putOptionalSecret("HOSTED_SERVER_TEMPLATE");
-  // Without the key, agents act on GitHub as the signed-in user and not as the OpenBot GitHub App.
+  // Without the key, agents act on GitHub as the signed-in user and not as the ZollyBot GitHub App.
   await putOptionalSecret("GITHUB_APP_PRIVATE_KEY");
   // Without it, company sign-in answers 503 company_sign_in_not_configured and email codes stay.
   await putOptionalSecret("COMPANY_SIGN_IN_SECRET");

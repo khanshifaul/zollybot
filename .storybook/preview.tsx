@@ -1,5 +1,5 @@
-import { TRANSLATED_LOCALES, type TranslatedLocale } from "@openbot/i18n";
-import { installPointerFocusGuard } from "@openbot/ui/pointer-focus";
+import { TRANSLATED_LOCALES, type TranslatedLocale } from "@zollybot/i18n";
+import { installPointerFocusGuard } from "@zollybot/ui/pointer-focus";
 import type { Preview } from "storybook-solidjs-vite";
 import { StaticI18nProvider } from "../src/renderer/src/i18n-context";
 import "../src/renderer/src/styles.css";
@@ -27,7 +27,7 @@ const preview: Preview = {
   initialGlobals: { locale: "en", colorScheme: "dark" },
   decorators: [
     (Story, context) => {
-      document.documentElement.dataset.openbotColorScheme = context.globals.colorScheme === "light" ? "light" : "dark";
+      document.documentElement.dataset.zollybotColorScheme = context.globals.colorScheme === "light" ? "light" : "dark";
       return (
         <StaticI18nProvider locale={isTranslatedLocale(context.globals.locale) ? context.globals.locale : "en"}>
           <Story />

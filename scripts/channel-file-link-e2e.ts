@@ -10,15 +10,15 @@
 // the workspace file must name its absolute path and open the file again. Then the same links must
 // still open from the person's message in the agent's own chat. It deletes its channel and its two
 // files at the end.
-// Writes .openbot-build/channel-file-link-e2e/report.json and screenshots.
+// Writes .zollybot-build/channel-file-link-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import { translateFor } from "@openbot/i18n";
+import { translateFor } from "@zollybot/i18n";
 import { ChannelClient, connectChannelE2e, WAIT_MS, waitFor, writeReport } from "./channel-e2e-support";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/channel-file-link-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/channel-file-link-e2e");
 const UI_WAIT_MS = 15_000;
 const english = translateFor("en");
 
@@ -47,8 +47,8 @@ const sharedName = `e2e-channel-shared-${id}.md`;
 const sharedText = `Shared spec ${id}`;
 const workspaceName = `e2e-channel-workspace-${id}.md`;
 const workspaceText = `Workspace spec ${id}`;
-// The dev profile uses the real ~/OpenBot folder, so the script removes only the files it wrote.
-const sharedFile = join(homedir(), "OpenBot", "Shared", sharedName);
+// The dev profile uses the real ~/ZollyBot folder, so the script removes only the files it wrote.
+const sharedFile = join(homedir(), "ZollyBot", "Shared", sharedName);
 let workspaceFile: string | null = null;
 mkdirSync(OUT, { recursive: true });
 
@@ -75,7 +75,7 @@ async function shot(label: string): Promise<void> {
 try {
   const [agent] = await client.agents();
   assert.ok(agent, "This check needs one visible agent.");
-  mkdirSync(join(homedir(), "OpenBot", "Shared"), { recursive: true });
+  mkdirSync(join(homedir(), "ZollyBot", "Shared"), { recursive: true });
   writeFileSync(sharedFile, `# ${sharedText}\n\n[inner spec](${workspaceName})\n`);
   workspaceFile = join(agent.workspacePath, workspaceName);
   writeFileSync(workspaceFile, `# ${workspaceText}\n`);
@@ -95,7 +95,7 @@ try {
       "Reply with exactly the next line and nothing else. Do not use tools.",
       `[workspace spec](${workspaceName})`,
       "",
-      `The shared spec: [shared spec](~/OpenBot/Shared/${sharedName})`,
+      `The shared spec: [shared spec](~/ZollyBot/Shared/${sharedName})`,
     ].join("\n"),
     agent.id,
   );
@@ -158,7 +158,7 @@ try {
     .click();
   await client.sendToAgent(
     agent.id,
-    `Reply with the single word ready. Do not use tools. [workspace spec](${workspaceName}) [shared spec](~/OpenBot/Shared/${sharedName})`,
+    `Reply with the single word ready. Do not use tools. [workspace spec](${workspaceName}) [shared spec](~/ZollyBot/Shared/${sharedName})`,
   );
   await workspaceLink().last().click({ timeout: UI_WAIT_MS });
   await panel().getByText(workspaceText).waitFor({ timeout: UI_WAIT_MS });

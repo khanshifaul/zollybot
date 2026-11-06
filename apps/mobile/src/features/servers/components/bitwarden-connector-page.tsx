@@ -1,10 +1,10 @@
-import type { BitwardenConnectorStatus } from "@openbot/contracts/ipc";
+import type { UseQueryResult } from "@tanstack/react-query";
+import type { BitwardenConnectorStatus } from "@zollybot/contracts/ipc";
 import {
   BITWARDEN_CONNECTOR_KEY_LIMIT,
   BITWARDEN_CONNECTOR_PASSWORD_LIMIT,
   BITWARDEN_CONNECTOR_URL_LIMIT,
-} from "@openbot/contracts/team-protocol/bitwarden-connector-v1";
-import type { UseQueryResult } from "@tanstack/react-query";
+} from "@zollybot/contracts/team-protocol/bitwarden-connector-v1";
 import { Typography } from "heroui-native";
 import { useState } from "react";
 import { Alert } from "react-native";

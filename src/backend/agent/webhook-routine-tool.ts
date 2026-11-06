@@ -1,14 +1,14 @@
-import type { RoutineLimitPolicy, RoutineRunPlace } from "@openbot/contracts/ipc";
-import { type EventFilter, type EventRoutine, isEventFilter } from "@openbot/contracts/ipc-events";
-import { type DynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { WEBHOOK_DELIVERY_BODY_BYTES_LIMIT } from "@openbot/contracts/signal-protocol/messages";
+import type { RoutineLimitPolicy, RoutineRunPlace } from "@zollybot/contracts/ipc";
+import { type EventFilter, type EventRoutine, isEventFilter } from "@zollybot/contracts/ipc-events";
+import { type DynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { WEBHOOK_DELIVERY_BODY_BYTES_LIMIT } from "@zollybot/contracts/signal-protocol/messages";
 import {
   WEBHOOK_DELIVERY_ID_HEADER,
   WEBHOOK_MAX_CLOCK_SKEW_SECONDS,
   WEBHOOK_SIGNATURE_HEADER,
   WEBHOOK_TIMESTAMP_HEADER,
-} from "@openbot/contracts/signal-protocol/webhook-route";
-import { RoutineInputError } from "@openbot/team-client/routine-schedule";
+} from "@zollybot/contracts/signal-protocol/webhook-route";
+import { RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import type { Effect } from "effect";
 import type { RoutineOperationFailed } from "./routine-scheduler";
 

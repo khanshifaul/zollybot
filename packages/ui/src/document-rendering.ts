@@ -4,7 +4,7 @@ import { createSignal } from "solid-js";
  * The root attribute that a desktop window sets when Chromium draws it on the CPU. `primitives.css`
  * then turns off each backdrop blur.
  */
-export const SOFTWARE_RENDERING_ATTRIBUTE = "data-openbot-software-rendering";
+export const SOFTWARE_RENDERING_ATTRIBUTE = "data-zollybot-software-rendering";
 
 function read(): boolean {
   return document.documentElement.hasAttribute(SOFTWARE_RENDERING_ATTRIBUTE);

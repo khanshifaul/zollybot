@@ -1,4 +1,4 @@
-import type { AppFormat } from "@openbot/i18n/mobile";
+import type { AppFormat } from "@zollybot/i18n/mobile";
 import { Typography } from "heroui-native";
 import { useUniwind } from "uniwind";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/settings-content";

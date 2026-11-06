@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "OpenBot'ta ara",
+  "conversation.globalSearch.title": "ZollyBot'ta ara",
   "conversation.globalSearch.filter": "Sonuçları filtrele",
   "conversation.globalSearch.tab.all": "Tümü",
   "conversation.globalSearch.tab.messages": "Mesajlar",
@@ -94,7 +94,7 @@ export const messages = {
   "conversation.threads.error.branch": "Sohbet dallandırılamadı.",
   "conversation.threads.error.send": "Mesaj, mesaj dizisine gönderilemedi.",
   "conversation.threads.error.files":
-    "Bu sunucu mesaj dizilerinde dosya kabul etmiyor. Sunucudaki OpenBot'u güncelleyin.",
+    "Bu sunucu mesaj dizilerinde dosya kabul etmiyor. Sunucudaki ZollyBot'u güncelleyin.",
   "conversation.threads.error.stop": "Mesaj dizisi durdurulamadı.",
   "conversation.threads.error.archive": "Mesaj dizisi arşivlenemedi.",
   "conversation.threads.error.restore": "Mesaj dizisi geri yüklenemedi.",

@@ -1,6 +1,6 @@
 Cohere Transcribe
 
-OpenBot downloads this speech recognition model when you select it for dictation. The model is not
+ZollyBot downloads this speech recognition model when you select it for dictation. The model is not
 part of the application package.
 
 Model: CohereLabs/cohere-transcribe-03-2026
@@ -11,7 +11,7 @@ License: Apache License 2.0
 https://www.apache.org/licenses/LICENSE-2.0
 
 Changes: the model was exported to ONNX and quantized to int8 for sherpa-onnx by the sherpa-onnx
-project. OpenBot uses that converted model without further changes:
+project. ZollyBot uses that converted model without further changes:
 https://huggingface.co/csukuangfj2/sherpa-onnx-cohere-transcribe-14-lang-int8-2026-04-01
 (revision 156a470cf08eefe706a0004f3c52d9ee567ca7a0)
 

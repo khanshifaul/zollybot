@@ -1,4 +1,5 @@
-import { isKeyOnlyProvider } from "@openbot/contracts/agent-providers";
+import { OpenPanelBase, type OpenPanelOptions } from "@openpanel/web";
+import { isKeyOnlyProvider } from "@zollybot/contracts/agent-providers";
 import {
   AGENT_PROVIDERS,
   AGENT_REASONING_EFFORTS,
@@ -13,9 +14,16 @@ import {
   type RoutineRunConversationEventStatus,
   type UsageTokens,
   WORKFLOW_RUN_SOURCES,
-} from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isFunction, isNumber, isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { normalizeEmailAddress } from "@openbot/contracts/validation";
+} from "@zollybot/contracts/ipc";
+import {
+  isBoolean,
+  isDynamicRecord,
+  isFunction,
+  isNumber,
+  isOneOf,
+  isString,
+} from "@zollybot/contracts/runtime-values";
+import { normalizeEmailAddress } from "@zollybot/contracts/validation";
 import {
   ANALYTICS_GENERATIONS,
   type CauseCode,
@@ -23,8 +31,7 @@ import {
   operationForCode,
   type ReportQueue,
   safeProperties,
-} from "@openbot/telemetry";
-import { OpenPanelBase, type OpenPanelOptions } from "@openpanel/web";
+} from "@zollybot/telemetry";
 import { Effect, Exit, Scope } from "effect";
 import { parse as parseDomain } from "tldts";
 import type { FailureSignal } from "../backend/agent/failure-signal";
@@ -44,7 +51,7 @@ const OPENPANEL_API_URL = "https://analytics.openbot.run/api";
 const OPENPANEL_CLIENT_ID = "6c989975-87ef-4f0c-857e-ab449a65b5c2";
 // Node fetch sends no Origin, and OpenPanel answers 401 to a client with no allowed origin or
 // secret. The SDK drops a 401 in silence. Send the renderer's origin, which the project allows.
-const OPENPANEL_ORIGIN = "openbot-app://app";
+const OPENPANEL_ORIGIN = "zollybot-app://app";
 // Provider CLI events are named `<provider>_diagnostic`, `_exited` and `_start_failed`. The list
 // comes from the registry so a new provider's events keep their own name instead of collapsing to
 // `unknown` the moment it ships.
@@ -124,9 +131,9 @@ const WORKFLOW_RUN_STEP_COUNTS = [
 ] as const satisfies readonly (readonly [string, readonly WorkflowRunEnd["stepKinds"][number][]])[];
 const MAX_INVENTORY_ITEMS = 32;
 const ANALYTICS_SCHEMA_VERSION = ANALYTICS_GENERATIONS.desktop_host;
-const CURATED_AGENT_PREFIX = "openbot-curated-agent-";
+const CURATED_AGENT_PREFIX = "zollybot-curated-agent-";
 const LISTING_SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/u;
-/** An OpenBot version, such as `0.52.1` or `0.53.0-beta.2`. */
+/** An ZollyBot version, such as `0.52.1` or `0.53.0-beta.2`. */
 const APP_VERSION_PATTERN = /^\d{1,4}\.\d{1,4}\.\d{1,6}(?:-[0-9A-Za-z.]{1,24})?$/u;
 const TOOL_NAME_PATTERN = /^[A-Za-z0-9_.-]{1,64}$/u;
 const TOOL_KINDS = [
@@ -136,18 +143,18 @@ const TOOL_KINDS = [
   "web_search",
   "web_fetch",
   "mcp",
-  "openbot",
+  "zollybot",
   "browser",
   "computer_use",
   "image_generation",
   "subagent",
   "other",
 ] as const;
-// OpenBot's own tool servers. Every other server name is the user's, so only these and catalog
+// ZollyBot's own tool servers. Every other server name is the user's, so only these and catalog
 // plugins keep their tool names.
 const BUILTIN_TOOL_SERVERS = new Map<string, (typeof TOOL_KINDS)[number]>([
-  ["openbot", "openbot"],
-  ["openbot_browser", "browser"],
+  ["zollybot", "zollybot"],
+  ["zollybot_browser", "browser"],
   [COMPUTER_USE_MCP_SERVER_NAME, "computer_use"],
 ]);
 const ROUTINE_TERMINAL_STATUSES = ["succeeded", "failed", "interrupted", "cancelled"] as const;
@@ -894,8 +901,8 @@ export class HostAnalytics {
   #toolUseRow(usage: ToolUsageSignal): ToolUseRow {
     const server = usage.server;
     if (usage.kind !== "mcp" || !server) return { kind: usage.kind, calls: 0, failed: 0 };
-    // A user's server can report under a built-in name, such as `openbot browser` shown as
-    // `openbot_browser`. It then stays custom, and a resolver that fails also gives custom.
+    // A user's server can report under a built-in name, such as `zollybot browser` shown as
+    // `zollybot_browser`. It then stays custom, and a resolver that fails also gives custom.
     let configured: { slug: string | null } | null;
     try {
       configured = this.#resolveMcpServer(server);

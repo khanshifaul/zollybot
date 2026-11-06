@@ -1,6 +1,6 @@
-import type { AgentModelOption } from "@openbot/contracts/ipc";
-import { isAgentModel, isReasoningEffort } from "@openbot/contracts/ipc";
-import { createOpenBotLogger } from "@openbot/logging";
+import type { AgentModelOption } from "@zollybot/contracts/ipc";
+import { isAgentModel, isReasoningEffort } from "@zollybot/contracts/ipc";
+import { createZollyBotLogger } from "@zollybot/logging";
 import { Effect } from "effect";
 import type { AgentClient, AgentProvider } from "./../agent-client";
 import { decodeModelListResponse, type ModelListResponse } from "./../protocol";
@@ -22,7 +22,7 @@ import { providerLabel } from "./thread-items";
 
 type ProviderModelCatalog = NonNullable<BuiltInProviderDriver["catalog"]>;
 
-const logger = createOpenBotLogger("provider-runtime");
+const logger = createZollyBotLogger("provider-runtime");
 const MODEL_METADATA_FALLBACKS = [...FALLBACK_MODELS, ...OPENCODE_FREE_MODEL_FALLBACKS];
 
 export interface ModelCatalogOptions {
@@ -163,7 +163,7 @@ export class ModelCatalog {
           if (catalog.hiddenWhenSignedOut && signedOut && !client) return { provider, models: [], fresh: false };
           if (!client) return { provider, models: previous, fresh: false };
           // Read once per pass, not per model: a stored key cannot change inside one refresh, and
-          // a model is unusable only because OpenBot is what put that key in the environment.
+          // a model is unusable only because ZollyBot is what put that key in the environment.
           const hasStoredKey = Boolean(this.#options.credentials.apiKey(provider));
           const startedAt = performance.now();
           return yield* Effect.gen({ self: this }, function* () {

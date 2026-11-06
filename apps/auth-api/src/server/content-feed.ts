@@ -6,7 +6,7 @@ import {
   createMarketplaceShareUrl,
   isMarketplaceAgentId,
   isMarketplaceSkillSlug,
-} from "@openbot/contracts/marketplace-links";
+} from "@zollybot/contracts/marketplace-links";
 import { BRAND_PAGE_UPDATED_AT, BRAND_ROUTE } from "../lib/brand-page";
 import { changelogUrl } from "../lib/changelog";
 import { CHANGELOG_UPDATED_AT } from "../lib/changelog-releases";
@@ -24,7 +24,7 @@ import { MARKETPLACE_APPS_ROUTE, MARKETPLACE_ROUTE, MARKETPLACE_SKILLS_ROUTE } f
 import { PLUGINS_UPDATED_AT, pluginUrl, SITE_PLUGINS } from "../lib/plugins";
 import { PRICING_PAGE_UPDATED_AT, PRICING_ROUTE } from "../lib/pricing-page";
 import { PRIVACY_POLICY_ROUTE, PRIVACY_POLICY_UPDATED_AT } from "../lib/privacy-policy";
-import { OPENBOT_SITE_TITLE, OPENBOT_SITE_URL } from "../lib/site-metadata";
+import { ZOLLYBOT_SITE_TITLE, ZOLLYBOT_SITE_URL } from "../lib/site-metadata";
 import { TEAMS_PAGE_UPDATED_AT, TEAMS_ROUTE } from "../lib/teams-page";
 import { readMarketplaceSitemapListings } from "./marketplace-catalog";
 
@@ -81,7 +81,7 @@ function newestListingDate(listings: readonly { updatedAt: string }[]): string {
  * has no approved version, so the catalog never returns it and it is never here.
  */
 function marketplaceSitemapEntries(listings: MarketplaceSitemapListings | null): SitemapEntry[] {
-  const marketplaceUrl = (path: string) => new URL(path, OPENBOT_SITE_URL).toString();
+  const marketplaceUrl = (path: string) => new URL(path, ZOLLYBOT_SITE_URL).toString();
   const apps = { loc: marketplaceUrl(MARKETPLACE_APPS_ROUTE), lastmod: PLUGINS_UPDATED_AT };
   if (!listings) {
     return [
@@ -110,7 +110,7 @@ function marketplaceSitemapEntries(listings: MarketplaceSitemapListings | null):
 
 function contentSitemapXml(listings: MarketplaceSitemapListings | null): string {
   const entries: SitemapEntry[] = [
-    { loc: OPENBOT_SITE_URL, lastmod: latestSiteModifiedAt() },
+    { loc: ZOLLYBOT_SITE_URL, lastmod: latestSiteModifiedAt() },
     { loc: downloadPageUrl("hub"), lastmod: DOWNLOAD_PAGES_UPDATED_AT },
     ...DOWNLOAD_PAGE_ORDER.map((platform) => ({
       loc: downloadPageUrl(platform),
@@ -128,10 +128,10 @@ function contentSitemapXml(listings: MarketplaceSitemapListings | null): string 
        entry's date is the catalog's own, which is what changes when a listing ships. */
     ...SITE_PLUGINS.map((plugin) => ({ loc: pluginUrl(plugin.slug), lastmod: PLUGINS_UPDATED_AT })),
     { loc: changelogUrl(), lastmod: CHANGELOG_UPDATED_AT },
-    { loc: new URL(TEAMS_ROUTE, OPENBOT_SITE_URL).toString(), lastmod: TEAMS_PAGE_UPDATED_AT },
-    { loc: new URL(PRICING_ROUTE, OPENBOT_SITE_URL).toString(), lastmod: PRICING_PAGE_UPDATED_AT },
-    { loc: new URL(BRAND_ROUTE, OPENBOT_SITE_URL).toString(), lastmod: BRAND_PAGE_UPDATED_AT },
-    { loc: new URL(PRIVACY_POLICY_ROUTE, OPENBOT_SITE_URL).toString(), lastmod: PRIVACY_POLICY_UPDATED_AT },
+    { loc: new URL(TEAMS_ROUTE, ZOLLYBOT_SITE_URL).toString(), lastmod: TEAMS_PAGE_UPDATED_AT },
+    { loc: new URL(PRICING_ROUTE, ZOLLYBOT_SITE_URL).toString(), lastmod: PRICING_PAGE_UPDATED_AT },
+    { loc: new URL(BRAND_ROUTE, ZOLLYBOT_SITE_URL).toString(), lastmod: BRAND_PAGE_UPDATED_AT },
+    { loc: new URL(PRIVACY_POLICY_ROUTE, ZOLLYBOT_SITE_URL).toString(), lastmod: PRIVACY_POLICY_UPDATED_AT },
   ];
 
   const urls = entries
@@ -171,7 +171,7 @@ function contentRssXml(collection: ContentCollection): string {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">',
     "  <channel>",
-    `    <title>${escapeXml(`${collection.feedTitle} — ${OPENBOT_SITE_TITLE}`)}</title>`,
+    `    <title>${escapeXml(`${collection.feedTitle} — ${ZOLLYBOT_SITE_TITLE}`)}</title>`,
     `    <link>${escapeXml(collectionIndexUrl(collection))}</link>`,
     `    <description>${escapeXml(collection.indexDescription)}</description>`,
     "    <language>en-us</language>",

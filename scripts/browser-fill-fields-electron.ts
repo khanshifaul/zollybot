@@ -3,8 +3,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { dirname, join } from "node:path";
 import { performance } from "node:perf_hooks";
-import type { BrowserTab } from "@openbot/contracts/ipc";
-import { redactText } from "@openbot/logging";
+import type { BrowserTab } from "@zollybot/contracts/ipc";
+import { redactText } from "@zollybot/logging";
 import { Deferred, Effect, Fiber } from "effect";
 import { app, BrowserWindow, type WebContents, webContents } from "electron";
 import { z } from "zod";
@@ -123,7 +123,7 @@ async function main(): Promise<void> {
       args: DynamicToolCallParams["arguments"],
       owner = "fixture-agent",
     ): DynamicToolCallParams => ({
-      namespace: "openbot_browser",
+      namespace: "zollybot_browser",
       tool,
       arguments: args,
       ownerAgentId: owner,
@@ -380,7 +380,7 @@ async function main(): Promise<void> {
         ),
     );
     const protectedTab = await runCauseEffect(
-      host.open("https://fill-protection.openbot.test/", "fixture-thread", "fixture-agent"),
+      host.open("https://fill-protection.zollybot.test/", "fixture-thread", "fixture-agent"),
     );
     const protectedSnapshot = snapshotSchema.parse(
       json(await call("snapshot", { tabId: protectedTab.id, image: "never" })),

@@ -1,4 +1,4 @@
-import type { CompanySignInSettings, OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { CompanySignInSettings, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 import {
   Badge,
   Button,
@@ -21,14 +21,14 @@ import {
   SettingsSection,
   Text,
   X,
-} from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createStore, Show } from "solid-js";
 import type { ServerSettingsSectionHost } from "./server-settings-section";
 
 /** What the section calls in main. Only the desktop app manages company sign-in. */
 export type CompanySignInCalls = Pick<
-  OpenBotDesktopApi["auth"],
+  ZollyBotDesktopApi["auth"],
   | "getCompanySignIn"
   | "testCompanySignIn"
   | "cancelCompanySignInTest"

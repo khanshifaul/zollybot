@@ -1,8 +1,8 @@
-import type { BillingPlanId } from "@openbot/contracts/billing";
-import { type LicenseTier, pricingOrderSearch } from "@openbot/contracts/license";
-import type { TranslatedLocale } from "@openbot/i18n";
-import { OrderForm, type OrderFormOrder } from "@openbot/ui/features/billing/OrderForm";
-import { TextProvider, useText } from "@openbot/ui/text";
+import type { BillingPlanId } from "@zollybot/contracts/billing";
+import { type LicenseTier, pricingOrderSearch } from "@zollybot/contracts/license";
+import type { TranslatedLocale } from "@zollybot/i18n";
+import { OrderForm, type OrderFormOrder } from "@zollybot/ui/features/billing/OrderForm";
+import { TextProvider, useText } from "@zollybot/ui/text";
 import { type Accessor, createSignal, onSettled, Show } from "solid-js";
 import { landingAnalytics } from "../../lib/analytics";
 import { PRICING_ROUTE, type PricingOffer } from "../../lib/pricing-page";
@@ -113,7 +113,7 @@ export function PricingPage(props: {
           aria-labelledby="pricing-title"
           style={{ "--pricing-accent": rarity().rgb }}
         >
-          {/* Personal use is free. This comes first, so that nobody thinks that OpenBot needs a server or a license. */}
+          {/* Personal use is free. This comes first, so that nobody thinks that ZollyBot needs a server or a license. */}
           <section class="pricing-enterprise pricing-personal" aria-labelledby="pricing-personal">
             <div>
               <h2 id="pricing-personal">{props.text.personal.title}</h2>

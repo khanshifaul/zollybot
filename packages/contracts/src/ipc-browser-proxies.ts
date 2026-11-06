@@ -3,7 +3,7 @@
  * agents; each named profile uses one of them, or none ("Automatic": the proxy settings of that
  * computer). The password never comes back from the host: a summary says only that one is saved.
  * A proxy can also be the computer of one member: the pages then go out through the internet
- * connection of that member's OpenBot desktop app, while the member shares it (`browser-egress-v1`).
+ * connection of that member's ZollyBot desktop app, while the member shares it (`browser-egress-v1`).
  */
 
 import { integerInRange } from "./ipc-bounded-values";
@@ -170,7 +170,7 @@ export interface BrowserProxyComputer {
   memberId: string;
   /** The name of the member, or null when the host does not know it. */
   name: string | null;
-  /** True when the OpenBot app of the member is connected and shares its connection now. */
+  /** True when the ZollyBot app of the member is connected and shares its connection now. */
   online: boolean;
   /** True when the member who asked for the list is this member. */
   mine: boolean;

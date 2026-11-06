@@ -1,7 +1,7 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { AgentTasksSnapshot } from "@openbot/contracts/ipc";
-import { plainTaskTitle } from "@openbot/team-client/agent-tasks";
 import { useQueryClient } from "@tanstack/react-query";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { AgentTasksSnapshot } from "@zollybot/contracts/ipc";
+import { plainTaskTitle } from "@zollybot/team-client/agent-tasks";
 import * as Crypto from "expo-crypto";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
@@ -37,7 +37,7 @@ export function NewTaskScreen() {
   const { serverId, agentId: initialAgentId } = useLocalSearchParams<{ serverId: string; agentId?: string }>();
   const queryScope = useQueryScope();
   const queryClient = useQueryClient();
-  const accent = String(useCSSVariable("--openbot-accent"));
+  const accent = String(useCSSVariable("--zollybot-accent"));
   const { startAgentTask } = useMobileWorkspace();
   const { agents, online, supported } = useServerTasks(serverId, { enabled: false });
   const [draft, setDraft] = useState("");

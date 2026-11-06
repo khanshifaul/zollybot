@@ -1,6 +1,6 @@
-import type { GlobalSearchPage } from "@openbot/ui/components/GlobalSearch";
-import type { AgentMessage } from "@openbot/ui/data";
-import { currentText } from "@openbot/ui/text";
+import type { GlobalSearchPage } from "@zollybot/ui/components/GlobalSearch";
+import type { AgentMessage } from "@zollybot/ui/data";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createSignal, onSettled, untrack } from "solid-js";
 import { desktopAnalytics } from "./analytics";
 import { toAgentMessage } from "./app-message-projection";

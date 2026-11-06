@@ -1,15 +1,15 @@
-import type { AppBehaviorPreference, AppBehaviorPreferenceChange } from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+import type { AppBehaviorPreference, AppBehaviorPreferenceChange } from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect, Result, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import type { LoginItem, LoginItemFailure } from "./login-item";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";
 
-const logger = createOpenBotLogger("app-behavior");
+const logger = createZollyBotLogger("app-behavior");
 
 /**
- * How OpenBot starts and stops on this computer, and if it keeps the computer awake.
+ * How ZollyBot starts and stops on this computer, and if it keeps the computer awake.
  *
  * The keep-running choice is stored here, because main reads it each time the main window closes.
  * On macOS it is the menu bar choice, stored as `menuBar`, and it is on unless the user turned it
@@ -29,7 +29,7 @@ export class AppBehaviorService {
   readonly #loginItem: LoginItem | null;
   /** False on a server, which has no window to close. */
   readonly #offersBackground: boolean;
-  /** On macOS the keep-running choice shows OpenBot in the menu bar. */
+  /** On macOS the keep-running choice shows ZollyBot in the menu bar. */
   readonly #menuBar: boolean;
   /** False on Linux, where Electron does not report a change of the power source, and on a server. */
   readonly #offersKeepAwake: boolean;

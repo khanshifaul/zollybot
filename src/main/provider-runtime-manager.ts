@@ -37,10 +37,10 @@ import {
   type ProviderRuntimeSnapshot,
   type ProviderRuntimeStatus,
   type RemovableRuntimes,
-} from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
-import { matchingSourceKeys, sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, type LogValue, redactText, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
+import { matchingSourceKeys, sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, type LogValue, redactText, toLogValue } from "@zollybot/logging";
 import { Deferred, Effect, Exit, Fiber, Result, Scope, Stream } from "effect";
 import lockValue from "../../native-runtime.lock.json";
 import { type AgentRuntimeLock, parseAgentRuntimeLock } from "../../scripts/agent-runtime-lock";
@@ -76,7 +76,7 @@ import {
 } from "./provider-runtime-releases";
 
 const execFileAsync = promisify(execFile);
-const logger = createOpenBotLogger("provider-runtimes");
+const logger = createZollyBotLogger("provider-runtimes");
 const PROVIDERS = MANAGED_RUNTIME_PROVIDERS;
 /**
  * Everything the store holds. Downloading, staging, verifying, sweeping and freeing disk are the
@@ -211,7 +211,7 @@ export interface ProviderRuntimeManagerOptions {
 /**
  * Where the downloaded provider CLIs live: one store for the whole computer, not one per profile.
  *
- * `appData/OpenBot` is exactly what Electron gives the packaged app as `userData` on macOS, Windows
+ * `appData/ZollyBot` is exactly what Electron gives the packaged app as `userData` on macOS, Windows
  * and Linux, so this is the path released builds already use and nothing has to be migrated. What
  * it changes is development, where every renderer port and every `--isolated` worktree gets a
  * profile of its own: each one used to start with an empty store, resolve the user's own CLI
@@ -224,7 +224,7 @@ export interface ProviderRuntimeManagerOptions {
 export function providerRuntimeRoot(input: { appData: string; userDataOverride: string }): string {
   const override = input.userDataOverride.trim();
   if (override) return join(resolve(override), "provider-runtimes");
-  return join(input.appData, "OpenBot", "provider-runtimes");
+  return join(input.appData, "ZollyBot", "provider-runtimes");
 }
 
 export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerEvents> {
@@ -441,7 +441,7 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
 
   /**
    * What `removeDownload` frees now. Nothing for a provider that is on, or whose CLI the user pointed
-   * OpenBot at.
+   * ZollyBot at.
    */
   measureDownload(provider: ManagedProviderId): Effect.Effect<ProviderRuntimeDownload> {
     return Effect.gen({ self: this }, function* () {
@@ -600,8 +600,8 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
   }
 
   /**
-   * Whether the update check after an app upgrade updates this provider CLI: OpenBot installed it
-   * and a newer version exists. A CLI the user installed or pointed OpenBot at, and a provider that
+   * Whether the update check after an app upgrade updates this provider CLI: ZollyBot installed it
+   * and a newer version exists. A CLI the user installed or pointed ZollyBot at, and a provider that
    * is off, are left alone.
    */
   #updatesInstalled(provider: ManagedProviderId, target: RuntimeTarget): boolean {
@@ -744,7 +744,7 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
         });
       if (this.#stopping)
         return yield* new ProviderRuntimeFailure({ cause: new Error(sourceText("error.provider.closing")) });
-      // Only a provider CLI has a path override; nothing points `OPENBOT_BUN_PATH` at a tool runtime.
+      // Only a provider CLI has a path override; nothing points `ZOLLYBOT_BUN_PATH` at a tool runtime.
       if (!isManagedToolRuntime(runtime) && configuredCliPath(runtime))
         return yield* new ProviderRuntimeFailure({ cause: new Error(sourceText("error.provider.cliOverride")) });
       if (this.#tasks.has(runtime)) return this.getStatus();
@@ -850,7 +850,7 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
   /**
    * Installs the Pi CLI that a key-only provider such as DeepSeek runs on, and waits for it. Only the
    * Pi row has a Download button, so without this a saved key finds no CLI (#3273). A Pi that the
-   * provider can already start, from OpenBot or from the user, is kept.
+   * provider can already start, from ZollyBot or from the user, is kept.
    */
   ensureKeyProviderCli(provider: AgentProviderRef): Effect.Effect<void, ProviderRuntimeFailure> {
     if (!isKeyOnlyProvider(provider)) return Effect.void;
@@ -883,7 +883,7 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
     return this.#startMissingCli(harness).pipe(Effect.ignore, Effect.forkIn(this.#scope), Effect.asVoid);
   }
   /**
-   * Starts the download of a CLI that cannot start, and keeps one that can, from OpenBot or from the
+   * Starts the download of a CLI that cannot start, and keeps one that can, from ZollyBot or from the
    * user. True while that download runs.
    */
   #startMissingCli(provider: CustomProviderHarness): Effect.Effect<boolean, ProviderRuntimeFailure> {
@@ -1406,7 +1406,7 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
       );
       const response = yield* runtimeIO((signal) =>
         this.#fetch(url, {
-          headers: { "User-Agent": "OpenBot-runtime-installer" },
+          headers: { "User-Agent": "ZollyBot-runtime-installer" },
           signal: AbortSignal.any([signal, controller.signal, AbortSignal.timeout(30_000)]),
         }),
       ).pipe(Effect.mapError(({ cause }) => requestFailure(url, cause)));
@@ -1436,7 +1436,7 @@ export class ProviderRuntimeManager extends EventEmitter<ProviderRuntimeManagerE
           signal: AbortSignal.any([signal, effectSignal]),
           redirect: "follow",
           headers: {
-            "User-Agent": "OpenBot-runtime-installer",
+            "User-Agent": "ZollyBot-runtime-installer",
             ...(offset > 0 ? { Range: `bytes=${offset}-`, ...(etag ? { "If-Range": etag } : {}) } : {}),
           },
         }),

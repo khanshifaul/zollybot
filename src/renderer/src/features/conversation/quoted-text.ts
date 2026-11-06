@@ -1,9 +1,9 @@
-import { type FileQuoteTarget, fileQuoteId } from "@openbot/contracts/chat-tag-references";
-import type { AgentProfile } from "@openbot/ui/data";
+import { type FileQuoteTarget, fileQuoteId } from "@zollybot/contracts/chat-tag-references";
+import type { AgentProfile } from "@zollybot/ui/data";
 import { findChatSearchMatches } from "./chat-search";
 import type { SidebarFilePreview } from "./conversation-types";
 
-const QUOTE_HIGHLIGHT = "openbot-quote-target";
+const QUOTE_HIGHLIGHT = "zollybot-quote-target";
 
 let releaseHighlight: AbortController | undefined;
 let stopFileQuoteWatch: (() => void) | undefined;

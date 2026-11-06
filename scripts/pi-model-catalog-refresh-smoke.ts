@@ -1,12 +1,12 @@
 // Runs the real `openrouter` provider driver over the real Pi CLI, in a new Pi folder, to check that
 // the model list shows OpenRouter's current catalog and not the one that Pi bundled at its release
-// (#4926). Pi refreshes the catalog in the background of an RPC process, which OpenBot stopped before
+// (#4926). Pi refreshes the catalog in the background of an RPC process, which ZollyBot stopped before
 // the refresh ended, so models that OpenRouter added after the Pi release, such as the stealth model
 // `stealth/crouton-alpha`, did not show. The driver now runs `pi update --models` first. The check
 // runs with Full access, and on macOS also with Workspace only, where Pi must read the saved catalog
 // in the sandbox. The key is not valid: OpenRouter's public catalog needs no key.
 // `PI_CLI=<path to pi> bun scripts/pi-model-catalog-refresh-smoke.ts`. Needs the network.
-// Writes .openbot-build/pi-model-catalog-refresh-smoke/report.json.
+// Writes .zollybot-build/pi-model-catalog-refresh-smoke/report.json.
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
@@ -20,7 +20,7 @@ import { getArray, getString } from "../src/backend/protocol";
 import { requireProviderDriver } from "../src/backend/provider-drivers";
 import { stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/pi-model-catalog-refresh-smoke");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/pi-model-catalog-refresh-smoke");
 
 interface ListCase {
   access: "full" | "workspace";
@@ -58,7 +58,7 @@ async function listModels(access: ListCase["access"]): Promise<void> {
   const client = requireProviderDriver("openrouter").createClient(
     cli,
     60_000,
-    { apiKey: () => "sk-or-v1-openbot-smoke-not-valid", customProviders: () => [], mcpServers: () => [] },
+    { apiKey: () => "sk-or-v1-zollybot-smoke-not-valid", customProviders: () => [], mcpServers: () => [] },
     confinement,
   );
   clients.push(client);

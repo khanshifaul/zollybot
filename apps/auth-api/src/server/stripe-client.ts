@@ -1,6 +1,6 @@
-import { BILLING_CURRENCIES, BILLING_METADATA, type BillingCurrency } from "@openbot/contracts/billing";
-import { LICENSE_LOOKUP_KEYS, LICENSE_METADATA, LICENSE_METADATA_KIND } from "@openbot/contracts/license";
-import { isOneOf } from "@openbot/contracts/runtime-values";
+import { BILLING_CURRENCIES, BILLING_METADATA, type BillingCurrency } from "@zollybot/contracts/billing";
+import { LICENSE_LOOKUP_KEYS, LICENSE_METADATA, LICENSE_METADATA_KIND } from "@zollybot/contracts/license";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
 import { Effect, Option, Result, Schema } from "effect";
 import { constantTimeEqual, hexToBytes, importHmacSha256Key } from "./crypto";
 

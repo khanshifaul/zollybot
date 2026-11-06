@@ -1,7 +1,7 @@
-import { type AgentProviderId, agentProviderName } from "@openbot/contracts/agent-providers";
-import type { AppFormat } from "@openbot/i18n";
-import { Button, ErrorReference, TriangleAlert } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { type AgentProviderId, agentProviderName } from "@zollybot/contracts/agent-providers";
+import type { AppFormat } from "@zollybot/i18n";
+import { Button, ErrorReference, TriangleAlert } from "@zollybot/ui";
 import { createEffect, createSignal, Show } from "solid-js";
 import { createCodeSignInFallback } from "../../components/createCodeSignInFallback";
 import { useText } from "../../text";

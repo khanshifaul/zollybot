@@ -10,9 +10,9 @@
 // A test sign-in uses the same flow. It saves the connection only when it passes, so a connection
 // with a wrong value never takes the email codes away. SCIM from the provider turns a person off.
 
-import { isAvatarColor } from "@openbot/contracts/ipc";
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { isValidHostname, normalizeEmailAddress } from "@openbot/contracts/validation";
+import { isAvatarColor } from "@zollybot/contracts/ipc";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { isValidHostname, normalizeEmailAddress } from "@zollybot/contracts/validation";
 import { Effect, Schema } from "effect";
 import { createRemoteJWKSet, customFetch, jwtVerify } from "jose";
 import { decodeBase64Url, deriveSecret, encodeBase64Url, hmacSha256, randomToken, sha256 } from "./crypto";
@@ -33,8 +33,8 @@ const TOKEN_PATTERN = /^[A-Za-z0-9_-]{16,128}$/u;
 const RETURN_PATTERN = /^http:\/\/(?:127\.0\.0\.1|localhost):[0-9]{2,5}\/company-sign-in$/u;
 /** The web app's return on this account service. The browser that started the flow holds its verifier. */
 export const WEB_RETURN_PATH = "/api/browser/company/return";
-const DOMAIN_RECORD_PREFIX = "_openbot";
-const DOMAIN_RECORD_VALUE_PREFIX = "openbot-domain-verification=";
+const DOMAIN_RECORD_PREFIX = "_zollybot";
+const DOMAIN_RECORD_VALUE_PREFIX = "zollybot-domain-verification=";
 const CALLBACK_PATH = "/v1/auth/company/callback";
 const GOOGLE_ISSUER = "https://accounts.google.com";
 /** Mail services that no company owns. Their addresses keep email codes. */
@@ -1134,7 +1134,7 @@ export class CompanySignInService {
     }
   });
 
-  /** The TXT record `_openbot.<domain>` must hold the value of this server. */
+  /** The TXT record `_zollybot.<domain>` must hold the value of this server. */
   readonly #requireDomainRecord = Effect.fn("CompanySignIn.requireDomainRecord")(function* (
     this: CompanySignInService,
     secret: string,
@@ -1258,7 +1258,7 @@ export class CompanySignInService {
   });
 
   readonly #cipherKey = Effect.fn("CompanySignIn.cipherKey")(function* (secret: string) {
-    const raw = yield* deriveSecret(secret, "openbot/company-sign-in/client-secret/v1").pipe(
+    const raw = yield* deriveSecret(secret, "zollybot/company-sign-in/client-secret/v1").pipe(
       Effect.mapError(() => new CompanySignInOperationError({})),
     );
     return yield* storeCall(() =>

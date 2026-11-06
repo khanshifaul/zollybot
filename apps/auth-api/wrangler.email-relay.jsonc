@@ -2,7 +2,7 @@
 // the `EMAIL_RELAY` service binding, so deploy this Worker first. See `src/email-relay-entry.ts`.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "openbot-email-relay",
+  "name": "zollybot-email-relay",
   "compatibility_date": "2026-08-18",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/email-relay-entry.ts",

@@ -1,6 +1,6 @@
-import type { AttachmentSummary } from "@openbot/contracts/ipc";
-import { Button, ChevronLeft, ChevronRight, Dialog, Spinner, X } from "@openbot/ui";
-import { prefersReducedMotion } from "@openbot/ui/utils";
+import type { AttachmentSummary } from "@zollybot/contracts/ipc";
+import { Button, ChevronLeft, ChevronRight, Dialog, Spinner, X } from "@zollybot/ui";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import {
   createEffect,
   createMemo,

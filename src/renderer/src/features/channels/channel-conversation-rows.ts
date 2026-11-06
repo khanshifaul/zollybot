@@ -13,9 +13,9 @@ import {
   type ChannelThread,
   type ConversationQuestionPrompt,
   channelRoutingConversationEvent,
-} from "@openbot/contracts/ipc";
-import type { AgentMessage, AgentProfile } from "@openbot/ui/data";
-import type { ChannelWorker } from "@openbot/ui/features/channels/ChannelActivityIndicator";
+} from "@zollybot/contracts/ipc";
+import type { AgentMessage, AgentProfile } from "@zollybot/ui/data";
+import type { ChannelWorker } from "@zollybot/ui/features/channels/ChannelActivityIndicator";
 import { toAgentMessage, toAgentMessages } from "../../app-message-projection";
 
 /** A row with no text, no attachment and no question has nothing to draw. */

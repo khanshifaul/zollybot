@@ -9,7 +9,7 @@ import type { DatabaseSync } from "node:sqlite";
 // and no relay route, so that table stays as it is.
 //
 // `workflow_github_runs`: the item of a run that a GitHub event started. `caused_by_bot` is set when
-// the OpenBot GitHub App's bot sent the event, so the loop guard can count a chain of such runs.
+// the ZollyBot GitHub App's bot sent the event, so the loop guard can count a chain of such runs.
 //
 // `workflow_github_deliveries`: each event that GitHub sent to a trigger, once, and each time the host
 // was offline (`delivery_id` is then `offline:<from>`, and the item is null). It is also the queue: a

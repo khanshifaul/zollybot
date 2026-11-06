@@ -8,25 +8,25 @@ export function Dpa() {
     <>
       <p>
         This Data Processing Addendum ("DPA") forms an integral part of the{" "}
-        <Link to="/terms">OpenBot Terms &amp; Conditions</Link> or any other applicable agreement (the "Agreement")
-        between Synthetify Labs sp. z o.o., operating as OpenBot (the "Processor"), and the customer accepting the
+        <Link to="/terms">ZollyBot Terms &amp; Conditions</Link> or any other applicable agreement (the "Agreement")
+        between Synthetify Labs sp. z o.o., operating as ZollyBot (the "Processor"), and the customer accepting the
         Agreement (the "Controller").
       </p>
       <p>
-        This DPA applies where OpenBot Processes Personal Data on behalf of the Controller in connection with the
-        provision of the Services, particularly OpenBot Hosted Server Services.
+        This DPA applies where ZollyBot Processes Personal Data on behalf of the Controller in connection with the
+        provision of the Services, particularly ZollyBot Hosted Server Services.
       </p>
       <p>
-        This DPA does not govern Personal Data processed by OpenBot as an independent Data Controller, including
+        This DPA does not govern Personal Data processed by ZollyBot as an independent Data Controller, including
         Personal Data processed for account administration, authentication, subscriptions, payments, billing, and other
-        independent purposes described in the <Link to="/privacy-policy">OpenBot Privacy Policy</Link>.
+        independent purposes described in the <Link to="/privacy-policy">ZollyBot Privacy Policy</Link>.
       </p>
       <p>
-        Where the Controller uses OpenBot exclusively on its own devices or independently managed infrastructure, and
-        OpenBot does not Process Personal Data on the Controller's behalf, this DPA does not apply to such independently
-        managed Processing.
+        Where the Controller uses ZollyBot exclusively on its own devices or independently managed infrastructure, and
+        ZollyBot does not Process Personal Data on the Controller's behalf, this DPA does not apply to such
+        independently managed Processing.
       </p>
-      <p>This DPA becomes effective upon acceptance of the OpenBot Terms &amp; Conditions by the Controller.</p>
+      <p>This DPA becomes effective upon acceptance of the ZollyBot Terms &amp; Conditions by the Controller.</p>
 
       <h2>§ 1</h2>
       <p>
@@ -35,8 +35,8 @@ export function Dpa() {
       </p>
       <ul>
         <li>
-          <strong>"Agreement"</strong> means the OpenBot Terms &amp; Conditions or any other agreement concluded between
-          the Parties governing the provision and use of the Services to which this DPA relates.
+          <strong>"Agreement"</strong> means the ZollyBot Terms &amp; Conditions or any other agreement concluded
+          between the Parties governing the provision and use of the Services to which this DPA relates.
         </li>
         <li>
           <strong>"Controller"</strong> means the Customer entering into this DPA with the Processor, who determines the
@@ -44,8 +44,8 @@ export function Dpa() {
           under this DPA.
         </li>
         <li>
-          <strong>"Processor"</strong> means Synthetify Labs sp. z o.o., operating under the name OpenBot, insofar as it
-          Processes Personal Data on behalf of the Controller pursuant to this DPA.
+          <strong>"Processor"</strong> means Synthetify Labs sp. z o.o., operating under the name ZollyBot, insofar as
+          it Processes Personal Data on behalf of the Controller pursuant to this DPA.
         </li>
         <li>
           <strong>"Personal Data"</strong> means any information relating to an identified or identifiable natural
@@ -70,15 +70,15 @@ export function Dpa() {
         <li>
           <strong>"Customer Data"</strong> means information, content, files, and other materials submitted, created,
           uploaded, imported, connected, or otherwise made available by or on behalf of the Controller through the
-          Services, to the extent Processed by OpenBot on the Controller's behalf.
+          Services, to the extent Processed by ZollyBot on the Controller's behalf.
         </li>
         <li>
-          <strong>"Services"</strong> means the services provided by OpenBot under the Agreement, particularly Hosted
+          <strong>"Services"</strong> means the services provided by ZollyBot under the Agreement, particularly Hosted
           Server Services, insofar as they involve the Processing of Personal Data on behalf of the Controller.
         </li>
         <li>
-          <strong>"Hosted Server Services"</strong> means the optional hosting services provided by OpenBot that enable
-          the Controller to operate the OpenBot application and store and Process Customer Data within hosted server
+          <strong>"Hosted Server Services"</strong> means the optional hosting services provided by ZollyBot that enable
+          the Controller to operate the ZollyBot application and store and Process Customer Data within hosted server
           environments.
         </li>
         <li>
@@ -87,7 +87,7 @@ export function Dpa() {
           otherwise Processed, as defined in Article 4(12) GDPR.
         </li>
         <li>
-          <strong>"Sub-processor"</strong> means any third-party Processor engaged by OpenBot to Process Personal Data
+          <strong>"Sub-processor"</strong> means any third-party Processor engaged by ZollyBot to Process Personal Data
           on behalf of the Controller in connection with the provision of the Services.
         </li>
       </ul>
@@ -95,11 +95,11 @@ export function Dpa() {
       <h2>§ 2</h2>
       <ol>
         <li>
-          Where OpenBot Processes Personal Data on behalf of the Controller, the Controller acts as the Controller and
-          OpenBot acts as the Processor.
+          Where ZollyBot Processes Personal Data on behalf of the Controller, the Controller acts as the Controller and
+          ZollyBot acts as the Processor.
         </li>
         <li>
-          The Controller determines the purposes and essential means of the Processing, while OpenBot carries out
+          The Controller determines the purposes and essential means of the Processing, while ZollyBot carries out
           Processing in accordance with documented instructions and applicable Data Protection Laws.
         </li>
         <li>Each Party shall comply with its respective obligations under applicable Data Protection Laws.</li>
@@ -128,7 +128,7 @@ export function Dpa() {
       <h2>§ 4</h2>
       <ol>
         <li>
-          The categories of Personal Data Processed by OpenBot on behalf of the Controller depend on the Controller's
+          The categories of Personal Data Processed by ZollyBot on behalf of the Controller depend on the Controller's
           use of the Services, particularly Hosted Server Services, and the information submitted, created, uploaded,
           imported, connected, or otherwise made available by the Controller or its authorised users.
         </li>
@@ -170,7 +170,7 @@ export function Dpa() {
           tasks performed by its AI Agents.
         </li>
         <li>
-          OpenBot does not require Customer Data to contain any particular category of Personal Data. The Controller
+          ZollyBot does not require Customer Data to contain any particular category of Personal Data. The Controller
           remains responsible for determining which Personal Data is made available through the Services, exercising
           appropriate caution when disclosing sensitive Personal Data, and ensuring that such Processing complies with
           applicable Data Protection Laws.
@@ -211,7 +211,7 @@ export function Dpa() {
       <h2>§ 6</h2>
       <ol>
         <li>
-          OpenBot Processes Personal Data on behalf of the Controller solely for the purpose of providing the Services
+          ZollyBot Processes Personal Data on behalf of the Controller solely for the purpose of providing the Services
           covered by this DPA.
         </li>
         <li>
@@ -254,8 +254,8 @@ export function Dpa() {
           </ul>
         </li>
         <li>
-          OpenBot shall not Process Personal Data entrusted by the Controller for purposes unrelated to the provision of
-          the Services or outside the scope of the Controller's documented instructions, except where required by
+          ZollyBot shall not Process Personal Data entrusted by the Controller for purposes unrelated to the provision
+          of the Services or outside the scope of the Controller's documented instructions, except where required by
           applicable law.
         </li>
         <li>
@@ -338,7 +338,7 @@ export function Dpa() {
         <li>
           The Controller acknowledges and authorises the engagement of Dedale AI, Corp. (operating as Boat) as a
           Sub-processor for the provision of Hosted Server Services. Boat provides the cloud infrastructure used to host
-          OpenBot server environments and store and Process associated Customer Data. Any additions or replacements of
+          ZollyBot server environments and store and Process associated Customer Data. Any additions or replacements of
           Sub-processors shall be subject to the requirements set out in paragraph 4 above.
         </li>
       </ol>
@@ -381,7 +381,7 @@ export function Dpa() {
         <li>
           Personal Data stored on the Controller's own devices or independently managed infrastructure remains under the
           Controller's control and is not automatically deleted upon termination of the Agreement or deletion of an
-          OpenBot account.
+          ZollyBot account.
         </li>
         <li>
           The Processor shall make available to the Controller all information necessary to demonstrate compliance with

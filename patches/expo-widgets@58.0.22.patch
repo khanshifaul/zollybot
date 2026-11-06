@@ -12,7 +12,7 @@ index 76b2199c2d3f879463fed5d2bd49038b0428a2e7..70b6475fdb00eda1f25b986f242965cb
    ]
  
    if #available(iOS 18.0, *) {
-+    // OpenBot patch: the SDK back-deploys this getter before iOS 17.0 only. iOS 17 WidgetKit does
++    // ZollyBot patch: the SDK back-deploys this getter before iOS 17.0 only. iOS 17 WidgetKit does
 +    // not export it, so the weak symbol is null there and the widget extension jumps to 0x0.
 +    env["isActivityFullscreen"] = environment.isActivityFullscreen
      env["isActivityUpdateReduced"] = environment.isActivityUpdateReduced

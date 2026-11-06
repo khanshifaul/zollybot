@@ -10,8 +10,8 @@ import {
   DEFAULT_PROMPT_CACHE_TTL,
   type KeyOnlyProviderId,
   type PromptCacheTtl,
-} from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { AcpAgentClient, type AcpHistoryPersistence } from "./acp-client";
 import {
@@ -104,7 +104,7 @@ import {
 import { type AccountReadResult, isCodexLoginType, type ModelListResponse } from "./protocol";
 import { type ProviderClientOperationError, providerCall, providerFailure } from "./provider-client-effects";
 
-/** One command OpenBot runs against a provider's own CLI, waiting for the process to exit. */
+/** One command ZollyBot runs against a provider's own CLI, waiting for the process to exit. */
 interface ProviderCliCommand {
   readonly argv: readonly string[];
   readonly env: (cli: AgentCliInfo) => Record<string, string>;
@@ -164,7 +164,7 @@ const CLAUDE_COMMAND_ENV = (cli: AgentCliInfo): Record<string, string> =>
  * `OPENCODE_API_KEY` is the whole of the optional account: with it the CLI lists the paid Go
  * catalog, without it the free one. `OPENCODE_DISABLE_AUTOUPDATE` is not optional on a managed
  * install -- a CLI that updates itself past the pin fails the exact-version compare in
- * `verifyInstalledRuntime`, and OpenBot would then keep re-downloading a runtime it already has.
+ * `verifyInstalledRuntime`, and ZollyBot would then keep re-downloading a runtime it already has.
  */
 function opencodeEnv(cli: AgentCliInfo, credentials: ProviderClientContext): Record<string, string> {
   const key = credentials.apiKey("opencode");
@@ -181,23 +181,23 @@ function opencodeEnv(cli: AgentCliInfo, credentials: ProviderClientContext): Rec
  * answer say what it is, and a new arm is a compile error at both sites rather than a wrong login.
  */
 type ProviderSignIn =
-  /** The provider's own protocol hands back a URL for OpenBot to open. */
+  /** The provider's own protocol hands back a URL for ZollyBot to open. */
   | { kind: "browser" }
-  /** OpenBot spawns the provider's CLI and waits for the process to exit. */
+  /** ZollyBot spawns the provider's CLI and waits for the process to exit. */
   | { kind: "cli-command"; command: ProviderSignInCommand }
-  /** The user signs in with the CLI themselves; OpenBot only re-probes the provider afterwards. */
+  /** The user signs in with the CLI themselves; ZollyBot only re-probes the provider afterwards. */
   | { kind: "external" }
   /** The host opens an interactive terminal and refreshes the account when it closes. */
   | { kind: "terminal"; timeoutMs: number }
   /**
-   * OpenBot starts the `muse serve` device sign-in and opens its page, which holds the code.
+   * ZollyBot starts the `muse serve` device sign-in and opens its page, which holds the code.
    * `muse login` with no terminal only prints that page and never opens it.
    */
   | { kind: "muse-device"; timeoutMs: number }
   | AcpAuthenticateSignIn;
 
 /**
- * OpenBot starts the ACP server and calls `authenticate` with this method, which opens a browser
+ * ZollyBot starts the ACP server and calls `authenticate` with this method, which opens a browser
  * from the server. Only the sign-in process calls it: in a status probe it would open a browser.
  */
 interface AcpAuthenticateSignIn {
@@ -263,7 +263,7 @@ const ANTIGRAVITY_ENV = { AGY_ACP_FORCE_FILE_STORAGE: "1" };
 
 /**
  * The sandbox paths of a Gemini process: in the account's `GEMINI_HOME` when it has one. The
- * sandbox cannot create the folders in a new account's home, so OpenBot makes them.
+ * sandbox cannot create the folders in a new account's home, so ZollyBot makes them.
  */
 function antigravityAccountStatePaths(context: ProviderClientContext) {
   const state = antigravityStatePaths({ ...process.env, ...context.accountEnvironment });
@@ -287,7 +287,7 @@ const GEMINI_API_KEY_METHOD = "gemini-api-key";
 /**
  * The Windows Antigravity server unpacks about 310 MB into the temporary folder at each start, and a
  * process that is stopped or times out leaves that copy behind. Each process gets a folder that
- * OpenBot removes (`provider-temp.ts`).
+ * ZollyBot removes (`provider-temp.ts`).
  */
 export function antigravityTemp(context: Pick<ProviderClientContext, "providerTempDirectory" | "availableDiskBytes">) {
   return context.providerTempDirectory
@@ -300,7 +300,7 @@ export function antigravityTemp(context: Pick<ProviderClientContext, "providerTe
 
 /**
  * Google's registry starts the Linux build with an empty `--uid=`, and the other builds with no
- * argument. OpenBot starts it the same way.
+ * argument. ZollyBot starts it the same way.
  */
 const ANTIGRAVITY_ARGV: readonly string[] = process.platform === "linux" ? ["--uid="] : [];
 
@@ -317,7 +317,7 @@ const CLINE_ARGV: readonly string[] = ["--acp"];
 
 /**
  * By default, the Cline CLI runs its sessions in a hub process that it detaches and that other Cline
- * processes share. That process would outlive OpenBot and would escape a Workspace only sandbox, so
+ * processes share. That process would outlive ZollyBot and would escape a Workspace only sandbox, so
  * every Cline process runs its sessions in itself. The managed CLI must not replace itself.
  */
 const CLINE_ENV: Readonly<Record<string, string>> = {
@@ -327,7 +327,7 @@ const CLINE_ENV: Readonly<Record<string, string>> = {
 
 /**
  * The sandbox lets a Cline process write in its data folder, not create `~/.cline` itself. A CLI
- * that only `CLINE_API_KEY` signs in has not made that folder yet, so OpenBot makes it.
+ * that only `CLINE_API_KEY` signs in has not made that folder yet, so ZollyBot makes it.
  */
 function confineClineTarget(target: SpawnTarget, confinement: ProcessConfinement): SpawnTarget {
   const state = clineStatePaths();
@@ -355,7 +355,7 @@ function requireHermesProvider(_connection: ClientSideConnection, initialization
     : Effect.void;
 }
 
-/** The sandbox lets a Hermes process write in its folder, not create it, so OpenBot makes it. */
+/** The sandbox lets a Hermes process write in its folder, not create it, so ZollyBot makes it. */
 function confineHermesTarget(
   target: SpawnTarget,
   confinement: ProcessConfinement,
@@ -398,7 +398,7 @@ function kimiProcessEnv(
 }
 
 /**
- * The sandbox lets a process write in its state folders, not create them, so OpenBot makes them.
+ * The sandbox lets a process write in its state folders, not create them, so ZollyBot makes them.
  * The agent's own environment can move them: `KIMI_SHARE_DIR` for Kimi, the XDG variables for Devin.
  */
 function confineWithState(
@@ -416,7 +416,7 @@ function confineWithState(
 const DEVIN_ARGV: readonly string[] = ["acp"];
 
 /**
- * GitHub Copilot CLI 1.0.105 updates itself unless told not to. OpenBot owns the version, so every
+ * GitHub Copilot CLI 1.0.105 updates itself unless told not to. ZollyBot owns the version, so every
  * process gets the variable: `copilot login` rejects the `--no-auto-update` flag.
  */
 const COPILOT_ENV: Readonly<Record<string, string>> = { COPILOT_AUTO_UPDATE: "false" };
@@ -450,7 +450,7 @@ export interface ProviderClientContext {
    */
   readonly reportMcpDrops?: McpDropReporter;
   /**
-   * What OpenBot downloaded for the MCP servers, read at spawn like everything else here. Optional
+   * What ZollyBot downloaded for the MCP servers, read at spawn like everything else here. Optional
    * for the same reason as `reportMcpDrops`: a driver without one sees the machine as it is.
    */
   readonly mcpToolRuntimes?: McpToolRuntimeSource;
@@ -472,7 +472,7 @@ export interface ProviderClientContext {
    */
   readonly mcpOAuthProxySettings?: McpOAuthProxySettingsStore;
   /**
-   * The OpenBot version that the OAuth proxy names to a server it signed in to. Optional: without it
+   * The ZollyBot version that the OAuth proxy names to a server it signed in to. Optional: without it
    * the proxy passes on the provider's own `clientInfo`.
    */
   readonly appVersion?: string;
@@ -483,12 +483,12 @@ export interface ProviderClientContext {
    */
   servesModel?(modelId: string): boolean;
   /**
-   * A folder OpenBot owns for files it gives a provider process, outside every root an agent can
+   * A folder ZollyBot owns for files it gives a provider process, outside every root an agent can
    * write. Optional for the same reason as `reportMcpDrops`.
    */
   readonly providerStateDirectory?: string;
   /**
-   * A folder OpenBot owns for the temporary files of provider processes, emptied at each launch.
+   * A folder ZollyBot owns for the temporary files of provider processes, emptied at each launch.
    * Optional for the same reason as `reportMcpDrops`: without it a process uses the system folder.
    * The app gives it on Windows only.
    */
@@ -596,7 +596,7 @@ interface ProviderModelCatalog {
 
 /**
  * What a provider *does*. What it is called, how it is described and where its sign-in help points
- * live in the provider registry in `@openbot/contracts/agent-providers`; a driver holds only the
+ * live in the provider registry in `@zollybot/contracts/agent-providers`; a driver holds only the
  * behaviour, so a new provider is one registry row plus one driver.
  */
 export interface BuiltInProviderDriver {
@@ -604,8 +604,8 @@ export interface BuiltInProviderDriver {
   signIn: ProviderSignIn;
   /**
    * The files the provider's CLI writes when the user signs in with it. The host checks the account
-   * again when one of them changes, so a sign-in done outside OpenBot, such as over SSH, needs no
-   * restart. Absent for a provider that OpenBot always signs in itself.
+   * again when one of them changes, so a sign-in done outside ZollyBot, such as over SSH, needs no
+   * restart. Absent for a provider that ZollyBot always signs in itself.
    */
   signInFiles?(): readonly string[];
   /** Absent for a provider that has no sign-in on another device. */
@@ -716,7 +716,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "inception",
-    // The key is pasted into OpenBot. Pi's own sign-in stays on the Pi row.
+    // The key is pasted into ZollyBot. Pi's own sign-in stays on the Pi row.
     signIn: { kind: "external" },
     cliProvider: "pi",
     resolveCli: resolvePiCli,
@@ -727,7 +727,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "deepseek",
-    // The key is pasted into OpenBot. Pi's own sign-in stays on the Pi row.
+    // The key is pasted into ZollyBot. Pi's own sign-in stays on the Pi row.
     signIn: { kind: "external" },
     cliProvider: "pi",
     resolveCli: resolvePiCli,
@@ -738,7 +738,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "openrouter",
-    // The key is pasted into OpenBot. Pi's own sign-in stays on the Pi row.
+    // The key is pasted into ZollyBot. Pi's own sign-in stays on the Pi row.
     signIn: { kind: "external" },
     cliProvider: "pi",
     resolveCli: resolvePiCli,
@@ -752,7 +752,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
     signIn: { kind: "muse-device", timeoutMs: CLI_LOGIN_TIMEOUT_MS },
     // On this computer only: no Team API protocol carries a Muse code sign-in.
     codeSignIn: { kind: "muse-device", timeoutMs: CLI_LOGIN_TIMEOUT_MS },
-    // Removes the saved Meta account or key. OpenBot's own key is in `META_API_KEY`, which stays.
+    // Removes the saved Meta account or key. ZollyBot's own key is in `META_API_KEY`, which stays.
     signOut: { argv: ["logout"], env: () => ({ MUSE_NO_AUTO_UPDATE: "1" }), timeoutMs: 30_000 },
     resolveCli: resolveMuseCli,
     createClient: (cli, timeout, context, confinement) =>
@@ -828,7 +828,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
       command: { argv: ["auth", "login", "--claudeai"], env: CLAUDE_COMMAND_ENV, timeoutMs: CLI_LOGIN_TIMEOUT_MS },
     },
     // On macOS the CLI keeps the credential in a keychain item named after the folder, so the
-    // sign-out removes that item before OpenBot removes the folder.
+    // sign-out removes that item before ZollyBot removes the folder.
     accounts: {
       homeVariable: "CLAUDE_CONFIG_DIR",
       signIn: { argv: ["auth", "login", "--claudeai"], env: CLAUDE_COMMAND_ENV, timeoutMs: CLI_LOGIN_TIMEOUT_MS },
@@ -861,7 +861,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
       kind: "cli-command",
       command: {
         argv: ["--no-auto-update", "login"],
-        env: () => ({ GROK_OAUTH2_REFERRER: "openbot" }),
+        env: () => ({ GROK_OAUTH2_REFERRER: "zollybot" }),
         timeoutMs: CLI_LOGIN_TIMEOUT_MS,
       },
     },
@@ -870,7 +870,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
       flow: "device",
       command: {
         argv: ["--no-auto-update", "login", "--device-auth"],
-        env: () => ({ GROK_OAUTH2_REFERRER: "openbot" }),
+        env: () => ({ GROK_OAUTH2_REFERRER: "zollybot" }),
         timeoutMs: CLI_LOGIN_TIMEOUT_MS,
       },
     },
@@ -878,7 +878,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
       homeVariable: "GROK_HOME",
       signIn: {
         argv: ["--no-auto-update", "login"],
-        env: () => ({ GROK_OAUTH2_REFERRER: "openbot" }),
+        env: () => ({ GROK_OAUTH2_REFERRER: "zollybot" }),
         timeoutMs: CLI_LOGIN_TIMEOUT_MS,
       },
     },
@@ -916,7 +916,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   {
     id: "opencode",
     // `opencode auth login` is an interactive terminal UI and cannot be spawned headless, so the
-    // optional OpenCode Go key is pasted into OpenBot instead. Nothing is required to sign in:
+    // optional OpenCode Go key is pasted into ZollyBot instead. Nothing is required to sign in:
     // with no credential at all the CLI still lists the free models and answers a turn.
     signIn: { kind: "external" },
     // A stored key is an OpenCode Go key, and `isOpencodeModelUnusableWithStoredKey` says why that
@@ -1365,7 +1365,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "acp",
-    // Each custom agent signs in its own way, in its own CLI. OpenBot only checks it again.
+    // Each custom agent signs in its own way, in its own CLI. ZollyBot only checks it again.
     signIn: { kind: "external" },
     // A custom agent can need more than 5 s to start and open a probe session in `initialize` and
     // again in `model/list`: Claude Agent ACP with a few plugins and MCP servers does.
@@ -1467,7 +1467,7 @@ let customAgentDiscoveryRoot: string | undefined;
  * the folder `antigravity`, an id that no custom agent can have.
  */
 function discoveryFolder(agentId: string): string {
-  customAgentDiscoveryRoot ??= mkdtempSync(join(tmpdir(), "openbot-custom-agents-"));
+  customAgentDiscoveryRoot ??= mkdtempSync(join(tmpdir(), "zollybot-custom-agents-"));
   const folder = join(customAgentDiscoveryRoot, agentId);
   mkdirSync(folder, { recursive: true, mode: 0o700 });
   return folder;

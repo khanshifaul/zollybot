@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { sortConversationMessages } from "@openbot/contracts/conversation-order";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { sortConversationMessages } from "@zollybot/contracts/conversation-order";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentEvent,
   AgentSummary,
@@ -17,12 +17,12 @@ import type {
   RoutineRunConversationEventStatus,
   TestRoutineInput,
   UpdateRoutineInput,
-} from "@openbot/contracts/ipc";
-import { routineConversationEventItemType, routineRunConversationEventItemType } from "@openbot/contracts/ipc";
-import type { EventRoutine } from "@openbot/contracts/ipc-events";
-import { type DynamicRecord, isBoolean } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { collapseMissedOccurrences, RoutineInputError } from "@openbot/team-client/routine-schedule";
+} from "@zollybot/contracts/ipc";
+import { routineConversationEventItemType, routineRunConversationEventItemType } from "@zollybot/contracts/ipc";
+import type { EventRoutine } from "@zollybot/contracts/ipc-events";
+import { type DynamicRecord, isBoolean } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { collapseMissedOccurrences, RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import { Effect, Schema } from "effect";
 import { AgentRoutineStore } from "../agent-routine-store";
 import { AGENT_PREVIEW_MAX_LENGTH, type AgentStore } from "../agent-store";
@@ -42,7 +42,6 @@ import { routineStatusForDelivery } from "./delivery-content";
 import { quietRoutineRun } from "./routine-quiet-runs";
 import {
   localTimezone,
-  type OpenBotToolResponse,
   openBotToolFailure,
   openBotToolResult,
   routineToolAgentId,
@@ -51,6 +50,7 @@ import {
   routineToolRunPlace,
   routineToolSchedule,
   routineToolString,
+  type ZollyBotToolResponse,
 } from "./routine-tools";
 import {
   CREATE_WEBHOOK_ROUTINE_ARGUMENTS,
@@ -541,7 +541,7 @@ export class RoutineScheduler implements RoutineDueSource {
   }
 
   /**
-   * The eight `openbot` routine tools. Returns null when `tool` is not one of them.
+   * The eight `zollybot` routine tools. Returns null when `tool` is not one of them.
    *
    * A request the model can correct is a tool failure, not a throw: a throw becomes a provider error
    * toast, although the model's corrected retry then creates the routine. Other errors are faults
@@ -550,7 +550,7 @@ export class RoutineScheduler implements RoutineDueSource {
   handleTool(
     params: DynamicToolCallParams,
     senderAgentId: string,
-  ): Effect.Effect<OpenBotToolResponse | null, RoutineOperationFailed> {
+  ): Effect.Effect<ZollyBotToolResponse | null, RoutineOperationFailed> {
     return this.#handleTool(params, senderAgentId).pipe(
       Effect.catchDefect((cause) => Effect.fail(new RoutineOperationFailed({ cause }))),
       Effect.catch((failure) =>

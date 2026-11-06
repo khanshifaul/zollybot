@@ -4,23 +4,23 @@ import { EventEmitter } from "node:events";
 import { mkdir, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import type { AgentProviderStatus, ProviderRuntimeStatus } from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
-import { createOpenBotLogger, redactText, toLogValue } from "@openbot/logging";
+import type { AgentProviderStatus, ProviderRuntimeStatus } from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
+import { createZollyBotLogger, redactText, toLogValue } from "@zollybot/logging";
 import { Deferred, Effect, Exit, Fiber, Scope } from "effect";
 import { configuredCliPath, resolveHermesCli } from "../backend/cli";
 import { ProviderRuntimeFailure, runtimeIO, runtimeSync } from "./provider-runtime-effects";
 import { readLimitedBody } from "./provider-runtime-releases";
 
-const logger = createOpenBotLogger("hermes-installer");
+const logger = createZollyBotLogger("hermes-installer");
 
 /**
  * The official Hermes installer, pinned to the script of one release. Hermes publishes no release
- * archive, and its virtual environment cannot move, so OpenBot runs the installer that Nous Research
+ * archive, and its virtual environment cannot move, so ZollyBot runs the installer that Nous Research
  * ships instead of a download of its own. The script checks out this same commit, and `uv.lock`
  * verifies the hash of each Python package. Hermes goes where a terminal install puts it
- * (`~/.hermes`, `~/.local/bin/hermes`), so `hermes update` keeps working and OpenBot finds it as
+ * (`~/.hermes`, `~/.local/bin/hermes`), so `hermes update` keeps working and ZollyBot finds it as
  * the user's own CLI.
  */
 const HERMES_INSTALLER = {
@@ -79,9 +79,9 @@ function failedStatus(message: string): ProviderRuntimeStatus {
 
 /**
  * Installs Hermes Agent for the provider row's Download. A missing Hermes gets the Download only where
- * this computer can run the installer: a Windows computer and an explicit `OPENBOT_HERMES_PATH` keep
+ * this computer can run the installer: a Windows computer and an explicit `ZOLLYBOT_HERMES_PATH` keep
  * the install guide. An installed Hermes reads as ready, as a downloaded CLI does, so a server's row
- * offers its Connect. OpenBot does not own what the installer writes: it does not verify, update or
+ * offers its Connect. ZollyBot does not own what the installer writes: it does not verify, update or
  * remove it.
  */
 export class HermesInstaller extends EventEmitter<{ status: [] }> {
@@ -182,7 +182,7 @@ export class HermesInstaller extends EventEmitter<{ status: [] }> {
           ),
         ),
       ),
-      // No Hermes command found: the installer ended without the command that OpenBot runs. The
+      // No Hermes command found: the installer ended without the command that ZollyBot runs. The
       // refresh above can do nothing (an off provider, a check that fails), so this looks again.
       Effect.andThen(Effect.exit(resolveHermesCli())),
       Effect.andThen((found) =>

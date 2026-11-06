@@ -8,8 +8,8 @@ import {
   type BillingSubscriptionStatus,
   LEGACY_MEMBER_LIMITS,
   memberLimitForPlan,
-} from "@openbot/contracts/billing";
-import { isOneOf } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/billing";
+import { isOneOf } from "@zollybot/contracts/runtime-values";
 import { OPEN_STATUSES_SQL } from "./billing-errors";
 
 /** The statuses of a subscription that gives its plan or license now. */

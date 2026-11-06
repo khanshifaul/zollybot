@@ -57,8 +57,8 @@ import type {
   SidebarPinsSnapshot,
   TeamPresenceSnapshot,
   UpdateHostIdentityInput,
-} from "@openbot/contracts/ipc";
-import type { Logger } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import type { Logger } from "@zollybot/logging";
 import type { AgentService } from "../../backend/agent-service";
 import type { BrowserHost } from "../../backend/browser-host";
 import type { MailboxStore } from "../../backend/mailbox-store";
@@ -263,7 +263,7 @@ export type TeamApiMachine = Pick<
   MachineAlertMonitor,
   "metrics" | "alerts" | "setAlerts" | "canBeResponsible" | "pending" | "subscribe"
 >;
-/** `hosted-sites-v1`: the openbot.site sites of this server. Members list; only admins delete. */
+/** `hosted-sites-v1`: the zollybot.site sites of this server. Members list; only admins delete. */
 export type TeamApiHostedSites = Pick<HostedSiteDesktopService, "listServerSites" | "deleteServerSite">;
 
 /** Its presence is what `#protocolSupport` advertises `agent-hidden-v1` on. Any member can use it. */
@@ -658,7 +658,7 @@ export interface TeamApiOptions {
   onDirectTyping?: ((event: DirectTypingRealtimeEvent) => void) | undefined;
   createInvite?: OmitThisParameter<HostService["createInvite"]> | undefined;
   /**
-   * Changes and removes members as the desktop app does. With an OpenBot account, the account
+   * Changes and removes members as the desktop app does. With an ZollyBot account, the account
    * directory holds the membership; a change only in the team file has no effect there.
    */
   updateMember?: OmitThisParameter<HostService["updateMember"]> | undefined;

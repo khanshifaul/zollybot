@@ -5,10 +5,10 @@ import type {
   WhatsAppGroupList,
   WhatsAppLinkState,
   WhatsAppSender,
-} from "@openbot/contracts/ipc";
-import { MESSAGING_LIMITS } from "@openbot/contracts/ipc";
-import { sourceText } from "@openbot/i18n/source";
-import { newStoreKey } from "@openbot/whatsapp/auth-store";
+} from "@zollybot/contracts/ipc";
+import { MESSAGING_LIMITS } from "@zollybot/contracts/ipc";
+import { sourceText } from "@zollybot/i18n/source";
+import { newStoreKey } from "@zollybot/whatsapp/auth-store";
 import { Effect, Schema } from "effect";
 import type { MessagingCredentials, MessagingOperationFailed } from "../messaging-service";
 import type { MessagingStore } from "../messaging-store";
@@ -54,7 +54,7 @@ interface RunningLink {
 /**
  * The WhatsApp half of the messaging service: the link of a new number, and who may give work through
  * each linked number. A link pairs a new device in a new store, which becomes the connection's store
- * when the link finishes; a failed link deletes it, so it leaves nothing. The sender settings live in `openbot.db` (allowed
+ * when the link finishes; a failed link deletes it, so it leaves nothing. The sender settings live in `zollybot.db` (allowed
  * senders) and in the connection's stored values (own number); pairing requests are in memory.
  */
 export class WhatsAppConnect implements WhatsAppPolicy {

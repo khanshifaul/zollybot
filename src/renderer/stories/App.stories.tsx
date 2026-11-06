@@ -1,11 +1,11 @@
-import type { AgentEvent } from "@openbot/contracts/ipc";
-import type { ServerView } from "@openbot/ui/features/servers/ServerMenu";
+import type { AgentEvent } from "@zollybot/contracts/ipc";
+import type { ServerView } from "@zollybot/ui/features/servers/ServerMenu";
 import { onCleanup } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { App } from "../src/App";
 import { LEFT_PANEL_COLLAPSED_STORAGE_KEY, SERVER_VIEW_STORAGE_KEY } from "../src/layout-constants";
-import { createMockOpenBot, type MockOpenBotOptions } from "../src/preview/mock-openbot";
-import { OpenBotPlayground } from "../src/preview/OpenBotPlayground";
+import { createMockZollyBot, type MockZollyBotOptions } from "../src/preview/mock-zollybot";
+import { ZollyBotPlayground } from "../src/preview/ZollyBotPlayground";
 import { STORY_AGENT_STATUS, STORY_AGENT_SUMMARIES, STORY_APP_INFO, STORY_SERVERS } from "./fixtures";
 
 const [storyLocalServer, storyRemoteServer] = STORY_SERVERS;
@@ -32,14 +32,14 @@ function useStoredLayoutValue(key: string, value: string): void {
   });
 }
 
-function SidebarStatePlayground(props: { compact: boolean; serverView?: ServerView; options?: MockOpenBotOptions }) {
+function SidebarStatePlayground(props: { compact: boolean; serverView?: ServerView; options?: MockZollyBotOptions }) {
   useStoredLayoutValue(LEFT_PANEL_COLLAPSED_STORAGE_KEY, props.compact ? "true" : "false");
   if (props.serverView) useStoredLayoutValue(SERVER_VIEW_STORAGE_KEY, props.serverView);
-  return <OpenBotPlayground options={props.options} />;
+  return <ZollyBotPlayground options={props.options} />;
 }
 
 export const Playground: Story = {
-  render: () => <OpenBotPlayground />,
+  render: () => <ZollyBotPlayground />,
 };
 
 export const ExpandedSidebar: Story = {
@@ -58,10 +58,10 @@ function SlowRemotePlayground() {
   useStoredLayoutValue(LEFT_PANEL_COLLAPSED_STORAGE_KEY, "false");
   useStoredLayoutValue(SERVER_VIEW_STORAGE_KEY, "rail");
   return (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       dependencies={{
         createMock: (options) => {
-          const mock = createMockOpenBot(options);
+          const mock = createMockZollyBot(options);
           const listAgents = mock.api.agent.listAgents;
           mock.api.agent.listAgents = async (serverId) => {
             if (serverId === storyRemoteServer?.id)
@@ -93,7 +93,7 @@ export const LinuxWindow: Story = {
 
 export const EmptyWorkspace: Story = {
   render: () => (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={{
         agents: [],
         servers: STORY_SERVERS.filter((server) => server.kind === "local"),
@@ -109,7 +109,7 @@ export const EmptyWorkspace: Story = {
 
 export const IncompatibleRemoteHost: Story = {
   render: () => (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={{
         servers: [
           { ...storyLocalServer, active: false },
@@ -127,7 +127,7 @@ export const IncompatibleRemoteHost: Story = {
             },
             issue: {
               code: "host_update_required",
-              message: "Update OpenBot on the host.",
+              message: "Update ZollyBot on the host.",
               retryable: true,
             },
           },
@@ -139,7 +139,7 @@ export const IncompatibleRemoteHost: Story = {
 
 export const DifferentRemoteVersions: Story = {
   render: () => (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={{
         servers: [
           { ...storyLocalServer, active: false },
@@ -169,10 +169,10 @@ export const DifferentRemoteVersions: Story = {
   ),
 };
 
-/** A joined server has a new OpenBot version. Entering it opens the update dialog each time. */
+/** A joined server has a new ZollyBot version. Entering it opens the update dialog each time. */
 export const RemoteHostUpdate: Story = {
   render: () => (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={{
         servers: [
           storyLocalServer,
@@ -197,17 +197,17 @@ export const RemoteHostUpdate: Story = {
 
 export const Onboarding: Story = {
   render: () => (
-    <OpenBotPlayground options={{ setupState: { completed: false, preferredProvider: null, preferredModel: null } }} />
+    <ZollyBotPlayground options={{ setupState: { completed: false, preferredProvider: null, preferredModel: null } }} />
   ),
 };
 
 export const SignedOut: Story = {
-  render: () => <OpenBotPlayground options={{ authState: { status: "signed_out" } }} />,
+  render: () => <ZollyBotPlayground options={{ authState: { status: "signed_out" } }} />,
 };
 
 export const AgentStarting: Story = {
   render: () => (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={{
         agentStatus: {
           ...STORY_AGENT_STATUS,
@@ -226,7 +226,7 @@ export const AgentStarting: Story = {
  */
 export const ProviderSignInRequired: Story = {
   render: () => (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       options={{
         agentStatus: {
           ...STORY_AGENT_STATUS,
@@ -303,10 +303,10 @@ const STORY_WAITING_EVENTS: AgentEvent[] = [
 function WaitingForInputPlayground(props: { compact: boolean }) {
   useStoredLayoutValue(LEFT_PANEL_COLLAPSED_STORAGE_KEY, props.compact ? "true" : "false");
   return (
-    <OpenBotPlayground
+    <ZollyBotPlayground
       dependencies={{
         createMock: (options) => {
-          const mock = createMockOpenBot(options);
+          const mock = createMockZollyBot(options);
           const subscribe = mock.api.agent.onEvent;
           mock.api.agent.onEvent = (listener) => {
             const unsubscribe = subscribe(listener);

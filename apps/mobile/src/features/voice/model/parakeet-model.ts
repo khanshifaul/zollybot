@@ -1,4 +1,4 @@
-import { PARAKEET_MODEL_DIRECTORY, PARAKEET_MODEL_FILES } from "@openbot/contracts/speech-models";
+import { PARAKEET_MODEL_DIRECTORY, PARAKEET_MODEL_FILES } from "@zollybot/contracts/speech-models";
 import * as Device from "expo-device";
 import { createModelDownload } from "./model-download";
 import { speechNative } from "./speech-native";

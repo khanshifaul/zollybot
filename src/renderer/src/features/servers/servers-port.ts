@@ -1,4 +1,4 @@
-import type { OpenBotDesktopApi, ServerSummary } from "@openbot/contracts/ipc";
+import type { ServerSummary, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the servers domain reaches in main: the server list and selection, the account changes, the local host, the
@@ -7,7 +7,7 @@ import type { OpenBotDesktopApi, ServerSummary } from "@openbot/contracts/ipc";
  */
 export interface ServersPort {
   agent: Pick<
-    OpenBotDesktopApi["agent"],
+    ZollyBotDesktopApi["agent"],
     | "getStatus"
     | "listAgents"
     | "listConversationReads"
@@ -30,17 +30,17 @@ export interface ServersPort {
     | "saveMcpSignInApp"
     | "removeMcpSignInApp"
   >;
-  events: OpenBotDesktopApi["events"];
-  auth: Pick<OpenBotDesktopApi["auth"], "onEvent">;
-  browser: Pick<OpenBotDesktopApi["browser"], "setVisible">;
+  events: ZollyBotDesktopApi["events"];
+  auth: Pick<ZollyBotDesktopApi["auth"], "onEvent">;
+  browser: Pick<ZollyBotDesktopApi["browser"], "setVisible">;
   hostAdmin: Pick<
-    OpenBotDesktopApi["hostAdmin"],
+    ZollyBotDesktopApi["hostAdmin"],
     "cancelUpdate" | "getUpdateStatus" | "startUpdate" | "updateIdentity"
   >;
-  hostedServers: Pick<OpenBotDesktopApi["hostedServers"], "list" | "restart" | "wake">;
-  localServers: OpenBotDesktopApi["localServers"];
+  hostedServers: Pick<ZollyBotDesktopApi["hostedServers"], "list" | "restart" | "wake">;
+  localServers: ZollyBotDesktopApi["localServers"];
   host: Pick<
-    OpenBotDesktopApi["host"],
+    ZollyBotDesktopApi["host"],
     | "configure"
     | "getStatus"
     | "onEvent"
@@ -50,13 +50,13 @@ export interface ServersPort {
     | "stop"
     | "updateIdentity"
   >;
-  notifications: Pick<OpenBotDesktopApi["notifications"], "onOpened">;
+  notifications: Pick<ZollyBotDesktopApi["notifications"], "onOpened">;
   remoteDesktop: Pick<
-    OpenBotDesktopApi["remoteDesktop"],
+    ZollyBotDesktopApi["remoteDesktop"],
     "checkSetup" | "connect" | "disconnect" | "list" | "openSetup" | "test"
   >;
   servers: Pick<
-    OpenBotDesktopApi["servers"],
+    ZollyBotDesktopApi["servers"],
     | "getPresenceFor"
     | "join"
     | "list"
@@ -72,9 +72,9 @@ export interface ServersPort {
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function serversPort(): ServersPort {
-  return window.openbot;
+  return window.zollybot;
 }
 
 /**
@@ -82,26 +82,26 @@ export function serversPort(): ServersPort {
  * through `host`; a remote server answers them through `servers`, addressed by its id.
  */
 export type ServerAdminPort = Pick<
-  OpenBotDesktopApi["host"],
+  ZollyBotDesktopApi["host"],
   "getPresence" | "listMembers" | "listInvites" | "createInvite" | "updateMember" | "removeMember" | "revokeInvite"
 >;
 
 export function serverAdminPort(server: Pick<ServerSummary, "id" | "kind">): ServerAdminPort {
-  if (server.kind === "local") return window.openbot.host;
+  if (server.kind === "local") return window.zollybot.host;
   const serverId = server.id;
   return {
-    getPresence: () => window.openbot.servers.getPresenceFor(serverId),
-    listMembers: () => window.openbot.servers.listMembers(serverId),
-    listInvites: () => window.openbot.servers.listInvites(serverId),
-    createInvite: (input) => window.openbot.servers.createInvite(input, serverId),
-    updateMember: (input) => window.openbot.servers.updateMember(input, serverId),
-    removeMember: (memberId) => window.openbot.servers.removeMember(memberId, serverId),
-    revokeInvite: (inviteId) => window.openbot.servers.revokeInvite(inviteId, serverId),
+    getPresence: () => window.zollybot.servers.getPresenceFor(serverId),
+    listMembers: () => window.zollybot.servers.listMembers(serverId),
+    listInvites: () => window.zollybot.servers.listInvites(serverId),
+    createInvite: (input) => window.zollybot.servers.createInvite(input, serverId),
+    updateMember: (input) => window.zollybot.servers.updateMember(input, serverId),
+    removeMember: (memberId) => window.zollybot.servers.removeMember(memberId, serverId),
+    revokeInvite: (inviteId) => window.zollybot.servers.revokeInvite(inviteId, serverId),
   };
 }
 
 /** The server main marks active. A test teardown can remove the bridge while a join is pending. */
 export async function activeServerId(): Promise<string> {
-  if (!window.openbot) return "local";
-  return (await window.openbot.servers.list()).find((item) => item.active)?.id ?? "local";
+  if (!window.zollybot) return "local";
+  return (await window.zollybot.servers.list()).find((item) => item.active)?.id ?? "local";
 }

@@ -1,6 +1,6 @@
-import type { MarketplaceAgentDetail, MarketplaceAgentRoutine, MarketplaceSkillSummary } from "@openbot/contracts/ipc";
-import { isMarketplaceAgentId, isMarketplaceSkillSlug } from "@openbot/contracts/marketplace-links";
 import { createServerFn } from "@tanstack/solid-start";
+import type { MarketplaceAgentDetail, MarketplaceAgentRoutine, MarketplaceSkillSummary } from "@zollybot/contracts/ipc";
+import { isMarketplaceAgentId, isMarketplaceSkillSlug } from "@zollybot/contracts/marketplace-links";
 import { runApiEffect } from "../server/effect-runtime";
 
 /** A routine as a listing page shows it. The instruction stays in the app, which shows it before Add. */

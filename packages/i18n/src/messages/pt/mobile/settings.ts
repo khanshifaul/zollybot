@@ -8,12 +8,12 @@ export const messages = {
   "mobile.settings.language.system": "Padrão do sistema",
   "mobile.settings.language.footer":
     "Padrão do sistema segue o primeiro idioma nas configurações do celular. O texto ainda não traduzido aparece em inglês.",
-  "mobile.settings.language.restartTitle": "Reiniciar o OpenBot?",
+  "mobile.settings.language.restartTitle": "Reiniciar o ZollyBot?",
   "mobile.settings.language.restartBody":
-    "Este idioma é lido na direção oposta. As telas mudam de direção quando o OpenBot iniciar de novo. Se as telas ainda parecerem erradas depois de reiniciar, feche o OpenBot no alternador de apps e abra-o de novo.",
+    "Este idioma é lido na direção oposta. As telas mudam de direção quando o ZollyBot iniciar de novo. Se as telas ainda parecerem erradas depois de reiniciar, feche o ZollyBot no alternador de apps e abra-o de novo.",
   "mobile.settings.language.restartNow": "Reiniciar agora",
   "mobile.settings.language.restartFailed":
-    "Não foi possível reiniciar o OpenBot. As telas mudam de direção na próxima vez que você abrir o OpenBot.",
+    "Não foi possível reiniciar o ZollyBot. As telas mudam de direção na próxima vez que você abrir o ZollyBot.",
   "mobile.settings.dictation.language": "Idioma do ditado",
   "mobile.settings.about.development": "Desenvolvimento",
   "mobile.settings.about.openFailed": "Não foi possível abrir o link. Tente novamente.",
@@ -22,7 +22,7 @@ export const messages = {
   "mobile.settings.about.privacy": "Política de privacidade",
   "mobile.settings.home.profile": "Perfil",
   "mobile.settings.home.preferences": "Preferências",
-  "mobile.settings.home.about": "Sobre o OpenBot",
+  "mobile.settings.home.about": "Sobre o ZollyBot",
   "mobile.settings.home.support": "Suporte",
   "mobile.settings.home.supportHint": "Obter ajuda e salvar um registro de suporte",
   "mobile.settings.support.help": "Obter ajuda",
@@ -40,7 +40,7 @@ export const messages = {
   "mobile.settings.support.clearTitle": "Limpar o registro de suporte?",
   "mobile.settings.support.clearBody": "Isso remove todos os eventos do registro neste celular.",
   "mobile.settings.support.logFooter":
-    "O registro fica neste celular e o OpenBot não o envia. Ele registra etapas de conexão, solicitações e erros. Ele não registra mensagens nem arquivos e oculta senhas e tokens. Leia o arquivo antes de compartilhá-lo.",
+    "O registro fica neste celular e o ZollyBot não o envia. Ele registra etapas de conexão, solicitações e erros. Ele não registra mensagens nem arquivos e oculta senhas e tokens. Leia o arquivo antes de compartilhá-lo.",
   "mobile.settings.support.saveFailed": "Não foi possível salvar o arquivo de registro. Tente novamente.",
   "mobile.settings.support.sharingUnavailable": "O compartilhamento não está disponível neste celular.",
   "mobile.settings.support.newestFirst": "Mais recentes primeiro.",
@@ -96,28 +96,28 @@ export const messages = {
   "mobile.settings.feedback.retry": "Tentar salvar a resposta tátil de novo",
   "mobile.settings.liveActivities.title": "Atividades ao Vivo",
   "mobile.settings.liveActivities.footer":
-    "Mostra o trabalho dos agentes, mensagens, perguntas e aprovações na Tela Bloqueada e na Dynamic Island enquanto o OpenBot está em execução.",
+    "Mostra o trabalho dos agentes, mensagens, perguntas e aprovações na Tela Bloqueada e na Dynamic Island enquanto o ZollyBot está em execução.",
   "mobile.settings.liveActivities.toggle": "Mostrar atividade dos agentes",
   "mobile.settings.liveActivities.retry": "Tentar salvar Atividades ao Vivo de novo",
   "mobile.settings.notifications.title": "Notificações",
   "mobile.settings.notifications.toggle": "Permitir notificações",
   "mobile.settings.notifications.footer":
-    "Os agentes avisam quando terminam, param com um erro ou precisam da sua resposta, de uma aprovação ou de uma etapa no navegador. Nada chega enquanto você usa o OpenBot aqui ou no app para computador. Enquanto a Atividade ao Vivo aparece, ela mostra o evento no lugar.",
+    "Os agentes avisam quando terminam, param com um erro ou precisam da sua resposta, de uma aprovação ou de uma etapa no navegador. Nada chega enquanto você usa o ZollyBot aqui ou no app para computador. Enquanto a Atividade ao Vivo aparece, ela mostra o evento no lugar.",
   "mobile.settings.notifications.footerAndroid":
-    "Os agentes avisam quando terminam, param com um erro ou precisam da sua resposta, de uma aprovação ou de uma etapa no navegador. Nada chega enquanto você usa o OpenBot aqui ou no app para computador.",
-  "mobile.settings.notifications.denied": "As notificações do OpenBot estão desativadas nos Ajustes do iOS.",
+    "Os agentes avisam quando terminam, param com um erro ou precisam da sua resposta, de uma aprovação ou de uma etapa no navegador. Nada chega enquanto você usa o ZollyBot aqui ou no app para computador.",
+  "mobile.settings.notifications.denied": "As notificações do ZollyBot estão desativadas nos Ajustes do iOS.",
   "mobile.settings.notifications.deniedAndroid":
-    "As notificações do OpenBot estão desativadas nas configurações do Android.",
+    "As notificações do ZollyBot estão desativadas nas configurações do Android.",
   "mobile.settings.notifications.openSettings": "Abrir Ajustes do iOS",
   "mobile.settings.notifications.openSettingsAndroid": "Abrir configurações do Android",
   "mobile.settings.notifications.preview": "Mostrar prévia da resposta",
   "mobile.settings.notifications.previewFooter":
-    "Mostra o início de uma resposta, uma pergunta ou a ação a aprovar. A Apple e o serviço de contas do OpenBot não conseguem ler.",
+    "Mostra o início de uma resposta, uma pergunta ou a ação a aprovar. A Apple e o serviço de contas do ZollyBot não conseguem ler.",
   "mobile.settings.notifications.previewFooterAndroid":
-    "Mostra o início de uma resposta, uma pergunta ou a ação a aprovar. O Google e o serviço de contas do OpenBot não conseguem ler.",
+    "Mostra o início de uma resposta, uma pergunta ou a ação a aprovar. O Google e o serviço de contas do ZollyBot não conseguem ler.",
   "mobile.settings.notifications.sound": "Som",
   "mobile.settings.notifications.playSound": "Tocar som",
-  "mobile.settings.notifications.sound.openbot": "OpenBot",
+  "mobile.settings.notifications.sound.zollybot": "ZollyBot",
   "mobile.settings.notifications.sound.warm": "Acolhedor",
   "mobile.settings.notifications.sound.mech": "Mecânico",
   "mobile.settings.notifications.sound.bubble": "Borbulhante",
@@ -125,9 +125,9 @@ export const messages = {
   "mobile.settings.notifications.sound.default": "Padrão do iOS",
   "mobile.settings.notifications.sound.defaultAndroid": "Padrão do Android",
   "mobile.settings.notifications.soundFooter":
-    "As notificações e a Atividade ao Vivo tocam este som. A Atividade ao Vivo também acende a tela. O som do OpenBot é o som que o app para computador toca quando uma tarefa termina. Os quatro sons seguintes são os dos temas de som do app para computador.",
+    "As notificações e a Atividade ao Vivo tocam este som. A Atividade ao Vivo também acende a tela. O som do ZollyBot é o som que o app para computador toca quando uma tarefa termina. Os quatro sons seguintes são os dos temas de som do app para computador.",
   "mobile.settings.notifications.soundFooterAndroid":
-    "As notificações tocam este som. O som do OpenBot é o som que o app para computador toca quando uma tarefa termina. Os quatro sons seguintes são os dos temas de som do app para computador.",
+    "As notificações tocam este som. O som do ZollyBot é o som que o app para computador toca quando uma tarefa termina. Os quatro sons seguintes são os dos temas de som do app para computador.",
   "mobile.settings.notifications.level.all": "Toda atividade",
   "mobile.settings.notifications.level.needsMe": "Só quando precisar de mim",
   "mobile.settings.notifications.level.nothing": "Nada",
@@ -143,7 +143,7 @@ export const messages = {
   "mobile.settings.notifications.serverFooter":
     "Os eventos deste servidor que notificam este celular. O app para computador tem as próprias configurações.",
   "mobile.settings.notifications.serverUnsupported":
-    "Este servidor não pode enviar notificações. Atualize o OpenBot no computador que o executa.",
+    "Este servidor não pode enviar notificações. Atualize o ZollyBot no computador que o executa.",
   "mobile.settings.notifications.thisPhone": "Este celular",
   "mobile.settings.notifications.whatYouHear": "O que chega para você",
   "mobile.settings.notifications.wholeServer": "Servidor inteiro",
@@ -157,7 +157,7 @@ export const messages = {
   "mobile.settings.notifications.chooseAgent": "Escolher para um agente",
   "mobile.settings.notifications.chooseAnotherAgent": "Escolher outro agente",
   "mobile.settings.notifications.levelsFooter": "Toque de novo no nível de um agente para seguir o servidor.",
-  "mobile.settings.notifications.agentsUnsupported": "Atualize o OpenBot neste servidor para escolher agentes.",
+  "mobile.settings.notifications.agentsUnsupported": "Atualize o ZollyBot neste servidor para escolher agentes.",
   "mobile.settings.notifications.agentsOffline": "Os agentes aparecem quando este servidor está online.",
   "mobile.settings.notifications.scopeFooter":
     "Suas escolhas valem em todos os seus dispositivos. Silenciar vale só para este celular.",
@@ -165,7 +165,7 @@ export const messages = {
   "mobile.settings.notifications.channelSilent": "Notificações dos agentes (sem som)",
   "mobile.settings.privacy.title": "Privacidade",
   "mobile.settings.privacy.footer":
-    "O uso de recursos e os resultados de conexão deste celular sempre vão para a análise do OpenBot. Ativado: com o ID e o e-mail da sua conta. Desativado: só com um ID de instalação aleatório. O conteúdo das mensagens e os arquivos não são enviados.",
+    "O uso de recursos e os resultados de conexão deste celular sempre vão para a análise do ZollyBot. Ativado: com o ID e o e-mail da sua conta. Desativado: só com um ID de instalação aleatório. O conteúdo das mensagens e os arquivos não são enviados.",
   "mobile.settings.privacy.analytics": "Vincular a análise à minha conta",
   "mobile.settings.privacy.retry": "Tentar salvar a privacidade de novo",
   "mobile.settings.conversations.title": "Conversas",
@@ -185,7 +185,7 @@ export const messages = {
   "mobile.settings.profile.security": "Segurança",
   "mobile.settings.profile.accountSessions": "Sessões da conta",
   "mobile.settings.profile.signOutTitle": "Sair?",
-  "mobile.settings.profile.signOutBody": "Reconecte-se lendo um novo código do OpenBot no computador.",
+  "mobile.settings.profile.signOutBody": "Reconecte-se lendo um novo código do ZollyBot no computador.",
   "mobile.settings.profile.signOut": "Sair",
   "mobile.settings.voice.title": "Voz",
   "mobile.settings.voice.sample": "Olá. É assim que vou ler minhas respostas.",
@@ -216,7 +216,7 @@ export const messages = {
   "mobile.settings.voice.supertonic.male": "Voz masculina {number}",
   "mobile.settings.voice.elevenLabs.title": "ElevenLabs",
   "mobile.settings.voice.elevenLabs.footer":
-    "O OpenBot envia o texto de cada resposta à ElevenLabs com sua chave, e a ElevenLabs cobra sua conta. A chave fica nas chaves deste celular.",
+    "O ZollyBot envia o texto de cada resposta à ElevenLabs com sua chave, e a ElevenLabs cobra sua conta. A chave fica nas chaves deste celular.",
   "mobile.settings.voice.elevenLabs.key": "Chave de API",
   "mobile.settings.voice.elevenLabs.keySaved": "Salva neste celular",
   "mobile.settings.voice.elevenLabs.chooseVoice": "Escolha uma voz",
@@ -226,7 +226,7 @@ export const messages = {
   "mobile.settings.voice.elevenLabs.removeBody": "O Supertonic 3 volta a ler as respostas.",
   "mobile.settings.voice.elevenLabs.saveKey": "Salvar chave",
   "mobile.settings.voice.elevenLabs.testing": "Testando a chave",
-  "mobile.settings.voice.elevenLabs.keyHint": "O OpenBot testa as duas primeiras permissões antes de salvar a chave.",
+  "mobile.settings.voice.elevenLabs.keyHint": "O ZollyBot testa as duas primeiras permissões antes de salvar a chave.",
   "mobile.settings.voice.elevenLabs.testFailed": "A ElevenLabs não respondeu. Tente de novo.",
   "mobile.settings.voice.elevenLabs.getKey": "Obter uma chave de API",
   "mobile.settings.voice.engine.supertonicReady": "Neste celular · {voice}",
@@ -272,12 +272,12 @@ export const messages = {
   "mobile.settings.voice.pause.title": "Pausa antes de enviar",
   "mobile.settings.voice.pause.label": "Esperar novas palavras",
   "mobile.settings.voice.pause.footer":
-    "Em uma conversa por voz, o OpenBot envia suas palavras quando não reconhece novas palavras por esse tempo. Ruído sem palavras não o mantém ouvindo. Escolha uma pausa maior se você fala devagar ou para para pensar.",
+    "Em uma conversa por voz, o ZollyBot envia suas palavras quando não reconhece novas palavras por esse tempo. Ruído sem palavras não o mantém ouvindo. Escolha uma pausa maior se você fala devagar ou para para pensar.",
   "mobile.settings.voice.pause.seconds": "{seconds} s",
   "mobile.settings.voice.speed.title": "Velocidade das respostas",
   "mobile.settings.voice.speed.footer":
-    "A velocidade das respostas que o OpenBot lê em voz alta, também em uma conversa por voz.",
+    "A velocidade das respostas que o ZollyBot lê em voz alta, também em uma conversa por voz.",
   "mobile.settings.voice.speed.value": "{speed}×",
   "mobile.settings.voice.elevenLabs.recognitionFooter":
-    "O OpenBot transmite sua fala para a ElevenLabs com um token de uso único, e a ElevenLabs cobra na sua conta. A chave fica neste celular.",
+    "O ZollyBot transmite sua fala para a ElevenLabs com um token de uso único, e a ElevenLabs cobra na sua conta. A chave fica neste celular.",
 } as const satisfies PartialTranslation<typeof source>;

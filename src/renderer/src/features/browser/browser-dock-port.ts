@@ -1,18 +1,18 @@
-import type { OpenBotDesktopApi } from "@openbot/contracts/ipc";
+import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
 
 /**
  * What the browser dock overlay reaches in main: the presentation, the actions, the frame, and the code
  * that the agent asks for. The overlay has no provider tree, so this is a module.
  */
 export interface BrowserDockPort {
-  agent: Pick<OpenBotDesktopApi["agent"], "respondToBrowserSecret">;
+  agent: Pick<ZollyBotDesktopApi["agent"], "respondToBrowserSecret">;
   browserDock: Pick<
-    OpenBotDesktopApi["browserDock"],
+    ZollyBotDesktopApi["browserDock"],
     "getPresentation" | "onPresentation" | "performAction" | "setFrame"
   >;
 }
 
-/** Read on each call: tests and stories replace `window.openbot` per case. */
+/** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function browserDockPort(): BrowserDockPort {
-  return window.openbot;
+  return window.zollybot;
 }

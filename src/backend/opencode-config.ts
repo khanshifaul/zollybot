@@ -1,4 +1,4 @@
-// The OpenCode config OpenBot hands to a spawned `opencode acp` process.
+// The OpenCode config ZollyBot hands to a spawned `opencode acp` process.
 //
 // OpenCode reads its own global and project config files first and then applies
 // `OPENCODE_CONFIG_CONTENT` as one more layer, so this is an overlay: it adds a provider without
@@ -8,7 +8,7 @@
 // This lives beside `provider-drivers.ts` rather than inside it because the driver table is a table:
 // the shape of one CLI's config is a concern of its own, and it is the half worth unit testing.
 
-import type { CustomProviderHarness, CustomProviderHeader, CustomProviderModel } from "@openbot/contracts/ipc";
+import type { CustomProviderHarness, CustomProviderHeader, CustomProviderModel } from "@zollybot/contracts/ipc";
 
 /** One endpoint, as the main process stores it. Carries the secrets, so it never crosses IPC. */
 export interface CustomProviderConfig {
@@ -72,7 +72,7 @@ interface OpenCodeProviderEntry {
  * The stored OpenCode Go key, under a built-in provider that `OPENCODE_API_KEY` also reaches.
  *
  * OpenCode applies the key from its own `auth.json` (`opencode auth login`) after the environment
- * key, so an old key saved there replaced the key pasted into OpenBot, and a new key could not fix
+ * key, so an old key saved there replaced the key pasted into ZollyBot, and a new key could not fix
  * an expired one (#2544). Config `options.apiKey` comes after both. Checked in OpenCode 1.18.30 to
  * 1.18.35: with both keys present, the request carried the config key.
  */
@@ -80,10 +80,10 @@ interface OpenCodeKeyEntry {
   readonly options: { readonly apiKey: string };
 }
 
-/** One rule per tool pattern, which is all OpenBot sends under `permission`. */
+/** One rule per tool pattern, which is all ZollyBot sends under `permission`. */
 type OpenCodePermissionLayer = Readonly<Record<string, "allow" | "ask" | "deny">>;
 
-/** The config layer OpenBot owns on `OPENCODE_CONFIG_CONTENT`. The user's own file is untouched. */
+/** The config layer ZollyBot owns on `OPENCODE_CONFIG_CONTENT`. The user's own file is untouched. */
 interface OpenCodeConfig {
   readonly agent?: { readonly title: { readonly disable: true } };
   readonly permission?: OpenCodePermissionLayer;
@@ -94,7 +94,7 @@ interface OpenCodeConfig {
 export type OpenCodeConfigBase = Omit<OpenCodeConfig, "agent" | "provider">;
 
 /**
- * OpenBot names its own chats and never reads OpenCode's titles. OpenCode asks its `small_model` for
+ * ZollyBot names its own chats and never reads OpenCode's titles. OpenCode asks its `small_model` for
  * a title on the first turn of each session, and a llama-swap server loads each model that a request
  * names: a `small_model` on the same server unloaded the agent's model and loaded it again for the
  * next turn. Checked in OpenCode 2.2.3 with `scripts/opencode-custom-model-e2e.ts`. OpenCode merges
@@ -116,7 +116,7 @@ export const OPENCODE_PROFILE_CONFIG: OpenCodeConfigBase = { permission: { "*": 
 
 /**
  * OpenCode 2.2.5 lists its `session_*` and `worktree_*` tools in the Code Mode catalog of each
- * request, about 1.2k characters. OpenBot names its own chats, and `session_move` would move the
+ * request, about 1.2k characters. ZollyBot names its own chats, and `session_move` would move the
  * session out of the agent's workspace. OpenCode leaves a denied tool out of the catalog. A rule names
  * the tool id, `opencode_<name>`, and OpenCode checks `worktree_remove` with the `edit` permission, so
  * that tool stays.

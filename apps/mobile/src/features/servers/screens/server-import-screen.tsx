@@ -1,4 +1,4 @@
-import type { AgentImportSkillSource } from "@openbot/contracts/ipc";
+import type { AgentImportSkillSource } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import {
@@ -18,7 +18,7 @@ export const IMPORT_SOURCE_NAMES = {
 
 /**
  * Server settings › Import agents (`agent-import-v1`): where the agents are now. Grok Bot and Hermes
- * each make an export file; another OpenBot server uses Transfer, for an owner or admin.
+ * each make an export file; another ZollyBot server uses Transfer, for an owner or admin.
  */
 export function ServerImportScreen() {
   const { t } = useText();

@@ -7,7 +7,7 @@ import { type DynamicRecord, isBoolean, isDynamicRecord, isNumber, isOneOf, isSt
 /**
  * Interactive blocks an agent puts in a conversation.
  *
- * An agent draws a block with the OpenBot tool `ask_ui` and waits for the answer. The block types are
+ * An agent draws a block with the ZollyBot tool `ask_ui` and waits for the answer. The block types are
  * `confirm`, `quick_replies`, `choice` and `form`. The block is stored as an ordinary `question_prompt`
  * message: `questionPrompt` holds the questions from `uiBlockFallbackQuestions`, and `uiBlock` sits
  * beside it. A client that does not know `uiBlock` answers the questions; the answer comes back
@@ -166,7 +166,7 @@ export interface UiFormTextField {
   value?: string;
   /**
    * Only on a `text` field, and only without `value`. The app draws a password box. The agent gets the
-   * value, but OpenBot does not store it: the stored response, the outcome and the fallback question
+   * value, but ZollyBot does not store it: the stored response, the outcome and the fallback question
    * resolution leave it out.
    */
   secret?: boolean;
@@ -331,7 +331,7 @@ export function isUiBlockType(value: unknown): value is UiBlockType {
 }
 
 /**
- * An id an agent may give. Ids that start with `_` are OpenBot's own (`_text`, and `__proto__` can never
+ * An id an agent may give. Ids that start with `_` are ZollyBot's own (`_text`, and `__proto__` can never
  * become a record key), and the legacy `bot*` key names are refused because the stored tree renames them.
  */
 export function isUiBlockId(value: unknown): value is string {
@@ -520,7 +520,7 @@ function readChoice(record: DynamicRecord): UiChoiceBlock {
   return block;
 }
 
-/** A form field whose value OpenBot does not store. See `UiFormTextField.secret`. */
+/** A form field whose value ZollyBot does not store. See `UiFormTextField.secret`. */
 export function isSecretFormField(field: UiFormField): boolean {
   return field.kind === "text" && field.secret === true;
 }

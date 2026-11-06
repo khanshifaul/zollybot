@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
   Badge,
   Bot,
@@ -11,8 +12,7 @@ import {
   Plus,
   Text,
   X,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { useText } from "../../text";
 import type { CustomProviderPresetId, LocalServerProbe } from "./custom-provider-presets";

@@ -1,11 +1,11 @@
-import { WORKFLOWS_CAPABILITY } from "@openbot/contracts/team-protocol/workflows-v1";
-import { WorkflowCanvas } from "@openbot/ui/features/workflows/WorkflowCanvas";
+import { WORKFLOWS_CAPABILITY } from "@zollybot/contracts/team-protocol/workflows-v1";
+import { WorkflowCanvas } from "@zollybot/ui/features/workflows/WorkflowCanvas";
 import {
   WORKFLOW_FEATURES_V1,
   type WorkflowCatalogs,
   type WorkflowFeatures,
-} from "@openbot/ui/features/workflows/workflow-model";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/workflows/workflow-model";
+import { useText } from "@zollybot/ui/text";
 import { createMemo, Show, untrack } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
 import { useAuth } from "../account/account-context";
@@ -16,7 +16,7 @@ import { createWorkflowsController } from "./workflows-controller";
 import { desktopWorkflowHost, type WorkflowHost } from "./workflows-port";
 
 /**
- * The workflows of one server on a page that covers the agent list. A joined server whose OpenBot
+ * The workflows of one server on a page that covers the agent list. A joined server whose ZollyBot
  * does not serve `workflows-v1` shows a notice.
  */
 export function WorkflowsPage(props: { serverId: string }) {

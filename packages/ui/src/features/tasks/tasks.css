@@ -3,8 +3,8 @@
   display: flex;
   height: 100%;
   min-height: 0;
-  background: var(--openbot-bg-canvas);
-  color: var(--openbot-text-primary);
+  background: var(--zollybot-bg-canvas);
+  color: var(--zollybot-text-primary);
 }
 
 /* One centered column. */
@@ -12,27 +12,27 @@
   min-width: 0;
   flex: 1;
   overflow-y: auto;
-  padding: 0 var(--openbot-space-6) var(--openbot-space-8);
+  padding: 0 var(--zollybot-space-6) var(--zollybot-space-8);
 }
 
 .tasks-page-column {
   display: flex;
   max-width: 36rem;
   flex-direction: column;
-  gap: var(--openbot-space-1);
+  gap: var(--zollybot-space-1);
   margin: 0 auto;
 }
 
 .tasks-page-header {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-6) var(--openbot-space-2) var(--openbot-space-3);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-6) var(--zollybot-space-2) var(--zollybot-space-3);
 }
 
 /* The arrow lines up with the content edge, not its hit area. */
 .tasks-page-header .ui-icon-button {
-  margin-inline-start: calc(-1 * var(--openbot-space-2));
+  margin-inline-start: calc(-1 * var(--zollybot-space-2));
 }
 
 /* Back and the agents panel toggle follow the reading direction. */
@@ -44,8 +44,8 @@
   min-width: 0;
   flex: 1;
   margin: 0;
-  font-size: var(--openbot-text-xl);
-  font-weight: var(--openbot-weight-semibold);
+  font-size: var(--zollybot-text-xl);
+  font-weight: var(--zollybot-weight-semibold);
 }
 
 .tasks-page-agent-option > span {
@@ -53,8 +53,8 @@
 }
 
 .tasks-page-header h2 span {
-  color: var(--openbot-text-muted);
-  font-weight: var(--openbot-weight-regular);
+  color: var(--zollybot-text-muted);
+  font-weight: var(--zollybot-weight-regular);
 }
 
 .tasks-page-avatar.agent-avatar {
@@ -70,13 +70,13 @@
   position: sticky;
   z-index: 3;
   top: 0;
-  margin-bottom: var(--openbot-space-2);
-  background: var(--openbot-bg-canvas);
-  padding: var(--openbot-space-1) 0 0;
+  margin-bottom: var(--zollybot-space-2);
+  background: var(--zollybot-bg-canvas);
+  padding: var(--zollybot-space-1) 0 0;
 }
 
 .tasks-page-composer .composer-notice {
-  margin-bottom: var(--openbot-space-2);
+  margin-bottom: var(--zollybot-space-2);
 }
 
 .tasks-page-composer-agent {
@@ -86,13 +86,13 @@
 }
 
 .tasks-page-agent.ui-button {
-  gap: var(--openbot-space-1-5);
-  font-size: var(--openbot-text-sm);
-  color: var(--openbot-text-secondary);
+  gap: var(--zollybot-space-1-5);
+  font-size: var(--zollybot-text-sm);
+  color: var(--zollybot-text-secondary);
 }
 
 .tasks-page-composer-agent .tasks-page-agent.ui-button {
-  margin-inline-start: calc(-1 * var(--openbot-space-1));
+  margin-inline-start: calc(-1 * var(--zollybot-space-1));
 }
 
 /* As the header model switcher: the face of a newly chosen agent springs in, and the chevron turns. */
@@ -114,10 +114,10 @@
 }
 
 .tasks-page-agent-chevron {
-  width: var(--openbot-icon-xs);
-  height: var(--openbot-icon-xs);
-  color: var(--openbot-text-muted);
-  transition: transform var(--openbot-duration-normal) ease;
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
+  color: var(--zollybot-text-muted);
+  transition: transform var(--zollybot-duration-normal) ease;
 }
 
 .tasks-page-agent[aria-expanded="true"] .tasks-page-agent-chevron {
@@ -125,7 +125,7 @@
 }
 
 .tasks-page-agent-check {
-  color: var(--openbot-text-primary);
+  color: var(--zollybot-text-primary);
 }
 
 /* A server can have more agents than the window has rows, so the menu fits the space left and scrolls. */
@@ -136,25 +136,25 @@
 
 .tasks-page-took {
   display: flex;
-  min-height: var(--openbot-control-sm);
+  min-height: var(--zollybot-control-sm);
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  margin-bottom: var(--openbot-space-2);
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  animation: tasks-page-rise var(--openbot-duration-overlay) var(--openbot-ease-out);
+  gap: var(--zollybot-space-1-5);
+  margin-bottom: var(--zollybot-space-2);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  animation: tasks-page-rise var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 .tasks-page-took .ui-button-size-sm {
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
 }
 
 .tasks-page-took-agent {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
-  padding: 0 var(--openbot-space-1);
+  gap: var(--zollybot-space-1-5);
+  padding: 0 var(--zollybot-space-1);
 }
 
 .tasks-page-took-text {
@@ -169,35 +169,35 @@
 .tasks-page-section {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
 }
 
 .tasks-page-section + .tasks-page-section {
-  margin-top: var(--openbot-space-4);
+  margin-top: var(--zollybot-space-4);
 }
 
 .tasks-page-section-heading {
   display: flex;
   align-items: center;
-  gap: var(--openbot-space-1-5);
+  gap: var(--zollybot-space-1-5);
   margin: 0;
-  padding: var(--openbot-space-1) var(--openbot-space-2);
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-medium);
+  padding: var(--zollybot-space-1) var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .tasks-page-count {
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
-  font-weight: var(--openbot-weight-regular);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-regular);
   font-variant-numeric: tabular-nums;
 }
 
 .tasks-page-list {
   display: flex;
   flex-direction: column;
-  gap: var(--openbot-space-0-5);
+  gap: var(--zollybot-space-0-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -206,21 +206,21 @@
 .tasks-page-row.ui-button {
   display: grid;
   width: 100%;
-  height: var(--openbot-control-lg);
+  height: var(--zollybot-control-lg);
   align-items: center;
   justify-content: stretch;
   grid-template-columns: 16px minmax(0, 1fr) auto auto;
-  gap: var(--openbot-space-3);
-  border-radius: var(--openbot-radius-md);
-  padding: 0 var(--openbot-space-2);
-  font-size: var(--openbot-text-md);
-  font-weight: var(--openbot-weight-regular);
+  gap: var(--zollybot-space-3);
+  border-radius: var(--zollybot-radius-md);
+  padding: 0 var(--zollybot-space-2);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-regular);
   text-align: start;
   --task-list-glyph: 14px;
 }
 
 .tasks-page-row[data-selected] {
-  background: var(--openbot-bg-control-active);
+  background: var(--zollybot-bg-control-active);
 }
 
 .tasks-page-section[data-closed] .tasks-page-row:not([data-selected]) {
@@ -237,31 +237,31 @@
 .tasks-page-status {
   min-width: 0;
   overflow: hidden;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-sm);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .tasks-page-status[data-tone="working"] {
-  color: var(--openbot-text-secondary);
+  color: var(--zollybot-text-secondary);
 }
 
 .tasks-page-status[data-tone="attention"] {
-  color: var(--openbot-accent);
+  color: var(--zollybot-accent);
 }
 
 .tasks-page-status[data-tone="danger"] {
-  color: var(--openbot-danger-text);
+  color: var(--zollybot-danger-text);
 }
 
 .tasks-page-show-all.ui-button {
   align-self: flex-start;
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 li[data-arrived] > .tasks-page-row {
-  animation: tasks-page-arrive 1600ms var(--openbot-ease-out);
+  animation: tasks-page-arrive 1600ms var(--zollybot-ease-out);
 }
 
 /*
@@ -274,8 +274,8 @@ li[data-arrived] > .tasks-page-row {
   flex: 0 0 420px;
   overflow: hidden;
   transition:
-    flex-basis var(--openbot-duration-overlay) var(--openbot-ease-out),
-    opacity var(--openbot-duration-overlay) var(--openbot-ease-out);
+    flex-basis var(--zollybot-duration-overlay) var(--zollybot-ease-out),
+    opacity var(--zollybot-duration-overlay) var(--zollybot-ease-out);
 }
 
 @starting-style {
@@ -288,7 +288,7 @@ li[data-arrived] > .tasks-page-row {
 .tasks-page-side[data-closing] {
   flex-basis: 0;
   opacity: 0.6;
-  transition-duration: var(--openbot-duration-slow);
+  transition-duration: var(--zollybot-duration-slow);
   transition-timing-function: cubic-bezier(0.5, 0, 0.75, 0);
 }
 
@@ -318,7 +318,7 @@ li[data-arrived] > .tasks-page-row {
 
 /* A change to a different task: the new task fades in at its place. */
 .tasks-page-side-content[data-entering] {
-  animation: tasks-page-side-swap var(--openbot-duration-normal) var(--openbot-ease-out);
+  animation: tasks-page-side-swap var(--zollybot-duration-normal) var(--zollybot-ease-out);
 }
 
 @keyframes tasks-page-side-swap {
@@ -343,30 +343,30 @@ li[data-arrived] > .tasks-page-row {
 .tasks-page-empty-pitch {
   display: grid;
   justify-items: center;
-  gap: var(--openbot-space-3);
+  gap: var(--zollybot-space-3);
   margin-top: auto;
-  padding: 0 var(--openbot-space-2) var(--openbot-space-6);
+  padding: 0 var(--zollybot-space-2) var(--zollybot-space-6);
   text-align: center;
 }
 
 .tasks-page-empty-title {
-  --tasks-page-empty-hand-size: calc(var(--openbot-text-display) * 1.2);
+  --tasks-page-empty-hand-size: calc(var(--zollybot-text-display) * 1.2);
   display: grid;
   margin: 0;
-  font-size: var(--openbot-text-display);
-  font-weight: var(--openbot-weight-semibold);
+  font-size: var(--zollybot-text-display);
+  font-weight: var(--zollybot-weight-semibold);
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
 
 .tasks-page-empty-lead {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
 }
 
 /* The one handwritten word of the title. It writes itself once. The app has no hand font, so it uses
  * the one of the system. Inline, not inline-block: a reader then hears "answer." with no space. */
 .tasks-page-empty-word {
-  color: var(--openbot-accent-text);
+  color: var(--zollybot-accent-text);
   font-family: "Bradley Hand", "Noteworthy", "Segoe Print", cursive;
   font-size: var(--tasks-page-empty-hand-size);
   clip-path: inset(-0.4em 100% -0.4em -0.2em);
@@ -382,8 +382,8 @@ li[data-arrived] > .tasks-page-row {
 .tasks-page-empty-lines {
   display: grid;
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-lg);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-lg);
   line-height: 1.5;
 }
 
@@ -391,20 +391,20 @@ li[data-arrived] > .tasks-page-row {
  * only. It fades towards every edge. */
 .tasks-page-empty-board {
   --tasks-page-empty-head: 1.75rem;
-  --tasks-page-empty-block: calc(var(--tasks-page-empty-head) + var(--openbot-control-lg) + var(--openbot-space-4));
+  --tasks-page-empty-block: calc(var(--tasks-page-empty-head) + var(--zollybot-control-lg) + var(--zollybot-space-4));
 
   position: relative;
   display: grid;
   grid-template-rows: repeat(3, var(--tasks-page-empty-block));
-  margin: var(--openbot-space-2) 0 auto;
-  padding-bottom: var(--openbot-space-8);
+  margin: var(--zollybot-space-2) 0 auto;
+  padding-bottom: var(--zollybot-space-8);
   opacity: 0.6;
   pointer-events: none;
   user-select: none;
   mask-image: radial-gradient(
     ellipse 80% 100% at 50% 45%,
-    var(--openbot-text-primary) 45%,
-    var(--openbot-transparent) 100%
+    var(--zollybot-text-primary) 45%,
+    var(--zollybot-transparent) 100%
   );
 }
 
@@ -431,15 +431,15 @@ li[data-arrived] > .tasks-page-row {
       var(--tasks-page-empty-slot) *
       var(--tasks-page-empty-block) +
       var(--tasks-page-empty-head) +
-      var(--openbot-space-0-5)
+      var(--zollybot-space-0-5)
     )
   );
   transition:
-    transform 760ms var(--openbot-ease-out),
-    opacity 600ms var(--openbot-ease-out),
-    filter 600ms var(--openbot-ease-out),
-    translate 600ms var(--openbot-ease-out);
-  animation: tasks-page-empty-arrive 620ms var(--openbot-ease-out) both;
+    transform 760ms var(--zollybot-ease-out),
+    opacity 600ms var(--zollybot-ease-out),
+    filter 600ms var(--zollybot-ease-out),
+    translate 600ms var(--zollybot-ease-out);
+  animation: tasks-page-empty-arrive 620ms var(--zollybot-ease-out) both;
 }
 
 /* A row arrives in Waiting, as the row of a real start does. */
@@ -468,7 +468,7 @@ li[data-arrived] > .tasks-page-row {
 
 @keyframes tasks-page-arrive {
   from {
-    background: var(--openbot-bg-control-active);
+    background: var(--zollybot-bg-control-active);
   }
 }
 

@@ -1,5 +1,5 @@
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
 import { createFileRoute } from "@tanstack/solid-router";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { ReportSitePage } from "../components/report-site/ReportSitePage";
 import { reportSiteText } from "../components/transactional/page-text";
 import { loadPageText } from "../lib/page-text";

@@ -1,4 +1,4 @@
-import type { PlanLimitWindow } from "@openbot/team-client/plan-limits";
+import type { PlanLimitWindow } from "@zollybot/team-client/plan-limits";
 import { useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
@@ -46,7 +46,7 @@ export function PlanLimitsScreen() {
 function PlanLimitWindowRow({ window }: { window: PlanLimitWindow }) {
   const { t, format } = useText();
   const track = String(useThemeColor("foreground"));
-  const [success, warning, danger] = useCSSVariable(["--openbot-success", "--openbot-warning", "--openbot-danger"]);
+  const [success, warning, danger] = useCSSVariable(["--zollybot-success", "--zollybot-warning", "--zollybot-danger"]);
   const fill = { neutral: success, warning, critical: danger }[window.tone];
   const resetsAt = planLimitResetDate(window);
   return (

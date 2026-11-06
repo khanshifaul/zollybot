@@ -7,15 +7,15 @@
 // the Trash, not removed. Records the child process ids and their memory.
 // Needs `--allow-mutations`, because it creates and deletes servers in the dev profile.
 // Run: `bun scripts/local-servers-e2e.ts --allow-mutations`.
-// Writes .openbot-build/local-servers-e2e/report.json and screenshots.
+// Writes .zollybot-build/local-servers-e2e/report.json and screenshots.
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join, resolve } from "node:path";
-import { LOCAL_SERVER_LIMIT, type OpenBotDesktopApi, type ServerSummary } from "@openbot/contracts/ipc";
-import { en } from "@openbot/i18n";
-import { createOpenBotLogger } from "@openbot/logging";
+import { LOCAL_SERVER_LIMIT, type ServerSummary, type ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import { en } from "@zollybot/i18n";
+import { createZollyBotLogger } from "@zollybot/logging";
 import type { Page } from "playwright-core";
 import { assertMutationAllowed, connectToDevApp } from "./dev-automation/cdp-client";
 import { readDevInstanceRecords } from "./dev-automation/instance-registry";
@@ -23,11 +23,11 @@ import { readDevInstanceRecords } from "./dev-automation/instance-registry";
 // The page functions below run in the app window, where the preload bridge sets this.
 declare global {
   interface Window {
-    openbot: OpenBotDesktopApi;
+    zollybot: ZollyBotDesktopApi;
   }
 }
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/local-servers-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/local-servers-e2e");
 const NAMES = ["E2E studio one", "E2E studio two"] as const;
 // A child's first start opens its database and its Team API. A bound on failure only.
 const START_DEADLINE_MS = 90_000;
@@ -87,12 +87,12 @@ function childOf(entryId: string): Child | undefined {
 }
 
 async function servers(page: Page): Promise<ServerSummary[]> {
-  return page.evaluate(() => window.openbot.servers.list());
+  return page.evaluate(() => window.zollybot.servers.list());
 }
 
 async function waitForServer(page: Page, serverId: string, state: ServerSummary["state"]): Promise<void> {
   await page.waitForFunction(
-    async ([id, expected]) => (await window.openbot.servers.list()).some((s) => s.id === id && s.state === expected),
+    async ([id, expected]) => (await window.zollybot.servers.list()).some((s) => s.id === id && s.state === expected),
     [serverId, state] as const,
     { timeout: START_DEADLINE_MS, polling: 250 },
   );
@@ -100,7 +100,7 @@ async function waitForServer(page: Page, serverId: string, state: ServerSummary[
 
 async function waitForActive(page: Page, serverId: string): Promise<void> {
   await page.waitForFunction(
-    async (id) => (await window.openbot.servers.list()).some((s) => s.id === id && s.active),
+    async (id) => (await window.zollybot.servers.list()).some((s) => s.id === id && s.active),
     serverId,
     { timeout: 10_000, polling: 100 },
   );
@@ -170,7 +170,7 @@ assertMutationAllowed({
   instanceNamed: true,
   target: instance.instanceId,
 });
-const logger = createOpenBotLogger("local-servers-e2e");
+const logger = createZollyBotLogger("local-servers-e2e");
 const session = await connectToDevApp(instance.remoteDebuggingPort, logger, {
   expectedRendererPort: instance.rendererPort,
   ownerPid: instance.pid,
@@ -209,7 +209,7 @@ try {
 
   await step("Create a second server", async () => {
     const childrenBefore = new Set(children().map((child) => child.pid));
-    const server = await page.evaluate((name) => window.openbot.localServers.create(name), NAMES[1]);
+    const server = await page.evaluate((name) => window.zollybot.localServers.create(name), NAMES[1]);
     assert.equal(server.thisComputer, true);
     const child = children().find((item) => !childrenBefore.has(item.pid));
     assert.ok(child, "No child process started for the second server.");
@@ -222,8 +222,8 @@ try {
     assert.ok(first && second);
     assert.notEqual(first.child.userData, second.child.userData);
     for (const { entryId, child } of created) {
-      assert.ok(existsSync(join(child.userData, "openbot.db")), `${child.userData} has no openbot.db.`);
-      assert.ok(existsSync(join(homedir(), "OpenBot", "Servers", entryId)), `No agent folder for ${entryId}.`);
+      assert.ok(existsSync(join(child.userData, "zollybot.db")), `${child.userData} has no zollybot.db.`);
+      assert.ok(existsSync(join(homedir(), "ZollyBot", "Servers", entryId)), `No agent folder for ${entryId}.`);
     }
     return created.map(({ child }) => child.userData);
   });
@@ -260,7 +260,7 @@ try {
     const [, second] = created;
     assert.ok(second);
     const previous = second.child.pid;
-    await page.evaluate((id) => window.openbot.localServers.restart(id), second.server.id);
+    await page.evaluate((id) => window.zollybot.localServers.restart(id), second.server.id);
     const next = await waitForChild(second.entryId, previous);
     await waitForServer(page, second.server.id, "online");
     second.child = next;
@@ -277,14 +277,14 @@ try {
     const existing = (await servers(page)).filter((server) => server.thisComputer).length;
     for (let index = existing; index < LOCAL_SERVER_LIMIT; index += 1) {
       const childrenBefore = new Set(children().map((child) => child.pid));
-      const server = await page.evaluate((name) => window.openbot.localServers.create(name), `E2E limit ${index + 1}`);
+      const server = await page.evaluate((name) => window.zollybot.localServers.create(name), `E2E limit ${index + 1}`);
       const child = children().find((item) => !childrenBefore.has(item.pid));
       assert.ok(child, `No child process started for ${server.name}.`);
       created.push({ server, entryId: basename(child.userData), child });
     }
     const running = children().length;
     const refused = await page
-      .evaluate(() => window.openbot.localServers.create("E2E over the limit"))
+      .evaluate(() => window.zollybot.localServers.create("E2E over the limit"))
       .then(
         () => null,
         (error: unknown) => (error instanceof Error ? error.message : String(error)),
@@ -308,13 +308,13 @@ try {
   await step("Delete moves each server to the Trash", async () => {
     const results = [];
     for (const { server, entryId, child } of created.splice(0)) {
-      await page.evaluate((id) => window.openbot.localServers.delete(id), server.id);
+      await page.evaluate((id) => window.zollybot.localServers.delete(id), server.id);
       assert.equal(childOf(entryId), undefined, `The child of ${server.id} still runs.`);
       assert.equal(
         (await servers(page)).some((item) => item.id === server.id),
         false,
       );
-      const agentRoot = join(homedir(), "OpenBot", "Servers", entryId);
+      const agentRoot = join(homedir(), "ZollyBot", "Servers", entryId);
       assert.equal(existsSync(child.userData), false, `${child.userData} is still in place.`);
       assert.equal(existsSync(agentRoot), false, `${agentRoot} is still in place.`);
       const trash = trashEntries();
@@ -343,7 +343,7 @@ try {
   const known = new Set(before.map((server) => server.id));
   const left = (await servers(page).catch(() => [])).filter((server) => server.thisComputer && !known.has(server.id));
   for (const server of left)
-    await page.evaluate((id) => window.openbot.localServers.delete(id), server.id).catch(() => undefined);
+    await page.evaluate((id) => window.zollybot.localServers.delete(id), server.id).catch(() => undefined);
   writeFileSync(resolve(OUT, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
   await session.close();
 }

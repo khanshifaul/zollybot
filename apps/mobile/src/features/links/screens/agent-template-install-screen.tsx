@@ -1,6 +1,6 @@
-import { type AgentTemplateDetail, canAdministerServer, type RoutineSchedule } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
 import { useQuery } from "@tanstack/react-query";
+import { type AgentTemplateDetail, canAdministerServer, type RoutineSchedule } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Button, Typography } from "heroui-native";
@@ -324,7 +324,7 @@ function TemplatePreview({ detail, apiUrl }: { detail: AgentTemplateDetail; apiU
 function EmbeddedSkill({ name, markdown }: { name: string; markdown: string }) {
   const { t } = useText();
   const [open, setOpen] = useState(false);
-  const muted = String(useCSSVariable("--openbot-text-grouped-secondary"));
+  const muted = String(useCSSVariable("--zollybot-text-grouped-secondary"));
   const Chevron = open ? ChevronDown : ChevronRight;
   return (
     <View>

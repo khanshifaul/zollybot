@@ -1,4 +1,4 @@
-import { useText } from "@openbot/ui/text";
+import { useText } from "@zollybot/ui/text";
 import { onSettled, Show } from "solid-js";
 import { quitShortcutHintShown, watchQuitShortcutHint } from "../../quit-shortcut-hint";
 

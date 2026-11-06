@@ -1,4 +1,4 @@
-import { isDynamicRecord, isNumber, isString } from "@openbot/contracts/runtime-values";
+import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import { decodeBase64Url, encodeBase64Url } from "./crypto";
 
 const MARKETPLACE_DEFAULT_PAGE_SIZE = 24;
@@ -63,7 +63,7 @@ export function normalizeMarketplaceQuery(value: string | undefined): string | u
 
 /** The public name of a creator. A creator with no display name stays anonymous: the email is private. */
 export function marketplaceCreatorName(name: string | null | undefined): string {
-  return name?.trim() || "OpenBot user";
+  return name?.trim() || "ZollyBot user";
 }
 
 export function marketplaceLikePattern(value: string): string {

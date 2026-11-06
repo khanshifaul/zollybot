@@ -1,6 +1,6 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { agentProviderName, CUSTOM_PROVIDER_LIMITS, type CustomProviderSummary } from "@openbot/contracts/ipc";
-import type { MobileTextKey } from "@openbot/i18n/mobile";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { agentProviderName, CUSTOM_PROVIDER_LIMITS, type CustomProviderSummary } from "@zollybot/contracts/ipc";
+import type { MobileTextKey } from "@zollybot/i18n/mobile";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";
@@ -133,7 +133,7 @@ function CustomProviderPresets({
   customAgents: boolean;
 }) {
   const { t } = useText();
-  const muted = String(useCSSVariable("--openbot-text-grouped-secondary"));
+  const muted = String(useCSSVariable("--zollybot-text-grouped-secondary"));
   return (
     <SettingsContent>
       <Stack.Screen options={{ title: t("mobile.server.customProviders.add") }} />

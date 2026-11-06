@@ -1,9 +1,9 @@
-import type { AgentTask } from "@openbot/contracts/ipc";
-import { isAgentTaskActive } from "@openbot/team-client/agent-tasks";
-import { Archive, ArchiveRestore, Badge, Button, MessageSquare, X } from "@openbot/ui";
-import { AgentTaskMark, type AgentTaskWait } from "@openbot/ui/features/conversation/AgentTasks";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
+import type { AgentTask } from "@zollybot/contracts/ipc";
+import { isAgentTaskActive } from "@zollybot/team-client/agent-tasks";
+import { Archive, ArchiveRestore, Badge, Button, MessageSquare, X } from "@zollybot/ui";
+import { AgentTaskMark, type AgentTaskWait } from "@zollybot/ui/features/conversation/AgentTasks";
+import { useText } from "@zollybot/ui/text";
 import { Show } from "solid-js";
 
 interface TaskPanelProps {

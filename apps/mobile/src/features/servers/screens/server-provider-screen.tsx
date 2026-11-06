@@ -1,11 +1,11 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   type AgentProviderId,
   isAgentProvider,
   isInstallerProvider,
   isKeyOnlyProvider,
   type ProviderAccountStatus,
-} from "@openbot/contracts/ipc";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { useRef, useState } from "react";

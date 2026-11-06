@@ -9,15 +9,15 @@
  *
  * The Worker must run with `HOSTED_SERVERS_ALLOWED_USER_IDS` set to the IDs that `--print-user-ids`
  * prints, and `stripe listen` must forward to it. The `portal` scenario prints two Customer Portal
- * pages and waits until someone uses them. The report goes to `.openbot-build/stripe-flows-e2e.json`.
+ * pages and waits until someone uses them. The report goes to `.zollybot-build/stripe-flows-e2e.json`.
  *
  * The `boat` scenario runs only when named. It makes a real VM: the Worker needs the real `BOAT_API_KEY`
  * and `HOSTED_SERVER_TEMPLATE`, and the template must know a public origin of this Worker. It waits
- * until OpenBot in the VM redeems its claim and publishes its host. Then it keeps a focused web client
+ * until ZollyBot in the VM redeems its claim and publishes its host. Then it keeps a focused web client
  * open with no input for 20 minutes and checks that the server stays on, waits for the idle stop
  * (about 15 minutes), starts the server, changes the plan, ends it, renews it, and deletes the server.
  * `--checkout` pays each Checkout page with a test card in the local Chrome. The web client then
- * connects to the server over Signal, and the screenshots go to `.openbot-build/`.
+ * connects to the server over Signal, and the screenshots go to `.zollybot-build/`.
  * `--remote-d1` reads the D1 of the deployed `test` Worker; pass its origin as `--api`.
  *
  * The `license-*` scenarios check the commercial license: its tiered Price, Checkout, users, the count
@@ -70,8 +70,8 @@ import {
   LEGACY_MEMBER_LIMITS,
   memberLimitForPlan,
   parseBillingLookupKey,
-} from "@openbot/contracts/billing";
-import { DEFAULT_TEAM_MEMBER_LIMIT } from "@openbot/contracts/input-limits";
+} from "@zollybot/contracts/billing";
+import { DEFAULT_TEAM_MEMBER_LIMIT } from "@zollybot/contracts/input-limits";
 import {
   LICENSE_INCLUDED_USERS,
   LICENSE_LOOKUP_KEYS,
@@ -91,14 +91,14 @@ import {
   licensePeriodAmount,
   licensePlanPrice,
   ORDER_METADATA,
-} from "@openbot/contracts/license";
+} from "@zollybot/contracts/license";
 import { type Browser, chromium } from "playwright-core";
 import { z } from "zod";
 import { STRIPE_API_VERSION } from "../apps/auth-api/src/server/stripe-client";
 import { developmentChildEnvironment, loadSharedDevelopmentEnvironment } from "./development-environment";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const REPORT = join(ROOT, ".openbot-build", "stripe-flows-e2e.json");
+const REPORT = join(ROOT, ".zollybot-build", "stripe-flows-e2e.json");
 const SCENARIOS = [
   "renewal",
   "failed-renewal",
@@ -144,12 +144,12 @@ const TEAM_MONTH: LicensePlan = { tier: "team", interval: "month", bundle: false
 const TEAM_BUNDLE_MONTH: LicensePlan = { tier: "team", interval: "month", bundle: true };
 const TEAM_YEAR: LicensePlan = { tier: "team", interval: "year", bundle: false };
 /** `WELCOME_EMAIL_CLAIM_PREFIX` of `billing-service.ts`. That module needs the Worker types. */
-const WELCOME_EMAIL_CLAIM_PREFIX = "openbot_welcome_email:";
+const WELCOME_EMAIL_CLAIM_PREFIX = "zollybot_welcome_email:";
 /** `LICENSE_EMAIL_CLAIM_PREFIXES` of `license-service.ts`. */
 const LICENSE_EMAIL_CLAIM_PREFIXES = {
-  welcome: "openbot_license_email:",
-  payment_failed: "openbot_license_payment_failed:",
-  ended: "openbot_license_ended:",
+  welcome: "zollybot_license_email:",
+  payment_failed: "zollybot_license_payment_failed:",
+  ended: "zollybot_license_ended:",
 } as const;
 type LicenseEmailKind = keyof typeof LICENSE_EMAIL_CLAIM_PREFIXES;
 
@@ -387,7 +387,7 @@ const REMOTE_D1 = process.argv.includes("--remote-d1");
 const REAL_CHECKOUT = process.argv.includes("--checkout");
 
 function d1<T>(sql: string, schema: z.ZodType<T>): T[] {
-  const target = REMOTE_D1 ? ["openbot-auth-test", "--remote", "--env", "test"] : ["openbot-auth", "--local"];
+  const target = REMOTE_D1 ? ["zollybot-auth-test", "--remote", "--env", "test"] : ["zollybot-auth", "--local"];
   const env = developmentChildEnvironment(process.env, "app");
   if (REMOTE_D1) delete env.CLOUDFLARE_API_TOKEN;
   const result = spawnSync(
@@ -459,7 +459,7 @@ class Account {
     );
     const clock = await stripe("POST", "/v1/test_helpers/test_clocks", idSchema, {
       frozen_time: String(Math.floor(now / 1_000)),
-      name: `openbot ${this.scenario}`,
+      name: `zollybot ${this.scenario}`,
     });
     this.clock = clock.id;
     const customer = await stripe("POST", "/v1/customers", idSchema, {
@@ -467,7 +467,7 @@ class Account {
       test_clock: this.clock,
       payment_method: "pm_card_visa",
       "invoice_settings[default_payment_method]": "pm_card_visa",
-      "metadata[openbot_user_id]": this.id,
+      "metadata[zollybot_user_id]": this.id,
     });
     this.customer = customer.id;
     // The Worker makes a customer without a test clock, so the account gets this one before its first Checkout.
@@ -489,8 +489,10 @@ class Account {
     const response = await fetch(`${this.api}/api/browser/${path}`, {
       method,
       headers: {
-        Cookie: `__Host-openbot-web=${token}`,
-        ...(method === "GET" ? {} : { Origin: this.api, "X-OpenBot-Browser": "1", "Content-Type": "application/json" }),
+        Cookie: `__Host-zollybot-web=${token}`,
+        ...(method === "GET"
+          ? {}
+          : { Origin: this.api, "X-ZollyBot-Browser": "1", "Content-Type": "application/json" }),
         ...headers,
       },
       ...(body ? { body: JSON.stringify(body) } : {}),
@@ -567,8 +569,8 @@ class Account {
       customer: this.customer,
       "items[0][price]": await priceId("standard", "month"),
       currency: "eur",
-      "metadata[openbot_user_id]": this.id,
-      "metadata[openbot_server_id]": serverId,
+      "metadata[zollybot_user_id]": this.id,
+      "metadata[zollybot_server_id]": serverId,
       payment_behavior: "error_if_incomplete",
     });
     return subscription.id;
@@ -603,7 +605,7 @@ class Account {
       "items[0][price]": await licensePriceId(plan),
       "items[0][quantity]": String(users),
       currency,
-      "metadata[openbot_user_id]": this.id,
+      "metadata[zollybot_user_id]": this.id,
       [`metadata[${LICENSE_METADATA.kind}]`]: LICENSE_METADATA_KIND,
       [`metadata[${LICENSE_METADATA.tier}]`]: plan.tier,
       [`metadata[${LICENSE_METADATA.interval}]`]: plan.interval,
@@ -636,8 +638,8 @@ class Account {
             [`metadata[${ORDER_METADATA.licenseTrialEnd}]`]: String(Math.floor(trialEnd / 1_000)),
           }),
       currency: "eur",
-      "metadata[openbot_user_id]": this.id,
-      "metadata[openbot_server_id]": serverId,
+      "metadata[zollybot_user_id]": this.id,
+      "metadata[zollybot_server_id]": serverId,
       payment_behavior: "error_if_incomplete",
     });
     return created.id;
@@ -783,7 +785,7 @@ async function payCheckout(url: string, returnOrigin: string, screenshot: string
       if (await card.isVisible()) await card.check({ force: true });
       await page.fill("#cardNumber", "4242424242424242");
     } catch (error) {
-      await page.screenshot({ path: join(ROOT, ".openbot-build", `failed-${screenshot}`), fullPage: true });
+      await page.screenshot({ path: join(ROOT, ".zollybot-build", `failed-${screenshot}`), fullPage: true });
       throw error;
     }
     await page.fill("#cardExpiry", "12 / 34");
@@ -795,7 +797,7 @@ async function payCheckout(url: string, returnOrigin: string, screenshot: string
     if ((await zip.count()) && (await zip.isVisible())) await zip.fill("00-001");
     const save = page.locator("#enableStripePass");
     if ((await save.count()) && (await save.isChecked())) await save.dispatchEvent("click");
-    await page.screenshot({ path: join(ROOT, ".openbot-build", screenshot) });
+    await page.screenshot({ path: join(ROOT, ".zollybot-build", screenshot) });
     await page.getByTestId("hosted-payment-submit-button").dispatchEvent("click");
     await page.waitForURL((current) => current.origin === returnOrigin, { timeout: 90_000 });
     return new URL(page.url()).pathname;
@@ -851,7 +853,7 @@ async function connectWeb(account: Account, serverId: string, name: string, scre
   const context = await (await browser()).newContext();
   try {
     await context.addCookies([
-      { name: "__Host-openbot-web", value: account.token, url: `${account.api}/`, secure: true, httpOnly: true },
+      { name: "__Host-zollybot-web", value: account.token, url: `${account.api}/`, secure: true, httpOnly: true },
     ]);
     await context.addInitScript(PEER_TRACE);
     const page = await context.newPage();
@@ -862,7 +864,7 @@ async function connectWeb(account: Account, serverId: string, name: string, scre
     const start = Date.now();
     await page.goto(`${account.api}/app`);
     const fail = async (error: unknown) => {
-      await page.screenshot({ path: join(ROOT, ".openbot-build", `failed-${screenshot}`), fullPage: true });
+      await page.screenshot({ path: join(ROOT, ".zollybot-build", `failed-${screenshot}`), fullPage: true });
       const snapshot = await page.locator("body").ariaSnapshot();
       process.stdout.write(`page: ${page.url()}\n${snapshot}\nconsole:\n${consoleLines.join("\n")}\n`);
       throw error;
@@ -880,7 +882,7 @@ async function connectWeb(account: Account, serverId: string, name: string, scre
       120_000,
     ).catch(fail);
     const connectedAt = Date.now();
-    await page.screenshot({ path: join(ROOT, ".openbot-build", screenshot) });
+    await page.screenshot({ path: join(ROOT, ".zollybot-build", screenshot) });
     const reported = await waitFor(
       "activity report",
       async () => {
@@ -915,7 +917,7 @@ async function connectWeb(account: Account, serverId: string, name: string, scre
 const priceIds = new Map<string, string>();
 /** The active Price of a server plan and interval. */
 function priceId(plan: string, interval: string): Promise<string> {
-  return priceIdByLookupKey(`openbot_${plan}_${interval}`);
+  return priceIdByLookupKey(`zollybot_${plan}_${interval}`);
 }
 
 /** The active Price of a license plan. Team monthly keeps the key of the license from before the tiers. */
@@ -1135,7 +1137,7 @@ async function openLicensePages(account: Account) {
     status: "open",
     limit: "100",
   });
-  return listed.data.filter((session) => session.metadata?.openbot_kind === "license").map((session) => session.id);
+  return listed.data.filter((session) => session.metadata?.zollybot_kind === "license").map((session) => session.id);
 }
 
 async function expireCheckout(url: string) {
@@ -1759,7 +1761,7 @@ const scenarios: Record<Scenario, (account: Account) => Promise<void>> = {
       );
     const serviceActive = async (sandboxId: string) => {
       const response = await boat("POST", `/sandboxes/${sandboxId}/commands`, {
-        command: "systemctl is-active openbot.service; sudo -n journalctl -u openbot.service --no-pager -n 30 -o cat",
+        command: "systemctl is-active zollybot.service; sudo -n journalctl -u zollybot.service --no-pager -n 30 -o cat",
         timeoutSeconds: 60,
       });
       return commandSchema.safeParse(response.body).data?.stdout ?? "";
@@ -1799,26 +1801,26 @@ const scenarios: Record<Scenario, (account: Account) => Promise<void>> = {
       );
       record(
         "boat",
-        "OpenBot in the VM redeems its claim and publishes the host with the server name",
+        "ZollyBot in the VM redeems its claim and publishes the host with the server name",
         host.host_name === name,
         host,
       );
       const output = await serviceActive(sandboxId);
-      record("boat", "openbot.service is active in the VM", output.startsWith("active"), output.split("\n"));
+      record("boat", "zollybot.service is active in the VM", output.startsWith("active"), output.split("\n"));
       // The claim works one time, so a server that did not store its session cannot sign in again. The
       // app signs in before it starts the host, so 60 seconds of a clean log is a complete start.
       const restart = await boat("POST", `/sandboxes/${sandboxId}/commands`, {
         command: [
-          'test -s "$HOME/.config/OpenBot/openbot-central-auth-v1.bin" || { echo "no stored session"; exit 1; }',
-          "sudo -n systemctl restart openbot.service",
-          "id=$(systemctl show -p InvocationID --value openbot.service)",
+          'test -s "$HOME/.config/ZollyBot/zollybot-central-auth-v1.bin" || { echo "no stored session"; exit 1; }',
+          "sudo -n systemctl restart zollybot.service",
+          "id=$(systemctl show -p InvocationID --value zollybot.service)",
           "for _ in $(seq 1 30); do",
           '  if sudo -n journalctl "_SYSTEMD_INVOCATION_ID=$id" -o cat --no-pager | grep -q "could not sign in"; then',
           '    echo "sign-in failed"; exit 1',
           "  fi",
           "  sleep 2",
           "done",
-          "systemctl is-active openbot.service",
+          "systemctl is-active zollybot.service",
         ].join("\n"),
         timeoutSeconds: 120,
       });
@@ -2578,14 +2580,14 @@ const scenarios: Record<Scenario, (account: Account) => Promise<void>> = {
       "the 8 license keys are the released Team monthly key and 7 new keys, and none is a server plan key",
       keys.join(",") ===
         [
-          "openbot_license_starter_month",
-          "openbot_license_starter_bundle_month",
-          "openbot_license_starter_year",
-          "openbot_license_starter_bundle_year",
-          "openbot_license_month",
-          "openbot_license_bundle_month",
-          "openbot_license_year",
-          "openbot_license_bundle_year",
+          "zollybot_license_starter_month",
+          "zollybot_license_starter_bundle_month",
+          "zollybot_license_starter_year",
+          "zollybot_license_starter_bundle_year",
+          "zollybot_license_month",
+          "zollybot_license_bundle_month",
+          "zollybot_license_year",
+          "zollybot_license_bundle_year",
         ].join(",") && parsed.every((entry) => entry.parsed === null),
       { keys, parsed },
     );
@@ -2750,7 +2752,7 @@ const scenarios: Record<Scenario, (account: Account) => Promise<void>> = {
     const created = createdSchema.safeParse(opened.body).data;
     const session = created?.checkoutUrl ? await licenseSession(created.checkoutUrl) : null;
     const lines = session?.line_items.data ?? [];
-    const serverLine = lines.find((line) => line.price.lookup_key === "openbot_standard_month");
+    const serverLine = lines.find((line) => line.price.lookup_key === "zollybot_standard_month");
     const licenseLine = lines.find((line) => line.price.lookup_key === licenseLookupKey(TEAM_BUNDLE_MONTH));
     record(
       "order-bundle",
@@ -3285,7 +3287,7 @@ const scenarios: Record<Scenario, (account: Account) => Promise<void>> = {
       "a Standard server with a Team order of 4 users: one Checkout page with the server Price only, and the order with the trial end in its metadata",
       opened.status === 201 &&
         lines.length === 1 &&
-        lines[0]?.price.lookup_key === "openbot_standard_month" &&
+        lines[0]?.price.lookup_key === "zollybot_standard_month" &&
         metadata[ORDER_METADATA.licenseTier] === "team" &&
         metadata[ORDER_METADATA.licenseUsers] === String(order.users) &&
         metadata[ORDER_METADATA.licenseInterval] === "month" &&
@@ -3391,7 +3393,7 @@ async function main(args: string[]) {
   // Deleting a test clock deletes its customers and subscriptions.
   for (const clock of clocks)
     await stripe("DELETE", `/v1/test_helpers/test_clocks/${clock}`, idSchema).catch(() => null);
-  mkdirSync(join(ROOT, ".openbot-build"), { recursive: true });
+  mkdirSync(join(ROOT, ".zollybot-build"), { recursive: true });
   const kept = previousSteps().filter((step) => !run.includes(step.scenario));
   writeFileSync(
     REPORT,

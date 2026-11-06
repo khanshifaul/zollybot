@@ -1,5 +1,3 @@
-import type { MarketplaceAgentSummary } from "@openbot/contracts/ipc";
-import { translateFor } from "@openbot/i18n";
 import type { JSX } from "@solidjs/web";
 import {
   createMemoryHistory,
@@ -8,6 +6,8 @@ import {
   createRouter,
   RouterContextProvider,
 } from "@tanstack/solid-router";
+import type { MarketplaceAgentSummary } from "@zollybot/contracts/ipc";
+import { translateFor } from "@zollybot/i18n";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import type { MarketplaceAgentListing, MarketplaceSkillView } from "../../lib/marketplace";
 // The site's stylesheet, loaded only when a site story opens. See `ArticleMedia.stories.tsx`.
@@ -185,11 +185,11 @@ export const SkillsPhone: Story = { args: { address: "skills", tab: "skills" }, 
 /** `openbot.run/marketplace/apps`: the plugins that `/plugins` showed. */
 export const Apps: Story = { args: { address: "apps", tab: "apps" } };
 
-/** A verified agent. "Add to OpenBot" opens the app; "Copy link" copies this page's address. */
+/** A verified agent. "Add to ZollyBot" opens the app; "Copy link" copies this page's address. */
 export const AgentVerified: Story = { args: { page: "agent", id: VERIFIED_AGENT } };
 export const AgentVerifiedPhone: Story = { args: { page: "agent", id: VERIFIED_AGENT }, globals: PHONE };
 
-/** An agent by another user: the line before Add says that OpenBot reviewed it before it went live. */
+/** An agent by another user: the line before Add says that ZollyBot reviewed it before it went live. */
 export const AgentPublic: Story = { args: { page: "agent", id: PUBLIC_AGENT } };
 export const AgentPublicPhone: Story = { args: { page: "agent", id: PUBLIC_AGENT }, globals: PHONE };
 

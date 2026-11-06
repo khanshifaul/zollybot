@@ -1,8 +1,8 @@
-import { type MarketplaceAgentSummary, SKILL_CATEGORIES, type SkillCategory } from "@openbot/contracts/ipc";
-import { Badge, Button, Heading, Plus, Text } from "@openbot/ui";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import { useText } from "@openbot/ui/text";
 import type { JSX } from "@solidjs/web";
+import { type MarketplaceAgentSummary, SKILL_CATEGORIES, type SkillCategory } from "@zollybot/contracts/ipc";
+import { Badge, Button, Heading, Plus, Text } from "@zollybot/ui";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createStore, For, Match, onCleanup, Show, Switch, untrack } from "solid-js";
 import { Done, ListingPanel, MissingNotice } from "./MarketplaceParts";
 import { GroupHead, MarketplaceSearch, SourceSwitch, VerifiedMark } from "./MarketplaceSkills";

@@ -1,10 +1,10 @@
-import { avatarHeadColor } from "@openbot/brand/bloub-avatar";
-import type { AgentRuntimeSnapshot, DynamicIslandPresentation } from "@openbot/contracts/ipc";
-import { LIVE_ACTIVITY_SEALED_LIMIT, type LiveActivityRelayPush } from "@openbot/contracts/live-activity-relay";
-import type { LiveActivityPushRegistration } from "@openbot/contracts/team-protocol/live-activity-push-v1";
-import { mobileTranslateFor, resolveLocale } from "@openbot/i18n/mobile";
-import { redactText, toLogValue } from "@openbot/logging";
-import { DynamicIslandCoordinator } from "@openbot/team-client/dynamic-island-coordinator";
+import { avatarHeadColor } from "@zollybot/brand/bloub-avatar";
+import type { AgentRuntimeSnapshot, DynamicIslandPresentation } from "@zollybot/contracts/ipc";
+import { LIVE_ACTIVITY_SEALED_LIMIT, type LiveActivityRelayPush } from "@zollybot/contracts/live-activity-relay";
+import type { LiveActivityPushRegistration } from "@zollybot/contracts/team-protocol/live-activity-push-v1";
+import { mobileTranslateFor, resolveLocale } from "@zollybot/i18n/mobile";
+import { redactText, toLogValue } from "@zollybot/logging";
+import { DynamicIslandCoordinator } from "@zollybot/team-client/dynamic-island-coordinator";
 import {
   type AgentLiveActivityProps,
   type LiveActivityUnreadAgent,
@@ -12,14 +12,14 @@ import {
   liveActivityIslandText,
   liveActivityShorterProps,
   liveActivityView,
-} from "@openbot/team-client/live-activity-props";
+} from "@zollybot/team-client/live-activity-props";
 import {
   decodeLiveActivityBytes,
   LIVE_ACTIVITY_NONCE_BYTES,
   type LiveActivityKeys,
   liveActivityKeys,
   sealLiveActivity,
-} from "@openbot/team-client/live-activity-seal";
+} from "@zollybot/team-client/live-activity-seal";
 import { Effect, Exit, Schema, Scope } from "effect";
 import type { PushNotificationSubject } from "./push-notifications";
 import type { TeamApiAgents } from "./team-api/dependencies";

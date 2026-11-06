@@ -1,14 +1,14 @@
-import type { LocalBrowserSecretResponse, QueueDelivery, QueueHold } from "@openbot/contracts/ipc";
-import { ArrowUp, Button } from "@openbot/ui";
-import type { ComposerAgent, ComposerMcpServer, ComposerSkill } from "@openbot/ui/data";
-import { AgentAvatar } from "@openbot/ui/features/agents/AgentAvatar";
-import type { BrowserSecretVault } from "@openbot/ui/features/conversation/BrowserSecretCard";
-import { ComposerEditor } from "@openbot/ui/features/conversation/ComposerEditor";
-import { StopIcon } from "@openbot/ui/features/conversation/ConversationIcons";
-import { QueuePanel } from "@openbot/ui/features/conversation/QueuePanel";
-import type { SendShortcut } from "@openbot/ui/features/conversation/send-shortcut";
-import { useText } from "@openbot/ui/text";
-import { prefersReducedMotion } from "@openbot/ui/utils";
+import type { LocalBrowserSecretResponse, QueueDelivery, QueueHold } from "@zollybot/contracts/ipc";
+import { ArrowUp, Button } from "@zollybot/ui";
+import type { ComposerAgent, ComposerMcpServer, ComposerSkill } from "@zollybot/ui/data";
+import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
+import type { BrowserSecretVault } from "@zollybot/ui/features/conversation/BrowserSecretCard";
+import { ComposerEditor } from "@zollybot/ui/features/conversation/ComposerEditor";
+import { StopIcon } from "@zollybot/ui/features/conversation/ConversationIcons";
+import { QueuePanel } from "@zollybot/ui/features/conversation/QueuePanel";
+import type { SendShortcut } from "@zollybot/ui/features/conversation/send-shortcut";
+import { useText } from "@zollybot/ui/text";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { createEffect, createSignal, flush, onSettled, Show, untrack } from "solid-js";
 import { type BrowserIslandContent, BrowserIslandFace, browserIslandKey } from "./BrowserIsland";
 import {

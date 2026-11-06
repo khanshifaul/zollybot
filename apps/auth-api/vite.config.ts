@@ -11,7 +11,7 @@ import { rendererPreviewAlias, rendererWebAlias } from "./renderer-preview-alias
 import { readLocalRuntimeVars } from "./src/server/runtime-env";
 
 export default defineConfig(({ command }) => {
-  const port = readApiPort(process.env.OPENBOT_API_PORT);
+  const port = readApiPort(process.env.ZOLLYBOT_API_PORT);
   const localRuntimeVars = command === "serve" ? readLocalRuntimeVars(process.env) : {};
   // The local Worker cannot reach Apple over HTTP/2, so it sends Live Activity updates to this server.
   if (localRuntimeVars.APNS_PRIVATE_KEY) {
@@ -21,8 +21,8 @@ export default defineConfig(({ command }) => {
     resolve: {
       dedupe: ["solid-js", "@solidjs/web", "@solidjs/signals"],
       alias: {
-        "@openbot/renderer-preview": rendererPreviewAlias,
-        "@openbot/renderer-web": rendererWebAlias,
+        "@zollybot/renderer-preview": rendererPreviewAlias,
+        "@zollybot/renderer-web": rendererWebAlias,
       },
     },
     optimizeDeps: {
@@ -46,11 +46,11 @@ export default defineConfig(({ command }) => {
       ssr: { build: { rolldownOptions: { output: { strictExecutionOrder: true } } } },
     },
     server: {
-      host: readApiHost(process.env.OPENBOT_API_HOST),
+      host: readApiHost(process.env.ZOLLYBOT_API_HOST),
       port,
       strictPort: true,
       // `bun run dev:slack` tunnels Slack's install return to this server.
-      allowedHosts: [".openbot.localhost", ".trycloudflare.com"],
+      allowedHosts: [".zollybot.localhost", ".trycloudflare.com"],
     },
     plugins: [
       developmentLanGuard(),
@@ -83,14 +83,14 @@ function readApiPort(value: string | undefined): number {
   if (value === undefined || value.trim() === "") return 3_100;
   const port = Number(value);
   if (!Number.isInteger(port) || port < 1_024 || port > 65_535) {
-    throw new Error("OPENBOT_API_PORT must be an integer from 1024 to 65535.");
+    throw new Error("ZOLLYBOT_API_PORT must be an integer from 1024 to 65535.");
   }
   return port;
 }
 
 function developmentLanGuard(): Plugin {
   return {
-    name: "openbot-development-lan-guard",
+    name: "zollybot-development-lan-guard",
     configureServer(server) {
       server.middlewares.use((request, response, next) => {
         if (developmentNetworkRequestAllowed(request.socket.remoteAddress, request.url ?? "/")) {
@@ -113,7 +113,7 @@ const EAGER_CATALOG_MODULES = new Set(["./app-catalogs", "./source-catalogs", ".
  */
 function lazyLanguageCatalogs(): Plugin {
   return {
-    name: "openbot-lazy-language-catalogs",
+    name: "zollybot-lazy-language-catalogs",
     enforce: "pre",
     applyToEnvironment: (environment) => environment.name === "client",
     resolveId(source, importer) {
@@ -144,7 +144,7 @@ function bloubServerBuild(): Plugin {
   );
   const serverFiles = new Set(serverEntries.values());
   return {
-    name: "openbot-bloub-server-build",
+    name: "zollybot-bloub-server-build",
     enforce: "pre",
     applyToEnvironment: (environment) => environment.name === "ssr",
     resolveId(source) {
@@ -166,5 +166,5 @@ function bloubServerBuild(): Plugin {
 function readApiHost(value: string | undefined): "127.0.0.1" | "0.0.0.0" {
   if (value === undefined || value.trim() === "") return "127.0.0.1";
   if (value === "127.0.0.1" || value === "0.0.0.0") return value;
-  throw new Error("OPENBOT_API_HOST must be 127.0.0.1 or 0.0.0.0.");
+  throw new Error("ZOLLYBOT_API_HOST must be 127.0.0.1 or 0.0.0.0.");
 }

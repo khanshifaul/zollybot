@@ -1,17 +1,17 @@
-import { CONNECTOR_IDS, type ConnectorId } from "@openbot/contracts/ipc";
-import { BITWARDEN_CONNECTOR_CAPABILITY } from "@openbot/contracts/team-protocol/bitwarden-connector-v1";
-import { CONNECTORS_CAPABILITY } from "@openbot/contracts/team-protocol/connectors-v1";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { ONEPASSWORD_CONNECTOR_CAPABILITY } from "@openbot/contracts/team-protocol/onepassword-connector-v1";
-import { PASSWORD_MANAGERS_CAPABILITY } from "@openbot/contracts/team-protocol/password-managers-v1";
-import { WHATSAPP_CONNECTOR_CAPABILITY } from "@openbot/contracts/team-protocol/whatsapp-connector-v1";
+import { CONNECTOR_IDS, type ConnectorId } from "@zollybot/contracts/ipc";
+import { BITWARDEN_CONNECTOR_CAPABILITY } from "@zollybot/contracts/team-protocol/bitwarden-connector-v1";
+import { CONNECTORS_CAPABILITY } from "@zollybot/contracts/team-protocol/connectors-v1";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { ONEPASSWORD_CONNECTOR_CAPABILITY } from "@zollybot/contracts/team-protocol/onepassword-connector-v1";
+import { PASSWORD_MANAGERS_CAPABILITY } from "@zollybot/contracts/team-protocol/password-managers-v1";
+import { WHATSAPP_CONNECTOR_CAPABILITY } from "@zollybot/contracts/team-protocol/whatsapp-connector-v1";
 
-export { CONNECTOR_IDS, type ConnectorId } from "@openbot/contracts/ipc";
+export { CONNECTOR_IDS, type ConnectorId } from "@zollybot/contracts/ipc";
 
 export interface ConnectorDefinition {
   /**
    * The capability that lets a joined server run the connector for an owner or admin. Null when the
-   * connector works only on the computer that runs OpenBot, because its app or browser runs there.
+   * connector works only on the computer that runs ZollyBot, because its app or browser runs there.
    */
   server: TeamCurrentCapability | null;
 }

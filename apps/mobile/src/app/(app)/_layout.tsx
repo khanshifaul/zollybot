@@ -64,7 +64,7 @@ function AuthenticatedStack() {
   const chatAnimation = useSplitLayout() ? "fade" : pushAnimation;
   const { t } = useText();
   const background = useThemeColor("background");
-  const sheetBackground = String(useCSSVariable("--openbot-bg-sheet") ?? background);
+  const sheetBackground = String(useCSSVariable("--zollybot-bg-sheet") ?? background);
   // iOS shows the native bar over a chat and the browser, so its bar items morph with the items of the
   // screen under it. The screen fills the bar with Back, the title and the buttons. Android draws them.
   const nativeBarOptions = {

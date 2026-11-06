@@ -1,7 +1,7 @@
-import { LOCAL_SERVER_ID, type RemovableRuntimes, type TeamMemberSummary } from "@openbot/contracts/ipc";
-import type { AgentProfile } from "@openbot/ui/data";
-import { MachineResources } from "@openbot/ui/features/files/MachineResources";
-import { StorageOverview } from "@openbot/ui/features/files/StorageOverview";
+import { LOCAL_SERVER_ID, type RemovableRuntimes, type TeamMemberSummary } from "@zollybot/contracts/ipc";
+import type { AgentProfile } from "@zollybot/ui/data";
+import { MachineResources } from "@zollybot/ui/features/files/MachineResources";
+import { StorageOverview } from "@zollybot/ui/features/files/StorageOverview";
 import { createEffect, createSignal, Show, untrack } from "solid-js";
 import { toAgentProfile } from "../../app-message-projection";
 import { type FilesPort, filesPort } from "./files-port";
@@ -17,7 +17,7 @@ export interface ServerStorageOptions {
   onShowMessage: (agentId: string, messageId: string) => void;
   /** The members of the server. An owner or admin among them gets the machine alerts. */
   members?: readonly TeamMemberSummary[];
-  /** The storage calls of a client with no `window.openbot`, such as the web client. */
+  /** The storage calls of a client with no `window.zollybot`, such as the web client. */
   calls?: FilesPort;
 }
 

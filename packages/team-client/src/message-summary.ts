@@ -7,7 +7,7 @@ import { cleanAgentMessageText } from "./agent-message-text";
  * notification makes it plain text, and the Live Activity keeps its inline marks.
  *
  * The caller redacts the secrets first. The marks of the shared log redaction, such as
- * `[redacted-email]`, then show as `•••`, and internal tool names, such as `openbot.revise_skill`,
+ * `[redacted-email]`, then show as `•••`, and internal tool names, such as `zollybot.revise_skill`,
  * show as words ("revise skill").
  *
  * The lead takes whole sentences while they fit in `limit` characters. It always has the first
@@ -62,7 +62,7 @@ const HEADER_LINE =
   /^\s*(?:(?:[A-Z][A-Za-z0-9]*-)+[A-Z][A-Za-z0-9]*:(?:\s|$)|[A-Z][A-Za-z]*:\s*(?:<[^<>\s]*(?:@|•••)[^<>\s]*>[\s,]*)+$)/u;
 /** The same header with its `<…>` value inside a sentence. */
 const INLINE_HEADER = /\b(?:[A-Z][A-Za-z0-9]*-)+[A-Z][A-Za-z0-9]*:\s*<[^<>\n]*>/gu;
-/** An internal tool name with a namespace, such as `openbot.revise_skill`. Paths and links do not match. */
+/** An internal tool name with a namespace, such as `zollybot.revise_skill`. Paths and links do not match. */
 const DOTTED_TOOL = /(?<![\w./:@-])(?:[a-z][a-z0-9]*\.)+([a-z0-9]+(?:_[a-z0-9]+)+)(?![\w/@-])/gu;
 /** An MCP tool name, such as `mcp__server__send_message`. */
 const MCP_TOOL = /(?<![\w./:@-])mcp__[a-z0-9_-]*__([a-z0-9-]+(?:_[a-z0-9-]+)*)(?![\w/@-])/gu;

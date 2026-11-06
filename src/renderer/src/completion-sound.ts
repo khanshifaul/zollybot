@@ -1,10 +1,10 @@
-import type { AgentEvent, ClientAgentSummary } from "@openbot/contracts/ipc";
-import { TASK_SOUND_CHOICES, type TaskSoundChoice } from "@openbot/ui/features/settings/app-settings";
+import type { AgentEvent, ClientAgentSummary } from "@zollybot/contracts/ipc";
+import { TASK_SOUND_CHOICES, type TaskSoundChoice } from "@zollybot/ui/features/settings/app-settings";
 import { play, unlock } from "cuelume";
 
-const TASK_SOUND_STORAGE_KEY = "openbot:task-sound";
+const TASK_SOUND_STORAGE_KEY = "zollybot:task-sound";
 /** The on/off switch from before the sound choice. It is still written, so an older version keeps the choice. */
-const COMPLETION_SOUND_STORAGE_KEY = "openbot:completion-sound-enabled";
+const COMPLETION_SOUND_STORAGE_KEY = "zollybot:completion-sound-enabled";
 const COMPLETION_SOUND_DURATION_SECONDS = 0.22;
 
 let completionAudioContext: AudioContext | undefined;

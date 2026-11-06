@@ -1,7 +1,7 @@
 import { type ChildProcess, spawn } from "node:child_process";
-import { pasteCodeSignInSupported } from "@openbot/contracts/agent-providers";
-import { sourceText } from "@openbot/i18n/source";
-import { registerSecretValue } from "@openbot/logging";
+import { pasteCodeSignInSupported } from "@zollybot/contracts/agent-providers";
+import { sourceText } from "@zollybot/i18n/source";
+import { registerSecretValue } from "@zollybot/logging";
 import { Deferred, Effect, Fiber, Option, Schema } from "effect";
 import { shellQuote } from "../automation-command";
 import { cliSpawnTarget } from "../cli";
@@ -13,7 +13,7 @@ import { waitForSuccessfulProcess } from "./provider-status";
  *
  * `device` is a device code: the user opens the page, confirms the code, and the CLI sees the
  * approval by itself (Grok, Cline, Kimi). `paste` is an authorization code the provider's page shows after
- * the sign-in, which the user copies back and OpenBot types into the CLI's prompt (Claude). `link` is
+ * the sign-in, which the user copies back and ZollyBot types into the CLI's prompt (Claude). `link` is
  * a page that signs the CLI in by itself, with no code to confirm or copy (Cursor).
  */
 export type CliCodePrompt =
@@ -76,7 +76,11 @@ export const startCliCodeLogin = Effect.fnUntraced(function* (options: {
           : cliSpawnTarget(options.executable, options.argv, platform);
         return spawn(target.command, target.args, {
           cwd: process.cwd(),
-          env: { ...process.env, ...options.env, ...(command ? { OPENBOT_LOGIN_EXECUTABLE: options.executable } : {}) },
+          env: {
+            ...process.env,
+            ...options.env,
+            ...(command ? { ZOLLYBOT_LOGIN_EXECUTABLE: options.executable } : {}),
+          },
           windowsVerbatimArguments: target.windowsVerbatimArguments,
           stdio: ["pipe", "pipe", "pipe"],
           shell: false,
@@ -196,7 +200,7 @@ export function pasteCodeLoginSupported(platform: NodeJS.Platform = process.plat
  */
 function terminalCommand(platform: NodeJS.Platform, argv: readonly string[]): { file: string; args: string[] } {
   if (pasteCodeLoginSupported(platform)) {
-    const line = ['exec "$OPENBOT_LOGIN_EXECUTABLE"', ...argv.map(shellQuote)].join(" ");
+    const line = ['exec "$ZOLLYBOT_LOGIN_EXECUTABLE"', ...argv.map(shellQuote)].join(" ");
     return { file: "script", args: ["-q", "-e", "-f", "-c", line, "/dev/null"] };
   }
   throw new Error(sourceText("error.provider.codeLoginUnsupported"));

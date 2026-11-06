@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves a table or
 // its marker; a newer or incomplete history is accepted; a proxy has a bad id, scheme, port or a
@@ -29,7 +29,7 @@ function databaseAt(version: number): DatabaseSync {
 function migrateUpTo(db: DatabaseSync, version: number): void {
   db.exec(`CREATE TEMP TRIGGER stop_at_version BEFORE INSERT ON schema_migrations WHEN new.version > ${version}
     BEGIN SELECT RAISE(ABORT, 'fixture stop'); END;`);
-  expect(() => migrateOpenBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
+  expect(() => migrateZollyBotDatabase(db)).toThrow(`migration to version ${version + 1} failed`);
   db.exec("DROP TRIGGER stop_at_version");
 }
 
@@ -106,7 +106,7 @@ describe("browser proxy migration", () => {
       // The earlier migrations run first; the rows after them are what v56 must keep.
       if (version < 55) migrateUpTo(db, 55);
       const before = contents(db);
-      migrateOpenBotDatabase(db);
+      migrateZollyBotDatabase(db);
       expect(contents(db)).toEqual({ ...before, ...PROXY_TABLES, ...LATER_TABLES });
       expectHealthy(db);
     },
@@ -118,13 +118,13 @@ describe("browser proxy migration", () => {
     const before = contents(db);
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=56
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
-    expect(() => migrateOpenBotDatabase(db)).toThrow("migration to version 56 failed");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 56 failed");
     expect(contents(db)).toEqual(before);
     expect(proxyTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=56").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(contents(db)).toEqual({ ...before, ...PROXY_TABLES, ...LATER_TABLES });
     expectHealthy(db);
   });
@@ -134,9 +134,9 @@ describe("browser proxy migration", () => {
     seed(db, 55);
     const before = contents(db);
     db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("newer than this application supports");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
     db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
-    expect(() => migrateOpenBotDatabase(db)).toThrow("missing version 20");
+    expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(contents(db)).toEqual(before);
     expect(proxyTables(db)).toEqual([]);
   });
@@ -144,7 +144,7 @@ describe("browser proxy migration", () => {
   it("refuses a bad proxy, and an assignment to no profile or no proxy", () => {
     const db = databaseAt(55);
     seed(db, 55);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     expect(() => insertProxy(db, { proxy_id: "short" })).toThrow("CHECK constraint failed");
     expect(() => insertProxy(db, { scheme: "socks4" })).toThrow("CHECK constraint failed");
     expect(() => insertProxy(db, { port: 0 })).toThrow("CHECK constraint failed");
@@ -163,7 +163,7 @@ describe("browser proxy migration", () => {
   it("keeps a computer proxy apart from an address, and one computer for each member", () => {
     const db = databaseAt(55);
     seed(db, 55);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     const computer =
       db.prepare(`INSERT INTO browser_proxies (proxy_id, kind, scheme, host, port, member_id, created_at, updated_at)
       VALUES (?, 'computer', ?, ?, ?, ?, '2026-01-03', '2026-01-03')`);
@@ -197,7 +197,7 @@ describe("browser proxy migration", () => {
   it("drops the assignment with its proxy or its profile, and keeps the other row", () => {
     const db = databaseAt(55);
     seed(db, 55);
-    migrateOpenBotDatabase(db);
+    migrateZollyBotDatabase(db);
     insertProxy(db);
     const assign = db.prepare("INSERT INTO browser_profile_proxies (profile_id, proxy_id) VALUES (?, ?)");
     assign.run(PROFILE, PROXY);

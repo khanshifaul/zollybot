@@ -6,16 +6,16 @@
 // and a failed call becomes the correctable tool failure of the router. No provider, account or
 // network is started.
 // Run: `bun scripts/agent-update-agents-e2e.ts`.
-// Writes .openbot-build/agent-update-agents-e2e/report.json.
+// Writes .zollybot-build/agent-update-agents-e2e/report.json.
 
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import type { AgentModelOption, UpdateAgentInput } from "@openbot/contracts/ipc";
-import { type DynamicRecord, isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+import type { AgentModelOption, UpdateAgentInput } from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { profileToolErrorMessage } from "../src/backend/agent/profile-tools";
 import { openBotToolFailure } from "../src/backend/agent/routine-tools";
@@ -23,10 +23,10 @@ import { ToolOperationFailed } from "../src/backend/agent/tool-operation";
 import { handleUpdateAgentsTool } from "../src/backend/agent/update-agents-tool";
 import { AgentStore } from "../src/backend/agent-store";
 import { runCauseEffect } from "../src/backend/effect-boundary";
-import { OpenBotDatabase } from "../src/backend/openbot-database";
+import { ZollyBotDatabase } from "../src/backend/zollybot-database";
 
 const ROOT = resolve(import.meta.dirname, "..");
-const OUT = join(ROOT, ".openbot-build", "agent-update-agents-e2e");
+const OUT = join(ROOT, ".zollybot-build", "agent-update-agents-e2e");
 const NEW_MODEL = "gpt-e2e-new";
 
 interface Step {
@@ -50,8 +50,8 @@ async function step<T>(name: string, run: () => Promise<T>): Promise<T> {
   }
 }
 
-const root = await mkdtemp(join(tmpdir(), "openbot-update-agents-"));
-const database = new OpenBotDatabase(join(root, "state"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-update-agents-"));
+const database = new ZollyBotDatabase(join(root, "state"));
 const store = new AgentStore(join(root, "state"), join(root, "home"), database);
 const busyAgentIds = new Set<string>();
 const writes: UpdateAgentInput[] = [];
@@ -101,7 +101,7 @@ try {
   const call = async (args: unknown): Promise<{ success: boolean; value: DynamicRecord }> => {
     const response = await Effect.runPromise(
       handleUpdateAgentsTool(
-        { threadId: "t", turnId: "turn", callId: "c", namespace: "openbot", tool: "update_agents", arguments: args },
+        { threadId: "t", turnId: "turn", callId: "c", namespace: "zollybot", tool: "update_agents", arguments: args },
         coordinator.id,
         hooks,
       ).pipe(Effect.catch((failure) => Effect.succeed(openBotToolFailure(profileToolErrorMessage(failure.cause))))),

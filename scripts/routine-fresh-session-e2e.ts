@@ -12,7 +12,7 @@
 // It also drives saved password and authenticator fills through the routine tool router, checks
 // the sign-in guidance, and checks that no secret reaches the provider. Each run keeps the agent's
 // Computer Use, as the chat does: a scheduled run can drive a desktop app.
-// `bun scripts/routine-fresh-session-e2e.ts`. Writes .openbot-build/routine-fresh-session-e2e/report.json.
+// `bun scripts/routine-fresh-session-e2e.ts`. Writes .zollybot-build/routine-fresh-session-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -27,13 +27,13 @@ import {
   COMPUTER_USE_MCP_SERVER_NAME,
   decodeUsageTokens,
   parseRoutineRunConversationEventItemType,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import { Effect } from "effect";
 import type { AgentBrowserHost } from "../src/backend/agent/turn-lifecycle";
 import { getRecord, getString } from "../src/backend/protocol";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/routine-fresh-session-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-routine-session-"));
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/routine-fresh-session-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-routine-session-"));
 const userData = join(root, "user-data");
 const home = join(root, "home");
 const fakeCodex = join(root, "codex");
@@ -44,14 +44,14 @@ const fakeHold = join(root, "hold");
 // Before the service modules load: the Codex process and the stores read the home folder.
 process.env.HOME = home;
 process.env.CODEX_HOME = join(home, ".codex");
-process.env.OPENBOT_CODEX_PATH = fakeCodex;
+process.env.ZOLLYBOT_CODEX_PATH = fakeCodex;
 mkdirSync(home, { recursive: true });
 
 const { AgentService } = await import("../src/backend/agent-service");
 const { AgentStore } = await import("../src/backend/agent-store");
 const { runCauseEffect } = await import("../src/backend/effect-boundary");
 const { MailboxStore } = await import("../src/backend/mailbox-store");
-const { OpenBotDatabase } = await import("../src/backend/openbot-database");
+const { ZollyBotDatabase } = await import("../src/backend/zollybot-database");
 
 /** Tokens that each session holds before its first request: the instructions and the tools. */
 const BASE_TOKENS = 3_000;
@@ -60,7 +60,7 @@ const HISTORY_CHARACTERS = 45_000;
 const ROUTINE_INPUT_LIMIT = 10_000;
 const ROUTINE_MARK = "ROUTINE-CHECK";
 const SECOND_MARK = "ROUTINE-SECOND";
-const VAULT_ORIGIN = "https://routine.openbot.test";
+const VAULT_ORIGIN = "https://routine.zollybot.test";
 const VAULT_LOGIN = "routine-login";
 const PASSWORD = "fixture-routine-password";
 const CODE = "739182";
@@ -92,7 +92,7 @@ const callNext = (turn) => {
   waiting.set(id, { turn, tool: call.arguments.name ?? call.tool });
   write({ id, method: "item/tool/call", params: {
     threadId: turn.threadId, turnId: turn.turnId, callId: id,
-    namespace: "openbot", tool: call.tool, arguments: call.arguments,
+    namespace: "zollybot", tool: call.tool, arguments: call.arguments,
   } });
 };
 /** threadId -> characters of all input so far, and the prompt and totals of the last request. */
@@ -150,7 +150,7 @@ const answer = (message) => {
         write({ method: "item/completed", params: { threadId: params.threadId, turnId, item } });
         write({ method: "turn/completed", params: { threadId: params.threadId, turn: { id: turnId, status: "completed" } } });
       };
-      const browserCall = (tool, args) => ({ tool: "tool_call", arguments: { name: "openbot_browser." + tool, arguments: args } });
+      const browserCall = (tool, args) => ({ tool: "tool_call", arguments: { name: "zollybot_browser." + tool, arguments: args } });
       const secret = (method) => browserCall("submit_secret", {
         tabId: "routine-tab", loginId: ${JSON.stringify(VAULT_LOGIN)}, method, digits: 6,
         targets: [{ kind: "css", selector: "#secret" }], submission: "click",
@@ -164,7 +164,7 @@ const answer = (message) => {
         setTimeout(finish, 20);
       };
       const calls = routine ? [
-        { tool: "tool_describe", arguments: { names: ["openbot_browser.list_logins"] } },
+        { tool: "tool_describe", arguments: { names: ["zollybot_browser.list_logins"] } },
         browserCall("open", { url: ${JSON.stringify(VAULT_ORIGIN)} }),
         browserCall("list_logins", { tabId: "routine-tab" }),
         secret("password"), secret("authenticator"),
@@ -341,7 +341,7 @@ function pass(name: string, condition: boolean, detail?: string) {
 }
 
 await writeFile(fakeCodex, FAKE_CODEX, { mode: 0o755 });
-const database = new OpenBotDatabase(userData);
+const database = new ZollyBotDatabase(userData);
 const store = new AgentStore(userData, home, database);
 const mailbox = new MailboxStore(userData, store.sharedRoot, store.database);
 const agents = new AgentService({
@@ -579,7 +579,7 @@ try {
     "Each routine fills its saved password and authenticator code",
     fills.join() === "password,authenticator,password,authenticator",
   );
-  const listed = results.filter((entry) => entry.tool === "openbot_browser.list_logins");
+  const listed = results.filter((entry) => entry.tool === "zollybot_browser.list_logins");
   pass(
     "Each routine can discover its saved login",
     listed.length === 2 &&
@@ -597,7 +597,7 @@ try {
     "Secrets stay outside provider input and tool results",
     [PASSWORD, CODE].every((value) => !JSON.stringify(entries).includes(value)),
   );
-  const routineRule = "In a routine run, first check saved logins with openbot_browser.list_logins";
+  const routineRule = "In a routine run, first check saved logins with zollybot_browser.list_logins";
   pass(
     "Routine sessions receive the saved-login rule",
     routineStarts.every((entry) => entry.instructions?.includes(routineRule)),

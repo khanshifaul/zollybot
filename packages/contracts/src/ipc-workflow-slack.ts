@@ -1,12 +1,12 @@
 /**
- * Slack triggers and outputs of workflows. A Slack trigger starts a run when a person mentions OpenBot in
+ * Slack triggers and outputs of workflows. A Slack trigger starts a run when a person mentions ZollyBot in
  * a channel of a connected Slack workspace; a Slack output replies in the thread of that message, posts
  * in a channel or adds a reaction. The node fields are in `WorkflowFields`. An owner or admin of a joined
  * server changes these nodes only through `workflows-chats-v1`, with the workspaces and channels of the
  * routine-results options; any other joined client reads them.
  */
 
-/** The events that a Slack trigger can start on. Slack sends `app_mention` for a message that names OpenBot. */
+/** The events that a Slack trigger can start on. Slack sends `app_mention` for a message that names ZollyBot. */
 export const WORKFLOW_SLACK_EVENTS = ["mention"] as const;
 export type WorkflowSlackEvent = (typeof WORKFLOW_SLACK_EVENTS)[number];
 

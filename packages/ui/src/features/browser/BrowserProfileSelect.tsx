@@ -1,4 +1,4 @@
-import { type AvatarHue, BROWSER_PROFILE_NAME_MAX, type BrowserProfileSummary } from "@openbot/contracts/ipc";
+import { type AvatarHue, BROWSER_PROFILE_NAME_MAX, type BrowserProfileSummary } from "@zollybot/contracts/ipc";
 import {
   Button,
   Input,
@@ -10,7 +10,7 @@ import {
   SelectValue,
   Text,
   Waypoints,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createStore, Show } from "solid-js";
 import { useText } from "../../text";
 import { BrowserProfileDot } from "./BrowserProfileColor";

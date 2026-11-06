@@ -10,12 +10,12 @@
   --app-loading-at: 0s;
   --app-loading-exit-delay: 300ms;
   position: absolute;
-  z-index: var(--openbot-layer-dialog);
+  z-index: var(--zollybot-layer-dialog);
   inset: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: var(--openbot-bg-canvas);
+  background: var(--zollybot-bg-canvas);
   -webkit-app-region: drag;
 }
 
@@ -66,8 +66,8 @@
 .app-loading-status {
   min-height: 20px;
   margin: 0;
-  color: var(--openbot-text-muted);
-  font-size: var(--openbot-text-md);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
 }
 
 .app-loading-line {
@@ -81,7 +81,7 @@
 
 /* The fade also runs with reduced motion: its animationend removes the screen. */
 .app-loading:is([data-phase="fade"], [data-phase="exit"]) {
-  animation: app-loading-exit var(--openbot-duration-overlay) var(--openbot-ease-in-out) forwards;
+  animation: app-loading-exit var(--zollybot-duration-overlay) var(--zollybot-ease-in-out) forwards;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -93,16 +93,16 @@
 
   /* The stage waits before it shows, so a fast load does not flash the crew. */
   .app-loading-stage {
-    animation: app-loading-enter var(--openbot-duration-overlay) var(--openbot-ease-out)
+    animation: app-loading-enter var(--zollybot-duration-overlay) var(--zollybot-ease-out)
       calc(250ms - var(--app-loading-at)) both;
   }
 
   .app-loading-line {
-    animation: app-loading-line-in 280ms var(--openbot-ease-out);
+    animation: app-loading-line-in 280ms var(--zollybot-ease-out);
   }
 
   .app-loading:not([data-phase="loading"]) .app-loading-status {
-    animation: app-loading-fade 200ms var(--openbot-ease-out) forwards;
+    animation: app-loading-fade 200ms var(--zollybot-ease-out) forwards;
   }
 }
 
@@ -136,22 +136,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--openbot-space-3);
-  padding: var(--openbot-space-3);
-  background: var(--openbot-bg-canvas);
-  border-bottom: 1px solid var(--openbot-border);
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-3);
+  background: var(--zollybot-bg-canvas);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 .server-connection-notice p {
   margin: 0;
 }
 .server-connection-detail {
-  color: var(--openbot-text-muted);
+  color: var(--zollybot-text-muted);
   font-variant-numeric: tabular-nums;
   text-wrap: pretty;
 }
 .server-connection-actions {
   display: flex;
-  gap: var(--openbot-space-2);
+  gap: var(--zollybot-space-2);
   -webkit-app-region: no-drag;
 }
 /* The toast of a long first load, like the GitHub star toast: a raised card with the 1px ring only. */
@@ -161,32 +161,32 @@
 .server-connection-toast {
   position: relative;
   display: grid;
-  gap: var(--openbot-space-2);
-  padding: var(--openbot-space-4) var(--openbot-space-3) var(--openbot-space-3) var(--openbot-space-4);
-  border-radius: var(--openbot-radius-lg);
-  background: var(--openbot-bg-surface-raised);
-  box-shadow: 0 0 0 1px var(--openbot-border);
-  color: var(--openbot-text-primary);
-  font-family: var(--openbot-font-sans);
-  font-size: var(--openbot-text-md);
-  line-height: var(--openbot-leading-md);
+  gap: var(--zollybot-space-2);
+  padding: var(--zollybot-space-4) var(--zollybot-space-3) var(--zollybot-space-3) var(--zollybot-space-4);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
+  box-shadow: 0 0 0 1px var(--zollybot-border);
+  color: var(--zollybot-text-primary);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
 }
 .server-connection-toast-close {
   position: absolute;
-  top: var(--openbot-space-2);
-  right: var(--openbot-space-2);
-  color: var(--openbot-text-muted);
+  top: var(--zollybot-space-2);
+  right: var(--zollybot-space-2);
+  color: var(--zollybot-text-muted);
 }
 /* The end padding keeps the title clear of the close button. */
 .server-connection-toast-title {
-  padding-right: var(--openbot-space-6);
-  font-weight: var(--openbot-weight-semibold);
+  padding-right: var(--zollybot-space-6);
+  font-weight: var(--zollybot-weight-semibold);
 }
 .server-connection-toast-body {
   margin: 0;
-  color: var(--openbot-text-secondary);
-  font-size: var(--openbot-text-sm);
-  line-height: var(--openbot-leading-sm);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
   font-variant-numeric: tabular-nums;
   text-wrap: pretty;
 }
@@ -195,8 +195,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: var(--openbot-space-1-5);
-  margin-top: var(--openbot-space-1);
+  gap: var(--zollybot-space-1-5);
+  margin-top: var(--zollybot-space-1);
 }
 .server-connection-content {
   position: relative;

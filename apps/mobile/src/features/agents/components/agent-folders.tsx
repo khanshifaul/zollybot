@@ -1,3 +1,4 @@
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AGENT_FOLDER_BROWSE_LIMIT,
   AGENT_FOLDER_LIMIT,
@@ -11,8 +12,7 @@ import {
   agentFolderParent,
   agentPermissionLevel,
   agentProviderDescriptor,
-} from "@openbot/contracts/ipc";
-import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button, Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";

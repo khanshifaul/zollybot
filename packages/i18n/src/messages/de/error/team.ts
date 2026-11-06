@@ -2,14 +2,14 @@ import type { PartialTranslation } from "../../../message";
 import type { messages as source } from "../../en/error/team";
 
 export const messages = {
-  "error.team.ownerNotLinked": "Dieser Host ist nicht mit einem OpenBot-Eigentümerkonto verknüpft.",
-  "error.team.ownerEmailRequired": "Melde dich mit der OpenBot-E-Mail-Adresse an, mit der dieser Host erstellt wurde.",
+  "error.team.ownerNotLinked": "Dieser Host ist nicht mit einem ZollyBot-Eigentümerkonto verknüpft.",
+  "error.team.ownerEmailRequired": "Melde dich mit der ZollyBot-E-Mail-Adresse an, mit der dieser Host erstellt wurde.",
   "error.team.hostNotConfigured": "Der Teamhost ist nicht eingerichtet.",
   "error.team.alreadyConfigured": "Der Teamserver ist bereits eingerichtet.",
   "error.team.identityCreateFailed": "Die Teamidentität konnte nicht erstellt werden.",
   "error.team.accountChangedDuringCreate":
     "Das angemeldete Konto wurde während der Erstellung dieses Servers geändert.",
-  "error.team.notConfigured": "Dieser OpenBot wurde nicht eingerichtet.",
+  "error.team.notConfigured": "Dieser ZollyBot wurde nicht eingerichtet.",
   "error.team.keyRotationMissing": "Es wartet keine Änderung des Serverschlüssels.",
   "error.team.serverNotActive": "Dieser Server ist für das angemeldete Konto nicht mehr aktiv.",
   "error.team.logoInvalid": "Wähle ein gültiges PNG-, JPEG- oder WebP-Bild mit höchstens 512 KB.",
@@ -24,9 +24,9 @@ export const messages = {
   "error.team.inviteEmailMismatch": "Diese Einladung gehört zu einer anderen E-Mail-Adresse.",
   "error.team.memberDisabled": "Dieses Teammitglied ist deaktiviert.",
   "error.team.memberLimit": "Ein Host kann bis zu {limit} Mitglieder haben.",
-  "error.team.accountNotMember": "Dieses OpenBot-Konto ist kein Teammitglied.",
+  "error.team.accountNotMember": "Dieses ZollyBot-Konto ist kein Teammitglied.",
   "error.team.usernameTaken": "Dieser Benutzername wird bereits verwendet.",
-  "error.team.inviteRequiresAccount": "Diese Einladung erfordert ein bestätigtes OpenBot-Konto.",
+  "error.team.inviteRequiresAccount": "Diese Einladung erfordert ein bestätigtes ZollyBot-Konto.",
   "error.team.loginIncorrect": "Der Benutzername oder das Passwort ist falsch.",
   "error.team.currentPasswordIncorrect": "Das aktuelle Passwort ist falsch.",
   "error.team.memberNotFound": "Teammitglied nicht gefunden.",
@@ -48,17 +48,17 @@ export const messages = {
     "Der Benutzername muss 3 bis 32 Buchstaben, Zahlen, Punkte, Bindestriche oder Unterstriche enthalten.",
   "error.team.passwordLength": "Das Passwort muss 12 bis 256 Zeichen enthalten.",
   "error.team.bindFailed": "Die Team-API konnte nicht gebunden werden.",
-  "error.team.signInRequired": "Eine OpenBot-Anmeldung ist erforderlich.",
+  "error.team.signInRequired": "Eine ZollyBot-Anmeldung ist erforderlich.",
   "error.team.authenticationRequired": "Authentifizierung erforderlich.",
   "error.team.agentNotFound": "Agent nicht gefunden.",
   "error.team.routeNotFound": "Route nicht gefunden.",
   "error.team.requestFailed": "Anfrage fehlgeschlagen.",
   "error.team.tooManySignInAttempts": "Zu viele Anmeldeversuche. Versuche es später erneut.",
-  "error.team.clientUpdateRequired": "Aktualisiere diesen OpenBot-Client, bevor du dich mit diesem Host verbindest.",
-  "error.team.hostUpdateRequired": "Aktualisiere OpenBot auf dem Host, bevor du dich verbindest.",
+  "error.team.clientUpdateRequired": "Aktualisiere diesen ZollyBot-Client, bevor du dich mit diesem Host verbindest.",
+  "error.team.hostUpdateRequired": "Aktualisiere ZollyBot auf dem Host, bevor du dich verbindest.",
   "error.team.sidebarLayoutUnavailable": "Die Anordnung der Seitenleiste ist nicht verfügbar.",
   "error.team.providersUnsupported": "Diese Verbindung unterstützt keine Anbietereinstellungen.",
-  "error.team.providerNotManaged": "OpenBot verwaltet die CLI dieses Anbieters nicht.",
+  "error.team.providerNotManaged": "ZollyBot verwaltet die CLI dieses Anbieters nicht.",
   "error.team.channelsUnsupported": "Diese Verbindung unterstützt keine Kanalchats.",
   "error.team.channelPictureUnsupported": "Diese Verbindung unterstützt keine Kanalbilder.",
   "error.team.channelDeleteUnsupported": "Diese Verbindung unterstützt das Löschen von Kanälen nicht.",
@@ -73,9 +73,9 @@ export const messages = {
   "error.team.chatColorsUnsupported": "Diese Verbindung unterstützt keine Chatfarben.",
   "error.team.sidebarFoldersUnsupported": "Diese Verbindung unterstützt keine Ordner in Ordnern.",
   "error.team.agentNotificationLevelsUnsupported":
-    "Dieser Server kann keine eigene Benachrichtigungsstufe pro Agent speichern. Aktualisiere OpenBot auf dem Computer, auf dem er läuft.",
+    "Dieser Server kann keine eigene Benachrichtigungsstufe pro Agent speichern. Aktualisiere ZollyBot auf dem Computer, auf dem er läuft.",
   "error.team.sidebarPinsUnsupported":
-    "Dieser Server kann deine angehefteten Chats nicht für alle deine Geräte speichern. Aktualisiere OpenBot auf dem Computer, auf dem er läuft.",
+    "Dieser Server kann deine angehefteten Chats nicht für alle deine Geräte speichern. Aktualisiere ZollyBot auf dem Computer, auf dem er läuft.",
   "error.team.agentInstructionsUnsupported":
     "Diese Verbindung unterstützt das Bearbeiten von Agentenanweisungen nicht.",
   "error.team.agentPublishUnsupported": "Diese Verbindung unterstützt das Veröffentlichen von Agenten nicht.",
@@ -87,7 +87,7 @@ export const messages = {
   "error.team.conversationFileSearchUnsupported": "Diese Verbindung unterstützt das Suchen von Dateien nicht.",
   "error.team.sideQuestionUnsupported": "Diese Verbindung unterstützt keine Nebenfragen.",
   "error.team.routineFlowsUnsupported":
-    "Dieser Server unterstützt keine Routinenabläufe. Aktualisiere OpenBot auf dem Computer, auf dem er läuft.",
+    "Dieser Server unterstützt keine Routinenabläufe. Aktualisiere ZollyBot auf dem Computer, auf dem er läuft.",
   "error.team.routineCanvasTooLarge":
     "Diese Routinenansicht ist zu groß, um sie an dieses Gerät zu senden. Kürze die Routinenanweisungen auf dem Computer, auf dem der Server läuft.",
   "error.team.conversationPageTooLarge":
@@ -124,7 +124,8 @@ export const messages = {
   "error.team.machineAlertMemberInvalid":
     "Nur Eigentümer oder Administratoren dieses Servers können Maschinenwarnungen erhalten.",
   "error.team.hostedSitesUnsupported": "Diese Verbindung unterstützt keine Websites.",
-  "error.team.hostedSitesUnregistered": "Dieser Server ist nicht bei OpenBot registriert und hat daher keine Websites.",
+  "error.team.hostedSitesUnregistered":
+    "Dieser Server ist nicht bei ZollyBot registriert und hat daher keine Websites.",
   "error.team.hostedSiteNotFound": "Website nicht gefunden.",
   "error.team.markUnreadUnsupported": "Dieser Client unterstützt das Markieren von Unterhaltungen als ungelesen nicht.",
   "error.team.inviteServiceUnavailable": "Der Einladungsdienst ist nicht verfügbar.",
@@ -147,12 +148,12 @@ export const messages = {
   "error.team.ownerRequired": "Nur der Eigentümer dieses Servers kann das tun.",
   "error.team.requestTooLarge": "Der Anfragetext ist zu groß.",
   "error.team.signInRelayUnsupported":
-    "Dieser Server kann keine Anmeldungen weiterleiten. Aktualisiere OpenBot auf dem Host.",
+    "Dieser Server kann keine Anmeldungen weiterleiten. Aktualisiere ZollyBot auf dem Host.",
   "error.team.connectorsUnsupported":
-    "Die Verbindungen dieses Servers lassen sich hier nicht verwalten. Aktualisiere OpenBot auf dem Host.",
+    "Die Verbindungen dieses Servers lassen sich hier nicht verwalten. Aktualisiere ZollyBot auf dem Host.",
   "error.team.discordAccessUnsupported":
-    "Dieser Server kann keine Discord-Rollen festlegen. Aktualisiere OpenBot auf dem Server.",
-  "error.team.connectorPageRefused": "Der Server hat eine Seite gesendet, die OpenBot nicht öffnet.",
+    "Dieser Server kann keine Discord-Rollen festlegen. Aktualisiere ZollyBot auf dem Server.",
+  "error.team.connectorPageRefused": "Der Server hat eine Seite gesendet, die ZollyBot nicht öffnet.",
   "error.team.signInRelayUnknown": "Diese Anmeldung ist beendet oder existiert nicht.",
   "error.team.signInRelayUsed": "Diese Anmeldung wurde bereits gesendet.",
   "error.team.signInRelayMismatch": "Diese Adresse gehört nicht zu dieser Anmeldung.",

@@ -1,6 +1,6 @@
-import type { AgentTemplateDetail } from "@openbot/contracts/ipc";
 import type { JSX } from "@solidjs/web";
 import { createRootRoute, createRoute, createRouter, RouterContextProvider } from "@tanstack/solid-router";
+import type { AgentTemplateDetail } from "@zollybot/contracts/ipc";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 // The site's stylesheet, loaded only when a site story opens. See `ArticleMedia.stories.tsx`.
 import "../../styles.css";
@@ -84,7 +84,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** What `openbot.run/agents/<id>` shows. "Add to OpenBot" opens `openbot://agents/<id>`. */
+/** What `openbot.run/agents/<id>` shows. "Add to ZollyBot" opens `zollybot://agents/<id>`. */
 export const SharedAgent: Story = {};
 
 /** The owner uploaded a photo for the agent, so the page shows it instead of the generated avatar. */

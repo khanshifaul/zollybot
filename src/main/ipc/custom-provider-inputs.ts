@@ -1,7 +1,7 @@
 // The one renderer-to-main payload that carries a secret. No message here quotes any part of the
 // input, because the field it would name is the API key or a header value.
 
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   CustomProviderHarness,
   CustomProviderHeader,
@@ -10,7 +10,7 @@ import type {
   DeleteCustomProviderInput,
   SaveCustomProviderInput,
   UpdateCustomProviderInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   CUSTOM_PROVIDER_LIMITS,
   composedCustomModelId,
@@ -22,9 +22,9 @@ import {
   isCustomProviderMaxOutput,
   isCustomProviderReasoningEfforts,
   isNewCustomProviderId,
-} from "@openbot/contracts/ipc";
-import { isString } from "@openbot/contracts/runtime-values";
-import { sourceText } from "@openbot/i18n/source";
+} from "@zollybot/contracts/ipc";
+import { isString } from "@zollybot/contracts/runtime-values";
+import { sourceText } from "@zollybot/i18n/source";
 import { isObject, requireString } from "./validation";
 
 function parseProviderId(value: unknown): string {

@@ -1,6 +1,6 @@
 import type { BrowserWindow, Input } from "electron";
 
-/** How long `Cmd + Q` must be held before OpenBot quits. */
+/** How long `Cmd + Q` must be held before ZollyBot quits. */
 const HOLD_MS = 1_200;
 /** The longest time between two presses that still counts as a double press. */
 const DOUBLE_PRESS_MS = 500;
@@ -37,13 +37,13 @@ interface Hold {
 }
 
 /**
- * `Cmd + Q` is next to `Cmd + W` and `Cmd + A`, and one press stopped OpenBot with its agents and
- * routines (#4149). In a focused OpenBot page, OpenBot quits only when the user holds the keys or
+ * `Cmd + Q` is next to `Cmd + W` and `Cmd + A`, and one press stopped ZollyBot with its agents and
+ * routines (#4149). In a focused ZollyBot page, ZollyBot quits only when the user holds the keys or
  * presses them twice, and a hint in the window tells how.
  *
  * macOS sends no key up for Q while Command is held, so the repeats of the held key show the hold.
- * The keys stay held when the hold is complete. If OpenBot quit then, macOS would give the next
- * repeats to the app that comes to the front, and that app would quit too. OpenBot therefore hides
+ * The keys stay held when the hold is complete. If ZollyBot quit then, macOS would give the next
+ * repeats to the app that comes to the front, and that app would quit too. ZollyBot therefore hides
  * the window and waits for the release: a key up, the loss of focus, or a quiet time with no repeat.
  */
 export function createQuitShortcut({ quit, isQuitting, showHint }: QuitShortcutOptions): QuitShortcut {

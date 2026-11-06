@@ -18,13 +18,13 @@ queries that contain each word of the tool name without its namespace, include t
 without a describe step. Each model step sends the full context again, so one step less saves more
 input than the added schema costs. A query word that is only in the namespace, or one shared verb
 such as "read", does not make a result strong. The other results have a short description only. When a
-strong result is an `openbot_browser` tool, the results also include `openbot_browser.run_script` with its
+strong result is an `zollybot_browser` tool, the results also include `zollybot_browser.run_script` with its
 schema. Agents search for the single actions that they know, such as click, and otherwise do not find the
 multi-step tool (see [Browser](browser.md)). The instructions
 tell the agent to describe a tool only when no search result gave its schema. A search with ready schemas, and each
 `tool_describe` result, starts with a `call` note: the tools are not direct tools, so run them with `tool_call`.
 Claude loads its own deferred tools with a search and then calls them directly, and it called a found
-`openbot.list_workflows` as `mcp__openbot__list_workflows`. A search that names a workflow does not get the
+`zollybot.list_workflows` as `mcp__zollybot__list_workflows`. A search that names a workflow does not get the
 browser note. `tool_describe` accepts `names`, or
 one `name` string, and returns the original schemas for up to ten qualified names, plus guidance from
 `agent/tool-guidance.ts`. Identical guidance appears once per response. The initial catalog lists
@@ -110,7 +110,7 @@ latest messages.
 The number of turns is a setting of the server that runs the agents: Server settings > General >
 Memory review, with 10, 20 (the default) or 40 turns, or Off. An owner or admin of a joined server sets
 it through `memory-review-v1` (see [servers.md](servers.md)). Main owns
-`openbot-memory-review-v1.json` (`MemoryReviewPreferenceStore`) and passes
+`zollybot-memory-review-v1.json` (`MemoryReviewPreferenceStore`) and passes
 `memoryReviewInterval()` to the agent service, which reads it at each use, so a change applies from
 the next turn. Off starts no review of any kind: not after turns, a pause, a clear or a closed side
 thread. The counts continue while it is off, so the first turn after it is on again can start a
@@ -145,7 +145,7 @@ While a turn of that conversation runs, the line waits for the turn to end. Agen
 
 Codex and Muse complete explicit compaction through turn events. Pi completes it through the request
 response. Claude manages compaction natively. ACP and custom ACP expose no explicit compaction
-operation to the OpenBot scheduler. Unsupported or native-managed clients cannot reserve its queue
+operation to the ZollyBot scheduler. Unsupported or native-managed clients cannot reserve its queue
 for a no-op request. Request completion clears the hold and keeps the minimum-growth guard.
 
 Antigravity reports its context fill but has no compact operation, so its flavor sets the `handoff`
@@ -160,7 +160,7 @@ Cumulative account usage is not context occupancy. A missing report is not zero 
 200,000-token context window, per-turn model summary, or new automatic model call is added.
 
 The design uses Hermes's on-demand discovery, stable instruction ordering, and bounded local
-history recall as references. OpenBot retains each native provider's session and compaction rules.
+history recall as references. ZollyBot retains each native provider's session and compaction rules.
 
 ## Model catalog
 
@@ -184,12 +184,12 @@ Codex, Pi, Kimi and GitHub Copilot, the manifest `checksum` for Muse, the manife
 so a Grok, Gemini or Cursor release is trusted on TLS alone. A Gemini release must stay on
 `dl.google.com/agy-extensions/releases` and keep the pinned command name. A Cursor release must use
 the pinned `downloads.cursor.com/lab` path for its target, with a build that starts with the
-registry date, and keep the pinned command. An upstream install writes `openbot-install.json` with the SHA-256 of each
+registry date, and keep the pinned command. An upstream install writes `zollybot-install.json` with the SHA-256 of each
 file it installed, and every start verifies that record and the binary's `--version` before the
 install is used. The newest version in the store that verifies is the one that runs.
 
 `provider-runtime-blocklist.json` on `main` names versions no installation may offer. It stops a
-broken upstream release without an OpenBot release. It suppresses an offer only: it does not remove
+broken upstream release without an ZollyBot release. It suppresses an offer only: it does not remove
 a version a user already installed. A list that cannot be read blocks nothing.
 
 The `Provider CLI canary` workflow (`.github/workflows/provider-cli-canary.yml`) finds a broken
@@ -209,7 +209,7 @@ keeps the previous client until the candidate is ready; activation failure remov
 artifact and preserves the old runtime, so a release that does not start leaves the last working CLI
 in use. Download status stays `finishing` until activation succeeds.
 
-CLI resolution prefers an explicit `OPENBOT_*_PATH`, then the installed managed copy, then an
+CLI resolution prefers an explicit `ZOLLYBOT_*_PATH`, then the installed managed copy, then an
 automatically discovered system CLI. When the managed copy wins, `resolveInstalledFirst` in
 `src/backend/cli.ts` also resolves with no managed copy, at the same time, and a system CLI of the same or a newer
 version runs instead: the user's CLI on `PATH` replaces a copy that is not newer. A version that
@@ -221,14 +221,14 @@ On macOS and Linux, discovery looks in the folders of the login-shell `PATH` (`l
 folders: `~/.local/bin`, `~/.npm-global/bin`, `~/.volta/bin`, `~/.bun/bin`, the pnpm home, Homebrew
 and the system folders. nvm folders are not searched, because only nvm's shell setup selects a
 version. The login shell is `$SHELL` when it is a known POSIX shell or fish; otherwise macOS uses
-`/bin/zsh`. The version probe and each process that OpenBot starts for the CLI (app server, ACP,
+`/bin/zsh`. The version probe and each process that ZollyBot starts for the CLI (app server, ACP,
 Claude sessions, sign-in and sign-out) start with the resolved `launchPath`: the login-shell
-folders, then OpenBot's own, then the CLI's folder for a system copy. An app that Finder starts can
+folders, then ZollyBot's own, then the CLI's folder for a system copy. An app that Finder starts can
 then run a `#!/usr/bin/env node` CLI. A CLI that exists but does not start reports whether the
 managed copy or the user's copy failed.
 
-Installed runtimes live in one store per computer, `appData/OpenBot/provider-runtimes`, which is the
-path the packaged app always used: its `userData` is `appData/OpenBot`. Development profiles differ
+Installed runtimes live in one store per computer, `appData/ZollyBot/provider-runtimes`, which is the
+path the packaged app always used: its `userData` is `appData/ZollyBot`. Development profiles differ
 per renderer port and per worktree, so a store inside `userData` started empty in each
 one, fell back to the user's own CLI, and offered and downloaded the managed copy again. An explicit
 `--user-data-dir` still keeps its own store, so automation and packaged smoke checks stay
@@ -289,7 +289,7 @@ A provider that is off in this profile runs no CLI, so the manager does not stam
 counts as in use while a key-only provider that runs on it is on. Its
 provider page in Settings offers Delete (#3321), which removes every version of that CLI and
 this profile's partial downloads of it, and leaves accounts and sign-ins alone. On a provider that
-is on and runs the CLI that OpenBot downloaded, Delete first turns the provider off. An agent that
+is on and runs the CLI that ZollyBot downloaded, Delete first turns the provider off. An agent that
 uses the provider stops it, as it stops the switch. It is refused while
 the provider is on, while its download runs, and for a provider with an explicit CLI path. The same
 age rule keeps a version another instance stamped, with one change: the manager remembers its own
@@ -321,7 +321,7 @@ metadata until the offered runtime passes the existing download and install chec
 preload decoder. Cancellation and failure preserve the previous installation and its update offer.
 
 After an app upgrade, main updates the managed CLIs with no offer (#3164).
-`openbot-provider-cli-app-version-v1.json` in `userData` keeps the app version that last started the
+`zollybot-provider-cli-app-version-v1.json` in `userData` keeps the app version that last started the
 update checks. A different or missing version calls `startUpdateChecks({ updateInstalled: true })`.
 Until the first check starts the downloads, `getStatus` does not offer the CLIs that it will update. That check then starts the
 download of each managed CLI that has a newer version, before it sends its status, so the renderer
@@ -349,15 +349,15 @@ runs behind it, whoever owns the CLI: the download installs the managed copy and
 `updateProviderCli` activates it with `preferInstalled: false`, so it starts the copy it downloaded.
 Later resolutions keep that copy while it is newer than the system install, which is left where it
 is; when the user's CLI catches up, the user's CLI runs again. When the user's CLI goes away, main calls
-`providerUseChanged`, which stamps the copy again, or reads the store when a sibling collected it. OpenBot never runs the CLI's own updater, so no version it offers depends
-on another release channel. An explicit `OPENBOT_*_PATH` suppresses the offer, because that path
+`providerUseChanged`, which stamps the copy again, or reads the store when a sibling collected it. ZollyBot never runs the CLI's own updater, so no version it offers depends
+on another release channel. An explicit `ZOLLYBOT_*_PATH` suppresses the offer, because that path
 names the binary to run and the managed copy is not it. The owner comes from the last resolution of
 the binary, not from the client that runs it, so a provider that is signed out still reports its own
 install rather than reading as the managed copy. A failure keeps the reason the CLI gave, redacted,
 in one error that goes to the provider row and to the caller - and on, through the Team API, to the
 team's connected clients.
 
-A hosted server (`OPENBOT_HOSTED_SERVER=1`, packaged Linux) has system Claude and Codex CLIs from its image, and the
+A hosted server (`ZOLLYBOT_HOSTED_SERVER=1`, packaged Linux) has system Claude and Codex CLIs from its image, and the
 image updates them at boot. That update can fail with no error, and the user cannot install a CLI
 there. When a row is `outdated`, main calls `download` for the provider once per start, so the
 managed copy replaces the old CLI with no offer (#4995). The row has no `cliSource`, because the
@@ -373,7 +373,7 @@ slow backfill (the first start after a hosted server's restore) starts the lease
 default is not a learned wait: a timeout after it gives the next start `LONG_START_TIMEOUT_MS` again,
 not twice that time.
 
-Every runtime the store reaches is on this computer: `window.openbot.providerRuntimes` addresses no
+Every runtime the store reaches is on this computer: `window.zollybot.providerRuntimes` addresses no
 other one, while the agent status beside it describes whichever server is open. The store therefore
 takes `isLocalServer`, and a workspace on another computer announces no offer and starts no update -
 the same rule the provider row and the picker already follow. A server switch rebuilds that store,
@@ -404,7 +404,7 @@ failure as well as after a success.
 `src/backend/acp-connection.ts` owns ACP process transport. `acp-configuration.ts` owns
 configuration and model discovery. `src/backend/acp-client.ts` owns session start/load,
 streamed messages, permissions, tool bridging, and cancellation. `grok-client.ts` supplies xAI
-login and billing hooks. The OpenCode driver starts `opencode acp` on the runtime OpenBot pins and
+login and billing hooks. The OpenCode driver starts `opencode acp` on the runtime ZollyBot pins and
 downloads, or on a CLI the user installed. Profile clients deny tool permissions.
 
 The pinned runtime is OpenCode 2 (`@opencode/cli`). Its platform tarballs carry no licence file, so
@@ -414,7 +414,7 @@ the stage step copies `LICENSE` from the `opencode-ai` tarball that `licensePack
 `session_v2` and keeps `session`, so OpenCode 1 can still open it. A database that OpenCode 2
 creates has no `session` table, and OpenCode 1 then refuses to start with "Database is not empty and
 has no session table" (OpenCode issue #53221); `ProviderRuntime` replaces that exit text with
-`error.provider.opencodeDatabaseNewer`. OpenBot does
+`error.provider.opencodeDatabaseNewer`. ZollyBot does
 not move OpenCode to a separate database, because the threads would lose their sessions. OpenCode 2
 differs from OpenCode 1 on the wire in three places that `acp-client.ts` handles: a missing session
 is `-32602` "session not found: <id>" instead of an `-32603` service failure; `session/resume` can
@@ -422,7 +422,7 @@ fail with `ServiceUnavailableError` while the CLI starts (OpenCode issue #57204)
 more after two seconds; and a model name starts with the provider id, not its name, so
 `openCodeModelName` restores the group name.
 
-OpenCode has no login step OpenBot can drive, because the account is one environment variable: a
+OpenCode has no login step ZollyBot can drive, because the account is one environment variable: a
 spawn without `OPENCODE_API_KEY` lists the free OpenCode Go models, and a spawn with one lists the
 paid catalog. So `AcpAgentClient` derives `#signedIn` from the models `session/new` returns, not
 from a credential, and a keyless OpenCode reports `available`. `AcpProviderOptions.extraEnv` is read
@@ -438,10 +438,10 @@ the provider's serialized connection command. It refuses a provider that is runn
 deliveries while it writes, and reports success only after a new process runs with the new key.
 
 That one variable turns on two products: OpenCode reports OpenCode Zen and OpenCode Go as a single
-catalog, on the separate endpoints `opencode.ai/zen/v1` and `opencode.ai/zen/go/v1`, and OpenBot
+catalog, on the separate endpoints `opencode.ai/zen/v1` and `opencode.ai/zen/go/v1`, and ZollyBot
 supports only Go. So `isOpencodeModelUnusableWithStoredKey` in `src/backend/agent/provider-models.ts`
 drops the paid Zen models from `ModelCatalog.refresh` (through the OpenCode driver's
-`catalog.usableWithStoredKey`) while OpenBot is the one supplying the key;
+`catalog.usableWithStoredKey`) while ZollyBot is the one supplying the key;
 with no key stored those models can only come from the user's own OpenCode sign-in, which does
 buy them. Neither `/models` endpoint authenticates, so entitlement cannot be read back and the
 split is a product rule rather than a check.
@@ -460,7 +460,7 @@ SQLite call. `scripts/opencode-go-usage-e2e.ts` covers it.
 `PREFERRED_MODEL_ORDER` (in the same file) reorders that catalog, because a provider with no
 `defaultProviderModel` runs the first model of its list and OpenCode reports the third-party
 services the user signed in to before its own — so the fallback used to pick a model behind a token
-OpenBot can neither see nor refresh. `opencodeModelRank` sorts free models first with Muse ahead of
+ZollyBot can neither see nor refresh. `opencodeModelRank` sorts free models first with Muse ahead of
 the rest, then OpenCode's own paid models, then everything behind a separate sign-in. Inside one
 tier the newest version comes first. The sort is stable, so the CLI's order stays between models of
 one version.
@@ -484,9 +484,9 @@ background subagent ends, OpenCode answers its result in a turn of its own (a `s
 `unsentBackgroundTurns` of `OPENCODE_ACP_FLAVOR` turns on the recovery in `acp-client.ts`:
 
 - A tool call that ends with `rawOutput.metadata.status` "running" and a `sessionID` started a
-  background task. OpenBot then watches the session for 30 minutes, and longer while it changes.
+  background task. ZollyBot then watches the session for 30 minutes, and longer while it changes.
   The idle pool does not close a watched session, because a closed one never reports the result.
-- Every 2 seconds, when no prompt runs or opens, OpenBot reads `session/list`. When the session's
+- Every 2 seconds, when no prompt runs or opens, ZollyBot reads `session/list`. When the session's
   `updatedAt` changes, it sends `session/load` with the session's own MCP servers, and collects the
   replay apart from live updates until the load answers, also after the request time limit. A
   prompt waits for the load meanwhile. A failed load is tried again at the next poll.
@@ -497,13 +497,13 @@ background subagent ends, OpenCode answers its result in a turn of its own (a `s
   its text when the step ends, so a replay can find it empty first. As for Claude
   (#1904), no delivery attaches to that turn, and a message sent meanwhile fails with
   `ProviderTurnActiveError` and waits in the queue.
-- OpenBot ends that turn when the session sends nothing new for 15 seconds and no tool call is open,
+- ZollyBot ends that turn when the session sends nothing new for 15 seconds and no tool call is open,
   or after the stall limit while one is. A step that writes for longer can split one turn in two;
   nothing is lost. A stop cancels the turn and marks its open tool calls as stopped. For 30 seconds
   after any turn that does not complete, a replay marks new entries as shown and does not show
   them, because OpenCode can go on with a stopped turn (#2858).
 
-The watch is in memory. A background task that ends while OpenBot is closed, or after OpenBot
+The watch is in memory. A background task that ends while ZollyBot is closed, or after ZollyBot
 loaded the session again, shows only in OpenCode's own store.
 
 #### Text of two steps
@@ -526,28 +526,28 @@ The Gemini provider (id `antigravity`) starts Google's Antigravity ACP server
 downloads the zip on the user's computer. `extractZipFiles` in `src/main/provider-runtime-archive.ts`
 accepts only the server and `localharness_external`, which the server starts from its own folder.
 The server has no `--version`, so staging writes `antigravity-package.json` and
-`verifyInstalledRuntime` reads the version from that file (`versionFile`). OpenBot never searches
+`verifyInstalledRuntime` reads the version from that file (`versionFile`). ZollyBot never searches
 `PATH`, because the Antigravity editor installs an `antigravity` command that is not this server.
 
 The server offers its Claude and GPT models only to a client whose `initialize` `clientInfo.name` is
 `zed`, `xcode`, `jetbrains.*` or `android studio*` (`supports_third_party_models` in 1.4.3). Other
 clients get only the Gemini models. So `ANTIGRAVITY_ACP_FLAVOR.clientInfo` sends the name `zed` and
-the title `OpenBot`. The server also sends the name and version to Google in its User-Agent
-(`_surface`), so Google sees OpenBot's requests as `zed/0.1.0`.
+the title `ZollyBot`. The server also sends the name and version to Google in its User-Agent
+(`_surface`), so Google sees ZollyBot's requests as `zed/0.1.0`.
 
 Sign in is an ACP `authenticate` call with `oauth-personal`, in a separate process
-(`src/backend/acp-sign-in.ts`). On Linux, OpenBot reads the Google sign-in link from the
+(`src/backend/acp-sign-in.ts`). On Linux, ZollyBot reads the Google sign-in link from the
 server and opens it with the desktop browser. The server browser launch is disabled for this
 process so the page opens once. A failed browser launch gives an actionable error; the OAuth
 link and browser error details are not logged. Other platforms let the server open the browser.
 A valid saved Google token answers `authenticate` with no browser page. So a Reconnect of a
 connected Google sign-in, with no saved key, first calls ACP `logout` when `initialize` advertises
 `agentCapabilities.auth.logout` (runtime 1.4.1 and later). The Google page then opens. The token is
-shared by every OpenBot profile on the computer, so they all sign out. A Reconnect is refused while
-a Gemini turn runs. When the sign-in stops after the logout answered, OpenBot stops the old client
+shared by every ZollyBot profile on the computer, so they all sign out. A Reconnect is refused while
+a Gemini turn runs. When the sign-in stops after the logout answered, ZollyBot stops the old client
 and reports Gemini signed out; a failure keeps its own reason. A status probe must never call `authenticate`. The serving client does not call it.
-OpenBot checks authentication through model discovery (`session/new`), not the auth methods
-advertised by `initialize`. The runtime can answer "Authentication required", which OpenBot
+ZollyBot checks authentication through model discovery (`session/new`), not the auth methods
+advertised by `initialize`. The runtime can answer "Authentication required", which ZollyBot
 reports as sign-in required. In runtime 1.3.0, a saved OAuth method with no valid token can also
 start interactive authentication during `session/new`; this can leave the probe waiting until
 its existing deadline. Runtime installation alone does not confirm authentication.
@@ -564,7 +564,7 @@ from the CLI in a private tab of its browser. The client polls `status`, shows t
 the live view (`browser-view`), and closes the dialog on the `result`. The Google callback goes to
 `127.0.0.1` on the host, so the host's browser completes it. No route carries the link or a
 credential, and every route requires an owner or admin. A host on another platform does not
-advertise the capability; open OpenBot in the host's desktop session to connect it there. A runtime status of "Runtime installed" means only that the files are
+advertise the capability; open ZollyBot in the host's desktop session to connect it there. A runtime status of "Runtime installed" means only that the files are
 available; "Connected" requires a successful provider check. A known authentication or launch
 error takes priority over runtime readiness.
 
@@ -573,7 +573,7 @@ error takes priority over runtime readiness.
 Issue #1776 reports an HTTP 404 for the official 1.3.0 Linux archive from an OVH IPv6 pool,
 and HTTP 200 over IPv4. This cause is not confirmed: checks from another host on 2026-10-10
 returned HTTP 200 over both families. An HTTP failure occurs before archive extraction or
-ACP startup; it is separate from browser sign-in and missing runtime files. OpenBot keeps
+ACP startup; it is separate from browser sign-in and missing runtime files. ZollyBot keeps
 the download error and Retry action and does not change the host's network settings.
 
 For an affected host, an operator can compare bounded requests to the exact failing URL
@@ -587,18 +587,18 @@ confirmed in the ACP Python source; a native harness requirement remains unverif
 An external installation must preserve this layout (1.3.0 is an example):
 
 ```text
-/var/lib/openbot/antigravity-acp-1.3.0/
+/var/lib/zollybot/antigravity-acp-1.3.0/
   antigravity-package.json    {"version":"1.3.0"}
   bin/
     agy_acp_server.par
     localharness_external
 ```
 
-Both programs must be executable by the OpenBot host user. Set
-`OPENBOT_ANTIGRAVITY_PATH=/var/lib/openbot/antigravity-acp-1.3.0/bin/agy_acp_server.par`
-in that process's environment and restart OpenBot. The variable names the executable, not
-the directory. OpenBot requires the version manifest two levels above it; extraction alone
-does not create that manifest. An invalid override remains an error: OpenBot does not replace
+Both programs must be executable by the ZollyBot host user. Set
+`ZOLLYBOT_ANTIGRAVITY_PATH=/var/lib/zollybot/antigravity-acp-1.3.0/bin/agy_acp_server.par`
+in that process's environment and restart ZollyBot. The variable names the executable, not
+the directory. ZollyBot requires the version manifest two levels above it; extraction alone
+does not create that manifest. An invalid override remains an error: ZollyBot does not replace
 it with the managed runtime. Managed updates do not change the explicit override.
 
 The server runs confined; `antigravityStatePaths` gives it `~/.gemini/antigravity-acp` and
@@ -616,7 +616,7 @@ Gemini can hold more than one account: each account after the first gets `GEMINI
 own folder (`antigravityReadsGeminiHome` gates the rows, the sign-in, the checks, the usage reads and
 the agent start), and `antigravityStatePaths` confines its process to that folder. Each new session
 leaves a conversation database in that folder, so a usage read of an account with no agent process
-starts no process: the account shows its reading from the sign-in check. The sandbox cannot create folders in a new account's home, so OpenBot makes them.
+starts no process: the account shows its reading from the sign-in check. The sandbox cannot create folders in a new account's home, so ZollyBot makes them.
 A plan can serve models that the first account's does not, so the account check also reads the account's own
 `model/list` (`ModelCatalog.read`) after it marks the account connected (#5217). The account row carries as
 `models` only the ones that the provider's catalogue does not list: the picker shows the catalogue on the
@@ -626,7 +626,7 @@ still shows the provider's catalogue for each account.
 The account sign-in is the same ACP `authenticate` call as the first account's; a Reconnect calls
 `logout` first. So a Reconnect refuses while an agent on the account runs a turn, and it stops the
 account's idle agent processes, which keep the old token. A saved Gemini API key belongs to the
-first account: an account process never gets `GEMINI_API_KEY`. The server reports no email and the token file holds none, so OpenBot cannot see
+first account: an account process never gets `GEMINI_API_KEY`. The server reports no email and the token file holds none, so ZollyBot cannot see
 that two accounts are the same Google account. A joined server relays the account's sign-in to the
 client's browser with `provider-account-relay-v2`. A host with only `provider-account-relay-v1`, which
 names Codex and Claude only, signs the account in through the live view.
@@ -663,7 +663,7 @@ limit can be for one model and that the plan's usage page can still show room.
 
 Antigravity 1.3.0 and later send ACP `usage_update` after each model step: `used` is the size of
 the last model call, and `size` is the model's context window. The adapter turns it into
-`thread/tokenUsage/updated`, also after a turn that OpenBot already ended. 1.2.1, the pinned
+`thread/tokenUsage/updated`, also after a turn that ZollyBot already ended. 1.2.1, the pinned
 first-install version, sends none, so the ring stays hidden until the runtime updates. The update
 has no category breakdown.
 
@@ -703,7 +703,7 @@ never `cursor`, which starts the Cursor editor.
 
 Sign in is an ACP `authenticate` call with `cursor_login`, in a separate process, as for Gemini.
 `CURSOR_API_KEY` in the environment also signs the CLI in. A confined Cursor process gets
-`CURSOR_CONFIG_DIR=~/.cursor/openbot-confined` (`cursorConfinedEnv`): the CLI writes
+`CURSOR_CONFIG_DIR=~/.cursor/zollybot-confined` (`cursorConfinedEnv`): the CLI writes
 `cli-config.json` when a session starts and fails when it cannot, and that file also holds the
 user's permissions. `cursorStatePaths` lets it write `~/.cursor` and protects the user's settings,
 hooks, rules, MCP and permission files there and in the CLI config folder, and the
@@ -747,7 +747,7 @@ npm packages have no license file, so staging downloads `LICENSE` from the `cli-
 checks the pinned hash. `resolveClineCli` refuses a CLI older than 3.0.68.
 
 By default the CLI runs its sessions in a hub process that it detaches and that other Cline
-processes share. That process outlives OpenBot and is outside a Workspace only sandbox, so every
+processes share. That process outlives ZollyBot and is outside a Workspace only sandbox, so every
 Cline process, the sign-in included, gets `CLINE_SESSION_BACKEND_MODE=local` and
 `CLINE_NO_AUTO_UPDATE=1` (`CLINE_ENV` in `provider-drivers.ts`). Sign in is an ACP `authenticate`
 call with `cline`, as for Gemini. `CLINE_API_KEY` in the environment also signs the CLI in.
@@ -768,7 +768,7 @@ reads `static.devin.ai/cli/current/manifest.json` and downloads
 archives hold only `bin/` and `share/`. Staging keeps both, because Devin CLI 3000.11.234 has a
 skill that reads its documentation in `share/devin/docs`, and refuses links and other special files.
 The manifest gives a SHA-256 for each target and no size, so a `GET` with `Range: bytes=0-0` gives
-the download size. `OPENBOT_DEVIN_PATH` selects another executable.
+the download size. `ZOLLYBOT_DEVIN_PATH` selects another executable.
 
 Sign in calls the ACP `authenticate` method `devin-browser`, which opens Devin's page in the system
 browser. Devin CLI 3000.11.234 keeps the sign-in in `credentials.toml` of its XDG data folder
@@ -792,8 +792,8 @@ state from peers below protocol 8, and `providers-v8` carries it.
 The GitHub Copilot provider (id `copilot`, issue #4637) starts GitHub's Copilot CLI with
 `copilot --acp --no-auto-update`. The runtime manager reads `releases/latest` of
 `github/copilot-cli` and downloads `copilot-<target>.tar.gz` (`.zip` on Windows). Each archive holds
-only `copilot` (`copilot.exe`). The licence lets an app include the CLI only unchanged, so OpenBot
-downloads it and does not ship it. `OPENBOT_COPILOT_PATH` selects another executable. Every Copilot
+only `copilot` (`copilot.exe`). The licence lets an app include the CLI only unchanged, so ZollyBot
+downloads it and does not ship it. `ZOLLYBOT_COPILOT_PATH` selects another executable. Every Copilot
 process gets `COPILOT_AUTO_UPDATE=false`, because `copilot login` refuses `--no-auto-update`.
 
 The executable unpacks its JavaScript package into `pkg/<platform>/<version>` of its cache folder
@@ -805,7 +805,7 @@ Sign in runs `copilot login`, which opens GitHub's page in the system browser an
 on a `127.0.0.1` callback. A joined computer signs in the host with `copilot login --device-code`,
 which prints "visit PAGE and enter code CODE". Copilot CLI 1.0.105 keeps the token in the system
 keychain. It prefers `COPILOT_GITHUB_TOKEN`, `GH_TOKEN` and `GITHUB_TOKEN`, in that order, to the
-keychain sign-in, so one of them in OpenBot's environment selects the account. The CLI has no
+keychain sign-in, so one of them in ZollyBot's environment selects the account. The CLI has no
 sign-out command: Sign out starts its ACP server and calls the ACP `logout` method
 (`acpLogout`). It cannot sign out a token from the environment. A signed-out process answers
 `session/new` with `-32000`. Not confirmed: a Linux server with no keychain service, and the form
@@ -845,7 +845,7 @@ open a browser on the host. On Windows the page can open on the host. Sign out r
 with `-32602` and `{ session_id: "Session not found" }`, which `KIMI_ACP_FLAVOR` reads as a missing
 session.
 
-Kimi CLI 1.52.0 has no ACP configuration options, so OpenBot changes the model with
+Kimi CLI 1.52.0 has no ACP configuration options, so ZollyBot changes the model with
 `session/set_model`. Kimi moves the session to the model, and then saves the model as its default in
 `config.toml`. A Workspace only Kimi process cannot write that file, and the save fails with `-32603`
 and the path in `data.details`. `AcpFlavor.modelSetUnsaved` reads that failure as a model change
@@ -910,33 +910,33 @@ is ready. The `providers-v5` and `providers-v1` key routes refuse its key.
 
 A v8 client keeps the agents of a provider that its build does not know (`ForeignProviderId`,
 `AgentProviderRef`). The agent stays in the list and chat works, because the host runs it. The
-provider and model pickers show the agent disabled, with "Update OpenBot to use {name}" and the
+provider and model pickers show the agent disabled, with "Update ZollyBot to use {name}" and the
 neutral `unknown` logo. They do not reset the agent. The model picker and the backup models leave
 out the models of that provider. Host types (`AgentProviderId`, the database, the drivers) stay
 closed.
 
 ### Hermes
 
-The Hermes provider (id `hermes`) starts the user's own Hermes Agent with `hermes acp`. OpenBot has
+The Hermes provider (id `hermes`) starts the user's own Hermes Agent with `hermes acp`. ZollyBot has
 no managed runtime for it: a newer Hermes moves `state.db` and `config.yaml` in `~/.hermes` forward,
 and the user's own older Hermes then cannot read them. `resolveHermesCli` looks for `hermes` on
 `PATH` and in `~/.local/bin`, and reads the version from `Hermes Agent vX.Y.Z` in `hermes --version`.
 
-A missing CLI is `not-installed`. On macOS and Linux, with no `OPENBOT_HERMES_PATH`, its row has a
+A missing CLI is `not-installed`. On macOS and Linux, with no `ZOLLYBOT_HERMES_PATH`, its row has a
 Download: `HermesInstaller` (`src/main/hermes-installer.ts`) runs the official installer as the
-OpenBot user. The script is pinned to the commit of one release (`HERMES_INSTALLER`), and OpenBot
+ZollyBot user. The script is pinned to the commit of one release (`HERMES_INSTALLER`), and ZollyBot
 checks its SHA-256 before it runs. It runs one `--stage <name> --json` at a time, with no browser,
 computer-use or setup stage, so each stage moves the progress bar and Cancel stops its process
 group. Hermes goes to `~/.hermes` and `~/.local/bin/hermes`, as a terminal install puts it, and
-OpenBot does not update or remove it. The installer status is an optional `providers.hermes` in the
+ZollyBot does not update or remove it. The installer status is an optional `providers.hermes` in the
 runtime snapshot: `not-downloaded`, `downloading`, `finishing`, `download-error`, and `ready` when
 Hermes is installed, so that a server's row offers its Connect. Team API protocols below 8 never
 carry it; `providers-v8` adds the row, and an older client drops it. On Windows and with
-`OPENBOT_HERMES_PATH`, the row opens the `hermes-install` guide. The process keeps
+`ZOLLYBOT_HERMES_PATH`, the row opens the `hermes-install` guide. The process keeps
 the user's `HERMES_HOME` (or `~/.hermes`, `%LOCALAPPDATA%\hermes` on Windows), so the user's memories,
 skills, sign-ins and `SOUL.md` apply. `hermesStatePaths` lets a confined process write that folder
 and protects the Hermes code, `config.yaml`, `.env`, `SOUL.md`, skills, hooks, cron, plugins and
-profiles in it. On a server, that is the Hermes of the service user (`/var/lib/openbot`, or `/data` in
+profiles in it. On a server, that is the Hermes of the service user (`/var/lib/zollybot`, or `/data` in
 Docker); the server packages include `libatomic1`, which the Node.js of the Hermes installer needs.
 `scripts/hermes-server-e2e.ts` installs Hermes in the release image with `HermesInstaller` and runs a
 turn on a mock model.
@@ -984,7 +984,7 @@ failed `session/new` (an agent that needs sign-in first) gives no models and doe
 check. The registry install check (`acp-registry-install.ts`) sends `initialize` only. The scan (`src/backend/acp-agent-scan.ts`) looks up the preset names on the
 login-shell `PATH` and in the user's folders, and never starts a file. An agent and its check start
 with the `PATH` that its command was looked up in (`agentLaunchPath`): the absolute folders of the
-login-shell `PATH`, then those of OpenBot's own, so an app that Finder starts can still run a
+login-shell `PATH`, then those of ZollyBot's own, so an app that Finder starts can still run a
 `#!/usr/bin/env node` agent. A `PATH` saved on the agent wins. Claude agent sessions start with the
 same `PATH`, so their Bash tool and hooks find the user's tools; an `env.PATH` in the Claude settings
 wins. The agents run confined with no state paths. Migration 23 adds `acp` to
@@ -995,7 +995,7 @@ A custom agent can have a usage prompt (`usagePrompt`, "Usage command" in the fo
 as `/usage`. `customAgents.usage` asks each agent that has one: `ProviderRuntime.customAgentUsage`
 sends it through `readUsageText` on the agent's model list process, in the session that no thread
 owns (`privatePrompt`). The answer is redacted and kept to `CUSTOM_AGENT_LIMITS.usageAnswer`
-characters. OpenBot does not read a percent from it, so `acp` keeps `reportsUsage: false`: the rail
+characters. ZollyBot does not read a percent from it, so `acp` keeps `reportsUsage: false`: the rail
 shows the agent's logo with no ring, and its hover card shows the text. The renderer polls with the
 plan usage interval, only while the local server is active. One read runs at a time, and a read from
 the last minute answers the next request. While `acp` is released, the read returns the last answers
@@ -1020,7 +1020,7 @@ saved, and a joined host gets no detection and no Edit.
 ### Local provider switches
 
 The Providers section can turn each built-in provider off on this computer.
-`ProviderUseSettingsStore` saves the choices in `openbot-provider-use-v1.json`.
+`ProviderUseSettingsStore` saves the choices in `zollybot-provider-use-v1.json`.
 A missing file leaves all providers on. An unreadable or newer file stays unchanged.
 
 `ProviderRuntime` filters off providers before CLI checks and model discovery. It also
@@ -1083,7 +1083,7 @@ account after the first also counts as a read.
 
 The values follow t3code (one refresh in five minutes for each host, one at a time) and openusage (5
 minutes, doubling up to an hour). CodexBar and openusage first wait for `Retry-After`; the Claude Agent
-SDK and the Codex app-server do not give OpenBot that header, so the gate uses only the doubling.
+SDK and the Codex app-server do not give ZollyBot that header, so the gate uses only the doubling.
 `scripts/usage-read-pacing-e2e.ts` checks the gate with a fake Codex.
 
 ### Usage reset credits
@@ -1111,12 +1111,12 @@ Codex, Grok, Muse, Cursor, Devin and GitHub Copilot (issue #3487). Claude and Co
 (`claude auth logout`, `codex logout`), which also signs out an account folder before its removal.
 Grok, Muse, Cursor, Devin and GitHub Copilot have a driver `signOut` (`grok logout`, `muse logout`,
 `cursor-agent logout`, `devin auth logout`, and the ACP `logout` method of `copilot --acp`)
-for the own sign-in only. Muse offers it only on this computer with no OpenBot key saved
+for the own sign-in only. Muse offers it only on this computer with no ZollyBot key saved
 (`apiKeyInUse`): the key keeps Muse connected, and the key dialog removes it. Cline, Gemini and Pi have no sign-out command.
 `ProviderRuntime.signOutProvider` refuses while the provider runs a turn, cancels a
 sign-in, and runs that command with no home variable, so it signs out the user's own home folder.
 On this computer a terminal CLI shares that folder and the macOS keychain item, so it signs out too;
-the confirmation says so. Then OpenBot stops the client and reports the provider signed out, as a
+the confirmation says so. Then ZollyBot stops the client and reports the provider signed out, as a
 Gemini Reconnect does. A failed sign-out keeps the client and shows its reason. Agents keep the own
 sign-in and wait for a Reconnect. The accounts after the first and their folders stay, but they
 need the connected CLI, so they wait too. A joined server uses the optional `provider-sign-out-v1`
@@ -1127,7 +1127,7 @@ route.
 `AgentClient` remains the provider boundary. ACP session ownership, history replay, and turn
 completion stay together. Boolean and select settings can include grouped choices. The client
 processes configuration notifications while idle. Model and reasoning continue to use their
-existing fields. Permission, access, and approval settings remain under OpenBot controls: the agent's
+existing fields. Permission, access, and approval settings remain under ZollyBot controls: the agent's
 Permissions level decides them, not an ACP setting.
 
 Additional overrides are stored in validated agent JSON, by provider identity. A custom ACP
@@ -1150,11 +1150,11 @@ Pi uses its native `--mode rpc` interface. It does not use an ACP wrapper. Reque
 `agent_settled` completes a turn. A successful `prompt` response only accepts the prompt. Cancellation
 clears queued work before abort. Session paths and the active conversation branch are preserved.
 Models come from the running CLI. A small extension uses Pi's `registerMcpServer` interface to
-register configured MCP servers and OpenBot tools. Secrets are supplied through process state,
+register configured MCP servers and ZollyBot tools. Secrets are supplied through process state,
 not copied into the extension source.
 
 Managed Pi archives come from official GitHub releases and use the published SHA-256 digest.
-Sign-in opens Pi in a host terminal. Close Pi after sign-in to refresh models in OpenBot.
+Sign-in opens Pi in a host terminal. Close Pi after sign-in to refresh models in ZollyBot.
 Remote clients must complete sign-in on the host. There is no separate Pi account screen.
 
 ## Inception
@@ -1177,7 +1177,7 @@ with a key as its only sign-in (`KEY_ONLY_PROVIDERS` in contracts). The key is s
 `deepseek` API key. Pi has a built-in `deepseek` provider, so the extension from
 `pi-key-providers.ts` calls `pi.registerProvider("deepseek", ...)` with the key and no models. A
 registration with only the key keeps Pi's DeepSeek models, endpoint and thinking levels (checked in
-Pi 1.4.0), so OpenBot keeps no DeepSeek model list. Pi prefers a `deepseek` key in its own
+Pi 1.4.0), so ZollyBot keeps no DeepSeek model list. Pi prefers a `deepseek` key in its own
 `auth.json` to the registered `apiKey`, so the extension also sets the `Authorization` header,
 which replaces either key. A 401 or a 402 from a key provider shows a text about the saved key or
 the account balance (`#failureText` in `pi-client.ts`). The DeepSeek client lists only the `deepseek`
@@ -1190,10 +1190,10 @@ Peers see DeepSeek from v8, as Inception.
 OpenRouter works as DeepSeek does: a key-only provider on Pi's managed CLI. The key is stored as the
 `openrouter` API key. Pi has a built-in `openrouter` provider with OpenRouter's model list (401 models
 in Pi 1.1.0 and 1.4.0), so the extension registers only the key and the `Authorization` header, and
-OpenBot keeps no OpenRouter model list. Pi sends some models to OpenRouter's Anthropic Messages
+ZollyBot keeps no OpenRouter model list. Pi sends some models to OpenRouter's Anthropic Messages
 endpoint and the others to its chat completions endpoint; both read the header. On the Anthropic
 Messages endpoint Pi also sends the key from its own `auth.json` as `x-api-key`, so the extension sets
-that header to the OpenBot key too (checked in Pi 1.4.0 with a local server). Pi's own
+that header to the ZollyBot key too (checked in Pi 1.4.0 with a local server). Pi's own
 `/api/models/user` request still uses a key from `auth.json` when the user saved one there; it reads
 the model list and sends no turn content. Model ids keep
 OpenRouter's `<lab>/<model>` form, such as `anthropic/claude-opus-5.5`, and the client passes them to
@@ -1210,7 +1210,7 @@ newer SDK versions must meet the three-day dependency rule before adoption. The 
 supplies `sessionMcp`, preserves native session identity, and reads durable items to recover missed
 events before completion. A cached model list does not prove authentication. Connect starts the
 `muse serve` device sign-in and opens its page, because `muse login` with no terminal never opens
-it; an explicit Meta API key uses OpenBot's encrypted credential store. The account check asks a
+it; an explicit Meta API key uses ZollyBot's encrypted credential store. The account check asks a
 short-lived `muse serve` host, which gets the same key, for the experimental `account/read`. The
 session host does not opt in to experimental MSP, so its strict event decoders see no experimental
 variants. A Muse CLI without `account/read` stays "not verified" and keeps running.
@@ -1219,11 +1219,11 @@ Muse profile generation fails before the CLI starts. The pinned native host stil
 MCP servers with `--disable-shell`, `--disable-write`, empty hooks, and session `mcpServers: {}`.
 It cannot meet the tool-free profile requirement. Generate the profile with another provider,
 then select Muse for the agent. The local echo test and synthetic MCP marker record this limit in
-`.openbot-build/muse-check/profile-mcp.mjs` and `profile-mcp-report.json`; this is not a live model
+`.zollybot-build/muse-check/profile-mcp.mjs` and `profile-mcp-report.json`; this is not a live model
 authentication test.
 
 Managed Muse downloads use the official stable-channel manifest and artifact SHA-256 values.
-The CLI remains an optional download, outside the OpenBot package. OpenBot does not overwrite
+The CLI remains an optional download, outside the ZollyBot package. ZollyBot does not overwrite
 provider account files or run upstream self-updaters against managed installations. Both Pi and
 Muse use the existing process confinement boundary. Workspace-only mode fails closed on hosts
 without confinement support.
@@ -1276,7 +1276,7 @@ The latest marker and timing are runtime state, not new saved conversation messa
 summary is not copied into this state.
 
 `agent:compact-context` asks for a compaction now, below the threshold too. The popover offers it
-when `autoCompactAt` is set, which means that OpenBot compacts the thread (`events`, `request` or
+when `autoCompactAt` is set, which means that ZollyBot compacts the thread (`events`, `request` or
 `handoff`). It refuses while a turn, a queued message or a session start needs the session. It is
 local only: the Team API has no route, and a joined server's agent shows no ring.
 `agent:tasks:compact-context` does the same for one open side thread. It refuses while the thread

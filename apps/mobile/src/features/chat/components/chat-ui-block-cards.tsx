@@ -1,4 +1,4 @@
-import type { AgentPromptResolution, ConversationQuestionPrompt } from "@openbot/contracts/ipc";
+import type { AgentPromptResolution, ConversationQuestionPrompt } from "@zollybot/contracts/ipc";
 import {
   type ConversationUiBlock,
   UI_BLOCK_SUBMIT_ACTION_ID,
@@ -12,7 +12,7 @@ import {
   type UiConfirmBlock,
   type UiConfirmField,
   uiBlockAnswersFromResponse,
-} from "@openbot/contracts/ui-blocks";
+} from "@zollybot/contracts/ui-blocks";
 import { router } from "expo-router";
 import { Button, Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
@@ -71,7 +71,7 @@ export function choiceBlockOf(prompt: ConversationQuestionPrompt, uiBlock: Conve
 
 /** The text of a question. An agent can write Markdown in it, such as a link. */
 export function QuestionText({ question, variant }: { question: string; variant: "title" | "body" | "secondary" }) {
-  const secondaryColor = useCSSVariable("--openbot-text-secondary");
+  const secondaryColor = useCSSVariable("--zollybot-text-secondary");
   return (
     <ChatMarkdown
       body={question}

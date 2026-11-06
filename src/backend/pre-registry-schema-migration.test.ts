@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateOpenBotDatabase } from "./openbot-database-schema";
+import { migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: a database that v0.1.12 to v0.2.1 made loses a row on its first upgrade to the migration
 // registry; the upgrade leaves a schema that a new install does not have; a foreign key or a page is broken.
@@ -44,7 +44,7 @@ function releasedDatabase({ tag, markers }: ReleasedSchema): DatabaseSync {
 function freshDatabase(): DatabaseSync {
   const db = new DatabaseSync(":memory:");
   databases.push(db);
-  migrateOpenBotDatabase(db, { appliedAt });
+  migrateZollyBotDatabase(db, { appliedAt });
   return db;
 }
 
@@ -57,11 +57,11 @@ function seedSharedTables(db: DatabaseSync): void {
     INSERT INTO orchestration_events
       (sequence, event_id, command_id, aggregate_type, aggregate_id, event_type, occurred_at, payload_json)
     VALUES
-      (1, 'event-1', 'command-1', 'thread', 'openbot-thread-chief', 'thread.snapshot', '2026-01-02T10:00:00.000Z',
+      (1, 'event-1', 'command-1', 'thread', 'zollybot-thread-chief', 'thread.snapshot', '2026-01-02T10:00:00.000Z',
         '{"snapshot":{"messages":[{"id":"message-1"}]}}'),
-      (2, 'event-2', 'command-2', 'thread', 'openbot-thread-chief', 'thread.snapshot', '2026-01-02T10:01:00.000Z',
+      (2, 'event-2', 'command-2', 'thread', 'zollybot-thread-chief', 'thread.snapshot', '2026-01-02T10:01:00.000Z',
         '${JSON.stringify({ snapshot })}'),
-      (3, 'event-3', 'command-3', 'thread', 'openbot-thread-chief', 'thread.renamed', '2026-01-02T10:02:00.000Z',
+      (3, 'event-3', 'command-3', 'thread', 'zollybot-thread-chief', 'thread.renamed', '2026-01-02T10:02:00.000Z',
         '{"title":"Plans"}'),
       (4, 'event-4', 'command-4', 'mailbox', 'mailbox', 'mailbox.snapshot', '2026-01-02T10:03:00.000Z',
         '{"messages":[]}'),
@@ -77,44 +77,44 @@ function seedSharedTables(db: DatabaseSync): void {
     INSERT INTO projection_threads
       (thread_id, agent_id, title, active_turn_id, created_at, updated_at, last_event_sequence)
     VALUES
-      ('openbot-thread-chief', 'chief', 'Plans', NULL, '2026-01-02T09:00:00.000Z', '2026-01-02T10:02:00.000Z', 3),
-      ('openbot-thread-scout', 'scout', 'Scout', NULL, '2026-01-02T09:00:00.000Z', '2026-01-02T09:30:00.000Z', 2);
+      ('zollybot-thread-chief', 'chief', 'Plans', NULL, '2026-01-02T09:00:00.000Z', '2026-01-02T10:02:00.000Z', 3),
+      ('zollybot-thread-scout', 'scout', 'Scout', NULL, '2026-01-02T09:00:00.000Z', '2026-01-02T09:30:00.000Z', 2);
     INSERT INTO projection_agents (agent_id, thread_id, model, updated_at, sort_order, agent_json, last_event_sequence)
     VALUES
-      ('chief', 'openbot-thread-chief', 'gpt-5', '2026-01-02T09:00:00.000Z', 0,
-        '{"id":"chief","name":"Chief","workspacePath":"/Users/user/OpenBot/Bots/chief"}', 1),
-      ('scout', 'openbot-thread-scout', 'claude-opus', NULL, 1, '{"id":"scout","name":"Scout"}', 2);
+      ('chief', 'zollybot-thread-chief', 'gpt-5', '2026-01-02T09:00:00.000Z', 0,
+        '{"id":"chief","name":"Chief","workspacePath":"/Users/user/ZollyBot/Bots/chief"}', 1),
+      ('scout', 'zollybot-thread-scout', 'claude-opus', NULL, 1, '{"id":"scout","name":"Scout"}', 2);
     INSERT INTO projection_provider_sessions (id, thread_id, provider, external_session_id, model, effort, state,
       created_at, updated_at, resume_cursor, last_event_sequence)
     VALUES
-      ('session-1', 'openbot-thread-chief', 'codex', 'codex-thread-1', 'gpt-5', 'high', 'active',
+      ('session-1', 'zollybot-thread-chief', 'codex', 'codex-thread-1', 'gpt-5', 'high', 'active',
         '2026-01-02T09:00:00.000Z', '2026-01-02T10:00:00.000Z', 'cursor-1', 2),
-      ('session-2', 'openbot-thread-scout', 'claude', 'claude-session-2', 'claude-opus', 'medium', 'inactive',
+      ('session-2', 'zollybot-thread-scout', 'claude', 'claude-session-2', 'claude-opus', 'medium', 'inactive',
         '2026-01-02T09:00:00.000Z', '2026-01-02T09:30:00.000Z', NULL, 2);
     INSERT INTO projection_turns
       (turn_id, thread_id, provider_session_id, status, started_at, completed_at, last_event_sequence)
     VALUES
-      ('turn-1', 'openbot-thread-chief', 'session-1', 'completed', '2026-01-02T10:00:00.000Z',
+      ('turn-1', 'zollybot-thread-chief', 'session-1', 'completed', '2026-01-02T10:00:00.000Z',
         '2026-01-02T10:01:00.000Z', 2),
-      ('turn-2', 'openbot-thread-scout', 'session-2', 'completed', '2026-01-02T09:10:00.000Z', NULL, 2);
+      ('turn-2', 'zollybot-thread-scout', 'session-2', 'completed', '2026-01-02T09:10:00.000Z', NULL, 2);
     INSERT INTO projection_thread_messages (thread_id, message_id, turn_id, author, status, item_type, created_at,
       ordinal, message_json, last_event_sequence)
     VALUES
-      ('openbot-thread-chief', 'message-1', NULL, 'user', 'completed', NULL, '2026-01-02T10:00:00.000Z', 0,
+      ('zollybot-thread-chief', 'message-1', NULL, 'user', 'completed', NULL, '2026-01-02T10:00:00.000Z', 0,
         '{"id":"message-1","text":"Plan the week."}', 1),
-      ('openbot-thread-chief', 'message-2', 'turn-1', 'agent', 'completed', 'agentMessage',
+      ('zollybot-thread-chief', 'message-2', 'turn-1', 'agent', 'completed', 'agentMessage',
         '2026-01-02T10:00:30.000Z', 1, '{"id":"message-2","text":"Here is the plan."}', 2),
-      ('openbot-thread-scout', 'scout-1', 'turn-2', 'agent', 'completed', 'agentMessage', '2026-01-02T09:20:00.000Z',
+      ('zollybot-thread-scout', 'scout-1', 'turn-2', 'agent', 'completed', 'agentMessage', '2026-01-02T09:20:00.000Z',
         0, '{"id":"scout-1","text":"Found it."}', 2);
     INSERT INTO projection_thread_reads (thread_id, member_id, through_message_id, updated_at)
-    VALUES ('openbot-thread-chief', 'user', 'message-1', '2026-01-02T10:00:10.000Z');
+    VALUES ('zollybot-thread-chief', 'user', 'message-1', '2026-01-02T10:00:10.000Z');
     INSERT INTO projection_thread_read_baselines (thread_id, through_message_id, initialized_at)
-    VALUES ('openbot-thread-chief', 'message-1', '2026-01-02T10:00:05.000Z');
+    VALUES ('zollybot-thread-chief', 'message-1', '2026-01-02T10:00:05.000Z');
     INSERT INTO projection_thread_activities
       (activity_id, thread_id, turn_id, activity_type, payload_json, created_at, last_event_sequence)
     VALUES
-      ('activity-1', 'openbot-thread-chief', 'turn-1', 'thread.snapshot', '{"step":1}', '2026-01-02T10:00:00.000Z', 1),
-      ('activity-3', 'openbot-thread-chief', NULL, 'thread.renamed', '{"title":"Plans"}', '2026-01-02T10:02:00.000Z', 3);
+      ('activity-1', 'zollybot-thread-chief', 'turn-1', 'thread.snapshot', '{"step":1}', '2026-01-02T10:00:00.000Z', 1),
+      ('activity-3', 'zollybot-thread-chief', NULL, 'thread.renamed', '{"title":"Plans"}', '2026-01-02T10:02:00.000Z', 3);
     INSERT INTO projection_mailbox_messages (message_id, sender_kind, sender_agent_id, text, reply_to_message_id,
       created_at, message_json, last_event_sequence)
     VALUES ('mailbox-1', 'agent', 'chief', 'Done.', NULL, '2026-01-02T10:04:00.000Z', '{"id":"mailbox-1"}', 5);
@@ -128,11 +128,11 @@ function seedSharedTables(db: DatabaseSync): void {
     VALUES ('chief', 'mailbox-1', '👍', '2026-01-02T10:05:00.000Z', 5);
     INSERT INTO projection_attachments
       (attachment_id, owner_kind, owner_id, name, path, metadata_json, created_at, last_event_sequence)
-    VALUES ('openbot-thread-chief:message-1:file-1', 'thread-message', 'openbot-thread-chief:message-1', 'notes.md',
-      '/Users/user/OpenBot/Attachments/notes.md', '{"id":"file-1"}', '2026-01-02T10:00:00.000Z', 1);
+    VALUES ('zollybot-thread-chief:message-1:file-1', 'thread-message', 'zollybot-thread-chief:message-1', 'notes.md',
+      '/Users/user/ZollyBot/Attachments/notes.md', '{"id":"file-1"}', '2026-01-02T10:00:00.000Z', 1);
     INSERT INTO projection_thread_summaries
       (summary_id, thread_id, through_message_id, summary_text, estimated_tokens, created_at, last_event_sequence)
-    VALUES ('summary-1', 'openbot-thread-chief', 'message-1', 'The user asked for a plan.', 12,
+    VALUES ('summary-1', 'zollybot-thread-chief', 'message-1', 'The user asked for a plan.', 12,
       '2026-01-02T10:01:00.000Z', 2);
     INSERT INTO projection_direct_threads
       (thread_id, member_a_id, member_b_id, created_at, updated_at, last_message_id, last_event_sequence)
@@ -144,7 +144,7 @@ function seedSharedTables(db: DatabaseSync): void {
     INSERT INTO projection_direct_reads (thread_id, member_id, last_read_sequence, updated_at)
     VALUES ('direct-1', 'chief', 4, '2026-01-02T09:05:00.000Z');
     INSERT INTO file_deletion_outbox (id, path, reason, created_at, attempts, last_error)
-    VALUES ('outbox-1', '/Users/user/OpenBot/Attachments/old.md', 'attachment-deleted', '2026-01-02T09:00:00.000Z', 2,
+    VALUES ('outbox-1', '/Users/user/ZollyBot/Attachments/old.md', 'attachment-deleted', '2026-01-02T09:00:00.000Z', 2,
       'EBUSY');
   `);
 }
@@ -256,7 +256,7 @@ describe("upgrade from a released schema before the migration registry", () => {
     const kept = Object.fromEntries(Object.entries(releasedColumns).filter(([table]) => !CHANGED_TABLES.has(table)));
     const before = releasedRows(db, kept);
 
-    migrateOpenBotDatabase(db, { appliedAt });
+    migrateZollyBotDatabase(db, { appliedAt });
 
     expect(releasedRows(db, kept)).toEqual(before);
     expectHealthy(db);
@@ -305,11 +305,11 @@ describe("upgrade from a released schema before the migration registry", () => {
     // A thread with no baseline gets its newest message; a direct thread member with no read gets one.
     expect(db.prepare("SELECT * FROM projection_thread_read_baselines ORDER BY thread_id").all()).toEqual([
       {
-        thread_id: "openbot-thread-chief",
+        thread_id: "zollybot-thread-chief",
         through_message_id: "message-1",
         initialized_at: "2026-01-02T10:00:05.000Z",
       },
-      { thread_id: "openbot-thread-scout", through_message_id: "scout-1", initialized_at: appliedAt },
+      { thread_id: "zollybot-thread-scout", through_message_id: "scout-1", initialized_at: appliedAt },
     ]);
     expect(db.prepare("SELECT * FROM projection_direct_reads ORDER BY member_id").all()).toEqual([
       { thread_id: "direct-1", member_id: "chief", last_read_sequence: 4, updated_at: "2026-01-02T09:05:00.000Z" },
@@ -322,7 +322,7 @@ describe("upgrade from a released schema before the migration registry", () => {
     ]);
     // No id is generated, so migration 13 changes no path.
     expect(db.prepare("SELECT agent_json FROM projection_agents WHERE agent_id = 'chief'").get()).toEqual({
-      agent_json: '{"id":"chief","name":"Chief","workspacePath":"/Users/user/OpenBot/Bots/chief"}',
+      agent_json: '{"id":"chief","name":"Chief","workspacePath":"/Users/user/ZollyBot/Bots/chief"}',
     });
 
     if (released.tag !== "v0.2.1") return;
@@ -354,7 +354,7 @@ describe("upgrade from a released schema before the migration registry", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version = 8
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
 
-    expect(() => migrateOpenBotDatabase(db, { appliedAt })).toThrow("migration to version 8 failed");
+    expect(() => migrateZollyBotDatabase(db, { appliedAt })).toThrow("migration to version 8 failed");
     expect(userTables(db)).toEqual(Object.keys(tables).sort());
     expect(releasedRows(db, tables)).toEqual(before);
     expect(columnNames(db, "projection_reactions")).toEqual(tables.projection_reactions);
@@ -366,7 +366,7 @@ describe("upgrade from a released schema before the migration registry", () => {
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
 
     db.exec("DROP TRIGGER fail_marker");
-    migrateOpenBotDatabase(db, { appliedAt });
+    migrateZollyBotDatabase(db, { appliedAt });
     expectHealthy(db);
     expect(db.prepare("SELECT COUNT(*) AS count FROM projection_thread_messages").get()).toEqual({ count: 3 });
   });

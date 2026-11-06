@@ -8,12 +8,12 @@
 // This module holds no JSX, for the same reason `content-collection.ts` holds none: it is read by
 // the sitemap, which runs outside the renderer.
 
-import { SKILL_CATEGORY_LABELS } from "@openbot/contracts/ipc-skills";
-import { createPluginShareUrl } from "@openbot/contracts/plugin-links";
-import { type DynamicRecord, isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
+import { SKILL_CATEGORY_LABELS } from "@zollybot/contracts/ipc-skills";
+import { createPluginShareUrl } from "@zollybot/contracts/plugin-links";
+import { type DynamicRecord, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { MARKETPLACE_APPS_ROUTE } from "./marketplace-routes";
 import { PLUGIN_CATALOG_DETAILS, PLUGIN_CATALOG_INDEX, type PluginCatalogDetail } from "./plugin-catalog.generated";
-import { OPENBOT_SITE_URL, type PageSocialImage } from "./site-metadata";
+import { type PageSocialImage, ZOLLYBOT_SITE_URL } from "./site-metadata";
 
 /**
  * One listing as the pages read it: what the generator writes, and the two facts the index carries
@@ -40,11 +40,11 @@ const PLUGIN_INDEX_ROUTE = "/plugins";
 export const PLUGIN_DETAIL_ROUTE = "/plugins/$slug";
 
 export const PLUGINS_DESCRIPTION =
-  "Apps and skills an OpenBot agent can use. Open a plugin in the app, and decide there what it connects to.";
+  "Apps and skills an ZollyBot agent can use. Open a plugin in the app, and decide there what it connects to.";
 /** One social card for the page of every plugin. */
 export const PLUGIN_PAGE_SOCIAL_IMAGE: PageSocialImage = {
   path: "/social/plugin.jpg",
-  alt: "Plant an idea. Your agents do the rest. OpenBot agents among paper trees",
+  alt: "Plant an idea. Your agents do the rest. ZollyBot agents among paper trees",
 };
 
 /** Newest listing first is not a thing here: the order is the order the index declares. */
@@ -176,11 +176,11 @@ export function pluginIconPath(slug: string, appId?: string): string {
   return appId ? `${path}?app=${encodeURIComponent(appId)}` : path;
 }
 
-export function pluginUrl(slug: string, siteUrl: string = OPENBOT_SITE_URL): string {
+export function pluginUrl(slug: string, siteUrl: string = ZOLLYBOT_SITE_URL): string {
   return new URL(pluginPath(slug), siteUrl).toString();
 }
 
-export function pluginIndexUrl(siteUrl: string = OPENBOT_SITE_URL): string {
+export function pluginIndexUrl(siteUrl: string = ZOLLYBOT_SITE_URL): string {
   return new URL(MARKETPLACE_APPS_ROUTE, siteUrl).toString();
 }
 

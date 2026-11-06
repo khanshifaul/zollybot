@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from "@openbot/ui/utils";
+import { prefersReducedMotion } from "@zollybot/ui/utils";
 import { flush } from "solid-js";
 import type { MarketplaceNavigation } from "./marketplace-view";
 

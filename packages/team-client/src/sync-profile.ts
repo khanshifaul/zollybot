@@ -8,7 +8,7 @@
 // or analytics. They stay in the sink's memory, or in the development file that desktop main writes.
 // A failure keeps only its `errorReference` code, such as `http/503` or `error/RemotePeerError`.
 
-import { errorReference } from "@openbot/user-errors/reference";
+import { errorReference } from "@zollybot/user-errors/reference";
 import { Cause, type Exit } from "effect";
 
 /** One request to the host, timed from send to the end of decoding. Times are epoch milliseconds. */
@@ -50,18 +50,18 @@ const QUERY_KEY = /^[A-Za-z]+$/;
 let installed: RemoteSyncProfileSink | null = null;
 let inFlight = 0;
 
-/** Desktop main installs its file sink here. Web and the harness use `globalThis.__openbotSyncProfile`. */
+/** Desktop main installs its file sink here. Web and the harness use `globalThis.__zollybotSyncProfile`. */
 export function installRemoteSyncProfileSink(sink: RemoteSyncProfileSink | null): void {
   installed = sink;
 }
 
 declare global {
   // The sink that the `perf:remote` harness installs in a web page before the app loads.
-  var __openbotSyncProfile: RemoteSyncProfileSink | undefined;
+  var __zollybotSyncProfile: RemoteSyncProfileSink | undefined;
 }
 
 function activeSink(): RemoteSyncProfileSink | null {
-  return installed ?? globalThis.__openbotSyncProfile ?? null;
+  return installed ?? globalThis.__zollybotSyncProfile ?? null;
 }
 
 function now(): number {
@@ -135,14 +135,14 @@ export function startRemoteRequest(
 }
 
 /**
- * Marks a connect or sync phase with `performance.mark("openbot:remote-<name>")`. The name is a fixed
+ * Marks a connect or sync phase with `performance.mark("zollybot:remote-<name>")`. The name is a fixed
  * word, never data. Only the latest mark of each name stays, so a tab that reconnects for days keeps
  * no more marks. React Native can lack the User Timing API; the mark is then skipped.
  */
 export function markRemoteSync(name: string): void {
   const clock = globalThis.performance;
   if (!clock || typeof clock.mark !== "function") return;
-  const mark = `openbot:remote-${name}`;
+  const mark = `zollybot:remote-${name}`;
   if (typeof clock.clearMarks === "function") clock.clearMarks(mark);
   clock.mark(mark);
 }

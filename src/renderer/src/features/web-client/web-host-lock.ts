@@ -1,5 +1,5 @@
-import { isDynamicRecord, isString } from "@openbot/contracts/runtime-values";
-import { currentText } from "@openbot/ui/text";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
+import { currentText } from "@zollybot/ui/text";
 
 /** Another tab of this browser has the host open. The host itself can be online. */
 export class WebHostOtherTabError extends Error {
@@ -25,7 +25,7 @@ export async function acquireWebHostLock(
   const lockOptions: LockOptions = options.wait ? { signal: options.wait } : { ifAvailable: true };
   return new Promise((resolve, reject) => {
     void navigator.locks
-      .request(`openbot.web.host:${accountId}:${hostId}`, lockOptions, async (lock) => {
+      .request(`zollybot.web.host:${accountId}:${hostId}`, lockOptions, async (lock) => {
         if (!lock) {
           reject(new WebHostOtherTabError());
           return;
@@ -78,7 +78,7 @@ export function decodeWebHostTabMessage(value: unknown): WebHostTabMessage | nul
 
 /** Null where the browser has no BroadcastChannel. Then no tab keeps status connections. */
 export function openWebHostChannel(accountId: string): BroadcastChannel | null {
-  return typeof BroadcastChannel === "function" ? new BroadcastChannel(`openbot.web.hosts:${accountId}`) : null;
+  return typeof BroadcastChannel === "function" ? new BroadcastChannel(`zollybot.web.hosts:${accountId}`) : null;
 }
 
 /**

@@ -25,12 +25,12 @@
 // user has not seen before are appended in directory order. The user drags this list.
 
 import { verify } from "node:crypto";
-import { REMOTE_ACCOUNT_CHECK_INTERVAL_MS } from "@openbot/team-client";
+import { REMOTE_ACCOUNT_CHECK_INTERVAL_MS } from "@zollybot/team-client";
 import {
   followHostKeyHandovers,
   type HostKeySignatureCheck,
   hostKeyChangedAt,
-} from "@openbot/team-client/host-key-handover";
+} from "@zollybot/team-client/host-key-handover";
 import { Effect } from "effect";
 import type { RemoteHostSummary } from "./central-auth-records";
 import type { PreservedHostIdentity, StoredRemoteServerView } from "./remote-server-store";

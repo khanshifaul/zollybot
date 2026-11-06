@@ -1,5 +1,5 @@
-import type { BrowserControlAction, BrowserControlDetailAction, BrowserControlSession } from "@openbot/contracts/ipc";
-import type { AppTextKey } from "@openbot/i18n";
+import type { BrowserControlAction, BrowserControlDetailAction, BrowserControlSession } from "@zollybot/contracts/ipc";
+import type { AppTextKey } from "@zollybot/i18n";
 
 export const BROWSER_ACTION_LABELS = {
   open: "browser.action.open",

@@ -1,11 +1,11 @@
-import { isKnownAgentProvider } from "@openbot/contracts/agent-providers";
-import type { AgentModelId, AgentProviderId, AgentReasoningEffort, UpdateAgentInput } from "@openbot/contracts/ipc";
-import { findModelOption } from "@openbot/ui/components/provider-accounts";
+import { isKnownAgentProvider } from "@zollybot/contracts/agent-providers";
+import type { AgentModelId, AgentProviderId, AgentReasoningEffort, UpdateAgentInput } from "@zollybot/contracts/ipc";
+import { findModelOption } from "@zollybot/ui/components/provider-accounts";
 import type {
   AgentRuntimeSettings,
   AgentRuntimeSettingsPatch,
-} from "@openbot/ui/features/conversation/AgentSettingsPanel";
-import { currentText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/AgentSettingsPanel";
+import { currentText } from "@zollybot/ui/text";
 import { agentConversationKey } from "../conversation-keys";
 import type { ConversationProps, ConversationTarget } from "../conversation-types";
 

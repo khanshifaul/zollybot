@@ -1,8 +1,8 @@
-import { DISCORD_ORCHESTRATOR_AVATAR } from "@openbot/contracts/discord-app";
-import type { MessagingConnection, MessagingPlatform, MessagingRole } from "@openbot/contracts/ipc";
-import { MESSAGING_LIMITS } from "@openbot/contracts/ipc";
-import { SLACK_ORCHESTRATOR_AVATAR } from "@openbot/contracts/slack-app";
-import type { AppMessages, AppTextKey } from "@openbot/i18n";
+import { DISCORD_ORCHESTRATOR_AVATAR } from "@zollybot/contracts/discord-app";
+import type { MessagingConnection, MessagingPlatform, MessagingRole } from "@zollybot/contracts/ipc";
+import { MESSAGING_LIMITS } from "@zollybot/contracts/ipc";
+import { SLACK_ORCHESTRATOR_AVATAR } from "@zollybot/contracts/slack-app";
+import type { AppMessages, AppTextKey } from "@zollybot/i18n";
 import {
   Button,
   Checkbox,
@@ -17,7 +17,7 @@ import {
   SettingsSection,
   Spinner,
   Text,
-} from "@openbot/ui";
+} from "@zollybot/ui";
 import { createEffect, createSignal, createStore, createUniqueId, For, Match, Show, Switch } from "solid-js";
 import { useText } from "../../text";
 import { DiscordMark, SlackMark } from "./brand-marks";
@@ -54,14 +54,14 @@ export type SlackOrchestratorChoice = ChannelOrchestratorChoice;
 /** The catalog behind the model picker. Absent, the orchestrator starts on a new agent's default. */
 export type SlackOrchestratorModels = ChannelOrchestratorModels;
 
-/** Who can use OpenBot in each Discord server: the members with one of the saved roles. */
+/** Who can use ZollyBot in each Discord server: the members with one of the saved roles. */
 export interface DiscordAccessControl {
   /** The saved roles of a Discord server. Empty lets everyone; null while they are not known. */
   allowed: (workspaceId: string) => readonly MessagingRole[] | null;
   /** The roles of a Discord server to choose from. Rejects with the reason. */
   loadRoles: (workspaceId: string) => Promise<readonly MessagingRole[]>;
   onSave: (workspaceId: string, roles: MessagingRole[]) => void;
-  /** True when the joined server's OpenBot is too old to choose roles. */
+  /** True when the joined server's ZollyBot is too old to choose roles. */
   unsupported?: boolean | undefined;
 }
 
@@ -91,7 +91,7 @@ export interface SlackIntegrationPanelProps extends IntegrationPageSlots {
   loadError?: string | null | undefined;
   /** Reads the connections again. */
   onRetry?: (() => void) | undefined;
-  /** Who can use OpenBot in each Discord server. Discord only. */
+  /** Who can use ZollyBot in each Discord server. Discord only. */
   access?: DiscordAccessControl | undefined;
 }
 
@@ -298,7 +298,7 @@ export function slackIntegrationState(
 type DialogTarget = { kind: "new"; before: ReadonlySet<string> } | { kind: "existing"; workspaceId: string };
 
 /**
- * Marketplace > Apps > Slack. A workspace installs the one OpenBot app, and its Slack Orchestrator
+ * Marketplace > Apps > Slack. A workspace installs the one ZollyBot app, and its Slack Orchestrator
  * agent receives every request, asks the team and answers. The connect dialog does both steps. No
  * token reaches this component. Marketplace > Apps > Discord is the same page for a Discord server,
  * with `platform` "discord".
@@ -500,7 +500,7 @@ export function SlackIntegrationPanel(props: SlackIntegrationPanelProps) {
   );
 }
 
-/** Who can mention OpenBot in one Discord server, and the button that changes it. */
+/** Who can mention ZollyBot in one Discord server, and the button that changes it. */
 function AccessRow(props: {
   connection: MessagingConnection;
   access: DiscordAccessControl;
@@ -510,7 +510,7 @@ function AccessRow(props: {
 }) {
   const { t, format } = useText();
   const allowed = () => props.access.allowed(props.connection.workspaceId);
-  // A host that cannot choose roles lets everyone mention OpenBot.
+  // A host that cannot choose roles lets everyone mention ZollyBot.
   const everyone = () => props.access.unsupported === true || allowed()?.length === 0;
   const summary = () => {
     const roles = allowed();
@@ -560,7 +560,7 @@ function AccessRow(props: {
 }
 
 /**
- * Chooses the roles whose members can use OpenBot in one Discord server. It reads the server's roles
+ * Chooses the roles whose members can use ZollyBot in one Discord server. It reads the server's roles
  * when it opens. A saved role that the server no longer has stays in the list until the user removes it.
  */
 function RolesDialog(props: {

@@ -37,7 +37,7 @@ export const ROBINHOOD_PLUGIN_GUIDE: PluginGuide = {
     {
       question: "Does the Robinhood plugin need an API key?",
       answer:
-        "No. You sign in to your own Robinhood account in the browser. OpenBot does the sign-in itself, keeps the tokens in encrypted storage, and adds the Authorization header. The plugin catalog holds no secret. To stop the access, disconnect Robinhood in OpenBot or in the Robinhood app.",
+        "No. You sign in to your own Robinhood account in the browser. ZollyBot does the sign-in itself, keeps the tokens in encrypted storage, and adds the Authorization header. The plugin catalog holds no secret. To stop the access, disconnect Robinhood in ZollyBot or in the Robinhood app.",
     },
   ],
   sources: [

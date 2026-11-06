@@ -9,27 +9,27 @@ import {
   DEFAULT_AGENT_DEFAULTS,
   type FilePreview,
   type ServerNotificationLevel,
-} from "@openbot/contracts/ipc";
-import { BookMarked, CalendarClock, FileText, Folder, Gauge, Puzzle, Table2, Upload } from "@openbot/ui";
-import { SettingsLinkGroup, SettingsLinkRow } from "@openbot/ui/components/SettingsPanel";
-import type { AgentProfile } from "@openbot/ui/data";
-import type { BrowserProfileSelectProfile } from "@openbot/ui/features/browser/BrowserProfileSelect";
-import { browserProfileProxyNames } from "@openbot/ui/features/browser/BrowserProxies";
+} from "@zollybot/contracts/ipc";
+import { BookMarked, CalendarClock, FileText, Folder, Gauge, Puzzle, Table2, Upload } from "@zollybot/ui";
+import { SettingsLinkGroup, SettingsLinkRow } from "@zollybot/ui/components/SettingsPanel";
+import type { AgentProfile } from "@zollybot/ui/data";
+import type { BrowserProfileSelectProfile } from "@zollybot/ui/features/browser/BrowserProfileSelect";
+import { browserProfileProxyNames } from "@zollybot/ui/features/browser/BrowserProxies";
 import {
   type AgentInstructionsCalls,
   AgentInstructionsView,
-} from "@openbot/ui/features/conversation/AgentInstructionsView";
+} from "@zollybot/ui/features/conversation/AgentInstructionsView";
 import {
   AgentSessionSettings,
   type AgentSessionSettingsApi,
-} from "@openbot/ui/features/conversation/AgentSessionSettings";
+} from "@zollybot/ui/features/conversation/AgentSessionSettings";
 import SharedAgentSettingsPanel, {
   type AgentBrowserProfileOptions,
   type AgentNotificationLevelOptions,
   type AgentSettingsPanelProps as SharedAgentSettingsPanelProps,
-} from "@openbot/ui/features/conversation/AgentSettingsPanel";
-import { agentFilesLinkValue } from "@openbot/ui/features/files/AgentFilesView";
-import { useText } from "@openbot/ui/text";
+} from "@zollybot/ui/features/conversation/AgentSettingsPanel";
+import { agentFilesLinkValue } from "@zollybot/ui/features/files/AgentFilesView";
+import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, createStore, Show, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { createSettingsPanelWidth, saveSettingsPanelWidth } from "../../components/settings-panel-width";

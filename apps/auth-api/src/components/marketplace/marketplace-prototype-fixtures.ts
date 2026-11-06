@@ -4,7 +4,7 @@ import type {
   MarketplaceAgentSkill,
   MarketplaceAgentSummary,
   MarketplaceSkillSummary,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 
 /*
  * Catalog data for the public Marketplace stories. Copied from the app's preview fixtures
@@ -27,7 +27,7 @@ export const PROTOTYPE_SKILLS: MarketplaceSkillSummary[] = [
     name: "Release notes",
     description: "Turns a range of commits into a changelog a reader outside the team can follow.",
     category: "documents",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 4,
     installs: 0,
     featured: true,
@@ -83,7 +83,7 @@ export const PROTOTYPE_SKILLS: MarketplaceSkillSummary[] = [
     name: "Source check",
     description: "Follows every citation in a draft and flags the ones that do not say what is claimed.",
     category: "research",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 3,
     installs: 0,
     featured: false,
@@ -114,7 +114,7 @@ export const PROTOTYPE_AGENTS: MarketplaceAgentSummary[] = [
     name: "Release Manager",
     title: "Ships the release",
     description: "Cuts the tag, writes the notes, and watches the rollout until it is green.",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 6,
     installs: 0,
     featured: true,
@@ -276,7 +276,7 @@ export const PROTOTYPE_AGENTS: MarketplaceAgentSummary[] = [
     name: "Contract Reader",
     title: "Finds the clause that matters",
     description: "Reads a long agreement and reports the dates, the duties, and the ways out.",
-    creatorName: "OpenBot",
+    creatorName: "ZollyBot",
     version: 3,
     installs: 0,
     featured: true,
@@ -509,9 +509,9 @@ export const PROTOTYPE_AGENT_DETAILS: Record<string, MarketplaceAgentDetail> = O
 );
 
 /**
- * The agent contract has no `verified` flag yet. As in the app prototype, the agents that OpenBot
+ * The agent contract has no `verified` flag yet. As in the app prototype, the agents that ZollyBot
  * made are the verified ones.
  */
 export function isVerifiedAgent(agent: MarketplaceAgentSummary): boolean {
-  return agent.creatorName === "OpenBot";
+  return agent.creatorName === "ZollyBot";
 }

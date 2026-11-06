@@ -1,10 +1,10 @@
-import type { HostedServerEntryPoint } from "@openbot/contracts/hosted-servers";
-import type { HostStatus, ServerNotificationLevel, ServerSummary } from "@openbot/contracts/ipc";
-import type { TeamCurrentCapability } from "@openbot/contracts/team-protocol/current";
-import { WAKE_RECONNECT_STATES } from "@openbot/team-client/hosted-server-wake";
-import { classifyFailure } from "@openbot/telemetry";
-import { toast } from "@openbot/ui";
-import { currentText } from "@openbot/ui/text";
+import type { HostedServerEntryPoint } from "@zollybot/contracts/hosted-servers";
+import type { HostStatus, ServerNotificationLevel, ServerSummary } from "@zollybot/contracts/ipc";
+import type { TeamCurrentCapability } from "@zollybot/contracts/team-protocol/current";
+import { WAKE_RECONNECT_STATES } from "@zollybot/team-client/hosted-server-wake";
+import { classifyFailure } from "@zollybot/telemetry";
+import { toast } from "@zollybot/ui";
+import { currentText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, flush, onSettled, untrack } from "solid-js";
 import { actionToast } from "../../action-toast";
 import { FALLBACK_HOST_STATUS } from "../../app-defaults";
@@ -19,7 +19,7 @@ import { checkServerUpdate, offerServerUpdate, type ServerUpdateTarget } from ".
 import { serversPort } from "./servers-port";
 
 /** "true" while the user hides the server on this computer from the server list. */
-const LOCAL_SERVER_HIDDEN_STORAGE_KEY = "openbot:local-server-hidden";
+const LOCAL_SERVER_HIDDEN_STORAGE_KEY = "zollybot:local-server-hidden";
 
 function readLocalServerHidden(): boolean {
   try {

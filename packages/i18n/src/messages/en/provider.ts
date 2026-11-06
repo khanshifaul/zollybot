@@ -34,7 +34,7 @@ export const messages = defineMessages("provider", {
   "provider.status.checking": "Checking",
   "provider.status.off": "Off",
   "provider.gemini.hostSignIn":
-    "To connect Gemini, open OpenBot on the host and select Connect in Server settings > Providers. Google sign-in needs a browser on that host. Remote sign-in is not supported.",
+    "To connect Gemini, open ZollyBot on the host and select Connect in Server settings > Providers. Google sign-in needs a browser on that host. Remote sign-in is not supported.",
 
   // Which account tier the OpenCode row runs on. It shows only while it adds to the runtime
   // badge: a saved key leaves the runtime "Connected" to speak for the row.
@@ -66,15 +66,15 @@ export const messages = defineMessages("provider", {
   "provider.aria.cancelSignIn": "Cancel the {name} sign-in",
   "provider.aria.apiKey": "{name} API key",
   "provider.connecting.browserHint": "Finish the sign-in if a browser page opens.",
-  "provider.connecting.cancelFailed": "OpenBot could not cancel the {name} sign-in. Try again.",
+  "provider.connecting.cancelFailed": "ZollyBot could not cancel the {name} sign-in. Try again.",
   "provider.aria.install": "Install {name}",
   "provider.aria.signIn": "Sign in to {name}",
   "provider.aria.codeFallback": "Log in to {name} with a code",
   "provider.aria.moreActions": "More actions for {name}",
 
-  // The switch that turns a provider on or off in OpenBot. While an agent uses the provider, the
+  // The switch that turns a provider on or off in ZollyBot. While an agent uses the provider, the
   // switch stays on and a toast names the agent, or counts the agents when there are more.
-  "provider.aria.use": "Use {name} in OpenBot",
+  "provider.aria.use": "Use {name} in ZollyBot",
   "provider.use.inUseOne": "{agent} uses {name}. Change the model of this agent, then turn {name} off.",
   "provider.use.inUse": {
     one: "{count} agent uses {name}. Change the model of this agent, then turn {name} off.",
@@ -83,7 +83,7 @@ export const messages = defineMessages("provider", {
 
   // The dialog that signs in to a provider with a code on another device.
   "provider.codeLogin.title": "Log in to {name} with a code",
-  "provider.codeLogin.description": "Finish on your phone or another browser. OpenBot waits here.",
+  "provider.codeLogin.description": "Finish on your phone or another browser. ZollyBot waits here.",
   "provider.codeLogin.starting": "Getting a code from {name}…",
   "provider.codeLogin.qrLabel": "QR code for the {name} login page",
   "provider.codeLogin.open": "Open",
@@ -104,14 +104,14 @@ export const messages = defineMessages("provider", {
   "provider.codeLogin.pageDescription": "This page is open in the browser on {host}. Sign in here.",
   "provider.codeLogin.relayStarting": "Starting the {name} sign-in on {host}…",
   "provider.codeLogin.pageOpening": "Opening the {name} sign-in page on {host}…",
-  "provider.codeLogin.linkStep": "Log in to {name}. OpenBot continues by itself.",
+  "provider.codeLogin.linkStep": "Log in to {name}. ZollyBot continues by itself.",
   "provider.codeLogin.chatgptDeviceSetting":
     "In ChatGPT on a computer, open the security settings and turn on device code sign-in for Codex. For a work account, your workspace admin turns it on.",
 
-  // A provider that only the OpenBot app can sign in, from a browser tab.
-  "provider.useApp.title": "Connect {name} in the OpenBot app",
+  // A provider that only the ZollyBot app can sign in, from a browser tab.
+  "provider.useApp.title": "Connect {name} in the ZollyBot app",
   "provider.useApp.description":
-    "The {name} sign-in returns to the computer that started it, and a browser tab cannot receive it. Connect {name} in the OpenBot app. The app finishes the sign-in by itself.",
+    "The {name} sign-in returns to the computer that started it, and a browser tab cannot receive it. Connect {name} in the ZollyBot app. The app finishes the sign-in by itself.",
   "provider.useApp.download": "Get the app",
 
   // The agent model picker.
@@ -123,7 +123,7 @@ export const messages = defineMessages("provider", {
   "provider.picker.providers": "Model providers",
   "provider.picker.downloading": "Downloading {percent}",
   "provider.picker.unavailable": "{name} is unavailable.",
-  "provider.picker.updateToUse": "Update OpenBot to use {name}",
+  "provider.picker.updateToUse": "Update ZollyBot to use {name}",
   "provider.picker.models": "{name} models",
   "provider.picker.addProvider": "Add provider",
   "provider.picker.download": "{name} download",
@@ -180,15 +180,15 @@ export const messages = defineMessages("provider", {
   "provider.codexKey.label": "OpenAI API key",
   "provider.inceptionKey.title": "Inception API key",
   "provider.inceptionKey.description":
-    "Save an Inception API key on this computer to use the Mercury models. OpenBot runs them in the Pi CLI that it downloads.",
+    "Save an Inception API key on this computer to use the Mercury models. ZollyBot runs them in the Pi CLI that it downloads.",
   "provider.inceptionKey.label": "Inception API key",
   "provider.deepseekKey.title": "DeepSeek API key",
   "provider.deepseekKey.description":
-    "Save a DeepSeek API key on this computer to use the DeepSeek models. OpenBot runs them in the Pi CLI that it downloads.",
+    "Save a DeepSeek API key on this computer to use the DeepSeek models. ZollyBot runs them in the Pi CLI that it downloads.",
   "provider.deepseekKey.label": "DeepSeek API key",
   "provider.openrouterKey.title": "OpenRouter API key",
   "provider.openrouterKey.description":
-    "Save an OpenRouter API key on this computer to use the models that OpenRouter serves. OpenBot runs them in the Pi CLI that it downloads.",
+    "Save an OpenRouter API key on this computer to use the models that OpenRouter serves. ZollyBot runs them in the Pi CLI that it downloads.",
   "provider.openrouterKey.label": "OpenRouter API key",
 
   // The optional OpenCode Go key dialog.
@@ -260,12 +260,12 @@ export const messages = defineMessages("provider", {
   "provider.settings.removeTitle": "Remove {name}?",
   "provider.settings.removeMoves": "{agents} will use {name}.",
   "provider.settings.removeUnused": "No agent uses this account.",
-  "provider.settings.removeCredentials": "OpenBot deletes the sign-in of this account from this computer.",
+  "provider.settings.removeCredentials": "ZollyBot deletes the sign-in of this account from this computer.",
   "provider.settings.disconnectTitle": "Disconnect {name}?",
   "provider.settings.disconnectOthers": "The other {provider} accounts wait until you connect {provider} again.",
   "provider.settings.disconnectLocal":
-    "OpenBot signs {provider} out on this computer. The {provider} CLI in your terminal also signs out.",
-  "provider.settings.disconnectHost": "OpenBot signs {provider} out on the server.",
+    "ZollyBot signs {provider} out on this computer. The {provider} CLI in your terminal also signs out.",
+  "provider.settings.disconnectHost": "ZollyBot signs {provider} out on the server.",
   "provider.settings.usageLow": "{percent} left · {window}",
   "provider.settings.usageOf": "Usage of {name}",
   "provider.settings.signIn": "Sign-in",
@@ -286,7 +286,7 @@ export const messages = defineMessages("provider", {
   "provider.settings.version": "Version",
   "provider.settings.versionAvailable": "{installed} · {available} is available",
   "provider.settings.versionInstalledByUser": "{version} · installed by you",
-  "provider.settings.versionDownloaded": "{version} · downloaded by OpenBot",
+  "provider.settings.versionDownloaded": "{version} · downloaded by ZollyBot",
   "provider.settings.update": "Update",
   "provider.settings.downloadLabel": "Download of {name}",
   "provider.settings.diagnostics": "Diagnostics",
@@ -318,9 +318,9 @@ export const messages = defineMessages("provider", {
   "provider.settings.useTitle": "Use {name}",
   "provider.settings.deleteTitle": "Delete {name}",
   "provider.settings.deleteOn":
-    "Turns {name} off and deletes the CLI that OpenBot downloaded. Accounts, sign-ins and agents stay.",
+    "Turns {name} off and deletes the CLI that ZollyBot downloaded. Accounts, sign-ins and agents stay.",
   "provider.settings.deleteOff":
-    "Deletes the CLI that OpenBot downloaded for {name} ({size}). Accounts, sign-ins and agents stay.",
+    "Deletes the CLI that ZollyBot downloaded for {name} ({size}). Accounts, sign-ins and agents stay.",
   "provider.settings.removeDownloadFailed": "Could not remove the download.",
   "provider.settings.endpoints": "Endpoints",
   "provider.settings.noEndpoints": "No endpoints.",

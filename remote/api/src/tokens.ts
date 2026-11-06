@@ -3,17 +3,17 @@ import {
   DISCORD_ROUTE_AUDIENCE,
   DISCORD_ROUTE_GUILDS_LIMIT,
   type DiscordRouteGuild,
-} from "@openbot/contracts/signal-protocol/discord-route";
+} from "@zollybot/contracts/signal-protocol/discord-route";
 import {
   GITHUB_ROUTE_AUDIENCE,
   GITHUB_ROUTE_REPOSITORIES_LIMIT,
   type GitHubRouteRepository,
-} from "@openbot/contracts/signal-protocol/github-route";
+} from "@zollybot/contracts/signal-protocol/github-route";
 import {
   SLACK_ROUTE_AUDIENCE,
   SLACK_ROUTE_TEAMS_LIMIT,
   type SlackRouteTeam,
-} from "@openbot/contracts/signal-protocol/slack-route";
+} from "@zollybot/contracts/signal-protocol/slack-route";
 import {
   TELEGRAM_BOT_ID_PATTERN,
   TELEGRAM_CHAT_ID_PATTERN,
@@ -22,12 +22,12 @@ import {
   TELEGRAM_ROUTE_CHATS_LIMIT,
   type TelegramReplyParameters,
   type TelegramRouteChat,
-} from "@openbot/contracts/signal-protocol/telegram-route";
+} from "@zollybot/contracts/signal-protocol/telegram-route";
 import {
   WEBHOOK_ROUTE_AUDIENCE,
   WEBHOOK_ROUTES_LIMIT,
   type WebhookRoute,
-} from "@openbot/contracts/signal-protocol/webhook-route";
+} from "@zollybot/contracts/signal-protocol/webhook-route";
 import { Effect, Result, Schema } from "effect";
 import {
   createLocalJWKSet,
@@ -53,7 +53,7 @@ import {
 
 // The resume token is this service's own, minted and verified here and never seen by the account
 // API, so its audience stays local while the ticket's comes from the shared contract.
-const RESUME_AUDIENCE = "openbot-remote-resume";
+const RESUME_AUDIENCE = "zollybot-remote-resume";
 const RESUME_TTL_SECONDS = 10 * 60;
 const MAXIMUM_STALE_RESUME_SECONDS = 24 * 60 * 60;
 const MAXIMUM_TRUSTED_RESUME_TOKENS = 100_000;
@@ -610,8 +610,8 @@ export class TelegramFileTokens {
   readonly #usedUploads = new Map<string, number>();
 
   constructor(sessionSecret: string) {
-    this.#fileKey = createHmac("sha256", sessionSecret).update("openbot-telegram-file-token").digest();
-    this.#uploadKey = createHmac("sha256", sessionSecret).update("openbot-telegram-upload-token").digest();
+    this.#fileKey = createHmac("sha256", sessionSecret).update("zollybot-telegram-file-token").digest();
+    this.#uploadKey = createHmac("sha256", sessionSecret).update("zollybot-telegram-upload-token").digest();
   }
 
   issueFile(grant: TelegramFileGrant, nowSeconds = Math.floor(Date.now() / 1_000)): string {

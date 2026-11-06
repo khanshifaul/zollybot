@@ -1,5 +1,5 @@
-import { resolveMobileFeatures, resolveMobileLatestVersion } from "@openbot/contracts/mobile-features";
 import { createFileRoute } from "@tanstack/solid-router";
+import { resolveMobileFeatures, resolveMobileLatestVersion } from "@zollybot/contracts/mobile-features";
 import { MOBILE_FEATURE_CONFIG, MOBILE_LATEST_VERSIONS } from "../../../server/mobile-features-config";
 import { json } from "../../../server/request-auth";
 

@@ -56,8 +56,8 @@ export const messages = {
   "browser.pip.reattach": "Browser terugzetten in rechterzijbalk",
   "browser.pip.reattachTitle": "Browser terugzetten",
   "browser.pip.close": "Browserpop-up sluiten",
-  "browser.pip.reattachFailed": "OpenBot kon de browser niet terugzetten.",
-  "browser.pip.closeFailed": "OpenBot kon de browserpop-up niet sluiten.",
+  "browser.pip.reattachFailed": "ZollyBot kon de browser niet terugzetten.",
+  "browser.pip.closeFailed": "ZollyBot kon de browserpop-up niet sluiten.",
   "browser.popupBlocked.title": "Pop-up geblokkeerd",
   "browser.popupBlocked.dismiss": "Pop-upmelding sluiten",
   "browser.liveView.label": "Live weergave van de pagina op de server",
@@ -90,7 +90,7 @@ export const messages = {
   "browser.secret.saveHintRemote":
     "Het wordt bewaard op {server}. De agents daar kunnen dan inloggen zonder het je te vragen.",
   "browser.secret.saveBlockedRole": "Alleen de eigenaar of een beheerder van {server} kan opslaan in de kluis daarvan.",
-  "browser.secret.saveBlockedVersion": "Werk OpenBot bij op {server} om wachtwoorden in de kluis daarvan op te slaan.",
+  "browser.secret.saveBlockedVersion": "Werk ZollyBot bij op {server} om wachtwoorden in de kluis daarvan op te slaan.",
   "browser.secret.signInPage": "Inlogpagina",
   "browser.secret.openSignInPage": "Inlogpagina openen in browser",
   "browser.secret.openInBrowser": "Openen in browser",
@@ -137,22 +137,22 @@ export const messages = {
   "browser.signIn.local": "Inloggen op deze computer",
   "browser.signIn.title": "Inloggen bij {site}",
   "browser.signIn.description":
-    "Sommige sites weigeren inloggen vanaf een server. Log in op deze computer, en OpenBot stuurt de login voor {site} naar {server}. Alle agents en leden op {server} kunnen die daarna in de browser gebruiken.",
+    "Sommige sites weigeren inloggen vanaf een server. Log in op deze computer, en ZollyBot stuurt de login voor {site} naar {server}. Alle agents en leden op {server} kunnen die daarna in de browser gebruiken.",
   "browser.signIn.windowOpen":
-    "Log in in het venster dat is geopend. OpenBot stuurt de login als die klaar is. Kies Klaar als het venster open blijft.",
+    "Log in in het venster dat is geopend. ZollyBot stuurt de login als die klaar is. Kies Klaar als het venster open blijft.",
   "browser.signIn.windowClosed":
     "Het inlogvenster is gesloten. Kies Klaar om de login te sturen, of open het venster opnieuw.",
   "browser.signIn.reopen": "Inlogvenster openen",
   "browser.signIn.sending": "Versturen naar {server}…",
   "browser.signIn.sent": "Ingelogd bij {site} op {server}",
   "browser.signIn.notFound":
-    "OpenBot heeft geen login voor {site} gevonden. Log in in het venster en kies daarna Klaar.",
+    "ZollyBot heeft geen login voor {site} gevonden. Log in in het venster en kies daarna Klaar.",
   "browser.signIn.stillSignedOut":
     "{server} toont nog een inlogpagina voor {site}. Rond het inloggen af in het venster.",
-  "browser.signIn.failed": "OpenBot kon de login niet versturen.",
+  "browser.signIn.failed": "ZollyBot kon de login niet versturen.",
   "browser.profiles.title": "Browserprofielen",
   "browser.profiles.subtitle":
-    "Elk profiel bewaart eigen logins, cookies en sitegegevens op de computer waarop OpenBot draait.",
+    "Elk profiel bewaart eigen logins, cookies en sitegegevens op de computer waarop ZollyBot draait.",
   "browser.profiles.label": "Browserprofielen",
   "browser.profiles.newName": "Profielnaam",
   "browser.profiles.create": "Toevoegen",
@@ -171,8 +171,8 @@ export const messages = {
   "browser.profiles.deleteDescription":
     "Hiermee worden de logins, cookies en sitegegevens van het profiel verwijderd. De open tabbladen worden gesloten.",
   "browser.profiles.deleteAgents": "Deze agents gaan over op het gedeelde profiel: {agents}.",
-  "browser.profiles.failed": "OpenBot kon de browserprofielen niet wijzigen.",
-  "browser.profiles.loadFailed": "OpenBot kon de browserprofielen niet laden.",
+  "browser.profiles.failed": "ZollyBot kon de browserprofielen niet wijzigen.",
+  "browser.profiles.loadFailed": "ZollyBot kon de browserprofielen niet laden.",
   "browser.profiles.tabLabel": "Profiel: {name}",
   "browser.profiles.tabLabelProxy": "Profiel: {name} · Proxy: {proxy}",
   "browser.profiles.agentTabLabel": "Eigen profiel van de agent",
@@ -187,7 +187,7 @@ export const messages = {
   "browser.proxies.addTitle": "Proxy toevoegen",
   "browser.proxies.editTitle": "{name} bewerken",
   "browser.proxies.dialogDescription":
-    "Gebruik socks5, http of https. Een gebruikersnaam en een wachtwoord zijn bij elk type optioneel. Het wachtwoord blijft versleuteld op de computer waarop OpenBot draait.",
+    "Gebruik socks5, http of https. Een gebruikersnaam en een wachtwoord zijn bij elk type optioneel. Het wachtwoord blijft versleuteld op de computer waarop ZollyBot draait.",
   "browser.proxies.address": "Adres",
   "browser.proxies.addressPlaceholder": "socks5://user:password@host:1080",
   "browser.proxies.deleteUsed": {
@@ -197,7 +197,7 @@ export const messages = {
   "browser.proxies.deleteUnused": "Geen enkel profiel gebruikt deze proxy.",
   "browser.proxies.failing": "{name} reageert niet",
   "browser.proxies.signInRefused": "{name} heeft de aanmelding geweigerd",
-  "browser.proxies.unsupported": "Deze server kan geen proxy's gebruiken. Werk OpenBot op die server bij.",
+  "browser.proxies.unsupported": "Deze server kan geen proxy's gebruiken. Werk ZollyBot op die server bij.",
   "browser.proxies.yourComputer": "Je computer",
   "browser.proxies.memberComputer": "Computer van {name}",
   "browser.proxies.unknownComputer": "Computer van een lid",
@@ -208,7 +208,7 @@ export const messages = {
   "browser.proxies.offlineBadge": "{name} is offline",
   "browser.proxies.shareTitle": "De verbinding van deze computer delen?",
   "browser.proxies.shareDescription":
-    "De profielen die je computer gebruiken, openen openbare sites via de internetverbinding van deze computer. Dit werkt alleen zolang OpenBot hier open is. De server kan geen adressen in je lokale netwerk openen.",
+    "De profielen die je computer gebruiken, openen openbare sites via de internetverbinding van deze computer. Dit werkt alleen zolang ZollyBot hier open is. De server kan geen adressen in je lokale netwerk openen.",
   "browser.proxies.share": "Delen",
   "browser.proxies.stopSharing": "Stoppen met delen",
   "browser.proxies.closesTabs": {

@@ -1,9 +1,10 @@
 /**
  * The GitHub settings of a trigger and of an output card. A GitHub trigger starts a run for each event that
  * matches its repository, its event and its filters; the Events row lists what each event did. A GitHub
- * output makes one change on the issue or the pull request of the event, as OpenBot's bot.
+ * output makes one change on the issue or the pull request of the event, as ZollyBot's bot.
  */
 
+import type { JSX } from "@solidjs/web";
 import {
   WORKFLOW_GITHUB_ACTIONS,
   WORKFLOW_GITHUB_CLOSE_REASONS,
@@ -20,8 +21,8 @@ import {
   workflowGitHubEventItemKind,
   workflowGitHubTriggerRepositories,
   workflowGitHubTriggerRepositoryFields,
-} from "@openbot/contracts/ipc";
-import type { AppTextKey, AppTranslate } from "@openbot/i18n";
+} from "@zollybot/contracts/ipc";
+import type { AppTextKey, AppTranslate } from "@zollybot/i18n";
 import {
   AtSign,
   Bot,
@@ -55,8 +56,7 @@ import {
   UserPlus,
   WifiOff,
   Zap,
-} from "@openbot/ui";
-import type { JSX } from "@solidjs/web";
+} from "@zollybot/ui";
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { useText } from "../../text";
 import { GitHubMark } from "../settings/brand-marks";

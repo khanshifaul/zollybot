@@ -12,16 +12,16 @@ import {
   type ServerAuditNames,
   serverAuditName,
   type TeamMemberSummary,
-} from "@openbot/contracts/ipc";
-import { isDynamicRecord } from "@openbot/contracts/runtime-values";
-import { createOpenBotLogger, toLogValue } from "@openbot/logging";
+} from "@zollybot/contracts/ipc";
+import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { createZollyBotLogger, toLogValue } from "@zollybot/logging";
 import { Effect, Result, Semaphore } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";
 
-export const SERVER_AUDIT_FILE = "openbot-server-audit-v1.json";
+export const SERVER_AUDIT_FILE = "zollybot-server-audit-v1.json";
 
-const logger = createOpenBotLogger("server-audit");
+const logger = createZollyBotLogger("server-audit");
 
 /** The name that the log keeps for a member: the display name, else the username. */
 export function memberAuditName(member: Pick<TeamMemberSummary, "id" | "name" | "username">): ServerAuditName {

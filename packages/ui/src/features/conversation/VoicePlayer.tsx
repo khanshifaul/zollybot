@@ -1,5 +1,5 @@
-import { Button, Pause, Play, SeekSlider } from "@openbot/ui";
-import { useText } from "@openbot/ui/text";
+import { Button, Pause, Play, SeekSlider } from "@zollybot/ui";
+import { useText } from "@zollybot/ui/text";
 import { createSignal, For, Show } from "solid-js";
 
 /** How many bars the waveform has. */

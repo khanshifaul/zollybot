@@ -1,6 +1,6 @@
-import type { UiAction, UiActionStyle, UiConfirmBlock as UiConfirmSpec } from "@openbot/contracts/ui-blocks";
-import { Button, NativeSelect, Spinner } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import type { UiAction, UiActionStyle, UiConfirmBlock as UiConfirmSpec } from "@zollybot/contracts/ui-blocks";
+import { Button, NativeSelect, Spinner } from "@zollybot/ui";
 import { createEffect, createSignal, createUniqueId, For, flush, Match, onSettled, Show, Switch } from "solid-js";
 import { useText } from "../../../text";
 import { cx } from "../../../utils";

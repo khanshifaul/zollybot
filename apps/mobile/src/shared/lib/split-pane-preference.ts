@@ -10,7 +10,7 @@ interface SplitPanePreference {
   width: number | null;
 }
 
-const key = "openbot.mobile.split-pane.v1";
+const key = "zollybot.mobile.split-pane.v1";
 
 function decode(stored: string | null): SplitPanePreference {
   let value: unknown = null;

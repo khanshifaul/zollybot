@@ -1,11 +1,11 @@
-import type { RemoteAuthEvent } from "@openbot/contracts/signal-protocol/auth-events";
+import type { RemoteAuthEvent } from "@zollybot/contracts/signal-protocol/auth-events";
 import {
   DISCORD_UPLOAD_BYTES_LIMIT,
   type DiscordApiErrorBody,
   type DiscordApiErrorCode,
   type DiscordApiRequest,
-} from "@openbot/contracts/signal-protocol/discord-api";
-import { DISCORD_API_PATH } from "@openbot/contracts/signal-protocol/discord-route";
+} from "@zollybot/contracts/signal-protocol/discord-api";
+import { DISCORD_API_PATH } from "@zollybot/contracts/signal-protocol/discord-route";
 import {
   GITHUB_DELIVERY_BODY_BYTES_LIMIT,
   GITHUB_DELIVERY_HEADER,
@@ -15,12 +15,12 @@ import {
   GITHUB_EVENTS_PATH,
   GITHUB_SIGNATURE_HEADER,
   GITHUB_SIGNATURE_PATTERN,
-} from "@openbot/contracts/signal-protocol/github-route";
+} from "@zollybot/contracts/signal-protocol/github-route";
 import {
   WEBHOOK_DELIVERY_BODY_BYTES_LIMIT,
   type WebhookDeliveryStatus,
-} from "@openbot/contracts/signal-protocol/messages";
-import { SLACK_EVENTS_PATH } from "@openbot/contracts/signal-protocol/slack-route";
+} from "@zollybot/contracts/signal-protocol/messages";
+import { SLACK_EVENTS_PATH } from "@zollybot/contracts/signal-protocol/slack-route";
 import {
   TELEGRAM_BOT_ID_PATTERN,
   TELEGRAM_CHAT_ID_PATTERN,
@@ -31,7 +31,7 @@ import {
   TELEGRAM_UPDATES_PATH,
   TELEGRAM_UPLOADS_PATH,
   type TelegramUploadAnswer,
-} from "@openbot/contracts/signal-protocol/telegram-route";
+} from "@zollybot/contracts/signal-protocol/telegram-route";
 import {
   STANDARD_WEBHOOK_HEADER_SETS,
   STANDARD_WEBHOOK_SIGNATURE_PATTERN,
@@ -45,7 +45,7 @@ import {
   WEBHOOK_TIMESTAMP_HEADER,
   WEBHOOK_TIMESTAMP_PATTERN,
   type WebhookSignatureFormat,
-} from "@openbot/contracts/signal-protocol/webhook-route";
+} from "@zollybot/contracts/signal-protocol/webhook-route";
 import { Effect, type ManagedRuntime, Result } from "effect";
 import { Elysia } from "elysia";
 import { z } from "zod";
@@ -87,7 +87,7 @@ const slackRequestSchema = z.object({
   team_id: z.string().optional(),
   team: z.object({ id: z.string() }).nullish(),
   authorizations: z.array(z.object({ team_id: z.string() })).optional(),
-  // Only to know whether the event addresses OpenBot, when a hosted server sleeps. Not the text.
+  // Only to know whether the event addresses ZollyBot, when a hosted server sleeps. Not the text.
   event: z
     .object({
       type: z.string().optional(),
@@ -101,7 +101,7 @@ const slackRequestSchema = z.object({
 });
 
 // The only parts of a Telegram update that Signal reads: the chat, the callback query, the text of a
-// message, only to find a link code, and, to know whether a message can address OpenBot, the chat
+// message, only to find a link code, and, to know whether a message can address ZollyBot, the chat
 // type, the entity types, and whether it replies, is in a thread, or renames or leaves the chat.
 const telegramChatSchema = z.object({ id: z.int(), type: z.string().optional().catch(undefined) });
 const telegramEntitiesSchema = z
@@ -180,22 +180,22 @@ export function createRemoteApiApp(
   discordApi: () => DiscordApi | null = () => null,
 ) {
   const app = new Elysia()
-    .get("/health/live", () => ({ service: "openbot-remote-api", status: "live", commit: config.sourceCommit }))
-    .get("/health/ready", () => ({ service: "openbot-remote-api", status: "ready" }))
+    .get("/health/live", () => ({ service: "zollybot-remote-api", status: "live", commit: config.sourceCommit }))
+    .get("/health/ready", () => ({ service: "zollybot-remote-api", status: "ready" }))
     // For the status page: Signal can answer while the TURN relay refuses every allocation. This is the
     // relay of `TURN_HOST`; the Signal on the machine of each other relay reports that relay. The route is
     // public, so the probe result is kept for a minute (`TurnRelays`).
     .get("/health/turn", async ({ set }) => {
       const result = await runtime.runPromise(turnRelays.localProbe.pipe(Effect.result));
-      if (Result.isSuccess(result)) return { service: "openbot-turn", status: "ready" };
+      if (Result.isSuccess(result)) return { service: "zollybot-turn", status: "ready" };
       set.status = 503;
       return result.failure.reason === "full"
         ? { error: { code: "turn_full", message: "The TURN relay has no free allocation." } }
         : { error: { code: "turn_unavailable", message: "The TURN relay did not allocate a relay address." } };
     })
     .post("/internal/auth-events", async ({ request, set }) => {
-      const timestamp = request.headers.get("OpenBot-Timestamp") ?? "";
-      const signature = request.headers.get("OpenBot-Signature") ?? "";
+      const timestamp = request.headers.get("ZollyBot-Timestamp") ?? "";
+      const signature = request.headers.get("ZollyBot-Signature") ?? "";
       const bytes = await readBody(request, AUTH_EVENT_BODY_BYTES_LIMIT);
       if (!bytes) {
         set.status = 413;
@@ -222,7 +222,7 @@ export function createRemoteApiApp(
       else signal.revokeSession(event.sessionId);
       return new Response(null, { status: 204 });
     })
-    // The OpenBot Slack app's one request URL, for the events and button presses of every
+    // The ZollyBot Slack app's one request URL, for the events and button presses of every
     // workspace. Signal checks Slack's signature, reads only the app and workspace IDs, and passes the
     // exact body to the ingress socket of the host that the app's workspace is linked to. Nothing here stores or
     // logs the body.
@@ -312,7 +312,7 @@ export function createRemoteApiApp(
       },
       { parse: "none" },
     )
-    // The OpenBot GitHub App's one webhook URL, for the events of every installation. Signal checks
+    // The ZollyBot GitHub App's one webhook URL, for the events of every installation. Signal checks
     // the App's signature, reads only the installation and repository IDs, and passes the exact body
     // to the ingress socket of every host whose GitHub route names the repository. Nothing here
     // stores or logs the body.
@@ -388,7 +388,7 @@ export function createRemoteApiApp(
       },
       { parse: "none" },
     )
-    // The webhook of each OpenBot Telegram bot. Signal checks the bot's secret header, reads only the
+    // The webhook of each ZollyBot Telegram bot. Signal checks the bot's secret header, reads only the
     // chat, the callback query and a link code, and passes the exact body to the ingress socket of
     // the chat's host. Nothing here stores or logs the body. A signed update is always answered 200:
     // Telegram holds back the bot's other updates while one fails. A machine that is not the entry
@@ -617,7 +617,7 @@ interface WebhookHeaderSet {
   format?: WebhookSignatureFormat;
 }
 
-// The signed header sets of a generic webhook request, in order: `X-OpenBot-*`, then Standard Webhooks.
+// The signed header sets of a generic webhook request, in order: `X-ZollyBot-*`, then Standard Webhooks.
 const WEBHOOK_HEADER_SETS: readonly WebhookHeaderSet[] = [
   {
     deliveryId: WEBHOOK_DELIVERY_ID_HEADER,
@@ -765,13 +765,13 @@ function telegramUpdate(
   };
 }
 
-// Entity types that can name OpenBot: `@username`, a mention of a user without a username, and a
+// Entity types that can name ZollyBot: `@username`, a mention of a user without a username, and a
 // command such as `/stop@bot`. Signal reads only the type, not the text, so a mention of another
 // person also counts.
 const TELEGRAM_ADDRESSING_ENTITIES = new Set(["mention", "text_mention", "bot_command"]);
 
 /**
- * True when a message can address OpenBot, so it can start a hosted server that sleeps: a direct
+ * True when a message can address ZollyBot, so it can start a hosted server that sleeps: a direct
  * message, a reply, a message in a thread, a message with a mention or a command, or a rename or a
  * removal that the host must see. The bot gets every group message, and the host answers none of the
  * others.
@@ -807,53 +807,53 @@ export function prometheusMetrics(signal: SignalService, turnRelays: TurnRelays,
     // 1 while this machine is the entry, 0 while another machine is. Absent without the entry rule.
     ...(entry.enabled
       ? [
-          "# TYPE openbot_remote_signal_entry gauge",
-          `openbot_remote_signal_entry${entryLabel} ${entry.isEntry ? 1 : 0}`,
+          "# TYPE zollybot_remote_signal_entry gauge",
+          `zollybot_remote_signal_entry${entryLabel} ${entry.isEntry ? 1 : 0}`,
         ]
       : []),
     // 1 when the last probe of the relay allocated, 0 when it failed. A relay that has no probe yet is absent.
-    "# TYPE openbot_remote_turn_relay_available gauge",
-    ...relays.map((relay) => `openbot_remote_turn_relay_available{host="${relay.host}"} ${relay.available ? 1 : 0}`),
-    "# TYPE openbot_remote_signal_sockets gauge",
-    `openbot_remote_signal_sockets ${metrics.activeSockets}`,
-    "# TYPE openbot_remote_peer_connections gauge",
-    `openbot_remote_peer_connections ${metrics.activePeerConnections}`,
-    "# TYPE openbot_remote_signal_messages_total counter",
-    `openbot_remote_signal_messages_total ${metrics.relayedMessages}`,
-    "# TYPE openbot_remote_auth_failures_total counter",
-    `openbot_remote_auth_failures_total ${metrics.authenticationFailures}`,
-    "# TYPE openbot_remote_auth_unavailable_total counter",
-    `openbot_remote_auth_unavailable_total ${metrics.authenticationUnavailable}`,
-    "# TYPE openbot_remote_protocol_failures_total counter",
-    `openbot_remote_protocol_failures_total ${metrics.protocolFailures}`,
-    "# TYPE openbot_remote_slack_deliveries_total counter",
-    `openbot_remote_slack_deliveries_total ${metrics.slackDeliveries}`,
-    "# TYPE openbot_remote_slack_deliveries_unavailable_total counter",
-    `openbot_remote_slack_deliveries_unavailable_total ${metrics.slackDeliveriesUnavailable}`,
-    "# TYPE openbot_remote_github_deliveries_total counter",
-    `openbot_remote_github_deliveries_total ${metrics.githubDeliveries}`,
-    "# TYPE openbot_remote_github_deliveries_unavailable_total counter",
-    `openbot_remote_github_deliveries_unavailable_total ${metrics.githubDeliveriesUnavailable}`,
-    "# TYPE openbot_remote_telegram_deliveries_total counter",
-    `openbot_remote_telegram_deliveries_total ${metrics.telegramDeliveries}`,
-    "# TYPE openbot_remote_telegram_deliveries_unrouted_total counter",
-    `openbot_remote_telegram_deliveries_unrouted_total ${metrics.telegramDeliveriesUnrouted}`,
-    "# TYPE openbot_remote_telegram_calls_total counter",
-    `openbot_remote_telegram_calls_total ${metrics.telegramCalls}`,
-    "# TYPE openbot_remote_telegram_calls_refused_total counter",
-    `openbot_remote_telegram_calls_refused_total ${metrics.telegramCallsRefused}`,
-    "# TYPE openbot_remote_queued_deliveries_total counter",
-    `openbot_remote_queued_deliveries_total ${metrics.queuedDeliveries}`,
-    "# TYPE openbot_remote_queued_deliveries_flushed_total counter",
-    `openbot_remote_queued_deliveries_flushed_total ${metrics.queuedDeliveriesFlushed}`,
-    "# TYPE openbot_remote_discord_deliveries_total counter",
-    `openbot_remote_discord_deliveries_total ${metrics.discordDeliveries}`,
-    "# TYPE openbot_remote_discord_deliveries_unavailable_total counter",
-    `openbot_remote_discord_deliveries_unavailable_total ${metrics.discordDeliveriesUnavailable}`,
-    "# TYPE openbot_remote_discord_api_calls_total counter",
-    `openbot_remote_discord_api_calls_total ${metrics.discordApiCalls}`,
-    "# TYPE openbot_remote_discord_api_failures_total counter",
-    `openbot_remote_discord_api_failures_total ${metrics.discordApiFailures}`,
+    "# TYPE zollybot_remote_turn_relay_available gauge",
+    ...relays.map((relay) => `zollybot_remote_turn_relay_available{host="${relay.host}"} ${relay.available ? 1 : 0}`),
+    "# TYPE zollybot_remote_signal_sockets gauge",
+    `zollybot_remote_signal_sockets ${metrics.activeSockets}`,
+    "# TYPE zollybot_remote_peer_connections gauge",
+    `zollybot_remote_peer_connections ${metrics.activePeerConnections}`,
+    "# TYPE zollybot_remote_signal_messages_total counter",
+    `zollybot_remote_signal_messages_total ${metrics.relayedMessages}`,
+    "# TYPE zollybot_remote_auth_failures_total counter",
+    `zollybot_remote_auth_failures_total ${metrics.authenticationFailures}`,
+    "# TYPE zollybot_remote_auth_unavailable_total counter",
+    `zollybot_remote_auth_unavailable_total ${metrics.authenticationUnavailable}`,
+    "# TYPE zollybot_remote_protocol_failures_total counter",
+    `zollybot_remote_protocol_failures_total ${metrics.protocolFailures}`,
+    "# TYPE zollybot_remote_slack_deliveries_total counter",
+    `zollybot_remote_slack_deliveries_total ${metrics.slackDeliveries}`,
+    "# TYPE zollybot_remote_slack_deliveries_unavailable_total counter",
+    `zollybot_remote_slack_deliveries_unavailable_total ${metrics.slackDeliveriesUnavailable}`,
+    "# TYPE zollybot_remote_github_deliveries_total counter",
+    `zollybot_remote_github_deliveries_total ${metrics.githubDeliveries}`,
+    "# TYPE zollybot_remote_github_deliveries_unavailable_total counter",
+    `zollybot_remote_github_deliveries_unavailable_total ${metrics.githubDeliveriesUnavailable}`,
+    "# TYPE zollybot_remote_telegram_deliveries_total counter",
+    `zollybot_remote_telegram_deliveries_total ${metrics.telegramDeliveries}`,
+    "# TYPE zollybot_remote_telegram_deliveries_unrouted_total counter",
+    `zollybot_remote_telegram_deliveries_unrouted_total ${metrics.telegramDeliveriesUnrouted}`,
+    "# TYPE zollybot_remote_telegram_calls_total counter",
+    `zollybot_remote_telegram_calls_total ${metrics.telegramCalls}`,
+    "# TYPE zollybot_remote_telegram_calls_refused_total counter",
+    `zollybot_remote_telegram_calls_refused_total ${metrics.telegramCallsRefused}`,
+    "# TYPE zollybot_remote_queued_deliveries_total counter",
+    `zollybot_remote_queued_deliveries_total ${metrics.queuedDeliveries}`,
+    "# TYPE zollybot_remote_queued_deliveries_flushed_total counter",
+    `zollybot_remote_queued_deliveries_flushed_total ${metrics.queuedDeliveriesFlushed}`,
+    "# TYPE zollybot_remote_discord_deliveries_total counter",
+    `zollybot_remote_discord_deliveries_total ${metrics.discordDeliveries}`,
+    "# TYPE zollybot_remote_discord_deliveries_unavailable_total counter",
+    `zollybot_remote_discord_deliveries_unavailable_total ${metrics.discordDeliveriesUnavailable}`,
+    "# TYPE zollybot_remote_discord_api_calls_total counter",
+    `zollybot_remote_discord_api_calls_total ${metrics.discordApiCalls}`,
+    "# TYPE zollybot_remote_discord_api_failures_total counter",
+    `zollybot_remote_discord_api_failures_total ${metrics.discordApiFailures}`,
     "",
   ].join("\n");
 }

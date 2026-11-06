@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { dirname, join } from "node:path";
-import { redactText } from "@openbot/logging";
+import { redactText } from "@zollybot/logging";
 import { Effect } from "effect";
 import { app, BrowserWindow, type WebContents, type WebFrameMain, webContents } from "electron";
 import { z } from "zod";
@@ -32,10 +32,10 @@ const CARD: VaultCardSecret = {
   nameOnCard: "Ada Lovelace",
 };
 const CARD_ID = "card-fixture";
-const CHECKOUT = "https://checkout.openbot.test";
-const SCRIPTED = "https://scripted.openbot.test";
+const CHECKOUT = "https://checkout.zollybot.test";
+const SCRIPTED = "https://scripted.zollybot.test";
 // A refused evaluate still marks the checkout site as scripted, so later fills use another site.
-const SHOP = "https://shop.openbot.test";
+const SHOP = "https://shop.zollybot.test";
 const PAYMENTS = "https://payments.cardfixture.test";
 
 const snapshotSchema = z.object({
@@ -152,7 +152,7 @@ async function main(): Promise<void> {
     await runCauseEffect(host.close(seed.id));
 
     const params = (tool: string, args: DynamicToolCallParams["arguments"]): DynamicToolCallParams => ({
-      namespace: "openbot_browser",
+      namespace: "zollybot_browser",
       tool,
       arguments: args,
       ownerAgentId: "card-agent",

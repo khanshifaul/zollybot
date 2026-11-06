@@ -1,11 +1,11 @@
+import type { UseQueryResult } from "@tanstack/react-query";
 import {
   type ConnectorMessagingPlatform,
   MESSAGING_LIMITS,
   type MessagingConnection,
   type MessagingOverview,
-} from "@openbot/contracts/ipc";
-import type { MessagingConnectorPage as HostPage } from "@openbot/team-client/team-admin-requests";
-import type { UseQueryResult } from "@tanstack/react-query";
+} from "@zollybot/contracts/ipc";
+import type { MessagingConnectorPage as HostPage } from "@zollybot/team-client/team-admin-requests";
 import { openAuthSessionAsync } from "expo-web-browser";
 import { Typography } from "heroui-native";
 import { Alert, Linking } from "react-native";
@@ -101,7 +101,7 @@ function isWorkspacePlatform(platform: ConnectorMessagingPlatform): platform is 
 
 /**
  * Opens the platform's page that the host named. A Slack or Discord install returns to an
- * `openbot://` link with a grant that is sealed to the host; the browser session gives it back here,
+ * `zollybot://` link with a grant that is sealed to the host; the browser session gives it back here,
  * and the phone sends it on. A Telegram link opens Telegram, and the chat shows when it is linked.
  * Resolves false when the user closed the browser.
  */
@@ -130,8 +130,8 @@ async function openHostPage(
 
 /**
  * Marketplace › Apps › Slack, Discord or Telegram of a joined server. A Slack workspace or a
- * Discord server installs the one OpenBot app, and its orchestrator agent receives every request.
- * Every Telegram chat adds the one OpenBot bot and shares one orchestrator. No token reaches the phone.
+ * Discord server installs the one ZollyBot app, and its orchestrator agent receives every request.
+ * Every Telegram chat adds the one ZollyBot bot and shares one orchestrator. No token reaches the phone.
  */
 export function MessagingConnectorPage({
   server,

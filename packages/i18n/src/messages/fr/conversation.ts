@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "Rechercher dans OpenBot",
+  "conversation.globalSearch.title": "Rechercher dans ZollyBot",
   "conversation.globalSearch.filter": "Filtrer les résultats",
   "conversation.globalSearch.tab.all": "Tout",
   "conversation.globalSearch.tab.messages": "Messages",
@@ -94,7 +94,7 @@ export const messages = {
   "conversation.threads.error.branch": "Impossible de dériver le chat.",
   "conversation.threads.error.send": "Impossible d’envoyer le message au fil.",
   "conversation.threads.error.files":
-    "Ce serveur n’accepte pas de fichiers dans les fils. Mettez OpenBot à jour dessus.",
+    "Ce serveur n’accepte pas de fichiers dans les fils. Mettez ZollyBot à jour dessus.",
   "conversation.threads.error.stop": "Impossible d’arrêter le fil.",
   "conversation.threads.error.archive": "Impossible d’archiver le fil.",
   "conversation.threads.error.restore": "Impossible de restaurer le fil.",

@@ -1,5 +1,5 @@
-import type { AgentProviderId } from "@openbot/contracts/ipc";
-import type { ProviderPickerOption } from "@openbot/ui/components/ProviderPicker";
+import type { AgentProviderId } from "@zollybot/contracts/ipc";
+import type { ProviderPickerOption } from "@zollybot/ui/components/ProviderPicker";
 
 /**
  * The plan providers that most users have. They come first among the providers that the user has,

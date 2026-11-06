@@ -3,7 +3,7 @@
 // `schedule` and `run_workflow` tools. A load or resume sends the filter again, so a session that an
 // earlier release opened also gets it. The model catalog probe sends no prompt, and it opens outside the
 // workspace, so it is not checked. The fake server writes each session request to a log.
-// `bun scripts/antigravity-tool-filter-e2e.ts`. Writes .openbot-build/antigravity-tool-filter-e2e/report.json.
+// `bun scripts/antigravity-tool-filter-e2e.ts`. Writes .zollybot-build/antigravity-tool-filter-e2e/report.json.
 import assert from "node:assert/strict";
 import { chmod, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -14,7 +14,7 @@ import { runCauseEffect } from "../src/backend/effect-boundary";
 import { NO_PROVIDER_CREDENTIALS, requireProviderDriver } from "../src/backend/provider-drivers";
 import { readJsonl, startThread, stopClients } from "./provider-fakes/host";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/antigravity-tool-filter-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/antigravity-tool-filter-e2e");
 const NL = String.fromCharCode(10);
 const DISABLED = ["schedule", "run_workflow"];
 
@@ -65,7 +65,7 @@ interface Report {
 }
 
 const report: Report = { passed: false, cases: [] };
-const root = await mkdtemp(join(tmpdir(), "openbot-antigravity-filter-e2e-"));
+const root = await mkdtemp(join(tmpdir(), "zollybot-antigravity-filter-e2e-"));
 const clients: AgentClient[] = [];
 
 try {

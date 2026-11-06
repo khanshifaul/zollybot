@@ -1,13 +1,13 @@
-import { isManagedRuntimeProvider, type ManagedProviderId } from "@openbot/contracts/agent-providers";
-import type { AgentProviderId, AgentProviderStatus, AgentStatus, ProviderRuntimeStatus } from "@openbot/contracts/ipc";
-import { Toaster, toast } from "@openbot/ui";
 import type { JSX } from "@solidjs/web";
+import { isManagedRuntimeProvider, type ManagedProviderId } from "@zollybot/contracts/agent-providers";
+import type { AgentProviderId, AgentProviderStatus, AgentStatus, ProviderRuntimeStatus } from "@zollybot/contracts/ipc";
+import { Toaster, toast } from "@zollybot/ui";
 import { createSignal, onCleanup, untrack } from "solid-js";
 import { fn } from "storybook/test";
 import type { FirstRunFlowProps } from "../src/features/onboarding/FirstRunFlow";
 import { providerKeyApi } from "../src/features/settings/provider-key-api";
 import { STORY_AGENT_STATUS } from "./fixtures";
-import { createMockOpenBot } from "./mock-openbot";
+import { createMockZollyBot } from "./mock-zollybot";
 import { createFakeConnection } from "./provider-connection-fixture";
 
 export const noProvidersConnectedAgentStatus: AgentStatus = {
@@ -92,10 +92,10 @@ const downloadedRuntimeStatuses = (): Record<ManagedProviderId, ProviderRuntimeS
   grok: { phase: "ready", progress: 100, message: null, version: "1.0.5" },
 });
 
-/** Installs the mock `window.openbot` before the flow renders, and a toaster beside it. */
+/** Installs the mock `window.zollybot` before the flow renders, and a toaster beside it. */
 export function MockedOnboardingApi(props: { permissions?: boolean; children: JSX.Element }) {
-  const previousApi = window.openbot;
-  const mock = createMockOpenBot();
+  const previousApi = window.zollybot;
+  const mock = createMockZollyBot();
   if (props.permissions) {
     mock.api.computerUse.getState = async () => ({
       status: "permissions-required",
@@ -106,11 +106,11 @@ export function MockedOnboardingApi(props: { permissions?: boolean; children: JS
       message: null,
     });
   }
-  window.openbot = mock.api;
+  window.zollybot = mock.api;
   onCleanup(() => {
     mock.dispose();
     toast.dismiss();
-    window.openbot = previousApi;
+    window.zollybot = previousApi;
   });
   return (
     <>

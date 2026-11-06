@@ -1,8 +1,8 @@
-import type { AgentInstructionFileName, AgentInstructionsFile } from "@openbot/contracts/ipc";
+import type { AgentInstructionFileName, AgentInstructionsFile } from "@zollybot/contracts/ipc";
 import {
   type AgentInstructionsCalls,
   AgentInstructionsView,
-} from "@openbot/ui/features/conversation/AgentInstructionsView";
+} from "@zollybot/ui/features/conversation/AgentInstructionsView";
 import { untrack } from "solid-js";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
@@ -23,7 +23,7 @@ const RULES = `# Chief
 - Tell the user when a refund appears in the export.
 `;
 
-const FOLDER = "/Users/alex/OpenBot/Agents/Chief";
+const FOLDER = "/Users/alex/ZollyBot/Agents/Chief";
 
 /** Calls that keep the file in memory, so Edit and Save work in the story. */
 function storyCalls(fileName: AgentInstructionFileName, text: string): AgentInstructionsCalls {

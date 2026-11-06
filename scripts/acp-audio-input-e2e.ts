@@ -13,8 +13,8 @@ import { runCauseEffect } from "../src/backend/effect-boundary";
 import { type AppServerNotification, getString, isRecord } from "../src/backend/protocol";
 import { requireProviderDriver } from "../src/backend/provider-drivers";
 
-const out = resolve(import.meta.dirname, "../.openbot-build/acp-audio-input-e2e");
-const root = await mkdtemp(join(tmpdir(), "openbot-acp-audio-"));
+const out = resolve(import.meta.dirname, "../.zollybot-build/acp-audio-input-e2e");
+const root = await mkdtemp(join(tmpdir(), "zollybot-acp-audio-"));
 const MB = 1024 * 1024;
 
 // The agent records the blocks of each prompt. `audio` selects its `promptCapabilities.audio`.

@@ -1,6 +1,6 @@
-import { canAdministerServer, type ServerNotificationLevel, type ServerSummary } from "@openbot/contracts/ipc";
-import type { AppFormat, AppTextKey, AppTranslate } from "@openbot/i18n";
-import { Bell, BellOff, ChevronRight, type ContextMenu, EyeOff, LogOut, RotateCcw, Trash2 } from "@openbot/ui";
+import { canAdministerServer, type ServerNotificationLevel, type ServerSummary } from "@zollybot/contracts/ipc";
+import type { AppFormat, AppTextKey, AppTranslate } from "@zollybot/i18n";
+import { Bell, BellOff, ChevronRight, type ContextMenu, EyeOff, LogOut, RotateCcw, Trash2 } from "@zollybot/ui";
 import { For, Show } from "solid-js";
 import { useText } from "../../text";
 
@@ -91,12 +91,12 @@ export function ServerActionItems(
     props.server.role === "owner" &&
     Boolean(props.canRemove?.(props.server.id));
   // A restart while the machine starts would stop it and begin the start again. A running machine whose
-  // OpenBot does not answer can restart.
+  // ZollyBot does not answer can restart.
   const canRestart = () =>
     Boolean(props.onRestart) &&
     props.server.kind === "remote" &&
     canAdministerServer(props.server.role) &&
-    !(props.server.hostedSleep === "waking" && props.server.hostedStart?.step !== "openbot") &&
+    !(props.server.hostedSleep === "waking" && props.server.hostedStart?.step !== "zollybot") &&
     (props.server.hosted === true || Boolean(props.canRestart?.(props.server.id)));
   const canHide = () =>
     Boolean(props.onHide) && props.server.kind === "local" && Boolean(props.canHide?.(props.server.id));

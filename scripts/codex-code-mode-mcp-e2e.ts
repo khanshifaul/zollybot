@@ -1,5 +1,5 @@
 // Runs issues #2897 and #4468 end to end on the real `codex app-server`: a code-mode-only model, as
-// Codex describes GPT-6, and an OpenBot MCP server. Codex defers such a model's MCP tools into its
+// Codex describes GPT-6, and an ZollyBot MCP server. Codex defers such a model's MCP tools into its
 // `exec` cell. #2897 made each MCP namespace direct-only, so each request carried the schema of every
 // MCP tool. Since #4468 only Computer Use stays direct; the model finds another server's tools in
 // `ALL_TOOLS` inside `exec`, as the developer instructions tell it. The payload is the one
@@ -11,7 +11,7 @@
 // Issue #3265: a direct call gives the model the result's `structuredContent` alone when the server
 // sends it, and drops each image of `content`. A result without it keeps its images. The image steps
 // record this Codex behavior, so a Codex update that changes it fails here.
-// `bun scripts/codex-code-mode-mcp-e2e.ts`. Writes .openbot-build/codex-code-mode-mcp-e2e/report.json.
+// `bun scripts/codex-code-mode-mcp-e2e.ts`. Writes .zollybot-build/codex-code-mode-mcp-e2e/report.json.
 import assert from "node:assert/strict";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { createServer, type Server as HttpServer } from "node:http";
@@ -20,7 +20,11 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { COMPUTER_USE_MCP_SERVER_ID, COMPUTER_USE_MCP_SERVER_NAME, type McpServerConfig } from "@openbot/contracts/ipc";
+import {
+  COMPUTER_USE_MCP_SERVER_ID,
+  COMPUTER_USE_MCP_SERVER_NAME,
+  type McpServerConfig,
+} from "@zollybot/contracts/ipc";
 import { readCodexMcpConfig } from "../src/backend/agent/codex-mcp-config";
 import { VISIBLE_DYNAMIC_TOOLS } from "../src/backend/agent/tool-catalog";
 import { CodexAppServerClient } from "../src/backend/app-server-client";
@@ -37,7 +41,7 @@ import {
 } from "../src/backend/mcp-provider-shapes";
 import { decodeRecordResponse, getRecord, getString } from "../src/backend/protocol";
 
-const OUT = resolve(import.meta.dirname, "../.openbot-build/codex-code-mode-mcp-e2e");
+const OUT = resolve(import.meta.dirname, "../.zollybot-build/codex-code-mode-mcp-e2e");
 const NL = String.fromCharCode(10);
 const DEADLINE_MS = 60_000;
 const MODEL = "code-mode-model";
@@ -313,7 +317,7 @@ async function open(home: string) {
       client.request(
         "initialize",
         {
-          clientInfo: { name: "openbot_e2e", title: "OpenBot E2E", version: "0.0.0" },
+          clientInfo: { name: "zollybot_e2e", title: "ZollyBot E2E", version: "0.0.0" },
           capabilities: { experimentalApi: true },
         },
         decodeRecordResponse,
@@ -366,11 +370,11 @@ async function run(test: Case): Promise<Outcome> {
       codexDisabledServers(() => readCodexMcpConfig(session.client, keyed).pipe(toMcpShapeFailed)),
     );
     const servers = keyed(own.transports);
-    const openbot = VISIBLE_DYNAMIC_TOOLS.map((namespace) => namespace.name);
-    const current = [...openbot, ...codexDirectMcpNamespaces(servers)];
+    const zollybot = VISIBLE_DYNAMIC_TOOLS.map((namespace) => namespace.name);
+    const current = [...zollybot, ...codexDirectMcpNamespaces(servers)];
     // The list from #2897 to #4468: Codex's name for each server key.
     const everyServer = [
-      ...openbot,
+      ...zollybot,
       ...Object.keys(servers).map((key) => `mcp__${key.replace(/[^A-Za-z0-9_]/gu, "_")}`),
     ];
     const params = (directOnly: string[]) => ({
@@ -480,7 +484,7 @@ try {
       rows: [row("composio")],
     },
     (o) => {
-      assert.deepEqual(o.keys, ["openbot_composio"]);
+      assert.deepEqual(o.keys, ["zollybot_composio"]);
       assert.deepEqual(o.offered, []);
       assert.deepEqual(o.calls, [TOOL]);
     },

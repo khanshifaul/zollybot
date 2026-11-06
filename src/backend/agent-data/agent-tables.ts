@@ -1,7 +1,7 @@
 import { access, chmod, mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import type { SharedTable } from "@openbot/contracts/ipc";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { SharedTable } from "@zollybot/contracts/ipc";
 import { Effect, Schema, Semaphore } from "effect";
 import {
   AGENT_DATABASE_LIMITS,
@@ -14,7 +14,7 @@ import { type AgentDatabaseCheck, type AgentSchemaChange, checkAgentSql, schemaC
 import type { AgentDatabaseSupervisor } from "./agent-database-supervisor";
 
 export interface AgentTablesOptions {
-  /** `~/OpenBot/Shared`. The `Data` directory under it is this class's alone. */
+  /** `~/ZollyBot/Shared`. The `Data` directory under it is this class's alone. */
   sharedRoot: string;
   supervisor: AgentDatabaseSupervisor;
 }
@@ -45,7 +45,7 @@ const FILE_NAME = "agent-data.db";
 const HIDDEN_TABLES = `name NOT LIKE 'sqlite~_%' ESCAPE '~' AND name <> '${AGENT_DATABASE_METADATA_TABLE}'`;
 
 /**
- * Owns the one shared database, `~/OpenBot/Shared/Data/agent-data.db`: the file, its owner record,
+ * Owns the one shared database, `~/ZollyBot/Shared/Data/agent-data.db`: the file, its owner record,
  * and the rule that decides who may remove a table.
  *
  * There is one database and many tables rather than a database per subject. An agent that wants to

@@ -18,8 +18,8 @@ export const messages = {
   "notification.channelMessage": "Envió un mensaje.",
   "notification.usageLimit.title": "La cuenta de {provider} alcanzó su límite",
   "notification.usageLimit.body": {
-    one: "{count} agente espera. OpenBot lo intentará de nuevo más tarde.",
-    other: "{count} agentes esperan. OpenBot lo intentará de nuevo más tarde.",
+    one: "{count} agente espera. ZollyBot lo intentará de nuevo más tarde.",
+    other: "{count} agentes esperan. ZollyBot lo intentará de nuevo más tarde.",
   },
   "notification.usageLimit.bodyResets": {
     one: "{count} agente espera. Se restablece {reset}.",
@@ -31,7 +31,7 @@ export const messages = {
   "notification.machineAlert.body":
     "Superó el nivel de alerta del {level}. Consulta Ajustes del servidor > Almacenamiento.",
   "notification.test": "Las notificaciones funcionan.",
-  "notification.welcome": "OpenBot te avisará aquí cuando un agente te necesite.",
+  "notification.welcome": "ZollyBot te avisará aquí cuando un agente te necesite.",
   "notification.toast.region": "Notificaciones",
   "notification.toast.close": "Cerrar notificación",
 } as const satisfies PartialTranslation<typeof source>;

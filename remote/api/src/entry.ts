@@ -78,8 +78,8 @@ export class SignalEntry {
         }
         console.log(
           this.#entry
-            ? "OpenBot Signal is the entry."
-            : `OpenBot Signal is not the entry: ${config.host} names another machine.`,
+            ? "ZollyBot Signal is the entry."
+            : `ZollyBot Signal is not the entry: ${config.host} names another machine.`,
         );
         if (this.#entry) yield* start;
         const check = Effect.gen({ self: this }, function* () {
@@ -90,7 +90,7 @@ export class SignalEntry {
           const entry = listed || (this.#entry && this.#misses < MISSES_TO_LEAVE);
           if (entry === this.#entry) return;
           this.#entry = entry;
-          console.log(entry ? "OpenBot Signal is the entry again." : "OpenBot Signal is no longer the entry.");
+          console.log(entry ? "ZollyBot Signal is the entry again." : "ZollyBot Signal is no longer the entry.");
           if (entry) {
             yield* start;
             yield* hooks.changed(true);

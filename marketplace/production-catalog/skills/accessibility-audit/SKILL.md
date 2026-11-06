@@ -12,7 +12,7 @@ description: "Audit a page in the browser for keyboard path, focus, names and ro
 
 ## Inputs
 
-1. **The page or flow.** A site address, or an open tab. Call `openbot_browser.list_tabs` first. Use a test
+1. **The page or flow.** A site address, or an open tab. Call `zollybot_browser.list_tabs` first. Use a test
    account for pages behind a sign-in. If there is none, ask for one; never use a real customer account.
 2. **The main task** on the page, such as "sign up" or "pay an invoice". If it is not clear, ask once with
    `ask_user`.
@@ -21,19 +21,19 @@ description: "Audit a page in the browser for keyboard path, focus, names and ro
 ## Steps
 
 1. Open the page. Record the address, the title and the time. Take a screenshot.
-2. **Keyboard path.** From the top, press Tab through the main task with `openbot_browser.press`. Write the
+2. **Keyboard path.** From the top, press Tab through the main task with `zollybot_browser.press`. Write the
    order. Check that every control is reached, that you can leave every widget, and that Enter or Space works.
 3. **Focus.** Screenshot each stop. Is the focus visible and not hidden behind a sticky bar?
-4. **Names and roles.** Read `openbot_browser.snapshot`. Every control needs a role and a name that matches
+4. **Names and roles.** Read `zollybot_browser.snapshot`. Every control needs a role and a name that matches
    its visible label. Note icon buttons with no name and clickable elements that are not buttons or links.
-5. **Contrast.** Read computed colors with `openbot_browser.evaluate` for body text, small text, placeholder,
+5. **Contrast.** Read computed colors with `zollybot_browser.evaluate` for body text, small text, placeholder,
    buttons, focus rings and icons. Compute the ratio. Text needs 4.5:1, large text 3:1, controls and focus 3:1.
 6. **Headings and landmarks.** List the heading levels in order. Check the page title, the language, and a way
    to skip repeated blocks.
 7. **Forms and errors.** Submit a form empty and with one wrong value. Are errors named in text, tied to their
    field, and announced? Are labels visible?
 8. **Images.** Check the alt text of informative, decorative and linked images.
-9. **Motion and layout.** Set reduced motion and a 320 px width with `openbot_browser.set_environment`. Check
+9. **Motion and layout.** Set reduced motion and a 320 px width with `zollybot_browser.set_environment`. Check
    that motion stops or reduces, and that content reflows without sideways scroll. Check target size.
 10. Rate each finding. Retest each blocker once.
 

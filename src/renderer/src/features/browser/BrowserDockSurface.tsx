@@ -4,9 +4,9 @@ import {
   type BrowserDockGlass,
   type BrowserDockPresentation,
   LOCAL_SERVER_ID,
-} from "@openbot/contracts/ipc";
-import { BrowserDock } from "@openbot/ui/features/browser/BrowserDock";
-import { clamp } from "@openbot/ui/utils";
+} from "@zollybot/contracts/ipc";
+import { BrowserDock } from "@zollybot/ui/features/browser/BrowserDock";
+import { clamp } from "@zollybot/ui/utils";
 import { createSignal, onSettled, Show } from "solid-js";
 import { browserDockPort } from "./browser-dock-port";
 

@@ -9,20 +9,20 @@ import {
   isOpenableAttachmentName,
   isSupportedAttachmentNameFor,
   supportedAttachmentExtensions,
-} from "@openbot/contracts/attachment-files";
+} from "@zollybot/contracts/attachment-files";
 import {
   legacyTeamCapabilities,
   TEAM_CURRENT_CAPABILITIES,
   TEAM_PROTOCOL_V9_ONLY_CAPABILITIES,
   TEAM_SVG_ATTACHMENTS_CAPABILITY,
   teamCapabilitiesForProtocol,
-} from "@openbot/contracts/team-protocol/current";
-import { TEAM_PROTOCOL_V9_CAPABILITY_LIMIT } from "@openbot/contracts/team-protocol/v9";
+} from "@zollybot/contracts/team-protocol/current";
+import { TEAM_PROTOCOL_V9_CAPABILITY_LIMIT } from "@zollybot/contracts/team-protocol/v9";
 import { Effect } from "effect";
 import { AttachmentFiles } from "../src/backend/attachment-files";
 
 const workspace = dirname(dirname(import.meta.filename));
-const artifactPath = join(workspace, ".openbot-build", "svg-attachment-e2e", "report.json");
+const artifactPath = join(workspace, ".zollybot-build", "svg-attachment-e2e", "report.json");
 
 function digest(bytes: Uint8Array): string {
   return createHash("sha256").update(bytes).digest("hex");
@@ -33,7 +33,7 @@ const drawing = new TextEncoder().encode(
 );
 
 async function run() {
-  const root = await mkdtemp(join(tmpdir(), "openbot-svg-attachment-"));
+  const root = await mkdtemp(join(tmpdir(), "zollybot-svg-attachment-"));
   try {
     const sharedRoot = join(root, "shared");
     const files = new AttachmentFiles({ userDataPath: join(root, "user-data"), sharedRoot });

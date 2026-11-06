@@ -2,7 +2,7 @@ import type { PartialTranslation } from "../../message";
 import type { messages as source } from "../en/conversation";
 
 export const messages = {
-  "conversation.globalSearch.title": "OpenBot 검색",
+  "conversation.globalSearch.title": "ZollyBot 검색",
   "conversation.globalSearch.filter": "결과 필터",
   "conversation.globalSearch.tab.all": "전체",
   "conversation.globalSearch.tab.messages": "메시지",
@@ -92,7 +92,7 @@ export const messages = {
   "conversation.threads.error.start": "스레드를 시작할 수 없어요.",
   "conversation.threads.error.branch": "채팅을 분기할 수 없어요.",
   "conversation.threads.error.send": "스레드에 메시지를 보낼 수 없어요.",
-  "conversation.threads.error.files": "이 서버는 스레드에서 파일을 받지 않아요. 서버의 OpenBot을 업데이트하세요.",
+  "conversation.threads.error.files": "이 서버는 스레드에서 파일을 받지 않아요. 서버의 ZollyBot을 업데이트하세요.",
   "conversation.threads.error.stop": "스레드를 중지할 수 없어요.",
   "conversation.threads.error.archive": "스레드를 보관할 수 없어요.",
   "conversation.threads.error.restore": "스레드를 복원할 수 없어요.",

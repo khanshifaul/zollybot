@@ -1,5 +1,5 @@
-import { DEFAULT_TEAM_MEMBER_LIMIT, INPUT_LIMITS } from "@openbot/contracts/input-limits";
-import { canAdministerServer } from "@openbot/contracts/ipc";
+import { DEFAULT_TEAM_MEMBER_LIMIT, INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { canAdministerServer } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";
@@ -81,7 +81,7 @@ function ServerSettingsHome({ server }: { server: MobileServer }) {
   const { memberCountByServer } = useMobileWorkspace();
   const memberCount = memberCountByServer[server.id];
   const updateStatus = useServerUpdate(server.id, { poll: false }).query.data?.status;
-  // The People row shows the member count, and Maintenance says when a new OpenBot version is ready.
+  // The People row shows the member count, and Maintenance says when a new ZollyBot version is ready.
   const values: Partial<Record<ServerSettingsCategory, string>> = {
     ...(memberCount === undefined
       ? {}
@@ -129,7 +129,7 @@ function ServerSettingsCategoryRow({
   value: string | undefined;
 }) {
   const { t, format } = useText();
-  const muted = String(useCSSVariable("--openbot-text-grouped-secondary"));
+  const muted = String(useCSSVariable("--zollybot-text-grouped-secondary"));
   const Icon = CATEGORY_ICONS[category];
   return (
     <SettingsRow

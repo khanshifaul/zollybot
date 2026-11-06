@@ -1,6 +1,6 @@
 // Signal protocol addresses of WhatsApp JIDs (`<name>.<deviceId>`) and sender key names.
 
-import { jidDecode } from "@openbot/whatsapp/baileys";
+import { jidDecode } from "@zollybot/whatsapp/baileys";
 
 export interface SignalAddress {
   /** JID user, with `_<domainType>` for every domain except WhatsApp (0). */

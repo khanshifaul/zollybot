@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import {
   isRoutineSchedule,
   ROUTINE_LIMIT_POLICIES,
@@ -9,9 +9,9 @@ import {
   type RoutineMissedPolicy,
   type RoutineRunPlace,
   type RoutineSchedule,
-} from "@openbot/contracts/ipc";
-import { type DynamicRecord, isOneOf, isString } from "@openbot/contracts/runtime-values";
-import { RoutineInputError } from "@openbot/team-client/routine-schedule";
+} from "@zollybot/contracts/ipc";
+import { type DynamicRecord, isOneOf, isString } from "@zollybot/contracts/runtime-values";
+import { RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import { isRecord } from "../protocol";
 
 export function routineToolArguments(value: unknown, allowedKeys: readonly string[]): DynamicRecord {
@@ -101,13 +101,13 @@ export function localTimezone(): string {
   }
 }
 
-/** The shape every `openbot` namespace dynamic tool answers with. */
-export interface OpenBotToolResponse {
+/** The shape every `zollybot` namespace dynamic tool answers with. */
+export interface ZollyBotToolResponse {
   success: boolean;
   contentItems: Array<{ type: "inputText"; text: string }>;
 }
 
-export function openBotToolResult(value: unknown): OpenBotToolResponse {
+export function openBotToolResult(value: unknown): ZollyBotToolResponse {
   return {
     success: true,
     contentItems: [{ type: "inputText", text: JSON.stringify(value) }],
@@ -121,7 +121,7 @@ export function openBotToolResult(value: unknown): OpenBotToolResponse {
  * give up on. `claude-client.ts` maps `success: false` onto `isError: true`, so both provider paths
  * show this as a failed tool call with the reason attached.
  */
-export function openBotToolFailure(message: string): OpenBotToolResponse {
+export function openBotToolFailure(message: string): ZollyBotToolResponse {
   return {
     success: false,
     contentItems: [{ type: "inputText", text: JSON.stringify({ error: message }) }],

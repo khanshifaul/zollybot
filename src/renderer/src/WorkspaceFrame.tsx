@@ -1,6 +1,6 @@
-import type { ServerSummary } from "@openbot/contracts/ipc";
-import { RemoteCompatibilityScreen } from "@openbot/ui/features/remote-desktop/RemoteCompatibilityScreen";
 import type { JSX } from "@solidjs/web";
+import type { ServerSummary } from "@zollybot/contracts/ipc";
+import { RemoteCompatibilityScreen } from "@zollybot/ui/features/remote-desktop/RemoteCompatibilityScreen";
 import { omit, type ParentProps, Show } from "solid-js";
 import { type WindowPage, windowPageKind } from "./features/window/window-page-context";
 import { useLayout } from "./layout";

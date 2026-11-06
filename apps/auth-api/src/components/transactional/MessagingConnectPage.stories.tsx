@@ -1,6 +1,6 @@
-import { translateFor } from "@openbot/i18n";
 import type { JSX } from "@solidjs/web";
 import { createRootRoute, createRoute, createRouter, RouterContextProvider } from "@tanstack/solid-router";
+import { translateFor } from "@zollybot/i18n";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 // The site's stylesheet, loaded only when a site story opens. See `ArticleMedia.stories.tsx`.
 import "../../styles.css";
@@ -42,8 +42,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /** After a Slack install: one action, in the middle of the card. */
-export const SlackReturnToOpenBot: Story = {
-  args: { openUrl: "openbot://slack-workspace?nonce=example&grant=example" },
+export const SlackReturnToZollyBot: Story = {
+  args: { openUrl: "zollybot://slack-workspace?nonce=example&grant=example" },
 };
 
 /** The browser client tab took the grant. */
@@ -69,8 +69,8 @@ export const SlackUnknownError: Story = {
   args: { failure: "slack_something_new" },
 };
 
-export const DiscordReturnToOpenBot: Story = {
-  args: { provider: "discord", text: DISCORD_TEXT, openUrl: "openbot://discord-guild?nonce=example&grant=example" },
+export const DiscordReturnToZollyBot: Story = {
+  args: { provider: "discord", text: DISCORD_TEXT, openUrl: "zollybot://discord-guild?nonce=example&grant=example" },
 };
 
 export const DiscordGuildTaken: Story = {

@@ -1,4 +1,4 @@
-import { INPUT_LIMITS } from "@openbot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type {
   AgentDefaults,
   AgentMemoryLimitPreference,
@@ -45,7 +45,7 @@ import type {
   UninstallSkillInput,
   UpdatePreferenceChange,
   VerifyEmailCodeInput,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   decodeExternalLinkTarget,
   IDLE_RESTART_TARGETS,
@@ -72,7 +72,7 @@ import {
   isSkillCategory,
   MAC_AUTOMATION_TARGETS,
   RENDERER_TIMING_LIMITS,
-} from "@openbot/contracts/ipc";
+} from "@zollybot/contracts/ipc";
 import {
   type DynamicRecord,
   isBoolean,
@@ -80,8 +80,8 @@ import {
   isNumber,
   isOneOf,
   isString,
-} from "@openbot/contracts/runtime-values";
-import { validateProfileName } from "@openbot/contracts/validation";
+} from "@zollybot/contracts/runtime-values";
+import { validateProfileName } from "@zollybot/contracts/validation";
 import { parseAvatarImage } from "./avatar-inputs";
 import { isObject, optionalBoolean, requireString } from "./validation";
 

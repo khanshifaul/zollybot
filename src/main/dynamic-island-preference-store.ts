@@ -4,8 +4,8 @@ import {
   type DynamicIslandPreference,
   isDynamicIslandServerVisibility,
   isDynamicIslandSizePercent,
-} from "@openbot/contracts/ipc";
-import { isBoolean, isDynamicRecord } from "@openbot/contracts/runtime-values";
+} from "@zollybot/contracts/ipc";
+import { isBoolean, isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Effect } from "effect";
 import { isMissingFileError } from "../backend/file-errors";
 import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } from "./preference-file";

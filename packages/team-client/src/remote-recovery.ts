@@ -1,8 +1,8 @@
-import type { ConversationSnapshot } from "@openbot/contracts/ipc";
-import { TEAM_API_ROUTES } from "@openbot/contracts/team-api-routes";
-import { SIDEBAR_FOLDERS_ROUTES } from "@openbot/contracts/team-protocol/sidebar-folders-v1";
-import { type SourceMessages, sourceText } from "@openbot/i18n/source";
-import { errorReference } from "@openbot/user-errors/reference";
+import type { ConversationSnapshot } from "@zollybot/contracts/ipc";
+import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
+import { SIDEBAR_FOLDERS_ROUTES } from "@zollybot/contracts/team-protocol/sidebar-folders-v1";
+import { type SourceMessages, sourceText } from "@zollybot/i18n/source";
+import { errorReference } from "@zollybot/user-errors/reference";
 import { Effect, Result, Schema } from "effect";
 import { runTeamEffect } from "./effect-boundary";
 

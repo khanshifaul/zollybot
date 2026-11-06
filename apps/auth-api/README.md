@@ -1,6 +1,6 @@
-# OpenBot Auth API
+# ZollyBot Auth API
 
-This TanStack Start and Solid 2 package is the central OpenBot account API. It
+This TanStack Start and Solid 2 package is the central ZollyBot account API. It
 runs on Cloudflare Workers, stores account and authentication records in D1,
 and stores account avatars in R2. Users sign in with an eight-character
 one-time email code. D1 stores hashes instead of plaintext codes, session tokens,
@@ -9,11 +9,11 @@ and team authentication tickets.
 ## Local development
 
 `.env.dev` is the committed encrypted development file. Local identity keys and saved overrides
-stay in ignored `.openbot/dev-state.json`. A checkout without a development key starts with stable
+stay in ignored `.zollybot/dev-state.json`. A checkout without a development key starts with stable
 generated local defaults. Existing state files remain valid.
 
 The update resets values that exist only in the old generated `.env.dev`; it does not import them.
-Local identity and custom settings already saved in `.openbot/dev-state.json` stay unchanged.
+Local identity and custom settings already saved in `.zollybot/dev-state.json` stay unchanged.
 Set new manual overrides in the shell. The load order is shell values, saved local overrides,
 decrypted development settings, then generated defaults. An explicit empty value is an override.
 Shared settings do not replace the local ticket keys, auth webhook secret, report hash secret, or
@@ -33,8 +33,8 @@ commands continue to use that file.
 
 ### Stripe sandbox
 
-`bun run api:stripe:bootstrap` creates the six plan Prices (lookup keys `openbot_{plan}_{month|year}`),
-the license Price (`openbot_license_month`) and the Customer Portal settings in the Stripe account of `STRIPE_SECRET_KEY`. It is safe to run
+`bun run api:stripe:bootstrap` creates the six plan Prices (lookup keys `zollybot_{plan}_{month|year}`),
+the license Price (`zollybot_license_month`) and the Customer Portal settings in the Stripe account of `STRIPE_SECRET_KEY`. It is safe to run
 again: a changed amount makes a new Price and moves the lookup key to it. In the Portal, an upgrade
 is charged at once, and a downgrade or a shorter interval starts at the next period.
 
@@ -69,9 +69,9 @@ bun scripts/stripe-flows-e2e.ts --api http://127.0.0.1:<port> [scenario ...]
 ```
 
 The `portal` scenario prints a Customer Portal cancel page and then an update page, and waits until
-you use them. The report goes to `.openbot-build/stripe-flows-e2e.json`.
+you use them. The report goes to `.zollybot-build/stripe-flows-e2e.json`.
 
-The `boat` scenario runs only when you name it. It pays for a server, waits until OpenBot in the VM
+The `boat` scenario runs only when you name it. It pays for a server, waits until ZollyBot in the VM
 signs in and publishes the host, restarts the service to check the stored session, and deletes the
 server. It needs the real `BOAT_API_KEY`, a template from `bun run hosting:template` whose
 `--auth-api-url` reaches your Worker (for example a `cloudflared tunnel --url` to its port), and
@@ -103,7 +103,7 @@ bun run env:validate:prod
 ```
 
 Commit the encrypted `.env.production` and `.env.dev` files. Never commit `.env.keys` or local
-state from `.openbot/`.
+state from `.zollybot/`.
 
 ## Article artwork
 
@@ -167,7 +167,7 @@ make it an alias of the `EMAIL_SMTP_USERNAME` mailbox. An empty value uses `EMAI
 
 Production does not open the SMTP socket itself. From some Cloudflare locations, such as FSD, a
 socket to the mail host fails at once (#4578). The production Worker sends each email through the
-`openbot-email-relay` Worker (`wrangler.email-relay.jsonc`) over the `EMAIL_RELAY` service binding.
+`zollybot-email-relay` Worker (`wrangler.email-relay.jsonc`) over the `EMAIL_RELAY` service binding.
 Cloudflare places that Worker near the mail host. The relay has no route and keeps no secret: the
 binding request carries the SMTP settings and the message. CI and `bun run api:deploy` deploy the
 relay before the production Worker. When you change `EMAIL_SMTP_HOST` or `EMAIL_SMTP_PORT`, also
@@ -186,11 +186,11 @@ write-only server client. Keep both in the encrypted `.env.production` for local
 the `cloudflare-production` GitHub Environment for CI. Both deployment paths check these values
 before remote changes. Test deployments do not send account analytics.
 
-`GITHUB_APP_PRIVATE_KEY` is the OpenBot GitHub App's private key as a PKCS #8 PEM. GitHub gives a
+`GITHUB_APP_PRIVATE_KEY` is the ZollyBot GitHub App's private key as a PKCS #8 PEM. GitHub gives a
 PKCS #1 key; convert it with `openssl pkcs8 -topk8 -nocrypt -in <key>.pem`. With the key, the
-Worker gives the desktop installation tokens, so GitHub shows `openbotgit[bot]` as the author of an
+Worker gives the desktop installation tokens, so GitHub shows `zollybotgit[bot]` as the author of an
 agent's work. With no key, the desktop acts as the signed-in user. In GitHub Actions the secret is
-`OPENBOT_GITHUB_APP_PRIVATE_KEY`, because GitHub refuses secret names that start with `GITHUB_`.
+`ZOLLYBOT_GITHUB_APP_PRIVATE_KEY`, because GitHub refuses secret names that start with `GITHUB_`.
 Secrets are never passed as process arguments. The other values are Worker
 variables. The SMTP connection uses TLS from the start and accepts only port 465.
 
@@ -207,10 +207,10 @@ Environment; a local deployment reads it from the encrypted `.env.production`.
 `SERVER_CLAIMS_ADMIN_TOKEN` lets an operator sign a new server in for a user without an email code: see
 [server claims](../../docs/self-hosted-server.md#sign-in-with-a-server-claim). Without it, the endpoint answers 401.
 
-Use `bun run api:deploy:test` for the isolated `openbot-auth-api-test` Worker
-and the `openbot-auth-test` D1 database.
+Use `bun run api:deploy:test` for the isolated `zollybot-auth-api-test` Worker
+and the `zollybot-auth-test` D1 database.
 
-As a fallback, set `EMAIL_DELIVERY_WEBHOOK_URL` to an HTTPS endpoint. OpenBot
+As a fallback, set `EMAIL_DELIVERY_WEBHOOK_URL` to an HTTPS endpoint. ZollyBot
 sends this JSON:
 
 ```json
@@ -271,7 +271,7 @@ code.
 
 ## Hosted sites
 
-`/v1/sites` takes two optional headers: `OpenBot-Host-Id` and `OpenBot-Host-Token`, the machine token
+`/v1/sites` takes two optional headers: `ZollyBot-Host-Id` and `ZollyBot-Host-Token`, the machine token
 of a registered server. With them, a request sees only that server's sites, and a new site counts
 against the server's limit: a `server_site_limits` row, else its plan's limit, else the account's shared
 pool (3 sites for each license user, else 1), within an account cap of 300. A wrong token gets 401
@@ -338,13 +338,13 @@ To deploy your own copy of this Worker with your own Signal, see
 host to Apple Push Notification service. The host seals the content for the phone, so the Worker
 cannot read it. The Worker checks the host credential and `LIVE_ACTIVITY_RATE_LIMITER`, makes the
 APNs payload itself, and stores and logs nothing. An update that shows an event that notifies the
-member has an `alert` with the sound of the phone and "OpenBot" as its only text (iOS shows the text
+member has an `alert` with the sound of the phone and "ZollyBot" as its only text (iOS shows the text
 on Apple Watch only); a host cannot give the text.
 
 `POST /v2/remote/hosts/:hostId/notification` forwards a sealed iPhone notification in the same way.
 It has its own key in `LIVE_ACTIVITY_RATE_LIMITER`, and it sends nothing for a device session that
 has ended (`RemoteControlPlane.sessionOpen`), because the host does not learn about the end. The
-alert has "OpenBot" as its only text and `mutable-content`; the app opens the sealed bytes.
+alert has "ZollyBot" as its only text and `mutable-content`; the app opens the sealed bytes.
 
 The relay is off until `APNS_PRIVATE_KEY` (the `.p8` key text) and `APNS_KEY_ID` are set. Create
 the key in Apple Developer > Keys with the Apple Push Notifications service, then add both to the

@@ -1,4 +1,4 @@
-import { runTeamEffect } from "@openbot/team-client";
+import { runTeamEffect } from "@zollybot/team-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { Typography } from "heroui-native";
 import { Alert, View } from "react-native";
