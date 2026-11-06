@@ -37,6 +37,6 @@ footer{margin-top:3rem;color:#777;font-size:.85rem}
 fetch("/latest").then(r=>r.text()).then(v=>{
   const ver=v.trim();
   document.getElementById("assets").innerHTML =
-    '<a href="/releases/'+ver+'/zollybot-gui-'+ver+'-x86_64.AppImage">AppImage</a> · <a href="/releases/'+ver+'/zollybot-linux-x86_64.tar.gz">bundle (.tar.gz)</a>';
+    `<a href="/releases/${ver}/zollybot-gui-${ver}-x86_64.AppImage">AppImage</a> · <a href="/releases/${ver}/zollybot-linux-x86_64.tar.gz">bundle (.tar.gz)</a>`;
 }).catch(()=>{document.getElementById("assets").textContent="no release published yet";});
 </script>
