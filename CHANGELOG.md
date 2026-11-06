@@ -6,6 +6,16 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.4] - 2026-11-07
+
+### Added
+
+- `zollybot --server` starts headless: when the app runs as a server it asks Chromium for the
+  headless ozone platform, so systemd can start it with no `DISPLAY` and still open the control
+  socket. The installer gains `--server`, which writes and enables
+  `zollybot-server.service` in the user manager — ZollyBot then stays up in the background the way
+  a herdr server does, and `zollybot-cli` or a phone can attach without a window open.
+
 ## [0.62.3] - 2026-11-06
 
 ### Fixed

@@ -231,6 +231,9 @@ removeClaudeCodeSessionEnvironment(process.env);
 const hostedServer = takeHostedServerEnvironment(process.env, app.isPackaged, process.platform);
 const hostingDeveloperKey = takeHostingDeveloperKey(process.env, app.isPackaged);
 const serverMode = takeServerModeEnvironment(process.env, app.isPackaged, process.platform);
+// A server has no window and often no screen: systemd starts it without DISPLAY.
+// Chromium's headless platform lets the app start there and still open its socket.
+if (serverMode || hostedServer) app.commandLine.appendSwitch("ozone-platform", "headless");
 // Always taken, so the owner password leaves the environment also when the flag is refused.
 const localServerChildEnvironment = takeLocalServerChildEnvironment(process.env, commandLineUserDataDirectory);
 const localServerChild = serverMode || hostedServer ? null : localServerChildEnvironment;

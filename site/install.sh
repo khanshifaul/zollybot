@@ -8,6 +8,7 @@
 #   --version <v>    install a specific version instead of the latest
 #   --no-desktop     skip the desktop entry
 #   --no-cli         skip the terminal companion (zollybot-cli)
+#   --server         install and enable a user service that keeps the server running
 #
 # This installs files, the way a package manager does: the release archive is
 # unpacked under <prefix>/lib/zollybot, the launcher is linked into <prefix>/bin,
@@ -22,6 +23,7 @@ PREFIX="${ZOLLYBOT_PREFIX:-$HOME/.local}"
 VERSION=""
 DESKTOP=1
 CLI=1
+SERVER=0
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -29,6 +31,7 @@ while [ $# -gt 0 ]; do
 		--version) VERSION="$2"; shift 2 ;;
 		--no-desktop) DESKTOP=0; shift ;;
 		--no-cli) CLI=0; shift ;;
+		--server) SERVER=1; shift ;;
 		*) echo "unknown option: $1" >&2; exit 2 ;;
 	esac
 done
@@ -128,6 +131,32 @@ MimeType=x-scheme-handler/zollybot;
 EOF
 	command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$data/applications" >/dev/null 2>&1 || true
 	echo "Added desktop entry"
+fi
+
+if [ "$SERVER" -eq 1 ]; then
+	need systemctl
+	unit_dir="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
+	mkdir -p "$unit_dir"
+	cat > "$unit_dir/zollybot-server.service" <<UNIT
+[Unit]
+Description=ZollyBot server (keeps the office running without a window)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=ZOLLYBOT_SERVER=1
+Environment=XDG_RUNTIME_DIR=%t
+ExecStart=$PREFIX/lib/zollybot/zollybot --server
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
+UNIT
+	systemctl --user daemon-reload
+	systemctl --user enable --now zollybot-server.service
+	echo "ZollyBot runs in the background: systemctl --user status zollybot-server"
 fi
 
 case ":$PATH:" in

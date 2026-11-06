@@ -2,7 +2,7 @@
   "name": "zollybot",
   "productName": "ZollyBot",
   "desktopName": "zollybot.desktop",
-  "version": "0.62.3",
+  "version": "0.62.4",
   "description": "A local-first multi-agent desktop workspace for Codex, Claude, and Grok.",
   "author": {
     "name": "Norbert Bodziony",
