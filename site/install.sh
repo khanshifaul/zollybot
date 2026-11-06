@@ -101,7 +101,29 @@ if [ ! -x "$app" ]; then
 	echo "the archive carried no zollybot binary" >&2
 	exit 1
 fi
-ln -sf "$app" "$PREFIX/bin/zollybot"
+# The launcher hands the profile between the desktop window and the background
+# service, so the window shows the same sessions the service holds and the
+# service resumes after the window closes.
+cat > "$PREFIX/bin/zollybot" <<WRAPPER
+#!/bin/sh
+unit=zollybot-server.service
+handover=0
+if command -v systemctl >/dev/null 2>&1 && systemctl --user is-active --quiet "\$unit" 2>/dev/null; then
+	handover=1
+	systemctl --user stop "\$unit" >/dev/null 2>&1 || true
+fi
+resume() {
+	[ "\$handover" -eq 1 ] && systemctl --user start "\$unit" >/dev/null 2>&1 || true
+}
+trap 'resume' EXIT
+trap 'resume; exit 143' INT TERM
+"$app" "\$@"
+status=\$?
+trap - EXIT INT TERM
+resume
+exit \$status
+WRAPPER
+chmod 0755 "$PREFIX/bin/zollybot"
 echo "Installed $PREFIX/bin/zollybot ($VERSION, files in $PREFIX/lib/zollybot)"
 
 if [ "$CLI" -eq 1 ] && [ -f "$PREFIX/lib/zollybot/zollybot-cli" ]; then
@@ -147,7 +169,7 @@ Wants=network-online.target
 Type=simple
 Environment=ZOLLYBOT_SERVER=1
 Environment=XDG_RUNTIME_DIR=%t
-ExecStart=$PREFIX/lib/zollybot/zollybot --server
+ExecStart=$PREFIX/lib/zollybot/zollybot --server --ozone-platform=headless
 Restart=on-failure
 RestartSec=2
 

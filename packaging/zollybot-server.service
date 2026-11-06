@@ -10,7 +10,7 @@ Type=simple
 Environment=ZOLLYBOT_SERVER=1
 # Run with the user's own runtime directory, so the socket is private to them.
 Environment=XDG_RUNTIME_DIR=%t
-ExecStart=%h/.local/lib/zollybot/zollybot --server
+ExecStart=%h/.local/lib/zollybot/zollybot --server --ozone-platform=headless
 Restart=on-failure
 RestartSec=2
 # A crash loop should not fill the journal.
