@@ -283,6 +283,8 @@ export const messages = {
     "OpenCode отклонил запрос и не указал причину. Это может произойти в длинном чате или после смены модели. ZollyBot начал новый сеанс OpenCode с историей чата. Повторите попытку. Если ошибка не исчезнет, выберите другую модель или меньший уровень усилий.",
   "error.provider.museMcpStartupFault":
     "Muse не удалось запустить сервер MCP, и он заблокировал MCP в этом сеансе. ZollyBot начал новый сеанс Muse с историей чата. Повторите попытку. Если ошибка повторяется, отключите Управление компьютером или неисправный сервер MCP для этого агента.",
+  "error.provider.claudeSessionMissing":
+    "Claude Code не нашёл сохранённую сессию этого чата. ZollyBot начал новую сессию Claude Code с историей чата. Повторите попытку.",
   "error.provider.grokSignIn": "Выполните `grok login` или задайте XAI_API_KEY, чтобы использовать Grok.",
   "error.provider.acpSignInTimedOut": "Время входа истекло.",
   "error.provider.acpSignInStopped": "Вход прервался, не завершившись.",
