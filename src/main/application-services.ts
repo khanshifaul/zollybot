@@ -3696,6 +3696,7 @@ export async function createApplicationServices({
               role: employment?.roleKey ?? "worker",
               scope: employment?.scope ?? "office",
               office: employment?.scope === "building" ? "" : office?.repoPath ? office.name : "",
+              officeId: employment?.officeId ?? "",
             };
           });
         },

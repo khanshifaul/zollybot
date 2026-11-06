@@ -6,6 +6,17 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.8] - 2026-11-07
+
+### Added
+
+- Employ and end employment (P2): a role is hired into an office from its
+  catalog template; single-instance roles refuse a second desk; ending a desk
+  uses the removal path and keeps the role.
+- Register and open offices (P3) on the control socket, with employment counts.
+- The terminal frontend filters by floor: `f` cycles all floors → lobby →
+  each office, and the header names the selected floor with its headcount.
+
 ## [0.62.7] - 2026-11-07
 
 ### Fixed

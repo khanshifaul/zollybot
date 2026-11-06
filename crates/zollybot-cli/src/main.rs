@@ -356,9 +356,19 @@ struct AgentRow {
     office: String,
 }
 
+#[derive(Clone, Default)]
+struct OfficeRow {
+    id: String,
+    name: String,
+    agents: usize,
+}
+
 struct App {
     server: ServerInfo,
+    all_agents: Vec<AgentRow>,
     agents: Vec<AgentRow>,
+    offices: Vec<OfficeRow>,
+    office_filter: Option<String>,
     selected: usize,
     table_state: TableState,
     quit: bool,
@@ -373,7 +383,10 @@ impl App {
     fn new() -> Self {
         let mut app = App {
             server: ServerInfo::default(),
+            all_agents: Vec::new(),
             agents: Vec::new(),
+            offices: Vec::new(),
+            office_filter: None,
             selected: 0,
             table_state: TableState::default(),
             quit: false,
@@ -405,9 +418,10 @@ impl App {
                 phase: line_value(&lines, "server").unwrap_or_default(),
             };
         }
+        self.load_offices();
         match control_call("GET", "/v1/agents", &[]) {
             Ok((200, lines)) => {
-                self.agents.clear();
+                self.all_agents.clear();
                 let count = line_value(&lines, "count")
                     .and_then(|count| count.parse::<usize>().ok())
                     .unwrap_or(0);
@@ -416,7 +430,7 @@ impl App {
                         continue;
                     };
                     let mut parts = raw.split('|');
-                    self.agents.push(AgentRow {
+                    self.all_agents.push(AgentRow {
                         name: parts.next().unwrap_or_default().to_string(),
                         provider: parts.next().unwrap_or_default().to_string(),
                         model: parts.next().unwrap_or_default().to_string(),
@@ -427,14 +441,80 @@ impl App {
                         office_id: parts.next().unwrap_or_default().to_string(),
                     });
                 }
-                if self.selected >= self.agents.len() {
-                    self.selected = self.agents.len().saturating_sub(1);
-                }
-                self.table_state.select(if self.agents.is_empty() { None } else { Some(self.selected) });
+                self.apply_office_filter();
             }
             Ok((status, lines)) => self.message = answer_error(status, &lines),
             Err(error) => self.message = error,
         }
+    }
+
+    fn load_offices(&mut self) {
+        self.offices.clear();
+        if let Ok((200, lines)) = control_call("GET", "/v1/offices", &[]) {
+            let count = line_value(&lines, "count")
+                .and_then(|count| count.parse::<usize>().ok())
+                .unwrap_or(0);
+            for index in 0..count {
+                let Some(raw) = line_value(&lines, &format!("office.{index}")) else {
+                    continue;
+                };
+                let mut parts = raw.split('|');
+                self.offices.push(OfficeRow {
+                    id: parts.next().unwrap_or_default().to_string(),
+                    name: parts.next().unwrap_or_default().to_string(),
+                    agents: parts.nth(2).and_then(|value| value.parse().ok()).unwrap_or(0),
+                });
+            }
+        }
+    }
+
+    /// `None` is every floor; `building` is the butler; anything else is an office id.
+    fn apply_office_filter(&mut self) {
+        self.agents = self
+            .all_agents
+            .iter()
+            .filter(|agent| match self.office_filter.as_deref() {
+                None => true,
+                Some("building") => agent.scope == "building",
+                Some(id) => agent.office_id == id,
+            })
+            .cloned()
+            .collect();
+        if self.selected >= self.agents.len() {
+            self.selected = self.agents.len().saturating_sub(1);
+        }
+        self.table_state
+            .select(if self.agents.is_empty() { None } else { Some(self.selected) });
+    }
+
+    fn office_filter_label(&self) -> String {
+        match self.office_filter.as_deref() {
+            None => "all floors".to_string(),
+            Some("building") => "lobby".to_string(),
+            Some(id) => self
+                .offices
+                .iter()
+                .find(|office| office.id == id)
+                .map(|office| format!("{} ({})", office.name, office.agents))
+                .unwrap_or_else(|| "office".to_string()),
+        }
+    }
+
+    fn cycle_office_filter(&mut self) {
+        self.office_filter = match self.office_filter.clone() {
+            None => Some("building".to_string()),
+            Some(id) if id == "building" => self.offices.first().map(|office| office.id.clone()),
+            Some(id) => {
+                let next = self
+                    .offices
+                    .iter()
+                    .position(|office| office.id == id)
+                    .and_then(|index| self.offices.get(index + 1))
+                    .map(|office| office.id.clone());
+                next
+            }
+        };
+        self.apply_office_filter();
     }
 
     fn refresh_account(&mut self) {
@@ -625,7 +705,13 @@ fn draw(frame: &mut Frame, app: &mut App) {
         " ZollyBot · no app running".to_string()
     } else {
         let name = if app.server.name.is_empty() { "server" } else { &app.server.name };
-        format!(" ZollyBot {} · {} · {}", app.server.version, name, app.server.phase)
+        format!(
+            " ZollyBot {} · {} · {} · {}",
+            app.server.version,
+            name,
+            app.server.phase,
+            app.office_filter_label()
+        )
     };
     frame.render_widget(
         Paragraph::new(Line::from(Span::styled(
@@ -738,10 +824,10 @@ fn draw(frame: &mut Frame, app: &mut App) {
     };
     let hints = match &app.session {
         Some(session) => format!(
-            "{} · j/k agent · c connect · i account · o sign out · r refresh · q quit ",
+            "{} · j/k agent · f office · c connect · i account · o sign out · r refresh · q quit ",
             session.email
         ),
-        None => "j/k agent · c connect · i sign in · r refresh · q quit ".to_string(),
+        None => "j/k agent · f office · c connect · i sign in · r refresh · q quit ".to_string(),
     };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
@@ -865,6 +951,7 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
                     KeyCode::Char('j') | KeyCode::Down => app.table_next(),
                     KeyCode::Char('k') | KeyCode::Up => app.table_previous(),
+                    KeyCode::Char('f') => app.cycle_office_filter(),
                     KeyCode::Char('r') => {
                         app.load();
                         app.refresh_account();
