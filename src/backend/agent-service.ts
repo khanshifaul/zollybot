@@ -251,6 +251,8 @@ import type { McpSignInOpener } from "./mcp-oauth-provider";
 import { McpServerStore } from "./mcp-server-store";
 import type { MessageDeleteAccess, MessageDeleteRefused } from "./message-delete";
 import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging/messaging-threads";
+import { syncEmployments } from "./offices/office-store";
+import { roleForAgentName } from "./offices/role-catalog";
 import type { PasswordVault } from "./password-vault";
 import { canConfineProcesses } from "./process-confinement";
 import { decodeRecordResponse, getString } from "./protocol";
@@ -3890,6 +3892,9 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
         ),
       );
     yield* Effect.ignore(this.#seedOfficeAgents());
+    // Every agent gets a desk once: role from the catalog, office Unassigned until
+    // the founder opens a real one.
+    yield* Effect.sync(() => syncEmployments(this.#store.database.connection, this.#store.list(), roleForAgentName));
     yield* this.#mailbox
       .initialize()
       .pipe(

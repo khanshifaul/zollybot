@@ -13,7 +13,7 @@ import { AgentRoutineStore } from "../backend/agent-routine-store";
 import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messaging/discord/discord-connect";
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
 import { discoverOffices } from "../backend/offices/office-catalog";
-import { roleForAgentName } from "../backend/offices/role-catalog";
+import { listEmployments, listOffices } from "../backend/offices/office-store";
 import { routineFlowRoutines } from "../backend/routine-flows/routine-flow-routines";
 import { RoutineFlowStore } from "../backend/routine-flows/routine-flow-store";
 import { createRoutineFlows, type RoutineFlowsHandle } from "../backend/routine-flows/routine-flows";
@@ -3681,18 +3681,41 @@ export async function createApplicationServices({
         centralAuth,
         host,
         memory: hostMemory,
-        agents: () =>
-          service.listAgents().map((agent) => {
-            const role = roleForAgentName(agent.name);
+        agents: () => {
+          const database = store.database.connection;
+          const employments = new Map(listEmployments(database).map((employment) => [employment.agentId, employment]));
+          const offices = new Map(listOffices(database).map((office) => [office.id, office]));
+          return service.listAgents().map((agent) => {
+            const employment = employments.get(agent.id);
+            const office = employment?.officeId ? offices.get(employment.officeId) : undefined;
             return {
               name: agent.name,
               provider: String(agent.provider),
               model: String(agent.model),
               title: agent.title,
-              ...(role ? { role: role.key, scope: role.scope } : { scope: "office" }),
+              role: employment?.roleKey ?? "worker",
+              scope: employment?.scope ?? "office",
+              office: employment?.scope === "building" ? "" : office?.repoPath ? office.name : "",
             };
-          }),
-        offices: () => discoverOffices([join(homedir(), "Projects")], 3),
+          });
+        },
+        offices: () => {
+          const database = store.database.connection;
+          const registered = listOffices(database).filter((office) => office.repoPath !== "");
+          const known = new Set(registered.map((office) => office.repoPath));
+          const discovered = discoverOffices([join(homedir(), "Projects")], 3)
+            .filter((office) => !known.has(office.path))
+            .map((office) => ({ id: office.id, name: office.name, path: office.path, hasAgents: office.hasAgents }));
+          return [
+            ...registered.map((office) => ({
+              id: office.id,
+              name: office.name,
+              path: office.repoPath,
+              hasAgents: true,
+            })),
+            ...discovered,
+          ];
+        },
         onError: (message, error) => logger.warn(message, toLogValue(error)),
       })
     : null;

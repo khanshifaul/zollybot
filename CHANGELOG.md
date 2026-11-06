@@ -6,6 +6,23 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.7] - 2026-11-07
+
+### Fixed
+
+- The office and employment reads validate each SQLite row with the shared
+  record guard instead of an unchecked cast, so a malformed row fails loudly.
+
+## [0.62.6] - 2026-11-07
+
+### Added
+
+- Offices and employments are stored: migration 59 adds `offices` and
+  `agent_employments` to both build paths (parity test and schema history
+  included). At start every agent receives one employment — its catalog role and
+  the `Unassigned` office, or the building for the butler — so a later move is
+  not undone. `/v1/agents` now reports the stored role, scope and office.
+
 ## [0.62.5] - 2026-11-07
 
 ### Added

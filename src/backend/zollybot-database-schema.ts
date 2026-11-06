@@ -27,6 +27,7 @@ import {
   MESSAGING_MEMORY_SCHEMA_SQL,
   MESSAGING_SCHEMA_SQL,
 } from "./messaging/messaging-schema";
+import { OFFICE_SCHEMA_SQL } from "./offices/office-schema";
 import { ROUTINE_FLOW_SCHEMA_SQL } from "./routine-flows/routine-flow-schema";
 import { ROUTINE_RESULT_SCHEMA_SQL } from "./routine-results/routine-result-schema";
 import { addDiscordWorkflows } from "./workflows/workflow-discord-schema";
@@ -631,7 +632,8 @@ const LATEST_SCHEMA_SQL =
   MESSAGING_ALLOWED_SENDERS_SCHEMA_SQL +
   DELETED_THREAD_MESSAGES_SCHEMA_SQL +
   BROWSER_PROXY_SCHEMA_SQL +
-  AGENT_SKILL_LOADS_SCHEMA_SQL;
+  AGENT_SKILL_LOADS_SCHEMA_SQL +
+  OFFICE_SCHEMA_SQL;
 
 /** The end of the thread message table with the migration 40 columns before its PRIMARY KEY constraint. */
 function withThreadMessageOrderColumns(tableEnd: string): string {
@@ -979,6 +981,12 @@ const MIGRATIONS: readonly ZollyBotMigration[] = [
     // Only creates a table and its indexes, so no foreign-key pause and no vacuum. No skill load was
     // recorded before it, so the table starts empty and no usage row changes.
     up: (db) => db.exec(AGENT_SKILL_LOADS_SCHEMA_SQL),
+  },
+  {
+    version: 59,
+    // Only creates two tables and their indexes, so no foreign-key pause and no vacuum. No office or
+    // employment exists before it, so both tables start empty; the backfill runs at store initialize.
+    up: (db) => db.exec(OFFICE_SCHEMA_SQL),
   },
 ];
 

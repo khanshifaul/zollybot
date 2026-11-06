@@ -3,8 +3,11 @@
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
 import { discoverOffices } from "./office-catalog";
+import { OFFICE_SCHEMA_SQL } from "./office-schema";
+import { listEmployments, syncEmployments } from "./office-store";
 import { roleForAgentName } from "./role-catalog";
 
 const roots: string[] = [];
@@ -58,5 +61,53 @@ describe("office discovery", () => {
     await office(join(root, ".hidden", "hidden-office"));
 
     expect(discoverOffices([root], 4)).toEqual([]);
+  });
+});
+
+describe("employment backfill", () => {
+  function database(): DatabaseSync {
+    const db = new DatabaseSync(":memory:");
+    db.exec("CREATE TABLE projection_agents (agent_id TEXT PRIMARY KEY, agent_json TEXT NOT NULL)");
+    db.exec("CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
+    db.exec(OFFICE_SCHEMA_SQL);
+    return db;
+  }
+
+  it("gives every agent a desk once, with the butler in the building", () => {
+    const db = database();
+    db.exec("INSERT INTO projection_agents VALUES ('a1', '{}'), ('a2', '{}')");
+    const agents = [
+      { id: "a1", name: "Zolly" },
+      { id: "a2", name: "Butler" },
+    ];
+
+    syncEmployments(db, agents, roleForAgentName);
+    const first = listEmployments(db);
+    syncEmployments(db, agents, roleForAgentName);
+
+    expect(first).toEqual(listEmployments(db));
+    expect(first.find((row) => row.agentId === "a1")).toMatchObject({
+      roleKey: "zolly",
+      scope: "office",
+      officeId: "unassigned",
+    });
+    expect(first.find((row) => row.agentId === "a2")).toMatchObject({
+      roleKey: "butler",
+      scope: "building",
+      officeId: null,
+    });
+    db.close();
+  });
+
+  it("drops the desk of an agent that is gone", () => {
+    const db = database();
+    db.exec("INSERT INTO projection_agents VALUES ('a1', '{}')");
+    syncEmployments(db, [{ id: "a1", name: "Foreman" }], roleForAgentName);
+    db.exec("DELETE FROM projection_agents WHERE agent_id = 'a1'");
+
+    syncEmployments(db, [], roleForAgentName);
+
+    expect(listEmployments(db)).toEqual([]);
+    db.close();
   });
 });
