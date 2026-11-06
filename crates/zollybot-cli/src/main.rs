@@ -822,6 +822,10 @@ impl App {
                     token: String::new(),
                     local: true,
                 });
+            } else {
+                // The server is the account of record while it runs; a token file
+                // from an earlier direct sign-in must not outvote it.
+                self.session = None;
             }
         }
     }
