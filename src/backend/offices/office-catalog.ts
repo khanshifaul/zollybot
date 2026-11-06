@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import type { Dirent } from "node:fs";
-import { existsSync, readdirSync, realpathSync } from "node:fs";
+import { existsSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 
 /** One repo that carries an office (`.agents/zolly/config.toml`). */
@@ -22,6 +22,32 @@ const SKIPPED: Record<string, true> = {
   target: true,
 };
 
+function officeId(path: string): string {
+  return createHash("sha1").update(path).digest("hex").slice(0, 12);
+}
+
+/** A directory as an office, whether or not it carries `.agents/` yet. */
+export function officeFromPath(directory: string): OfficeInfo | null {
+  const absolute = resolve(directory);
+  try {
+    if (!statSync(absolute).isDirectory()) return null;
+  } catch {
+    return null;
+  }
+  let real = absolute;
+  try {
+    real = realpathSync(absolute);
+  } catch {
+    return null;
+  }
+  return {
+    id: officeId(real),
+    name: basename(real),
+    path: real,
+    hasAgents: existsSync(join(real, OFFICE_MARKER)),
+  };
+}
+
 function officeAt(directory: string): OfficeInfo | null {
   if (!existsSync(join(directory, OFFICE_MARKER))) return null;
   let real = directory;
@@ -32,7 +58,7 @@ function officeAt(directory: string): OfficeInfo | null {
     return null;
   }
   return {
-    id: createHash("sha1").update(real).digest("hex").slice(0, 12),
+    id: officeId(real),
     name: basename(directory),
     path: real,
     hasAgents: true,

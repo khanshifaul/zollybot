@@ -12,8 +12,8 @@ import { AgentTables } from "../backend/agent-data/agent-tables";
 import { AgentRoutineStore } from "../backend/agent-routine-store";
 import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messaging/discord/discord-connect";
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
-import { discoverOffices } from "../backend/offices/office-catalog";
-import { listEmployments, listOffices } from "../backend/offices/office-store";
+import { discoverOffices, officeFromPath } from "../backend/offices/office-catalog";
+import { listEmployments, listOffices, upsertOffice } from "../backend/offices/office-store";
 import { routineFlowRoutines } from "../backend/routine-flows/routine-flow-routines";
 import { RoutineFlowStore } from "../backend/routine-flows/routine-flow-store";
 import { createRoutineFlows, type RoutineFlowsHandle } from "../backend/routine-flows/routine-flows";
@@ -3701,20 +3701,52 @@ export async function createApplicationServices({
         },
         offices: () => {
           const database = store.database.connection;
+          const counts = new Map<string, number>();
+          for (const employment of listEmployments(database)) {
+            if (!employment.officeId) continue;
+            counts.set(employment.officeId, (counts.get(employment.officeId) ?? 0) + 1);
+          }
           const registered = listOffices(database).filter((office) => office.repoPath !== "");
           const known = new Set(registered.map((office) => office.repoPath));
           const discovered = discoverOffices([join(homedir(), "Projects")], 3)
             .filter((office) => !known.has(office.path))
-            .map((office) => ({ id: office.id, name: office.name, path: office.path, hasAgents: office.hasAgents }));
+            .map((office) => ({
+              id: office.id,
+              name: office.name,
+              path: office.path,
+              hasAgents: office.hasAgents,
+              agents: 0,
+            }));
           return [
             ...registered.map((office) => ({
               id: office.id,
               name: office.name,
               path: office.repoPath,
               hasAgents: true,
+              agents: counts.get(office.id) ?? 0,
             })),
             ...discovered,
           ];
+        },
+        registerOffice: (path, name) => {
+          const found = officeFromPath(path);
+          if (!found) return { ok: false as const, error: "That path is not a directory." };
+          const officeName = name ?? found.name;
+          upsertOffice(store.database.connection, {
+            id: found.id,
+            repoPath: found.path,
+            name: officeName,
+            baseBranch: "main",
+          });
+          return { ok: true as const, office: { ...found, name: officeName, agents: 0 } };
+        },
+        openOffice: (id) => {
+          const database = store.database.connection;
+          const office = listOffices(database).find((candidate) => candidate.id === id);
+          if (!office) return null;
+          upsertOffice(database, { ...office, lastOpenedAt: Date.now() });
+          const agents = listEmployments(database).filter((employment) => employment.officeId === id).length;
+          return { id: office.id, name: office.name, path: office.repoPath, hasAgents: true, agents };
         },
         onError: (message, error) => logger.warn(message, toLogValue(error)),
       })

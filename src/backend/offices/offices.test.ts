@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { discoverOffices } from "./office-catalog";
+import { discoverOffices, officeFromPath } from "./office-catalog";
 import { OFFICE_SCHEMA_SQL } from "./office-schema";
 import { isRoleEmployed, listEmployments, syncEmployments, upsertEmployment, upsertOffice } from "./office-store";
 import { roleForAgentName } from "./role-catalog";
@@ -121,5 +121,19 @@ describe("employment backfill", () => {
 
     expect(listEmployments(db)).toEqual([]);
     db.close();
+  });
+});
+
+describe("a directory as an office", () => {
+  it("reads a repo without .agents and refuses a missing path", async () => {
+    const root = await workspace();
+    const plain = join(root, "plain");
+    await mkdir(plain, { recursive: true });
+
+    const office = officeFromPath(plain);
+
+    expect(office?.name).toBe("plain");
+    expect(office?.hasAgents).toBe(false);
+    expect(officeFromPath(join(root, "missing"))).toBeNull();
   });
 });

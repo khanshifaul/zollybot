@@ -80,7 +80,12 @@ export interface ServerOffice {
   name: string;
   path: string;
   hasAgents: boolean;
+  /** Employments holding a desk in this office. */
+  agents?: number;
 }
+
+/** The result of registering a directory as an office. */
+export type OfficeRegistration = { ok: true; office: ServerOffice } | { ok: false; error: string };
 
 export interface ServerModeOptions {
   environment: ServerModeEnvironment;
@@ -103,6 +108,8 @@ export interface ServerModeOptions {
   agents?: () => readonly ServerAgent[];
   /** The offices the building knows, for the lobby and the floor chooser. */
   offices?: () => readonly ServerOffice[];
+  registerOffice?: (path: string, name: string | null) => OfficeRegistration;
+  openOffice?: (id: string) => ServerOffice | null;
   onError: (message: string, error: unknown) => void;
   /** Tests only. */
   uid?: number;
@@ -238,6 +245,10 @@ export class ServerMode {
         return this.#agents(new URLSearchParams(query).get("office") ?? undefined);
       case "GET /v1/offices":
         return this.#offices();
+      case "POST /v1/offices":
+        return this.#registerOffice(body.get("path") ?? "", body.get("name"));
+      case "POST /v1/offices/open":
+        return this.#openOffice(body.get("id") ?? "");
       case "POST /v1/login/start":
         return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
       case "POST /v1/login/verify":
@@ -310,14 +321,32 @@ export class ServerMode {
     return { status: 200, lines };
   }
 
-  /** One `office.N=id|name|path|hasAgents` line each. */
+  /** One `office.N=id|name|path|hasAgents|agents` line each. */
   #offices(): Answer {
     const offices = this.#options.offices?.() ?? [];
     const lines: Answer["lines"] = { count: offices.length };
     offices.forEach((office, index) => {
-      lines[`office.${index}`] = [office.id, office.name, office.path, office.hasAgents ? "1" : "0"].join("|");
+      lines[`office.${index}`] = officeLine(office);
     });
     return { status: 200, lines };
+  }
+
+  #registerOffice(path: string, name: string | null): Answer {
+    const directory = path.trim();
+    const officeName = name?.trim() ?? "";
+    if (!directory) return failure(400, "invalid_path", "Choose a directory.");
+    const register = this.#options.registerOffice;
+    if (!register) return failure(501, "office_actions_unavailable", "This app cannot register an office.");
+    const result = register(directory, officeName === "" ? null : officeName);
+    if (!result.ok) return failure(400, "office_not_registered", result.error);
+    return { status: 200, lines: officeFields(result.office) };
+  }
+
+  #openOffice(id: string): Answer {
+    if (!id.trim()) return failure(400, "invalid_office", "Name the office to open.");
+    const office = this.#options.openOffice?.(id.trim());
+    if (!office) return failure(404, "office_not_found", "No office has that id.");
+    return { status: 200, lines: officeFields(office) };
   }
 
   readonly #startLogin = Effect.fn("ServerMode.startLogin")(function* (
@@ -458,6 +487,20 @@ function issueFailure(state: CentralAuthState): Answer {
 }
 
 /** One `key=value` line for each value. A value never breaks its line. */
+function officeLine(office: ServerOffice): string {
+  return [office.id, office.name, office.path, office.hasAgents ? "1" : "0", office.agents ?? 0].join("|");
+}
+
+function officeFields(office: ServerOffice): Answer["lines"] {
+  return {
+    id: office.id,
+    name: office.name,
+    path: office.path,
+    has_agents: office.hasAgents ? 1 : 0,
+    agents: office.agents ?? 0,
+  };
+}
+
 function formatLines(lines: Answer["lines"]): string {
   return Object.entries(lines)
     .filter((entry): entry is [string, string | number] => entry[1] !== null && entry[1] !== "")
