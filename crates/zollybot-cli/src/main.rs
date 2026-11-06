@@ -15,7 +15,7 @@ use ratatui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Line, Span},
-    widgets::{Block, Borders, Cell, Paragraph, Row, Table, TableState},
+    widgets::{Block, Borders, Cell, Clear, Paragraph, Row, Table, TableState},
     Frame, Terminal,
 };
 use serde::Serialize;
@@ -381,6 +381,28 @@ fn office_name(office: &Office) -> String {
     }
 }
 
+struct ConnectPanel {
+    url: String,
+    lines: Vec<String>,
+}
+
+fn connect_url() -> String {
+    std::env::var("ZOLLYBOT_CONNECT_URL").unwrap_or_else(|_| "https://zollybot.shifaul.dev".to_string())
+}
+
+fn connect_qr(url: &str) -> Vec<String> {
+    match qrcode::QrCode::new(url.as_bytes()) {
+        Ok(code) => code
+            .render::<qrcode::render::unicode::Dense1x2>()
+            .quiet_zone(true)
+            .build()
+            .lines()
+            .map(|line| line.to_string())
+            .collect(),
+        Err(_) => Vec::new(),
+    }
+}
+
 struct App {
     offices: Vec<Office>,
     selected: usize,
@@ -391,6 +413,7 @@ struct App {
     quit: bool,
     message: String,
     last_refresh: Instant,
+    connect: Option<ConnectPanel>,
 }
 
 impl App {
@@ -405,6 +428,7 @@ impl App {
             quit: false,
             message: String::new(),
             last_refresh: Instant::now(),
+            connect: None,
         };
         app.reload();
         app
@@ -460,6 +484,16 @@ impl App {
             View::Gates => View::Queue,
         };
         self.load_detail();
+    }
+
+    fn toggle_connect(&mut self) {
+        self.connect = if self.connect.is_some() {
+            None
+        } else {
+            let url = connect_url();
+            let lines = connect_qr(&url);
+            Some(ConnectPanel { url, lines })
+        };
     }
 
     fn table_next(&mut self) {
@@ -607,6 +641,26 @@ fn draw(frame: &mut Frame, app: &mut App) {
         frame.render_widget(empty, inner);
     }
 
+    if let Some(panel) = &app.connect {
+        let area = centered_rect(70, 80, frame.area());
+        frame.render_widget(Clear, area);
+        let mut lines: Vec<Line> = panel
+            .lines
+            .iter()
+            .map(|line| Line::from(Span::raw(line.clone())))
+            .collect();
+        lines.push(Line::from(""));
+        lines.push(Line::from(Span::styled(
+            panel.url.clone(),
+            Style::default().fg(Color::DarkGray),
+        )));
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .border_type(ratatui::widgets::BorderType::Rounded)
+            .title(" connect a phone · c or Esc to close ");
+        frame.render_widget(Paragraph::new(lines).block(block), area);
+    }
+
     // Status bar.
     let summary = app
         .offices
@@ -621,13 +675,32 @@ fn draw(frame: &mut Frame, app: &mut App) {
             )
         })
         .unwrap_or_else(|| " no offices ".to_string());
-    let hints = "h/l office · j/k row · v queue/gates · r refresh · q quit ";
+    let hints = "h/l office · j/k row · v queue/gates · c connect · r refresh · q quit ";
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
         Span::styled(format!("{hints:>60}"), Style::default().fg(Color::DarkGray)),
     ]))
     .style(Style::default().bg(Color::DarkGray));
     frame.render_widget(status, outer[2]);
+}
+
+fn centered_rect(percent_x: u16, percent_y: u16, area: ratatui::layout::Rect) -> ratatui::layout::Rect {
+    let vertical = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([
+            Constraint::Percentage((100 - percent_y) / 2),
+            Constraint::Percentage(percent_y),
+            Constraint::Percentage((100 - percent_y) / 2),
+        ])
+        .split(area);
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([
+            Constraint::Percentage((100 - percent_x) / 2),
+            Constraint::Percentage(percent_x),
+            Constraint::Percentage((100 - percent_x) / 2),
+        ])
+        .split(vertical[1])[1]
 }
 
 fn run_tui() -> std::io::Result<i32> {
@@ -659,6 +732,8 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     continue;
                 }
                 match key.code {
+                    KeyCode::Esc if app.connect.is_some() => app.connect = None,
+                    KeyCode::Char('c') => app.toggle_connect(),
                     KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
                     KeyCode::Char('h') | KeyCode::Left => app.previous_office(),
                     KeyCode::Char('l') | KeyCode::Right => app.next_office(),
