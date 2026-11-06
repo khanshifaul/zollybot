@@ -13,9 +13,25 @@ Agents live in a per-profile SQLite store.
 
 ## 2. Proposed model
 
-- `Office` entity: `{ id, repoPath, name, remote, baseBranch }`.
-- Agent record gains `officeId` (nullable). Alternative: an `agent_offices` join table if an agent may serve several offices. Recommendation: start with `officeId` column (simpler); revisit join table only if multi-office agents become a real requirement (see Decisions).
-- Existing agents: migration assigns each to a default office = the profile's primary repo, or an "unassigned" office for profiles with no repo. Backfill at read time (normalize), mirroring how `migrateLegacyAgent`/`normalizeStoredAgent` already convert legacy records.
+Three things, not two. This is the correction the first draft missed: a manager
+can hold a desk in several offices, so an agent cannot own a single office.
+
+- `Role` — the job description: `{ id, key, name, title, prompt, provider?, model? }`.
+  Zolly, Foreman, HR, PR Reviewer and the worker roles live here, in the
+  building. A role has no chats and no office.
+- `Office` — one repo: `{ id, repoPath, name, remote, baseBranch }`.
+- `Employment` — one role at one office: `{ id, officeId, roleId, displayName }`.
+  `zolly@office1` and `zolly@office2` are two employments of one role. Chats,
+  sessions, permissions and status hang off the employment, never the role.
+- The store's current agent record becomes an employment plus a reference to its
+  role; migration gives every existing agent a role (by name, else a generic
+  "Worker" role) and places it in the profile's primary office, or an
+  "unassigned" office for a profile with no repo.
+
+Deletion follows the same split: deleting `zolly@office1` ends that employment
+and archives its chats; the Zolly role stays in the building and can be employed
+in another office. Deleting the role itself is a separate act, allowed only when
+no office employs it, and it must name the employments it would remove.
 
 ## 3. Boundaries
 
@@ -30,14 +46,24 @@ Agents live in a per-profile SQLite store.
 
 ## 5. Decisions
 
-1. `officeId` column vs join table — recommend column first; join table later if needed.
-2. Multi-office agents — recommend no (one office per agent) for v1.
-3. Default agents landing — recommend profile's primary repo office; "unassigned" fallback.
+1. `officeId` column vs employment table — **employment table**, because Zolly,
+   Foreman and HR hold a desk in several offices. A column makes that impossible
+   without duplicating the role.
+2. Multi-office agents — **yes for roles**; one employment per office, and no
+   sharing of chats between them.
+3. Default agents landing — the seeded roles are employed once in the primary
+   office at first run; a new office offers to employ the roles it lacks.
+4. Deletion — ending an employment archives its chats and keeps the role;
+   deleting a role needs no employment and removes the role everywhere.
 
 ## 6. Phased implementation
 
-Phase 1 (smallest, one worker task): add `officeId` nullable column to agent store + normalize read path + expose in `GET /v1/agents` response; no UI. Backfill existing agents to a synthetic "unassigned" office id.
+Phase 1 (smallest, one worker task): add `roles`, `offices` and `employments`
+tables (or an equivalent store split); migrate each existing agent into one
+employment whose role matches its name; expose `office` and `role` in
+`GET /v1/agents`. No UI.
 
-Phase 2: roster scoping in AgentService + desktop filter.
+Phase 2: scope the roster to the selected office in AgentService and the
+terminal frontend; "employ role in this office" and "end employment" actions.
 
 Phase 3: office switcher UI + client-mode window.
