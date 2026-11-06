@@ -316,6 +316,7 @@ export class ServerMode {
         agent.role ?? "",
         agent.scope ?? "",
         agent.office ?? "",
+        agent.officeId ?? "",
       ].join("|");
     });
     return { status: 200, lines };

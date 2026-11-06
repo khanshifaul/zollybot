@@ -350,8 +350,11 @@ struct AgentRow {
     title: String,
     #[allow(dead_code)]
     role: String,
+    #[allow(dead_code)]
+    office_id: String,
     scope: String,
     office: String,
+    office_id: String,
 }
 
 struct App {
@@ -422,6 +425,7 @@ impl App {
                         role: parts.next().unwrap_or_default().to_string(),
                         scope: parts.next().unwrap_or_default().to_string(),
                         office: parts.next().unwrap_or_default().to_string(),
+                        office_id: parts.next().unwrap_or_default().to_string(),
                     });
                 }
                 if self.selected >= self.agents.len() {
