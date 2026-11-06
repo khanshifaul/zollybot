@@ -41,8 +41,37 @@ no office employs it, and it must name the employments it would remove.
 
 ## 4. UX consequences
 
-- Desktop: office switcher in the window; roster scoped to selected office; new-agent flow chooses an office.
-- Terminal (`zollybot-cli`): `GET /v1/agents` should accept an optional office filter and/or return `officeId` per agent; CLI keeps no office state (per its doc comment) but may pass a selected office via query param or env.
+### A tab is an office floor
+
+The desktop window keeps a tab strip. One tab is one **open office**, exactly as a
+floor is one office in a building:
+
+- The tab shows the office name and its repo path (for example `zollybot — ~/Projects/zollybot`).
+- The roster, chats, schedules and gates below the tab belong to that office only.
+- Switching tabs is switching floors: nothing from one office's chats appears in another.
+- Closing a tab closes the view, not the office. The office, its employments and its
+  history stay in the building and can be opened again.
+- The last selected tab is remembered. On start, the app reopens the floors that were open.
+- A tab is not a document and not a clone: it holds an `officeId`, and the same office
+  cannot be open in two tabs (focus the existing one instead).
+
+The `+` on the strip opens a **floor chooser**, not a create form:
+
+1. **Open a repo** — pick a folder; if it has `.agents/`, it is an existing office and
+   is adopted; if it is a git repo without `.agents/`, offer to initialise one (the
+   Zolly template).
+2. **Create an office** — clone or `git init` a repo, then initialise its `.agents/`.
+3. Recently opened offices appear first, so the common case is one click.
+
+Employing a role on a floor is a separate action from opening the floor: opening an
+office does not hire anyone, and ending an employment does not close the tab.
+
+### The terminal mirrors the strip
+
+`zollybot-cli` reads the same offices over the control socket. It gains an office
+line and a way to pick one (a query parameter for `GET /v1/agents`, or a chosen
+office in the TUI header), so the same `name@office` identity appears on both
+frontends. The CLI keeps no office state of its own, as its module comment says.
 
 ## 5. Decisions
 
@@ -66,4 +95,5 @@ employment whose role matches its name; expose `office` and `role` in
 Phase 2: scope the roster to the selected office in AgentService and the
 terminal frontend; "employ role in this office" and "end employment" actions.
 
-Phase 3: office switcher UI + client-mode window.
+Phase 3: the tab strip (one tab per open office, remembered across starts,
+`+` opening the floor chooser) and the client-mode window.
