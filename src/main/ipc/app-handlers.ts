@@ -60,11 +60,11 @@ import {
 } from "./app-inputs";
 import { stringPayload } from "./validation";
 
-const ZOLLYBOT_SITE = "https://openbot.run";
+const ZOLLYBOT_SITE = "https://zollybot.shifaul.dev";
 
 /** The first post that the social toast offers, encoded for a query string. */
 function draftPost(translate: AppTranslate): string {
-  return encodeURIComponent(translate("app.socialFollow.draftPost", { site: "openbot.run" }));
+  return encodeURIComponent(translate("app.socialFollow.draftPost", { site: "zollybot.shifaul.dev" }));
 }
 
 /**

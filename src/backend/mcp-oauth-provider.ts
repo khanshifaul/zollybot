@@ -877,8 +877,8 @@ class McpOAuthClientProvider implements OAuthClientProvider {
     const methods = this.#discoveryState?.authorizationServerMetadata?.token_endpoint_auth_methods_supported;
     return {
       client_name: "ZollyBot",
-      client_uri: "https://openbot.run",
-      logo_uri: "https://openbot.run/icon-512x512.png",
+      client_uri: "https://zollybot.shifaul.dev",
+      logo_uri: "https://zollybot.shifaul.dev/icon.png",
       redirect_uris: [this.#options.redirectUrl],
       application_type: "native",
       grant_types: ["authorization_code", "refresh_token"],

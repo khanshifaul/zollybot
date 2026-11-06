@@ -321,7 +321,7 @@ function clientInfo(client: McpOAuthProxyClient, agentKey: string | null): Clien
     name: "zollybot",
     title: name ? `${name} (ZollyBot)` : "ZollyBot",
     version: client.version,
-    websiteUrl: "https://openbot.run",
+    websiteUrl: "https://zollybot.shifaul.dev",
   };
 }
 

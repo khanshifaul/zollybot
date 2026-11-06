@@ -60,14 +60,26 @@
 
 <h2>Usage</h2>
 
-<h3>Ask an office what it is doing</h3>
+<h3>Terminal UI</h3>
+<pre><code>zollybot-cli</code></pre>
+<p>A tab strip of offices, the selected office's queue or gates, and a status bar — the terminal
+version of the app. It reads the same <code>.agents/</code> files and never writes to them.</p>
+<table>
+  <tr><th>Key</th><th>Does</th></tr>
+  <tr><td><code>h</code> / <code>l</code></td><td>previous / next office</td></tr>
+  <tr><td><code>1</code>–<code>9</code></td><td>jump to an office</td></tr>
+  <tr><td><code>j</code> / <code>k</code></td><td>move down / up a row</td></tr>
+  <tr><td><code>v</code></td><td>switch between queue and gates</td></tr>
+  <tr><td><code>r</code></td><td>refresh now (it also refreshes every 3 seconds)</td></tr>
+  <tr><td><code>q</code></td><td>quit</td></tr>
+</table>
+
+<h3>Scripts and SSH</h3>
 <pre><code>zollybot-cli offices
 zollybot-cli queue shifaul-dev
 zollybot-cli gates shifaul-dev</code></pre>
-<p>Every command takes <code>--json</code> for scripts. An office can be named by its path or by the
-frequency in its config (<code>shifaul-dev</code>, <code>zylosync</code>, …).</p>
-
-<h3>What the commands show</h3>
+<p>Each subcommand prints one view and exits. Add <code>--json</code> for machines; a piped
+invocation prints the table instead of drawing the TUI.</p>
 <table>
   <tr><th>Command</th><th>Answers</th></tr>
   <tr><td><code>offices</code></td><td>Which repositories have an office, and how many tasks are queued, dispatched or blocked in each.</td></tr>

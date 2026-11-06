@@ -15,7 +15,7 @@
 set -eu
 
 BASE_URL="${ZOLLYBOT_BASE_URL:-https://zollybot.shifaul.dev}"
-DOWNLOAD_BASE="${ZOLLYBOT_DOWNLOAD_BASE:-https://downloads.zollybot.shifaul.dev}"
+DOWNLOAD_BASE="${ZOLLYBOT_DOWNLOAD_BASE:-$BASE_URL}"
 PREFIX="${ZOLLYBOT_PREFIX:-$HOME/.local}"
 VERSION=""
 DESKTOP=1
