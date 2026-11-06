@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Text } from "@/components/ui";
-
-const BASE = "https://zollybot.shifaul.dev";
+import { Badge, Card, CardContent, Text } from "@/components/ui";
 
 export default function Page() {
   const [version, setVersion] = useState<string | null>(null);
