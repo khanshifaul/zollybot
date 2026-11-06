@@ -130,9 +130,9 @@ fetch("/latest")
     const ver = v.trim();
     document.getElementById("assets").innerHTML =
       `<a href="/releases/${ver}/zollybot-gui-${ver}-x86_64.AppImage">AppImage ${ver} (x86_64)</a> · ` +
-      `<a href="/releases/${ver}/zollybot-linux-x86_64.tar.gz">bundle .tar.gz (GUI + CLI)</a> · ` +
-      `<a href="/releases/${ver}/zollybot-cli-linux-x86_64">CLI only</a> · ` +
-      `<a href="/releases/${ver}/zollybot-android-arm64.apk">Android APK (arm64)</a>`;
+      `<a href="/releases/${ver}/zollybot-linux-x86_64-${ver}.tar.gz">bundle .tar.gz (GUI + CLI)</a> · ` +
+      `<a href="/releases/${ver}/zollybot-cli-linux-x86_64-${ver}">CLI only</a> · ` +
+      `<a href="/releases/${ver}/zollybot-android-arm64-${ver}.apk">Android APK (arm64)</a>`;
   })
   .catch(() => {
     document.getElementById("assets").textContent = "No release published yet.";
