@@ -449,6 +449,13 @@ export type AgentUpdate = UpdateAgentInput & {
 /** The agents a fresh ZollyBot install starts with. Upstream ships none. */
 const OFFICE_AGENTS = [
   {
+    name: "Butler",
+    title: "Concierge",
+    seed: "butler",
+    description:
+      "The building's concierge. Knows which offices exist, opens and creates them, and proposes a roster. Reads no office's chats and approves no gate.",
+  },
+  {
     name: "Zolly",
     title: "Manager",
     seed: "zolly",

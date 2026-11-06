@@ -64,6 +64,20 @@ export interface ServerAgent {
   provider: string;
   model: string;
   title: string;
+  /** The catalog role, when the name maps to one. */
+  role?: string;
+  /** `office` or `building`; the butler is the building's. */
+  scope?: string;
+  /** The office name, when the employment names one. */
+  office?: string;
+}
+
+/** One repo that carries an office. */
+export interface ServerOffice {
+  id: string;
+  name: string;
+  path: string;
+  hasAgents: boolean;
 }
 
 export interface ServerModeOptions {
@@ -85,6 +99,8 @@ export interface ServerModeOptions {
   memory: Pick<ServerMemory, "level" | "sample" | "turnLimit"> | null;
   /** The agents of this machine, as the app lists them, for the terminal frontend. */
   agents?: () => readonly ServerAgent[];
+  /** The offices the building knows, for the lobby and the floor chooser. */
+  offices?: () => readonly ServerOffice[];
   onError: (message: string, error: unknown) => void;
   /** Tests only. */
   uid?: number;
@@ -218,6 +234,8 @@ export class ServerMode {
         return this.#status();
       case "GET /v1/agents":
         return this.#agents();
+      case "GET /v1/offices":
+        return this.#offices();
       case "POST /v1/login/start":
         return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
       case "POST /v1/login/verify":
@@ -273,7 +291,25 @@ export class ServerMode {
     const agents = this.#options.agents?.() ?? [];
     const lines: Answer["lines"] = { count: agents.length };
     agents.forEach((agent, index) => {
-      lines[`agent.${index}`] = [agent.name, agent.provider, agent.model, agent.title].join("|");
+      lines[`agent.${index}`] = [
+        agent.name,
+        agent.provider,
+        agent.model,
+        agent.title,
+        agent.role ?? "",
+        agent.scope ?? "",
+        agent.office ?? "",
+      ].join("|");
+    });
+    return { status: 200, lines };
+  }
+
+  /** One `office.N=id|name|path|hasAgents` line each. */
+  #offices(): Answer {
+    const offices = this.#options.offices?.() ?? [];
+    const lines: Answer["lines"] = { count: offices.length };
+    offices.forEach((office, index) => {
+      lines[`office.${index}`] = [office.id, office.name, office.path, office.hasAgents ? "1" : "0"].join("|");
     });
     return { status: 200, lines };
   }

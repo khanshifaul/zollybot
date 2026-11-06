@@ -348,6 +348,10 @@ struct AgentRow {
     provider: String,
     model: String,
     title: String,
+    #[allow(dead_code)]
+    role: String,
+    scope: String,
+    office: String,
 }
 
 struct App {
@@ -415,6 +419,9 @@ impl App {
                         provider: parts.next().unwrap_or_default().to_string(),
                         model: parts.next().unwrap_or_default().to_string(),
                         title: parts.next().unwrap_or_default().to_string(),
+                        role: parts.next().unwrap_or_default().to_string(),
+                        scope: parts.next().unwrap_or_default().to_string(),
+                        office: parts.next().unwrap_or_default().to_string(),
                     });
                 }
                 if self.selected >= self.agents.len() {
@@ -636,7 +643,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .iter()
         .map(|agent| {
             Row::new(vec![
-                Cell::from(agent.name.clone()),
+                Cell::from(agent_label(agent)),
                 Cell::from(agent.provider.clone()),
                 Cell::from(agent.model.clone()),
                 Cell::from(agent.title.clone()),
@@ -739,6 +746,18 @@ fn draw(frame: &mut Frame, app: &mut App) {
     ]))
     .style(Style::default().bg(Color::DarkGray));
     frame.render_widget(status, outer[2]);
+}
+
+/// `name@office` for an office seat, `name@building` for the butler, a bare name
+/// while employments are not stored yet.
+fn agent_label(agent: &AgentRow) -> String {
+    if !agent.office.is_empty() {
+        format!("{}@{}", agent.name, agent.office)
+    } else if agent.scope == "building" {
+        format!("{}@building", agent.name)
+    } else {
+        agent.name.clone()
+    }
 }
 
 fn centered_rect(percent_x: u16, percent_y: u16, area: ratatui::layout::Rect) -> ratatui::layout::Rect {

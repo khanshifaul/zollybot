@@ -6,6 +6,16 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.5] - 2026-11-07
+
+### Added
+
+- Office geography in the API: `GET /v1/offices` lists the repos under the project
+  root that carry `.agents/zolly/config.toml`, and `/v1/agents` now reports each
+  agent's catalog `role`, its `scope` (`office` or `building`) and its `office`.
+  The butler is seeded with the office agents and reports `@building` in the
+  terminal. This is the read-only half; employments are still derived, not stored.
+
 ## [0.62.4] - 2026-11-07
 
 ### Added

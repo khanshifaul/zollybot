@@ -12,6 +12,8 @@ import { AgentTables } from "../backend/agent-data/agent-tables";
 import { AgentRoutineStore } from "../backend/agent-routine-store";
 import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messaging/discord/discord-connect";
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
+import { discoverOffices } from "../backend/offices/office-catalog";
+import { roleForAgentName } from "../backend/offices/role-catalog";
 import { routineFlowRoutines } from "../backend/routine-flows/routine-flow-routines";
 import { RoutineFlowStore } from "../backend/routine-flows/routine-flow-store";
 import { createRoutineFlows, type RoutineFlowsHandle } from "../backend/routine-flows/routine-flows";
@@ -3680,12 +3682,17 @@ export async function createApplicationServices({
         host,
         memory: hostMemory,
         agents: () =>
-          service.listAgents().map((agent) => ({
-            name: agent.name,
-            provider: String(agent.provider),
-            model: String(agent.model),
-            title: agent.title,
-          })),
+          service.listAgents().map((agent) => {
+            const role = roleForAgentName(agent.name);
+            return {
+              name: agent.name,
+              provider: String(agent.provider),
+              model: String(agent.model),
+              title: agent.title,
+              ...(role ? { role: role.key, scope: role.scope } : { scope: "office" }),
+            };
+          }),
+        offices: () => discoverOffices([join(homedir(), "Projects")], 3),
         onError: (message, error) => logger.warn(message, toLogValue(error)),
       })
     : null;

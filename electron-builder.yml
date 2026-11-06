@@ -22,7 +22,7 @@ publish:
   # Updates come from this release host. The path carries the version, so a
   # release bumps this line with the version in package.json.
   provider: generic
-  url: https://zollybot.shifaul.dev/releases/0.62.4
+  url: https://zollybot.shifaul.dev/releases/0.62.5
 files:
   - out/**/*
   - package.json
