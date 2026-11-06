@@ -6,6 +6,26 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.1] - 2026-11-06
+
+### Added
+
+- `zollybot-cli` signs in with an email code, the same steps as the app. Press `i`, enter the email,
+  then the code. When a `zollybot --server` runs, the TUI talks to that server over its control
+  socket, so both frontends share one account and one session; `o` signs out. `c` shows the pairing
+  QR the server mints, so a phone pairs with the same host the GUI would offer.
+
+### Changed
+
+- The Linux installer installs files instead of an AppImage. It unpacks the release `.tar.gz` into
+  `<prefix>/lib/zollybot`, links `<prefix>/bin/zollybot`, and installs `zollybot-cli` — the layout a
+  package manager uses. The published `.tar.gz` now carries the unpacked app.
+
+### Fixed
+
+- Updates check `https://zollybot.shifaul.dev/releases/0.62.1` instead of the deleted
+  `nightly-labs/zollybot` GitHub feed, which answered 404 on every check.
+
 ## [0.62.0] - 2026-11-05
 
 ### Added

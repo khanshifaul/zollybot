@@ -71,6 +71,7 @@ version of the app. It reads the same <code>.agents/</code> files and never writ
   <tr><td><code>j</code> / <code>k</code></td><td>move down / up a row</td></tr>
   <tr><td><code>v</code></td><td>switch between queue and gates</td></tr>
   <tr><td><code>c</code></td><td>show the connect QR for a phone, and the URL beneath it</td></tr>
+  <tr><td><code>i</code></td><td>sign in with an email code — the same steps as the app, against the same server</td></tr>
   <tr><td><code>r</code></td><td>refresh now (it also refreshes every 3 seconds)</td></tr>
   <tr><td><code>q</code></td><td>quit</td></tr>
 </table>
@@ -96,13 +97,14 @@ a prompt. Each office remembers its own decisions and lessons in
 
 <h2>Download</h2>
 <p id="assets">Loading release…</p>
-<p>Checksums: <a href="/releases/0.62.0/SHA256SUMS">SHA256SUMS</a>. Prefer a single archive?
-The <code>.tar.gz</code> carries both binaries.</p>
+<p>Checksums: <a href="/releases/0.62.1/SHA256SUMS">SHA256SUMS</a>. The installer unpacks the
+<code>.tar.gz</code> into <code>~/.local/lib/zollybot</code> and links the launcher — real files,
+no self-mounting AppImage.</p>
 
 <h2>Platforms</h2>
 <table>
   <tr><th>Platform</th><th>Package</th><th>State</th></tr>
-  <tr><td>Linux</td><td><code>zollybot</code> + <code>zollybot-cli</code></td><td>available — installer, AppImage, tarball</td></tr>
+  <tr><td>Linux</td><td><code>zollybot</code> + <code>zollybot-cli</code></td><td>available — installer unpacks the bundle; AppImage also published</td></tr>
   <tr><td>macOS</td><td><code>zollybot</code></td><td>not published yet</td></tr>
   <tr><td>Windows</td><td><code>zollybot</code></td><td>not published yet</td></tr>
   <tr><td>Android</td><td>remote</td><td>available — arm64 release APK</td></tr>
@@ -129,7 +131,8 @@ fetch("/latest")
     document.getElementById("assets").innerHTML =
       `<a href="/releases/${ver}/zollybot-gui-${ver}-x86_64.AppImage">AppImage ${ver} (x86_64)</a> · ` +
       `<a href="/releases/${ver}/zollybot-linux-x86_64.tar.gz">bundle .tar.gz (GUI + CLI)</a> · ` +
-      `<a href="/releases/${ver}/zollybot-cli-linux-x86_64">CLI only</a>`;
+      `<a href="/releases/${ver}/zollybot-cli-linux-x86_64">CLI only</a> · ` +
+      `<a href="/releases/${ver}/zollybot-android-arm64.apk">Android APK (arm64)</a>`;
   })
   .catch(() => {
     document.getElementById("assets").textContent = "No release published yet.";

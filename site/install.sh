@@ -9,8 +9,10 @@
 #   --no-desktop     skip the desktop entry
 #   --no-cli         skip the terminal companion (zollybot-cli)
 #
-# The download is verified against the release's SHA256SUMS before anything is
-# installed. Nothing is written outside the prefix.
+# This installs files, the way a package manager does: the release archive is
+# unpacked under <prefix>/lib/zollybot, the launcher is linked into <prefix>/bin,
+# and nothing runs from a self-mounting AppImage. The download is verified
+# against the release's SHA256SUMS before anything is written.
 
 set -eu
 
@@ -27,7 +29,6 @@ while [ $# -gt 0 ]; do
 		--version) VERSION="$2"; shift 2 ;;
 		--no-desktop) DESKTOP=0; shift ;;
 		--no-cli) CLI=0; shift ;;
-		-h|--help) sed -n '2,12p' "$0"; exit 0 ;;
 		*) echo "unknown option: $1" >&2; exit 2 ;;
 	esac
 done
@@ -35,6 +36,7 @@ done
 need() { command -v "$1" >/dev/null 2>&1 || { echo "missing dependency: $1" >&2; exit 1; }; }
 need curl
 need sha256sum
+need tar
 
 arch="$(uname -m)"
 case "$arch" in
@@ -47,7 +49,7 @@ if [ -z "$VERSION" ]; then
 	VERSION="$(curl -fsSL "$BASE_URL/latest")" || { echo "could not read $BASE_URL/latest" >&2; exit 1; }
 fi
 
-asset="zollybot-gui-${VERSION}-${asset_arch}.AppImage"
+asset="zollybot-linux-${asset_arch}.tar.gz"
 release="$DOWNLOAD_BASE/releases/$VERSION"
 
 tmp="$(mktemp -d)"
@@ -57,7 +59,7 @@ echo "Downloading $asset ..."
 curl -fsSL "$release/$asset" -o "$tmp/$asset"
 curl -fsSL "$release/SHA256SUMS" -o "$tmp/SHA256SUMS"
 
-expected="$(awk -v name="$asset" '{ n = $2; sub(/^\.\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
+expected="$(awk -v name="$asset" '{ n = $2; sub(/^[.]\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
 if [ -z "$expected" ]; then
 	echo "no checksum for $asset in SHA256SUMS" >&2
 	exit 1
@@ -65,54 +67,54 @@ fi
 actual="$(sha256sum "$tmp/$asset" | awk '{ print $1 }')"
 if [ "$actual" != "$expected" ]; then
 	echo "checksum mismatch for $asset" >&2
-	echo "  expected $expected" >&2
-	echo "  actual   $actual" >&2
 	exit 1
 fi
 
-mkdir -p "$PREFIX/bin"
-install -m 0755 "$tmp/$asset" "$PREFIX/bin/zollybot"
-echo "Installed $PREFIX/bin/zollybot ($VERSION)"
+mkdir -p "$PREFIX/lib" "$PREFIX/bin"
+rm -rf "$PREFIX/lib/zollybot"
+mkdir -p "$PREFIX/lib/zollybot"
+tar -xzf "$tmp/$asset" -C "$PREFIX/lib/zollybot"
 
-if [ "$CLI" -eq 1 ]; then
-	cli_asset="zollybot-cli-linux-${asset_arch}"
-	echo "Downloading $cli_asset ..."
-	if curl -fsSL "$release/$cli_asset" -o "$tmp/$cli_asset"; then
-		cli_expected="$(awk -v name="$cli_asset" '{ n = $2; sub(/^\.\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
-		cli_actual="$(sha256sum "$tmp/$cli_asset" | awk '{ print $1 }')"
-		if [ -n "$cli_expected" ] && [ "$cli_actual" != "$cli_expected" ]; then
-			echo "checksum mismatch for $cli_asset" >&2
-			exit 1
-		fi
-		install -m 0755 "$tmp/$cli_asset" "$PREFIX/bin/zollybot-cli"
-		echo "Installed $PREFIX/bin/zollybot-cli ($VERSION)"
-	else
-		echo "zollybot-cli not published for this version; skipped" >&2
-	fi
+app="$PREFIX/lib/zollybot/zollybot"
+if [ ! -x "$app" ]; then
+	echo "the archive carried no zollybot binary" >&2
+	exit 1
+fi
+ln -sf "$app" "$PREFIX/bin/zollybot"
+echo "Installed $PREFIX/bin/zollybot ($VERSION, files in $PREFIX/lib/zollybot)"
+
+if [ "$CLI" -eq 1 ] && [ -f "$PREFIX/lib/zollybot/zollybot-cli" ]; then
+	install -m 0755 "$PREFIX/lib/zollybot/zollybot-cli" "$PREFIX/bin/zollybot-cli"
+	echo "Installed $PREFIX/bin/zollybot-cli ($VERSION)"
 fi
 
-if [ "$DESKTOP" -eq 1 ] && [ -d "${XDG_DATA_HOME:-$HOME/.local/share}/applications" ]; then
-	icon_dir="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
-	mkdir -p "$icon_dir"
-	curl -fsSL "$BASE_URL/icon.png" -o "$icon_dir/zollybot.png" || true
-	desktop="${XDG_DATA_HOME:-$HOME/.local/share}/applications/zollybot.desktop"
-	cat > "$desktop" <<EOF
+if [ "$DESKTOP" -eq 1 ]; then
+	data="${XDG_DATA_HOME:-$HOME/.local/share}"
+	mkdir -p "$data/applications"
+	if [ -f "$PREFIX/lib/zollybot/zollybot.png" ]; then
+		mkdir -p "$data/icons"
+		install -m 0644 "$PREFIX/lib/zollybot/zollybot.png" "$data/icons/zollybot.png"
+	fi
+	icon_line=""
+	[ -f "$data/icons/zollybot.png" ] && icon_line="Icon=zollybot"
+	cat > "$data/applications/zollybot.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Name=ZollyBot
-Comment=Governed agent offices for your repositories
+Comment=Local-first multi-agent workspace
 Exec=$PREFIX/bin/zollybot %U
-Icon=$icon_dir/zollybot.png
+$icon_line
 Terminal=false
 Categories=Development;
+MimeType=x-scheme-handler/zollybot;
 EOF
-	command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$(dirname "$desktop")" || true
+	command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$data/applications" >/dev/null 2>&1 || true
 	echo "Added desktop entry"
 fi
 
 case ":$PATH:" in
 	*":$PREFIX/bin:"*) ;;
-	*) echo "Note: add $PREFIX/bin to PATH to run 'zollybot' from a shell." ;;
+	*) echo "Add $PREFIX/bin to PATH to run 'zollybot' from a terminal." ;;
 esac
 
 echo "Run 'zollybot' to start."

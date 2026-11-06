@@ -19,9 +19,10 @@ electronFuses:
   loadBrowserProcessSpecificV8Snapshot: false
   grantFileProtocolExtraPrivileges: false
 publish:
-  provider: github
-  owner: nightly-labs
-  repo: zollybot
+  # Updates come from this release host. The path carries the version, so a
+  # release bumps this line with the version in package.json.
+  provider: generic
+  url: https://zollybot.shifaul.dev/releases/0.62.1
 files:
   - out/**/*
   - package.json

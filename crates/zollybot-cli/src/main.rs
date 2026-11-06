@@ -390,6 +390,289 @@ fn connect_url() -> String {
     std::env::var("ZOLLYBOT_CONNECT_URL").unwrap_or_else(|_| "https://zollybot.shifaul.dev".to_string())
 }
 
+/// The account service the GUI talks to. The CLI follows the same steps, so the
+/// same host answers it.
+fn api_base() -> String {
+    std::env::var("ZOLLYBOT_API_URL").unwrap_or_else(|_| "https://api-zollybot.shifaul.dev".to_string())
+}
+
+#[derive(Clone)]
+struct Session {
+    email: String,
+    #[allow(dead_code)]
+    token: String,
+    /// The session lives in the running server, not in this process, so there is no
+    /// token to write to disk.
+    local: bool,
+}
+
+/// The control socket of a running `zollybot --server`. The GUI and the TUI are two
+/// frontends of that one server, exactly like herdr.
+fn control_socket() -> Option<PathBuf> {
+    let runtime = std::env::var("XDG_RUNTIME_DIR").ok()?;
+    if runtime.trim().is_empty() {
+        return None;
+    }
+    let path = PathBuf::from(runtime).join("control.sock");
+    if path.exists() {
+        Some(path)
+    } else {
+        None
+    }
+}
+
+fn url_encode(value: &str) -> String {
+    let mut encoded = String::new();
+    for byte in value.bytes() {
+        match byte {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => encoded.push(byte as char),
+            b' ' => encoded.push('+'),
+            other => encoded.push_str(&format!("%{other:02X}")),
+        }
+    }
+    encoded
+}
+
+/// One request to the control socket, answered with a status and `key=value` lines.
+fn control_call(
+    method: &str,
+    path: &str,
+    form: &[(&str, &str)],
+) -> Result<(u16, Vec<(String, String)>), String> {
+    use std::io::{Read, Write};
+    use std::os::unix::net::UnixStream;
+    let socket = control_socket().ok_or_else(|| "no running zollybot server".to_string())?;
+    let mut stream = UnixStream::connect(&socket).map_err(|error| error.to_string())?;
+    stream
+        .set_read_timeout(Some(Duration::from_secs(30)))
+        .map_err(|error| error.to_string())?;
+    let body = form
+        .iter()
+        .map(|(key, value)| format!("{}={}", url_encode(key), url_encode(value)))
+        .collect::<Vec<_>>()
+        .join("&");
+    let request = format!(
+        "{method} {path} HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+        body.len()
+    );
+    stream
+        .write_all(request.as_bytes())
+        .map_err(|error| error.to_string())?;
+    let mut response = String::new();
+    stream
+        .read_to_string(&mut response)
+        .map_err(|error| error.to_string())?;
+    let (head, payload) = response
+        .split_once("\r\n\r\n")
+        .ok_or_else(|| "the server answered without a body".to_string())?;
+    let status = head
+        .lines()
+        .next()
+        .and_then(|line| line.split_whitespace().nth(1))
+        .and_then(|code| code.parse::<u16>().ok())
+        .ok_or_else(|| "the server answered without a status".to_string())?;
+    let mut lines = Vec::new();
+    for line in payload.lines() {
+        if let Some((key, value)) = line.split_once('=') {
+            lines.push((key.to_string(), value.to_string()));
+        }
+    }
+    Ok((status, lines))
+}
+
+fn line_value(lines: &[(String, String)], key: &str) -> Option<String> {
+    lines
+        .iter()
+        .find(|(name, _)| name == key)
+        .map(|(_, value)| value.clone())
+}
+
+fn answer_error(status: u16, lines: &[(String, String)]) -> String {
+    line_value(lines, "message")
+        .filter(|message| !message.is_empty())
+        .or_else(|| line_value(lines, "error"))
+        .unwrap_or_else(|| format!("the server answered {status}"))
+}
+
+fn decode_base64(input: &str) -> Option<String> {
+    const ALPHABET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut output = Vec::new();
+    let mut buffer = 0u32;
+    let mut bits = 0u8;
+    for byte in input.bytes().filter(|byte| !byte.is_ascii_whitespace() && *byte != b'=') {
+        let value = ALPHABET.iter().position(|candidate| *candidate == byte)? as u32;
+        buffer = (buffer << 6) | value;
+        bits += 6;
+        if bits >= 8 {
+            bits -= 8;
+            output.push((buffer >> bits) as u8);
+        }
+    }
+    String::from_utf8(output).ok()
+}
+
+fn config_dir() -> PathBuf {
+    let base = std::env::var("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(".config"));
+    base.join("zollybot")
+}
+
+fn session_path() -> PathBuf {
+    config_dir().join("session.json")
+}
+
+fn load_session() -> Option<Session> {
+    let text = fs::read_to_string(session_path()).ok()?;
+    let value: serde_json::Value = serde_json::from_str(&text).ok()?;
+    Some(Session {
+        email: value.get("email")?.as_str()?.to_string(),
+        token: value.get("token")?.as_str()?.to_string(),
+        local: false,
+    })
+}
+
+fn save_session(session: &Session) -> std::io::Result<()> {
+    if session.local {
+        return Ok(());
+    }
+    let dir = config_dir();
+    fs::create_dir_all(&dir)?;
+    let path = session_path();
+    fs::write(
+        &path,
+        serde_json::to_string_pretty(&ureq::json!({
+            "email": session.email,
+            "token": session.token,
+        }))?,
+    )?;
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        fs::set_permissions(&path, fs::Permissions::from_mode(0o600))?;
+    }
+    Ok(())
+}
+
+fn random_uuid() -> String {
+    fs::read_to_string("/proc/sys/kernel/random/uuid")
+        .map(|value| value.trim().to_string())
+        .unwrap_or_else(|_| {
+            let nanos = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|duration| duration.as_nanos())
+                .unwrap_or_default();
+            format!("{nanos:x}")
+        })
+}
+
+fn api_error(error: ureq::Error) -> String {
+    match error {
+        ureq::Error::Status(code, response) => response
+            .into_json::<serde_json::Value>()
+            .ok()
+            .and_then(|value| {
+                value
+                    .get("error")
+                    .and_then(|error| error.get("message"))
+                    .and_then(|message| message.as_str())
+                    .map(|message| message.to_string())
+            })
+            .unwrap_or_else(|| format!("the account service answered {code}")),
+        other => format!("{other}"),
+    }
+}
+
+/// Step one of the GUI flow: the service emails a code and returns the challenge.
+/// A running server owns the sign-in, so ask it first; without one, call the API directly.
+fn request_code(email: &str) -> Result<(String, bool), String> {
+    if control_socket().is_some() {
+        let (status, lines) = control_call("POST", "/v1/login/start", &[("email", email)])?;
+        if status == 200 {
+            return line_value(&lines, "challenge")
+                .map(|challenge| (challenge, true))
+                .ok_or_else(|| "the server sent no challenge".to_string());
+        }
+        return Err(answer_error(status, &lines));
+    }
+    let url = format!("{}/v1/auth/email/start", api_base());
+    let response = ureq::post(&url)
+        .set("Content-Type", "application/json")
+        .set("Idempotency-Key", &random_uuid())
+        .send_json(ureq::json!({ "email": email }));
+    match response {
+        Ok(response) => response
+            .into_json::<serde_json::Value>()
+            .map_err(|error| error.to_string())?
+            .get("challengeId")
+            .and_then(|challenge| challenge.as_str())
+            .map(|challenge| (challenge.to_string(), false))
+            .ok_or_else(|| "the account service sent no challenge".to_string()),
+        Err(error) => Err(api_error(error)),
+    }
+}
+
+/// Step two: the code becomes a session, which the server keeps or the CLI stores.
+fn verify_code(challenge: &str, code: &str) -> Result<Session, String> {
+    if control_socket().is_some() {
+        let (status, lines) = control_call(
+            "POST",
+            "/v1/login/verify",
+            &[("challenge", challenge), ("code", code)],
+        )?;
+        if status == 200 {
+            return Ok(Session {
+                email: line_value(&lines, "email").unwrap_or_default(),
+                token: String::new(),
+                local: true,
+            });
+        }
+        return Err(answer_error(status, &lines));
+    }
+    let url = format!("{}/v1/auth/email/verify", api_base());
+    let response = ureq::post(&url)
+        .set("Content-Type", "application/json")
+        .send_json(ureq::json!({ "challengeId": challenge, "code": code }));
+    match response {
+        Ok(response) => {
+            let value = response
+                .into_json::<serde_json::Value>()
+                .map_err(|error| error.to_string())?;
+            let token = value
+                .get("sessionToken")
+                .and_then(|token| token.as_str())
+                .unwrap_or_default()
+                .to_string();
+            let email = value
+                .get("user")
+                .and_then(|user| user.get("email"))
+                .and_then(|email| email.as_str())
+                .unwrap_or_default()
+                .to_string();
+            if token.is_empty() {
+                return Err("the account service sent no session".to_string());
+            }
+            Ok(Session { email, token, local: false })
+        }
+        Err(error) => Err(api_error(error)),
+    }
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum SignInStage {
+    Email,
+    Code,
+}
+
+struct SignIn {
+    stage: SignInStage,
+    email: String,
+    code: String,
+    challenge: String,
+    status: String,
+    server: bool,
+}
+
 fn connect_qr(url: &str) -> Vec<String> {
     match qrcode::QrCode::new(url.as_bytes()) {
         Ok(code) => code
@@ -414,6 +697,8 @@ struct App {
     message: String,
     last_refresh: Instant,
     connect: Option<ConnectPanel>,
+    session: Option<Session>,
+    sign_in: Option<SignIn>,
 }
 
 impl App {
@@ -429,7 +714,10 @@ impl App {
             message: String::new(),
             last_refresh: Instant::now(),
             connect: None,
+            session: load_session(),
+            sign_in: None,
         };
+        app.refresh_account();
         app.reload();
         app
     }
@@ -487,13 +775,159 @@ impl App {
     }
 
     fn toggle_connect(&mut self) {
-        self.connect = if self.connect.is_some() {
-            None
-        } else {
-            let url = connect_url();
-            let lines = connect_qr(&url);
-            Some(ConnectPanel { url, lines })
+        if self.connect.is_some() {
+            self.connect = None;
+            return;
+        }
+        // The server mints the pairing code the GUI shows, so ask it for the same QR.
+        if control_socket().is_some() {
+            match control_call("POST", "/v1/mobile-connect", &[]) {
+                Ok((200, lines)) => {
+                    if let Some(qr) = line_value(&lines, "qr").and_then(|encoded| decode_base64(&encoded)) {
+                        let lines = qr.lines().map(|line| line.to_string()).collect();
+                        self.connect = Some(ConnectPanel {
+                            url: "scan with the ZollyBot app".to_string(),
+                            lines,
+                        });
+                        return;
+                    }
+                }
+                Ok((status, lines)) => {
+                    self.message = answer_error(status, &lines);
+                    return;
+                }
+                Err(error) => {
+                    self.message = error;
+                    return;
+                }
+            }
+        }
+        let url = match &self.session {
+            Some(_) => format!("zollybot://mobile-connect?api={}", api_base()),
+            None => connect_url(),
         };
+        let lines = connect_qr(&url);
+        self.connect = Some(ConnectPanel { url, lines });
+    }
+
+    /// The server owns the account, so the first read comes from it, not from a token file.
+    fn refresh_account(&mut self) {
+        if control_socket().is_none() {
+            return;
+        }
+        if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
+            if line_value(&lines, "account").as_deref() == Some("signed_in") {
+                self.session = Some(Session {
+                    email: line_value(&lines, "email").unwrap_or_default(),
+                    token: String::new(),
+                    local: true,
+                });
+            }
+        }
+    }
+
+    fn open_sign_in(&mut self) {
+        let mut email = self
+            .session
+            .as_ref()
+            .map(|session| session.email.clone())
+            .unwrap_or_default();
+        let mut status = String::new();
+        if control_socket().is_some() {
+            if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
+                if line_value(&lines, "account").as_deref() == Some("signed_in") {
+                    email = line_value(&lines, "email").unwrap_or(email);
+                } else {
+                    status = "The server has no account yet.".to_string();
+                }
+            }
+        }
+        self.sign_in = Some(SignIn {
+            stage: SignInStage::Email,
+            email,
+            code: String::new(),
+            challenge: String::new(),
+            status,
+            server: false,
+        });
+    }
+
+    /// Enter inside the dialog: request a code, then turn the code into a session.
+    fn submit_sign_in(&mut self) {
+        let mut sign_in = match self.sign_in.take() {
+            Some(sign_in) => sign_in,
+            None => return,
+        };
+        match sign_in.stage {
+            SignInStage::Email => {
+                let email = sign_in.email.trim().to_string();
+                if email.is_empty() {
+                    sign_in.status = "Enter your email first.".into();
+                } else {
+                    match request_code(&email) {
+                        Ok((challenge, server)) => {
+                            sign_in.challenge = challenge;
+                            sign_in.server = server;
+                            sign_in.stage = SignInStage::Code;
+                            sign_in.status = if server {
+                                format!("The running server emailed a code to {email}.")
+                            } else {
+                                format!("Code sent to {email}.")
+                            };
+                            sign_in.email = email;
+                        }
+                        Err(error) => sign_in.status = error,
+                    }
+                }
+            }
+            SignInStage::Code => {
+                let code = sign_in.code.trim().to_string();
+                if code.is_empty() {
+                    sign_in.status = "Enter the code from the email.".into();
+                } else {
+                    match verify_code(&sign_in.challenge, &code) {
+                        Ok(session) => {
+                            let email = session.email.clone();
+                            if let Err(error) = save_session(&session) {
+                                self.message = format!("signed in, but saving failed: {error}");
+                            } else {
+                                self.message = format!("signed in as {email}");
+                            }
+                            self.session = Some(session);
+                            return;
+                        }
+                        Err(error) => {
+                            sign_in.status = error;
+                            sign_in.code.clear();
+                        }
+                    }
+                }
+            }
+        }
+        self.sign_in = Some(sign_in);
+    }
+
+    fn sign_out(&mut self) {
+        if control_socket().is_some() {
+            match control_call("POST", "/v1/logout", &[]) {
+                Ok((200, _)) => {
+                    self.message = "signed out".into();
+                }
+                Ok((status, lines)) => {
+                    self.message = answer_error(status, &lines);
+                    return;
+                }
+                Err(error) => {
+                    self.message = error;
+                    return;
+                }
+            }
+        } else {
+            let _ = fs::remove_file(session_path());
+            self.message = "signed out".into();
+        }
+        self.session = None;
+        self.sign_in = None;
     }
 
     fn table_next(&mut self) {
@@ -641,6 +1075,47 @@ fn draw(frame: &mut Frame, app: &mut App) {
         frame.render_widget(empty, inner);
     }
 
+    if let Some(sign_in) = &app.sign_in {
+        let area = centered_rect(64, 42, frame.area());
+        frame.render_widget(Clear, area);
+        let email_line = if sign_in.stage == SignInStage::Email {
+            format!("✎ {}", sign_in.email)
+        } else {
+            format!("  {}", sign_in.email)
+        };
+        let code_line = if sign_in.stage == SignInStage::Code {
+            format!("✎ {}", sign_in.code)
+        } else {
+            "  -".to_string()
+        };
+        let mut lines = vec![
+            Line::from(Span::styled(
+                "Sign in with the email that owns your account.",
+                Style::default().fg(Color::DarkGray),
+            )),
+            Line::from(""),
+            Line::from(vec![Span::raw("Email  "), Span::styled(email_line, Style::default().fg(Color::White))]),
+            Line::from(vec![Span::raw("Code   "), Span::styled(code_line, Style::default().fg(Color::White))]),
+            Line::from(""),
+        ];
+        if !sign_in.status.is_empty() {
+            lines.push(Line::from(Span::styled(
+                sign_in.status.clone(),
+                Style::default().fg(Color::Yellow),
+            )));
+            lines.push(Line::from(""));
+        }
+        lines.push(Line::from(Span::styled(
+            "Enter to continue · Backspace to edit · Esc to close",
+            Style::default().fg(Color::DarkGray),
+        )));
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .border_type(ratatui::widgets::BorderType::Rounded)
+            .title(" sign in · the same steps as the app ");
+        frame.render_widget(Paragraph::new(lines).block(block), area);
+    }
+
     if let Some(panel) = &app.connect {
         let area = centered_rect(70, 80, frame.area());
         frame.render_widget(Clear, area);
@@ -675,7 +1150,13 @@ fn draw(frame: &mut Frame, app: &mut App) {
             )
         })
         .unwrap_or_else(|| " no offices ".to_string());
-    let hints = "h/l office · j/k row · v queue/gates · c connect · r refresh · q quit ";
+    let hints = match &app.session {
+        Some(session) => format!(
+            "{} · h/l office · j/k row · v queue/gates · c connect · i account · o sign out · r refresh · q quit ",
+            session.email
+        ),
+        None => "h/l office · j/k row · v queue/gates · c connect · i sign in · r refresh · q quit ".to_string(),
+    };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
         Span::styled(format!("{hints:>60}"), Style::default().fg(Color::DarkGray)),
@@ -731,9 +1212,39 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 if key.kind != KeyEventKind::Press {
                     continue;
                 }
+                if app.sign_in.is_some() {
+                    match key.code {
+                        KeyCode::Esc => app.sign_in = None,
+                        KeyCode::Enter => app.submit_sign_in(),
+                        KeyCode::Backspace => {
+                            if let Some(sign_in) = app.sign_in.as_mut() {
+                                match sign_in.stage {
+                                    SignInStage::Email => {
+                                        sign_in.email.pop();
+                                    }
+                                    SignInStage::Code => {
+                                        sign_in.code.pop();
+                                    }
+                                }
+                            }
+                        }
+                        KeyCode::Char(character) => {
+                            if let Some(sign_in) = app.sign_in.as_mut() {
+                                match sign_in.stage {
+                                    SignInStage::Email => sign_in.email.push(character),
+                                    SignInStage::Code => sign_in.code.push(character),
+                                }
+                            }
+                        }
+                        _ => {}
+                    }
+                    continue;
+                }
                 match key.code {
                     KeyCode::Esc if app.connect.is_some() => app.connect = None,
                     KeyCode::Char('c') => app.toggle_connect(),
+                    KeyCode::Char('i') => app.open_sign_in(),
+                    KeyCode::Char('o') => app.sign_out(),
                     KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
                     KeyCode::Char('h') | KeyCode::Left => app.previous_office(),
                     KeyCode::Char('l') | KeyCode::Right => app.next_office(),
