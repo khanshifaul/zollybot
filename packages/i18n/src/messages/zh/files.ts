@@ -57,7 +57,7 @@ export const messages = {
   "files.storage.allFiles": "全部文件",
   "files.storage.allFilesOn": "{host} 上的全部文件",
   "files.storage.allFilesDescription": "所有助手和对话的文件",
-  "files.storage.openBotOn": "{host} 上的 ZollyBot",
+  "files.storage.zollyBotOn": "{host} 上的 ZollyBot",
   "files.storage.measuring": "正在统计…",
   "files.storage.measureAgain": "重新统计",
   "files.storage.measuringStorage": "正在统计存储占用",

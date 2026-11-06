@@ -107,7 +107,7 @@ const longDescriptionSkill: InstalledSkill = {
 
 /** The agent's open browser tabs. One title is long, so the row cuts it off. */
 const browserTabs: ComposerBrowserTab[] = [
-  { id: "browser-tab-docs", title: "ZollyBot documentation", url: "https://openbot.run/docs" },
+  { id: "browser-tab-docs", title: "ZollyBot documentation", url: "https://zollybot.shifaul.dev/docs" },
   { id: "browser-tab-linear", title: "Plans and pricing – Linear", url: "https://linear.app/pricing" },
   {
     id: "browser-tab-github",

@@ -29,7 +29,7 @@ export const messages = {
   "onboarding.setup.defaultProviderHint":
     "Usado para novos agentes locais. Você pode alterá-lo para cada agente depois.",
   "onboarding.setup.invitation": "Convite do computador anfitrião",
-  "onboarding.setup.invitationPlaceholder": "Cole um link de convite https://openbot.run/join",
+  "onboarding.setup.invitationPlaceholder": "Cole um link de convite https://zollybot.shifaul.dev/join",
   "onboarding.setup.otherInvitation": "Usar outro convite",
   "onboarding.setup.joinNote":
     "Você entrará como {email}. Convites por e-mail só funcionam para o endereço que os recebeu.",

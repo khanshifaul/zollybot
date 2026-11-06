@@ -13,15 +13,15 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const authApiRoot = join(projectRoot, "apps", "auth-api");
 const executableSuffix = process.platform === "win32" ? ".exe" : "";
 const wrangler = join(projectRoot, "node_modules", ".bin", `wrangler${executableSuffix}`);
-const productionApiUrl = "https://api.openbot.run";
+const productionApiUrl = "https://api.zollybot.shifaul.dev";
 const productionDatabase = "zollybot-auth";
 const productionBucket = "zollybot-skills";
 const owner = {
   id: "zollybot-production-catalog",
   identityKey: "zollybot-production-catalog",
-  email: "catalog@openbot.run",
+  email: "catalog@zollybot.shifaul.dev",
   name: "ZollyBot",
-  avatarUrl: "https://openbot.run/icon-192x192.png",
+  avatarUrl: "https://zollybot.shifaul.dev/icon-192x192.png",
 } as const;
 
 interface PublishedSkill {

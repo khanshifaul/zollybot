@@ -19,7 +19,7 @@ export const LANDING_FAQ: readonly LandingQuestion[] = [
     question: "Is ZollyBot's source code open?",
     answer:
       "Yes. All of the source code is open on GitHub, so you can check what ZollyBot does. You can change and run it for free for noncommercial use, such as personal projects, study or research. Commercial use needs a separate license. The license is PolyForm Noncommercial 1.0.0.",
-    link: { label: "See the source code on GitHub", href: "https://github.com/nightly-labs/openbot" },
+    link: { label: "See the source code on GitHub", href: "https://github.com/khanshifaul/zollybot" },
   },
   {
     question: "Can I use my ChatGPT or Claude plan?",

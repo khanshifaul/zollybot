@@ -1107,7 +1107,7 @@ the tiers used the same lookup key. The license terms allow 3 devices for each u
   the new page with `license_exists`. A second open license can still come from the
   Stripe Dashboard; `sync` logs a warning, and a person refunds it.
 - Refunds are by email only; the app and the Worker have no refund action. A customer emails
-  licenses@openbot.run within 24 hours of the first payment for a refund less a €3 / $3.60 /
+  licenses@zollybot.shifaul.dev within 24 hours of the first payment for a refund less a €3 / $3.60 /
   13.20 zł fee, once per account. There are no refunds for later changes.
 - When the owner of a full license creates an invite, the members section asks to add 1 user and
   shows the extra price, then adds the user and creates the invite. A 1-user license changes to Team

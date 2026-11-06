@@ -14,7 +14,7 @@
   ],
   "vars": {
     // The account service origin. The report route `/_zollybot/report` and the links on error pages use it.
-    "ACCOUNT_ORIGIN": "https://openbot.run"
+    "ACCOUNT_ORIGIN": "https://zollybot.shifaul.dev"
   },
   "r2_buckets": [
     {

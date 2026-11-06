@@ -145,7 +145,7 @@ function SettingsModalStory(props: {
     }, 6_000);
     return {
       qrData:
-        "zollybot://mobile-connect?api=https%3A%2F%2Fapi.openbot.run&ticket=storybook-mobile-ticket_1234567890abcdef",
+        "zollybot://mobile-connect?api=https%3A%2F%2Fapi.zollybot.shifaul.dev&ticket=storybook-mobile-ticket_1234567890abcdef",
       expiresAt: Date.now() + 120_000,
     };
   }
@@ -240,7 +240,7 @@ const meta = {
     onSetChatColor: fn(async () => undefined),
     onCreateMobileConnect: fn(async () => ({
       qrData:
-        "zollybot://mobile-connect?api=https%3A%2F%2Fapi.openbot.run&ticket=storybook-mobile-ticket_1234567890abcdef",
+        "zollybot://mobile-connect?api=https%3A%2F%2Fapi.zollybot.shifaul.dev&ticket=storybook-mobile-ticket_1234567890abcdef",
       expiresAt: Date.now() + 120_000,
     })),
   },

@@ -17,7 +17,7 @@ permissions: {}
 jobs:
   canary:
     name: Newest provider CLIs
-    if: github.repository == 'nightly-labs/openbot'
+    if: github.repository == 'nightly-labs/zollybot'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -48,7 +48,7 @@ jobs:
   alert:
     name: Report a failed canary
     needs: canary
-    if: always() && github.repository == 'nightly-labs/openbot'
+    if: always() && github.repository == 'nightly-labs/zollybot'
     concurrency:
       group: provider-cli-canary-alert
       cancel-in-progress: false

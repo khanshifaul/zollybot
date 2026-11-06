@@ -24,8 +24,8 @@ import {
   SwitchField,
 } from "@zollybot/ui";
 import {
-  openBotIdleCompactWidth,
   ZollyBotDynamicIsland,
+  zollyBotIdleCompactWidth,
 } from "@zollybot/ui/features/dynamic-island/ZollyBotDynamicIsland";
 import { ServerMark, serverStatusLabels } from "@zollybot/ui/features/servers/ServerRail";
 import type { GeneralSettingsValue } from "@zollybot/ui/features/settings/app-settings";
@@ -63,8 +63,12 @@ export function SettingsDynamicIslandTab(props: SettingsDynamicIslandTabProps) {
   const widthPercent = () => props.value.macBookNotchWidthPercent;
   const heightPercent = () => props.value.macBookNotchHeightPercent;
   const widestBuiltInWidth = () =>
-    openBotIdleCompactWidth("notch", builtInNotchSize(), DYNAMIC_ISLAND_SIZE_LIMITS.widthPercent.max);
-  const widestExternalWidth = openBotIdleCompactWidth("island", undefined, DYNAMIC_ISLAND_SIZE_LIMITS.widthPercent.max);
+    zollyBotIdleCompactWidth("notch", builtInNotchSize(), DYNAMIC_ISLAND_SIZE_LIMITS.widthPercent.max);
+  const widestExternalWidth = zollyBotIdleCompactWidth(
+    "island",
+    undefined,
+    DYNAMIC_ISLAND_SIZE_LIMITS.widthPercent.max,
+  );
   const builtInNotchSize = (): DynamicIslandNotchSize | undefined =>
     props.builtInDisplayGeometry === null ? undefined : (props.builtInDisplayGeometry ?? PREVIEW_NOTCH_SIZE);
   const isDefaultSize = () =>

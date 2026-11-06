@@ -432,7 +432,7 @@ export class RemoteTeamDirectoryClient {
 
   /**
    * The account service an invitation names. The public website serves the same Worker as
-   * `api.openbot.run`, but an invitation must name `api.openbot.run`: the desktop and mobile apps
+   * `api.zollybot.shifaul.dev`, but an invitation must name `api.zollybot.shifaul.dev`: the desktop and mobile apps
    * accept only that address.
    */
   #inviteApiUrl(): string {
@@ -456,8 +456,8 @@ export class RemoteTeamDirectoryClient {
       // These production origins serve the same account Worker. Requests still use this client's origin.
       const publicWebsiteInvite =
         this.#authentication.kind === "browser" &&
-        origin === "https://openbot.run" &&
-        inviteOrigin === "https://api.openbot.run";
+        origin === "https://zollybot.shifaul.dev" &&
+        inviteOrigin === "https://api.zollybot.shifaul.dev";
       if (inviteOrigin !== origin && !publicWebsiteInvite) {
         return yield* directoryFailure(sourceText("error.remote.inviteOtherService"));
       }

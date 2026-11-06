@@ -1016,7 +1016,7 @@ There is no review and no marketplace listing. Before a publish, the renderer dr
 card (`agent-template-card.tsx`) with the agent's avatar and text. It draws it there because the
 avatar and its fonts are there, and it uses a `data:` URL because the Content Security Policy
 refuses `blob:` images. The Worker accepts only a PNG of that size, stores it in R2, and serves it
-as the page's `og:image`, so a post on X shows the agent. `openbot.run/agents/<id>` is a public
+as the page's `og:image`, so a post on X shows the agent. `zollybot.shifaul.dev/agents/<id>` is a public
 card page, tinted with the avatar colour. The Bloub library uses browser-only APIs when its module
 loads, so the page loads the avatar and its colour in the browser after hydration. Its button opens
 `zollybot://agents/<id>`, the third renderer link kind in

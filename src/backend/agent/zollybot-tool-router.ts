@@ -123,7 +123,7 @@ import {
 import { apiKeyFormSpec, browserUserControlResult } from "./prompts";
 import { ROUTINE_NO_UPDATE_TOOL, ROUTINE_REPORT_FAILURE_TOOL } from "./routine-quiet-runs";
 import type { RoutineScheduler } from "./routine-scheduler";
-import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "./routine-tools";
+import { type ZollyBotToolResponse, zollyBotToolFailure, zollyBotToolResult } from "./routine-tools";
 import {
   captureScreenToolSchema,
   type ScreenCaptureFailed,
@@ -173,7 +173,7 @@ function listedDescription(description: string): string {
 
 /** The reason says what to grant or to correct, and holds no screen content. */
 function captureFailure(failure: ScreenCaptureFailed) {
-  return openBotToolFailure(failure.reason);
+  return zollyBotToolFailure(failure.reason);
 }
 
 export interface ZollyBotToolRouterHooks {
@@ -392,7 +392,7 @@ export class ZollyBotToolRouter {
                 this.#requireAgent(agentId);
                 result = discoverTools(params);
               } catch {
-                client.respond(request.id, openBotToolFailure(invalid));
+                client.respond(request.id, zollyBotToolFailure(invalid));
                 return;
               }
               const signIns = yield* this.#searchSignIns(agentId, params);
@@ -401,14 +401,14 @@ export class ZollyBotToolRouter {
                 deferredMcp && params.tool === "tool_search" ? { ...result, mcpTools: deferredMcp } : result;
               client.respond(
                 request.id,
-                openBotToolResult(signIns.length > 0 ? { ...found, mcpServers: signIns } : found),
+                zollyBotToolResult(signIns.length > 0 ? { ...found, mcpServers: signIns } : found),
               );
               return;
             }
             if (params.tool === "tool_call") {
               const resolved = resolveDeferredTool(params);
               if (!resolved) {
-                client.respond(request.id, openBotToolFailure(invalid));
+                client.respond(request.id, zollyBotToolFailure(invalid));
                 return;
               }
               params = resolved;
@@ -417,7 +417,7 @@ export class ZollyBotToolRouter {
           if (params.namespace === "zollybot" && (params.tool === "history_search" || params.tool === "history_read")) {
             const scope = this.#conversation.historyScope(params.threadId, client);
             if (!scope || this.#channels.store.channelForThread(scope.threadId)) {
-              client.respond(request.id, openBotToolFailure(sourceText("error.agent.historyUnavailable")));
+              client.respond(request.id, zollyBotToolFailure(sourceText("error.agent.historyUnavailable")));
               return;
             }
             // A taskId reads a side thread of the same agent. A thread of another agent reads as unknown.
@@ -429,13 +429,13 @@ export class ZollyBotToolRouter {
                   ? this.#tasks.require(scope.agentId, taskId).threadId
                   : null;
             if (targetThreadId === null) {
-              client.respond(request.id, openBotToolFailure(sourceText("error.backend.threadNotFound")));
+              client.respond(request.id, zollyBotToolFailure(sourceText("error.backend.threadNotFound")));
               return;
             }
             const result = yield* this.#history.call(scope.agentId, targetThreadId, params.tool, params.arguments).pipe(
-              Effect.catch(() => Effect.succeed(openBotToolFailure(sourceText("error.agent.historyUnavailable")))),
+              Effect.catch(() => Effect.succeed(zollyBotToolFailure(sourceText("error.agent.historyUnavailable")))),
               Effect.catchDefect(() =>
-                Effect.succeed(openBotToolFailure(sourceText("error.agent.historyUnavailable"))),
+                Effect.succeed(zollyBotToolFailure(sourceText("error.agent.historyUnavailable"))),
               ),
             );
             const currentScope = this.#conversation.historyScope(params.threadId, client);
@@ -444,7 +444,7 @@ export class ZollyBotToolRouter {
                 request.id,
                 currentScope?.threadId === scope.threadId
                   ? result
-                  : openBotToolFailure(sourceText("error.agent.historyUnavailable")),
+                  : zollyBotToolFailure(sourceText("error.agent.historyUnavailable")),
               );
             return;
           }
@@ -573,7 +573,7 @@ export class ZollyBotToolRouter {
               Effect.sync(() => {
                 const message = this.#hooks.redactMcp(profileToolErrorMessage(error));
                 if (!(error instanceof z.ZodError)) logger.warn("An ZollyBot tool failed.", { tool, error: message });
-                return openBotToolFailure(message);
+                return zollyBotToolFailure(message);
               });
             const correctableTool =
               PROFILE_TOOL_NAMES.has(tool) ||
@@ -636,7 +636,7 @@ export class ZollyBotToolRouter {
    * person answers or the turn ends. The agent can correct a refused block, so it gets the reason.
    */
   #askUi(client: AgentClient, request: AppServerRequest, params: DynamicToolCallParams): void {
-    const refuse = (message: string) => client.respond(request.id, openBotToolFailure(message));
+    const refuse = (message: string) => client.respond(request.id, zollyBotToolFailure(message));
     const parsed = askUiToolSchema.safeParse(params.arguments);
     if (!parsed.success) {
       refuse(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
@@ -669,32 +669,32 @@ export class ZollyBotToolRouter {
     const agentId = this.#conversation.agentForThread(params.threadId);
     if (!agentId) throw new Error("The calling ZollyBot agent is unknown.");
     const apiKeys = this.#apiKeys;
-    if (!apiKeys) return openBotToolFailure("This ZollyBot server cannot save API keys.");
+    if (!apiKeys) return zollyBotToolFailure("This ZollyBot server cannot save API keys.");
     const failed = (failure: { cause: unknown }) =>
       Effect.succeed(
-        openBotToolFailure(
+        zollyBotToolFailure(
           failure.cause instanceof Error ? failure.cause.message : sourceText("error.backend.apiKeySaveFailed"),
         ),
       );
     if (params.tool === "list_api_keys")
       return yield* apiKeys.list(agentId).pipe(
-        Effect.map((keys) => openBotToolResult({ keys })),
+        Effect.map((keys) => zollyBotToolResult({ keys })),
         Effect.catch(failed),
       );
     if (params.tool === "remove_api_key") {
       const parsed = removeApiKeyToolSchema.safeParse(params.arguments);
       if (!parsed.success)
-        return openBotToolFailure(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
+        return zollyBotToolFailure(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
       const { name } = parsed.data;
       return yield* apiKeys.remove(agentId, name).pipe(
         Effect.map((removed) => {
-          if (removed) return openBotToolResult({ status: "removed", name });
+          if (removed) return zollyBotToolResult({ status: "removed", name });
           // Agents cannot delete a Vault key: every agent reads it.
           if (this.#vaultItems?.apiKeys().some((key) => key.name === name))
-            return openBotToolFailure(
+            return zollyBotToolFailure(
               `${name} is in the Vault, which every agent uses. Only the user can delete it, in Server settings > Vault.`,
             );
-          return openBotToolResult({ status: "not_found", name });
+          return zollyBotToolResult({ status: "not_found", name });
         }),
         Effect.catch(failed),
       );
@@ -702,19 +702,19 @@ export class ZollyBotToolRouter {
     if (params.tool === "save_api_key") return yield* this.#saveApiKey(apiKeys, agentId, params);
     const parsed = requestApiKeyToolSchema.safeParse(params.arguments);
     if (!parsed.success)
-      return openBotToolFailure(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
+      return zollyBotToolFailure(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
     // A key that the Vault has is used as it is: a copy for this agent would not follow a change in the Vault.
     const keys = yield* apiKeys.list(agentId).pipe(Effect.catch(() => Effect.succeed<SavedApiKey[]>([])));
     const vaultKey = keys.find((key) => key.name === parsed.data.name && key.source === "vault");
-    if (vaultKey) return openBotToolResult({ status: "saved", ...vaultKey });
+    if (vaultKey) return zollyBotToolResult({ status: "saved", ...vaultKey });
     if (this.#messaging.store.linkForThread(this.#conversation.publicThreadId(agentId, params.threadId)))
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         "request_api_key does not work in an external chat. Ask the user to give you the key in ZollyBot.",
       );
     // With a Vault, the user can save the key for every agent, so another agent does not ask again.
     const vault = this.#vaultItems?.ready() === true;
     const spec = apiKeyFormSpec({ ...parsed.data, vault });
-    if (!spec) return openBotToolFailure("ZollyBot could not show this form. Use a shorter title and retry.");
+    if (!spec) return zollyBotToolFailure("ZollyBot could not show this form. Use a shorter title and retry.");
     this.#attention.surfaceUiBlock(client, request, {
       blockId: randomUUID(),
       spec,
@@ -735,28 +735,28 @@ export class ZollyBotToolRouter {
     if (raw.success) registerSecretValue(raw.data.key);
     const parsed = saveApiKeyToolSchema.safeParse(params.arguments);
     if (!parsed.success)
-      return openBotToolFailure(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
+      return zollyBotToolFailure(`${z.prettifyError(parsed.error)}\nCorrect the arguments and retry.`);
     const { name, key, notes } = parsed.data;
     const threadId = this.#conversation.publicThreadId(agentId, params.threadId);
     // A person in an external chat is not an ZollyBot user, and every agent reads a Vault key.
     if (this.#messaging.store.linkForThread(threadId))
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         "save_api_key does not work in an external chat. Ask the user to add the key in Server settings > Vault.",
       );
     // A team member, a routine, another agent or a web page must not replace the key of every agent.
     if (!this.#requestedByPerson(agentId, params.turnId, threadId))
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         "Only a person's message, in your ZollyBot chat or a thread they opened, can save a key to the Vault. Ask the user to add it in Server settings > Vault.",
       );
     const vault = this.#vaultItems;
-    if (!vault?.ready()) return openBotToolFailure("No Vault is available on this computer. Ask the user.");
+    if (!vault?.ready()) return zollyBotToolFailure("No Vault is available on this computer. Ask the user.");
     const agentName = this.#store.list().find((candidate) => candidate.id === agentId)?.name;
     const saved = yield* Effect.result(vault.saveApiKey({ name, key, notes }, agentName));
     if (Result.isFailure(saved)) {
       // The Vault's own errors are user text with no secret in them. A file error gets a fixed text.
       const { cause } = saved.failure;
       logger.warn("Unable to save an API key in the Vault for an agent", { error: toLogValue(cause) });
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         cause instanceof Error && !("code" in cause) ? cause.message : sourceText("error.backend.apiKeySaveFailed"),
       );
     }
@@ -774,13 +774,13 @@ export class ZollyBotToolRouter {
       logger.warn("Unable to delete an agent's own API key after a Vault save", {
         error: toLogValue(removed.failure.cause),
       });
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         `The Vault has ${name} now, but ZollyBot could not delete your own key with this name, which you still read first. Call remove_api_key name=${name}.`,
       );
     }
     const keys = yield* apiKeys.list(agentId).pipe(Effect.catch(() => Effect.succeed<SavedApiKey[]>([])));
     const path = keys.find((entry) => entry.name === name)?.path ?? null;
-    return openBotToolResult({ status: saved.success.created ? "added" : "updated", name, path });
+    return zollyBotToolResult({ status: saved.success.created ? "added" : "updated", name, path });
   });
 
   /**
@@ -789,7 +789,7 @@ export class ZollyBotToolRouter {
    * card waits for a person, and its prompt raises a notification as `ask_ui` does.
    */
   #acknowledgeRequest(client: AgentClient, request: AppServerRequest, params: DynamicToolCallParams): void {
-    const refuse = (message: string) => client.respond(request.id, openBotToolFailure(message));
+    const refuse = (message: string) => client.respond(request.id, zollyBotToolFailure(message));
     const agentId = this.#conversation.agentForThread(params.threadId);
     const agent = agentId ? this.#store.list().find((candidate) => candidate.id === agentId) : undefined;
     const defaults = this.#store.agentDefaults();
@@ -926,7 +926,7 @@ export class ZollyBotToolRouter {
         });
       return yield* Effect.gen({ self: this }, function* () {
         if (!this.#localSkillTools) throw new Error("Local skill tools are unavailable.");
-        const result = openBotToolResult(
+        const result = zollyBotToolResult(
           yield* runLocalSkillTool(
             this.#localSkillTools(),
             senderAgentId,
@@ -998,13 +998,13 @@ export class ZollyBotToolRouter {
       // Only the agent that answers a platform conversation, in that conversation's own thread.
       const link = this.#messaging.store.linkForThread(executionThreadId);
       if (!link || link.agentId !== senderAgentId)
-        return openBotToolFailure("Messaging tools work only in a turn that answers an external chat message.");
+        return zollyBotToolFailure("Messaging tools work only in a turn that answers an external chat message.");
       return yield* this.#messaging.tool(link, params.turnId, params.callId, params.tool, params.arguments);
     }
     const channelId = this.#channels.store.channelForThread(executionThreadId);
     if (channelId && (params.tool.startsWith("channel_") || params.tool === "send_message")) {
       if (params.tool === "send_message") throw new Error("Use channel_assign or channel_transfer for channel work.");
-      return openBotToolResult(
+      return zollyBotToolResult(
         yield* this.#channels.tool(
           channelId,
           senderAgentId,
@@ -1029,15 +1029,15 @@ export class ZollyBotToolRouter {
 
     if (params.tool === "list_channels") {
       const args = listChannelsToolSchema.parse(params.arguments ?? {}, { reportInput: true });
-      return openBotToolResult({ channels: this.#channels.handoffTargets(args.archived === true) });
+      return zollyBotToolResult({ channels: this.#channels.handoffTargets(args.archived === true) });
     }
     if (CHANNEL_AGENT_TOOL_NAMES.has(params.tool)) {
       // In a channel task, the request that started the task must come from this computer's user.
       if (channelId) {
         if (!(yield* this.#channels.requestedByLocalPerson(channelId, senderAgentId, params.turnId)))
-          return openBotToolFailure(CHANNEL_AGENT_TOOL_NEEDS_LOCAL_PERSON);
+          return zollyBotToolFailure(CHANNEL_AGENT_TOOL_NEEDS_LOCAL_PERSON);
       } else if (!this.#requestedByPerson(senderAgentId, params.turnId, executionThreadId))
-        return openBotToolFailure(
+        return zollyBotToolFailure(
           "Only a person's message, in your ZollyBot chat or a thread they opened, can create or change a channel. Ask the user to request it there.",
         );
       return yield* handleChannelAgentTool(params, senderAgentId, {
@@ -1047,7 +1047,7 @@ export class ZollyBotToolRouter {
       });
     }
     if (params.tool === "send_to_channel") {
-      if (channelId) return openBotToolFailure("Use channel_assign or channel_transfer for channel work.");
+      if (channelId) return zollyBotToolFailure("Use channel_assign or channel_transfer for channel work.");
       const args = sendToChannelToolSchema.parse(params.arguments, { reportInput: true });
       const channel = yield* this.#channels.handoff({
         operationId: toolCallIdempotencyKey(params),
@@ -1057,7 +1057,7 @@ export class ZollyBotToolRouter {
         recipientAgentIds: args.recipientAgentIds ?? [],
         sourcePaths: args.paths ?? [],
       });
-      return openBotToolResult({
+      return zollyBotToolResult({
         status: "posted",
         channel: { id: channel.id, name: channel.name },
         next: "The channel members work on it in the channel. Tell the user to follow it there, and do not do the work here.",
@@ -1073,7 +1073,7 @@ export class ZollyBotToolRouter {
     }
 
     if (params.tool === "list_sites") {
-      return openBotToolResult(yield* this.#hostedSites.listSites());
+      return zollyBotToolResult(yield* this.#hostedSites.listSites());
     }
 
     if (isHostedSiteMutationTool(params.tool)) throw new Error("Hosted site changes require user approval.");
@@ -1124,7 +1124,7 @@ export class ZollyBotToolRouter {
             ...(openWaits.has(agent.id) ? { openWaits: openWaits.get(agent.id) } : {}),
           };
         });
-      return openBotToolResult({ agents });
+      return zollyBotToolResult({ agents });
     }
 
     if (params.tool === "list_models") {
@@ -1164,13 +1164,13 @@ export class ZollyBotToolRouter {
     if (params.tool === "start_new_chat") {
       const agent = this.#store.list().find((candidate) => candidate.id === senderAgentId);
       if (!agent || !agentNewChatAllowed(agent, this.#store.agentDefaults()))
-        return openBotToolFailure(
+        return zollyBotToolFailure(
           "The user has not allowed you to start a new chat. Ask the user to allow it in your settings, or to start a new chat there.",
         );
       if (agent.threadId !== this.#conversation.publicThreadId(senderAgentId, params.threadId))
-        return openBotToolFailure("You can start a new chat only from your own chat, not from a task or a channel.");
+        return zollyBotToolFailure("You can start a new chat only from your own chat, not from a task or a channel.");
       this.#hooks.requestNewChat(senderAgentId);
-      return openBotToolResult({
+      return zollyBotToolResult({
         status: "requested",
         note: "The new chat starts when this turn ends and your queue is empty. A queued message that runs first ends the request. Finish your answer now.",
       });
@@ -1178,8 +1178,8 @@ export class ZollyBotToolRouter {
 
     if (params.tool === ROUTINE_NO_UPDATE_TOOL) {
       const outcome = this.#hooks.requestNoUpdate(senderAgentId, executionThreadId, params.turnId);
-      if (outcome === null) return openBotToolFailure("Use this tool only in a routine run.");
-      return openBotToolResult(
+      if (outcome === null) return zollyBotToolFailure("Use this tool only in a routine run.");
+      return zollyBotToolResult(
         outcome === "quiet"
           ? { status: "quiet", note: "This run ends without a message or a notification. End your turn now." }
           : { status: "shown", note: "Someone waits for this answer. Report the result as usual." },
@@ -1189,8 +1189,8 @@ export class ZollyBotToolRouter {
     if (params.tool === ROUTINE_REPORT_FAILURE_TOOL) {
       const { reason } = routineReportFailureToolSchema.parse(params.arguments ?? {});
       if (!this.#hooks.reportRoutineFailure(senderAgentId, params.turnId, reason))
-        return openBotToolFailure("Use this tool only in a routine run.");
-      return openBotToolResult({ status: "failed", note: "This run ends as failed. Give your answer as usual." });
+        return zollyBotToolFailure("Use this tool only in a routine run.");
+      return zollyBotToolResult({ status: "failed", note: "This run ends as failed. Give your answer as usual." });
     }
 
     const sidebarResult = yield* handleSidebarTool(
@@ -1217,13 +1217,13 @@ export class ZollyBotToolRouter {
       WORKFLOW_CHANGE_TOOL_NAMES.has(params.tool) &&
       !this.#requestedByPerson(senderAgentId, params.turnId, executionThreadId)
     )
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         "Only a person's message, in your ZollyBot chat or a thread they opened, can change, delete or run a workflow. Ask the user to request it there.",
       );
     // A read gives every workflow, its webhook URLs and its run outputs. The Team API hides these
     // from a member by agent access and admin rights, so a member's message does not get them here.
     if (WORKFLOW_TOOL_NAMES.has(params.tool) && this.#fromRemoteMember(senderAgentId, params.turnId))
-      return openBotToolFailure("A team member's message cannot read workflows. Ask the member to use Workflows.");
+      return zollyBotToolFailure("A team member's message cannot read workflows. Ask the member to use Workflows.");
     // The agent list is read only for a workflow tool, not on each ZollyBot tool call.
     if (WORKFLOW_TOOL_NAMES.has(params.tool)) {
       const workflowResult = yield* handleWorkflowTool(
@@ -1273,7 +1273,7 @@ export class ZollyBotToolRouter {
     ) {
       const args = isRecord(params.arguments) ? params.arguments : {};
       if (args.memoryId !== undefined)
-        return openBotToolFailure(
+        return zollyBotToolFailure(
           "This channel is isolated, so a memory from it cannot change your own memories. Save the corrected fact without memoryId: it becomes a channel memory.",
         );
       const result = yield* this.#channels.tool(
@@ -1284,7 +1284,7 @@ export class ZollyBotToolRouter {
         "channel_remember",
         { text: args.text },
       );
-      return openBotToolResult(
+      return zollyBotToolResult(
         isRecord(result) && result.accepted === true
           ? {
               status: "saved",
@@ -1321,7 +1321,7 @@ export class ZollyBotToolRouter {
       const args = params.arguments;
       if (!isRecord(args) || !isString(args.app)) throw new Error("app must be a Marketplace app slug.");
       if (!MARKETPLACE_APP_IDS.includes(args.app)) {
-        return openBotToolResult({
+        return zollyBotToolResult({
           status: "not_found",
           app: args.app,
           apps: MARKETPLACE_APP_IDS,
@@ -1339,7 +1339,7 @@ export class ZollyBotToolRouter {
         eventType: "marketplace.suggested",
         detail: { appId: args.app },
       });
-      return openBotToolResult({
+      return zollyBotToolResult({
         status: "suggested",
         app: args.app,
         next:
@@ -1366,13 +1366,13 @@ export class ZollyBotToolRouter {
   ) {
     // The agent can correct its page, so it gets the reason. The reason does not repeat the page.
     const parsed = htmlRenderToolSchema.safeParse(params.arguments, { reportInput: true });
-    if (!parsed.success) return openBotToolFailure(profileToolErrorMessage(parsed.error));
+    if (!parsed.success) return zollyBotToolFailure(profileToolErrorMessage(parsed.error));
     const args = parsed.data;
     const messageId = visualReplyMessageId(params.threadId, params.turnId, params.callId);
     if (
       this.#conversation.ensureSnapshot(senderAgentId, executionThreadId).messages.some(({ id }) => id === messageId)
     ) {
-      return openBotToolResult({ status: "shown", messageId });
+      return zollyBotToolResult({ status: "shown", messageId });
     }
     yield* this.#addGeneratedMessage({
       agentId: senderAgentId,
@@ -1389,7 +1389,7 @@ export class ZollyBotToolRouter {
       eventType: "response.visual-added",
       detail: (attachmentId) => ({ turnId: params.turnId, messageId, attachmentId }),
     });
-    return openBotToolResult({ status: "shown", messageId });
+    return zollyBotToolResult({ status: "shown", messageId });
   });
 
   /**
@@ -1454,10 +1454,10 @@ export class ZollyBotToolRouter {
     params: DynamicToolCallParams,
   ) {
     const parsed = htmlPreviewToolSchema.safeParse(params.arguments, { reportInput: true });
-    if (!parsed.success) return openBotToolFailure(profileToolErrorMessage(parsed.error));
+    if (!parsed.success) return zollyBotToolFailure(profileToolErrorMessage(parsed.error));
     const args = parsed.data;
     const preview = this.#visualPreview;
-    if (!preview) return openBotToolFailure("This ZollyBot cannot draw a page. Call html_render without a preview.");
+    if (!preview) return zollyBotToolFailure("This ZollyBot cannot draw a page. Call html_render without a preview.");
     return yield* preview
       .capture({
         html: args.html,
@@ -1474,7 +1474,7 @@ export class ZollyBotToolRouter {
             ],
           }),
         ),
-        Effect.catchTag("ChatVisualPreviewFailed", (failure) => Effect.succeed(openBotToolFailure(failure.reason))),
+        Effect.catchTag("ChatVisualPreviewFailed", (failure) => Effect.succeed(zollyBotToolFailure(failure.reason))),
       );
   });
 
@@ -1490,28 +1490,28 @@ export class ZollyBotToolRouter {
   ) {
     const agentId = this.#conversation.agentForThread(params.threadId);
     const agent = agentId ? this.#hooks.listAgents().find((candidate) => candidate.id === agentId) : undefined;
-    if (!agent) return openBotToolFailure(sourceText("error.agent.toolRequestInvalid"));
-    if (!agentComputerUseEnabled(agent)) return openBotToolFailure(sourceText("error.agent.screenCaptureOff"));
+    if (!agent) return zollyBotToolFailure(sourceText("error.agent.toolRequestInvalid"));
+    if (!agentComputerUseEnabled(agent)) return zollyBotToolFailure(sourceText("error.agent.screenCaptureOff"));
     const host = this.#screenCapture;
-    if (!host) return openBotToolFailure(sourceText("error.agent.screenCaptureUnavailable"));
+    if (!host) return zollyBotToolFailure(sourceText("error.agent.screenCaptureUnavailable"));
     const threadId = this.#conversation.publicThreadId(agent.id, params.threadId);
     // A Slack, Discord, Telegram or WhatsApp link sends each agent attachment of the turn to the platform. The
     // screen of this computer must stay on this computer.
     if (this.#messaging.store.linkForThread(threadId)) {
-      return openBotToolFailure(sourceText("error.agent.screenCaptureShared"));
+      return zollyBotToolFailure(sourceText("error.agent.screenCaptureShared"));
     }
     // A channel shows the image to each member who reads it, so each capture asks, with Full access too.
     const channelId = this.#channels.store.channelForThread(threadId);
     if (params.tool === "list_capture_sources") {
       const sources = yield* Effect.result(host.listSources());
-      return Result.isFailure(sources) ? captureFailure(sources.failure) : openBotToolResult(sources.success);
+      return Result.isFailure(sources) ? captureFailure(sources.failure) : zollyBotToolResult(sources.success);
     }
     const parsed = captureScreenToolSchema.safeParse(params.arguments, { reportInput: true });
-    if (!parsed.success) return openBotToolFailure(profileToolErrorMessage(parsed.error));
+    if (!parsed.success) return zollyBotToolFailure(profileToolErrorMessage(parsed.error));
     const capture = parsed.data;
     const messageId = responseAttachmentMessageId(params.threadId, params.turnId, params.callId);
     if (this.#conversation.ensureSnapshot(agent.id, threadId).messages.some(({ id }) => id === messageId)) {
-      return openBotToolResult({ status: "shown", messageId });
+      return zollyBotToolResult({ status: "shown", messageId });
     }
     const target = yield* this.#captureApprovalReason(host, capture);
     if (typeof target !== "string") return target;
@@ -1537,7 +1537,7 @@ export class ZollyBotToolRouter {
       },
       { alwaysAsk: channelId !== null },
     );
-    if (decision !== "accept") return openBotToolFailure(sourceText("error.agent.screenCaptureDeclined"));
+    if (decision !== "accept") return zollyBotToolFailure(sourceText("error.agent.screenCaptureDeclined"));
     const image = yield* Effect.result(host.capture(capture));
     if (Result.isFailure(image)) return captureFailure(image.failure);
     return yield* this.#showCapture(agent.id, threadId, params, messageId, image.success);
@@ -1557,7 +1557,7 @@ export class ZollyBotToolRouter {
     const agentId = this.#conversation.agentForThread(params.threadId);
     const servers = this.#mcpServers;
     if (!agentId || !servers || !isMcpServerTool(params.tool))
-      return openBotToolFailure(sourceText("error.agent.toolRequestInvalid"));
+      return zollyBotToolFailure(sourceText("error.agent.toolRequestInvalid"));
     const threadId = this.#conversation.publicThreadId(agentId, params.threadId);
     return yield* handleMcpServerTool(servers, {
       tool: params.tool,
@@ -1728,13 +1728,14 @@ export class ZollyBotToolRouter {
     const sources = listed.success;
     if (capture.target === "window") {
       const window = sources.windows.find(({ id }) => id === capture.windowId);
-      if (!window) return openBotToolFailure(sourceText("error.agent.screenCaptureWindowMissing"));
+      if (!window) return zollyBotToolFailure(sourceText("error.agent.screenCaptureWindowMissing"));
       return sourceText("status.agent.screenCaptureWindow", { name: window.name });
     }
     const display = capture.displayId
       ? sources.displays.find(({ id }) => id === capture.displayId)
       : sources.displays.find(({ primary }) => primary);
-    if (capture.displayId && !display) return openBotToolFailure(sourceText("error.agent.screenCaptureDisplayMissing"));
+    if (capture.displayId && !display)
+      return zollyBotToolFailure(sourceText("error.agent.screenCaptureDisplayMissing"));
     return display?.name
       ? sourceText("status.agent.screenCaptureDisplay", { name: display.name })
       : sourceText("status.agent.screenCaptureScreen");
@@ -1917,7 +1918,7 @@ export class ZollyBotToolRouter {
       if (!sender) throw new Error("The calling agent no longer exists.");
       const target = this.#requireAgent(agentId);
       if (widensAgentSettings(target, access, computerUse)) {
-        return openBotToolFailure(sourceText("error.agent.onlyUserWidensSettings"));
+        return zollyBotToolFailure(sourceText("error.agent.onlyUserWidensSettings"));
       }
       // Checked before anything is written, so a model the provider does not list leaves the name
       // and every other field of the same call unchanged.
@@ -2016,7 +2017,7 @@ export class ZollyBotToolRouter {
       const snapshot = this.#conversation.ensureSnapshot(senderAgentId, params.threadId);
       this.#mailboxSync.syncMailboxMessages(snapshot);
       this.#conversation.emitConversation(snapshot);
-      return openBotToolResult({ status: "reacted", messageId: delivery.delivery.id, emoji: args.emoji });
+      return zollyBotToolResult({ status: "reacted", messageId: delivery.delivery.id, emoji: args.emoji });
     },
     Effect.catchDefect((cause) => Effect.fail(new ToolOperationFailed({ cause }))),
     Effect.uninterruptible,

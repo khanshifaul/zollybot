@@ -95,7 +95,7 @@ function assertLandingBeam(): void {
   const port = join(apiRoot, "src", "vendor", "laser-flow", "LandingLaserFlow.tsx");
   if (existsSync(port)) return;
   throw new Error(
-    "The home page beam is missing. Clone nightly-labs/openbot-laser-flow into apps/auth-api/src/vendor/laser-flow.",
+    "The home page beam is missing. Clone nightly-labs/zollybot-laser-flow into apps/auth-api/src/vendor/laser-flow.",
   );
 }
 

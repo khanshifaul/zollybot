@@ -41,7 +41,7 @@ import {
 } from "./error-reports";
 import { MARKETPLACE_PLUGINS } from "./features/settings/marketplace-plugin-catalog";
 
-const OPENPANEL_API_URL = "https://analytics.openbot.run/api";
+const OPENPANEL_API_URL = "https://analytics.zollybot.shifaul.dev/api";
 const OPENPANEL_CLIENT_ID = "6c989975-87ef-4f0c-857e-ab449a65b5c2";
 const MAX_PENDING_EVENTS = 100;
 const CURATED_LISTING_PATTERN = /^zollybot-curated-(?:skill|agent)-([a-z0-9][a-z0-9-]{0,63})$/u;
@@ -904,7 +904,7 @@ class DesktopAnalytics {
    * failure reports, and the web preference controls both.
    */
   configureWeb(options: { version: string; user: AnalyticsIdentity | null; enabled: boolean }): boolean {
-    if (!this.#client && (!this.#productionBuild || window.location.origin !== "https://openbot.run")) {
+    if (!this.#client && (!this.#productionBuild || window.location.origin !== "https://zollybot.shifaul.dev")) {
       this.#disabled = true;
       this.#pending = [];
       return false;

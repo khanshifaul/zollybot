@@ -3,7 +3,7 @@
 # docs/docker.md#several-instances-on-one-host.
 services:
   zollybot:
-    image: ghcr.io/nightly-labs/openbot:${ZOLLYBOT_TAG:-latest}
+    image: ghcr.io/nightly-labs/zollybot:${ZOLLYBOT_TAG:-latest}
     container_name: zollybot-${ZOLLYBOT_NAME:?}
     restart: unless-stopped
     security_opt:

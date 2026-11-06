@@ -11,7 +11,7 @@
     "ios": {
       "bundleIdentifier": "run.zollybot.mobile",
       "supportsTablet": true,
-      "associatedDomains": ["applinks:openbot.run"],
+      "associatedDomains": ["applinks:zollybot.shifaul.dev"],
       "infoPlist": {
         "NSLocalNetworkUsageDescription": "Allow ZollyBot to connect to your desktop during local development.",
         "NSAppTransportSecurity": {

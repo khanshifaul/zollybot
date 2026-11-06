@@ -5,9 +5,9 @@
 
 import { version } from "../../../../package.json";
 import channelScreenshot from "../content/guides/media/zollybot-101/a-channel.webp";
-import { openBotSoftwareApplication, ZOLLYBOT_SITE_URL } from "./site-metadata";
+import { ZOLLYBOT_SITE_URL, zollyBotSoftwareApplication } from "./site-metadata";
 
-export const ZOLLYBOT_SOFTWARE_APPLICATION = openBotSoftwareApplication({
+export const ZOLLYBOT_SOFTWARE_APPLICATION = zollyBotSoftwareApplication({
   version,
   screenshot: new URL(channelScreenshot, ZOLLYBOT_SITE_URL).toString(),
 });

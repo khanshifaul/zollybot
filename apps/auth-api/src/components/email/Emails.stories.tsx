@@ -13,7 +13,7 @@ import {
 // `<style>` block apply, and Storybook's stylesheet does not leak in.
 
 const INVITE_URL =
-  "https://openbot.run/join?api=https%3A%2F%2Fstudio-mac-k7m4q2pz-host.openbot.run%2F&server=00000000-0000-4000-8000-000000000000&fingerprint=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&invite=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+  "https://zollybot.shifaul.dev/join?api=https%3A%2F%2Fstudio-mac-k7m4q2pz-host.zollybot.shifaul.dev%2F&server=00000000-0000-4000-8000-000000000000&fingerprint=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&invite=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 
 const TEAM_LICENSE: LicenseEmailInput = {
   kind: "welcome",

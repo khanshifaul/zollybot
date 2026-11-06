@@ -22,7 +22,7 @@ export const COMPARE_COLLECTION: ContentCollection<"compare"> = {
   feedTitle: "ZollyBot comparisons",
   backLabel: "All comparisons",
   moreTitle: "More comparisons",
-  imageEyebrow: "OPENBOT · COMPARE",
+  imageEyebrow: "ZOLLYBOT · COMPARE",
   articles: publishedFirst([
     {
       slug: "paperclip",

@@ -944,7 +944,7 @@ jobs:
         if: steps.beam.outputs.present == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: nightly-labs/openbot-laser-flow
+          repository: nightly-labs/zollybot-laser-flow
           ssh-key: ${{ secrets.LASER_FLOW_DEPLOY_KEY }}
           path: apps/auth-api/src/vendor/laser-flow
           persist-credentials: false
@@ -1040,7 +1040,7 @@ jobs:
       - name: Check out the home page beam
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: nightly-labs/openbot-laser-flow
+          repository: nightly-labs/zollybot-laser-flow
           ssh-key: ${{ secrets.LASER_FLOW_DEPLOY_KEY }}
           path: apps/auth-api/src/vendor/laser-flow
           persist-credentials: false
@@ -1224,15 +1224,15 @@ jobs:
               fail "$3 has no response header that matches '$2'."
             fi
           }
-          curl --fail --silent --show-error --retry 5 --retry-all-errors https://openbot.run/ >/dev/null
+          curl --fail --silent --show-error --retry 5 --retry-all-errors https://zollybot.shifaul.dev/ >/dev/null
           join_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
             --max-redirs 0 --dump-header "$verification_dir/join.headers" \
             --output "$verification_dir/join.html" --write-out '%{http_code}' \
-            https://openbot.run/join)"
-          require_status "$join_status" 200 https://openbot.run/join
-          require_header "$verification_dir/join.headers" '^cache-control:.*no-store' https://openbot.run/join
-          require_header "$verification_dir/join.headers" '^referrer-policy:.*no-referrer' https://openbot.run/join
-          association_url=https://openbot.run/.well-known/apple-app-site-association
+            https://zollybot.shifaul.dev/join)"
+          require_status "$join_status" 200 https://zollybot.shifaul.dev/join
+          require_header "$verification_dir/join.headers" '^cache-control:.*no-store' https://zollybot.shifaul.dev/join
+          require_header "$verification_dir/join.headers" '^referrer-policy:.*no-referrer' https://zollybot.shifaul.dev/join
+          association_url=https://zollybot.shifaul.dev/.well-known/apple-app-site-association
           association_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
             --max-redirs 0 --dump-header "$verification_dir/association.headers" \
             --output "$verification_dir/association.json" --write-out '%{http_code}' \
@@ -1248,8 +1248,8 @@ jobs:
             echo
             fail "$association_url does not have the expected applinks.details."
           fi
-          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.openbot.run/health/live >/dev/null
-          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.openbot.run/health/ready >/dev/null
+          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.zollybot.shifaul.dev/health/live >/dev/null
+          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.zollybot.shifaul.dev/health/ready >/dev/null
           site_url=https://deployment-smoke-check.zollybot.site/
           site_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
             --max-redirs 0 --dump-header "$verification_dir/site-router.headers" \

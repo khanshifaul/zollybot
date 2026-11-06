@@ -84,7 +84,7 @@ export type LicenseEmailInput =
   | ({ kind: "payment_failed" } & LicensePaymentFailedEmailInput)
   | ({ kind: "ended" } & LicenseEndedEmailInput);
 
-const SITE_URL = "https://openbot.run";
+const SITE_URL = "https://zollybot.shifaul.dev";
 const WEB_APP_URL = `${SITE_URL}/app`;
 const DOWNLOAD_URL = `${SITE_URL}${ZOLLYBOT_DOWNLOAD_PAGE_LINKS.hub}`;
 const PRICING_URL = `${SITE_URL}/pricing`;
@@ -92,7 +92,7 @@ const PLAN_NAMES: Record<BillingPlanId, string> = { starter: "Starter", standard
 const LICENSE_TIER_NAMES: Record<LicenseTier, string> = { starter: "Starter", team: "Team" };
 const LOGO_URL = `${SITE_URL}/icon-192x192.png`;
 const FOOTER_LINKS = [
-  { label: "openbot.run", href: SITE_URL },
+  { label: "zollybot.shifaul.dev", href: SITE_URL },
   { label: "X", href: ZOLLYBOT_LINKS.x },
   { label: "GitHub", href: ZOLLYBOT_LINKS.repository },
 ] as const;
@@ -189,7 +189,7 @@ export function renderContactMessageEmail(input: ContactMessageEmailInput): Rend
   const fullSubject = `${input.topic} from ${input.name ?? input.email}`;
   const subject = fullSubject.length > 150 ? `${fullSubject.slice(0, 149)}…` : fullSubject;
   const preheader = input.message.slice(0, 120);
-  const footer = `Sent from the contact form on openbot.run. Reply to this email to answer ${input.email}.`;
+  const footer = `Sent from the contact form on zollybot.shifaul.dev. Reply to this email to answer ${input.email}.`;
   return {
     subject,
     preheader,

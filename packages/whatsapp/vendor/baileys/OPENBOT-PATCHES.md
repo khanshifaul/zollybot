@@ -4,7 +4,7 @@ Upstream: <https://github.com/WhiskeySockets/Baileys>, tag `v7.0.0-rc14`, commit
 `7e7b0757e3f9f3c7789fb1cfd2f241d5002a199a`. License: MIT (`LICENSE`, kept unchanged).
 
 Copied: `src/` and `WAProto/` (without `WAProto/fix-imports.js`). Every changed line has an
-`OPENBOT PATCH` comment.
+`ZOLLYBOT PATCH` comment.
 
 ## Why
 
@@ -41,7 +41,7 @@ both and plug in ZollyBot's clean-room Signal module (`../../src/signal`, see `.
 2. Replace `src/` and `WAProto/`, then delete `src/Signal/libsignal.ts`, `src/Signal/Group/`,
    `src/__tests__/` and `WAProto/fix-imports.js`.
 3. Apply each change in the table again. Drop a row when upstream has the same fix. `grep -rn "libsignal\|whatsapp-rust-bridge" src` must find
-   only `OPENBOT PATCH` comments.
+   only `ZOLLYBOT PATCH` comments.
 4. Compare upstream's dependency list with `packages/whatsapp/package.json`, and check the license
    of each new package.
 5. Check that `Types/Signal.ts` (`SignalRepository`) did not change. If it did, update

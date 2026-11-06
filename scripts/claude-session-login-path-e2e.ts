@@ -1,4 +1,4 @@
-// Adapted from the reproduction in nightly-labs/openbot#2464.
+// Adapted from the reproduction in nightly-labs/zollybot#2464.
 // A Claude agent session with ZollyBot started the way Finder, the Dock or a login item starts it:
 // PATH=/usr/bin:/bin:/usr/sbin:/sbin. The session's Bash tool and hooks run with the PATH the Claude
 // process starts with, so that process must get the login shell's folders, such as Homebrew's.

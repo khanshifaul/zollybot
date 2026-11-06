@@ -544,7 +544,7 @@ export const makeMessagesRecvSocket = (config: SocketConfig) => {
 	}
 
 	const sendMessageAck = async (node: BinaryNode, errorCode?: number) => {
-		// OPENBOT PATCH: a node can arrive before the device is linked (upstream #2738, #2749).
+		// ZOLLYBOT PATCH: a node can arrive before the device is linked (upstream #2738, #2749).
 		const stanza = buildAckStanza(node, errorCode, authState.creds.me?.id)
 		logger.debug({ recv: { tag: node.tag, attrs: node.attrs }, sent: stanza.attrs }, 'sent ack')
 		await sendNode(stanza)

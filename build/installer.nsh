@@ -8,7 +8,7 @@
 ; files are copied at each install and update, because an update deletes the folder. The installer
 ; makes the folder, so this user owns it and icacls can change it. On a drive with no ACLs, such as
 ; exFAT, icacls fails and the install continues.
-!macro openBotRestrictInstallDirectory
+!macro zollyBotRestrictInstallDirectory
   Push $0
   Push $1
   ReadEnvStr $0 USERDOMAIN
@@ -34,7 +34,7 @@
     Quit
   ${endIf}
   CreateDirectory "$INSTDIR"
-  !insertmacro openBotRestrictInstallDirectory
+  !insertmacro zollyBotRestrictInstallDirectory
 !macroend
 
 !macro customInstall
@@ -42,7 +42,7 @@
   WriteRegStr SHCTX "Software\Classes\zollybot" "URL Protocol" ""
   WriteRegStr SHCTX "Software\Classes\zollybot\DefaultIcon" "" "$appExe,0"
   WriteRegStr SHCTX "Software\Classes\zollybot\shell\open\command" "" '"$appExe" "%1"'
-  !insertmacro openBotRemoveAppFromDataFolder
+  !insertmacro zollyBotRemoveAppFromDataFolder
 !macroend
 
 ; ZollyBot keeps the agent workspaces in %USERPROFILE%\ZollyBot (`src/backend/agent-store.ts`) and its
@@ -51,7 +51,7 @@
 ; deletes. An installation folder must not be one of these folders or a folder that holds one.
 ; Sets OUT to "1" when the folder in the variable PATH is such a folder, otherwise to "0". A
 ; trailing backslash is removed from PATH. OUT must not be PATH, $R8 or $R9.
-!macro openBotHoldsUserData PATH OUT
+!macro zollyBotHoldsUserData PATH OUT
   Push $R8
   Push $R9
   StrCpy ${OUT} "0"
@@ -60,14 +60,14 @@
     StrCpy ${PATH} ${PATH} -1
   ${endIf}
   ${if} ${PATH} != ""
-    !insertmacro openBotHolds ${PATH} "$PROFILE\ZollyBot" ${OUT}
-    !insertmacro openBotHolds ${PATH} "$APPDATA\ZollyBot" ${OUT}
+    !insertmacro zollyBotHolds ${PATH} "$PROFILE\ZollyBot" ${OUT}
+    !insertmacro zollyBotHolds ${PATH} "$APPDATA\ZollyBot" ${OUT}
   ${endIf}
   Pop $R9
   Pop $R8
 !macroend
 
-!macro openBotHolds PATH FOLDER OUT
+!macro zollyBotHolds PATH FOLDER OUT
   StrLen $R9 ${PATH}
   StrCpy $R8 "${FOLDER}" $R9
   ${if} $R8 == ${PATH}
@@ -81,9 +81,9 @@
 
 !ifndef BUILD_UNINSTALLER
   ; "1" when the registry names an earlier installation in a folder with user data.
-  Var openBotRegisteredInDataFolder
+  Var zollyBotRegisteredInDataFolder
   ; The folder with user data that holds an earlier ZollyBot.exe. The update removes that copy.
-  Var openBotDataFolderInstall
+  Var zollyBotDataFolderInstall
 
   ; The assisted installer accepted a folder that did not exist yet, so a first installation could go
   ; to %USERPROFILE%\ZollyBot, and the app then made the agent folders in it. The earlier uninstaller
@@ -94,18 +94,18 @@
   ; in the default folder; the page that chooses a folder refuses the folder with user data.
   !macro customInit
     ReadRegStr $1 SHCTX "${INSTALL_REGISTRY_KEY}" InstallLocation
-    !insertmacro openBotHoldsUserData $1 $0
+    !insertmacro zollyBotHoldsUserData $1 $0
     ${if} $0 == "1"
-      StrCpy $openBotRegisteredInDataFolder "1"
+      StrCpy $zollyBotRegisteredInDataFolder "1"
       ${if} ${FileExists} "$1\${APP_EXECUTABLE_FILENAME}"
-        StrCpy $openBotDataFolderInstall $1
+        StrCpy $zollyBotDataFolderInstall $1
       ${endIf}
     ${elseIf} ${FileExists} "$PROFILE\ZollyBot\${APP_EXECUTABLE_FILENAME}"
-      StrCpy $openBotDataFolderInstall "$PROFILE\ZollyBot"
+      StrCpy $zollyBotDataFolderInstall "$PROFILE\ZollyBot"
     ${elseIf} ${FileExists} "$APPDATA\ZollyBot\${APP_EXECUTABLE_FILENAME}"
-      StrCpy $openBotDataFolderInstall "$APPDATA\ZollyBot"
+      StrCpy $zollyBotDataFolderInstall "$APPDATA\ZollyBot"
     ${endIf}
-    !insertmacro openBotHoldsUserData $INSTDIR $0
+    !insertmacro zollyBotHoldsUserData $INSTDIR $0
     ${if} $0 == "1"
       StrCpy $INSTDIR "$LocalAppData\Programs\${APP_FILENAME}"
     ${endIf}
@@ -118,14 +118,14 @@
   ; `uninstallOldVersion` does not run its uninstaller. The uninstaller keeps the default check.
   !macro customCheckAppRunning
     !insertmacro IS_POWERSHELL_AVAILABLE
-    ${if} $openBotRegisteredInDataFolder == "1"
-    ${andIf} $openBotDataFolderInstall != ""
+    ${if} $zollyBotRegisteredInDataFolder == "1"
+    ${andIf} $zollyBotDataFolderInstall != ""
       Push $INSTDIR
-      StrCpy $INSTDIR "$openBotDataFolderInstall\${APP_EXECUTABLE_FILENAME}"
+      StrCpy $INSTDIR "$zollyBotDataFolderInstall\${APP_EXECUTABLE_FILENAME}"
     ${endIf}
     !insertmacro _CHECK_APP_RUNNING
-    ${if} $openBotRegisteredInDataFolder == "1"
-      ${if} $openBotDataFolderInstall != ""
+    ${if} $zollyBotRegisteredInDataFolder == "1"
+      ${if} $zollyBotDataFolderInstall != ""
         Pop $INSTDIR
       ${endIf}
       DeleteRegKey SHCTX "${UNINSTALL_REGISTRY_KEY}"
@@ -146,12 +146,12 @@
 ; that Windows still holds stays too; it does not stop the update. The login item names the
 ; executable (`src/main/login-item.ts`), and Electron calls it by the AppUserModelId: point it at
 ; the new copy, or ZollyBot no longer opens at sign-in.
-!macro openBotRemoveAppFromDataFolder
-  ${if} $openBotDataFolderInstall != ""
+!macro zollyBotRemoveAppFromDataFolder
+  ${if} $zollyBotDataFolderInstall != ""
     Push $0
     Push $1
     Push $2
-    StrCpy $0 $openBotDataFolderInstall
+    StrCpy $0 $zollyBotDataFolderInstall
     ReadRegStr $1 HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_ID}"
     ${StrContains} $2 "$0\${APP_EXECUTABLE_FILENAME}" $1
     ${if} $2 != ""
@@ -215,9 +215,9 @@
 !macro customPageAfterChangeDir
   !include FileFunc.nsh
 
-  Page custom openBotSafeInstallDirectory
+  Page custom zollyBotSafeInstallDirectory
 
-  Function openBotSafeInstallDirectory
+  Function zollyBotSafeInstallDirectory
     Push $0
     Push $1
     ReadRegStr $1 HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation
@@ -229,7 +229,7 @@
     ${if} $0 == ""
       StrCpy $INSTDIR "$INSTDIR\${APP_FILENAME}"
     ${endIf}
-    !insertmacro openBotHoldsUserData $INSTDIR $0
+    !insertmacro zollyBotHoldsUserData $INSTDIR $0
     ${if} $0 == "1"
       StrCpy $INSTDIR "$LocalAppData\Programs\${APP_FILENAME}"
     ${endIf}

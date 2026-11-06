@@ -30,7 +30,7 @@ import {
 import { RoutineInputError } from "@zollybot/team-client/routine-schedule";
 import { Effect } from "effect";
 import { z } from "zod";
-import { openBotToolFailure, openBotToolResult } from "../agent/routine-tools";
+import { zollyBotToolFailure, zollyBotToolResult } from "../agent/routine-tools";
 import { ToolOperationFailed, toolStep } from "../agent/tool-operation";
 import { WorkflowStoreError } from "./workflow-store";
 import type { WorkflowsHandle } from "./workflows";
@@ -670,7 +670,7 @@ export const handleWorkflowTool = Effect.fn("WorkflowTools.handle")(function* (
     if (tool === "list_workflows") {
       yield* toolStep(() => listSchema.parse(args ?? {}));
       const summaries = yield* workflows.list();
-      return openBotToolResult(
+      return zollyBotToolResult(
         summaries.map((summary) => ({
           workflowId: summary.id,
           title: summary.title,
@@ -682,7 +682,7 @@ export const handleWorkflowTool = Effect.fn("WorkflowTools.handle")(function* (
     if (tool === "read_workflow") {
       const input = yield* toolStep(() => readSchema.parse(args));
       const detail = yield* workflows.get(input.workflowId);
-      return openBotToolResult({
+      return zollyBotToolResult({
         title: detail.summary.title,
         revision: detail.revision,
         ...compactGraph(detail.graph, input.layout === true),
@@ -701,14 +701,14 @@ export const handleWorkflowTool = Effect.fn("WorkflowTools.handle")(function* (
       const workflowId = input.workflowId;
       // A new workflow is made with its graph in one step, so a refused op leaves no empty workflow.
       if (workflowId === undefined) {
-        if (input.title === undefined) return openBotToolFailure("A new workflow needs a title.");
+        if (input.title === undefined) return zollyBotToolFailure("A new workflow needs a title.");
         const applied = yield* toolStep(() =>
           applyWorkflowOps({ nodes: [], edges: [], strokes: [] }, ops, agentIds, tidy),
         );
         const problem = graphProblem(applied.graph);
-        if (problem) return openBotToolFailure(problem);
+        if (problem) return zollyBotToolFailure(problem);
         const created = yield* workflows.create({ title: input.title, graph: applied.graph }, callerId);
-        return openBotToolResult({
+        return zollyBotToolResult({
           workflowId: created.summary.id,
           revision: created.revision,
           ...(Object.keys(applied.ids).length > 0 ? { ids: applied.ids } : {}),
@@ -717,8 +717,8 @@ export const handleWorkflowTool = Effect.fn("WorkflowTools.handle")(function* (
       // The rename comes after the ops, so a refused edit changes nothing.
       const saved = ops.length > 0 || tidy ? yield* save(workflowId, ops, tidy) : null;
       if (input.title !== undefined) yield* workflows.rename({ workflowId, title: input.title });
-      if (!saved) return openBotToolResult({ workflowId });
-      return openBotToolResult({
+      if (!saved) return zollyBotToolResult({ workflowId });
+      return zollyBotToolResult({
         workflowId,
         revision: saved.revision,
         ...(Object.keys(saved.ids).length > 0 ? { ids: saved.ids } : {}),
@@ -728,9 +728,9 @@ export const handleWorkflowTool = Effect.fn("WorkflowTools.handle")(function* (
       const input = yield* toolStep(() => deleteSchema.parse(args));
       const detail = yield* workflows.get(input.workflowId);
       if (!(yield* confirmDelete(detail.summary.title)))
-        return openBotToolFailure("The user declined the delete. Do not try again unless they ask.");
+        return zollyBotToolFailure("The user declined the delete. Do not try again unless they ask.");
       yield* workflows.remove(input.workflowId);
-      return openBotToolResult({ removed: input.workflowId });
+      return zollyBotToolResult({ removed: input.workflowId });
     }
     if (tool === "run_workflow") {
       const input = yield* toolStep(() => runSchema.parse(args));
@@ -739,29 +739,29 @@ export const handleWorkflowTool = Effect.fn("WorkflowTools.handle")(function* (
         requestId: callKey,
         ...(input.fromNodeId === undefined ? {} : { fromNodeId: input.fromNodeId }),
       });
-      return openBotToolResult({ runId: detail.run.id, number: detail.run.number, status: detail.run.status });
+      return zollyBotToolResult({ runId: detail.run.id, number: detail.run.number, status: detail.run.status });
     }
     const input = yield* toolStep(() => runsSchema.parse(args));
     const nodes = new Map((yield* workflows.get(input.workflowId)).graph.nodes.map((node) => [node.id, node]));
     if (input.runId !== undefined) {
       const detail = yield* workflows.run(input.runId);
       if (detail.run.workflowId !== input.workflowId)
-        return openBotToolFailure(`No run ${input.runId} in this workflow.`);
-      return openBotToolResult(compactRun(detail, nodes));
+        return zollyBotToolFailure(`No run ${input.runId} in this workflow.`);
+      return zollyBotToolResult(compactRun(detail, nodes));
     }
     const page = yield* workflows.runs({ workflowId: input.workflowId, limit: input.limit ?? 1 });
-    return openBotToolResult({ runs: page.runs.map((detail) => compactRun(detail, nodes)) });
+    return zollyBotToolResult({ runs: page.runs.map((detail) => compactRun(detail, nodes)) });
   });
 
   return yield* operation.pipe(
     Effect.catchTag("WorkflowFailed", (failure) =>
       failure.cause instanceof WorkflowStoreError || failure.cause instanceof RoutineInputError
-        ? Effect.succeed(openBotToolFailure(failure.cause.message))
+        ? Effect.succeed(zollyBotToolFailure(failure.cause.message))
         : Effect.fail(new ToolOperationFailed({ cause: failure.cause })),
     ),
     Effect.catchTag("ToolOperationFailed", (failure) =>
       failure.cause instanceof WorkflowEditRefused
-        ? Effect.succeed(openBotToolFailure(failure.cause.message))
+        ? Effect.succeed(zollyBotToolFailure(failure.cause.message))
         : Effect.fail(failure),
     ),
   );

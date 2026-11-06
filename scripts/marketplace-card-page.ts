@@ -30,7 +30,7 @@ export interface MarketplaceCardJob {
 
 declare global {
   interface Window {
-    openBotMarketplaceCard?: { render: (job: MarketplaceCardJob) => Promise<string> };
+    zollyBotMarketplaceCard?: { render: (job: MarketplaceCardJob) => Promise<string> };
   }
 }
 
@@ -69,7 +69,7 @@ const BLOCKS_PATHS = [
   "M15 2h6a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z",
 ];
 
-window.openBotMarketplaceCard = { render: renderMarketplaceCard };
+window.zollyBotMarketplaceCard = { render: renderMarketplaceCard };
 
 async function renderMarketplaceCard(job: MarketplaceCardJob): Promise<string> {
   await Promise.all([

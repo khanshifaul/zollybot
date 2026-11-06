@@ -101,7 +101,7 @@ export async function postAnnouncement(
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         username: "ZollyBot",
-        avatar_url: "https://openbot.run/icon-512x512.png",
+        avatar_url: "https://zollybot.shifaul.dev/icon-512x512.png",
         content,
         allowed_mentions: allowedMentions,
       }),

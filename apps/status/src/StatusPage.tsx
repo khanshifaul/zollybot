@@ -32,8 +32,8 @@ import {
 } from "./model";
 import "./status.css";
 
-export const ISSUES_URL = "https://github.com/nightly-labs/openbot/issues?q=label%3Astatus";
-const SITE_URL = "https://openbot.run";
+export const ISSUES_URL = "https://github.com/khanshifaul/zollybot/issues?q=label%3Astatus";
+const SITE_URL = "https://zollybot.shifaul.dev";
 /** A scheduled run can start late, but a check older than this means that the checks stopped. */
 const LATE_CHECK_MS = 30 * 60_000;
 
@@ -279,7 +279,7 @@ export function StatusPage(props: StatusPageProps) {
 
       <footer class="status-footer">
         <a class="status-link" href={SITE_URL}>
-          openbot.run
+          zollybot.shifaul.dev
         </a>
         <span class="status-muted">Times are in UTC. The page updates every minute.</span>
       </footer>

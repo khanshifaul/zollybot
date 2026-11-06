@@ -7,12 +7,12 @@ asks the right agent and answers. No code runs here: each directory holds only t
 
 | Directory | App | App ID | Home team | Redirect URL |
 | --- | --- | --- | --- | --- |
-| `production` | `ZollyBot` | `A0C5H5C95NH` | `zollybotdev` (`T0C5B1XG542`) | `https://api.openbot.run/v2/slack/callback` |
+| `production` | `ZollyBot` | `A0C5H5C95NH` | `zollybotdev` (`T0C5B1XG542`) | `https://api.zollybot.shifaul.dev/v2/slack/callback` |
 | `development` | `ZollyBot (dev)` | `A0C5G5XGS83` | `zollybotdev` (`T0C5B1XG542`) | Test Worker (`bun run deploy:test`) |
 
 `.slack/apps.json` links each directory to its app. Run the Slack CLI from inside a directory.
 
-Both apps send events and button presses to `https://signal.openbot.run/v1/slack/events`. For local
+Both apps send events and button presses to `https://signal.zollybot.shifaul.dev/v1/slack/events`. For local
 work, `bun run dev:slack` prints a tunnel address: set it as the development app's request URL while
 you test.
 

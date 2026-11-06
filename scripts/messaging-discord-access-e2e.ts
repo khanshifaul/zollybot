@@ -1001,7 +1001,7 @@ try {
           embeds: [
             {
               title: "Login fails after the update",
-              url: "https://github.com/nightly-labs/openbot/issues/1",
+              url: "https://github.com/khanshifaul/zollybot/issues/1",
               description: "The app closes at start.",
             },
           ],

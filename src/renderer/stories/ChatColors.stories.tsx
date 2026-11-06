@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { STORY_AGENTS, STORY_ATTACHMENTS } from "./fixtures";
 
 const AGENT_BODY = [
-  "I ran `bun run check` and read [the release guide](https://openbot.run/docs).",
+  "I ran `bun run check` and read [the release guide](https://zollybot.shifaul.dev/docs).",
   "",
   "> The tag waits for a green build.",
   "",

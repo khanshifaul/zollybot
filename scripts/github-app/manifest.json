@@ -1,9 +1,9 @@
 {
   "name": "ZollyBotGit",
-  "url": "https://github.com/nightly-labs/openbot",
+  "url": "https://github.com/khanshifaul/zollybot",
   "description": "Gives ZollyBot agents your repositories, issues and pull requests, through the GitHub MCP server, gh and git. The sign-in stays on the computer that runs ZollyBot.",
   "public": true,
-  "hook_attributes": { "url": "https://signal.openbot.run/v1/github/events", "active": true },
+  "hook_attributes": { "url": "https://signal.zollybot.shifaul.dev/v1/github/events", "active": true },
   "request_oauth_on_install": false,
   "setup_on_update": false,
   "default_permissions": {

@@ -9,7 +9,7 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   (`ipc-marketplace-agents.ts`). **teammate** is prompt and marketing text, never a type.
   Human members use `TeamMemberSummary`.
 - **agent template**: a public, link-only copy of one agent's instructions, skills and routines
-  (`ipc-agent-templates.ts`, `agent-templates:*`, D1 `agent_templates`, `openbot.run/agents/<id>`).
+  (`ipc-agent-templates.ts`, `agent-templates:*`, D1 `agent_templates`, `zollybot.shifaul.dev/agents/<id>`).
   It holds no workspace files and no memories. It is not a marketplace agent: it has no review and
   no listing.
 - **browser profile**: a named, persistent browser session on the computer that runs the agents

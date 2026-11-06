@@ -22,7 +22,7 @@ export const GUIDES_COLLECTION: ContentCollection<"guides"> = {
   feedTitle: "ZollyBot guides",
   backLabel: "All guides",
   moreTitle: "More guides",
-  imageEyebrow: "OPENBOT · GUIDES",
+  imageEyebrow: "ZOLLYBOT · GUIDES",
   articles: publishedFirst([
     {
       slug: "ai-workspace-vs-chat",

@@ -209,7 +209,7 @@ it writes anything. Your data is intact.
 
 Do not follow the reset steps below, and do not move the folder. When in-app updates and automatic
 downloads are on, ZollyBot installs the latest version and opens again. Otherwise, or when the
-update fails, install the latest version from [openbot.run/download](https://openbot.run/download).
+update fails, install the latest version from [zollybot.shifaul.dev/download](https://zollybot.shifaul.dev/download).
 
 Then remove the older copy. On Windows, look for a second ZollyBot in Settings → Apps, and pin the
 new ZollyBot again if a taskbar or desktop shortcut opens the old one. Older versions show the
@@ -256,10 +256,10 @@ Ask the network administrator to allow these hosts over HTTPS (TCP 443) and WebS
 
 | Host | Use |
 | --- | --- |
-| `api.openbot.run` | Accounts, sign-in, teams, and hosted servers |
-| `signal.openbot.run` | Connection setup for teams and remote servers |
-| `openbot.run` | Public site and images in invitation emails |
-| `*.openbot.run` | Hosted servers and sites, and `analytics.openbot.run` |
+| `api.zollybot.shifaul.dev` | Accounts, sign-in, teams, and hosted servers |
+| `signal.zollybot.shifaul.dev` | Connection setup for teams and remote servers |
+| `zollybot.shifaul.dev` | Public site and images in invitation emails |
+| `*.zollybot.shifaul.dev` | Hosted servers and sites, and `analytics.zollybot.shifaul.dev` |
 | `github.com`, `*.githubusercontent.com` | App updates |
 
 Teams and remote servers also send WebRTC traffic to the other device or to the TURN relay that
@@ -267,7 +267,7 @@ Signal names, on the UDP and TCP ports that it names. A filter that blocks WebRT
 connections slow or stops them. Conversations stay on the computer; the [privacy policy](../PRIVACY.md) lists what each
 host receives.
 
-If the filter puts `openbot.run` in a blocked category, the administrator can ask the vendor to
+If the filter puts `zollybot.shifaul.dev` in a blocked category, the administrator can ask the vendor to
 review it. For Fortinet, use the FortiGuard web filter lookup.
 
 ## Reset ZollyBot
@@ -298,7 +298,7 @@ are independent and are not removed with ZollyBot.
 
 ## Report a problem
 
-Use the [bug report form](https://github.com/nightly-labs/openbot/issues/new?template=bug_report.yml)
+Use the [bug report form](https://github.com/khanshifaul/zollybot/issues/new?template=bug_report.yml)
 for reproducible bugs. It asks for the platform, the ZollyBot version (Settings → Updates on the
 desktop, Settings → About on the phone), the operating system and hardware, the provider and its CLI
 version, the steps, and the expected and actual results. When a provider row shows an error, select

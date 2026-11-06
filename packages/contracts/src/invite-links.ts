@@ -1,8 +1,8 @@
 import { isZollyBotTeamApiHostname } from "./validation";
 
-export const ZOLLYBOT_INVITE_ORIGIN = "https://openbot.run";
+export const ZOLLYBOT_INVITE_ORIGIN = "https://zollybot.shifaul.dev";
 export const ZOLLYBOT_INVITE_PATH = "/join";
-export const ZOLLYBOT_CONTROL_PLANE_ORIGIN = "https://api.openbot.run";
+export const ZOLLYBOT_CONTROL_PLANE_ORIGIN = "https://api.zollybot.shifaul.dev";
 
 /**
  * The finite deadline a permanent invitation carries. Invitation expiry travels the

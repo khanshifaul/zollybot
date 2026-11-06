@@ -84,7 +84,7 @@ export function InstallZollyBotVPS() {
       <pre>
         <code>
           {
-            "curl -fsSL \\\n  https://raw.githubusercontent.com/nightly-labs/openbot/main/scripts/install-server.sh |\n  sudo bash"
+            "curl -fsSL \\\n  https://raw.githubusercontent.com/nightly-labs/zollybot/main/scripts/install-server.sh |\n  sudo bash"
           }
         </code>
       </pre>
@@ -134,7 +134,7 @@ export function InstallZollyBotVPS() {
       <pre>
         <code>
           {
-            "mkdir zollybot-vps\ncd zollybot-vps\ncurl -fsSLO \\\n  https://raw.githubusercontent.com/nightly-labs/openbot/main/docker/compose.yaml\ncurl -fsSLO \\\n  https://raw.githubusercontent.com/nightly-labs/openbot/main/docker/seccomp.json\nsudo docker compose up -d"
+            "mkdir zollybot-vps\ncd zollybot-vps\ncurl -fsSLO \\\n  https://raw.githubusercontent.com/nightly-labs/zollybot/main/docker/compose.yaml\ncurl -fsSLO \\\n  https://raw.githubusercontent.com/nightly-labs/zollybot/main/docker/seccomp.json\nsudo docker compose up -d"
           }
         </code>
       </pre>

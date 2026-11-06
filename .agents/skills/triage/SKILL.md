@@ -57,7 +57,7 @@ Issue labels do not change this workflow. Labels such as `from-x` and
    - **Expected**: what the reporter expects.
    - **Surface**: desktop renderer, main process, backend, mobile, public
      web, Signal, Team API, provider, or plugin.
-   - **Version**: the OpenBot version or commit, and the provider CLI version.
+   - **Version**: the ZollyBot version or commit, and the provider CLI version.
    For a feature request, write only **Surface** and **Version** here.
    Step 2a has the other fields. The feature template has no version
    field; when it is missing, use the last release with a `publishedAt`
@@ -79,7 +79,7 @@ an issue, a `path:line`, or a command output.
 | `already fixed` | A commit on `origin/main` that fixes it, or that adds the requested feature, from `git log origin/main --grep` or `git log -S`. Give the first release tag that holds it: `git tag --contains <sha> --list 'v*' --sort=v:refname \| head -n 1`. |
 | `works as intended` | The code, a test, or a doc that defines the current behavior as correct. For a feature request: the feature exists, and it was in the release that the reporter used. Show where it is. |
 | `out of scope` | A product constraint or a non-negotiable rule in `AGENTS.md` that the requested change breaks. Example: chats or files that leave the user's computer, or a change to a released Team API meaning. |
-| `environment` | The cause is outside OpenBot: provider CLI version, OS setting, network, or a third-party service. |
+| `environment` | The cause is outside ZollyBot: provider CLI version, OS setting, network, or a third-party service. |
 | `feature request` | The issue asks for new behavior, not a fix for broken behavior. Go to Step 2a. |
 | `needs info` | The data that is missing, and why you cannot get it from the code or the history. |
 | `valid` | None of the above holds. Continue to Step 3. |
@@ -95,7 +95,7 @@ Step 2a, and assess only the parts that are missing.
 
 ## Step 2a — Assess a feature request
 
-Do not implement the feature in this skill. Decide if it makes OpenBot
+Do not implement the feature in this skill. Decide if it makes ZollyBot
 better, and how important it is. Each finding needs evidence. Do not
 score from the reporter's tone or from how sure the request sounds.
 
@@ -107,10 +107,10 @@ Write, in one line each:
 - **Need**: the problem under the request. A request often names one
   solution. Assess the need, not the named solution.
 - **Today**: what the user can do now, and since which release
-  (`git tag --contains`). Search the `@openbot/i18n` catalog
+  (`git tag --contains`). Search the `@zollybot/i18n` catalog
   (`packages/i18n/src/messages/en`), settings, workflows, webhooks, agent
   tools, and `marketplace/production-catalog`. Text that starts with `/`
-  goes to the provider; OpenBot has no local slash commands. Give
+  goes to the provider; ZollyBot has no local slash commands. Give
   `path:line` for each match.
 - **Gap**: the part of the need that **Today** does not cover. Score only
   the gap. When there is no gap, the verdict is `works as intended`.
@@ -124,7 +124,7 @@ Write, in one line each:
     The `external` label shows an author outside the organization.
   - A request from an organization member shows product intent. It is
     not user demand.
-  - An issue that the `openbotgit` app opened is not a user.
+  - An issue that the `zollybotgit` app opened is not a user.
 - **History**: earlier decisions for the same need. Search issues closed
   as not planned (`gh issue list --state closed --search "<words> reason:not-planned"`),
   issues with the `wontfix` label, maintainer comments, merged PR bodies,
@@ -175,7 +175,7 @@ of evidence.
   not add cost.
 
 **Value score** = Impact + Reach + Fit + Cost, from 0 to 12. It answers
-"does this make OpenBot better for its cost".
+"does this make ZollyBot better for its cost".
 
 **Priority** answers "how important is it now":
 
@@ -216,7 +216,7 @@ exist. Then give the recommendation for the gap and the reason.
 Find the root cause, not only the place where the symptom shows.
 
 1. Find the code path from the symptom. Start from the UI text (an
-   `@openbot/i18n` key), the IPC channel, the error code, or the log line
+   `@zollybot/i18n` key), the IPC channel, the error code, or the log line
    in the issue. Use an `Explore` agent for a broad search.
 2. Write the hypothesis in one sentence: "X fails because Y at `path:line`".
 3. Prove it. Use the cheapest proof that is conclusive:
@@ -254,7 +254,7 @@ Otherwise, continue:
    over new code. Do not fix nearby problems in the same change; list them
    in the report.
 2. Obey `AGENTS.md`: non-negotiable rules, Effect rules, shared UI,
-   `@openbot/i18n` text, and terms.
+   `@zollybot/i18n` text, and terms.
 3. Add a test only when `AGENTS.md` asks for one: data loss, released
    protocol, trust boundary, secret leak, or a bug that came back. A
    migration always needs its tests. Delete temporary tests from Step 3

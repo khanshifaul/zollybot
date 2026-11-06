@@ -6,7 +6,7 @@ import { BENCHMARK_SOURCES, type RoundupComparison } from "./comparison";
 // official home or pricing page of each app. The benchmark numbers are read by hand
 // from the Artificial Analysis Coding Agent Index.
 
-const OPENBOT = "https://github.com/nightly-labs/openbot";
+const ZOLLYBOT = "https://github.com/khanshifaul/zollybot";
 
 export const BEST_AI_AGENT_APPS: RoundupComparison = {
   kind: "roundup",
@@ -247,8 +247,8 @@ export const BEST_AI_AGENT_APPS: RoundupComparison = {
     { label: "Grok Bot overview", url: "https://docs.x.ai/grok-bot/overview" },
     { label: "Meta: Introducing Muse", url: "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/" },
     { label: "Muse subscription plans", url: "https://www.meta.com/help/subscriptions/1021145227643680/" },
-    { label: "ZollyBot privacy notes", url: `${OPENBOT}/blob/main/PRIVACY.md` },
-    { label: "ZollyBot source code", url: OPENBOT },
+    { label: "ZollyBot privacy notes", url: `${ZOLLYBOT}/blob/main/PRIVACY.md` },
+    { label: "ZollyBot source code", url: ZOLLYBOT },
     ...BENCHMARK_SOURCES,
   ],
   checkedAt: "2026-10-03",

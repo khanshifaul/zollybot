@@ -27,7 +27,7 @@ export const messages = {
   "onboarding.setup.defaultProvider": "المزوّد الافتراضي",
   "onboarding.setup.defaultProviderHint": "يُستخدم للوكلاء المحليين الجدد. يمكنك تغييره لكل وكيل لاحقًا.",
   "onboarding.setup.invitation": "دعوة المضيف",
-  "onboarding.setup.invitationPlaceholder": "الصق رابط دعوة https://openbot.run/join",
+  "onboarding.setup.invitationPlaceholder": "الصق رابط دعوة https://zollybot.shifaul.dev/join",
   "onboarding.setup.otherInvitation": "استخدام دعوة أخرى",
   "onboarding.setup.joinNote": "ستنضم باسم {email}. تعمل دعوات البريد الإلكتروني فقط للعنوان الذي تلقّاها.",
   "onboarding.setup.connect": "الاتصال بالمضيف",

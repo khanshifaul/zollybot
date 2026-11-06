@@ -13,7 +13,7 @@ import { z } from "zod";
 import type { ChannelService } from "../channel-service";
 import type { DynamicToolCallParams } from "../protocol";
 import { loadAvatarFile } from "./avatar-file";
-import { openBotToolResult } from "./routine-tools";
+import { zollyBotToolResult } from "./routine-tools";
 import { toolCallIdempotencyKey } from "./tool-call-idempotency";
 import { ToolOperationFailed, toToolOperationFailed } from "./tool-operation";
 
@@ -257,7 +257,7 @@ export const handleChannelAgentTool = Effect.fn("ChannelAgentTool.handle")(funct
             }),
         ),
       );
-    return openBotToolResult({ status: "created", channel: channelResult(channel, agents) });
+    return zollyBotToolResult({ status: "created", channel: channelResult(channel, agents) });
   }
 
   const args = updateChannelToolSchema.parse(params.arguments, { reportInput: true });
@@ -285,7 +285,7 @@ export const handleChannelAgentTool = Effect.fn("ChannelAgentTool.handle")(funct
   else if (image === null || (args.icon !== undefined && args.icon !== null)) channel = yield* removeImage(channel);
   if (archived === true && !channel.archived)
     channel = yield* channels.command({ type: "archive", operationId: `${operationId}:archive`, channelId }, actor);
-  return openBotToolResult({ status: "updated", channel: channelResult(channel, agents) });
+  return zollyBotToolResult({ status: "updated", channel: channelResult(channel, agents) });
 });
 
 /** The refusal in a channel task that a routine run, an agent, a member reply or a team member started. */

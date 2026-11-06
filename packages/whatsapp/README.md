@@ -6,7 +6,7 @@ own Signal-protocol code, and the encrypted store of one linked device. The conn
 
 | Path | What it is | License |
 | --- | --- | --- |
-| `vendor/baileys/` | Baileys v7.0.0-rc14, with the patches in `vendor/baileys/OPENBOT-PATCHES.md` | MIT (`vendor/baileys/LICENSE`) |
+| `vendor/baileys/` | Baileys v7.0.0-rc14, with the patches in `vendor/baileys/ZOLLYBOT-PATCHES.md` | MIT (`vendor/baileys/LICENSE`) |
 | `vendor/baileys/types/` | Declarations of the vendor, made by `bun run vendor:types` | MIT |
 | `src/signal/`, `src/signal-repository.ts` | Signal sessions and sender keys, clean-room | PolyForm Noncommercial 1.0.0 |
 | `src/auth-store.ts` | The device's encrypted SQLite store | PolyForm Noncommercial 1.0.0 |
@@ -53,5 +53,5 @@ release that changes `src/signal/` or updates the vendor.
 
 ## Update Baileys
 
-Follow `vendor/baileys/OPENBOT-PATCHES.md`. Then run `bun run --cwd packages/whatsapp vendor:types`
+Follow `vendor/baileys/ZOLLYBOT-PATCHES.md`. Then run `bun run --cwd packages/whatsapp vendor:types`
 and the checks above.

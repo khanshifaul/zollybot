@@ -1,5 +1,5 @@
 /**
- * What an `zollybot://` or `https://openbot.run/...` link means.
+ * What an `zollybot://` or `https://zollybot.shifaul.dev/...` link means.
  *
  * The scheme carries more than one kind of link now, so the decision of which kind a URL is has one
  * home rather than one `try` per entry point. `src/main/index.ts` has four ways a link arrives -

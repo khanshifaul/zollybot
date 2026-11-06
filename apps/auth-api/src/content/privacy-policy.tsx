@@ -3,7 +3,7 @@
 
 import { Link } from "@tanstack/solid-router";
 
-const PRIVACY_EMAIL = "privacy@openbot.run";
+const PRIVACY_EMAIL = "privacy@zollybot.shifaul.dev";
 
 function PrivacyEmail() {
   return <a href={`mailto:${PRIVACY_EMAIL}`}>{PRIVACY_EMAIL}</a>;
@@ -26,8 +26,9 @@ export function PrivacyPolicy() {
         tasks.
       </p>
       <p>
-        This Privacy Policy applies to the ZollyBot website at <a href="https://openbot.run">https://openbot.run</a>,
-        its applications, and related services (collectively, the "Services").
+        This Privacy Policy applies to the ZollyBot website at{" "}
+        <a href="https://zollybot.shifaul.dev">https://zollybot.shifaul.dev</a>, its applications, and related services
+        (collectively, the "Services").
       </p>
       <p>
         By accessing or using the Services, you acknowledge that you have read and understood this Privacy Policy. If
@@ -36,7 +37,7 @@ export function PrivacyPolicy() {
       <p>
         Contact: <PrivacyEmail />
         <br />
-        Website: <a href="https://openbot.run">https://openbot.run</a>
+        Website: <a href="https://zollybot.shifaul.dev">https://zollybot.shifaul.dev</a>
       </p>
 
       <h2>About Our Services</h2>

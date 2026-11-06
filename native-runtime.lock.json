@@ -385,7 +385,7 @@
       }
     },
     "artifactRelease": {
-      "repository": "nightly-labs/openbot",
+      "repository": "nightly-labs/zollybot",
       "tag": "remote-desktop-runtime-fbe06961a9b2fa374c077a56c3354f1f7ab6a18dd672b9d4586cf1b5636f6d7b",
       "inputDigest": "fbe06961a9b2fa374c077a56c3354f1f7ab6a18dd672b9d4586cf1b5636f6d7b",
       "manifestAsset": "remote-desktop-runtime-manifest.json",

@@ -58,7 +58,7 @@ export const messages = {
   "files.storage.allFiles": "Todos os arquivos",
   "files.storage.allFilesOn": "Todos os arquivos em {host}",
   "files.storage.allFilesDescription": "Arquivos de todos os agentes e chats",
-  "files.storage.openBotOn": "ZollyBot em {host}",
+  "files.storage.zollyBotOn": "ZollyBot em {host}",
   "files.storage.measuring": "Medindo…",
   "files.storage.measureAgain": "Medir novamente",
   "files.storage.measuringStorage": "Medindo armazenamento",

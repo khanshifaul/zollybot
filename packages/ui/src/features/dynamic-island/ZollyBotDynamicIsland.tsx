@@ -371,7 +371,7 @@ function scaleCompactWidth(width: number, floor: number, percent: number, minimu
  * The idle compact width for a width setting, or undefined for the default width. The Settings
  * preview reads it to scale the widest setting into its frame.
  */
-export function openBotIdleCompactWidth(
+export function zollyBotIdleCompactWidth(
   displayMode: "notch" | "island" | undefined,
   notchSize: DynamicIslandNotchSize | undefined,
   percent: number,
@@ -489,7 +489,7 @@ export function ZollyBotDynamicIsland(props: ZollyBotDynamicIslandProps): JSX.El
   const compactWidth = () => {
     const geometry = compactGeometry();
     if (geometry) return props.displayMode === "island" ? geometry.island.width : geometry.notch.width;
-    return openBotIdleCompactWidth(props.displayMode, props.notchSize, widthPercent());
+    return zollyBotIdleCompactWidth(props.displayMode, props.notchSize, widthPercent());
   };
   const compactHeight = () => {
     const percent = heightPercent();

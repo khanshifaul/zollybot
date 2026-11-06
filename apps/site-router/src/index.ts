@@ -14,7 +14,7 @@ interface SiteBucket {
 interface SiteRouterEnv {
   SITES: SiteBucket;
   SITE_SERVE_ENABLED?: string;
-  /** Origin of the account service, such as `https://openbot.run`. The report route and error pages use it. */
+  /** Origin of the account service, such as `https://zollybot.shifaul.dev`. The report route and error pages use it. */
   ACCOUNT_ORIGIN?: string;
 }
 

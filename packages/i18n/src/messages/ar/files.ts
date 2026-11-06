@@ -78,7 +78,7 @@ export const messages = {
   "files.storage.allFiles": "كل الملفات",
   "files.storage.allFilesOn": "كل الملفات على {host}",
   "files.storage.allFilesDescription": "ملفات كل الوكلاء والدردشات",
-  "files.storage.openBotOn": "ZollyBot على {host}",
+  "files.storage.zollyBotOn": "ZollyBot على {host}",
   "files.storage.measuring": "جارٍ القياس…",
   "files.storage.measureAgain": "إعادة القياس",
   "files.storage.measuringStorage": "جارٍ قياس التخزين",

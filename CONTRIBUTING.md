@@ -25,7 +25,7 @@ These need an issue with the `approved` label before you write code:
 - Large refactors, new dependencies, and changes to migrations, IPC contracts, the Team API,
   security boundaries, or CI.
 
-To propose one, open a [feature request](https://github.com/nightly-labs/openbot/issues/new?template=feature_request.yml)
+To propose one, open a [feature request](https://github.com/khanshifaul/zollybot/issues/new?template=feature_request.yml)
 and wait. A maintainer adds `approved` when the change fits ZollyBot. Then link the issue in your
 pull request with `Closes #<number>`.
 
@@ -54,7 +54,7 @@ A maintainer who reopens a closed pull request starts a new 7-day period.
 ## Development setup
 
 ```bash
-git clone https://github.com/nightly-labs/openbot.git
+git clone https://github.com/khanshifaul/zollybot.git
 cd zollybot
 bun install --frozen-lockfile
 bun run check
@@ -186,8 +186,8 @@ Each author of a pull request must sign the
 give Synthetify Labs sp. z o.o. a copyright and patent license to use them. Organization members,
 users with write access to this repository and bots do not sign.
 
-To sign, download the agreement as a PDF from [openbot.run/cla](https://openbot.run/cla). Fill it
-in, sign it, and send it to licenses@openbot.run with your GitHub login and the link to your pull
+To sign, download the agreement as a PDF from [zollybot.shifaul.dev/cla](https://zollybot.shifaul.dev/cla). Fill it
+in, sign it, and send it to licenses@zollybot.shifaul.dev with your GitHub login and the link to your pull
 request. A coding agent never signs or sends the agreement for you. You sign one time. When you
 must sign, the `CLA` workflow adds a comment to your pull request and sets the `CLA` status to
 failed. A maintainer records your signature with `bun scripts/cla.ts record <login> <pull request>`,

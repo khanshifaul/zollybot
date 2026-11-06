@@ -38,7 +38,7 @@ index-*.css
 .zollybot-browser-test/
 .zollybot-build/
 # The home page beam, a React Bits port. Its license forbids a public copy; CI checks it out
-# from the private nightly-labs/openbot-laser-flow repository.
+# from the private nightly-labs/zollybot-laser-flow repository.
 /apps/auth-api/src/vendor/laser-flow/
 .worktrees/
 # Claude Code creates git worktrees here; they carry a nested biome.json.

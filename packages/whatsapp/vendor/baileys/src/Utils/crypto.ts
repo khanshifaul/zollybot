@@ -1,10 +1,10 @@
 import { createCipheriv, createDecipheriv, createHash, createHmac, hkdfSync, randomBytes } from 'crypto'
-// OPENBOT PATCH: curve operations come from ZollyBot's own Signal module, not libsignal (GPL-3.0).
+// ZOLLYBOT PATCH: curve operations come from ZollyBot's own Signal module, not libsignal (GPL-3.0).
 import * as curve from '../../../../src/signal/curve'
 import { KEY_BUNDLE_TYPE } from '../Defaults'
 import type { KeyPair } from '../Types'
 
-// OPENBOT PATCH: md5 and hkdf were imported from whatsapp-rust-bridge, which compiles AGPL-3.0 code.
+// ZOLLYBOT PATCH: md5 and hkdf were imported from whatsapp-rust-bridge, which compiles AGPL-3.0 code.
 export function md5(buffer: Uint8Array) {
 	return createHash('md5').update(buffer).digest()
 }

@@ -79,22 +79,22 @@ function draftPost(translate: AppTranslate): string {
  * `mailto:` address, which `openUrl` refuses; the web client opens the same constant.
  */
 const EXTERNAL_DESTINATIONS: Record<ExternalDestination, string | ((translate: AppTranslate) => string)> = {
-  "agent-setup": "https://github.com/nightly-labs/openbot/blob/main/docs/TROUBLESHOOTING.md",
+  "agent-setup": "https://github.com/khanshifaul/zollybot/blob/main/docs/TROUBLESHOOTING.md",
   "opencode-install": "https://opencode.ai/docs/",
   "opencode-auth": "https://opencode.ai/auth",
   "claude-install": "https://code.claude.com/docs",
   "hermes-install": "https://hermes-agent.nousresearch.com/docs/getting-started/installation",
   feedback: "https://x.com/intent/post?text=Feedback%20for%20ZollyBot%20%40norbertbodziony%3A%20",
   message: "https://x.com/norbertbodziony",
-  changelog: "https://openbot.run/changelog",
-  guides: "https://openbot.run/guides",
-  // A Redirect Rule in the openbot.run Cloudflare zone sends this to the current Discord invite.
-  discord: "https://discord.openbot.run",
-  github: "https://github.com/nightly-labs/openbot",
+  changelog: "https://zollybot.shifaul.dev/changelog",
+  guides: "https://zollybot.shifaul.dev/guides",
+  // A Redirect Rule in the zollybot.shifaul.dev Cloudflare zone sends this to the current Discord invite.
+  discord: "https://discord.zollybot.shifaul.dev",
+  github: "https://github.com/khanshifaul/zollybot",
   x: "https://x.com/ZollyBot_",
-  threads: "https://www.threads.com/@openbot.run",
-  instagram: "https://www.instagram.com/openbot.run/",
-  tiktok: "https://www.tiktok.com/@openbot.run",
+  threads: "https://www.threads.com/@zollybot.shifaul.dev",
+  instagram: "https://www.instagram.com/zollybot.shifaul.dev/",
+  tiktok: "https://www.tiktok.com/@zollybot.shifaul.dev",
   facebook: "https://www.facebook.com/profile.php?id=61595425259628",
   linkedin: "https://www.linkedin.com/company/zollybot-si/",
   reddit: "https://www.reddit.com/r/ZollyBot_/",

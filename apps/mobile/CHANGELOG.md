@@ -464,7 +464,7 @@ the [root changelog](../../CHANGELOG.md).
 - In the message queue, tap a teammate's answer to steer it into the running turn. Before, the
   answer had no actions and waited for the turn to end.
 - The app icon has a new design, with a dark appearance on iOS.
-- Settings > About opens the privacy policy on openbot.run instead of GitHub.
+- Settings > About opens the privacy policy on zollybot.shifaul.dev instead of GitHub.
 - The Threads row of the server menu shows how many threads have unread messages, not "needs you".
 - The Threads page puts threads in Working, Unread, Read and Archived sections. A host that does not keep read marks still shows Needs you, Working and Waiting.
 - Tasks are now called threads, as on desktop. The Tasks page is now Threads, and Close and Reopen are now Archive and Restore.
@@ -547,7 +547,7 @@ the [root changelog](../../CHANGELOG.md).
 
 - MP3 and other audio files in a chat play in the conversation. The card shows the waveform of the file, as on desktop. Tap or drag the waveform to move the position, and tap the speed button to play at 0.5×, 1×, 1.5× or 2×. Before, you could only download them.
 - A Markdown file in a chat opens in a preview that shows the formatted text. The menu shows the source, copies it, or shares the file. Before, you could only download it.
-- Tap any image in a chat to open it, then swipe left or right to see all the other images of the loaded conversation, in chat order. The top bar shows the position, such as "3 of 8". ([#2426](https://github.com/nightly-labs/openbot/issues/2426))
+- Tap any image in a chat to open it, then swipe left or right to see all the other images of the loaded conversation, in chat order. The top bar shows the position, such as "3 of 8". ([#2426](https://github.com/khanshifaul/zollybot/issues/2426))
 - When an agent sends two or more images in one reply, the chat shows them together in a compact grid, as on desktop. Before, each image took the full width of the chat.
 - Channels are back in the mobile app, on a computer whose ZollyBot has channels again. A channel
   shows in the home list beside your agents, and you can pin it, hide it, put it in a section, and
@@ -1045,7 +1045,7 @@ the [root changelog](../../CHANGELOG.md).
   logo.
 - Haptic feedback when you open and close screens, pick options, save, and when an action succeeds
   or fails. Turn it off with the Haptics setting.
-- Open a shared agent link (`https://openbot.run/agents/...` or `zollybot://agents/...`) in the app.
+- Open a shared agent link (`https://zollybot.shifaul.dev/agents/...` or `zollybot://agents/...`) in the app.
   You see the agent before you add it, and you choose the server where you are owner or admin.
   Before, the link opened Safari or showed "Link unavailable".
 - Manage the skills of an agent from Agent info > Skills. An owner or admin can turn a skill on or

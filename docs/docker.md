@@ -2,7 +2,7 @@
 
 The ZollyBot image is the Linux release, run as a [self-hosted server](self-hosted-server.md) in a
 container. It is a normal Remote host of your account. You use it from the desktop app, the iPhone
-app or `openbot.run/app`. The image is `ghcr.io/nightly-labs/openbot`, for `linux/amd64` and
+app or `zollybot.shifaul.dev/app`. The image is `ghcr.io/nightly-labs/zollybot`, for `linux/amd64` and
 `linux/arm64`.
 
 ## Run
@@ -10,8 +10,8 @@ app or `openbot.run/app`. The image is `ghcr.io/nightly-labs/openbot`, for `linu
 With Docker Compose:
 
 ```sh
-curl -fsSLO https://raw.githubusercontent.com/nightly-labs/openbot/main/docker/compose.yaml
-curl -fsSLO https://raw.githubusercontent.com/nightly-labs/openbot/main/docker/seccomp.json
+curl -fsSLO https://raw.githubusercontent.com/nightly-labs/zollybot/main/docker/compose.yaml
+curl -fsSLO https://raw.githubusercontent.com/nightly-labs/zollybot/main/docker/seccomp.json
 docker compose up -d
 docker compose exec zollybot zollybot login
 ```
@@ -19,12 +19,12 @@ docker compose exec zollybot zollybot login
 With `docker run`:
 
 ```sh
-curl -fsSLO https://raw.githubusercontent.com/nightly-labs/openbot/main/docker/seccomp.json
+curl -fsSLO https://raw.githubusercontent.com/nightly-labs/zollybot/main/docker/seccomp.json
 docker run -d --name zollybot --restart unless-stopped \
   --security-opt seccomp=seccomp.json --security-opt no-new-privileges:true \
   --shm-size 1g --stop-timeout 60 \
   -v zollybot-data:/data \
-  ghcr.io/nightly-labs/openbot:latest
+  ghcr.io/nightly-labs/zollybot:latest
 docker exec -it zollybot zollybot login
 ```
 
@@ -56,7 +56,7 @@ For Amazon ECS, see [AWS ECS](aws-ecs.md).
 The container publishes no port. ZollyBot only connects out: to the account server, to the providers,
 and to Signal and TURN for remote use. The Team API listens on `127.0.0.1` in the container.
 The container does not serve a web interface. After `zollybot login`, use
-[`openbot.run/app`](https://openbot.run/app) with the same account to select the server. A web
+[`zollybot.shifaul.dev/app`](https://zollybot.shifaul.dev/app) with the same account to select the server. A web
 client at your own origin is not included in this image. The
 [self-hosted account service](self-hosting.md#what-changes) is a separate deployment with its own
 client limits.
@@ -223,7 +223,7 @@ Agents have full access in their container, so the host limits what a container 
 - **Network.** `setup` makes the Docker network `zollybot` (`172.30.0.0/16`, bridge `br-zollybot`)
   with inter-container traffic off, so instances cannot reach each other. It installs
   `zollybot-firewall.service`, which runs `instances/zollybot-firewall` before Docker starts. The
-  chain `OPENBOT-EGRESS` in `DOCKER-USER` drops traffic to private, local and multicast ranges and to
+  chain `ZOLLYBOT-EGRESS` in `DOCKER-USER` drops traffic to private, local and multicast ranges and to
   the addresses in `/etc/zollybot-docker/deny`. A rule at the start of `INPUT` drops traffic from the
   bridge to the host. The containers reach only the internet. `create`, `up` and `upgrade` refuse
   to start a container when the firewall is off.
@@ -390,7 +390,7 @@ is the machine-readable source for the newest full release. For example, this re
 prints its tag:
 
 ```sh
-gh api repos/nightly-labs/openbot/releases/latest --jq '.tag_name'
+gh api repos/nightly-labs/zollybot/releases/latest --jq '.tag_name'
 ```
 
 Automation can poll that metadata and download an image. Installation needs these checks:
@@ -470,7 +470,7 @@ environment of ZollyBot, so they can read these values.
 - **Check the image.** Each release image has a build provenance attestation:
 
   ```sh
-  gh attestation verify oci://ghcr.io/nightly-labs/openbot:<version> --repo nightly-labs/openbot
+  gh attestation verify oci://ghcr.io/nightly-labs/zollybot:<version> --repo nightly-labs/zollybot
   ```
 
 ## How it works

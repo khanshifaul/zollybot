@@ -3,8 +3,8 @@
  * that listing in the app, and the browser client's entry for it.
  *
  * ```
- * https://openbot.run/marketplace/agents/<id>     the link a person shares and the app copies
- * https://openbot.run/marketplace/skills/<slug>
+ * https://zollybot.shifaul.dev/marketplace/agents/<id>     the link a person shares and the app copies
+ * https://zollybot.shifaul.dev/marketplace/skills/<slug>
  * zollybot://marketplace/agents/<id>               the link the page button opens
  * zollybot://marketplace/skills/<slug>
  * /app?marketplaceAgent=<id>                      the page's link to the browser client
@@ -20,7 +20,7 @@
  * foreign address behind the button that copies its own link.
  */
 
-export const ZOLLYBOT_MARKETPLACE_ORIGIN = "https://openbot.run";
+export const ZOLLYBOT_MARKETPLACE_ORIGIN = "https://zollybot.shifaul.dev";
 export const ZOLLYBOT_MARKETPLACE_PATH = "/marketplace";
 export const ZOLLYBOT_MARKETPLACE_HOST = "marketplace";
 export const WEB_APP_MARKETPLACE_AGENT_PARAM = "marketplaceAgent";
@@ -69,7 +69,7 @@ export function marketplaceListingPath(link: MarketplaceListingLink): string {
 }
 
 /**
- * Where a shared listing link points. The origin is `openbot.run`, or a loopback origin while a
+ * Where a shared listing link points. The origin is `zollybot.shifaul.dev`, or a loopback origin while a
  * developer runs the Account Worker on this computer; `agentTemplateShareOrigin` picks it.
  */
 export function createMarketplaceShareUrl(
@@ -132,7 +132,7 @@ export function parseMarketplaceUrl(value: string): MarketplaceListingLink {
   }
 
   /* The origin is compared as one string. An `endsWith` or a host expression here is what lets
-     `openbot.run.example.com` through. */
+     `zollybot.shifaul.dev.example.com` through. */
   const prefix = `${ZOLLYBOT_MARKETPLACE_PATH}/`;
   const canonical =
     url.protocol === "https:" && url.origin === ZOLLYBOT_MARKETPLACE_ORIGIN && url.pathname.startsWith(prefix);

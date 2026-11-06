@@ -15,7 +15,7 @@ import { Option, Schema } from "effect";
 import { dialog, shell } from "electron";
 
 const logger = createZollyBotLogger("app-archive");
-export const DOWNLOAD_URL = "https://openbot.run/download";
+export const DOWNLOAD_URL = "https://zollybot.shifaul.dev/download";
 // A copy of the archive writes for some seconds. Check once the writes stop.
 const SETTLE_MS = 2_000;
 

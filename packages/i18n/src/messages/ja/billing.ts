@@ -80,7 +80,7 @@ export const messages = {
   "billing.license.description": "企業での業務向けです。サーバーは含まれません。",
   "billing.license.loadFailed": "ライセンスを読み込めませんでした。",
   "billing.license.actionFailed": "ライセンスを変更できませんでした。",
-  "billing.license.contactSales": "詳しくは licenses@openbot.run までお問い合わせください。",
+  "billing.license.contactSales": "詳しくは licenses@zollybot.shifaul.dev までお問い合わせください。",
   "billing.license.saving": "保存中…",
   "billing.license.personal.title": "個人利用",
   "billing.license.personal.description": "非商用利用は無料です。",

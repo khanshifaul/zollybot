@@ -79,7 +79,7 @@ export const messages = {
   "billing.license.description": "Voor werk bij een bedrijf. Er is geen server bij inbegrepen.",
   "billing.license.loadFailed": "Kan de licentie niet laden.",
   "billing.license.actionFailed": "Kan de licentie niet wijzigen.",
-  "billing.license.contactSales": "Neem contact op via licenses@openbot.run voor meer informatie.",
+  "billing.license.contactSales": "Neem contact op via licenses@zollybot.shifaul.dev voor meer informatie.",
   "billing.license.saving": "Opslaan…",
   "billing.license.personal.title": "Persoonlijk gebruik",
   "billing.license.personal.description": "Gratis voor niet-commercieel gebruik.",

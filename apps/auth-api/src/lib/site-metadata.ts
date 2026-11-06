@@ -6,7 +6,7 @@
 import { LANDING_FAQ_STRUCTURED_DATA } from "./landing-faq";
 import { ZOLLYBOT_ALTERNATE_DOWNLOAD_LINKS, ZOLLYBOT_DOWNLOAD_LINKS } from "./landing-links";
 
-export const ZOLLYBOT_SITE_URL = "https://openbot.run/";
+export const ZOLLYBOT_SITE_URL = "https://zollybot.shifaul.dev/";
 export const ZOLLYBOT_SITE_TITLE = "ZollyBot: Run a team of AI agents on your computer";
 export const ZOLLYBOT_SITE_DESCRIPTION =
   "A free desktop app that runs AI agents as a team on your own computer, with the ChatGPT, Claude, Gemini or Grok plan you already pay for, or your own model.";
@@ -14,7 +14,7 @@ export const ZOLLYBOT_SOCIAL_IMAGE_URL = `${ZOLLYBOT_SITE_URL}zollybot-social.pn
 /** The account `ZOLLYBOT_LINKS.x` opens, which a shared card names. */
 export const ZOLLYBOT_X_HANDLE = "@ZollyBot_";
 const ZOLLYBOT_X_URL = "https://x.com/ZollyBot_";
-const ZOLLYBOT_REPOSITORY_URL = "https://github.com/nightly-labs/openbot";
+const ZOLLYBOT_REPOSITORY_URL = "https://github.com/khanshifaul/zollybot";
 const ZOLLYBOT_PRODUCT_HUNT_URL = "https://www.producthunt.com/products/zollybot-3";
 const ZOLLYBOT_LICENSE_URL = "https://polyformproject.org/licenses/noncommercial/1.0.0/";
 // One id for each entity, so that every page describes the same organization,
@@ -79,13 +79,13 @@ export function pageSocialImageMeta(image: PageSocialImage, siteUrl: string) {
 }
 
 // The hosts production answers on. Both serve the same pages, and those pages go by
-// openbot.run.
-const ZOLLYBOT_PRODUCTION_HOSTS = new Set(["openbot.run", "api.openbot.run"]);
+// zollybot.shifaul.dev.
+const ZOLLYBOT_PRODUCTION_HOSTS = new Set(["zollybot.shifaul.dev", "api.zollybot.shifaul.dev"]);
 
 /**
  * The site that the head tags of a page served at `pageUrl` name. Social sites fetch
  * `og:url` and `og:image` themselves and show no card when those answer 404. A
- * pull-request preview serves pages and images that openbot.run does not have yet,
+ * pull-request preview serves pages and images that zollybot.shifaul.dev does not have yet,
  * so any host other than production names itself. Cloudflare marks preview URLs
  * `noindex`, so a preview canonical does not compete with production.
  */
@@ -101,7 +101,7 @@ export interface ZollyBotApplicationFacts {
   screenshot: string;
 }
 
-export function openBotSoftwareApplication(facts: ZollyBotApplicationFacts) {
+export function zollyBotSoftwareApplication(facts: ZollyBotApplicationFacts) {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -149,7 +149,7 @@ export function openBotSoftwareApplication(facts: ZollyBotApplicationFacts) {
   } as const;
 }
 
-export type ZollyBotSoftwareApplication = ReturnType<typeof openBotSoftwareApplication>;
+export type ZollyBotSoftwareApplication = ReturnType<typeof zollyBotSoftwareApplication>;
 
 // Search engines read these two for the site name and the logo next to a result.
 const ZOLLYBOT_ORGANIZATION = {
@@ -187,7 +187,7 @@ export const ZOLLYBOT_SECURITY_HEADERS = {
  * replaces it. The caller passes the same hashed asset the `@font-face` rule asks
  * for, so the preload below is that request and not a second one.
  */
-export function openBotRootHead(interLatinFont: string) {
+export function zollyBotRootHead(interLatinFont: string) {
   return {
     meta: [
       { charSet: "utf-8" },
@@ -220,7 +220,7 @@ const ZOLLYBOT_HOME_SOCIAL_IMAGE: PageSocialImage = {
   alt: "Models come and go. Your team stays. ZollyBot agents on a paper planet",
 };
 
-export function openBotHomeHead(application: ZollyBotSoftwareApplication, siteUrl: string) {
+export function zollyBotHomeHead(application: ZollyBotSoftwareApplication, siteUrl: string) {
   const image = pageSocialImageMeta(ZOLLYBOT_HOME_SOCIAL_IMAGE, siteUrl);
   return {
     meta: [

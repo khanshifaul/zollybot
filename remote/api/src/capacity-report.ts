@@ -73,7 +73,7 @@ function readConfig(environment: Record<string, string | undefined>): ReporterCo
   if (!clientId || !clientSecret || !signalMetricsToken || !turnHost) return null;
   return {
     // `scripts/signal-capacity-report-smoke.ts` points it at a local capture server.
-    trackUrl: environment.OPENPANEL_TRACK_URL ?? "https://analytics.openbot.run/api/track",
+    trackUrl: environment.OPENPANEL_TRACK_URL ?? "https://analytics.zollybot.shifaul.dev/api/track",
     clientId,
     clientSecret,
     turnMetricsUrl: environment.TURN_METRICS_URL ?? "http://127.0.0.1:9641/metrics",

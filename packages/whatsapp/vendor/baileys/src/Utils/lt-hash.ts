@@ -1,4 +1,4 @@
-// OPENBOT PATCH: the LT-hash came from whatsapp-rust-bridge, which compiles AGPL-3.0 code. This is the
+// ZOLLYBOT PATCH: the LT-hash came from whatsapp-rust-bridge, which compiles AGPL-3.0 code. This is the
 // JavaScript LT-hash of Baileys 6.7.24 (MIT), made synchronous over node:crypto HKDF.
 import { hkdf } from './crypto'
 

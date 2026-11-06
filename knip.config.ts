@@ -150,7 +150,7 @@ const config: KnipConfig = {
       entry: ["src/*.ts", "scripts/*.ts"],
       project: ["src/**/*.ts", "scripts/*.ts"],
       // The vendored Baileys imports these. Knip does not read the vendor, which keeps upstream's code
-      // as it is (vendor/baileys/OPENBOT-PATCHES.md).
+      // as it is (vendor/baileys/ZOLLYBOT-PATCHES.md).
       ignoreDependencies: [
         "@cacheable/node-cache",
         "@hapi/boom",

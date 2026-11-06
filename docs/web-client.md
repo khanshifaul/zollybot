@@ -67,7 +67,7 @@ mock. The separate web preview implements the browser runtime with that same moc
   desktop only.
 - Sign-in credentials are cookie-only. The browser receives a short connection ticket for the
   existing Signal handshake. Session creation, ticket issue and end are bound to its credential.
-- The production website accepts invitation links for `https://api.openbot.run`; the request still
+- The production website accepts invitation links for `https://api.zollybot.shifaul.dev`; the request still
   goes to its own origin. Other services are refused. Host fingerprints are checked before use.
 - One tab can connect to a given host with an account. Other accounts and hosts have separate
   locks. A second tab gets an explicit message instead of replacing the first tab's peer.
@@ -202,7 +202,7 @@ loads about 100 relative ES modules, and it starts a module Worker from `import.
 A Service Worker cannot control an opaque iframe. To serve the viewer there, the client would
 have to rewrite and bundle the host's code.
 
-A possible design uses a separate viewer origin, for example `viewer.openbot.run`, on the same
+A possible design uses a separate viewer origin, for example `viewer.zollybot.shifaul.dev`, on the same
 Worker. That origin serves only a trusted bootstrap page and a Service Worker. The Service Worker
 sends viewer requests to the web app. The web app sends them over the host connection, limited
 to one remote-screen session. On 2026-09-23 the user decided not to add this origin for the MVP.

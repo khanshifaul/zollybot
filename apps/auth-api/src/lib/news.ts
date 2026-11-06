@@ -25,7 +25,7 @@ export const NEWS_COLLECTION: ContentCollection<"news"> = {
   feedTitle: "ZollyBot news",
   backLabel: "All news",
   moreTitle: "More from ZollyBot",
-  imageEyebrow: "OPENBOT · NEWS",
+  imageEyebrow: "ZOLLYBOT · NEWS",
   articles: publishedFirst([
     {
       slug: "introducing-zollybot",

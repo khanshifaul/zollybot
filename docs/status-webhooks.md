@@ -1,8 +1,8 @@
 # Status webhooks
 
-The status page at `status.openbot.run` can send its incidents and service changes to the tools of
+The status page at `status.zollybot.shifaul.dev` can send its incidents and service changes to the tools of
 the ZollyBot team, such as a Slack channel or an on-call service. These webhooks are for the team
-only. The public way to follow the page is its feed, `https://status.openbot.run/feed.xml`.
+only. The public way to follow the page is its feed, `https://status.zollybot.shifaul.dev/feed.xml`.
 
 The `notify` job of the `status-page` workflow sends them. It runs after each run that publishes the
 page, so a new event goes out about 5 minutes after it occurs, or a short time after a person edits
@@ -30,7 +30,7 @@ The subscriptions are in the `STATUS_WEBHOOKS` repository secret, as one JSON li
 | `paused` | No | `true` stops the deliveries. The waiting deliveries are removed. |
 
 To change the list, replace the whole secret:
-`gh secret set STATUS_WEBHOOKS -R nightly-labs/openbot < webhooks.json`. Then delete `webhooks.json`.
+`gh secret set STATUS_WEBHOOKS -R nightly-labs/zollybot < webhooks.json`. Then delete `webhooks.json`.
 The secret is not in the log: the job masks each URL and secret before it does anything else. An
 error in the list names only the entry number, the field or the `id`. A list that is not valid stops
 the job, and the job sends nothing.
@@ -76,10 +76,10 @@ The meaning of a field does not change.
   "id": "incident.updated:201:2026-10-16T11:00:00Z:identified",
   "type": "incident.updated",
   "createdAt": "2026-10-16T11:05:12.000Z",
-  "page": "https://status.openbot.run",
+  "page": "https://status.zollybot.shifaul.dev",
   "incident": {
     "id": 201,
-    "url": "https://github.com/nightly-labs/openbot/issues/201",
+    "url": "https://github.com/khanshifaul/zollybot/issues/201",
     "title": "Invitation links fail",
     "kind": "incident",
     "impact": "partial",

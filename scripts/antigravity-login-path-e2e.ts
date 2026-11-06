@@ -1,4 +1,4 @@
-// Adapted from the report in nightly-labs/openbot#3418: "Gemini MCP servers cannot find commands on
+// Adapted from the report in nightly-labs/zollybot#3418: "Gemini MCP servers cannot find commands on
 // the login-shell PATH". ZollyBot started the way Finder, the Dock or a login item starts it:
 // PATH=/usr/bin:/bin:/usr/sbin:/sbin. The Antigravity server starts by its absolute path, but the
 // stdio MCP servers that it starts are commands such as bare `node`, which must be found on the

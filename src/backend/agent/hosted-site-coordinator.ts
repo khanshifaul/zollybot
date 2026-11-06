@@ -29,7 +29,7 @@ import {
   hostedSiteEventMessageId,
   hostedSiteTool,
 } from "./hosted-site-events";
-import { openBotToolResult, siteToolString, type ZollyBotToolResponse } from "./routine-tools";
+import { siteToolString, type ZollyBotToolResponse, zollyBotToolResult } from "./routine-tools";
 import { checkAgentFolders, workspaceWritableRoots } from "./workspace-sandbox";
 
 /** The zollybot.site host, injected so the backend never depends on the account Worker directly. */
@@ -305,7 +305,7 @@ export class HostedSiteCoordinator {
       const siteId = yield* siteStep(() => siteToolString(args.siteId, "siteId", INPUT_LIMITS.identifier));
       const host = yield* siteStep(() => this.#requireHostedSites());
       yield* host.delete(siteId);
-      return { response: openBotToolResult({ deleted: true, siteId }), eventDetails: context.eventDetails };
+      return { response: zollyBotToolResult({ deleted: true, siteId }), eventDetails: context.eventDetails };
     }
 
     const sourcePath = yield* siteStep(() => siteToolString(args.sourcePath, "sourcePath", INPUT_LIMITS.path));
@@ -329,7 +329,7 @@ export class HostedSiteCoordinator {
         : yield* siteStep(() => siteToolString(args.siteId, "siteId", INPUT_LIMITS.identifier));
     const host = yield* siteStep(() => this.#requireHostedSites());
     const site = siteId ? yield* host.replace({ ...input, siteId }, roots) : yield* host.publish(input, roots);
-    return { response: openBotToolResult(site), eventDetails: hostedSiteEventDetails(site, siteId) };
+    return { response: zollyBotToolResult(site), eventDetails: hostedSiteEventDetails(site, siteId) };
   });
 
   #recordEvent(

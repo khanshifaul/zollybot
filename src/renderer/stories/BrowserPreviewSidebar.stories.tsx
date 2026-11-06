@@ -9,7 +9,7 @@ const tabs = [
   {
     id: "docs",
     title: "ZollyBot documentation",
-    url: "https://openbot.run/docs",
+    url: "https://zollybot.shifaul.dev/docs",
     loading: false,
     ownerThreadId: "chief",
     ownerAgentId: "chief",

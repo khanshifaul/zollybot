@@ -15,11 +15,11 @@ import { clearSupportLog, supportLogFileText } from "@/features/support/model/su
 import { useText } from "@/shared/lib/text";
 
 /** The ZollyBot Discord community, the same address as the desktop app. Its tickets get the fastest answer. */
-const DISCORD_URL = "https://discord.openbot.run";
+const DISCORD_URL = "https://discord.zollybot.shifaul.dev";
 /** The ZollyBot account, the same contact as the website. */
 const SUPPORT_X_HANDLE = "@ZollyBot_";
 const SUPPORT_X_URL = "https://x.com/ZollyBot_";
-const ISSUES_URL = "https://github.com/nightly-labs/openbot/issues/new";
+const ISSUES_URL = "https://github.com/khanshifaul/zollybot/issues/new";
 
 export function SupportSettingsScreen() {
   const { t } = useText();

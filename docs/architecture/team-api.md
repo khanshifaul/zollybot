@@ -175,7 +175,7 @@ sheet moves its files into the app cache, the user chooses an agent, and that ch
 text and files, which follow the attachment rules above. The phone reads the response headers of a
 shared link; a link to an image of at most 10 MB is downloaded and comes as a file instead of the link. Permanent invitation metadata comes from the shared Team client; revocation stops
 new joins without removing existing members.
-iOS associates `https://openbot.run/join` and `https://openbot.run/agents/*` with `run.zollybot.mobile`. Changes to associated
+iOS associates `https://zollybot.shifaul.dev/join` and `https://zollybot.shifaul.dev/agents/*` with `run.zollybot.mobile`. Changes to associated
 domains require a new native app build and deployment of the website association file. Android
 continues to open HTTPS invitations in the browser, whose button opens `zollybot://join`. Enabling
 verified Android App Links requires the release app-signing certificate's SHA-256 fingerprint,

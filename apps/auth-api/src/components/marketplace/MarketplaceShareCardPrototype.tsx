@@ -10,7 +10,7 @@ const AgentAvatar = lazy(() =>
 );
 
 /*
- * Prototype of the image a shared `openbot.run/marketplace/agents/<id>` link shows: 1200 × 630, the
+ * Prototype of the image a shared `zollybot.shifaul.dev/marketplace/agents/<id>` link shows: 1200 × 630, the
  * shape X, iMessage and Slack crop to. The background is flat, so the avatar's own colour is the only
  * colour on the card. The shield after the name marks a verified agent; the line under the role names
  * the creator, as the rows and pages do. The apps print the page title and the host beside the image,
@@ -21,7 +21,7 @@ const AgentAvatar = lazy(() =>
  * serves; how it is drawn is a later step.
  */
 
-const SHARE_HOST = "openbot.run";
+const SHARE_HOST = "zollybot.shifaul.dev";
 
 function shareTitle(agent: MarketplaceAgentSummary): string {
   return `${agent.name} — ZollyBot agent`;

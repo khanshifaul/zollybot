@@ -14,7 +14,7 @@ export * from './Mex'
 import type { AuthenticationState } from './Auth'
 import type { SocketConfig } from './Socket'
 
-// OPENBOT PATCH: no default Signal repository (the libsignal one was removed), so the caller passes one.
+// ZOLLYBOT PATCH: no default Signal repository (the libsignal one was removed), so the caller passes one.
 export type UserFacingSocketConfig = Partial<SocketConfig> & {
 	auth: AuthenticationState
 	makeSignalRepository: SocketConfig['makeSignalRepository']

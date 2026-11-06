@@ -98,7 +98,7 @@ export function redirectIncomingLink(path: string, initial: boolean): string | n
   // Expo Go and ordinary internal routes retain Expo Router's normal behavior.
   if (/^exps?:\/\//u.test(path)) return path;
   if (path.startsWith("/") && !path.startsWith("//")) {
-    const url = new URL(path, "https://openbot.run");
+    const url = new URL(path, "https://zollybot.shifaul.dev");
     if (
       url.pathname !== "/join" &&
       !url.pathname.startsWith("/plugins/") &&

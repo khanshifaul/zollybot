@@ -2,7 +2,7 @@ import { SKILL_CATEGORIES, type SkillCategory } from "@zollybot/contracts/ipc-sk
 import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 
 /*
- * The public Marketplace on openbot.run. One address for each tab, category, search and listing:
+ * The public Marketplace on zollybot.shifaul.dev. One address for each tab, category, search and listing:
  *
  *   /marketplace                    Agents
  *   /marketplace?category=coding    one category (also on Skills)

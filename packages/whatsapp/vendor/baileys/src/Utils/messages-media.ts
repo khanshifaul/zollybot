@@ -595,7 +595,7 @@ export const downloadEncryptedContent = async (
 
 	let remainingBytes = Buffer.from([])
 
-	let aes: Crypto.Decipheriv // OPENBOT PATCH: @types/node 24 has no Decipher
+	let aes: Crypto.Decipheriv // ZOLLYBOT PATCH: @types/node 24 has no Decipher
 
 	const pushBytes = (bytes: Buffer, push: (bytes: Buffer) => void) => {
 		if (startByte || endByte) {

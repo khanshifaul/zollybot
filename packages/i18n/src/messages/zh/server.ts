@@ -551,7 +551,7 @@ export const messages = {
   "server.update.path.container":
     "在 Docker 主机上拉取新的 ZollyBot 镜像，并使用相同的数据卷重新创建容器。请先等待进行中的工作结束。保留原有数据卷，以免数据丢失。",
   "server.update.path.manual":
-    "该安装方式无法自我更新。请联系主机管理员从 github.com/nightly-labs/openbot/releases 安装兼容版本，并保留现有的 ZollyBot 数据。",
+    "该安装方式无法自我更新。请联系主机管理员从 github.com/khanshifaul/zollybot/releases 安装兼容版本，并保留现有的 ZollyBot 数据。",
   "server.update.path.unavailable": "这是开发构建。请使用已安装的 ZollyBot 正式版本检查更新。",
   "server.update.check": "检查更新",
   "server.update.start": "空闲时更新",

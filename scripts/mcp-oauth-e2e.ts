@@ -729,7 +729,7 @@ async function proxyCases(auth: Awaited<ReturnType<typeof startAuthorizationServ
       name: "zollybot",
       title,
       version: "9.9.9-e2e",
-      websiteUrl: "https://openbot.run",
+      websiteUrl: "https://zollybot.shifaul.dev",
     });
     assert.deepEqual(resource.clients.at(-1), zollybotClient("ZollyBot"));
     assert.ok(upstream.every((hit) => hit.userAgent === "ZollyBot/9.9.9-e2e"));

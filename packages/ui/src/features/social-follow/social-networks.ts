@@ -17,10 +17,10 @@ export interface SocialNetwork {
 
 export const SOCIAL_NETWORKS: Record<SocialNetworkId, SocialNetwork> = {
   x: { id: "x", name: "X", handle: "@ZollyBot_", kind: "profile", compose: "text" },
-  threads: { id: "threads", name: "Threads", handle: "@openbot.run", kind: "profile", compose: "text" },
+  threads: { id: "threads", name: "Threads", handle: "@zollybot.shifaul.dev", kind: "profile", compose: "text" },
   linkedin: { id: "linkedin", name: "LinkedIn", handle: "ZollyBot", kind: "profile", compose: "link" },
   reddit: { id: "reddit", name: "Reddit", handle: "r/ZollyBot_", kind: "community", compose: "text" },
-  instagram: { id: "instagram", name: "Instagram", handle: "@openbot.run", kind: "profile", compose: "copy" },
-  tiktok: { id: "tiktok", name: "TikTok", handle: "@openbot.run", kind: "profile", compose: "copy" },
+  instagram: { id: "instagram", name: "Instagram", handle: "@zollybot.shifaul.dev", kind: "profile", compose: "copy" },
+  tiktok: { id: "tiktok", name: "TikTok", handle: "@zollybot.shifaul.dev", kind: "profile", compose: "copy" },
   facebook: { id: "facebook", name: "Facebook", handle: "ZollyBot", kind: "profile", compose: "link" },
 };

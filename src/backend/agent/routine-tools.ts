@@ -107,7 +107,7 @@ export interface ZollyBotToolResponse {
   contentItems: Array<{ type: "inputText"; text: string }>;
 }
 
-export function openBotToolResult(value: unknown): ZollyBotToolResponse {
+export function zollyBotToolResult(value: unknown): ZollyBotToolResponse {
   return {
     success: true,
     contentItems: [{ type: "inputText", text: JSON.stringify(value) }],
@@ -121,7 +121,7 @@ export function openBotToolResult(value: unknown): ZollyBotToolResponse {
  * give up on. `claude-client.ts` maps `success: false` onto `isError: true`, so both provider paths
  * show this as a failed tool call with the reason attached.
  */
-export function openBotToolFailure(message: string): ZollyBotToolResponse {
+export function zollyBotToolFailure(message: string): ZollyBotToolResponse {
   return {
     success: false,
     contentItems: [{ type: "inputText", text: JSON.stringify({ error: message }) }],

@@ -150,7 +150,7 @@ export function StorageOverview(props: StorageOverviewProps) {
           <div class="storage-summary-heading">
             <div>
               <h3 id={`${headingId}-summary`} class="storage-summary-label">
-                {t("files.storage.openBotOn", { host: props.hostName })}
+                {t("files.storage.zollyBotOn", { host: props.hostName })}
               </h3>
               <Show
                 when={props.state !== "scanning" || total() > 0}

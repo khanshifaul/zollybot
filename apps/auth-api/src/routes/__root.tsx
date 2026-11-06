@@ -11,7 +11,7 @@ import { type RootPageText, rootPageText } from "../components/transactional/pag
 import { loadPageText, type PageText } from "../lib/page-text";
 import { requestLocale } from "../lib/request-locale";
 import { servingSiteUrl } from "../lib/serving-site-url";
-import { openBotRootHead, ZOLLYBOT_SECURITY_HEADERS } from "../lib/site-metadata";
+import { ZOLLYBOT_SECURITY_HEADERS, zollyBotRootHead } from "../lib/site-metadata";
 
 const NOT_FOUND_TITLE = "Page not found · ZollyBot";
 
@@ -25,7 +25,7 @@ export const Route = createRootRoute({
   // its own, so the root head gives it its title. A child route's own title still wins. The 404 page
   // is English only, so its title is English too.
   head: ({ matches }) => {
-    const head = openBotRootHead(interLatinFont);
+    const head = zollyBotRootHead(interLatinFont);
     if (!matches.some((match) => match._notFound)) return head;
     return { ...head, meta: head.meta.map((tag) => ("title" in tag ? { title: NOT_FOUND_TITLE } : tag)) };
   },

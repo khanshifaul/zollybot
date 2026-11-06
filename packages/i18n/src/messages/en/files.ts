@@ -57,7 +57,7 @@ export const messages = defineMessages("files", {
   "files.storage.allFiles": "All files",
   "files.storage.allFilesOn": "All files on {host}",
   "files.storage.allFilesDescription": "Files of all agents and chats",
-  "files.storage.openBotOn": "ZollyBot on {host}",
+  "files.storage.zollyBotOn": "ZollyBot on {host}",
   "files.storage.measuring": "Measuring…",
   "files.storage.measureAgain": "Measure again",
   "files.storage.measuringStorage": "Measuring storage",

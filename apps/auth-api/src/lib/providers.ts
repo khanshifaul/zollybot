@@ -22,7 +22,7 @@ export const PROVIDERS_COLLECTION: ContentCollection<"providers"> = {
   feedTitle: "ZollyBot providers",
   backLabel: "All providers",
   moreTitle: "More providers",
-  imageEyebrow: "OPENBOT · PROVIDERS",
+  imageEyebrow: "ZOLLYBOT · PROVIDERS",
   articles: publishedFirst([
     {
       slug: "claude-code",

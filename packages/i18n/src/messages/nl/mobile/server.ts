@@ -1048,7 +1048,7 @@ export const messages = {
   "mobile.server.update.path.container":
     "Haal op de Docker-host de nieuwe ZollyBot-image op en maak de container opnieuw met dezelfde datavolumes. Wacht eerst tot actief werk klaar is. Houd de bestaande volumes om je gegevens te bewaren.",
   "mobile.server.update.path.manual":
-    "Deze installatie kan zichzelf niet vervangen. Vraag de hostbeheerder de compatibele release van github.com/nightly-labs/openbot/releases te installeren. Houd de bestaande ZollyBot-gegevens.",
+    "Deze installatie kan zichzelf niet vervangen. Vraag de hostbeheerder de compatibele release van github.com/khanshifaul/zollybot/releases te installeren. Houd de bestaande ZollyBot-gegevens.",
   "mobile.server.update.path.unavailable":
     "Dit is een ontwikkelbuild. Gebruik een geïnstalleerde ZollyBot-release om naar updates te zoeken.",
   "mobile.server.update.check": "Zoek naar updates",

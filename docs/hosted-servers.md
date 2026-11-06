@@ -64,7 +64,7 @@ when a server is idle or boat stops a sandbox; and `error` and `deleted`. The Wo
    renews on the same day as the server ([Commercial license](architecture/servers.md#commercial-license)).
    While the license promotion (`LICENSE_TRIAL_END`) runs, the page has the server line only, and the
    license starts with a free trial until the promotion ends.
-   Refunds are by email only: email licenses@openbot.run within 24 hours of the first payment for a
+   Refunds are by email only: email licenses@zollybot.shifaul.dev within 24 hours of the first payment for a
    refund less a €3 / $3.60 / 13.20 zł fee, once per account. There are no refunds for later changes.
    The desktop main process opens the URL only when it is an `https://checkout.stripe.com` URL; the
    renderer never gets it. The web client goes to the page in the same tab, and Stripe returns to
@@ -594,7 +594,7 @@ it. A release without all of its `resources/hosting` files cannot update a serve
 A server that has no updater, such as one made from a template before 0.26.0, needs one upgrade by
 hand. With a boat key that has command and file access: upload `scripts/hosting/` to
 `/tmp/zollybot-upgrade`, run `sudo systemctl stop zollybot.service`, run `sudo bash /tmp/zollybot-upgrade/provision.sh user <AppImage URL> <SHA-256>
-https://api.openbot.run` as a detached command, and start the service again. The data in the home
+https://api.zollybot.shifaul.dev` as a detached command, and start the service again. The data in the home
 folder and in `/srv` stays.
 
 On a server, `zollybot-hosted-server` starts a D-Bus session, unlocks a gnome-keyring with a

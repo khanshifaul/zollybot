@@ -6,7 +6,7 @@ const meta = {
   component: QrCode,
   args: {
     value:
-      "zollybot://mobile-connect?api=https%3A%2F%2Fapi.openbot.run&ticket=storybook-mobile-ticket_1234567890abcdef",
+      "zollybot://mobile-connect?api=https%3A%2F%2Fapi.zollybot.shifaul.dev&ticket=storybook-mobile-ticket_1234567890abcdef",
     label: "Example Mobile Connect QR code",
   },
   parameters: { layout: "centered", a11y: { test: "error" } },

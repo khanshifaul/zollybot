@@ -1,4 +1,4 @@
-// Adapted from the report in nightly-labs/openbot#3824: "Gemini shows MCP errors for cloudflare and
+// Adapted from the report in nightly-labs/zollybot#3824: "Gemini shows MCP errors for cloudflare and
 // higgsfield servers". An agent saved an http MCP server that asks for a sign-in ZollyBot does not
 // hold. ZollyBot gives such a row to the provider as written, the server answers 401, and Antigravity
 // ends every turn with "The MCP server 'higgsfield' failed to initialize". Other providers start

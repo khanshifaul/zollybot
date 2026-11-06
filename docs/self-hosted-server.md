@@ -2,7 +2,7 @@
 
 A self-hosted server is the Linux ZollyBot build on your own computer with no screen: a VPS, a home
 server or a cloud VM. It is a normal Remote host of your account. You use it from the desktop app,
-the iPhone app or `openbot.run/app`, as you use a [hosted server](hosted-servers.md). You install
+the iPhone app or `zollybot.shifaul.dev/app`, as you use a [hosted server](hosted-servers.md). You install
 and control it from a terminal.
 
 To run it in a container, see [Docker](docker.md).
@@ -12,7 +12,7 @@ To run it in a container, see [Docker](docker.md).
 On Ubuntu 24.04 or 26.04 (x86_64 or arm64) with systemd:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/nightly-labs/openbot/main/scripts/install-server.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/nightly-labs/zollybot/main/scripts/install-server.sh | sudo bash
 sudo zollybot login
 ```
 
@@ -58,7 +58,7 @@ sign in to ZollyBot with that email, the server is in their server list.
 
 ```sh
 printf '{"email":"%s"}' owner@example.com |
-  curl --fail -sS -X POST https://api.openbot.run/v2/admin/server-claims \
+  curl --fail -sS -X POST https://api.zollybot.shifaul.dev/v2/admin/server-claims \
     -H @server-claims.header -H 'content-type: application/json' --data-binary @- |
   sed -n 's/.*"claim":"\([A-Za-z0-9_-]*\)".*/\1/p' |
   sudo zollybot login --claim --name <name>

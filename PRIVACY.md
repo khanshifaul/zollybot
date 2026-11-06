@@ -186,7 +186,7 @@ send only lengths, times, counts, the chosen voice (for example `F1`), whether t
 remote, and whether speech recognition runs on the computer or in the cloud. They never send what
 the user said, the reply, a transcript, or audio.
 
-The production browser client at `/app` on `https://openbot.run` records the same product events
+The production browser client at `/app` on `https://zollybot.shifaul.dev` records the same product events
 as the desktop app, with the same limits, and labels them as web. When its **Link analytics to my
 account** setting in account settings is off, these events and the error reports are anonymous. They
 carry only the random install ID that "Install ID" describes, and no name, email or account. When the
@@ -229,21 +229,21 @@ platform name (or unknown), and the referring domain when available. A recognize
 takes precedence over the referring domain for platform classification; unrecognized tags are not
 sent. Attribution excludes referrer paths, query parameters, fragments, credentials, ports, and
 campaign URLs other than the allowlisted tags described above. Website page and article events carry
-the path of a news article, guide or comparison published on openbot.run, together with the collection name, the
+the path of a news article, guide or comparison published on zollybot.shifaul.dev, together with the collection name, the
 reading position reached (start, half, or end), and the section of the page a link was clicked in.
 That path is a published article address and nothing else: it is matched against the site's own list
 of articles, so no other part of a visited URL can be reported through it. Reading position is taken
-from where the article sits on screen, never from how long it was open. Referrals from openbot.run and its subdomains are omitted.
+from where the article sits on screen, never from how long it was open. Referrals from zollybot.shifaul.dev and its subdomains are omitted.
 The production website also saves the first visit of the browser in its `localStorage`: the source
 category, the platform name, the first website page, the day, and the allowlisted campaign tags.
 It saves no referrer, IP address or identifier. A later visit does not change it, and it is not used
 after 90 days. When you sign in on the web, or open the page after a desktop checkout in the same
 browser, the browser sends it to the account service. The account service keeps the first one that
 it gets on your account and sends it to OpenPanel with your account ID. To remove it from a
-browser, clear the site data of openbot.run. OpenPanel can also derive
+browser, clear the site data of zollybot.shifaul.dev. OpenPanel can also derive
 session, device, browser, operating-system, network, and approximate geographic metadata from a
 request. The analytics service runs on ZollyBot's self-hosted infrastructure and receives events
-through `analytics.openbot.run`.
+through `analytics.zollybot.shifaul.dev`.
 Desktop and web installs from before the first-run analytics box keep analytics on. On a new desktop
 install, and at web sign-in with no saved choice, the **Help make ZollyBot better** box starts ticked
 only when both the region (of the system on desktop, of the browser language on web) and the time
@@ -366,9 +366,9 @@ of the account, the email, the device name or the hardware, and ZollyBot does no
 events to an account. The events and their limits are the same as above, with one exception: the
 local host sends the **Websites**, **Tools** and **Setup** records only when analytics is on.
 The desktop app and the local host keep the ID in a file in the app data folder, the browser app in
-the `localStorage` of openbot.run, and the mobile app in the phone's keychain. At the first start
+the `localStorage` of zollybot.shifaul.dev, and the mobile app in the phone's keychain. At the first start
 after 13 months, a new ID replaces it. Deleting the desktop app data or the site data of
-openbot.run also makes a new ID. When the device cannot save the ID, it sends no events without an
+zollybot.shifaul.dev also makes a new ID. When the device cannot save the ID, it sends no events without an
 account. OpenPanel still derives session, device, browser, operating-system, network, and approximate
 geographic metadata from each request, as for other events. Because the session comes from the
 network and the browser, on the day that you turn analytics off, OpenPanel can show the last events
@@ -685,12 +685,12 @@ provider receives the recipient address and the message content. A sign-in messa
 one-time code and its expiration time. A team invitation can contain the inviter address, team name,
 role, and invite URL. When the first cloud server plan of an account starts, a welcome message goes
 to the account address. It contains the plan name and the server name. License messages go to the
-account address from `licenses@openbot.run` through the same provider. When a license has its first
+account address from `licenses@zollybot.shifaul.dev` through the same provider. When a license has its first
 payment, the message contains the license tier, the number of users, the list price when no discount
 applies, the currency, the billing period, and the date of the next payment. When a renewal payment fails, the message contains
 the license tier, the number of users, the amount due, the currency, the date of the next payment
 try, and the link to the Stripe page of the invoice. When a paid license ends, the message contains
-the license tier, the number of users, and whether it ended after a failed payment. The HTML version of a message loads the ZollyBot logo from `openbot.run` when
+the license tier, the number of users, and whether it ended after a failed payment. The HTML version of a message loads the ZollyBot logo from `zollybot.shifaul.dev` when
 the mail client shows images. The image address is the same in every message and identifies no
 recipient.
 
@@ -699,7 +699,7 @@ is spent, Cloudflare Email Service sends the same message instead. It then recei
 recipient address and message content as the SMTP provider. ZollyBot does not use it after an
 unconfirmed SMTP send, so you do not get the same message twice.
 
-The contact form on `openbot.run/contact` sends your message to the ZollyBot mailbox through the same
+The contact form on `zollybot.shifaul.dev/contact` sends your message to the ZollyBot mailbox through the same
 SMTP provider. The message contains the email address, topic and text that you enter, and the name and
 company when you enter them. The account service stores none of these values. To limit how many
 messages one address can send, it keeps a hash of your IP address in its rate-limit records. The ZollyBot team receives the message
@@ -716,7 +716,7 @@ computer answers each chat; see [Telegram connections](#telegram-connections). C
 email provider can keep their own security, delivery, and network logs under their own policies. These provider logs are outside the
 ZollyBot application database and its daily maintenance task.
 
-The public status page at `status.openbot.run` is on GitHub Pages. GitHub serves it and keeps its
+The public status page at `status.zollybot.shifaul.dev` is on GitHub Pages. GitHub serves it and keeps its
 own request logs under its own policy. The page has no analytics and no cookies, and it loads
 nothing from other sites. A GitHub Actions workflow checks the ZollyBot services about every 5 minutes
 with plain requests that carry no account or user data. Incidents on the page come from issues
@@ -994,8 +994,8 @@ Network traffic can also occur when:
   `User-Agent: ZollyBot/<version>` and, when a session starts, the client name `zollybot`, the
   ZollyBot version and the title `<agent name> (ZollyBot)`, so the server can show which agent made a
   change. Nothing else about the user's agents, conversations or files is sent in those requests. The
-  registration names ZollyBot's logo at `openbot.run`; an authorization service that shows it on its
-  sign-in page can make the browser load it from `openbot.run`;
+  registration names ZollyBot's logo at `zollybot.shifaul.dev`; an authorization service that shows it on its
+  sign-in page can make the browser load it from `zollybot.shifaul.dev`;
 - the user presses Install on the 1Password page. ZollyBot downloads the 1Password CLI release that it
   pins from `cache.agilebits.com`, checks its SHA-256, and keeps it in
   `~/Library/Application Support/ZollyBot/provider-state/1password-cli`. The request carries no user
@@ -1065,7 +1065,7 @@ Network traffic can also occur when:
   address that GitHub gives, on GitHub's image host. Agents then reach the
   GitHub MCP server at `api.githubcopilot.com` and GitHub itself through `gh` and `git`, with that
   token. So that GitHub shows the ZollyBot app as the author of an agent's work, ZollyBot sends that
-  token to the central account service (`api.openbot.run`) about once an hour, and when you open the
+  token to the central account service (`api.zollybot.shifaul.dev`) about once an hour, and when you open the
   repository list. The service uses it
   only to ask GitHub which repositories you can push to, and gets back short-lived installation
   tokens for those repositories. It does not store or log either token, and it gets no chats, files
@@ -1086,7 +1086,7 @@ Network traffic can also occur when:
   `dl.google.com` (for the download size) for Gemini, and the same registry and
   `downloads.cursor.com` (for the download size) for Cursor, `static.devin.ai` (the manifest, and the
   download size) for Devin, and it reads a list of blocked
-  versions from `raw.githubusercontent.com/nightly-labs/openbot`. These requests contain no account, agent,
+  versions from `raw.githubusercontent.com/nightly-labs/zollybot`. These requests contain no account, agent,
   conversation or file data;
 - an agent shows a visual reply, an agent checks its page with `html_preview`, or a user opens an
   HTML attachment, shared file or workspace file in the file preview. The page is HTML that the
@@ -1154,7 +1154,7 @@ graph, or ID.
   64,000 characters. The body, marked as data, is the trigger's output and goes to the next steps.
   Remove the trigger, or delete the workflow, to stop its URL.
 - **GitHub triggers** receive the events of the ZollyBot GitHub App: issues, comments, pull requests,
-  reviews and checks. GitHub sends each event to ZollyBot's Signal service (`signal.openbot.run`).
+  reviews and checks. GitHub sends each event to ZollyBot's Signal service (`signal.zollybot.shifaul.dev`).
   Signal checks GitHub's signature, reads only the installation and repository IDs, and passes the
   event to every computer that watches the repository, in transit only: it does not store or log it.
   When the Signal connection opens, the computer sends the account service its GitHub sign-in and the
@@ -1203,7 +1203,7 @@ ZollyBot account that connected it, and the Slack app and bot user IDs. It keeps
 message. It gives the bot token to the computer encrypted to a key that only that computer has.
 
 Slack sends the workspace's events, which contain the Slack messages in the channels ZollyBot is in
-and its direct messages, to ZollyBot's Signal service (`signal.openbot.run`). Signal checks Slack's
+and its direct messages, to ZollyBot's Signal service (`signal.zollybot.shifaul.dev`). Signal checks Slack's
 signature and reads only the app ID and the workspace ID, to find the computer, and the type,
 channel type, thread and bot ID of the event, to know whether it addresses ZollyBot. It passes each
 request to that computer over its Signal connection, in transit only: it does not store or log the
@@ -1247,7 +1247,7 @@ because the app's secret lives there, and revokes the Discord sign-in token that
 records which ZollyBot computer answers the Discord server: the Discord server ID, the computer and the
 ZollyBot account that connected it. It keeps no Discord token and no message.
 
-Discord has one bot token for every server, so only ZollyBot's Signal service (`signal.openbot.run`)
+Discord has one bot token for every server, so only ZollyBot's Signal service (`signal.zollybot.shifaul.dev`)
 holds it. Unlike Slack, both directions go through Signal:
 
 - **To the computer.** Signal keeps the bot's connection to Discord. Discord sends it the messages of
@@ -1293,7 +1293,7 @@ has, so Signal cannot read it; a restart of Signal deletes it.
 ## Telegram connections
 
 One ZollyBot Telegram bot serves every user. Its token is only in ZollyBot's Signal service
-(`signal.openbot.run`); no computer has it. The user connects a chat from ZollyBot on their computer:
+(`signal.zollybot.shifaul.dev`); no computer has it. The user connects a chat from ZollyBot on their computer:
 the account service gives a one-use code, and the browser opens a `t.me` link with it. When the user
 adds the bot to a group, or starts a direct chat with it, Telegram sends the code in that chat.
 Signal then asks the account service to link the chat to the computer. The account service records
@@ -1342,7 +1342,7 @@ access the user gave them. A hosted server that sleeps starts for a message that
 Signal keeps that message in memory for at most 10 minutes, encrypted to a key that only that server
 has, so Signal cannot read it; a restart of Signal deletes it.
 
-Plugin pages on openbot.run show each listing's own icon. The page asks `openbot.run` for that
+Plugin pages on zollybot.shifaul.dev show each listing's own icon. The page asks `zollybot.shifaul.dev` for that
 picture, and the website fetches it there from the address the plugin catalog holds, so reading a
 plugin page does not connect your browser to the plugin developer's servers.
 
@@ -1456,7 +1456,7 @@ Review folders before deleting them and keep a backup of anything you need.
 
 ## Questions
 
-Use [GitHub Discussions](https://github.com/nightly-labs/openbot/discussions) for privacy questions.
+Use [GitHub Discussions](https://github.com/khanshifaul/zollybot/discussions) for privacy questions.
 Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md), without attaching
 credentials, conversations, or unrelated private files.
 
@@ -1475,7 +1475,7 @@ secrets from these steps first. Command output can contain file contents. Reason
 attachment contents are not sent.
 
 Publishing an agent template from the chat makes its instructions, skills, and routines public to
-anyone with the link at `openbot.run/agents/<id>`, with your account name as the creator. ZollyBot
+anyone with the link at `zollybot.shifaul.dev/agents/<id>`, with your account name as the creator. ZollyBot
 stops the publish when a text field looks like a secret. Workspace files and memories are not sent.
 An owner or admin of a server can also publish, update or unpublish an agent of that server from the
 browser client. The host sends the template content and the agent's avatar to that browser for the

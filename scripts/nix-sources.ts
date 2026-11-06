@@ -19,7 +19,7 @@ type NixSources = typeof NixSources.Type;
 const decodePackageJson = Schema.decodeUnknownSync(Schema.fromJsonString(Schema.Struct({ version: Schema.String })));
 const decodeSources = Schema.decodeUnknownSync(Schema.fromJsonString(NixSources));
 
-const repository = process.env.GITHUB_REPOSITORY ?? "nightly-labs/openbot";
+const repository = process.env.GITHUB_REPOSITORY ?? "nightly-labs/zollybot";
 const root = resolve(import.meta.dir, "..");
 const sourcesPath = resolve(root, "nix/sources.json");
 

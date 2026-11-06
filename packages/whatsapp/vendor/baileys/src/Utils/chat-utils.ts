@@ -30,7 +30,7 @@ type FetchAppStateSyncKey = (keyId: string) => Promise<proto.Message.IAppStateSy
 
 export type ChatMutationMap = { [index: string]: ChatMutation }
 
-// OPENBOT PATCH: expandAppStateKeys came from whatsapp-rust-bridge (AGPL-3.0 code). Baileys 6.7.24 (MIT).
+// ZOLLYBOT PATCH: expandAppStateKeys came from whatsapp-rust-bridge (AGPL-3.0 code). Baileys 6.7.24 (MIT).
 const mutationKeys = (keydata: Uint8Array) => {
 	const expanded = hkdf(keydata, 160, { info: 'WhatsApp Mutation Keys' })
 	return {

@@ -59,7 +59,7 @@ export const messages = {
   "files.storage.allFiles": "すべてのファイル",
   "files.storage.allFilesOn": "{host} のすべてのファイル",
   "files.storage.allFilesDescription": "すべてのエージェントとチャットのファイル",
-  "files.storage.openBotOn": "{host} の ZollyBot",
+  "files.storage.zollyBotOn": "{host} の ZollyBot",
   "files.storage.measuring": "計測中…",
   "files.storage.measureAgain": "もう一度計測",
   "files.storage.measuringStorage": "ストレージを計測しています",

@@ -24,7 +24,7 @@ concurrency:
 jobs:
   report:
     name: Compare the newest release
-    if: github.repository == 'nightly-labs/openbot'
+    if: github.repository == 'nightly-labs/zollybot'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: analytics

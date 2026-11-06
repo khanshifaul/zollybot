@@ -170,7 +170,7 @@ async function main(): Promise<void> {
     const fixtureCopied = run("docker", ["cp", `${fixture}/.`, `${dind}:/fixture`]);
     if (fixtureCopied.status !== 0) throw new Error(`The instance fixture did not copy: ${fixtureCopied.stderr}`);
     must(`mkdir -p /stand-in && cat >/stand-in/Dockerfile <<'EOF'\n${standIn}EOF`);
-    must("docker build --quiet --tag ghcr.io/nightly-labs/openbot:latest /stand-in >/dev/null");
+    must("docker build --quiet --tag ghcr.io/nightly-labs/zollybot:latest /stand-in >/dev/null");
 
     // The layout of `zollybot-instance create`, without systemd: an ext4 image mounted as /data.
     must(`mkdir -p /srv/zollybot/main/data /backups
@@ -179,7 +179,7 @@ async function main(): Promise<void> {
       mount -o loop /srv/zollybot/main/data.img ${data}
       cp -a /fixture/. ${data}/ && chown -R 1000:1000 ${data} && chmod 0700 ${data}
       printf 'ZOLLYBOT_NAME=main\\nZOLLYBOT_CPUS=1\\nZOLLYBOT_MEM=1g\\nZOLLYBOT_DISK=256M\\nZOLLYBOT_BACKUP_DIR=/backups\\nZOLLYBOT_BACKUP_KEEP=2\\nZOLLYBOT_BACKUP_MAX_AGE=24\\n' >/opt/zollybot-docker/instances/main.env
-      docker run --detach --name zollybot-main --stop-timeout 20 -v ${data}:/data ghcr.io/nightly-labs/openbot:latest >/dev/null`);
+      docker run --detach --name zollybot-main --stop-timeout 20 -v ${data}:/data ghcr.io/nightly-labs/zollybot:latest >/dev/null`);
     const dataHash = must(`sha256sum ${data}/.config/ZollyBot/zollybot.db | cut -d ' ' -f 1`);
 
     let result = instance("backups", "main");
@@ -439,7 +439,7 @@ async function main(): Promise<void> {
       `sed -n 's/^  "zollybotVersion": "\\(.*\\)",$/\\1/p' /backups/main/${removedBackup}/manifest.json`,
     );
     must(
-      `docker run --detach --name zollybot-main --stop-timeout 20 -v ${data}:/data ghcr.io/nightly-labs/openbot:latest >/dev/null`,
+      `docker run --detach --name zollybot-main --stop-timeout 20 -v ${data}:/data ghcr.io/nightly-labs/zollybot:latest >/dev/null`,
     );
     check(
       "a backup without a container has the version of the image",

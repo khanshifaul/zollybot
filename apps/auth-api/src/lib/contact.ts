@@ -4,7 +4,7 @@
 export const CONTACT_ROUTE = "/contact";
 
 /** The mailbox that receives each message. The form also names it for people who prefer email. */
-export const CONTACT_EMAIL = "hello@openbot.run";
+export const CONTACT_EMAIL = "hello@zollybot.shifaul.dev";
 
 export const CONTACT_TOPICS = [
   { id: "setup", label: "Custom setup" },

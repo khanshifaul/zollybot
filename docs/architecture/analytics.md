@@ -9,7 +9,7 @@ first buffered event. The next account claims this buffer; identify precedes ord
 original timestamps. Reconnects do not replay it. Expiry, opt-out, and process exit discard it.
 Account changes invalidate prior operation scopes; the anonymous-to-account transition retains the
 pairing scope so its completion can be recorded. Mobile uses a write-only client in the existing
-Openbot OpenPanel project shared with desktop and the website.
+Zollybot OpenPanel project shared with desktop and the website.
 Workspace command wrappers record outcomes once at the mobile caller; conversation availability is measured in
 the visible chat view, including cached reads, not from background broadcasts. The host remains the only source of turn lifecycle
 events. No Team API or database schema changes are required.
@@ -24,7 +24,7 @@ semantics and native verification steps are in [the mobile README](../../apps/mo
 ## Website analytics
 
 Public website tracking lives in `apps/auth-api/src/lib/analytics.ts`. It runs only on the
-production `openbot.run` hostname. Landing and invitation events carry a bounded
+production `zollybot.shifaul.dev` hostname. Landing and invitation events carry a bounded
 `source_platform`, the existing `acquisition_source` category, and a domain-only referrer.
 
 A recognized `utm_source` tag takes precedence over the referring domain. Exact domain and

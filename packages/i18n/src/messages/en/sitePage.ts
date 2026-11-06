@@ -99,7 +99,7 @@ export const messages = defineMessages("sitePage", {
   "sitePage.pricing.enterprise.body":
     "Larger servers, more than {count} members, or anything else you need. With enterprise support.",
   "sitePage.pricing.enterprise.contact": "Contact sales",
-  // The public Marketplace on openbot.run. The tab and category names are the app's `marketplace.*` keys.
+  // The public Marketplace on zollybot.shifaul.dev. The tab and category names are the app's `marketplace.*` keys.
   "sitePage.marketplace.agents.title": "Agents — ZollyBot Marketplace",
   "sitePage.marketplace.agents.description":
     "Agents that people made in ZollyBot. Add one to ZollyBot with its skills and routines.",

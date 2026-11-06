@@ -79,7 +79,7 @@ export const messages = {
   "billing.license.description": "用于公司内的工作，不包含服务器。",
   "billing.license.loadFailed": "无法加载许可证。",
   "billing.license.actionFailed": "无法更改许可证。",
-  "billing.license.contactSales": "如需了解更多信息，请联系 licenses@openbot.run。",
+  "billing.license.contactSales": "如需了解更多信息，请联系 licenses@zollybot.shifaul.dev。",
   "billing.license.saving": "正在保存…",
   "billing.license.personal.title": "个人使用",
   "billing.license.personal.description": "非商业用途免费。",

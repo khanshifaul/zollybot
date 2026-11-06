@@ -95,7 +95,7 @@ function AddServerFlow(props: FlowProps) {
         </Heading>
         <Text tone="muted">Click the plus button in the server rail to add a server.</Text>
         <Show when={contactNote()}>
-          <Text tone="muted">"Contact us" was clicked. The app opens an email to hello@openbot.run here.</Text>
+          <Text tone="muted">"Contact us" was clicked. The app opens an email to hello@zollybot.shifaul.dev here.</Text>
         </Show>
         <Show when={manageNote()}>
           <Text tone="muted">"Manage servers" was clicked. The app opens the list of hosted servers here.</Text>
@@ -144,7 +144,7 @@ function AddServerFlow(props: FlowProps) {
               ...serverDefaults(),
               id: pending().id,
               name: pending().name,
-              apiUrl: `https://${pending().id}.hosted.openbot.run`,
+              apiUrl: `https://${pending().id}.hosted.zollybot.shifaul.dev`,
               role: "owner",
             })
           }

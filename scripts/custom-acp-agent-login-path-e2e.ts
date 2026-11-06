@@ -1,4 +1,4 @@
-// Adapted from the reproduction in nightly-labs/openbot#1824.
+// Adapted from the reproduction in nightly-labs/zollybot#1824.
 // A custom ACP agent whose interpreter is only on the user's login-shell PATH, with ZollyBot started
 // the way Finder, the Dock or a login item starts it: PATH=/usr/bin:/bin:/usr/sbin:/sbin.
 // Most ACP adapters are `#!/usr/bin/env node` scripts and Node comes from Homebrew, nvm or mise, so

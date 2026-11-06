@@ -11,7 +11,7 @@ import {
 } from "@zollybot/contracts/ipc";
 import { sourceText } from "@zollybot/i18n/source";
 import { Deferred, Effect, Result, Schema, type Scope } from "effect";
-import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "../agent/routine-tools";
+import { type ZollyBotToolResponse, zollyBotToolFailure, zollyBotToolResult } from "../agent/routine-tools";
 import type { AttachmentOperationError } from "../attachment-effects";
 import { causeHelpers } from "../effect-boundary";
 import type { DeliveryContext, MailboxStore, MessagingOrigin } from "../mailbox-store";
@@ -441,10 +441,10 @@ export class MessagingThreads {
     openFiles: (paths: string[]) => Effect.Effect<MessagingAnswerFile[], AttachmentOperationError>,
   ): Effect.fn.Return<ZollyBotToolResponse, AttachmentOperationError> {
     const call = parseMessagingOutboundTool(tool, args);
-    if ("error" in call) return openBotToolFailure(call.error);
+    if ("error" in call) return zollyBotToolFailure(call.error);
     const enabled = this.store.connections().filter((record) => record.enabled);
     if (call.tool === "messaging_list_places" && !call.connection)
-      return openBotToolResult({
+      return zollyBotToolResult({
         connections: enabled.map((record) => ({
           connection: record.connectionId,
           platform: PLATFORM_NAMES[record.platform],
@@ -453,9 +453,9 @@ export class MessagingThreads {
       });
     const record = enabled.find((candidate) => candidate.connectionId === call.connection);
     if (!record)
-      return openBotToolFailure("No enabled connection has that id. Call zollybot.messaging_list_places for the ids.");
+      return zollyBotToolFailure("No enabled connection has that id. Call zollybot.messaging_list_places for the ids.");
     const outbound = this.#outbound;
-    if (!outbound) return openBotToolFailure(MESSAGING_NOT_RUNNING);
+    if (!outbound) return zollyBotToolFailure(MESSAGING_NOT_RUNNING);
     // No deadline on a post: one that ended late could be sent again by the agent.
     const answer =
       call.tool === "messaging_list_places"
@@ -469,7 +469,7 @@ export class MessagingThreads {
             call.text,
             call.files.length ? yield* openFiles(call.files) : [],
           );
-    return "error" in answer ? openBotToolFailure(answer.error) : openBotToolResult(answer);
+    return "error" in answer ? zollyBotToolFailure(answer.error) : zollyBotToolResult(answer);
   });
 
   /**
@@ -537,11 +537,11 @@ export class MessagingThreads {
     args: unknown,
   ): Effect.fn.Return<ZollyBotToolResponse> {
     const call = parseMessagingTool(tool, args);
-    if ("error" in call) return openBotToolFailure(call.error);
+    if ("error" in call) return zollyBotToolFailure(call.error);
     switch (call.tool) {
       case "messaging_remember": {
         if (link.isDirect)
-          return openBotToolFailure(
+          return zollyBotToolFailure(
             "A direct message is private. Facts from it are not saved for the whole workspace.",
           );
         const saved = Result.try(() =>
@@ -553,8 +553,8 @@ export class MessagingThreads {
           }),
         );
         if (Result.isFailure(saved))
-          return openBotToolFailure(saved.failure instanceof Error ? saved.failure.message : String(saved.failure));
-        return openBotToolResult({
+          return zollyBotToolFailure(saved.failure instanceof Error ? saved.failure.message : String(saved.failure));
+        return zollyBotToolResult({
           accepted: true,
           memoryId: saved.success.id,
           count: this.memories.count(link.connectionId),
@@ -563,8 +563,8 @@ export class MessagingThreads {
       }
       case "messaging_forget_memory":
         return this.memories.delete(link.connectionId, call.memoryId)
-          ? openBotToolResult({ accepted: true })
-          : openBotToolResult({ accepted: false, reason: "No saved fact of this workspace has that memoryId." });
+          ? zollyBotToolResult({ accepted: true })
+          : zollyBotToolResult({ accepted: false, reason: "No saved fact of this workspace has that memoryId." });
       case "messaging_history": {
         const source = this.#historySource;
         const history = source
@@ -575,9 +575,9 @@ export class MessagingThreads {
             )
           : null;
         if (!history)
-          return openBotToolFailure("The platform did not answer, or it limits reads now. Try again in a minute.");
-        if (!history.value) return openBotToolFailure(MESSAGING_NOT_RUNNING);
-        return openBotToolResult({
+          return zollyBotToolFailure("The platform did not answer, or it limits reads now. Try again in a minute.");
+        if (!history.value) return zollyBotToolFailure(MESSAGING_NOT_RUNNING);
+        return zollyBotToolResult({
           place: history.value.place,
           scope: call.scope,
           messages: boundedHistory(history.value.messages),

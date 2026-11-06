@@ -12,7 +12,7 @@
 //
 // It needs Docker and network access for the image, the Hermes installer and Bun. No account is used.
 //
-//   bun run test:hermes-server [-- --image ghcr.io/nightly-labs/openbot:0.60.0]
+//   bun run test:hermes-server [-- --image ghcr.io/nightly-labs/zollybot:0.60.0]
 //
 // The report is `.zollybot-build/hermes-server-e2e/report.json`.
 import assert from "node:assert/strict";
@@ -258,7 +258,7 @@ function startMockModel(requests: string[]) {
 }
 
 async function host(): Promise<void> {
-  const image = argument("--image") ?? "ghcr.io/nightly-labs/openbot:latest";
+  const image = argument("--image") ?? "ghcr.io/nightly-labs/zollybot:latest";
   const tag = randomBytes(4).toString("hex");
   const testImage = `zollybot-hermes-server-e2e:${tag}`;
   const volume = `zollybot-hermes-server-e2e-${tag}`;

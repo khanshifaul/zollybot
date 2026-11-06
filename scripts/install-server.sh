@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installs ZollyBot as a self-hosted server on a Linux computer with no screen:
 #
-#   curl -fsSL https://raw.githubusercontent.com/nightly-labs/openbot/main/scripts/install-server.sh | sudo bash
+#   curl -fsSL https://raw.githubusercontent.com/nightly-labs/zollybot/main/scripts/install-server.sh | sudo bash
 #
 # Options (after `sudo bash -s --`):
 #   --user <name>             The user that runs ZollyBot and its agents. Default: the user of the
@@ -19,7 +19,7 @@
 set -euo pipefail
 export LC_ALL=C DEBIAN_FRONTEND=noninteractive
 
-RELEASES=https://github.com/nightly-labs/openbot/releases
+RELEASES=https://github.com/khanshifaul/zollybot/releases
 service_user=""
 auth_api_url=""
 display_size=""
@@ -58,7 +58,7 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-[ "$(uname -s)" = Linux ] || fail "This install is for Linux. Download the desktop app at https://openbot.run."
+[ "$(uname -s)" = Linux ] || fail "This install is for Linux. Download the desktop app at https://zollybot.shifaul.dev."
 [ "$(id -u)" -eq 0 ] || fail "Run this with sudo."
 [ -d /run/systemd/system ] || fail "ZollyBot needs systemd."
 command -v apt-get >/dev/null || fail "ZollyBot needs Ubuntu 24.04 or a newer Ubuntu or Debian."

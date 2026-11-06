@@ -17,7 +17,7 @@ const chief = requireFixture(STORY_AGENTS[0], "Story agent 0");
 const tab: BrowserTab = {
   id: "tab-docs",
   title: "ZollyBot documentation",
-  url: "https://openbot.run/docs",
+  url: "https://zollybot.shifaul.dev/docs",
   loading: false,
   ownerThreadId: "thread-chief",
   ownerAgentId: chief.id,
@@ -27,8 +27,8 @@ const tab: BrowserTab = {
 
 const tabs: BrowserTab[] = [
   tab,
-  { ...tab, id: "tab-changelog", title: "Changelog", url: "https://openbot.run/changelog" },
-  { ...tab, id: "tab-pricing", title: "Pricing", url: "https://openbot.run/pricing", loading: true },
+  { ...tab, id: "tab-changelog", title: "Changelog", url: "https://zollybot.shifaul.dev/changelog" },
+  { ...tab, id: "tab-pricing", title: "Pricing", url: "https://zollybot.shifaul.dev/pricing", loading: true },
   {
     ...tab,
     id: "tab-search",
@@ -58,8 +58,8 @@ const meta = {
     tabs,
     activeTab: tab,
     history: [
-      { url: "https://openbot.run/docs", title: "ZollyBot documentation", visits: 3 },
-      { url: "https://openbot.run/docs/browser", title: "Browser · ZollyBot documentation", visits: 1 },
+      { url: "https://zollybot.shifaul.dev/docs", title: "ZollyBot documentation", visits: 3 },
+      { url: "https://zollybot.shifaul.dev/docs/browser", title: "Browser · ZollyBot documentation", visits: 1 },
     ],
     canReopen: true,
     controlForTab: () => undefined,

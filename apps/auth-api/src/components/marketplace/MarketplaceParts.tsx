@@ -93,7 +93,7 @@ export function ListingLink(props: { link: MarketplaceListingLink; class: string
 const COPIED_MS = 1600;
 
 /**
- * The listing's `openbot.run` address. A developer's Worker on this computer gives its own loopback
+ * The listing's `zollybot.shifaul.dev` address. A developer's Worker on this computer gives its own loopback
  * address; any other origin, such as a preview deployment, gives the public one.
  */
 function shareUrl(link: MarketplaceListingLink): string {

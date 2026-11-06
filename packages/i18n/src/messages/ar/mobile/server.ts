@@ -1491,7 +1491,7 @@ export const messages = {
   "mobile.server.update.path.container":
     "على مضيف Docker، اسحب صورة ZollyBot الجديدة وأنشئ الحاوية مجددًا بوحدات تخزين البيانات نفسها. انتظر انتهاء العمل النشط أولًا. أبقِ وحدات التخزين الحالية للحفاظ على بياناتك.",
   "mobile.server.update.path.manual":
-    "لا يستطيع هذا التثبيت استبدال نفسه. اطلب من مسؤول المضيف تثبيت الإصدار المتوافق من github.com/nightly-labs/openbot/releases. أبقِ بيانات ZollyBot الحالية.",
+    "لا يستطيع هذا التثبيت استبدال نفسه. اطلب من مسؤول المضيف تثبيت الإصدار المتوافق من github.com/khanshifaul/zollybot/releases. أبقِ بيانات ZollyBot الحالية.",
   "mobile.server.update.path.unavailable": "هذا إصدار تطوير. استخدم إصدار ZollyBot مثبّتًا للتحقق من وجود تحديثات.",
   "mobile.server.update.check": "التحقق من وجود تحديثات",
   "mobile.server.update.start": "التحديث عند الخمول",

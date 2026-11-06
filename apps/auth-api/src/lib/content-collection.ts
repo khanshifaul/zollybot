@@ -81,7 +81,7 @@ export function reportedArticlePath(collection: ContentCollection, slug: string)
 
 // The absolute URLs below take the site they sit on. The head tags pass the site
 // that served the page (see `servingSiteUrl`); the feed and the sitemap keep
-// openbot.run.
+// zollybot.shifaul.dev.
 
 export function articleUrl(collection: ContentCollection, slug: string, siteUrl = ZOLLYBOT_SITE_URL): string {
   return new URL(articlePath(collection, slug), siteUrl).toString();

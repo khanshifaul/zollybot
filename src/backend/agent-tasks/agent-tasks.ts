@@ -22,7 +22,7 @@ import { Deferred, Effect, Schema, Semaphore } from "effect";
 import { z } from "zod";
 import type { ConversationRuntime } from "../agent/conversation-runtime";
 import type { TaskLanes } from "../agent/drain-scheduler";
-import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "../agent/routine-tools";
+import { type ZollyBotToolResponse, zollyBotToolFailure, zollyBotToolResult } from "../agent/routine-tools";
 import {
   type AgentThreadOrigin,
   type AgentThreadRecord,
@@ -518,8 +518,8 @@ export class AgentTasks implements TaskLanes {
   ): Effect.fn.Return<ZollyBotToolResponse | null> {
     if (params.tool !== START_TASK_TOOL) return null;
     const parsed = startTaskToolSchema.safeParse(params.arguments);
-    if (!parsed.success) return openBotToolFailure(sourceText("error.backend.taskToolInvalid"));
-    if (caller.inExecutionThread) return openBotToolFailure(sourceText("error.backend.taskOwnChatOnly"));
+    if (!parsed.success) return zollyBotToolFailure(sourceText("error.backend.taskToolInvalid"));
+    if (caller.inExecutionThread) return zollyBotToolFailure(sourceText("error.backend.taskOwnChatOnly"));
     return yield* this.#starts.withPermit(this.#start(params, caller, parsed.data));
   });
 
@@ -545,7 +545,7 @@ export class AgentTasks implements TaskLanes {
     // A routine thread is the routine's own: its runs do not count as tasks that the agent started.
     const unfinishedTasks = open.filter((task) => task.routineId === null && !finished.includes(task)).length;
     if (unfinishedTasks >= AGENT_STARTED_UNFINISHED_TASKS)
-      return openBotToolFailure(
+      return zollyBotToolFailure(
         sourceText("error.backend.taskUnfinishedLimit", { count: AGENT_STARTED_UNFINISHED_TASKS }),
       );
     // The newest finished tasks that the agent started stay open, when the task list has a place for them
@@ -557,7 +557,9 @@ export class AgentTasks implements TaskLanes {
     const kept = Math.max(0, Math.min(AGENT_STARTED_FINISHED_KEPT, INPUT_LIMITS.agentTasks - 1 - others));
     const archived = finishedByAgent.slice(kept);
     if (open.length - archived.length >= INPUT_LIMITS.agentTasks)
-      return openBotToolFailure(sourceText("error.backend.threadOpenLimitReached", { count: INPUT_LIMITS.agentTasks }));
+      return zollyBotToolFailure(
+        sourceText("error.backend.threadOpenLimitReached", { count: INPUT_LIMITS.agentTasks }),
+      );
     // All of them close before the first yield, so no turn starts between the check and the close.
     for (const task of archived) this.#closeQuietly(task);
     const task = this.create(caller.agentId, input.title, "agent");
@@ -583,7 +585,7 @@ export class AgentTasks implements TaskLanes {
     if (!queued) {
       this.discard(task);
       if (archived.length > 0) this.changed(caller.agentId);
-      return openBotToolFailure(sourceText("error.backend.taskStartFailed"));
+      return zollyBotToolFailure(sourceText("error.backend.taskStartFailed"));
     }
     this.changed(caller.agentId);
     this.#hooks.queued(caller.agentId);
@@ -752,7 +754,7 @@ function branchTitle(sourceTitle: string, titles: readonly string[]): string {
 }
 
 function startedTaskResult(task: AgentThreadRecord): ZollyBotToolResponse {
-  return openBotToolResult({
+  return zollyBotToolResult({
     taskId: task.taskId,
     title: task.title,
     note: "The task runs in its own conversation beside this chat, and the user follows it in the task list. Its result stays in the task: you do not receive it here. Tell the user in one sentence that the task started, and continue with other work or end your turn.",

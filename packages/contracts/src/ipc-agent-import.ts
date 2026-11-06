@@ -23,7 +23,7 @@ export type AgentImportSkillSource = (typeof AGENT_IMPORT_SKILL_SOURCES)[number]
  * The export skill in ZollyBot's own repository, as Hermes installs it from GitHub with
  * `/skills install`. The path is the skill folder on the default branch.
  */
-export const HERMES_EXPORT_SKILL_ID = "nightly-labs/openbot/resources/agent-import/hermes-agent";
+export const HERMES_EXPORT_SKILL_ID = "nightly-labs/zollybot/resources/agent-import/hermes-agent";
 
 /** What the user types in a Hermes chat to install the export skill. */
 export const HERMES_SKILL_COMMAND = `/skills install ${HERMES_EXPORT_SKILL_ID}`;

@@ -10,7 +10,7 @@ import type { DynamicToolCallParams } from "../protocol";
 import type { ConversationRuntime } from "./conversation-runtime";
 import type { DrainScheduler } from "./drain-scheduler";
 import type { MailboxSync } from "./mailbox-sync";
-import { openBotToolFailure, openBotToolResult } from "./routine-tools";
+import { zollyBotToolFailure, zollyBotToolResult } from "./routine-tools";
 import { toolCallIdempotencyKey } from "./tool-call-idempotency";
 import { ToolOperationFailed, toolStep, toToolOperationFailed } from "./tool-operation";
 
@@ -72,7 +72,7 @@ export class AgentInterruptTool {
     callerAgentId: string,
   ) {
     const { agentId, reason } = yield* toolStep(() => interruptAgentToolSchema.parse(params.arguments));
-    if (agentId === callerAgentId) return openBotToolFailure(sourceText("error.backend.interruptSelf"));
+    if (agentId === callerAgentId) return zollyBotToolFailure(sourceText("error.backend.interruptSelf"));
     if (!this.#hooks.listAgents().some((agent) => agent.id === agentId)) {
       return yield* new ToolOperationFailed({ cause: new Error(`Unknown ZollyBot agent: ${agentId}`) });
     }
@@ -84,7 +84,7 @@ export class AgentInterruptTool {
       if (task) yield* task.pipe(toToolOperationFailed);
     }
     if (this.#mailbox.startingDeliveryForAgent(agentId, null)) {
-      return openBotToolFailure(sourceText("error.backend.interruptStarting"));
+      return zollyBotToolFailure(sourceText("error.backend.interruptStarting"));
     }
 
     const turnId = this.#activeTurnId(agentId);
@@ -96,29 +96,29 @@ export class AgentInterruptTool {
         (snapshot?.activeTurnId === turnId && this.#conversation.isExecutionThread(snapshot.threadId)) ||
         deliveries.some((context) => this.#channels.store.assignmentForDelivery(context.delivery.id))
       ) {
-        return openBotToolFailure(sourceText("error.backend.useChannelTaskControlsWork"));
+        return zollyBotToolFailure(sourceText("error.backend.useChannelTaskControlsWork"));
       }
       if (!ownedBy(deliveries, callerAgentId)) {
-        return openBotToolFailure(sourceText("error.backend.interruptOtherWork"));
+        return zollyBotToolFailure(sourceText("error.backend.interruptOtherWork"));
       }
       if (!this.#store.activeProviderSession(agentId) && !this.#conversation.hasRoutineSession(agentId)) {
-        return openBotToolFailure(sourceText("error.backend.interruptNoSession"));
+        return zollyBotToolFailure(sourceText("error.backend.interruptNoSession"));
       }
     }
 
     // Before the interrupt: the interrupted turn schedules the next drain as it completes, and that
     // drain would start the next of these messages.
     const cancelledMessages = yield* toolStep(() => this.#cancelQueuedFrom(agentId, callerAgentId));
-    if (!turnId) return openBotToolResult({ interruptedTurnId: null, cancelledMessages });
+    if (!turnId) return zollyBotToolResult({ interruptedTurnId: null, cancelledMessages });
 
     // The turn can end, or the user can steer a message into it, while the stop is on its way. The
     // check then runs again on the deliveries the turn has at that moment. No stop, no notice.
     const mayStop = () => ownedBy(this.#mailbox.findDeliveriesByTurn(agentId, turnId), callerAgentId);
     if (!(yield* this.#hooks.interrupt(agentId, turnId, mayStop).pipe(toToolOperationFailed))) {
-      return openBotToolResult({ interruptedTurnId: null, cancelledMessages });
+      return zollyBotToolResult({ interruptedTurnId: null, cancelledMessages });
     }
     yield* this.#notifyEffect(params, callerAgentId, agentId, deliveries[0]?.delivery.messageId ?? null, reason);
-    return openBotToolResult({ interruptedTurnId: turnId, cancelledMessages });
+    return zollyBotToolResult({ interruptedTurnId: turnId, cancelledMessages });
   }, Effect.uninterruptible);
 
   #activeTurnId(agentId: string): string | null {

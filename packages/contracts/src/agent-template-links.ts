@@ -3,7 +3,7 @@
  * the app, and the browser client's entry for it.
  *
  * ```
- * https://openbot.run/agents/<id>    the link a person shares and the app copies
+ * https://zollybot.shifaul.dev/agents/<id>    the link a person shares and the app copies
  * zollybot://agents/<id>              the link the page button opens
  * /app?agent=<id>                    the page's link to the browser client, on the same origin
  * ```
@@ -13,7 +13,7 @@
  * installing is still a press of Install there.
  */
 
-export const ZOLLYBOT_AGENT_TEMPLATE_ORIGIN = "https://openbot.run";
+export const ZOLLYBOT_AGENT_TEMPLATE_ORIGIN = "https://zollybot.shifaul.dev";
 export const ZOLLYBOT_AGENT_TEMPLATE_PATH_PREFIX = "/agents/";
 export const ZOLLYBOT_AGENT_TEMPLATE_HOST = "agents";
 export const WEB_APP_AGENT_TEMPLATE_PARAM = "agent";
@@ -26,7 +26,7 @@ export function isAgentTemplateId(value: string): boolean {
 }
 
 /**
- * The site a share link names: `openbot.run`, or a loopback origin while a developer runs the Account
+ * The site a share link names: `zollybot.shifaul.dev`, or a loopback origin while a developer runs the Account
  * Worker on this computer. Nothing else passes, so a configured address cannot turn the copied link
  * into another site.
  */
@@ -44,7 +44,7 @@ export function isAgentTemplateShareOrigin(origin: string): boolean {
   }
 }
 
-/** The share origin for an Account Worker: the local Worker in development, `openbot.run` otherwise. */
+/** The share origin for an Account Worker: the local Worker in development, `zollybot.shifaul.dev` otherwise. */
 export function agentTemplateShareOrigin(apiOrigin: string): string {
   return apiOrigin !== ZOLLYBOT_AGENT_TEMPLATE_ORIGIN && isAgentTemplateShareOrigin(apiOrigin)
     ? apiOrigin
@@ -86,7 +86,7 @@ export function parseAgentTemplateUrl(value: string): string {
     throw new Error("The ZollyBot agent link is invalid.");
   }
 
-  // The origin is compared as one string, so `openbot.run.example.com` does not pass.
+  // The origin is compared as one string, so `zollybot.shifaul.dev.example.com` does not pass.
   const canonical =
     url.protocol === "https:" &&
     url.origin === ZOLLYBOT_AGENT_TEMPLATE_ORIGIN &&

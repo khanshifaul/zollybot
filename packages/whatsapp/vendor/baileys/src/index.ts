@@ -7,7 +7,7 @@ export * from './Defaults/index'
 export * from './WABinary/index'
 export * from './WAM/index'
 export * from './WAUSync/index'
-// OPENBOT PATCH: the ZollyBot Signal repository builds the LID mapping store itself.
+// ZOLLYBOT PATCH: the ZollyBot Signal repository builds the LID mapping store itself.
 export * from './Signal/lid-mapping'
 
 export type WASocket = ReturnType<typeof makeWASocket>

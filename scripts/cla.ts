@@ -30,8 +30,8 @@ const AGREEMENT_PATH = "CLA.md";
 const AGREEMENT_NAME = "ZollyBot Contributor License Agreement";
 /** Earlier versions whose signatures still pass. See the comment at the top. */
 const EARLIER_ACCEPTED_VERSIONS = ["1.0"];
-const CLA_PAGE_URL = "https://openbot.run/cla";
-const LICENSES_EMAIL = "licenses@openbot.run";
+const CLA_PAGE_URL = "https://zollybot.shifaul.dev/cla";
+const LICENSES_EMAIL = "licenses@zollybot.shifaul.dev";
 const SIGNATURES_BRANCH = "cla-signatures";
 const SIGNATURES_FILE = "signatures.json";
 const STATUS_CONTEXT = "CLA";
@@ -315,7 +315,7 @@ function requestComment(pr: PullRequest, unsigned: readonly Person[], unlinked: 
     lines.push(
       `${unsigned.map((person) => `@${person.login}`).join(", ")}, thank you for the contribution. Before we can merge it, each author from outside the organization must sign the [${AGREEMENT_NAME}](${CLA_PAGE_URL}). With the agreement, you keep the copyright in your contributions and give ZollyBot a license to use them.`,
       "",
-      `To sign, download the agreement as a PDF from [openbot.run/cla](${CLA_PAGE_URL}). Fill it in, sign it, and send it to ${LICENSES_EMAIL}. In the email, write your GitHub login and the link to this pull request: ${pr.url}`,
+      `To sign, download the agreement as a PDF from [zollybot.shifaul.dev/cla](${CLA_PAGE_URL}). Fill it in, sign it, and send it to ${LICENSES_EMAIL}. In the email, write your GitHub login and the link to this pull request: ${pr.url}`,
       "",
       "A maintainer records your signature, and then this check runs again. You sign one time. The signature applies to all your contributions to ZollyBot.",
     );

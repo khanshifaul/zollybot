@@ -168,21 +168,21 @@ type Story = StoryObj<typeof meta>;
 
 const PHONE = { viewport: "sitePhone" } as const;
 
-/** `openbot.run/marketplace`: Featured, then each category as rows. */
+/** `zollybot.shifaul.dev/marketplace`: Featured, then each category as rows. */
 export const Agents: Story = {};
 export const AgentsPhone: Story = { globals: PHONE };
 
-/** `openbot.run/marketplace?category=coding`: one category, every agent in it. */
+/** `zollybot.shifaul.dev/marketplace?category=coding`: one category, every agent in it. */
 export const AgentsCategory: Story = { args: { address: "coding", category: "coding" } };
 
 /** A search with no result. */
 export const AgentsNoMatch: Story = { args: { query: "kubernetes" } };
 
-/** `openbot.run/marketplace/skills`. */
+/** `zollybot.shifaul.dev/marketplace/skills`. */
 export const Skills: Story = { args: { address: "skills", tab: "skills" } };
 export const SkillsPhone: Story = { args: { address: "skills", tab: "skills" }, globals: PHONE };
 
-/** `openbot.run/marketplace/apps`: the plugins that `/plugins` showed. */
+/** `zollybot.shifaul.dev/marketplace/apps`: the plugins that `/plugins` showed. */
 export const Apps: Story = { args: { address: "apps", tab: "apps" } };
 
 /** A verified agent. "Add to ZollyBot" opens the app; "Copy link" copies this page's address. */

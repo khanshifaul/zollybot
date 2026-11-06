@@ -10,7 +10,7 @@ import {
   updateAgentsToolSchema,
   widensAgentSettings,
 } from "./profile-tools";
-import { openBotToolResult, type ZollyBotToolResponse } from "./routine-tools";
+import { type ZollyBotToolResponse, zollyBotToolResult } from "./routine-tools";
 import { ToolOperationFailed, toolStep } from "./tool-operation";
 import type { ZollyBotToolRouterHooks } from "./zollybot-tool-router";
 
@@ -93,7 +93,7 @@ export const handleUpdateAgentsTool = Effect.fn("UpdateAgentsTool.handle")(
       ),
     );
     const updatedCount = results.filter((result) => result.ok).length;
-    return openBotToolResult({ updated: updatedCount, failed: results.length - updatedCount, results });
+    return zollyBotToolResult({ updated: updatedCount, failed: results.length - updatedCount, results });
   },
   Effect.catchDefect((cause) => Effect.fail(new ToolOperationFailed({ cause }))),
 );

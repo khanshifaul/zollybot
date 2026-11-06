@@ -1347,7 +1347,7 @@ index 2f703dbc..504bcd79 100644
 +#endif
 +  }
 +
-+  void openBotTest(const resp_https_t &response, const req_https_t &request) {
++  void zollyBotTest(const resp_https_t &response, const req_https_t &request) {
 +    if (!authenticate(response, request)) return;
 +#ifdef __APPLE__
 +    if (!std::getenv("ZOLLYBOT_REMOTE_SETUP")) {
@@ -1418,8 +1418,8 @@ index 2f703dbc..504bcd79 100644
      server.resource["^/api/pin$"]["POST"] = savePin;
      server.resource["^/api/logs$"]["GET"] = getLogs;
 +    server.resource["^/api/zollybot/setup$"]["GET"] = getZollyBotSetup;
-+    server.resource["^/api/zollybot/test$"]["GET"] = openBotTest;
-+    server.resource["^/api/zollybot/test$"]["POST"] = openBotTest;
++    server.resource["^/api/zollybot/test$"]["GET"] = zollyBotTest;
++    server.resource["^/api/zollybot/test$"]["POST"] = zollyBotTest;
 +    server.resource["^/api/zollybot/displays$"]["GET"] = getZollyBotDisplays;
      server.resource["^/api/reset-display-device-persistence$"]["POST"] = resetDisplayDevicePersistence;
      server.resource["^/api/restart$"]["POST"] = restart;

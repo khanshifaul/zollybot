@@ -42,8 +42,6 @@ import { routineStatusForDelivery } from "./delivery-content";
 import { quietRoutineRun } from "./routine-quiet-runs";
 import {
   localTimezone,
-  openBotToolFailure,
-  openBotToolResult,
   routineToolAgentId,
   routineToolArguments,
   routineToolPolicies,
@@ -51,6 +49,8 @@ import {
   routineToolSchedule,
   routineToolString,
   type ZollyBotToolResponse,
+  zollyBotToolFailure,
+  zollyBotToolResult,
 } from "./routine-tools";
 import {
   CREATE_WEBHOOK_ROUTINE_ARGUMENTS,
@@ -555,7 +555,7 @@ export class RoutineScheduler implements RoutineDueSource {
       Effect.catchDefect((cause) => Effect.fail(new RoutineOperationFailed({ cause }))),
       Effect.catch((failure) =>
         failure.cause instanceof RoutineInputError
-          ? Effect.succeed(openBotToolFailure(failure.cause.message))
+          ? Effect.succeed(zollyBotToolFailure(failure.cause.message))
           : Effect.fail(failure),
       ),
     );
@@ -592,7 +592,7 @@ export class RoutineScheduler implements RoutineDueSource {
     if (params.tool === "list_routines") {
       const args = routineToolArguments(params.arguments, ["agentId"]);
       const agentId = this.#toolAgentId(args, senderAgentId);
-      return openBotToolResult({
+      return zollyBotToolResult({
         routines: this.list(agentId),
         webhookRoutines: this.#routines
           .listRecords(agentId)
@@ -647,7 +647,7 @@ export class RoutineScheduler implements RoutineDueSource {
         },
         this.#toolMutationOptions(agentId, senderAgentId, params),
       );
-      return openBotToolResult(routine);
+      return zollyBotToolResult(routine);
     }
 
     if (params.tool === CREATE_WEBHOOK_ROUTINE_TOOL) {
@@ -680,7 +680,7 @@ export class RoutineScheduler implements RoutineDueSource {
       // Only the caller's own chat shows the card with the secret: the card needs the turn.
       const turnId = agentId === senderAgentId ? params.turnId : undefined;
       const recorded = this.#recordWebhookEvent(agentId, "created", routine, turnId);
-      return openBotToolResult(webhookRoutineToolResult(routine, recorded && turnId !== undefined));
+      return zollyBotToolResult(webhookRoutineToolResult(routine, recorded && turnId !== undefined));
     }
 
     if (params.tool === UPDATE_WEBHOOK_ROUTINE_TOOL) {
@@ -729,7 +729,7 @@ export class RoutineScheduler implements RoutineDueSource {
       });
       const turnId = agentId === senderAgentId ? params.turnId : undefined;
       const recorded = this.#recordWebhookEvent(agentId, "updated", routine, turnId);
-      return openBotToolResult(webhookRoutineToolResult(routine, recorded && turnId !== undefined, true));
+      return zollyBotToolResult(webhookRoutineToolResult(routine, recorded && turnId !== undefined, true));
     }
 
     if (params.tool === "update_routine") {
@@ -774,7 +774,7 @@ export class RoutineScheduler implements RoutineDueSource {
         hasUpdate = true;
       }
       if (!hasUpdate) throw new RoutineInputError("At least one routine update is required.");
-      return openBotToolResult(this.update(input, this.#toolMutationOptions(input.agentId, senderAgentId, params)));
+      return zollyBotToolResult(this.update(input, this.#toolMutationOptions(input.agentId, senderAgentId, params)));
     }
 
     if (params.tool === "delete_routine") {
@@ -791,7 +791,7 @@ export class RoutineScheduler implements RoutineDueSource {
       } else {
         yield* this.delete({ agentId, routineId }, agentId === senderAgentId ? { turnId: params.turnId } : {});
       }
-      return openBotToolResult({ deleted: true, agentId, routineId });
+      return zollyBotToolResult({ deleted: true, agentId, routineId });
     }
 
     if (params.tool === "test_routine") {
@@ -804,7 +804,7 @@ export class RoutineScheduler implements RoutineDueSource {
         "routineId is required.",
       );
       this.#refuseWebhookTest(agentId, routineId);
-      return openBotToolResult(yield* this.test({ agentId, routineId }));
+      return zollyBotToolResult(yield* this.test({ agentId, routineId }));
     }
 
     return null;

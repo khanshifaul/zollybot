@@ -18,7 +18,7 @@ import { type DynamicRecord, isDynamicRecord } from "@zollybot/contracts/runtime
 import { sourceText } from "@zollybot/i18n/source";
 import { Effect } from "effect";
 import { profileToolErrorMessage } from "../src/backend/agent/profile-tools";
-import { openBotToolFailure } from "../src/backend/agent/routine-tools";
+import { zollyBotToolFailure } from "../src/backend/agent/routine-tools";
 import { ToolOperationFailed } from "../src/backend/agent/tool-operation";
 import { handleUpdateAgentsTool } from "../src/backend/agent/update-agents-tool";
 import { AgentStore } from "../src/backend/agent-store";
@@ -104,7 +104,7 @@ try {
         { threadId: "t", turnId: "turn", callId: "c", namespace: "zollybot", tool: "update_agents", arguments: args },
         coordinator.id,
         hooks,
-      ).pipe(Effect.catch((failure) => Effect.succeed(openBotToolFailure(profileToolErrorMessage(failure.cause))))),
+      ).pipe(Effect.catch((failure) => Effect.succeed(zollyBotToolFailure(profileToolErrorMessage(failure.cause))))),
     );
     const item = response.contentItems[0];
     assert.ok(item && item.type === "inputText", "The answer is text.");

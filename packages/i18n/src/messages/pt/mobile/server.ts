@@ -1082,7 +1082,7 @@ export const messages = {
   "mobile.server.update.path.container":
     "No computador anfitrião do Docker, baixe a nova imagem do ZollyBot e crie o contêiner de novo com os mesmos volumes de dados. Aguarde o trabalho ativo terminar primeiro. Mantenha os volumes existentes para preservar seus dados.",
   "mobile.server.update.path.manual":
-    "Esta instalação não pode se substituir. Peça ao administrador do computador anfitrião para instalar a versão compatível de github.com/nightly-labs/openbot/releases. Mantenha os dados existentes do ZollyBot.",
+    "Esta instalação não pode se substituir. Peça ao administrador do computador anfitrião para instalar a versão compatível de github.com/khanshifaul/zollybot/releases. Mantenha os dados existentes do ZollyBot.",
   "mobile.server.update.path.unavailable":
     "Esta é uma compilação de desenvolvimento. Use uma versão instalada do ZollyBot para verificar atualizações.",
   "mobile.server.update.check": "Buscar atualizações",

@@ -166,7 +166,7 @@ export function noteSocialFollowReplyCompleted(): void {
 
 /** Copies the first post for a network that takes no text in its post link. */
 function copyDraftPost(): Promise<"copied" | "opened"> {
-  return writeClipboardText(currentText().t("app.socialFollow.draftPost", { site: "openbot.run" })).then(
+  return writeClipboardText(currentText().t("app.socialFollow.draftPost", { site: "zollybot.shifaul.dev" })).then(
     () => "copied",
     () => "opened",
   );

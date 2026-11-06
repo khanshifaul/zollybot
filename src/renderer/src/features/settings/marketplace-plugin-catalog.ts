@@ -73,7 +73,7 @@ const AAVE: MarketplacePluginDetail = {
   installs: 0,
   featured: true,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/aave",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/aave",
 };
 
 const CANVA: MarketplacePluginDetail = {
@@ -114,7 +114,7 @@ const CANVA: MarketplacePluginDetail = {
   installs: 0,
   featured: true,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/canva",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/canva",
 };
 
 const LINEAR: MarketplacePluginDetail = {
@@ -155,7 +155,7 @@ const LINEAR: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/linear",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/linear",
 };
 
 const NOTION: MarketplacePluginDetail = {
@@ -196,7 +196,7 @@ const NOTION: MarketplacePluginDetail = {
   installs: 0,
   featured: true,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/notion",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/notion",
 };
 
 const OBSIDIAN: MarketplacePluginDetail = {
@@ -253,7 +253,7 @@ const OBSIDIAN: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/obsidian",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/obsidian",
 };
 
 const ATLASSIAN: MarketplacePluginDetail = {
@@ -293,7 +293,7 @@ const ATLASSIAN: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/atlassian",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/atlassian",
 };
 
 const TODOIST: MarketplacePluginDetail = {
@@ -333,7 +333,7 @@ const TODOIST: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/todoist",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/todoist",
 };
 
 const TICKTICK: MarketplacePluginDetail = {
@@ -373,7 +373,7 @@ const TICKTICK: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/ticktick",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/ticktick",
 };
 
 const TRELLO: MarketplacePluginDetail = {
@@ -413,7 +413,7 @@ const TRELLO: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/trello",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/trello",
 };
 
 const COBRAIN: MarketplacePluginDetail = {
@@ -453,7 +453,7 @@ const COBRAIN: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/cobrain",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/cobrain",
 };
 
 const FIGMA: MarketplacePluginDetail = {
@@ -508,7 +508,7 @@ const FIGMA: MarketplacePluginDetail = {
   installs: 0,
   featured: true,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/figma",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/figma",
 };
 
 const PAPER: MarketplacePluginDetail = {
@@ -544,7 +544,7 @@ const PAPER: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/paper",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/paper",
 };
 
 const HIGGSFIELD: MarketplacePluginDetail = {
@@ -585,7 +585,7 @@ const HIGGSFIELD: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/higgsfield",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/higgsfield",
 };
 
 const APPLE_APPS: MarketplacePluginDetail = {
@@ -625,7 +625,7 @@ const APPLE_APPS: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/apple-apps",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/apple-apps",
 };
 
 const SENTRY: MarketplacePluginDetail = {
@@ -665,7 +665,7 @@ const SENTRY: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/sentry",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/sentry",
 };
 
 const VERCEL: MarketplacePluginDetail = {
@@ -706,7 +706,7 @@ const VERCEL: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/vercel",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/vercel",
 };
 
 const CLOUDFLARE: MarketplacePluginDetail = {
@@ -746,7 +746,7 @@ const CLOUDFLARE: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/cloudflare",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/cloudflare",
 };
 
 const SUPABASE: MarketplacePluginDetail = {
@@ -786,7 +786,7 @@ const SUPABASE: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/supabase",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/supabase",
 };
 
 const NEON: MarketplacePluginDetail = {
@@ -829,7 +829,7 @@ const NEON: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/neon",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/neon",
 };
 
 const PRISMA: MarketplacePluginDetail = {
@@ -869,7 +869,7 @@ const PRISMA: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/prisma",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/prisma",
 };
 
 const NETLIFY: MarketplacePluginDetail = {
@@ -910,7 +910,7 @@ const NETLIFY: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/netlify",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/netlify",
 };
 
 const RAILWAY: MarketplacePluginDetail = {
@@ -950,7 +950,7 @@ const RAILWAY: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/railway",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/railway",
 };
 
 const RENDER: MarketplacePluginDetail = {
@@ -1008,7 +1008,7 @@ const RENDER: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/render",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/render",
 };
 
 const CONTEXT7: MarketplacePluginDetail = {
@@ -1043,7 +1043,7 @@ const CONTEXT7: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/context7",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/context7",
 };
 
 const HUGGINGFACE: MarketplacePluginDetail = {
@@ -1078,7 +1078,7 @@ const HUGGINGFACE: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/huggingface",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/huggingface",
 };
 
 const STRIPE: MarketplacePluginDetail = {
@@ -1118,7 +1118,7 @@ const STRIPE: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/stripe",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/stripe",
 };
 
 const REVENUECAT: MarketplacePluginDetail = {
@@ -1177,7 +1177,7 @@ const REVENUECAT: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/revenuecat",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/revenuecat",
 };
 
 const POSTHOG: MarketplacePluginDetail = {
@@ -1235,7 +1235,7 @@ const POSTHOG: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/posthog",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/posthog",
 };
 
 const AIRTABLE: MarketplacePluginDetail = {
@@ -1285,7 +1285,7 @@ const AIRTABLE: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/airtable",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/airtable",
 };
 
 const FIRECRAWL: MarketplacePluginDetail = {
@@ -1343,7 +1343,7 @@ const FIRECRAWL: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/firecrawl",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/firecrawl",
 };
 
 const BRAVE_SEARCH: MarketplacePluginDetail = {
@@ -1395,7 +1395,7 @@ const BRAVE_SEARCH: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/brave-search",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/brave-search",
 };
 
 const RESEND: MarketplacePluginDetail = {
@@ -1447,7 +1447,7 @@ const RESEND: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/resend",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/resend",
 };
 
 const COMPOSIO: MarketplacePluginDetail = {
@@ -1511,7 +1511,7 @@ const COMPOSIO: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/composio",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/composio",
 };
 
 const CLICKUP: MarketplacePluginDetail = {
@@ -1551,7 +1551,7 @@ const CLICKUP: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/clickup",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/clickup",
 };
 
 const COINBASE: MarketplacePluginDetail = {
@@ -1592,7 +1592,7 @@ const COINBASE: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/coinbase",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/coinbase",
 };
 
 const ROBINHOOD: MarketplacePluginDetail = {
@@ -1632,7 +1632,7 @@ const ROBINHOOD: MarketplacePluginDetail = {
   installs: 0,
   featured: false,
   updatedAt: "2026-09-30T00:00:00.000Z",
-  shareUrl: "https://openbot.run/plugins/robinhood",
+  shareUrl: "https://zollybot.shifaul.dev/plugins/robinhood",
 };
 
 export const MARKETPLACE_PLUGINS: MarketplacePluginDetail[] = [

@@ -957,7 +957,7 @@ export class ClaudeAgentClient extends EventEmitter<ClientEvents> {
         : null;
     const plugins = [skillPlugin, homeSkillPlugin].filter((plugin) => plugin !== null);
     const launchPath = yield* cliLaunchPath(this.#cli.executable, this.#cli.source);
-    const openBotServers = handoff ? this.#createZollyBotServers(threadId) : {};
+    const zollyBotServers = handoff ? this.#createZollyBotServers(threadId) : {};
     const nodeOptions = this.#agentEnvironment?.().NODE_OPTIONS;
     const mcpConfigFile =
       handoff && stateDirectory && Object.keys(handoff.servers).length > 0
@@ -977,7 +977,7 @@ export class ClaudeAgentClient extends EventEmitter<ClientEvents> {
       return yield* providerFailure(new Error("Claude Agent SDK is not running."));
     }
     if (handoff) this.#reportMcpDrops?.(this.provider, handoff.dropped);
-    const mcpServers = handoff ? { ...(mcpConfigFile ? {} : handoff.servers), ...openBotServers } : {};
+    const mcpServers = handoff ? { ...(mcpConfigFile ? {} : handoff.servers), ...zollyBotServers } : {};
     const extraArgs: Record<string, string | null> = {
       // The developer instructions carry the profile and the memories, and `thread/resume` above
       // restarts the query when they change. A recorded prompt would be sent instead of them on

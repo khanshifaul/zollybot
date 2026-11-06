@@ -57,7 +57,7 @@ export const DEFAULT_CACHE_TTLS = {
 	USER_DEVICES: 5 * 60 // 5 minutes
 }
 
-// OPENBOT PATCH: makeSignalRepository has no default; makeWASocket requires it.
+// ZOLLYBOT PATCH: makeSignalRepository has no default; makeWASocket requires it.
 export const DEFAULT_CONNECTION_CONFIG: Omit<SocketConfig, 'makeSignalRepository'> = {
 	version: version as WAVersion,
 	browser: Browsers.macOS('Chrome'),

@@ -315,7 +315,7 @@ const TOOL_RESULT_PROGRESS = sourceText("status.agent.toolResultReviewing");
  * it, a Claude item names it `mcp__zollybot__<tool>`, and a `tool_call` bridge item names it in its
  * arguments. A tool of another MCP server with the same name is not ZollyBot's.
  */
-function openBotTool(item: ThreadItem): string | null {
+function zollyBotTool(item: ThreadItem): string | null {
   const bridged = bridgedToolName(item);
   if (bridged) return bridged.startsWith("zollybot.") ? bridged.slice("zollybot.".length) : null;
   if (item.type === "toolCall") return /^mcp__zollybot__(.+)$/u.exec(getString(item, "name") ?? "")?.[1] ?? null;
@@ -383,7 +383,7 @@ function messageRecipients(item: ThreadItem): string[] {
 /** What the trace keeps of a tool step: its shell command, and the agents that an ZollyBot message went to. */
 export function toolTraceDetail(item: ThreadItem): { command: string | null; recipientAgentIds: string[] | null } {
   const command = getString(item, "command");
-  const recipients = openBotTool(item) === "send_message" ? messageRecipients(item) : [];
+  const recipients = zollyBotTool(item) === "send_message" ? messageRecipients(item) : [];
   return { command, recipientAgentIds: recipients.length > 0 ? recipients : null };
 }
 
@@ -423,14 +423,15 @@ export function toolProgressText(item: ThreadItem, completed: boolean): string |
   }
   // ZollyBot's own memory and skill tools, before the generic words too. A memory search reports what
   // it found itself, while it runs, so its end adds no line.
-  const openBot = openBotTool(item);
-  if (openBot === "search_memories" || openBot === "list_memories") {
+  const zollyBot = zollyBotTool(item);
+  if (zollyBot === "search_memories" || zollyBot === "list_memories") {
     return completed ? null : sourceText("status.agent.memoriesSearching");
   }
-  if (openBot === "remember" || openBot === "forget_memory" || openBot === "set_memory_inclusion") {
+  if (zollyBot === "remember" || zollyBot === "forget_memory" || zollyBot === "set_memory_inclusion") {
     return completed ? TOOL_RESULT_PROGRESS : sourceText("status.agent.memoriesUpdating");
   }
-  if (openBot === "read_local_skill") return completed ? TOOL_RESULT_PROGRESS : sourceText("status.agent.skillReading");
+  if (zollyBot === "read_local_skill")
+    return completed ? TOOL_RESULT_PROGRESS : sourceText("status.agent.skillReading");
   const skill = getString(item, "name") === "Skill" ? getString(item, "skill") : null;
   if (skill) return completed ? TOOL_RESULT_PROGRESS : sourceText("status.agent.skillUsing", { name: skill });
   if (descriptor.includes("capture_screen")) {

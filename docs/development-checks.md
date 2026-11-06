@@ -282,7 +282,7 @@ anything in the tests: building a jsdom for each file was 61.8s of a 176.7s CI r
 registry per file inside a VM context. That took the full suite from 118.7s to 92.6s locally.
 
 The mounts themselves are not the cost, which is worth recording because the file sizes suggest
-otherwise. Measured on one worker: `installOpenbotStub()` is 0.4ms, `AppProviders` with a probe
+otherwise. Measured on one worker: `installZollybotStub()` is 0.4ms, `AppProviders` with a probe
 under it is 4.3ms, and a full `<App />` is 21.8ms, of which the view tree is 17.4ms. Dividing a
 file's total time by its render count attributes the whole test to the mount and overstates it by
 more than twenty times. Two other theories also measured close to nothing: the 50ms `waitFor` poll

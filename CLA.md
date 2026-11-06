@@ -6,9 +6,9 @@ Date: 2026-11-04
 
 ## How to sign
 
-1. Download the agreement as a PDF from [openbot.run/cla](https://openbot.run/cla).
+1. Download the agreement as a PDF from [zollybot.shifaul.dev/cla](https://zollybot.shifaul.dev/cla).
 2. Fill in the contributor type and the contributor details, then sign and date it.
-3. Send the signed PDF to licenses@openbot.run. In the email, write your GitHub login and the link
+3. Send the signed PDF to licenses@zollybot.shifaul.dev. In the email, write your GitHub login and the link
    to your pull request.
 4. A maintainer records your signature on the `cla-signatures` branch and the `CLA` check runs again.
 
@@ -37,7 +37,7 @@ Each Contribution becomes subject to this Agreement upon its submission.
 Except for the licenses expressly granted under this Agreement, the Contributor retains all rights,
 title, and interest in their Contributions.
 
-Please complete and sign this Agreement, and then email a pdf copy to licenses@openbot.run only.
+Please complete and sign this Agreement, and then email a pdf copy to licenses@zollybot.shifaul.dev only.
 Read this document carefully before signing and keep a copy for your records.
 
 ## Contributor Type (select one)
@@ -204,4 +204,4 @@ includes changes concerning the authority of individuals submitting Contribution
 - Date
 
 This is a legal contract containing Personally Identifiable Information. Please refer to
-https://openbot.run/privacy for the policy governing how this information is used and shared.
+https://zollybot.shifaul.dev/privacy for the policy governing how this information is used and shared.

@@ -2,7 +2,7 @@ import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type { AgentEvent, AgentWait, AgentWaitsSnapshot } from "@zollybot/contracts/ipc";
 import { sourceText } from "@zollybot/i18n/source";
 import { z } from "zod";
-import { openBotToolFailure, openBotToolResult, type ZollyBotToolResponse } from "../agent/routine-tools";
+import { type ZollyBotToolResponse, zollyBotToolFailure, zollyBotToolResult } from "../agent/routine-tools";
 import type { MailboxStore } from "../mailbox-store";
 import type { DynamicToolCallParams } from "../protocol";
 import { AgentWaitError, AgentWaitLimitError, type AgentWaitStore } from "./agent-wait-store";
@@ -119,32 +119,32 @@ export class AgentWaits {
       if (params.tool === LIST_WAITS_TOOL) return this.#listWaits(params, caller);
       return null;
     } catch (error) {
-      if (error instanceof AgentWaitError) return openBotToolFailure(error.message);
+      if (error instanceof AgentWaitError) return zollyBotToolFailure(error.message);
       throw error;
     }
   }
 
   #awaitEvent(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse {
     const parsed = awaitEventToolSchema.safeParse(params.arguments);
-    if (!parsed.success) return openBotToolFailure(sourceText("error.backend.agentWaitNoteRequired"));
+    if (!parsed.success) return zollyBotToolFailure(sourceText("error.backend.agentWaitNoteRequired"));
     const { note, routineId } = parsed.data;
-    if (caller.inExecutionThread) return openBotToolFailure(sourceText("error.backend.agentWaitOwnChatOnly"));
+    if (caller.inExecutionThread) return zollyBotToolFailure(sourceText("error.backend.agentWaitOwnChatOnly"));
     const deliveries = this.#mailbox.findDeliveriesByTurn(caller.agentId, params.turnId);
     // A run that continues waits keeps them: leaving a wait open waits for the next run again.
     const continued = deliveries.flatMap((context) => this.#store.wokenBy(context.delivery.id));
     if (continued.length > 0)
-      return openBotToolResult({
+      return zollyBotToolResult({
         waitIds: continued.map((wait) => wait.id),
         note: "This run continues these open waits. To wait again, leave them open and end your turn. Open a new wait only for a different request.",
       });
     // The user's message comes first; a routine run that waits serves its own instruction.
     const request =
       deliveries.findLast((context) => context.delivery.sender.kind === "user") ?? deliveries.at(0) ?? null;
-    if (!request) return openBotToolFailure(sourceText("error.backend.agentWaitNoRequest"));
+    if (!request) return zollyBotToolFailure(sourceText("error.backend.agentWaitNoRequest"));
     if (routineId && !this.#hooks.ownsRoutine(caller.agentId, routineId))
-      return openBotToolFailure(sourceText("error.backend.agentWaitRoutineGone"));
+      return zollyBotToolFailure(sourceText("error.backend.agentWaitRoutineGone"));
     if (!this.#hooks.hasRoutine(caller.agentId))
-      return openBotToolFailure(sourceText("error.backend.agentWaitNoRoutine"));
+      return zollyBotToolFailure(sourceText("error.backend.agentWaitNoRoutine"));
     let wait: AgentWait;
     try {
       wait = this.#store.open({
@@ -172,7 +172,7 @@ export class AgentWaits {
     }
     this.#changed(caller.agentId);
     const openWaits = this.#store.count(caller.agentId);
-    return openBotToolResult({
+    return zollyBotToolResult({
       waitId: wait.id,
       openWaits,
       limit: INPUT_LIMITS.agentWaits,
@@ -191,19 +191,19 @@ export class AgentWaits {
 
   #closeWait(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse {
     const parsed = closeWaitToolSchema.safeParse(params.arguments);
-    if (!parsed.success) return openBotToolFailure(z.prettifyError(parsed.error));
+    if (!parsed.success) return zollyBotToolFailure(z.prettifyError(parsed.error));
     const agentId = this.#waitOwner(parsed.data.agentId, caller);
     if (!this.#store.delete(agentId, parsed.data.waitId))
-      return openBotToolFailure(sourceText("error.backend.agentWaitGone"));
+      return zollyBotToolFailure(sourceText("error.backend.agentWaitGone"));
     this.#changed(agentId);
-    return openBotToolResult({ closed: parsed.data.waitId });
+    return zollyBotToolResult({ closed: parsed.data.waitId });
   }
 
   #listWaits(params: DynamicToolCallParams, caller: AgentWaitCaller): ZollyBotToolResponse {
     const parsed = listWaitsToolSchema.safeParse(params.arguments ?? {});
-    if (!parsed.success) return openBotToolFailure(z.prettifyError(parsed.error));
+    if (!parsed.success) return zollyBotToolFailure(z.prettifyError(parsed.error));
     const agentId = this.#waitOwner(parsed.data.agentId, caller);
-    return openBotToolResult({
+    return zollyBotToolResult({
       agentId,
       limit: INPUT_LIMITS.agentWaits,
       waits: this.#store.list(agentId).map(waitSummary),

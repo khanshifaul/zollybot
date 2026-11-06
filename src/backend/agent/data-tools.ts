@@ -4,7 +4,7 @@ import { z } from "zod";
 import { AGENT_DATABASE_LIMITS } from "../agent-data/agent-database-protocol";
 import { checkAgentParameters } from "../agent-data/agent-database-rules";
 import type { AgentDatabaseQueryResult, AgentTables } from "../agent-data/agent-tables";
-import { openBotToolFailure, openBotToolResult } from "./routine-tools";
+import { zollyBotToolFailure, zollyBotToolResult } from "./routine-tools";
 import { ToolOperationFailed, toolStep } from "./tool-operation";
 
 const sql = z.string().min(1).max(AGENT_DATABASE_LIMITS.maxSqlLength);
@@ -55,11 +55,11 @@ export const handleDataTool = Effect.fn("DataTools.handle")(function* (
   tables: AgentTables | null,
 ) {
   if (!DATA_TOOL_DEFINITIONS.some((definition) => definition.name === tool)) return null;
-  if (!tables) return openBotToolFailure("Shared data is unavailable.");
+  if (!tables) return zollyBotToolFailure("Shared data is unavailable.");
 
   switch (tool) {
     case "list_tables":
-      return openBotToolResult({
+      return zollyBotToolResult({
         tables: yield* tables.list().pipe(Effect.mapError((cause) => new ToolOperationFailed({ cause }))),
       });
     case "delete_table": {
@@ -67,22 +67,22 @@ export const handleDataTool = Effect.fn("DataTools.handle")(function* (
       const removed = yield* tables
         .remove(agentId, input.name)
         .pipe(Effect.mapError((cause) => new ToolOperationFailed({ cause })));
-      return removed.ok ? openBotToolResult({ deleted: removed.value }) : openBotToolFailure(removed.message);
+      return removed.ok ? zollyBotToolResult({ deleted: removed.value }) : zollyBotToolFailure(removed.message);
     }
     default: {
       const statement = yield* toolStep(() => dataStatementSchema.parse(args));
       const parameters = checkAgentParameters(statement.params);
-      if (!parameters.ok) return openBotToolFailure(parameters.message);
+      if (!parameters.ok) return zollyBotToolFailure(parameters.message);
       if (tool === "execute_data") {
         const written = yield* tables
           .execute(agentId, statement.sql, parameters.value)
           .pipe(Effect.mapError((cause) => new ToolOperationFailed({ cause })));
-        return written.ok ? openBotToolResult(written.value) : openBotToolFailure(written.message);
+        return written.ok ? zollyBotToolResult(written.value) : zollyBotToolFailure(written.message);
       }
       const rows = yield* tables
         .query(statement.sql, parameters.value)
         .pipe(Effect.mapError((cause) => new ToolOperationFailed({ cause })));
-      return rows.ok ? openBotToolResult(readResult(rows.value)) : openBotToolFailure(rows.message);
+      return rows.ok ? zollyBotToolResult(readResult(rows.value)) : zollyBotToolFailure(rows.message);
     }
   }
 });
