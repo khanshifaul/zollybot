@@ -56,24 +56,42 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
 echo "Downloading $asset ..."
-curl -fsSL "$release/$asset" -o "$tmp/$asset"
 curl -fsSL "$release/SHA256SUMS" -o "$tmp/SHA256SUMS"
-
 expected="$(awk -v name="$asset" '{ n = $2; sub(/^[.]\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
 if [ -z "$expected" ]; then
 	echo "no checksum for $asset in SHA256SUMS" >&2
 	exit 1
 fi
-actual="$(sha256sum "$tmp/$asset" | awk '{ print $1 }')"
-if [ "$actual" != "$expected" ]; then
-	echo "checksum mismatch for $asset" >&2
-	exit 1
-fi
+# A dropped connection can still end the download quietly, so a checksum
+# mismatch retries once before failing.
+attempt=1
+while :; do
+	curl -fsSL "$release/$asset" -o "$tmp/$asset"
+	actual="$(sha256sum "$tmp/$asset" | awk '{ print $1 }')"
+	[ "$actual" = "$expected" ] && break
+	if [ "$attempt" -ge 2 ]; then
+		echo "checksum mismatch for $asset" >&2
+		exit 1
+	fi
+	attempt=$((attempt + 1))
+	rm -f "$tmp/$asset"
+	echo "The download did not match its checksum; downloading again ..."
+done
 
 mkdir -p "$PREFIX/lib" "$PREFIX/bin"
 rm -rf "$PREFIX/lib/zollybot"
 mkdir -p "$PREFIX/lib/zollybot"
 tar -xzf "$tmp/$asset" -C "$PREFIX/lib/zollybot"
+
+# An archive that carries a `zollybot/` wrapper is flattened, so both layouts
+# install to the same place.
+if [ -d "$PREFIX/lib/zollybot/zollybot" ]; then
+	flat="$PREFIX/lib/.zollybot-install"
+	rm -rf "$flat"
+	mv "$PREFIX/lib/zollybot/zollybot" "$flat"
+	rm -rf "$PREFIX/lib/zollybot"
+	mv "$flat" "$PREFIX/lib/zollybot"
+fi
 
 app="$PREFIX/lib/zollybot/zollybot"
 if [ ! -x "$app" ]; then
