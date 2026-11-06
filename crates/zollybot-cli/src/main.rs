@@ -354,7 +354,6 @@ struct AgentRow {
     office_id: String,
     scope: String,
     office: String,
-    office_id: String,
 }
 
 struct App {
