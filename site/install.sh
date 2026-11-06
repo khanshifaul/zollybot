@@ -57,7 +57,7 @@ echo "Downloading $asset ..."
 curl -fsSL "$release/$asset" -o "$tmp/$asset"
 curl -fsSL "$release/SHA256SUMS" -o "$tmp/SHA256SUMS"
 
-expected="$(awk -v name="$asset" '$2 == name { print $1 }' "$tmp/SHA256SUMS")"
+expected="$(awk -v name="$asset" '{ n = $2; sub(/^\.\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
 if [ -z "$expected" ]; then
 	echo "no checksum for $asset in SHA256SUMS" >&2
 	exit 1
@@ -78,7 +78,7 @@ if [ "$CLI" -eq 1 ]; then
 	cli_asset="zollybot-cli-linux-${asset_arch}"
 	echo "Downloading $cli_asset ..."
 	if curl -fsSL "$release/$cli_asset" -o "$tmp/$cli_asset"; then
-		cli_expected="$(awk -v name="$cli_asset" '$2 == name { print $1 }' "$tmp/SHA256SUMS")"
+		cli_expected="$(awk -v name="$cli_asset" '{ n = $2; sub(/^\.\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
 		cli_actual="$(sha256sum "$tmp/$cli_asset" | awk '{ print $1 }')"
 		if [ -n "$cli_expected" ] && [ "$cli_actual" != "$cli_expected" ]; then
 			echo "checksum mismatch for $cli_asset" >&2

@@ -25,7 +25,7 @@ for artifact in "$@"; do
 	echo "published $(basename "$artifact")"
 done
 
-(cd "$dir" && sha256sum ./* > SHA256SUMS)
+(cd "$dir" && rm -f SHA256SUMS && sha256sum ./* | awk '{ n = $2; sub("^\./", "", n); print $1 "  " n }' > SHA256SUMS)
 echo "$VERSION" > "$ROOT/latest"
 cp "$(dirname "$0")/../site/install.sh" "$ROOT/install.sh"
 
