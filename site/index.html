@@ -1,0 +1,42 @@
+<!doctype html><meta charset="utf-8"><title>ZollyBot</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 system-ui,-apple-system,sans-serif;max-width:44rem;margin:4rem auto;padding:0 1.25rem;color:#1b1b1b}
+h1{font-size:2.2rem;margin:0 0 .25rem}p.lead{color:#555;margin:0 0 2rem}
+h2{font-size:1.1rem;margin:2rem 0 .5rem}
+code{background:#f3f3f3;padding:.15rem .4rem;border-radius:4px;font-size:.9em}
+pre{background:#f7f7f7;padding:1rem;border-radius:8px;overflow:auto}
+a{color:#0b5fff}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+td,th{text-align:left;padding:.4rem .5rem;border-bottom:1px solid #eee}
+footer{margin-top:3rem;color:#777;font-size:.85rem}
+</style>
+<h1>ZollyBot</h1>
+<p class="lead">Governed, memory-driven agent offices for your repositories. Your machine runs the agents; any device runs the controls.</p>
+
+<h2>Install on Linux</h2>
+<pre><code>curl -fsSL https://zollybot.shifaul.dev/install.sh | sh</code></pre>
+<p>The installer downloads the AppImage, verifies its SHA-256, installs
+<code>~/.local/bin/zollybot</code>, and adds a desktop entry.</p>
+
+<h2>Direct download</h2>
+<p id="assets">Loading release…</p>
+
+<h2>Platforms</h2>
+<table>
+<tr><th>Platform</th><th>State</th></tr>
+<tr><td>Linux</td><td><a href="/install.sh">curl installer</a> · AppImage</td></tr>
+<tr><td>macOS</td><td>not published yet</td></tr>
+<tr><td>Windows</td><td>not published yet</td></tr>
+<tr><td>Android</td><td>building</td></tr>
+<tr><td>iOS</td><td>not published yet</td></tr>
+</table>
+
+<footer>ZollyBot is a fork of <a href="https://github.com/nightly-labs/openbot">OpenBot</a>, with zolly's gates and memory model.</footer>
+<script>
+fetch("/latest").then(r=>r.text()).then(v=>{
+  const ver=v.trim();
+  document.getElementById("assets").innerHTML =
+    '<a href="https://downloads.zollybot.shifaul.dev/releases/'+ver+'/ZollyBot-'+ver+'-x86_64.AppImage">AppImage '+ver+' (x86_64)</a>';
+}).catch(()=>{document.getElementById("assets").textContent="no release published yet";});
+</script>
