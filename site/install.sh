@@ -7,6 +7,7 @@
 #   --prefix <dir>   install root (default: $HOME/.local)
 #   --version <v>    install a specific version instead of the latest
 #   --no-desktop     skip the desktop entry
+#   --no-cli         skip the terminal companion (zollybot-cli)
 #
 # The download is verified against the release's SHA256SUMS before anything is
 # installed. Nothing is written outside the prefix.
@@ -18,12 +19,14 @@ DOWNLOAD_BASE="${ZOLLYBOT_DOWNLOAD_BASE:-https://downloads.zollybot.shifaul.dev}
 PREFIX="${ZOLLYBOT_PREFIX:-$HOME/.local}"
 VERSION=""
 DESKTOP=1
+CLI=1
 
 while [ $# -gt 0 ]; do
 	case "$1" in
 		--prefix) PREFIX="$2"; shift 2 ;;
 		--version) VERSION="$2"; shift 2 ;;
 		--no-desktop) DESKTOP=0; shift ;;
+		--no-cli) CLI=0; shift ;;
 		-h|--help) sed -n '2,12p' "$0"; exit 0 ;;
 		*) echo "unknown option: $1" >&2; exit 2 ;;
 	esac
@@ -70,6 +73,23 @@ fi
 mkdir -p "$PREFIX/bin"
 install -m 0755 "$tmp/$asset" "$PREFIX/bin/zollybot"
 echo "Installed $PREFIX/bin/zollybot ($VERSION)"
+
+if [ "$CLI" -eq 1 ]; then
+	cli_asset="zollybot-cli-linux-${asset_arch}"
+	echo "Downloading $cli_asset ..."
+	if curl -fsSL "$release/$cli_asset" -o "$tmp/$cli_asset"; then
+		cli_expected="$(awk -v name="$cli_asset" '$2 == name { print $1 }' "$tmp/SHA256SUMS")"
+		cli_actual="$(sha256sum "$tmp/$cli_asset" | awk '{ print $1 }')"
+		if [ -n "$cli_expected" ] && [ "$cli_actual" != "$cli_expected" ]; then
+			echo "checksum mismatch for $cli_asset" >&2
+			exit 1
+		fi
+		install -m 0755 "$tmp/$cli_asset" "$PREFIX/bin/zollybot-cli"
+		echo "Installed $PREFIX/bin/zollybot-cli ($VERSION)"
+	else
+		echo "zollybot-cli not published for this version; skipped" >&2
+	fi
+fi
 
 if [ "$DESKTOP" -eq 1 ] && [ -d "${XDG_DATA_HOME:-$HOME/.local/share}/applications" ]; then
 	icon_dir="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
