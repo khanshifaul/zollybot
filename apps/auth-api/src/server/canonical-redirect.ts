@@ -4,7 +4,7 @@ const SITE_ORIGIN = new URL(ZOLLYBOT_SITE_URL).origin;
 const SITE_HOST = new URL(ZOLLYBOT_SITE_URL).hostname;
 
 /**
- * Sends `http://zollybot.shifaul.dev` and `www.zollybot.shifaul.dev` to `https://zollybot.shifaul.dev`, so
+ * Sends `http://zollybot.shifaul.dev` and `www-zollybot.shifaul.dev` to `https://zollybot.shifaul.dev`, so
  * search engines index one address. The zone route sends plain HTTP here too, and
  * the `www` route exists only for this redirect: `www` has no origin of its own.
  * 308 keeps the method and the body, and search engines read it as permanent.
@@ -34,7 +34,7 @@ export function permanentTrailingSlashRedirect(request: Request, response: Respo
 }
 
 /**
- * The page that a Slack or Discord install returns to. The callback runs on `api.zollybot.shifaul.dev`, and the
+ * The page that a Slack or Discord install returns to. The callback runs on `api-zollybot.shifaul.dev`, and the
  * page opens on `zollybot.shifaul.dev`, where the browser client runs, so the client tab that started the
  * install can take its grant. Another origin, such as a development one, keeps its own.
  */
@@ -44,7 +44,7 @@ export function installReturnPage(path: string, callbackUrl: URL): URL {
 
 /**
  * The account API origin for a sign-in that the browser client starts. The company provider knows one
- * callback, on `api.zollybot.shifaul.dev`, and the browser client runs on `zollybot.shifaul.dev`. Another origin, such as
+ * callback, on `api-zollybot.shifaul.dev`, and the browser client runs on `zollybot.shifaul.dev`. Another origin, such as
  * a development one, keeps its own.
  */
 export function companySignInApiOrigin(siteUrl: URL): string {

@@ -101,7 +101,7 @@ const WEB_EXTERNAL_DESTINATIONS: Partial<Record<ExternalDestination, string>> = 
   message: "https://x.com/norbertbodziony",
   changelog: "https://zollybot.shifaul.dev/changelog",
   guides: "https://zollybot.shifaul.dev/guides",
-  discord: "https://discord.zollybot.shifaul.dev",
+  discord: "https://discord-zollybot.shifaul.dev",
   x: "https://x.com/ZollyBot_",
 };
 

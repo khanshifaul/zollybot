@@ -181,7 +181,7 @@ export function createMockTeam(
     previewInvite: async () => ({
       serverId: "00000000-0000-4000-8000-000000000000",
       serverName: "Joined workspace",
-      apiHostname: "story-host.zollybot.shifaul.dev",
+      apiHostname: "story-host-zollybot.shifaul.dev",
       role: "member",
       expiresAt: "2026-09-19T10:00:00.000Z",
       emailBound: false,

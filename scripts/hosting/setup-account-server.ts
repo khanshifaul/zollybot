@@ -39,7 +39,7 @@ const BOAT_API_URL = "https://boat.dev/api/v1";
 const BOAT_EVENTS = ["sandbox.ready", "sandbox.error", "sandbox.archived", "sandbox.hydrated"];
 const GITHUB_ENVIRONMENT = "cloudflare-production";
 const TARGETS = {
-  production: { api: "https://api.zollybot.shifaul.dev" },
+  production: { api: "https://api-zollybot.shifaul.dev" },
   test: { api: "https://zollybot-auth-api-test.internal9671.workers.dev" },
 } as const;
 

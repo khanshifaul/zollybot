@@ -313,7 +313,7 @@ Two optional variables spread hosts over more than one Signal machine. When both
 ticket names `REMOTE_SIGNAL_URL`, as before.
 
 - `REMOTE_SIGNAL_HOMES`: the Signal machines that a host can have as its home, as `id=url,id=url`,
-  for example `a=wss://signal-a.zollybot.shifaul.dev/v1/signal,b=wss://signal-b.zollybot.shifaul.dev/v1/signal`. An ID
+  for example `a=wss://signal-a-zollybot.shifaul.dev/v1/signal,b=wss://signal-b-zollybot.shifaul.dev/v1/signal`. An ID
   has 1 to 32 characters from `a-z`, `0-9` and `-`. A URL must use `wss:`, or `ws:` when
   `REMOTE_SIGNAL_URL` uses `ws:`. An invalid value makes each ticket request fail with
   `503 remote_not_configured`. A host ticket request with `signalHome: true` gets a home, which

@@ -33,7 +33,7 @@ export interface GitHubBotToken {
 }
 
 export interface GitHubBotTokensOptions {
-  /** The origin of the ZollyBot API, such as `https://api.zollybot.shifaul.dev`. */
+  /** The origin of the ZollyBot API, such as `https://api-zollybot.shifaul.dev`. */
   apiUrl: string;
   fetch: GitHubFetch;
   now: () => number;

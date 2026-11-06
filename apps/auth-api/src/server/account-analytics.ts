@@ -21,7 +21,7 @@ import { normalizeEmailAddress } from "@zollybot/contracts/validation";
 import { Effect, Schema } from "effect";
 
 /** The same OpenPanel project as the desktop app and the website. ANALYTICS.md is the contract. */
-const OPENPANEL_API_URL = "https://analytics.zollybot.shifaul.dev/api";
+const OPENPANEL_API_URL = "https://analytics-zollybot.shifaul.dev/api";
 /**
  * The current generation. Generation 10 adds the account events, first-touch properties, and
  * `reactivated` and `end_reason` on plan events. Generation 11 adds the license to the billing events

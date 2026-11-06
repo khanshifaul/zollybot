@@ -629,7 +629,7 @@ for (const item of got.filter((entry) => entry.subscription === "team" || entry.
   const body = JSON.parse(item.body);
   assert.equal(body.version, 1);
   assert.equal(body.type, item.headers["x-zollybot-event"]);
-  assert.equal(body.page, "https://status.zollybot.shifaul.dev");
+  assert.equal(body.page, "https://status-zollybot.shifaul.dev");
   assert.match(item.headers["x-zollybot-delivery-id"] ?? "", /^[0-9a-f]{32}$/);
 }
 const created = JSON.parse(

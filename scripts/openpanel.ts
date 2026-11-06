@@ -10,7 +10,7 @@ import { loadSharedDevelopmentEnvironment } from "./development-environment";
 //   bun scripts/openpanel.ts tools [name]
 //   bun scripts/openpanel.ts call <tool> ['<json arguments>']
 
-const SERVER_URL = "https://analytics.zollybot.shifaul.dev/api/mcp";
+const SERVER_URL = "https://analytics-zollybot.shifaul.dev/api/mcp";
 
 const McpParams = Schema.Record(Schema.String, Schema.Unknown);
 type McpParams = typeof McpParams.Type;

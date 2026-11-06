@@ -80,7 +80,7 @@ export function pageSocialImageMeta(image: PageSocialImage, siteUrl: string) {
 
 // The hosts production answers on. Both serve the same pages, and those pages go by
 // zollybot.shifaul.dev.
-const ZOLLYBOT_PRODUCTION_HOSTS = new Set(["zollybot.shifaul.dev", "api.zollybot.shifaul.dev"]);
+const ZOLLYBOT_PRODUCTION_HOSTS = new Set(["zollybot.shifaul.dev", "api-zollybot.shifaul.dev"]);
 
 /**
  * The site that the head tags of a page served at `pageUrl` name. Social sites fetch

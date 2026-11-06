@@ -243,7 +243,7 @@ it gets on your account and sends it to OpenPanel with your account ID. To remov
 browser, clear the site data of zollybot.shifaul.dev. OpenPanel can also derive
 session, device, browser, operating-system, network, and approximate geographic metadata from a
 request. The analytics service runs on ZollyBot's self-hosted infrastructure and receives events
-through `analytics.zollybot.shifaul.dev`.
+through `analytics-zollybot.shifaul.dev`.
 Desktop and web installs from before the first-run analytics box keep analytics on. On a new desktop
 install, and at web sign-in with no saved choice, the **Help make ZollyBot better** box starts ticked
 only when both the region (of the system on desktop, of the browser language on web) and the time
@@ -716,7 +716,7 @@ computer answers each chat; see [Telegram connections](#telegram-connections). C
 email provider can keep their own security, delivery, and network logs under their own policies. These provider logs are outside the
 ZollyBot application database and its daily maintenance task.
 
-The public status page at `status.zollybot.shifaul.dev` is on GitHub Pages. GitHub serves it and keeps its
+The public status page at `status-zollybot.shifaul.dev` is on GitHub Pages. GitHub serves it and keeps its
 own request logs under its own policy. The page has no analytics and no cookies, and it loads
 nothing from other sites. A GitHub Actions workflow checks the ZollyBot services about every 5 minutes
 with plain requests that carry no account or user data. Incidents on the page come from issues
@@ -1065,7 +1065,7 @@ Network traffic can also occur when:
   address that GitHub gives, on GitHub's image host. Agents then reach the
   GitHub MCP server at `api.githubcopilot.com` and GitHub itself through `gh` and `git`, with that
   token. So that GitHub shows the ZollyBot app as the author of an agent's work, ZollyBot sends that
-  token to the central account service (`api.zollybot.shifaul.dev`) about once an hour, and when you open the
+  token to the central account service (`api-zollybot.shifaul.dev`) about once an hour, and when you open the
   repository list. The service uses it
   only to ask GitHub which repositories you can push to, and gets back short-lived installation
   tokens for those repositories. It does not store or log either token, and it gets no chats, files
@@ -1154,7 +1154,7 @@ graph, or ID.
   64,000 characters. The body, marked as data, is the trigger's output and goes to the next steps.
   Remove the trigger, or delete the workflow, to stop its URL.
 - **GitHub triggers** receive the events of the ZollyBot GitHub App: issues, comments, pull requests,
-  reviews and checks. GitHub sends each event to ZollyBot's Signal service (`signal.zollybot.shifaul.dev`).
+  reviews and checks. GitHub sends each event to ZollyBot's Signal service (`signal-zollybot.shifaul.dev`).
   Signal checks GitHub's signature, reads only the installation and repository IDs, and passes the
   event to every computer that watches the repository, in transit only: it does not store or log it.
   When the Signal connection opens, the computer sends the account service its GitHub sign-in and the
@@ -1203,7 +1203,7 @@ ZollyBot account that connected it, and the Slack app and bot user IDs. It keeps
 message. It gives the bot token to the computer encrypted to a key that only that computer has.
 
 Slack sends the workspace's events, which contain the Slack messages in the channels ZollyBot is in
-and its direct messages, to ZollyBot's Signal service (`signal.zollybot.shifaul.dev`). Signal checks Slack's
+and its direct messages, to ZollyBot's Signal service (`signal-zollybot.shifaul.dev`). Signal checks Slack's
 signature and reads only the app ID and the workspace ID, to find the computer, and the type,
 channel type, thread and bot ID of the event, to know whether it addresses ZollyBot. It passes each
 request to that computer over its Signal connection, in transit only: it does not store or log the
@@ -1247,7 +1247,7 @@ because the app's secret lives there, and revokes the Discord sign-in token that
 records which ZollyBot computer answers the Discord server: the Discord server ID, the computer and the
 ZollyBot account that connected it. It keeps no Discord token and no message.
 
-Discord has one bot token for every server, so only ZollyBot's Signal service (`signal.zollybot.shifaul.dev`)
+Discord has one bot token for every server, so only ZollyBot's Signal service (`signal-zollybot.shifaul.dev`)
 holds it. Unlike Slack, both directions go through Signal:
 
 - **To the computer.** Signal keeps the bot's connection to Discord. Discord sends it the messages of
@@ -1293,7 +1293,7 @@ has, so Signal cannot read it; a restart of Signal deletes it.
 ## Telegram connections
 
 One ZollyBot Telegram bot serves every user. Its token is only in ZollyBot's Signal service
-(`signal.zollybot.shifaul.dev`); no computer has it. The user connects a chat from ZollyBot on their computer:
+(`signal-zollybot.shifaul.dev`); no computer has it. The user connects a chat from ZollyBot on their computer:
 the account service gives a one-use code, and the browser opens a `t.me` link with it. When the user
 adds the bot to a group, or starts a direct chat with it, Telegram sends the code in that chat.
 Signal then asks the account service to link the chat to the computer. The account service records

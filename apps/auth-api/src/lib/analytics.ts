@@ -30,7 +30,7 @@ import { PRIVACY_POLICY_ROUTE } from "./privacy-policy";
 import { TEAMS_ROUTE } from "./teams-page";
 import { TERMS_ROUTE } from "./terms";
 
-const OPENPANEL_API_URL = "https://analytics.zollybot.shifaul.dev/api";
+const OPENPANEL_API_URL = "https://analytics-zollybot.shifaul.dev/api";
 const OPENPANEL_CLIENT_ID = "6c989975-87ef-4f0c-857e-ab449a65b5c2";
 /** Generation 10 adds `billing_return_viewed` and `contact_form_submitted`. */
 const ANALYTICS_SCHEMA_VERSION = 10;

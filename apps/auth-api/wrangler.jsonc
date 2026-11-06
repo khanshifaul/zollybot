@@ -30,11 +30,11 @@
     },
     // `www` has no origin. The Worker answers it only with a redirect to zollybot.shifaul.dev.
     {
-      "pattern": "www.zollybot.shifaul.dev/*",
+      "pattern": "www-zollybot.shifaul.dev/*",
       "zone_id": "bac5e044ba951c390229f0e93673ebd3"
     },
     {
-      "pattern": "api.zollybot.shifaul.dev",
+      "pattern": "api-zollybot.shifaul.dev",
       "custom_domain": true
     }
   ],
@@ -56,13 +56,13 @@
     "EMAIL_FROM": "hello@zollybot.shifaul.dev",
     "EMAIL_LICENSE_FROM": "licenses@zollybot.shifaul.dev",
     "REMOTE_TICKET_KEY_ID": "zollybot-remote-1",
-    "REMOTE_SIGNAL_URL": "wss://signal.zollybot.shifaul.dev/v1/signal",
+    "REMOTE_SIGNAL_URL": "wss://signal-zollybot.shifaul.dev/v1/signal",
     // Two active Signal machines (docs/remote-session-deployment.md): a is sui-alexandria, b is signal2.
     // Set both lists together, so that a revoke reaches each home. An empty REMOTE_SIGNAL_HOMES rolls back.
-    "REMOTE_SIGNAL_HOMES": "a=wss://signal1.zollybot.shifaul.dev/v1/signal,b=wss://signal2.zollybot.shifaul.dev/v1/signal",
-    "REMOTE_AUTH_WEBHOOK_URL": "https://signal.zollybot.shifaul.dev/internal/auth-events",
-    "REMOTE_AUTH_WEBHOOK_URLS": "https://signal1.zollybot.shifaul.dev/internal/auth-events,https://signal2.zollybot.shifaul.dev/internal/auth-events",
-    // The zone of signal.zollybot.shifaul.dev. The entry check stays off until the secret SIGNAL_ENTRY_DNS_TOKEN
+    "REMOTE_SIGNAL_HOMES": "a=wss://signal1-zollybot.shifaul.dev/v1/signal,b=wss://signal2-zollybot.shifaul.dev/v1/signal",
+    "REMOTE_AUTH_WEBHOOK_URL": "https://signal-zollybot.shifaul.dev/internal/auth-events",
+    "REMOTE_AUTH_WEBHOOK_URLS": "https://signal1-zollybot.shifaul.dev/internal/auth-events,https://signal2-zollybot.shifaul.dev/internal/auth-events",
+    // The zone of signal-zollybot.shifaul.dev. The entry check stays off until the secret SIGNAL_ENTRY_DNS_TOKEN
     // is set and REMOTE_SIGNAL_HOMES names two machines.
     "SIGNAL_ENTRY_ZONE_ID": "bac5e044ba951c390229f0e93673ebd3",
     // Creates stay off until the boat and Stripe secrets and the template are set. "false" stops new
@@ -271,9 +271,9 @@
         "SITE_PUBLISH_ENABLED": "false",
         "SITE_COOKIE_ISOLATION_READY": "false",
         "REMOTE_TICKET_KEY_ID": "zollybot-remote-1",
-        "REMOTE_SIGNAL_URL": "wss://signal.zollybot.shifaul.dev/v1/signal",
+        "REMOTE_SIGNAL_URL": "wss://signal-zollybot.shifaul.dev/v1/signal",
         "REMOTE_SIGNAL_HOMES": "",
-        "REMOTE_AUTH_WEBHOOK_URL": "https://signal.zollybot.shifaul.dev/internal/auth-events",
+        "REMOTE_AUTH_WEBHOOK_URL": "https://signal-zollybot.shifaul.dev/internal/auth-events",
         "REMOTE_AUTH_WEBHOOK_URLS": "",
         // The test Worker never moves the production entry name.
         "SIGNAL_ENTRY_ZONE_ID": "",

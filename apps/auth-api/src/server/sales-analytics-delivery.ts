@@ -10,7 +10,7 @@ import {
   readAccountEmail,
 } from "./account-analytics";
 
-const OPENPANEL_API_URL = "https://analytics.zollybot.shifaul.dev/api";
+const OPENPANEL_API_URL = "https://analytics-zollybot.shifaul.dev/api";
 const SEND_TIMEOUT_MS = 5_000;
 const CLAIM_TIMEOUT_MS = 5 * 60_000;
 const MAX_BATCH_SIZE = 50;

@@ -69,7 +69,7 @@ const TOKEN = process.env.GITHUB_TOKEN?.trim() || null;
 if (TOKEN) registerSecretValue(TOKEN);
 if (!DRY_RUN && !TOKEN && !args["issues-file"]) throw new Error("GITHUB_TOKEN is necessary to write issues.");
 
-const SITE_URL = "https://status.zollybot.shifaul.dev";
+const SITE_URL = "https://status-zollybot.shifaul.dev";
 const BOT_LOGIN = "github-actions[bot]";
 const TIMEOUT_MS = 10_000;
 const SLOW_MS = 5_000;
@@ -84,8 +84,8 @@ const MAX_TEXT = 2_000;
 // Probes ---------------------------------------------------------------------
 
 const ORIGINS = {
-  api: "https://api.zollybot.shifaul.dev",
-  signal: "https://signal.zollybot.shifaul.dev",
+  api: "https://api-zollybot.shifaul.dev",
+  signal: "https://signal-zollybot.shifaul.dev",
   github: "https://github.com",
 } as const;
 

@@ -15,7 +15,7 @@ import { clearSupportLog, supportLogFileText } from "@/features/support/model/su
 import { useText } from "@/shared/lib/text";
 
 /** The ZollyBot Discord community, the same address as the desktop app. Its tickets get the fastest answer. */
-const DISCORD_URL = "https://discord.zollybot.shifaul.dev";
+const DISCORD_URL = "https://discord-zollybot.shifaul.dev";
 /** The ZollyBot account, the same contact as the website. */
 const SUPPORT_X_HANDLE = "@ZollyBot_";
 const SUPPORT_X_URL = "https://x.com/ZollyBot_";

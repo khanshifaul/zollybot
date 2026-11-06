@@ -28,7 +28,7 @@ export const ZOLLYBOT_LINKS = {
   contact: "/contact",
   x: "https://x.com/ZollyBot_",
   /** A Redirect Rule in the zollybot.shifaul.dev Cloudflare zone sends this to the current Discord invite. */
-  discord: "https://discord.zollybot.shifaul.dev",
+  discord: "https://discord-zollybot.shifaul.dev",
   download: "#download",
   news: "/news",
   guides: "/guides",
@@ -41,7 +41,7 @@ export const ZOLLYBOT_LINKS = {
   documentation: "https://github.com/khanshifaul/zollybot#readme",
   troubleshooting: "https://github.com/khanshifaul/zollybot/blob/main/docs/TROUBLESHOOTING.md",
   /** GitHub Pages hosts the status page, so it stays up when Cloudflare does not. */
-  status: "https://status.zollybot.shifaul.dev",
+  status: "https://status-zollybot.shifaul.dev",
   selfHostedServer: "https://github.com/khanshifaul/zollybot/blob/main/docs/self-hosted-server.md",
   dockerDocumentation: "https://github.com/khanshifaul/zollybot/blob/main/docs/docker.md",
   dockerInstallUbuntu: "https://docs.docker.com/engine/install/ubuntu/",

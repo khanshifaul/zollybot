@@ -58,7 +58,7 @@ sign in to ZollyBot with that email, the server is in their server list.
 
 ```sh
 printf '{"email":"%s"}' owner@example.com |
-  curl --fail -sS -X POST https://api.zollybot.shifaul.dev/v2/admin/server-claims \
+  curl --fail -sS -X POST https://api-zollybot.shifaul.dev/v2/admin/server-claims \
     -H @server-claims.header -H 'content-type: application/json' --data-binary @- |
   sed -n 's/.*"claim":"\([A-Za-z0-9_-]*\)".*/\1/p' |
   sudo zollybot login --claim --name <name>

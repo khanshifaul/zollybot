@@ -1052,7 +1052,7 @@ export async function createApplicationServices({
   teardown.push(TEARDOWN_ORDER.dynamicIsland, "the Dynamic Island", () => dynamicIsland.destroy());
   const centralAuthApiUrl = readCentralAuthApiUrl(
     process.env.ZOLLYBOT_AUTH_API_URL,
-    app.isPackaged ? "https://api.zollybot.shifaul.dev" : "http://127.0.0.1:3100",
+    app.isPackaged ? "https://api-zollybot.shifaul.dev" : "http://127.0.0.1:3100",
   );
   const centralAuth = new CentralAuthManager({
     apiUrl: centralAuthApiUrl,

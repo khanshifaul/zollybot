@@ -1248,8 +1248,8 @@ jobs:
             echo
             fail "$association_url does not have the expected applinks.details."
           fi
-          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.zollybot.shifaul.dev/health/live >/dev/null
-          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api.zollybot.shifaul.dev/health/ready >/dev/null
+          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api-zollybot.shifaul.dev/health/live >/dev/null
+          curl --fail --silent --show-error --retry 5 --retry-all-errors https://api-zollybot.shifaul.dev/health/ready >/dev/null
           site_url=https://deployment-smoke-check.zollybot.site/
           site_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
             --max-redirs 0 --dump-header "$verification_dir/site-router.headers" \

@@ -20,7 +20,7 @@ export function buildContentSecurityPolicy(
     // The lightbox plays a recording from the attachment scheme, and the preview panel plays one
     // from an object URL of the bytes that the main process sent. Neither matches `default-src`.
     "media-src 'self' blob: zollybot-attachment: zollybot-remote-attachment:",
-    `connect-src 'self' zollybot-attachment: zollybot-remote-attachment: https://analytics.zollybot.shifaul.dev ws://127.0.0.1:* wss://*.zollybot.shifaul.dev${selfHostedSignalSource}${developmentSources}`,
+    `connect-src 'self' zollybot-attachment: zollybot-remote-attachment: https://analytics-zollybot.shifaul.dev ws://127.0.0.1:* wss://*.zollybot.shifaul.dev${selfHostedSignalSource}${developmentSources}`,
     "object-src 'none'",
     // The remote desktop viewer uses a loopback proxy in packaged apps too.
     "frame-src 'self' zollybot-attachment: zollybot-remote-attachment: zollybot-visual: zollybot-remote-visual: https://*.zollybot.shifaul.dev http://127.0.0.1:* http://localhost:*",

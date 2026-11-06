@@ -144,7 +144,7 @@ function AddServerFlow(props: FlowProps) {
               ...serverDefaults(),
               id: pending().id,
               name: pending().name,
-              apiUrl: `https://${pending().id}.hosted.zollybot.shifaul.dev`,
+              apiUrl: `https://${pending().id}.hosted-zollybot.shifaul.dev`,
               role: "owner",
             })
           }

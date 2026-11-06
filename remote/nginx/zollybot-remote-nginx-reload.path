@@ -2,7 +2,7 @@
 Description=Watch ZollyBot Remote TLS certificate
 
 [Path]
-PathChanged=/var/lib/docker/volumes/zollybot-remote_acme-data/_data/certificates/signal.zollybot.shifaul.dev.crt
+PathChanged=/var/lib/docker/volumes/zollybot-remote_acme-data/_data/certificates/signal-zollybot.shifaul.dev.crt
 Unit=zollybot-remote-nginx-reload.service
 
 [Install]

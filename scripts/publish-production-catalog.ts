@@ -13,7 +13,7 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const authApiRoot = join(projectRoot, "apps", "auth-api");
 const executableSuffix = process.platform === "win32" ? ".exe" : "";
 const wrangler = join(projectRoot, "node_modules", ".bin", `wrangler${executableSuffix}`);
-const productionApiUrl = "https://api.zollybot.shifaul.dev";
+const productionApiUrl = "https://api-zollybot.shifaul.dev";
 const productionDatabase = "zollybot-auth";
 const productionBucket = "zollybot-skills";
 const owner = {

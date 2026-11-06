@@ -256,10 +256,10 @@ Ask the network administrator to allow these hosts over HTTPS (TCP 443) and WebS
 
 | Host | Use |
 | --- | --- |
-| `api.zollybot.shifaul.dev` | Accounts, sign-in, teams, and hosted servers |
-| `signal.zollybot.shifaul.dev` | Connection setup for teams and remote servers |
+| `api-zollybot.shifaul.dev` | Accounts, sign-in, teams, and hosted servers |
+| `signal-zollybot.shifaul.dev` | Connection setup for teams and remote servers |
 | `zollybot.shifaul.dev` | Public site and images in invitation emails |
-| `*.zollybot.shifaul.dev` | Hosted servers and sites, and `analytics.zollybot.shifaul.dev` |
+| `*.zollybot.shifaul.dev` | Hosted servers and sites, and `analytics-zollybot.shifaul.dev` |
 | `github.com`, `*.githubusercontent.com` | App updates |
 
 Teams and remote servers also send WebRTC traffic to the other device or to the TURN relay that

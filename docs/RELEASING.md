@@ -87,7 +87,7 @@ place. Correct the package settings, then run the failed job again.
 After GitHub publication, `Publish boat server snapshot` builds the Linux x64 release into a boat
 named snapshot (`zollybot-server-production-<version>` with dots replaced by hyphens), then selects
 it for new production servers. It uses the tagged hosting scripts,
-the published `SHA256SUMS-linux.txt`, and `https://api.zollybot.shifaul.dev`. The builder checks the AppImage
+the published `SHA256SUMS-linux.txt`, and `https://api-zollybot.shifaul.dev`. The builder checks the AppImage
 checksum and installed version and requires an empty host profile before saving the snapshot.
 Existing servers and the test Worker do not change.
 
@@ -721,14 +721,14 @@ Before creating the first tag or any later release:
 14. confirm `CHANGELOG.md` and `.github/release-announcement.json` describe the version and the
     working tree is clean;
 15. create and push the version commit, and create the tag locally, only after CI passes on `main`;
-16. read the running Signal commit from `curl -fsS https://signal.zollybot.shifaul.dev/health/live`. If it is
+16. read the running Signal commit from `curl -fsS https://signal-zollybot.shifaul.dev/health/live`. If it is
     missing or `unknown`, or if `git diff --quiet <running commit> <new tag> -- remote packages/contracts/src/signal-protocol`
     finds changes, deploy Signal from the local tag before you push the tag. Compare with the running
     commit, not with the previous tag: an earlier release can have left Signal behind. Pushing the tag starts the
     release workflow, and nothing in it waits for Signal. Use the Signal-only procedure in
     [remote-session-deployment.md](remote-session-deployment.md#deployment-procedure--requires-separate-approval);
     the `.agents/skills/signal-deploy/` skill adds the checks before and after it.
-    Confirm that `curl -fsS https://signal.zollybot.shifaul.dev/health/live` shows the tag commit. A client
+    Confirm that `curl -fsS https://signal-zollybot.shifaul.dev/health/live` shows the tag commit. A client
     that needs a newer Signal fails until then: v0.33.0 shipped webhook routines while Signal was older
     than #1520, so every webhook route answered 404 (#1661);
 17. push the tag.

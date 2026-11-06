@@ -89,7 +89,7 @@ const EXTERNAL_DESTINATIONS: Record<ExternalDestination, string | ((translate: A
   changelog: "https://zollybot.shifaul.dev/changelog",
   guides: "https://zollybot.shifaul.dev/guides",
   // A Redirect Rule in the zollybot.shifaul.dev Cloudflare zone sends this to the current Discord invite.
-  discord: "https://discord.zollybot.shifaul.dev",
+  discord: "https://discord-zollybot.shifaul.dev",
   github: "https://github.com/khanshifaul/zollybot",
   x: "https://x.com/ZollyBot_",
   threads: "https://www.threads.com/@zollybot.shifaul.dev",

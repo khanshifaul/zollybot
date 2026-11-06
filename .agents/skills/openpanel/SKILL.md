@@ -5,7 +5,7 @@ description: Query ZollyBot product analytics (events, sessions, profiles, funne
 
 # OpenPanel analytics
 
-`scripts/openpanel.ts` calls the OpenPanel MCP server at `https://analytics.zollybot.shifaul.dev/api/mcp`.
+`scripts/openpanel.ts` calls the OpenPanel MCP server at `https://analytics-zollybot.shifaul.dev/api/mcp`.
 The token is a `root` client. It reads analytics and makes, changes and deletes dashboards and
 reports (`create_dashboard`, `create_report`, `update_report_layout`, `delete_dashboard` and others).
 `apps/auth-api/.env.dev` and `apps/auth-api/.env.production` hold the same token as

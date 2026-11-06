@@ -57,7 +57,7 @@ export const mobileAnalytics = new MobileAnalytics(() => {
   )
     return null;
   const client = new OpenPanel({
-    apiUrl: "https://analytics.zollybot.shifaul.dev/api",
+    apiUrl: "https://analytics-zollybot.shifaul.dev/api",
     clientId,
     clientSecret,
     filter: filterMobilePayload,

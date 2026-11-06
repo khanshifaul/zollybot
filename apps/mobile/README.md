@@ -584,7 +584,7 @@ One-time setup:
 
 The app uses the official [`@openpanel/react-native` SDK](https://openpanel.dev/docs/sdks/react-native)
 and `expo-application`, following the [React Native guide](https://openpanel.dev/guides/react-native-analytics).
-The endpoint is fixed to `https://analytics.zollybot.shifaul.dev/api`. No analytics credentials are committed.
+The endpoint is fixed to `https://analytics-zollybot.shifaul.dev/api`. No analytics credentials are committed.
 
 ### Production configuration
 

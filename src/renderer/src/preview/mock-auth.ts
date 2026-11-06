@@ -61,8 +61,8 @@ export function createMockAuth(options: MockAuthOptions, { emit }: MockRuntime) 
     },
   ];
   let companySignIn: CompanySignInSettings = {
-    redirectUri: "https://api.zollybot.shifaul.dev/v1/auth/company/callback",
-    scimUrl: "https://api.zollybot.shifaul.dev/scim/v2",
+    redirectUri: "https://api-zollybot.shifaul.dev/v1/auth/company/callback",
+    scimUrl: "https://api-zollybot.shifaul.dev/scim/v2",
     domainRecord: { name: "_zollybot", value: "zollybot-domain=preview" },
     domainCheck: false,
     connection: null,

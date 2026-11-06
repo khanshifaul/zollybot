@@ -29,7 +29,7 @@ import {
 import { sourceText } from "@zollybot/i18n/source";
 import { nextValidRoutineOccurrence } from "@zollybot/team-client/routine-schedule";
 
-const PREVIEW_HOOKS = "https://hooks.zollybot.shifaul.dev/wf";
+const PREVIEW_HOOKS = "https://hooks-zollybot.shifaul.dev/wf";
 
 /** The GitHub connection of the preview: two repositories, and the bot cannot change the second one. */
 const PREVIEW_GITHUB_CATALOG: WorkflowGitHubCatalog = {
