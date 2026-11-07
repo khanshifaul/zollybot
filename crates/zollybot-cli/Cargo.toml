@@ -1,6 +1,6 @@
 [package]
 name = "zollybot-cli"
-version = "0.62.8"
+version = "0.62.9"
 edition = "2021"
 description = "ZollyBot offices from the terminal"
 license = "MIT"

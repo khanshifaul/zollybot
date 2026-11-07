@@ -6,6 +6,22 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.9] - 2026-11-07
+
+### Added
+
+- The desktop frame has a floor strip: the lobby first and fixed, then one tab
+  per office from the roster; choosing a tab opens that floor's first seat.
+- The terminal mirrors that shape: a floor strip, the roster on the left and the
+  selected seat on the right; with the lobby selected, the butler's room is in
+  the middle and the offices are listed beside it. `Ctrl+b` is the prefix
+  (`o` floors, `a` all, `l` lobby, `c` connect, `i` account, `q` quit).
+
+### Changed
+
+- A fresh profile seeds only the butler. Office roles are hired per office
+  through `employ`, which is the butler's setup job.
+
 ## [0.62.8] - 2026-11-07
 
 ### Added
