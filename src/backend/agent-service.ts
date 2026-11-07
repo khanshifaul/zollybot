@@ -3967,6 +3967,39 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     syncEmployments(this.#store.database.connection, this.#store.list(), roleForAgentName);
   });
 
+  /**
+   * A profile that predates butler seeding gets its concierge once. The butler
+   * is building infrastructure, so it is created even when the seed marker says
+   * this profile was already seeded.
+   */
+  #ensureButler = Effect.fn("AgentService.ensureButler")(function* (
+    this: AgentService,
+  ): Effect.fn.Return<void, AgentLifecycleFailed> {
+    const database = this.#store.database.connection;
+    if (listEmployments(database).some((employment) => employment.scope === "building")) return;
+    if (this.#store.list().some((agent) => roleForAgentName(agent.name)?.scope === "building")) return;
+    const created = yield* this.#store
+      .createAgent({
+        name: "Butler",
+        description:
+          "The building's concierge. Knows which offices exist, opens and creates them, and proposes a roster. Reads no office's chats and approves no gate.",
+        avatarSeed: "zollybot:butler",
+        avatarHue: null,
+      })
+      .pipe(
+        Effect.mapError(
+          (failure) => new AgentLifecycleFailed({ operation: "create the butler", cause: failure.cause }),
+        ),
+      );
+    yield* this.#store
+      .updateAgent({ agentId: created.id, title: "Concierge" })
+      .pipe(
+        Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title the butler", cause: failure.cause })),
+      );
+    upsertEmployment(database, { agentId: created.id, officeId: null, roleKey: "butler", scope: "building" });
+    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+  });
+
   readonly initialize = Effect.fn("AgentService.initialize")(function* (
     this: AgentService,
     options: { heldRoutines?: RoutineHoldWindow | undefined } = {},
@@ -3983,6 +4016,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     // Every agent gets a desk once: role from the catalog, office Unassigned until
     // the founder opens a real one.
     yield* Effect.sync(() => syncEmployments(this.#store.database.connection, this.#store.list(), roleForAgentName));
+    yield* Effect.ignore(this.#ensureButler());
     yield* this.#mailbox
       .initialize()
       .pipe(
