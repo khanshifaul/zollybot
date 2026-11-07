@@ -375,6 +375,7 @@ struct App {
     message: String,
     last_refresh: Instant,
     connect: Option<ConnectPanel>,
+    office_picker: Option<usize>,
     session: Option<Session>,
     sign_in: Option<SignIn>,
 }
@@ -393,6 +394,7 @@ impl App {
             message: String::new(),
             last_refresh: Instant::now(),
             connect: None,
+            office_picker: None,
             session: load_session(),
             sign_in: None,
         };
@@ -500,20 +502,44 @@ impl App {
         }
     }
 
-    fn cycle_office_filter(&mut self) {
-        self.office_filter = match self.office_filter.clone() {
-            None => Some("building".to_string()),
-            Some(id) if id == "building" => self.offices.first().map(|office| office.id.clone()),
-            Some(id) => {
-                let next = self
-                    .offices
-                    .iter()
-                    .position(|office| office.id == id)
-                    .and_then(|index| self.offices.get(index + 1))
-                    .map(|office| office.id.clone());
-                next
-            }
-        };
+    /// `(filter, label, headcount)`; the first is every floor, the second the lobby.
+    fn floor_choices(&self) -> Vec<(Option<String>, String, usize)> {
+        let lobby = self.all_agents.iter().filter(|agent| agent.scope == "building").count();
+        let mut choices = vec![
+            (None, "All floors".to_string(), self.all_agents.len()),
+            (Some("building".to_string()), "Lobby".to_string(), lobby),
+        ];
+        for office in &self.offices {
+            choices.push((Some(office.id.clone()), office.name.clone(), office.agents));
+        }
+        choices
+    }
+
+    fn open_office_picker(&mut self) {
+        // Start on the floor that is showing, so Enter changes nothing.
+        let choices = self.floor_choices();
+        let current = choices
+            .iter()
+            .position(|(filter, _, _)| *filter == self.office_filter)
+            .unwrap_or(0);
+        self.office_picker = Some(current);
+    }
+
+    fn move_office_picker(&mut self, delta: isize) {
+        let len = self.floor_choices().len();
+        if len == 0 {
+            return;
+        }
+        let current = self.office_picker.unwrap_or(0) as isize;
+        self.office_picker = Some((current + delta).clamp(0, (len - 1) as isize) as usize);
+    }
+
+    fn choose_office(&mut self) {
+        let choices = self.floor_choices();
+        let Some(index) = self.office_picker else { return };
+        let Some((filter, _, _)) = choices.get(index) else { return };
+        self.office_filter = filter.clone();
+        self.office_picker = None;
         self.apply_office_filter();
     }
 
@@ -765,6 +791,34 @@ fn draw(frame: &mut Frame, app: &mut App) {
         );
     }
 
+    if let Some(selected) = app.office_picker {
+        let area = centered_rect(52, 52, frame.area());
+        frame.render_widget(Clear, area);
+        let mut lines: Vec<Line> = Vec::new();
+        for (index, (_, label, headcount)) in app.floor_choices().iter().enumerate() {
+            let marker = if index == selected { "› " } else { "  " };
+            let style = if index == selected {
+                Style::default().add_modifier(Modifier::BOLD)
+            } else {
+                Style::default()
+            };
+            lines.push(Line::from(Span::styled(
+                format!("{marker}{label}  ({headcount})"),
+                style,
+            )));
+        }
+        lines.push(Line::from(""));
+        lines.push(Line::from(Span::styled(
+            "j/k move · Enter open · Esc close",
+            Style::default().fg(Color::DarkGray),
+        )));
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .border_type(ratatui::widgets::BorderType::Rounded)
+            .title(" floors ");
+        frame.render_widget(Paragraph::new(lines).block(block), area);
+    }
+
     if let Some(sign_in) = &app.sign_in {
         let area = centered_rect(64, 42, frame.area());
         frame.render_widget(Clear, area);
@@ -915,6 +969,16 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 if key.kind != KeyEventKind::Press {
                     continue;
                 }
+                if app.office_picker.is_some() {
+                    match key.code {
+                        KeyCode::Esc | KeyCode::Char('f') => app.office_picker = None,
+                        KeyCode::Enter => app.choose_office(),
+                        KeyCode::Char('j') | KeyCode::Down => app.move_office_picker(1),
+                        KeyCode::Char('k') | KeyCode::Up => app.move_office_picker(-1),
+                        _ => {}
+                    }
+                    continue;
+                }
                 if app.sign_in.is_some() {
                     match key.code {
                         KeyCode::Esc => app.sign_in = None,
@@ -951,7 +1015,7 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
                     KeyCode::Char('j') | KeyCode::Down => app.table_next(),
                     KeyCode::Char('k') | KeyCode::Up => app.table_previous(),
-                    KeyCode::Char('f') => app.cycle_office_filter(),
+                    KeyCode::Char('f') => app.open_office_picker(),
                     KeyCode::Char('r') => {
                         app.load();
                         app.refresh_account();
