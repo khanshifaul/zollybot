@@ -21,6 +21,8 @@ export function OfficeTabStrip() {
   const agents = useAgents();
   const { t } = useText();
   const [active, setActive] = createSignal(localStorage.getItem(ACTIVE_OFFICE_KEY) ?? "building");
+  // The saved floor scopes the roster as soon as the window opens.
+  agents.setActiveOfficeId(active());
 
   const tabs = createMemo<OfficeTab[]>(() => {
     const byOffice = new Map<string, OfficeTab>();
@@ -51,6 +53,7 @@ export function OfficeTabStrip() {
 
   const choose = (tab: OfficeTab): void => {
     setActive(tab.id);
+    agents.setActiveOfficeId(tab.id);
     localStorage.setItem(ACTIVE_OFFICE_KEY, tab.id);
     const first = agents
       .agentList()

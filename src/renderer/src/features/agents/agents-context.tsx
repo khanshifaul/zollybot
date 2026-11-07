@@ -80,6 +80,8 @@ const Agents = createSimpleContext({
     const { uiErrors, setUiErrors, appendUiError } = useUiErrors();
 
     const [agentList, setAgentList] = createSignal<AgentProfile[]>([]);
+    /** The floor the window is showing; `null` shows every floor, `building` the lobby. */
+    const [activeOfficeId, setActiveOfficeId] = createSignal<string | null>(null);
     /** The first roster read of this scope succeeded. */
     const [agentListSettled, setAgentListSettled] = createSignal(false);
     const [duplicatingAgentIds, setDuplicatingAgentIds] = createSignal<Set<string>>(new Set());
@@ -179,6 +181,15 @@ const Agents = createSimpleContext({
       if (!scopeIsCurrent()) return;
       setUserHiddenAgents(agents);
     }
+
+    /** The roster the sidebar draws: the selected floor's seats, or everyone. */
+    const filteredAgentList = createMemo(() => {
+      const office = activeOfficeId();
+      if (office === null) return agentList();
+      return agentList().filter((agent) =>
+        office === "building" ? agent.scope === "building" : agent.officeId === office,
+      );
+    });
 
     const activeAgent = createMemo(() => {
       if (activeDirectMember()) return undefined;
@@ -381,6 +392,9 @@ const Agents = createSimpleContext({
 
     return {
       agentList,
+      filteredAgentList,
+      activeOfficeId,
+      setActiveOfficeId,
       setAgentList,
       agentListConnecting,
       agentListSettled,

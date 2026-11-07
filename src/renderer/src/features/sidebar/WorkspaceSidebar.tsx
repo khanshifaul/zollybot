@@ -88,6 +88,7 @@ export function WorkspaceSidebar(props: { peopleEnabled: boolean }) {
     openAgentSetup,
     userHiddenAgents,
     userHiddenAgentIds,
+    filteredAgentList,
   } = useAgents();
   const { editAgent, duplicateAgent, duplicateSection, duplicatingSectionIds, deleteAgent, setAgentHiddenByUser } =
     useAgentActions();
@@ -209,7 +210,7 @@ export function WorkspaceSidebar(props: { peopleEnabled: boolean }) {
   const workingTurns = createMemo(() => {
     const turns = { ...activeTurns() };
     const subagents = subagentTurns();
-    for (const agent of agentList()) {
+    for (const agent of filteredAgentList()) {
       const running = agentTasks.snapshot(agent.id)?.tasks.find((task) => task.state === "running");
       if (running && !turns[agent.id]) turns[agent.id] = running.activeTurnId ?? running.id;
       const subagentTurn = subagents[agent.id];
