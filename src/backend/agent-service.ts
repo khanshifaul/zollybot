@@ -3882,6 +3882,10 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   ): Effect.fn.Return<void, AgentLifecycleFailed> {
     if (this.#store.officeAgentsSeeded() || this.#store.list().length > 0) return;
     for (const spec of OFFICE_AGENTS) {
+      // Only the building's own role is created at first run. The office roles
+      // (Zolly, Foreman, HR, PR Reviewer, workers) belong to a floor, and the
+      // butler hires them into an office with `employ`.
+      if (roleForAgentName(spec.name)?.scope !== "building") continue;
       const created = yield* this.#store
         .createAgent({
           name: spec.name,
