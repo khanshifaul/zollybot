@@ -466,7 +466,7 @@ export function agentIpcHandlers({
         remote: (input, serverId) => runCauseEffect(remoteServers.setAgentNotificationLevel(serverId, input)),
       }),
       listAgents: scopedQueryHandler({
-        local: () => service.listAgents(),
+        local: () => service.listAgentsWithEmployment(),
         // The released agent list has no exact colour and no chat colour, so `agent-colors-v1` and
         // `chat-colors-v1` give them on their own routes.
         remote: (serverId) =>

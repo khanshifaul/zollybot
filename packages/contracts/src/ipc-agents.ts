@@ -257,6 +257,12 @@ export interface AgentSummary {
   title: string;
   description: string;
   notifications: boolean;
+  /** The office holding this employment; null for a building role such as the butler. */
+  officeId?: string | null;
+  /** The catalog role key, when the name maps to one. */
+  role?: string;
+  /** `office` or `building`; absent means an agent without an employment. */
+  scope?: "office" | "building";
   provider: AgentProviderId;
   model: AgentModelId;
   reasoningEffort: AgentReasoningEffort;
@@ -397,6 +403,9 @@ function hasAgentSummaryFields(value: DynamicRecord): boolean {
     isBoundedString(value.title, INPUT_LIMITS.agentTitle) &&
     isBoundedString(value.description, INPUT_LIMITS.agentDescription) &&
     isBoolean(value.notifications) &&
+    (value.officeId === undefined || value.officeId === null || isString(value.officeId)) &&
+    (value.role === undefined || isString(value.role)) &&
+    (value.scope === undefined || value.scope === "office" || value.scope === "building") &&
     isAgentModel(value.model) &&
     isReasoningEffort(value.reasoningEffort) &&
     (value.sessionSettingOverrides === undefined || isAgentSessionSettingOverrides(value.sessionSettingOverrides)) &&

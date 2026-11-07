@@ -251,7 +251,13 @@ import type { McpSignInOpener } from "./mcp-oauth-provider";
 import { McpServerStore } from "./mcp-server-store";
 import type { MessageDeleteAccess, MessageDeleteRefused } from "./message-delete";
 import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging/messaging-threads";
-import { isRoleEmployed, syncEmployments, UNASSIGNED_OFFICE_ID, upsertEmployment } from "./offices/office-store";
+import {
+  isRoleEmployed,
+  listEmployments,
+  syncEmployments,
+  UNASSIGNED_OFFICE_ID,
+  upsertEmployment,
+} from "./offices/office-store";
 import { roleByKey, roleForAgentName } from "./offices/role-catalog";
 import type { PasswordVault } from "./password-vault";
 import { canConfineProcesses } from "./process-confinement";
@@ -1820,6 +1826,22 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
 
   listAgents(): AgentSummary[] {
     return this.#duplication.visibleAgents(this.#store.list());
+  }
+
+  /**
+   * The roster with its employment attached, for the IPC boundary. The stored
+   * agent record does not carry these fields; the employment table does.
+   */
+  listAgentsWithEmployment(): AgentSummary[] {
+    const employments = new Map(
+      listEmployments(this.#store.database.connection).map((employment) => [employment.agentId, employment]),
+    );
+    return this.listAgents().map((agent) => {
+      const employment = employments.get(agent.id);
+      return employment
+        ? { ...agent, officeId: employment.officeId, role: employment.roleKey, scope: employment.scope }
+        : agent;
+    });
   }
 
   /** The folder that every local agent can change, beside its own workspace. */
