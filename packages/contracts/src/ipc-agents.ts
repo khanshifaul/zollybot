@@ -259,6 +259,8 @@ export interface AgentSummary {
   notifications: boolean;
   /** The office holding this employment; null for a building role such as the butler. */
   officeId?: string | null;
+  /** The office's display name, for a tab title. */
+  officeName?: string;
   /** The catalog role key, when the name maps to one. */
   role?: string;
   /** `office` or `building`; absent means an agent without an employment. */
@@ -404,6 +406,7 @@ function hasAgentSummaryFields(value: DynamicRecord): boolean {
     isBoundedString(value.description, INPUT_LIMITS.agentDescription) &&
     isBoolean(value.notifications) &&
     (value.officeId === undefined || value.officeId === null || isString(value.officeId)) &&
+    (value.officeName === undefined || isString(value.officeName)) &&
     (value.role === undefined || isString(value.role)) &&
     (value.scope === undefined || value.scope === "office" || value.scope === "building") &&
     isAgentModel(value.model) &&

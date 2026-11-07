@@ -254,6 +254,7 @@ import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging
 import {
   isRoleEmployed,
   listEmployments,
+  listOffices,
   syncEmployments,
   UNASSIGNED_OFFICE_ID,
   upsertEmployment,
@@ -1833,14 +1834,20 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
    * agent record does not carry these fields; the employment table does.
    */
   listAgentsWithEmployment(): AgentSummary[] {
-    const employments = new Map(
-      listEmployments(this.#store.database.connection).map((employment) => [employment.agentId, employment]),
-    );
+    const database = this.#store.database.connection;
+    const employments = new Map(listEmployments(database).map((employment) => [employment.agentId, employment]));
+    const offices = new Map(listOffices(database).map((office) => [office.id, office]));
     return this.listAgents().map((agent) => {
       const employment = employments.get(agent.id);
-      return employment
-        ? { ...agent, officeId: employment.officeId, role: employment.roleKey, scope: employment.scope }
-        : agent;
+      if (!employment) return agent;
+      const office = employment.officeId ? offices.get(employment.officeId) : undefined;
+      return {
+        ...agent,
+        officeId: employment.officeId,
+        officeName: office?.repoPath ? office.name : undefined,
+        role: employment.roleKey,
+        scope: employment.scope,
+      };
     });
   }
 
