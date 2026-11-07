@@ -376,6 +376,7 @@ struct App {
     last_refresh: Instant,
     connect: Option<ConnectPanel>,
     office_picker: Option<usize>,
+    lobby_selected: usize,
     prefix: bool,
     session: Option<Session>,
     sign_in: Option<SignIn>,
@@ -396,6 +397,7 @@ impl App {
             last_refresh: Instant::now(),
             connect: None,
             office_picker: None,
+            lobby_selected: 0,
             prefix: false,
             session: load_session(),
             sign_in: None,
@@ -520,6 +522,25 @@ impl App {
         }
         choices.push((None, "All floors".to_string(), self.all_agents.len()));
         choices
+    }
+
+    /// Floors the lobby can open: every office and Unassigned, not the lobby or All.
+    fn lobby_targets(&self) -> Vec<(Option<String>, String, usize)> {
+        self.floor_choices().into_iter().skip(1).filter(|(filter, _, _)| filter.is_some()).collect()
+    }
+
+    fn move_lobby_selection(&mut self, delta: isize) {
+        let len = self.lobby_targets().len();
+        if len == 0 { return; }
+        let current = self.lobby_selected as isize;
+        self.lobby_selected = (current + delta).clamp(0, (len - 1) as isize) as usize;
+    }
+
+    fn open_lobby_selection(&mut self) {
+        let targets = self.lobby_targets();
+        let Some((filter, _, _)) = targets.get(self.lobby_selected).cloned() else { return };
+        self.office_filter = filter;
+        self.apply_office_filter();
     }
 
     fn open_office_picker(&mut self) {
@@ -838,16 +859,17 @@ fn draw(frame: &mut Frame, app: &mut App) {
         frame.render_widget(Paragraph::new(chat).block(chat_block), body[0]);
 
         let mut offices: Vec<Line> = Vec::new();
-        for office in &app.offices {
-            offices.push(Line::from(format!("{}  ({})", office.name, office.agents)));
-        }
-        let unassigned = app
-            .all_agents
-            .iter()
-            .filter(|agent| agent.office_id == "unassigned")
-            .count();
-        if unassigned > 0 {
-            offices.push(Line::from(format!("Unassigned  ({unassigned})")));
+        for (index, (_, label, headcount)) in app.lobby_targets().iter().enumerate() {
+            let marker = if index == app.lobby_selected { "› " } else { "  " };
+            let style = if index == app.lobby_selected {
+                Style::default().add_modifier(Modifier::BOLD)
+            } else {
+                Style::default()
+            };
+            offices.push(Line::from(Span::styled(
+                format!("{marker}{label}  ({headcount})"),
+                style,
+            )));
         }
         if offices.is_empty() {
             offices.push(Line::from("No offices yet."));
@@ -1136,8 +1158,23 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     KeyCode::Char('i') => app.open_sign_in(),
                     KeyCode::Char('o') => app.sign_out(),
                     KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
-                    KeyCode::Char('j') | KeyCode::Down => app.table_next(),
-                    KeyCode::Char('k') | KeyCode::Up => app.table_previous(),
+                    KeyCode::Char('j') | KeyCode::Down => {
+                        if app.office_filter.as_deref() == Some("building") {
+                            app.move_lobby_selection(1);
+                        } else {
+                            app.table_next();
+                        }
+                    }
+                    KeyCode::Char('k') | KeyCode::Up => {
+                        if app.office_filter.as_deref() == Some("building") {
+                            app.move_lobby_selection(-1);
+                        } else {
+                            app.table_previous();
+                        }
+                    }
+                    KeyCode::Enter if app.office_filter.as_deref() == Some("building") => {
+                        app.open_lobby_selection();
+                    }
                     KeyCode::Char('f') => app.open_office_picker(),
                     KeyCode::Char('r') => {
                         app.load();
