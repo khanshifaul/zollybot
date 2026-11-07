@@ -648,13 +648,15 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       changed: (agent, previous) => {
         if (standingProfileChanged(previous, agent, this.#store.agentDefaults()))
           this.#conversation.unloadAgentThreads(agent.id);
-        this.#emit({ type: "agents-changed", agents: this.listAgents() });
+        this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
         this.#drain.scheduleDrain(agent.id);
       },
       delete: (agent) =>
         this.#removal.deleteData(agent).pipe(
           toProfileSaveFailed,
-          Effect.tap(() => Effect.sync(() => this.#emit({ type: "agents-changed", agents: this.listAgents() }))),
+          Effect.tap(() =>
+            Effect.sync(() => this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() })),
+          ),
         ),
     });
     this.#mailbox = mailbox;
@@ -1867,7 +1869,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     for (const agent of this.#store.list()) {
       if (standingProfileChanged(agent, agent, defaults, previous)) this.#conversation.unloadAgentThreads(agent.id);
     }
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
   }
 
   /**
@@ -1914,7 +1916,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     return buildRuntimeSnapshot({
       contextStates: this.#compaction.snapshot(),
       threadContextStates: this.#compaction.threadSnapshot(this.#tasks.openExecutionThreads()),
-      agents: this.listAgents(),
+      agents: this.listAgentsWithEmployment(),
       conversation: this.#conversation,
       database: this.#store.database,
       mailbox: this.#mailbox,
@@ -2386,7 +2388,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
    */
   notifyAgentsChanged(): void {
     this.#attention.answerGrantedRequests();
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
   }
 
   /** The installed skills of one agent changed, so every open skills list reads them again. */
@@ -2682,7 +2684,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     );
     if (Result.isSuccess(result)) return result.success;
     const rollback = yield* Effect.result(this.#removal.deleteData(agent));
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
     return yield* new AgentLifecycleFailed({
       operation: "create agent",
       cause: Result.isFailure(rollback)
@@ -2813,7 +2815,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
                 (failure) => new AgentLifecycleFailed({ operation: "set profile title", cause: failure.cause }),
               ),
             );
-        this.#emit({ type: "agents-changed", agents: this.listAgents() });
+        this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
         return agent;
       }).pipe(
         Effect.catchDefect((cause) =>
@@ -2863,7 +2865,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   /** The agents a user hid, oldest hide first. */
   listHiddenAgents(): HiddenAgentsSnapshot {
     return {
-      agents: this.listAgents()
+      agents: this.listAgentsWithEmployment()
         .flatMap((agent) => (agent.hiddenAt === undefined ? [] : [{ agentId: agent.id, hiddenAt: agent.hiddenAt }]))
         .sort(
           (left, right) => left.hiddenAt.localeCompare(right.hiddenAt) || left.agentId.localeCompare(right.agentId),
@@ -2915,7 +2917,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       this.#drain.scheduleDrain(input.agentId);
     }
     this.#emit({ type: "hidden-agents-changed", agents: snapshot.agents });
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
     return snapshot;
   }).bind(this);
 
@@ -2926,7 +2928,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
 
   setMarketplaceSource(agentId: string, source: NonNullable<AgentSummary["marketplaceSource"]>): AgentSummary {
     const agent = this.#store.setMarketplaceSource(agentId, source);
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
     return agent;
   }
 
@@ -3177,7 +3179,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       this.#store.updateAgent({ agentId: input.agentId, pendingRuntime }, initiatingAgentId).pipe(
         Effect.tap(() =>
           Effect.sync(() => {
-            this.#emit({ type: "agents-changed", agents: this.listAgents() });
+            this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
             this.#drain.scheduleDrain(input.agentId);
           }),
         ),
@@ -3320,7 +3322,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     // A Workspace only agent moved to Full access gets no grant event, and its cards wait for that grant.
     if (previous && workspaceAccessEnforced(previous) && !workspaceAccessEnforced(agent))
       this.#attention.answerGrantedRequests();
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
     // The task limit follows the agent's own setting and its provider. A higher one can start a task now.
     if (providerChanged || (previous && agentTaskLimit(previous) !== agentTaskLimit(agent))) {
       this.#tasks.changed(agent.id);
@@ -3505,7 +3507,8 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
             // before each turn. The agent stays on its provider, and the header stops showing the change.
             if (this.#runtimeHandoverBusy(agentId)) return false;
             const cleared = yield* Effect.exit(this.#store.updateAgent({ agentId, pendingRuntime: null }));
-            if (Exit.isSuccess(cleared)) this.#emit({ type: "agents-changed", agents: this.listAgents() });
+            if (Exit.isSuccess(cleared))
+              this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
             return false;
           }),
         ),
@@ -3617,7 +3620,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     const agent = yield* this.#store
       .setAvatar(agentId, image)
       .pipe(Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "set avatar", cause: failure.cause })));
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
     return agent;
   }).bind(this);
 
@@ -3909,7 +3912,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     yield* this.#store
       .markOfficeAgentsSeeded()
       .pipe(Effect.mapError((cause) => new AgentLifecycleFailed({ operation: "mark office agents", cause })));
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
   });
 
   /**
@@ -3954,7 +3957,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
         Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title employment", cause: failure.cause })),
       );
     upsertEmployment(database, { agentId: created.id, officeId, roleKey: role.key, scope: role.scope });
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
     return this.#store.list().find((agent) => agent.id === created.id) ?? created;
   });
 
@@ -3997,7 +4000,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
         Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title the butler", cause: failure.cause })),
       );
     upsertEmployment(database, { agentId: created.id, officeId: null, roleKey: "butler", scope: "building" });
-    this.#emit({ type: "agents-changed", agents: this.listAgents() });
+    this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
   });
 
   readonly initialize = Effect.fn("AgentService.initialize")(function* (
@@ -4258,7 +4261,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
                   ...this.#modelForAccount(agent.pendingRuntime, undefined),
                 },
               });
-          if (queued.length > 0) this.#emit({ type: "agents-changed", agents: this.listAgents() });
+          if (queued.length > 0) this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
           return yield* this.#providers.removeProviderAccount(provider, accountId);
         }),
       )
@@ -5379,7 +5382,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
         );
     yield* this.#steerWhenBusy(agent, task, snapshot, delivery.delivery.id, true);
     if (!task) {
-      this.#emit({ type: "agents-changed", agents: this.listAgents() });
+      this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
       this.#conversation.emitConversation(snapshot);
     }
     this.#mailboxSync.emitQueue(agent.id);
