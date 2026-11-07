@@ -489,29 +489,34 @@ impl App {
             .select(if self.agents.is_empty() { None } else { Some(self.selected) });
     }
 
-    fn office_filter_label(&self) -> String {
-        match self.office_filter.as_deref() {
-            None => "all floors".to_string(),
-            Some("building") => "lobby".to_string(),
-            Some(id) => self
-                .offices
-                .iter()
-                .find(|office| office.id == id)
-                .map(|office| format!("{} ({})", office.name, office.agents))
-                .unwrap_or_else(|| "office".to_string()),
-        }
-    }
-
     /// `(filter, label, headcount)`; the first is every floor, the second the lobby.
     fn floor_choices(&self) -> Vec<(Option<String>, String, usize)> {
+        // The lobby leads and is never a closable floor: it is the building itself.
         let lobby = self.all_agents.iter().filter(|agent| agent.scope == "building").count();
-        let mut choices = vec![
-            (None, "All floors".to_string(), self.all_agents.len()),
-            (Some("building".to_string()), "Lobby".to_string(), lobby),
-        ];
+        let mut choices = vec![(Some("building".to_string()), "Lobby".to_string(), lobby)];
+        // Then every floor that holds a seat, named from the employment; a discovered
+        // office with no staff still gets a floor so it can be opened.
+        let mut seen: Vec<String> = Vec::new();
+        for agent in &self.all_agents {
+            if agent.scope == "building" || agent.office_id.is_empty() || seen.contains(&agent.office_id) {
+                continue;
+            }
+            seen.push(agent.office_id.clone());
+            let label = if agent.office.is_empty() { "Unassigned" } else { &agent.office };
+            let headcount = self
+                .all_agents
+                .iter()
+                .filter(|candidate| candidate.office_id == agent.office_id)
+                .count();
+            choices.push((Some(agent.office_id.clone()), label.to_string(), headcount));
+        }
         for office in &self.offices {
+            if seen.contains(&office.id) {
+                continue;
+            }
             choices.push((Some(office.id.clone()), office.name.clone(), office.agents));
         }
+        choices.push((None, "All floors".to_string(), self.all_agents.len()));
         choices
     }
 
@@ -727,25 +732,32 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .constraints([Constraint::Length(1), Constraint::Min(3), Constraint::Length(1)])
         .split(frame.area());
 
-    let header = if app.server.version.is_empty() {
-        " ZollyBot · no app running".to_string()
-    } else {
-        let name = if app.server.name.is_empty() { "server" } else { &app.server.name };
-        format!(
-            " ZollyBot {} · {} · {} · {}",
-            app.server.version,
-            name,
-            app.server.phase,
-            app.office_filter_label()
-        )
-    };
-    frame.render_widget(
-        Paragraph::new(Line::from(Span::styled(
-            header,
-            Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD),
-        ))),
-        outer[0],
-    );
+    // The floor strip: the lobby and every office, the open one raised.
+    let mut strip: Vec<Span> = Vec::new();
+    for (filter, label, headcount) in app.floor_choices() {
+        let active = filter == app.office_filter;
+        let text = format!(" {label} {headcount} ");
+        let style = if active {
+            Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD)
+        } else {
+            Style::default().fg(Color::DarkGray)
+        };
+        strip.push(Span::styled(text, style));
+        strip.push(Span::raw(" "));
+    }
+    if !app.server.version.is_empty() {
+        let server = if app.server.name.is_empty() { "server" } else { &app.server.name };
+        strip.push(Span::styled(
+            format!(" · {} {} {} ", server, app.server.version, app.server.phase),
+            Style::default().fg(Color::DarkGray),
+        ));
+    }
+    frame.render_widget(Paragraph::new(Line::from(strip)), outer[0]);
+
+    let body = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(62), Constraint::Percentage(38)])
+        .split(outer[1]);
 
     let widths = [
         Constraint::Length(26),
@@ -775,10 +787,10 @@ fn draw(frame: &mut Frame, app: &mut App) {
         )
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
-    frame.render_stateful_widget(table, outer[1], &mut app.table_state);
+    frame.render_stateful_widget(table, body[0], &mut app.table_state);
 
     if app.agents.is_empty() {
-        let area = outer[1];
+        let area = body[0];
         let inner = ratatui::layout::Rect {
             x: area.x + 2,
             y: area.y + 2,
@@ -790,6 +802,31 @@ fn draw(frame: &mut Frame, app: &mut App) {
             inner,
         );
     }
+
+    // The right pane: the selected seat, the way the app shows an agent's details.
+    let selected = app.agents.get(app.selected);
+    let mut detail: Vec<Line> = Vec::new();
+    match selected {
+        Some(agent) => {
+            detail.push(Line::from(Span::styled(
+                agent_label(agent),
+                Style::default().add_modifier(Modifier::BOLD),
+            )));
+            detail.push(Line::from(agent.title.clone()));
+            detail.push(Line::from(""));
+            detail.push(Line::from(format!("role    {}", if agent.role.is_empty() { "-" } else { &agent.role })));
+            detail.push(Line::from(format!("scope   {}", if agent.scope.is_empty() { "-" } else { &agent.scope })));
+            detail.push(Line::from(format!("office  {}", if agent.office.is_empty() { "-" } else { &agent.office })));
+            detail.push(Line::from(format!("model   {}", agent.model)));
+            detail.push(Line::from(format!("via     {}", agent.provider)));
+        }
+        None => detail.push(Line::from("No seat selected.")),
+    }
+    let detail_block = Block::default()
+        .borders(Borders::ALL)
+        .border_type(ratatui::widgets::BorderType::Rounded)
+        .title(" agent ");
+    frame.render_widget(Paragraph::new(detail).block(detail_block), body[1]);
 
     if let Some(selected) = app.office_picker {
         let area = centered_rect(52, 52, frame.area());
