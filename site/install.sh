@@ -113,7 +113,11 @@ if command -v systemctl >/dev/null 2>&1 && systemctl --user is-active --quiet "\
 	systemctl --user stop "\$unit" >/dev/null 2>&1 || true
 fi
 resume() {
-	[ "\$handover" -eq 1 ] && systemctl --user start "\$unit" >/dev/null 2>&1 || true
+	if [ "\$handover" -eq 1 ]; then
+		# The window releases its singleton lock a moment after it exits.
+		sleep 2
+		systemctl --user start "\$unit" >/dev/null 2>&1 || true
+	fi
 }
 trap 'resume' EXIT
 trap 'resume; exit 143' INT TERM

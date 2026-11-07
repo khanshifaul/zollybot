@@ -11,7 +11,9 @@ Environment=ZOLLYBOT_SERVER=1
 # Run with the user's own runtime directory, so the socket is private to them.
 Environment=XDG_RUNTIME_DIR=%t
 ExecStart=%h/.local/lib/zollybot/zollybot --server --ozone-platform=headless
-Restart=on-failure
+# The window's handover stops this unit; a fast restart keeps the office up
+# even when the exit code is 0 (a stale singleton lock during handover).
+Restart=always
 RestartSec=2
 # A crash loop should not fill the journal.
 StartLimitIntervalSec=60
