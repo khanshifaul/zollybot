@@ -6,7 +6,10 @@
 
 use clap::{Parser, Subcommand};
 use crossterm::{
-    event::{self, Event, KeyCode, KeyEventKind, KeyModifiers},
+    event::{
+        self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind, KeyModifiers, MouseButton,
+        MouseEvent, MouseEventKind,
+    },
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -543,6 +546,53 @@ impl App {
         self.apply_office_filter();
     }
 
+    /// The floor tab under a column of the strip row, if any.
+    fn strip_tab_at(&self, column: u16) -> Option<usize> {
+        let mut cursor = 0u16;
+        for (index, (_, label, count)) in self.floor_choices().iter().enumerate() {
+            let width = (label.chars().count() + count.to_string().len() + 3) as u16;
+            if column >= cursor && column < cursor + width {
+                return Some(index);
+            }
+            cursor += width;
+        }
+        None
+    }
+
+    fn handle_mouse(&mut self, mouse: MouseEvent) {
+        match mouse.kind {
+            MouseEventKind::ScrollDown => {
+                if self.office_filter.as_deref() == Some("building") {
+                    self.move_lobby_selection(1);
+                } else {
+                    self.table_next();
+                }
+            }
+            MouseEventKind::ScrollUp => {
+                if self.office_filter.as_deref() == Some("building") {
+                    self.move_lobby_selection(-1);
+                } else {
+                    self.table_previous();
+                }
+            }
+            MouseEventKind::Down(MouseButton::Left) => {
+                if mouse.row == 0 {
+                    if let Some(index) = self.strip_tab_at(mouse.column) {
+                        let filter = self.floor_choices()[index].0.clone();
+                        self.office_filter = filter;
+                        self.apply_office_filter();
+                    }
+                } else if mouse.row >= 2 {
+                    let index = (mouse.row - 2) as usize;
+                    if index < self.agents.len() {
+                        self.select(index);
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
     fn open_office_picker(&mut self) {
         // Start on the floor that is showing, so Enter changes nothing.
         let choices = self.floor_choices();
@@ -1047,13 +1097,13 @@ fn run_tui() -> std::io::Result<i32> {
     }
     enable_raw_mode()?;
     let mut out = stdout();
-    execute!(out, EnterAlternateScreen)?;
+    execute!(out, EnterAlternateScreen, EnableMouseCapture)?;
     let backend = CrosstermBackend::new(out);
     let mut terminal = Terminal::new(backend)?;
     let mut app = App::new();
     let result = run_loop(&mut terminal, &mut app);
     disable_raw_mode()?;
-    execute!(terminal.backend_mut(), LeaveAlternateScreen)?;
+    execute!(terminal.backend_mut(), LeaveAlternateScreen, DisableMouseCapture)?;
     terminal.show_cursor()?;
     result.map(|_| 0)
 }
@@ -1083,7 +1133,12 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
     loop {
         terminal.draw(|frame| draw(frame, app))?;
         if event::poll(Duration::from_millis(200))? {
-            if let Event::Key(key) = event::read()? {
+            let event = event::read()?;
+            if let Event::Mouse(mouse) = event {
+                app.handle_mouse(mouse);
+                continue;
+            }
+            if let Event::Key(key) = event {
                 if key.kind != KeyEventKind::Press {
                     continue;
                 }
