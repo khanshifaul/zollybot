@@ -6,7 +6,7 @@
 
 use clap::{Parser, Subcommand};
 use crossterm::{
-    event::{self, Event, KeyCode, KeyEventKind},
+    event::{self, Event, KeyCode, KeyEventKind, KeyModifiers},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -376,6 +376,7 @@ struct App {
     last_refresh: Instant,
     connect: Option<ConnectPanel>,
     office_picker: Option<usize>,
+    prefix: bool,
     session: Option<Session>,
     sign_in: Option<SignIn>,
 }
@@ -395,6 +396,7 @@ impl App {
             last_refresh: Instant::now(),
             connect: None,
             office_picker: None,
+            prefix: false,
             session: load_session(),
             sign_in: None,
         };
@@ -758,6 +760,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .direction(Direction::Horizontal)
         .constraints([Constraint::Percentage(62), Constraint::Percentage(38)])
         .split(outer[1]);
+    let lobby = app.office_filter.as_deref() == Some("building");
 
     let widths = [
         Constraint::Length(26),
@@ -787,9 +790,11 @@ fn draw(frame: &mut Frame, app: &mut App) {
         )
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
-    frame.render_stateful_widget(table, body[0], &mut app.table_state);
+    if !lobby {
+        frame.render_stateful_widget(table, body[0], &mut app.table_state);
+    }
 
-    if app.agents.is_empty() {
+    if !lobby && app.agents.is_empty() {
         let area = body[0];
         let inner = ratatui::layout::Rect {
             x: area.x + 2,
@@ -803,6 +808,56 @@ fn draw(frame: &mut Frame, app: &mut App) {
         );
     }
 
+    if lobby {
+        // The lobby is the butler's room: the chat in the middle, the offices beside it.
+        let butler = app.all_agents.iter().find(|agent| agent.scope == "building");
+        let mut chat: Vec<Line> = Vec::new();
+        match butler {
+            Some(agent) => {
+                chat.push(Line::from(Span::styled(
+                    agent_label(agent),
+                    Style::default().add_modifier(Modifier::BOLD),
+                )));
+                chat.push(Line::from(agent.title.clone()));
+                chat.push(Line::from(""));
+                chat.push(Line::from(format!("role    {}", agent.role)));
+                chat.push(Line::from(format!("model   {}", agent.model)));
+                chat.push(Line::from(format!("via     {}", agent.provider)));
+                chat.push(Line::from(""));
+                chat.push(Line::from(Span::styled(
+                    "The butler sets up offices. Open one from the list on the right.",
+                    Style::default().fg(Color::DarkGray),
+                )));
+            }
+            None => chat.push(Line::from("No butler on this server.")),
+        }
+        let chat_block = Block::default()
+            .borders(Borders::ALL)
+            .border_type(ratatui::widgets::BorderType::Rounded)
+            .title(" chat · butler ");
+        frame.render_widget(Paragraph::new(chat).block(chat_block), body[0]);
+
+        let mut offices: Vec<Line> = Vec::new();
+        for office in &app.offices {
+            offices.push(Line::from(format!("{}  ({})", office.name, office.agents)));
+        }
+        let unassigned = app
+            .all_agents
+            .iter()
+            .filter(|agent| agent.office_id == "unassigned")
+            .count();
+        if unassigned > 0 {
+            offices.push(Line::from(format!("Unassigned  ({unassigned})")));
+        }
+        if offices.is_empty() {
+            offices.push(Line::from("No offices yet."));
+        }
+        let offices_block = Block::default()
+            .borders(Borders::ALL)
+            .border_type(ratatui::widgets::BorderType::Rounded)
+            .title(" offices ");
+        frame.render_widget(Paragraph::new(offices).block(offices_block), body[1]);
+    } else {
     // The right pane: the selected seat, the way the app shows an agent's details.
     let selected = app.agents.get(app.selected);
     let mut detail: Vec<Line> = Vec::new();
@@ -827,6 +882,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .border_type(ratatui::widgets::BorderType::Rounded)
         .title(" agent ");
     frame.render_widget(Paragraph::new(detail).block(detail_block), body[1]);
+    }
 
     if let Some(selected) = app.office_picker {
         let area = centered_rect(52, 52, frame.area());
@@ -913,12 +969,15 @@ fn draw(frame: &mut Frame, app: &mut App) {
         let current = app.selected.min(app.agents.len() - 1);
         format!(" {} agents · {} ", app.agents.len(), app.agents[current].name)
     };
-    let hints = match &app.session {
-        Some(session) => format!(
+    let hints = if app.prefix {
+        "PREFIX · o floors · a all · l lobby · c connect · i account · q quit".to_string()
+    } else if let Some(session) = &app.session {
+        format!(
             "{} · j/k agent · f office · c connect · i account · o sign out · r refresh · q quit ",
             session.email
-        ),
-        None => "j/k agent · f office · c connect · i sign in · r refresh · q quit ".to_string(),
+        )
+    } else {
+        "j/k agent · f office · c connect · i sign in · r refresh · q quit ".to_string()
     };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
@@ -1040,6 +1099,33 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                                 }
                             }
                         }
+                        _ => {}
+                    }
+                    continue;
+                }
+                if key.modifiers.contains(KeyModifiers::CONTROL) && key.code == KeyCode::Char('b') {
+                    app.prefix = true;
+                    continue;
+                }
+                if app.prefix {
+                    app.prefix = false;
+                    match key.code {
+                        KeyCode::Char('o') | KeyCode::Char('f') => app.open_office_picker(),
+                        KeyCode::Char('a') => {
+                            app.office_filter = None;
+                            app.apply_office_filter();
+                        }
+                        KeyCode::Char('l') => {
+                            app.office_filter = Some("building".to_string());
+                            app.apply_office_filter();
+                        }
+                        KeyCode::Char('c') => app.toggle_connect(),
+                        KeyCode::Char('i') => app.open_sign_in(),
+                        KeyCode::Char('r') => {
+                            app.load();
+                            app.refresh_account();
+                        }
+                        KeyCode::Char('q') => app.quit = true,
                         _ => {}
                     }
                     continue;
