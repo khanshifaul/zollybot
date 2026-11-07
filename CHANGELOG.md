@@ -6,6 +6,16 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.62.10] - 2026-11-07
+
+### Added
+
+- A profile created before butler-first seeding now gets the Butler once, with a
+  building employment, so the lobby is staffed instead of empty.
+- Mouse in the terminal frontend: click a floor tab, click a roster row, wheel to
+  scroll. The lobby list is navigable with j/k and opens with Enter.
+- Choosing a floor scopes the sidebar roster; the lobby lists only the butler.
+
 ## [0.62.9] - 2026-11-07
 
 ### Added
