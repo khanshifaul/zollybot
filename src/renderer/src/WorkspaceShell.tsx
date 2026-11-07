@@ -19,6 +19,7 @@ import { useDirectMessages } from "./features/conversation/direct-messages-conte
 import { WorkspaceConversation } from "./features/conversation/WorkspaceConversation";
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
+import { OfficeTabStrip } from "./features/offices/OfficeTabStrip";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
 import { WorkspaceRoutineFlows } from "./features/routine-flows/WorkspaceRoutineFlows";
@@ -307,6 +308,7 @@ export function WorkspaceShell(props: {
       <div class="app-window">
         <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
         <WorkspaceFrame
+          strip={chatWindow ? undefined : <OfficeTabStrip />}
           class={chatWindow ? "app-frame-chat-window" : undefined}
           compact={layout.leftPanelCompact()}
           initialLoading={!serversLoaded() || !scope.connection.synced}

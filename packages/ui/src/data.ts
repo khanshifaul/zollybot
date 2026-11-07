@@ -251,6 +251,14 @@ export interface AgentProfile {
   title: string;
   description: string;
   notifications: boolean;
+  /** The office holding this employment; null for a building role such as the butler. */
+  officeId?: string | null;
+  /** The office's display name, for a floor tab. */
+  officeName?: string;
+  /** The catalog role key, when the name maps to one. */
+  role?: string;
+  /** `office` or `building`; absent means an agent without an employment. */
+  scope?: "office" | "building";
   provider: AgentProviderRef;
   model: AgentModelId;
   reasoningEffort: AgentReasoningEffort;

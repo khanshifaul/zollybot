@@ -96,6 +96,8 @@ export const messages = defineMessages("app", {
   "app.rail.customAgentUsage": "{name} usage. Open usage",
   "app.settingsPage.title": "Settings",
   "app.settingsPage.search": "Search settings",
+  "app.offices.lobby": "Lobby",
+  "app.offices.stripLabel": "Offices",
   "app.settingsPage.searchPlaceholder": "Search settings…",
   "app.settingsPage.results": "Settings search results",
   "app.settingsPage.noResults": "No matching settings.",

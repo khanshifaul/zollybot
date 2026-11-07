@@ -28,6 +28,8 @@ type WorkspaceFrameProps = ParentProps<
     initialLoading?: boolean;
     /** Dialogs and overlays after the panes. */
     after?: JSX.Element;
+    /** The floor strip: one row above the panes when the caller has offices. */
+    strip?: JSX.Element;
   } & Omit<JSX.HTMLAttributes<HTMLDivElement>, "children">
 >;
 
@@ -55,6 +57,7 @@ export function WorkspaceFrame(props: WorkspaceFrameProps) {
     "after",
     "children",
     "connection",
+    "strip",
     "initialLoading",
     "class",
   );
@@ -74,12 +77,14 @@ export function WorkspaceFrame(props: WorkspaceFrameProps) {
           "app-frame-with-server-rail": layout.serverRailVisible(),
           "app-frame-page-open": pageOpen(),
           "app-frame-sidebar-hidden": props.sidebarHidden === true,
+          "app-frame-with-strip": props.strip !== undefined,
           "app-frame-platform-darwin": platform.appInfo()?.platform === "darwin",
         },
       ]}
       aria-hidden={props.hidden ? "true" : undefined}
       style={`--left-panel-width: ${props.compact ? LEFT_PANEL_COMPACT : layout.leftPanelWidth()}px`}
     >
+      {props.strip}
       {props.left}
       <WorkspaceLeftPanelResizer />
       <div
