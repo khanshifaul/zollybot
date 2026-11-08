@@ -71,3 +71,12 @@ keys
 # The Next.js site (apps/web) builds into .next and out.
 apps/web/.next/
 apps/web/out/
+
+# Secret/key material (local). Never commit.
+.env
+.env.local
+.env.*.local
+*.pem
+*.p12
+*.key
+*.mobileprovision
