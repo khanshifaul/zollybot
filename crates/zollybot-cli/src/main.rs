@@ -453,6 +453,9 @@ impl App {
         }
         app.refresh_account();
         app.load();
+        if app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none() && app.session.is_none() {
+            app.open_sign_in();
+        }
         if app.onboarding == OnboardingStep::Done { app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
         app
     }
@@ -809,6 +812,15 @@ impl App {
                                 self.message = format!("signed in as {email}");
                             }
                             self.session = Some(session);
+                            self.sign_in = None;
+                            if self.onboarding == OnboardingStep::SignIn {
+                                self.onboarding = OnboardingStep::Done;
+                                self.tui_config.onboarding_done = true;
+                                let _ = save_tui_config(&self.tui_config);
+                                self.office_filter = Some("building".to_string());
+                                self.apply_office_filter();
+                                self.message = format!("Signed in as {email}. Welcome to the lobby.");
+                            }
                             return;
                         }
                         Err(error) => {
@@ -870,8 +882,32 @@ fn draw(frame: &mut Frame, app: &mut App) {
         frame.render_widget(Paragraph::new(lines).block(block), area);
         return;
     }
-    if app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none() && app.session.is_none() {
-        // show sign-in prompt as onboarding step
+    if app.onboarding == OnboardingStep::SignIn {
+        let area = centered_rect(68, 52, frame.area());
+        frame.render_widget(Clear, area);
+        let mut lines = vec![
+            Line::from(Span::styled("Sign in", Style::default().add_modifier(Modifier::BOLD))),
+            Line::from(Span::styled("Use the same email code as the desktop app. Butler and offices open after this.", Style::default().fg(Color::DarkGray))),
+            Line::from(""),
+        ];
+        if let Some(sign_in) = &app.sign_in {
+            let email_line = if sign_in.stage == SignInStage::Email { format!("✎ {}", sign_in.email) } else { format!("  {}", sign_in.email) };
+            let code_line = if sign_in.stage == SignInStage::Code { format!("✎ {}", sign_in.code) } else { "  -".to_string() };
+            lines.push(Line::from(vec![Span::raw("Email  "), Span::styled(email_line, Style::default().fg(Color::White))]));
+            lines.push(Line::from(vec![Span::raw("Code   "), Span::styled(code_line, Style::default().fg(Color::White))]));
+            lines.push(Line::from(""));
+            if !sign_in.status.is_empty() { lines.push(Line::from(Span::styled(sign_in.status.clone(), Style::default().fg(Color::Yellow)))); lines.push(Line::from("")); }
+        } else if app.session.is_some() {
+            lines.push(Line::from(Span::styled("Signed in.", Style::default().fg(Color::Green))));
+            lines.push(Line::from(""));
+        } else {
+            lines.push(Line::from("Press Enter to start sign-in, or s to skip for now."));
+            lines.push(Line::from(""));
+        }
+        lines.push(Line::from(Span::styled("Enter continue/send · s skip · Esc back · q quit", Style::default().fg(Color::DarkGray))));
+        let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" ZollyBot · Sign in ");
+        frame.render_widget(Paragraph::new(lines).block(block), area);
+        return;
     }
 
     // The floor strip: the lobby and every office, the open one raised.
@@ -1268,7 +1304,7 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 }
                 if app.onboarding == OnboardingStep::Language {
                     match key.code {
-                        KeyCode::Char('q') | KeyCode::Esc => { app.quit = true; }
+                        KeyCode::Char('q') => { app.quit = true; }
                         KeyCode::Char('j') | KeyCode::Down => { app.lang_selected = (app.lang_selected + 1).min(LANGUAGES.len()-1); }
                         KeyCode::Char('k') | KeyCode::Up => { app.lang_selected = app.lang_selected.saturating_sub(1); }
                         KeyCode::Enter => {
@@ -1277,6 +1313,16 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                             if app.session.is_some() { app.onboarding = OnboardingStep::Done; app.tui_config.onboarding_done = true; let _ = save_tui_config(&app.tui_config); app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
                             else { app.onboarding = OnboardingStep::SignIn; app.open_sign_in(); }
                         }
+                        _ => {}
+                    }
+                    continue;
+                }
+                if app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none() {
+                    match key.code {
+                        KeyCode::Char('q') => { app.quit = true; }
+                        KeyCode::Esc => { app.onboarding = OnboardingStep::Language; }
+                        KeyCode::Char('s') => { app.onboarding = OnboardingStep::Done; app.tui_config.onboarding_done = true; let _ = save_tui_config(&app.tui_config); app.office_filter = Some("building".to_string()); app.apply_office_filter(); app.message = "Skipped sign-in. Press i to sign in later.".to_string(); }
+                        KeyCode::Enter | KeyCode::Char('i') => { app.open_sign_in(); }
                         _ => {}
                     }
                     continue;
@@ -1293,6 +1339,7 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 }
                 if app.sign_in.is_some() {
                     match key.code {
+                        KeyCode::Char('q') if key.modifiers.is_empty() && false => { app.quit = true; } // keep q for email/code input
                         KeyCode::Esc => app.sign_in = None,
                         KeyCode::Enter => app.submit_sign_in(),
                         KeyCode::Backspace => {
