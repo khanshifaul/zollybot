@@ -3996,24 +3996,19 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     const database = this.#store.database.connection;
     if (listEmployments(database).some((employment) => employment.scope === "building")) return;
     if (this.#store.list().some((agent) => roleForAgentName(agent.name)?.scope === "building")) return;
+    const description = "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices and help hire agents, and never reads office chats or approves gates.";
+    const existing = this.#store.list().find((agent) => agent.name.toLowerCase() === "butler" || roleForAgentName(agent.name)?.key === "butler");
+    if (existing) {
+      upsertEmployment(database, { agentId: existing.id, officeId: null, roleKey: "butler", scope: "building" });
+      yield* Effect.ignore(this.#store.updateAgent({ agentId: existing.id, title: "Concierge", description } as any));
+      this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
+      return;
+    }
     const created = yield* this.#store
-      .createAgent({
-        name: "Butler",
-        description:
-          "The building's concierge. Knows which offices exist, opens and creates them, and proposes a roster. Reads no office's chats and approves no gate.",
-        avatarSeed: "zollybot:butler",
-        avatarHue: null,
-      })
-      .pipe(
-        Effect.mapError(
-          (failure) => new AgentLifecycleFailed({ operation: "create the butler", cause: failure.cause }),
-        ),
-      );
-    yield* this.#store
-      .updateAgent({ agentId: created.id, title: "Concierge" })
-      .pipe(
-        Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title the butler", cause: failure.cause })),
-      );
+      .createAgent({ name: "Butler", description, avatarSeed: "zollybot:butler", avatarHue: null })
+      .pipe(Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "create the butler", cause: failure.cause })));
+    yield* this.#store.updateAgent({ agentId: created.id, title: "Concierge" } as any)
+      .pipe(Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title the butler", cause: failure.cause })));
     upsertEmployment(database, { agentId: created.id, officeId: null, roleKey: "butler", scope: "building" });
     this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
   });

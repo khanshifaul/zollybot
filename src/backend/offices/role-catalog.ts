@@ -22,7 +22,7 @@ export const ROLE_CATALOG: readonly Role[] = [
     name: "Butler",
     title: "Concierge",
     description:
-      "The building's concierge. Knows which offices exist, opens and creates them, and proposes a roster. Reads no office's chats and approves no gate.",
+      "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices and help hire agents, and never reads office chats or approves gates.",
     scope: "building",
   },
   {

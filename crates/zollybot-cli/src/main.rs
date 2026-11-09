@@ -1001,15 +1001,22 @@ fn draw(frame: &mut Frame, app: &mut App) {
                 chat.push(Line::from(format!("via     {}", agent.provider)));
                 chat.push(Line::from(""));
                 chat.push(Line::from(Span::styled(
-                    "Predefined Butler (Lobby). Can create offices and agents, and help with chores.",
+                    "Teach Butler about you, your business, work, and environment. Butler can self-improve its instructions and change provider, model, and effort when you ask.",
                     Style::default().fg(Color::DarkGray),
                 )));
                 chat.push(Line::from(Span::styled(
-                    "No new-agent setup here: ask Butler to create an office or hire agents.",
+                    "Ask Butler to create offices, hire agents, or help with chores. Chat uses the desktop agent chat/provider path (control socket chat API required).",
                     Style::default().fg(Color::DarkGray),
                 )));
             }
-            None => chat.push(Line::from("No butler on this server.")),
+            None => {
+                chat.push(Line::from(Span::styled("Butler", Style::default().add_modifier(Modifier::BOLD))));
+                chat.push(Line::from("Concierge · building"));
+                chat.push(Line::from(""));
+                chat.push(Line::from("No Butler agent found. Start the desktop app once so it can create the default Butler, or add Butler in the app."));
+                chat.push(Line::from(""));
+                chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment.", Style::default().fg(Color::DarkGray))));
+            }
         }
         let chat_block = Block::default()
             .borders(Borders::ALL)
