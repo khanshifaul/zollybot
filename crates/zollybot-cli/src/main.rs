@@ -382,6 +382,7 @@ struct AgentRow {
     name: String,
     provider: String,
     model: String,
+    reasoning_effort: String,
     title: String,
     #[allow(dead_code)]
     role: String,
@@ -424,6 +425,9 @@ struct App {
     chat_messages: Vec<(String,String)>,
     chat_agent_id: String,
     chat_last_load: Instant,
+    profile_field: usize,
+    profile_models: Vec<(String, String, String)>,
+    profile_busy: bool,
 }
 
 impl App {
@@ -451,6 +455,9 @@ impl App {
             chat_messages: Vec::new(),
             chat_agent_id: String::new(),
             chat_last_load: Instant::now() - Duration::from_secs(99),
+            profile_field: 0,
+            profile_models: Vec::new(),
+            profile_busy: false,
         };
         let cfg = app.tui_config.clone();
         app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
@@ -509,6 +516,7 @@ impl App {
                         office: parts.next().unwrap_or_default().to_string(),
                         office_id: parts.next().unwrap_or_default().to_string(),
                         id: parts.next().unwrap_or_default().to_string(),
+                        reasoning_effort: parts.next().unwrap_or_default().to_string(),
                     });
                 }
                 self.apply_office_filter();
@@ -530,6 +538,60 @@ impl App {
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
         let _ = cmd.spawn();
         for _ in 0..20 { std::thread::sleep(Duration::from_millis(250)); if control_socket().is_some() { break; } }
+    }
+
+    fn load_profile_models(&mut self) {
+        if control_socket().is_none() || self.profile_busy { return; }
+        if let Some(agent) = self.agents.get(self.selected).cloned() {
+            let count = line_value(&[], "count").and_then(|c| c.parse::<usize>().ok()).unwrap_or(0);
+            let _ = count;
+            let path = if agent.scope == "building" || agent.role == "butler" { "/v1/models".to_string() } else { format!("/v1/agents/{}/profile", agent.id) };
+            if let Ok((200, lines)) = control_call("GET", &path, &[]) {
+                self.profile_models.clear();
+                let count = line_value(&lines, "count").and_then(|c| c.parse::<usize>().ok()).unwrap_or(0);
+                for i in 0..count {
+                    let Some(raw) = line_value(&lines, &format!("provider.{i}")) else { continue; };
+                    let mut p = raw.splitn(3, '|');
+                    let provider = p.next().unwrap_or("").to_string();
+                    let default_model = p.next().unwrap_or("").to_string();
+                    let _n = p.next().unwrap_or("").to_string();
+                    for j in 0..20 {
+                        let Some(mraw) = line_value(&lines, &format!("model.{i}.{j}")) else { break; };
+                        let mut mp = mraw.splitn(4, '|');
+                        let id = mp.next().unwrap_or("").to_string();
+                        let name = mp.next().unwrap_or("").to_string();
+                        let def_effort = mp.next().unwrap_or("").to_string();
+                        let _efforts = mp.next().unwrap_or("").to_string();
+                        if !id.is_empty() {
+                            self.profile_models.push((provider.clone(), id, format!("{} | {} | default effort {}", name, def_effort, def_effort)));
+                        }
+                    }
+                    if self.profile_models.is_empty() && !default_model.is_empty() {
+                        self.profile_models.push((provider.clone(), default_model.clone(), "default".to_string()));
+                    }
+                }
+            }
+        }
+    }
+
+    fn switch_selected_profile(&mut self, next: bool) {
+        if self.profile_models.is_empty() { self.load_profile_models(); }
+        if self.profile_models.is_empty() { self.message = "No profile choices available.".to_string(); return; }
+        let len = self.profile_models.len();
+        self.profile_field = if next { (self.profile_field + 1) % len } else { self.profile_field + len - 1 };
+        self.profile_field %= len;
+        let (provider, model, _) = self.profile_models[self.profile_field].clone();
+        if let Some(agent) = self.agents.get(self.selected).cloned() {
+            let path = format!("/v1/agents/{}/profile", agent.id);
+            match control_call("POST", &path, &[("provider", &provider), ("model", &model)]) {
+                Ok((200, lines)) => {
+                    self.message = format!("Switched {} to {}/{} pending={}", agent.name, provider, model, line_value(&lines, "pending_runtime").unwrap_or_default());
+                    self.load();
+                }
+                Ok((status, lines)) => self.message = answer_error(status, &lines),
+                Err(e) => self.message = e,
+            }
+        }
     }
 
     fn load_selected_chat(&mut self) {
@@ -1114,8 +1176,8 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
     if !lobby {
-        // Office 3-pane: left agents, middle chat (terminal), right description. Chat pane is always a terminal.
-        let outer = Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(34), Constraint::Percentage(36), Constraint::Percentage(30)]).split(body[0]);
+        // Office 3-pane: left agents (32%), middle terminal takes all remaining width, right profile on far right edge (30%).
+        let outer = Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(32), Constraint::Min(0), Constraint::Percentage(30)]).split(body[0]);
         frame.render_stateful_widget(table, outer[0], &mut app.table_state);
         if app.agents.is_empty() {
             let area = outer[0];
@@ -1151,6 +1213,8 @@ fn draw(frame: &mut Frame, app: &mut App) {
         frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
         frame.render_widget(Paragraph::new("chat is the terminal (harness owns input).").block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
         // right: description
+        // right: agent + switchable harness/model/effort (profile)
+        app.load_profile_models();
         let mut detail: Vec<Line> = Vec::new();
         match app.agents.get(app.selected) {
             Some(agent) => {
@@ -1162,8 +1226,24 @@ fn draw(frame: &mut Frame, app: &mut App) {
                 detail.push(Line::from(format!("office  {}", if agent.office.is_empty() { "-" } else { &agent.office })));
                 detail.push(Line::from(format!("model   {}", agent.model)));
                 detail.push(Line::from(format!("via     {}", agent.provider)));
+                if !agent.reasoning_effort.is_empty() {
+                    detail.push(Line::from(format!("effort  {}", agent.reasoning_effort)));
+                }
                 detail.push(Line::from(""));
-                detail.push(Line::from(Span::styled("Learn/teach: user teaches Butler/agent about self/business/work/env. Butler can self-improve instructions and switch provider/model/effort when asked.", Style::default().fg(Color::DarkGray))));
+                detail.push(Line::from(Span::styled("Harness / model / effort switcher (profile)", Style::default().add_modifier(Modifier::BOLD))));
+                detail.push(Line::from(format!("Current: {}/{} · effort {}", agent.provider, agent.model, if agent.reasoning_effort.is_empty() { "default" } else { agent.reasoning_effort.as_str() })));
+                detail.push(Line::from(Span::styled("Click/right-click this pane or use j/k, then Enter/leader m to apply next choice.", Style::default().fg(Color::DarkGray))));
+                if app.profile_models.is_empty() {
+                    detail.push(Line::from(Span::styled("No model choices listed yet.", Style::default().fg(Color::DarkGray))));
+                } else {
+                    for (i, (p, m, d)) in app.profile_models.iter().enumerate().take(12) {
+                        let marker = if i == app.profile_field { "› " } else { "  " };
+                        let style = if i == app.profile_field { Style::default().add_modifier(Modifier::BOLD).bg(Color::DarkGray) } else { Style::default() };
+                        detail.push(Line::from(Span::styled(format!("{marker}{} / {} {}", p, m, d), style)));
+                    }
+                }
+                detail.push(Line::from(""));
+                detail.push(Line::from(Span::styled("Learn/teach: user teaches Butler/agent about self/business/work/env. Butler can self-improve instructions and switch provider/model/effort here.", Style::default().fg(Color::DarkGray))));
             }
             None => detail.push(Line::from("No seat selected.")),
         }
@@ -1568,6 +1648,8 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                         KeyCode::Char('q') => app.quit = true,
                         KeyCode::Char('w') => { app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
                         KeyCode::Char('s') => { app.open_office_picker(); }
+                        KeyCode::Char('m') => { app.load_profile_models(); app.switch_selected_profile(true); }
+                        KeyCode::Char('n') => { app.load_profile_models(); app.switch_selected_profile(false); }
                         KeyCode::Enter => { if app.office_filter.as_deref() == Some("building") { app.open_lobby_selection(); } }
                         _ => {}
                     }
