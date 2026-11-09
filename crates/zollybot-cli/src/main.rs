@@ -428,6 +428,7 @@ struct App {
     profile_field: usize,
     profile_models: Vec<(String, String, String)>,
     profile_busy: bool,
+    terminal_pct: u16,
 }
 
 impl App {
@@ -458,6 +459,7 @@ impl App {
             profile_field: 0,
             profile_models: Vec::new(),
             profile_busy: false,
+            terminal_pct: 50,
         };
         let cfg = app.tui_config.clone();
         app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
@@ -821,6 +823,13 @@ impl App {
                 }
             }
             MouseEventKind::Drag(MouseButton::Left) => {
+                // Drag in the middle terminal pane adjusts terminal width (mouse resize for middle pane).
+                let terminal_mid = 25 + self.terminal_pct - self.terminal_pct / 2;
+                if mouse.column > terminal_mid - 3 && mouse.column < terminal_mid + 3 && self.office_filter.as_deref() != Some("building") {
+                    let pct = (mouse.column.saturating_mul(100) / 80_u16).max(20).min(80);
+                    self.terminal_pct = pct;
+                    return;
+                }
                 if self.office_filter.as_deref() == Some("building") {
                     if mouse.column > 62 {
                         let row = mouse.row.saturating_sub(1) as usize;
@@ -1141,11 +1150,15 @@ fn draw(frame: &mut Frame, app: &mut App) {
     }
     frame.render_widget(Paragraph::new(Line::from(strip)), outer[0]);
 
-    let body = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(62), Constraint::Percentage(38)])
-        .split(outer[1]);
     let lobby = app.office_filter.as_deref() == Some("building");
+    let body = if lobby {
+        Layout::default()
+            .direction(Direction::Horizontal)
+            .constraints([Constraint::Percentage(62), Constraint::Percentage(38)])
+            .split(outer[1])
+    } else {
+        Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(100)]).split(outer[1])
+    };
 
     let widths = [
         Constraint::Length(26),
@@ -1186,8 +1199,8 @@ fn draw(frame: &mut Frame, app: &mut App) {
         let outer = Layout::default().direction(Direction::Horizontal).constraints([
             Constraint::Percentage(5),   // (1) icon gutter
             Constraint::Percentage(20),  // (2) agent/thread list tied to (1)
-            Constraint::Percentage(50),  // (3) terminal: harness running, tied to (1)/(2)
-            Constraint::Percentage(25),  // (4) profile/description tied to (3)
+            Constraint::Percentage(app.terminal_pct.min(80).max(20)),  // (3) terminal: resizable, tied to (1)/(2)
+            Constraint::Percentage(100 - 5 - 20 - app.terminal_pct.min(80).max(20)),  // (4) profile/description tied to (3)
         ]).split(body[0]);
         // (1) icon-only agents/threads: mirrors GUI icon rail; selection lives here and drives 2/3/4.
         let icons: Vec<Line> = app.agents.iter().enumerate().map(|(i, a)| {
@@ -1666,6 +1679,10 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                         KeyCode::Char('s') => { app.open_office_picker(); }
                         KeyCode::Char('m') => { app.load_profile_models(); app.switch_selected_profile(true); }
                         KeyCode::Char('n') => { app.load_profile_models(); app.switch_selected_profile(false); }
+                        KeyCode::Char('e') => { app.terminal_pct = app.terminal_pct.saturating_sub(5).max(20); }
+                        KeyCode::Char('t') => { app.terminal_pct = (app.terminal_pct + 5).min(80); }
+                        KeyCode::Char('.') => { app.terminal_pct = (app.terminal_pct + 5).min(80); }
+                        KeyCode::Char(',') => { app.terminal_pct = app.terminal_pct.saturating_sub(5).max(20); }
                         KeyCode::Enter => { if app.office_filter.as_deref() == Some("building") { app.open_lobby_selection(); } }
                         _ => {}
                     }
