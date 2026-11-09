@@ -1176,24 +1176,42 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
     if !lobby {
-        // Office 3-pane: left agents (32%), middle terminal takes all remaining width, right profile on far right edge (30%).
-        let outer = Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(32), Constraint::Min(0), Constraint::Percentage(30)]).split(body[0]);
-        frame.render_stateful_widget(table, outer[0], &mut app.table_state);
+        // GUI-mirror 4-pane office tab (terminal-allocation rule):
+        //  (1) 5% icon-only agents/threads (also owns 2/3/4),
+        //  (2) 20% agent/thread list tied to 1,
+        //  (3) 50% terminal running harness tied to 1/2,
+        //  (4) 25% agent/profile tied to 3.
+        // Ratatui has no true overlapping terminal layers, so (1) is a narrow icon gutter
+        // and (2)-(4) share the same selected agent/thread/arm state.
+        let outer = Layout::default().direction(Direction::Horizontal).constraints([
+            Constraint::Percentage(5),   // (1) icon gutter
+            Constraint::Percentage(20),  // (2) agent/thread list tied to (1)
+            Constraint::Percentage(50),  // (3) terminal: harness running, tied to (1)/(2)
+            Constraint::Percentage(25),  // (4) profile/description tied to (3)
+        ]).split(body[0]);
+        // (1) icon-only agents/threads: mirrors GUI icon rail; selection lives here and drives 2/3/4.
+        let icons: Vec<Line> = app.agents.iter().enumerate().map(|(i, a)| {
+            let marker = if i == app.selected { "●" } else { "○" };
+            let style = if i == app.selected { Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD) } else { Style::default().fg(Color::DarkGray) };
+            Line::from(Span::styled(format!("{marker}{}", a.name.chars().take(1).collect::<String>().to_uppercase()), style))
+        }).collect();
+        frame.render_widget(Paragraph::new(icons).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" i ")), outer[0]);
+        // (2) agent/thread list tied to (1): j/k changes selection here; (3) and (4) follow.
+        frame.render_stateful_widget(table, outer[1], &mut app.table_state);
         if app.agents.is_empty() {
-            let area = outer[0];
+            let area = outer[1];
             let inner = ratatui::layout::Rect { x: area.x + 2, y: area.y + 2, width: area.width.saturating_sub(4), height: 2 };
             frame.render_widget(Paragraph::new(app.message.clone()).style(Style::default().fg(Color::DarkGray)), inner);
         }
-        // sync chat_agent_id to selected agent for middle pane
         if let Some(agent) = app.agents.get(app.selected).cloned() {
             if !agent.id.is_empty() && agent.id != app.chat_agent_id {
                 app.chat_agent_id = agent.id.clone();
-                /* harness input */
                 app.chat_last_load = Instant::now() - Duration::from_secs(99);
             }
         }
         app.load_selected_chat();
-        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(outer[1]);
+        // (3) terminal pane: harness terminal, tied to (1)/(2). The harness owns input.
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(outer[2]);
         let mut chat: Vec<Line> = Vec::new();
         if let Some(agent) = app.agents.get(app.selected) {
             chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
@@ -1202,7 +1220,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
             chat.push(Line::from("Select an agent (j/k)."));
         }
         if app.chat_messages.is_empty() {
-            chat.push(Line::from(Span::styled("No messages yet. Press / to chat (terminal).", Style::default().fg(Color::DarkGray))));
+            chat.push(Line::from(Span::styled("No messages yet. Terminal is running here.", Style::default().fg(Color::DarkGray))));
         } else {
             for (role,text) in app.chat_messages.iter().rev().take(14).rev() {
                 let who = if role=="user" { "you" } else { "agent" };
@@ -1210,10 +1228,8 @@ fn draw(frame: &mut Frame, app: &mut App) {
                 chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
             }
         }
-        frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
-        frame.render_widget(Paragraph::new("chat is the terminal (harness owns input).").block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
-        // right: description
-        // right: agent + switchable harness/model/effort (profile)
+        frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" terminal · harness ")), chat_layout[0]);
+        // (4) profile/description tied to (3): shows selected agent + harness/model/effort switcher.
         app.load_profile_models();
         let mut detail: Vec<Line> = Vec::new();
         match app.agents.get(app.selected) {
@@ -1247,7 +1263,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
             }
             None => detail.push(Line::from("No seat selected.")),
         }
-        frame.render_widget(Paragraph::new(detail).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" agent ")), outer[2]);
+        frame.render_widget(Paragraph::new(detail).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" agent ")), outer[3]);
     }
 
     if lobby {
