@@ -48,7 +48,7 @@ export interface ServerModeEnvironment {
 /** Returns null unless this process is a self-hosted server that systemd started. */
 export function takeServerModeEnvironment(
   environment: NodeJS.ProcessEnv,
-  isPackaged: boolean,
+  _isPackaged: boolean,
   platform: NodeJS.Platform,
 ): ServerModeEnvironment | null {
   const explicit = environment.ZOLLYBOT_SERVER === "1" || process.argv.includes("--server") || environment.ZOLLYBOT_CONTROL_SOCKET === "1";
