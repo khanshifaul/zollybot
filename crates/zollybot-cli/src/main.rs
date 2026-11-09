@@ -421,10 +421,8 @@ struct App {
     tui_config: TuiConfig,
     onboarding: OnboardingStep,
     lang_selected: usize,
-    chat_input: String,
     chat_messages: Vec<(String,String)>,
     chat_agent_id: String,
-    chat_composing: bool,
     chat_last_load: Instant,
 }
 
@@ -450,10 +448,8 @@ impl App {
             tui_config: load_tui_config(),
             onboarding: OnboardingStep::Language,
             lang_selected: 0,
-            chat_input: String::new(),
             chat_messages: Vec::new(),
             chat_agent_id: String::new(),
-            chat_composing: false,
             chat_last_load: Instant::now() - Duration::from_secs(99),
         };
         let cfg = app.tui_config.clone();
@@ -588,9 +584,9 @@ impl App {
     }
 
     fn send_butler_chat(&mut self) {
-        let text = self.chat_input.trim().to_string();
-        if text.is_empty() { return; }
-        self.chat_input.clear();
+        let text = std::env::var("ZOLLYBOT_CHAT_TEXT").unwrap_or_default();
+        if text.trim().is_empty() { return; }
+        let text = text.trim().to_string();
         self.chat_messages.push(("user".to_string(), text.clone()));
         let path = if self.chat_agent_id.is_empty() { "/v1/butler/messages".to_string() } else { format!("/v1/agents/{}/messages", self.chat_agent_id) };
         match control_call("POST",&path,&[("text",&text)]) {
@@ -746,7 +742,7 @@ impl App {
                         return;
                     }
                     if mouse.row > 15 {
-                        self.chat_composing = true;
+                        /* harness owns input */
                     } else if mouse.row >= 2 {
                         let index = (mouse.row - 2) as usize;
                         if index < self.agents.len() {
@@ -787,7 +783,7 @@ impl App {
                         self.open_lobby_selection();
                     }
                 } else if self.office_filter.as_deref() == Some("building") {
-                    self.chat_composing = true;
+                    /* harness owns input */
                 }
             }
             _ => {}
@@ -1130,12 +1126,12 @@ fn draw(frame: &mut Frame, app: &mut App) {
         if let Some(agent) = app.agents.get(app.selected).cloned() {
             if !agent.id.is_empty() && agent.id != app.chat_agent_id {
                 app.chat_agent_id = agent.id.clone();
-                app.chat_input.clear();
+                /* harness input */
                 app.chat_last_load = Instant::now() - Duration::from_secs(99);
             }
         }
         app.load_selected_chat();
-        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3), Constraint::Length(3)]).split(outer[1]);
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(outer[1]);
         let mut chat: Vec<Line> = Vec::new();
         if let Some(agent) = app.agents.get(app.selected) {
             chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
@@ -1153,9 +1149,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
             }
         }
         frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
-        let input_title = if app.chat_composing { " message (/ sends) " } else { " / chat · j/k agent " };
-        let input = if app.chat_composing { format!("› {}", app.chat_input) } else { "Press / to write to agent (terminal chat).".to_string() };
-        frame.render_widget(Paragraph::new(input).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(input_title)), chat_layout[1]);
+        frame.render_widget(Paragraph::new("chat is the terminal (harness owns input).").block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
         // right: description
         let mut detail: Vec<Line> = Vec::new();
         match app.agents.get(app.selected) {
@@ -1179,7 +1173,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
     if lobby {
         // The lobby is the butler's room: the chat in the middle, the offices beside it.
         let butler = app.all_agents.iter().find(|agent| agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || (!agent.id.is_empty() && agent.id == app.chat_agent_id));
-        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3), Constraint::Length(3)]).split(body[0]);
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(body[0]);
         let mut chat: Vec<Line> = Vec::new();
         if let Some(agent) = butler {
             chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
@@ -1204,9 +1198,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
             }
         }
         frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler ")), chat_layout[0]);
-        let input_title = if app.chat_composing { " message to Butler (/ sends) " } else { " / chat · r refresh " };
-        let input = if app.chat_composing { format!("› {}", app.chat_input) } else { "Press / to write to Butler (uses desktop/server provider chat).".to_string() };
-        frame.render_widget(Paragraph::new(input).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(input_title)), chat_layout[1]);
+        frame.render_widget(Paragraph::new("chat is the terminal (harness owns input).").block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler ")), chat_layout[0]);
 
         let mut offices: Vec<Line> = Vec::new();
         for (index, (_, label, headcount)) in app.lobby_targets().iter().enumerate() {
@@ -1585,19 +1577,8 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     }
                     continue;
                 }
-                if app.chat_composing {
-                    match key.code {
-                        KeyCode::Esc => { app.chat_composing = false; }
-                        KeyCode::Enter => { app.chat_composing = false; app.send_butler_chat(); }
-                        KeyCode::Backspace => { app.chat_input.pop(); }
-                        KeyCode::Char(c) => app.chat_input.push(c),
-                        _ => {}
-                    }
-                    continue;
-                }
                 match key.code {
                     KeyCode::Esc if app.connect.is_some() => app.connect = None,
-                    KeyCode::Char('/') if app.office_filter.as_deref() == Some("building") => { app.chat_composing = true; }
                     KeyCode::Char('c') => app.toggle_connect(),
                     KeyCode::Char('i') => app.open_sign_in(),
                     KeyCode::Char('o') => app.sign_out(),
