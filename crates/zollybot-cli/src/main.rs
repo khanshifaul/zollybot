@@ -378,6 +378,7 @@ struct ServerInfo {
 
 #[derive(Clone, Default)]
 struct AgentRow {
+    id: String,
     name: String,
     provider: String,
     model: String,
@@ -420,6 +421,11 @@ struct App {
     tui_config: TuiConfig,
     onboarding: OnboardingStep,
     lang_selected: usize,
+    chat_input: String,
+    chat_messages: Vec<(String,String)>,
+    chat_agent_id: String,
+    chat_composing: bool,
+    chat_last_load: Instant,
 }
 
 impl App {
@@ -444,6 +450,11 @@ impl App {
             tui_config: load_tui_config(),
             onboarding: OnboardingStep::Language,
             lang_selected: 0,
+            chat_input: String::new(),
+            chat_messages: Vec::new(),
+            chat_agent_id: String::new(),
+            chat_composing: false,
+            chat_last_load: Instant::now() - Duration::from_secs(99),
         };
         let cfg = app.tui_config.clone();
         app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
@@ -456,7 +467,7 @@ impl App {
         if app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none() && app.session.is_none() {
             app.open_sign_in();
         }
-        if app.onboarding == OnboardingStep::Done { app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
+        if app.onboarding == OnboardingStep::Done { app.office_filter = Some("building".to_string()); app.apply_office_filter(); app.load_butler_chat(); }
         app
     }
 
@@ -465,9 +476,12 @@ impl App {
     fn load(&mut self) {
         self.last_refresh = Instant::now();
         if control_socket().is_none() {
+            self.ensure_local_server();
+        }
+        if control_socket().is_none() {
             self.agents.clear();
             self.table_state.select(None);
-            self.message = "Start ZollyBot, then this attaches to it.".to_string();
+            self.message = "Local server is starting… if this stays, run: zollybot --server".to_string();
             return;
         }
         if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
@@ -498,12 +512,64 @@ impl App {
                         scope: parts.next().unwrap_or_default().to_string(),
                         office: parts.next().unwrap_or_default().to_string(),
                         office_id: parts.next().unwrap_or_default().to_string(),
+                        id: parts.next().unwrap_or_default().to_string(),
                     });
                 }
                 self.apply_office_filter();
             }
             Ok((status, lines)) => self.message = answer_error(status, &lines),
             Err(error) => self.message = error,
+        }
+    }
+
+    fn ensure_local_server(&mut self) {
+        use std::process::{Command, Stdio};
+        if control_socket().is_some() { return; }
+        let app = std::env::var("ZOLLYBOT_BIN").ok().filter(|v| !v.trim().is_empty()).unwrap_or_else(|| {
+            let p = PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(".local/share/zollybot/zollybot");
+            if p.exists() { p.to_string_lossy().to_string() } else { "zollybot".to_string() }
+        });
+        let mut cmd = Command::new(app);
+        cmd.arg("--server").env("ZOLLYBOT_SERVER","1").env("ZOLLYBOT_CONTROL_SOCKET","1");
+        cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
+        let _ = cmd.spawn();
+        for _ in 0..20 { std::thread::sleep(Duration::from_millis(250)); if control_socket().is_some() { break; } }
+    }
+
+    fn load_butler_chat(&mut self) {
+        if control_socket().is_none() { return; }
+        if self.chat_last_load.elapsed() < Duration::from_millis(900) { return; }
+        self.chat_last_load = Instant::now();
+        let butler = self.all_agents.iter().find(|a| a.scope=="building" || a.role=="butler" || a.name.eq_ignore_ascii_case("butler")).cloned();
+        let Some(b) = butler else { self.chat_messages.clear(); self.chat_agent_id.clear(); return; };
+        self.chat_agent_id = b.id.clone();
+        let id = control_call("GET",&format!("/v1/agents/{}/messages", self.chat_agent_id),&[("limit","20")]).ok().and_then(|(s,l)| if s==200 { Some(l) } else if self.chat_agent_id.is_empty() { control_call("GET","/v1/butler/messages",&[("limit","20")]).ok().and_then(|(s2,l2)| if s2==200 { Some(l2)} else {None}) } else { None });
+        if let Some(lines) = id {
+            self.chat_messages.clear();
+            let count = line_value(&lines,"count").and_then(|v| v.parse::<usize>().ok()).unwrap_or(0);
+            for i in 0..count {
+                if let Some(raw)=line_value(&lines,&format!("msg.{i}")) {
+                    let mut p=raw.splitn(4,'|');
+                    let _id=p.next().unwrap_or("");
+                    let role=p.next().unwrap_or("").to_string();
+                    let _at=p.next().unwrap_or("");
+                    let text=p.next().unwrap_or("").to_string();
+                    self.chat_messages.push((role,text));
+                }
+            }
+        }
+    }
+
+    fn send_butler_chat(&mut self) {
+        let text = self.chat_input.trim().to_string();
+        if text.is_empty() { return; }
+        self.chat_input.clear();
+        self.chat_messages.push(("user".to_string(), text.clone()));
+        let path = if self.chat_agent_id.is_empty() { "/v1/butler/messages".to_string() } else { format!("/v1/agents/{}/messages", self.chat_agent_id) };
+        match control_call("POST",&path,&[("text",&text)]) {
+            Ok((200,_)) => { self.chat_last_load = Instant::now()-Duration::from_secs(99); self.load_butler_chat(); self.message = "Sent to Butler.".to_string(); }
+            Ok((_,l)) => self.message = answer_error(400,&l),
+            Err(e) => self.message = e,
         }
     }
 
@@ -987,42 +1053,30 @@ fn draw(frame: &mut Frame, app: &mut App) {
     if lobby {
         // The lobby is the butler's room: the chat in the middle, the offices beside it.
         let butler = app.all_agents.iter().find(|agent| agent.scope == "building");
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3), Constraint::Length(3)]).split(body[0]);
         let mut chat: Vec<Line> = Vec::new();
-        match butler {
-            Some(agent) => {
-                chat.push(Line::from(Span::styled(
-                    agent_label(agent),
-                    Style::default().add_modifier(Modifier::BOLD),
-                )));
-                chat.push(Line::from(agent.title.clone()));
-                chat.push(Line::from(""));
-                chat.push(Line::from(format!("role    {}", agent.role)));
-                chat.push(Line::from(format!("model   {}", agent.model)));
-                chat.push(Line::from(format!("via     {}", agent.provider)));
-                chat.push(Line::from(""));
-                chat.push(Line::from(Span::styled(
-                    "Teach Butler about you, your business, work, and environment. Butler can self-improve its instructions and change provider, model, and effort when you ask.",
-                    Style::default().fg(Color::DarkGray),
-                )));
-                chat.push(Line::from(Span::styled(
-                    "Ask Butler to create offices, hire agents, or help with chores. Chat uses the desktop agent chat/provider path (control socket chat API required).",
-                    Style::default().fg(Color::DarkGray),
-                )));
-            }
-            None => {
-                chat.push(Line::from(Span::styled("Butler", Style::default().add_modifier(Modifier::BOLD))));
-                chat.push(Line::from("Concierge · building"));
-                chat.push(Line::from(""));
-                chat.push(Line::from("No Butler agent found. Start the desktop app once so it can create the default Butler, or add Butler in the app."));
-                chat.push(Line::from(""));
-                chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment.", Style::default().fg(Color::DarkGray))));
+        if let Some(agent) = butler {
+            chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
+            chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment. Butler can self-improve its instructions and change provider, model, and effort when you ask.", Style::default().fg(Color::DarkGray))));
+            chat.push(Line::from(""));
+        } else {
+            chat.push(Line::from(Span::styled("Butler · Concierge", Style::default().add_modifier(Modifier::BOLD))));
+            chat.push(Line::from(Span::styled("No Butler agent visible yet. The app/server should create it by default; start server if needed.", Style::default().fg(Color::DarkGray))));
+            chat.push(Line::from(""));
+        }
+        if app.chat_messages.is_empty() {
+            chat.push(Line::from(Span::styled("No messages yet. Press / to chat with Butler.", Style::default().fg(Color::DarkGray))));
+        } else {
+            for (role, text) in app.chat_messages.iter().rev().take(12).rev() {
+                let who = if role=="user" { "you" } else { "butler" };
+                let style = if role=="user" { Style::default().fg(Color::Cyan) } else { Style::default().fg(Color::White) };
+                chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
             }
         }
-        let chat_block = Block::default()
-            .borders(Borders::ALL)
-            .border_type(ratatui::widgets::BorderType::Rounded)
-            .title(" chat · butler ");
-        frame.render_widget(Paragraph::new(chat).block(chat_block), body[0]);
+        frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler ")), chat_layout[0]);
+        let input_title = if app.chat_composing { " message to Butler (/ sends) " } else { " / chat · r refresh " };
+        let input = if app.chat_composing { format!("› {}", app.chat_input) } else { "Press / to write to Butler (uses desktop/server provider chat).".to_string() };
+        frame.render_widget(Paragraph::new(input).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(input_title)), chat_layout[1]);
 
         let mut offices: Vec<Line> = Vec::new();
         for (index, (_, label, headcount)) in app.lobby_targets().iter().enumerate() {
@@ -1400,8 +1454,19 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     }
                     continue;
                 }
+                if app.chat_composing {
+                    match key.code {
+                        KeyCode::Esc => { app.chat_composing = false; }
+                        KeyCode::Enter => { app.chat_composing = false; app.send_butler_chat(); }
+                        KeyCode::Backspace => { app.chat_input.pop(); }
+                        KeyCode::Char(c) => app.chat_input.push(c),
+                        _ => {}
+                    }
+                    continue;
+                }
                 match key.code {
                     KeyCode::Esc if app.connect.is_some() => app.connect = None,
+                    KeyCode::Char('/') if app.office_filter.as_deref() == Some("building") => { app.chat_composing = true; }
                     KeyCode::Char('c') => app.toggle_connect(),
                     KeyCode::Char('i') => app.open_sign_in(),
                     KeyCode::Char('o') => app.sign_out(),

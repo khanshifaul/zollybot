@@ -3693,6 +3693,7 @@ export async function createApplicationServices({
             const employment = employments.get(agent.id);
             const office = employment?.officeId ? offices.get(employment.officeId) : undefined;
             return {
+              id: agent.id,
               name: agent.name,
               provider: String(agent.provider),
               model: String(agent.model),
@@ -3757,6 +3758,27 @@ export async function createApplicationServices({
           upsertOffice(database, { ...office, lastOpenedAt: Date.now() });
           const agents = listEmployments(database).filter((employment) => employment.officeId === id).length;
           return { id: office.id, name: office.name, path: office.repoPath, hasAgents: true, agents };
+        },
+        chat: {
+          listMessages: async (agentId, limit = 30) => {
+            try {
+              const page = await runCauseEffect(service.readConversationPageFor(agentId, "local:control", { type: "latest" } as any, limit) as any);
+              const messages = ((page as any)?.messages ?? []).map((m: any) => ({
+                id: String(m.id ?? ""),
+                role: String(m.role ?? m.author?.role ?? (m.author?.kind === "user" ? "user" : "assistant")),
+                text: String(m.text ?? m.content ?? ""),
+                at: m.createdAt ?? m.at ?? "",
+              }));
+              return { messages };
+            } catch (e) { return { error: e instanceof Error ? e.message : String(e) }; }
+          },
+          sendMessage: async (agentId, text) => {
+            try {
+              const receipt = await runCauseEffect(service.sendMessage({ agentId, text } as any) as any);
+              const deliveryId = (receipt as any)?.deliveries?.[0]?.id ?? (receipt as any)?.deliveryId;
+              return { ok: true as const, deliveryId };
+            } catch (e) { return { ok: false as const, error: e instanceof Error ? e.message : String(e) }; }
+          },
         },
         onError: (message, error) => logger.warn(message, toLogValue(error)),
       })

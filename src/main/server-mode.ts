@@ -51,7 +51,8 @@ export function takeServerModeEnvironment(
   isPackaged: boolean,
   platform: NodeJS.Platform,
 ): ServerModeEnvironment | null {
-  if (!isPackaged || platform !== "linux" || environment.ZOLLYBOT_SERVER !== "1") return null;
+  const explicit = environment.ZOLLYBOT_SERVER === "1" || process.argv.includes("--server") || environment.ZOLLYBOT_CONTROL_SOCKET === "1";
+  if (!explicit || platform !== "linux") return null;
   // A hosted server signs in with its claim, not from a terminal.
   if (environment.ZOLLYBOT_HOSTED_SERVER === "1") return null;
   const runtimeDirectory = environment.XDG_RUNTIME_DIR?.trim() ?? "";
@@ -61,6 +62,7 @@ export function takeServerModeEnvironment(
 
 /** One agent as the app lists it. The terminal frontend shows this same list. */
 export interface ServerAgent {
+  id?: string;
   name: string;
   provider: string;
   model: string;
@@ -114,6 +116,10 @@ export interface ServerModeOptions {
   officeMemories?: OfficeMemories;
   officeTasks?: { list: (i?: any)=>any[]; get:(id:string)=>any; create:(i:any)=>any; setStatus:(id:string,s:any,g?:any)=>void; pause:(id:string)=>void; resume:(id:string)=>void; setReviewPass?:(id:string,actor:string)=>void; hasReviewPass?:(id:string)=>boolean; merge?:(id:string,actor:string)=>{ok:boolean;error?:string}; };
   officeDb?: () => import("node:sqlite").DatabaseSync | null;
+  chat?: {
+    listMessages: (agentId: string, limit?: number) => Promise<{ messages: { id: string; role: string; text: string; at?: string }[] } | { error: string }>;
+    sendMessage: (agentId: string, text: string) => Promise<{ ok: true; deliveryId?: string } | { ok: false; error: string }>;
+  };
   onError: (message: string, error: unknown) => void;
   /** Tests only. */
   uid?: number;
@@ -273,7 +279,43 @@ export class ServerMode {
     const taskGet = path.match(/^\/v1\/office-tasks\/([^/]+)$/);
     if (taskGet && m === "GET") return this.#officeTaskGet(decodeURIComponent(taskGet[1] ?? ""));
     if (route === "POST /v1/butler/office") return this.#registerOffice(body.get("path") ?? "", body.get("name"));
+    const chatList = path.match(/^\/v1\/agents\/([^/]+)\/messages$/);
+    if (chatList && m === "GET") return await this.#agentMessages(decodeURIComponent(chatList[1] ?? ""), new URLSearchParams(query));
+    const chatSend = path.match(/^\/v1\/agents\/([^/]+)\/messages$/);
+    if (chatSend && m === "POST") return await this.#agentSendMessage(decodeURIComponent(chatSend[1] ?? ""), body);
+    if (route === "GET /v1/butler/messages") return await this.#butlerMessages(new URLSearchParams(query));
+    if (route === "POST /v1/butler/messages") return await this.#butlerSendMessage(body);
     return failure(404, "not_found");
+  }
+
+
+  #findButlerId(): string | null {
+    const butler = (this.#options.agents?.() ?? []).find((a) => a.scope === "building" || a.role === "butler" || a.name.toLowerCase() === "butler");
+    return butler?.id ?? null;
+  }
+  async #butlerMessages(q: URLSearchParams): Promise<Answer> {
+    const id = this.#findButlerId(); if (!id) return failure(404, "butler_not_found", "No Butler agent is available. Start the desktop app and let it seed Butler.");
+    return this.#agentMessages(id, q);
+  }
+  async #butlerSendMessage(body: URLSearchParams): Promise<Answer> {
+    const id = this.#findButlerId(); if (!id) return failure(404, "butler_not_found", "No Butler agent is available.");
+    return this.#agentSendMessage(id, body);
+  }
+  async #agentMessages(agentId: string, q: URLSearchParams): Promise<Answer> {
+    const chat = this.#options.chat; if (!chat) return failure(501, "chat_unavailable", "Chat is not available on this server.");
+    const limit = Math.max(1, Math.min(100, Number(q.get("limit") ?? 30) || 30));
+    const res = await chat.listMessages(agentId, limit);
+    if ("error" in res) return failure(400, "chat_read_failed", res.error);
+    const lines: Answer["lines"] = { count: res.messages.length, agent_id: agentId };
+    res.messages.forEach((m, i) => { lines[`msg.${i}`] = [m.id, m.role, (m.at ?? ""), String(m.text ?? "").replace(/[\r\n]+/g, " ").replace(/[|]/g, "/")].join("|"); });
+    return { status: 200, lines };
+  }
+  async #agentSendMessage(agentId: string, body: URLSearchParams): Promise<Answer> {
+    const chat = this.#options.chat; if (!chat) return failure(501, "chat_unavailable", "Chat is not available on this server.");
+    const text = (body.get("text") ?? "").trim(); if (!text) return failure(400, "invalid_request", "text is required");
+    const res = await chat.sendMessage(agentId, text);
+    if (!res.ok) return failure(400, "chat_send_failed", res.error);
+    return { status: 200, lines: { ok: 1, delivery_id: res.deliveryId ?? "" } };
   }
 
   #officeMemory(officeId: string): Answer {
@@ -413,6 +455,7 @@ export class ServerMode {
         agent.scope ?? "",
         agent.office ?? "",
         agent.officeId ?? "",
+        agent.id ?? "",
       ].join("|");
     });
     return { status: 200, lines };
