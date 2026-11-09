@@ -25,8 +25,104 @@ use std::fs;
 use std::io::{IsTerminal, Write, stdout};
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
+use std::sync::{Arc, Mutex};
+use portable_pty::{CommandBuilder, PtySize, MasterPty, Child};
+use avt::Terminal as VtTerminal;
+
+fn harness_for(agent: &AgentRow) -> String {
+    let provider = agent.provider.trim().to_lowercase();
+    let executable = std::env::var("ZOLLYBOT_HARNESS").unwrap_or_else(|_| provider.clone());
+    if !executable.is_empty() { executable } else { "sh".to_string() }
+}
+
+fn spawn_pty_session(agent: &AgentRow, cols: u16, rows: u16) -> std::io::Result<PtySession> {
+    let size = PtySize { rows: rows.max(1), cols: cols.max(1), pixel_width: 0, pixel_height: 0 };
+    let pty = portable_pty::native_pty_system().openpty(size).map_err(|e| std::io::Error::other(e.to_string()))?;
+    let mut cmd = CommandBuilder::new(harness_for(agent));
+    cmd.env("TERM", "xterm-256color");
+    cmd.env("COLORTERM", "truecolor");
+    cmd.env("TERM_PROGRAM", "zollybot-tui");
+    cmd.env("ZOLLYBOT_AGENT_ID", &agent.id);
+    cmd.env("ZOLLYBOT_PROVIDER", &agent.provider);
+    cmd.env("ZOLLYBOT_MODEL", &agent.model);
+    cmd.env("ZOLLYBOT_HARNESS", harness_for(agent));
+    if let Ok(cwd) = std::env::current_dir() { cmd.cwd(cwd); }
+    let child = pty.slave.spawn_command(cmd).map_err(|e| std::io::Error::other(e.to_string()))?;
+    drop(pty.slave);
+    let mut reader = pty.master.try_clone_reader().map_err(|e| std::io::Error::other(e.to_string()))?;
+    let writer = pty.master.take_writer().map_err(|e| std::io::Error::other(e.to_string()))?;
+    let vt = Arc::new(Mutex::new(VtTerminal::with_scrollback(cols as usize, rows as usize, Some(5000)).map_err(|e| std::io::Error::other(e.to_string()))?));
+    let output: Arc<Mutex<Vec<u8>>> = Arc::new(Mutex::new(Vec::new()));
+    let vt_thread = vt.clone();
+    let output_thread = output.clone();
+    std::thread::spawn(move || {
+        use std::io::Read;
+        let mut buf = [0u8; 8192];
+        loop {
+            match reader.read(&mut buf) {
+                Ok(0) | Err(_) => break,
+                Ok(n) => {
+                    output_thread.lock().unwrap().extend_from_slice(&buf[..n]);
+                    if let Ok(mut term) = vt_thread.lock() {
+                        term.feed(String::from_utf8_lossy(&buf[..n]).into_owned());
+                    }
+                }
+            }
+        }
+    });
+    Ok(PtySession { master: pty.master, child, writer, vt, output })
+}
+
+impl App {
+    fn ensure_pty(&mut self, cols: u16, rows: u16) {
+        let Some(agent) = self.agents.get(self.selected).cloned() else { return; };
+        if agent.id.is_empty() { return; }
+        let stale = self.pty.as_ref().map(|p| self.pty_agent_id != agent.id).unwrap_or(false);
+        let missing = self.pty.is_none();
+        if stale || missing {
+            if let Some(old) = self.pty.take() {
+                let mut child = old.child;
+                let _ = child.kill();
+            }
+            match spawn_pty_session(&agent, cols.max(20), rows.max(4)) {
+                Ok(session) => {
+                    self.pty = Some(session);
+                    self.pty_agent_id = agent.id.clone();
+                }
+                Err(e) => {
+                    self.message = format!("PTY failed for {}: {e}", agent.name);
+                }
+            }
+        } else if let Some(pty) = &self.pty {
+            let _ = pty.master.resize(PtySize { rows: rows.max(1), cols: cols.max(1), pixel_width: 0, pixel_height: 0 });
+            if let Ok(mut vt) = pty.vt.lock() {
+                vt.resize(cols as usize, rows as usize);
+            }
+        }
+    }
+
+    fn write_pty(&mut self, bytes: &[u8]) -> std::io::Result<()> {
+        use std::io::Write;
+        if let Some(pty) = &mut self.pty {
+            pty.writer.write_all(bytes)?;
+            pty.writer.flush()?;
+        }
+        Ok(())
+    }
+}
+
+// Additional office-pane methods split for readability; state lives in the primary App struct below.
 
 const REFRESH_EVERY: Duration = Duration::from_secs(3);
+
+/// Real PTY harness session owned by the middle office pane.
+struct PtySession {
+    master: Box<dyn MasterPty + Send>,
+    child: Box<dyn Child + Send + Sync>,
+    writer: Box<dyn std::io::Write + Send>,
+    vt: Arc<Mutex<VtTerminal>>,
+    output: Arc<Mutex<Vec<u8>>>,
+}
 
 #[derive(Parser)]
 #[command(
@@ -429,6 +525,8 @@ struct App {
     profile_models: Vec<(String, String, String)>,
     profile_busy: bool,
     terminal_pct: u16,
+    pty: Option<PtySession>,
+    pty_agent_id: String,
 }
 
 impl App {
@@ -459,7 +557,9 @@ impl App {
             profile_field: 0,
             profile_models: Vec::new(),
             profile_busy: false,
+            pty: None,
             terminal_pct: 50,
+            pty_agent_id: String::new(),
         };
         let cfg = app.tui_config.clone();
         app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
@@ -1237,25 +1337,30 @@ fn draw(frame: &mut Frame, app: &mut App) {
             }
         }
         app.load_selected_chat();
-        // (3) terminal pane: harness terminal, tied to (1)/(2). The harness owns input.
-        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(outer[2]);
-        let mut chat: Vec<Line> = Vec::new();
-        if let Some(agent) = app.agents.get(app.selected) {
-            chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
-            chat.push(Line::from(""));
-        } else {
-            chat.push(Line::from("Select an agent (j/k)."));
-        }
-        if app.chat_messages.is_empty() {
-            chat.push(Line::from(Span::styled("No messages yet. Terminal is running here.", Style::default().fg(Color::DarkGray))));
-        } else {
-            for (role,text) in app.chat_messages.iter().rev().take(14).rev() {
-                let who = if role=="user" { "you" } else { "agent" };
-                let style = if role=="user" { Style::default().fg(Color::Cyan) } else { Style::default().fg(Color::White) };
-                chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
+        // (3) REAL terminal pane: a portable-pty child running the selected harness.
+        // Herdr-style: the PTY owns the pane; Ratatui only draws its VT cells.
+        let pane_area = outer[2];
+        let cols = pane_area.width.saturating_sub(2) as usize;
+        let rows = pane_area.height.saturating_sub(2) as usize;
+        app.ensure_pty(cols as u16, rows as u16);
+        let pty_title = app.agents.get(app.selected).map(|a| format!(" terminal · {} · {} ", a.provider, a.model)).unwrap_or_else(|| " terminal · harness ".to_string());
+        let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(pty_title);
+        let inner = block.inner(pane_area);
+        frame.render_widget(block, pane_area);
+        if let Some(pty) = &app.pty {
+            if let Ok(vt) = pty.vt.lock() {
+                let screen = vt.screen();
+                for (r, line) in screen.visible_lines().enumerate() {
+                    if r >= ((rows) as usize) { break; }
+                    let text = line.text();
+                    if !text.trim().is_empty() {
+                        frame.render_widget(Paragraph::new(text), ratatui::layout::Rect::new(inner.x, inner.y + r as u16, inner.width, 1));
+                    }
+                }
             }
+        } else {
+            frame.render_widget(Paragraph::new("Starting PTY… select an agent (j/k).").style(Style::default().fg(Color::DarkGray)), inner);
         }
-        frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" terminal · harness ")), chat_layout[0]);
         // (4) profile/description tied to (3): shows selected agent + harness/model/effort switcher.
         app.load_profile_models();
         let mut detail: Vec<Line> = Vec::new();
