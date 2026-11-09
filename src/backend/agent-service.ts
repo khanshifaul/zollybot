@@ -144,6 +144,7 @@ import { createZollyBotLogger } from "@zollybot/logging";
 import { classifyFailure } from "@zollybot/telemetry";
 import { Cause, Deferred, Effect, Exit, Fiber, Result, Schema, Scope, Semaphore } from "effect";
 import { AgentMemories } from "./agent/agent-memories";
+import { OfficeMemories } from "./offices/office-memory-store";
 import { AgentRemoval, AgentRemovalFailed } from "./agent/agent-removal";
 import { AgentSettingsRefused } from "./agent/agent-settings-refused";
 import type { ApprovalAutomationPolicy } from "./agent/approval-automation";
@@ -255,6 +256,7 @@ import {
   isRoleEmployed,
   listEmployments,
   listOffices,
+  primaryOfficeId,
   syncEmployments,
   UNASSIGNED_OFFICE_ID,
   upsertEmployment,
@@ -1162,6 +1164,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       mailbox,
       conversation: this.#conversation,
       memories: this.#memories,
+      officeMemories: new OfficeMemories(store.database),
       compaction: this.#compaction,
       mcpServers: () => this.#mcp.enabled(),
       mcpToolRuntimes: () => this.#mcp.toolRuntimes(),
@@ -1712,6 +1715,8 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       hostedSites: this.#hostedSites,
       routines: this.#routines,
       memories: this.#memories,
+      officeMemories: new OfficeMemories(store.database),
+      officeIdForAgent: (agentId: string) => { try { const row = store.database.connection.prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?").get(agentId) as any; return row?.office_id ?? null; } catch { return null; } },
       waits: this.#waits,
       tasks: this.#tasks,
       drain: this.#drain,
@@ -2389,6 +2394,15 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   notifyAgentsChanged(): void {
     this.#attention.answerGrantedRequests();
     this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
+  }
+
+  /**
+   * Reassigns the provisional Unassigned desks after an office is registered.
+   * An agent that already holds a real desk keeps it.
+   */
+  syncEmploymentAssignments(): void {
+    syncEmployments(this.#store.database.connection, this.#store.list(), roleForAgentName);
+    this.notifyAgentsChanged();
   }
 
   /** The installed skills of one agent changed, so every open skills list reads them again. */
@@ -3931,8 +3945,9 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
         cause: new Error(`Unknown role: ${input.roleKey}`),
       });
     }
-    const officeId = role.scope === "building" ? null : (input.officeId ?? UNASSIGNED_OFFICE_ID);
     const database = this.#store.database.connection;
+    const officeId =
+      role.scope === "building" ? null : (input.officeId ?? primaryOfficeId(database) ?? UNASSIGNED_OFFICE_ID);
     if (!role.multiInstance && isRoleEmployed(database, role.key, officeId)) {
       return yield* new AgentLifecycleFailed({
         operation: "employ",

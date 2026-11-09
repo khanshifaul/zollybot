@@ -264,6 +264,10 @@ export const messages = {
   "error.provider.hermesVersionUnreadable": "تتعذّر قراءة إصدار Hermes Agent.",
   "error.provider.hermesSignIn":
     "سجّل الدخول باستخدام Nous Portal، أو شغّل `hermes setup` في نافذة طرفية، لاستخدام Hermes.",
+  "error.provider.ompMissing": "لم يتم تثبيت Oh My Pi. ثبّته ثم حاول مرة أخرى.",
+  "error.provider.ompNotStarted": "تعذّر بدء Oh My Pi. شغّل `omp --version` في طرفية.",
+  "error.provider.ompVersionUnreadable": "تعذّرت قراءة إصدار Oh My Pi.",
+  "error.provider.ompSignIn": "سجّل الدخول بـ `omp` على كمبيوتر المضيف، ثم حاول مرة أخرى.",
   "error.provider.usageLimitReached": "بلغ الحساب حد الاستخدام.",
   "error.provider.foreignReasoning":
     "لم يقبل {provider} الاستدلال السابق في هذه الدردشة، لأن حسابًا أو مفتاح API مختلفًا استلمه. بدأ ZollyBot جلسة {provider} جديدة بسجل الدردشة. أعد المحاولة.",

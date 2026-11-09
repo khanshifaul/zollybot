@@ -181,7 +181,7 @@ export class RoutineStore {
 
   protected get routineColumns(): string {
     return `routine_id, ${this.tables.ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy,
-            ${this.tables.runInColumn ? "run_in, " : ""}created_at, updated_at`;
+            ${this.tables.runInColumn ? "run_in, " : ""}created_at, updated_at${this.tables.routineTable === "projection_agent_routines" ? ", office_id" : ""}`;
   }
 
   protected get runColumns(): string {
@@ -200,6 +200,32 @@ export class RoutineStore {
         )
         .all(ownerId),
     ).map((row) => this.#routine(row));
+  }
+
+
+  protected listRoutinesByOffice(officeId: string): OwnedRoutine[] {
+    if (this.tables.routineTable !== "projection_agent_routines") return [];
+    return databaseRows(
+      this.database.connection
+        .prepare(
+          `SELECT ${this.routineColumns}
+           FROM ${this.tables.routineTable} WHERE office_id = ? AND ${this.#hasSchedule}
+           ORDER BY updated_at DESC, routine_id`,
+        )
+        .all(officeId),
+    ).map((row) => this.#routine(row));
+  }
+  protected listRecordsByOffice(officeId: string): OwnedRoutineRecord[] {
+    if (this.tables.routineTable !== "projection_agent_routines") return [];
+    return databaseRows(
+      this.database.connection
+        .prepare(
+          `SELECT ${this.routineColumns}
+           FROM ${this.tables.routineTable} WHERE office_id = ?
+           ORDER BY updated_at DESC, routine_id`,
+        )
+        .all(officeId),
+    ).map((row) => this.#record(row));
   }
 
   /** Routines of every trigger kind. */
@@ -261,24 +287,22 @@ export class RoutineStore {
       ],
       (db, sequences) => {
         const sequence = sequences[0] ?? 0;
-        db.prepare(
-          `INSERT INTO ${routineTable} (
-             routine_id, ${ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy, created_at,
-             updated_at, last_event_sequence
-           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        ).run(
-          routineId,
-          ownerId,
-          input.name.trim(),
-          input.instruction.trim(),
-          input.active ? 1 : 0,
-          input.timezone,
-          limitPolicyFor(schedule, input.limitPolicy),
-          input.missedPolicy ?? defaultMissedPolicy(schedule),
-          createdAt,
-          createdAt,
-          sequence,
-        );
+        const officeId = this.tables.routineTable === "projection_agent_routines" ? ((db.prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?").get(ownerId) as any)?.office_id ?? null) : undefined;
+        if (this.tables.routineTable === "projection_agent_routines") {
+          db.prepare(
+            `INSERT INTO ${routineTable} (
+               routine_id, ${ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy, created_at,
+               updated_at, last_event_sequence, office_id
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          ).run(routineId, ownerId, input.name.trim(), input.instruction.trim(), input.active ? 1 : 0, input.timezone, limitPolicyFor(schedule, input.limitPolicy), input.missedPolicy ?? defaultMissedPolicy(schedule), createdAt, createdAt, sequence, officeId);
+        } else {
+          db.prepare(
+            `INSERT INTO ${routineTable} (
+               routine_id, ${ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy, created_at,
+               updated_at, last_event_sequence
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          ).run(routineId, ownerId, input.name.trim(), input.instruction.trim(), input.active ? 1 : 0, input.timezone, limitPolicyFor(schedule, input.limitPolicy), input.missedPolicy ?? defaultMissedPolicy(schedule), createdAt, createdAt, sequence);
+        }
         this.#writeRunIn(db, routineId, input.runIn ?? "chat");
         this.#insertTrigger(db, routineId, input.timezone, schedule, createdAt, sequence, now);
         return this.#require(routineId, ownerId);
@@ -416,29 +440,32 @@ export class RoutineStore {
       ],
       (db, sequences) => {
         const sequence = sequences[0] ?? 0;
-        db.prepare(
-          `INSERT INTO ${routineTable} (
-             routine_id, ${ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy, created_at,
-             updated_at, last_event_sequence
-           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-           ON CONFLICT(routine_id) DO UPDATE SET
-             name = excluded.name, instruction = excluded.instruction, active = excluded.active,
-             timezone = excluded.timezone, limit_policy = excluded.limit_policy,
-             missed_policy = excluded.missed_policy, updated_at = excluded.updated_at,
-             last_event_sequence = excluded.last_event_sequence`,
-        ).run(
-          id,
-          ownerId,
-          input.name.trim(),
-          input.instruction.trim(),
-          input.active ? 1 : 0,
-          input.timezone,
-          limitPolicy,
-          missedPolicy,
-          current?.createdAt ?? timestamp,
-          timestamp,
-          sequence,
-        );
+        const officeId = this.tables.routineTable === "projection_agent_routines" ? ((db.prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?").get(ownerId) as any)?.office_id ?? (current as any)?.officeId ?? null) : undefined;
+        if (this.tables.routineTable === "projection_agent_routines") {
+          db.prepare(
+            `INSERT INTO ${routineTable} (
+               routine_id, ${ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy, created_at,
+               updated_at, last_event_sequence, office_id
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(routine_id) DO UPDATE SET
+               name = excluded.name, instruction = excluded.instruction, active = excluded.active,
+               timezone = excluded.timezone, limit_policy = excluded.limit_policy,
+               missed_policy = excluded.missed_policy, updated_at = excluded.updated_at,
+               last_event_sequence = excluded.last_event_sequence, office_id = COALESCE(excluded.office_id, ${routineTable}.office_id)`,
+          ).run(id, ownerId, input.name.trim(), input.instruction.trim(), input.active ? 1 : 0, input.timezone, limitPolicy, missedPolicy, current?.createdAt ?? timestamp, timestamp, sequence, officeId);
+        } else {
+          db.prepare(
+            `INSERT INTO ${routineTable} (
+               routine_id, ${ownerColumn}, name, instruction, active, timezone, limit_policy, missed_policy, created_at,
+               updated_at, last_event_sequence
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(routine_id) DO UPDATE SET
+               name = excluded.name, instruction = excluded.instruction, active = excluded.active,
+               timezone = excluded.timezone, limit_policy = excluded.limit_policy,
+               missed_policy = excluded.missed_policy, updated_at = excluded.updated_at,
+               last_event_sequence = excluded.last_event_sequence`,
+          ).run(id, ownerId, input.name.trim(), input.instruction.trim(), input.active ? 1 : 0, input.timezone, limitPolicy, missedPolicy, current?.createdAt ?? timestamp, timestamp, sequence);
+        }
         if (runIn) this.#writeRunIn(db, id, runIn);
         if (schedule) {
           if (current?.trigger.kind === "webhook") {

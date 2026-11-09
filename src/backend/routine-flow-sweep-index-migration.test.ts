@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { expectSameTables, pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: an upgrade loses or changes a routine run, flow link or flow step; a partial migration
 // survives a failure; a retry fails on an index that the failed run left; a newer or incomplete history is
@@ -84,7 +85,9 @@ function indexColumns(db: DatabaseSync) {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -113,11 +116,11 @@ describe("routine flow sweep index migration", () => {
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 42 failed");
     expect(indexColumns(db)).toEqual(NO_INDEXES);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version = 42").all()).toEqual([]);
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(withChatRunPlace(before));
+    expectSameTables(contents(db), withChatRunPlace(before));
     expect(indexColumns(db)).toEqual(INDEXES);
     expectHealthy(db);
   });
@@ -132,10 +135,10 @@ describe("routine flow sweep index migration", () => {
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 42 failed");
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version = 42").all()).toEqual([]);
     expect(indexColumns(db)).toEqual(NO_INDEXES);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     db.exec("DROP TABLE routine_flow_steps_updated");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(withChatRunPlace(before));
+    expectSameTables(contents(db), withChatRunPlace(before));
     expect(indexColumns(db)).toEqual(INDEXES);
     expectHealthy(db);
   });
@@ -144,11 +147,13 @@ describe("routine flow sweep index migration", () => {
     const db = databaseAt(41);
     seedRoutineFlow(db, 41);
     const before = contents(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59, 'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1}, 'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version = 59; DELETE FROM schema_migrations WHERE version = 20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version = ${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version = 20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(indexColumns(db)).toEqual(NO_INDEXES);
   });
 });

@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: migration 13 leaves a workspace root at `ZollyBot/Bots` while it renames the leaf, misses the
 // Windows or the JSON-escaped form of a path, changes a path that only looks like the root (`Botsy`, a user's own
@@ -119,7 +120,9 @@ describe("agent workspace root migration", () => {
       { owner_id: windowsAgent, path: `C:\\Users\\user\\ZollyBot\\Agents\\${windowsAgent}\\plan.md` },
     ]);
     expect(contents(db).outbox).toEqual([{ path: `/Users/user/ZollyBot/Agents/${posixAgent}/old.md` }]);
-    expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+    expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+      version: LATEST_SCHEMA_VERSION,
+    });
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
     expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -132,7 +135,7 @@ describe("agent workspace root migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version = 13
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 13 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version = 13").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
 

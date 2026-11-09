@@ -23,8 +23,14 @@ import { ChannelStore } from "./channel-store";
 import { ConversationReadStore } from "./conversation-read-store";
 import { runCauseEffect } from "./effect-boundary";
 import { ZollyBotDatabase } from "./zollybot-database";
+import { LATEST_SCHEMA_VERSION, MIGRATION_VERSIONS } from "./zollybot-database-schema";
 
 const roots: string[] = [];
+
+/** The version rows a start records: every migration in the registry, from the 8 baseline on. */
+function appliedVersions(first: number): { version: number }[] {
+  return MIGRATION_VERSIONS.filter((version) => version >= first).map((version) => ({ version }));
+}
 
 afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
@@ -130,57 +136,7 @@ describe("ZollyBotDatabase", () => {
     });
     expect((await stat(database.path)).mode & 0o777).toBe(0o600);
     expect(database.connection.prepare("SELECT version FROM schema_migrations ORDER BY version").all()).toEqual([
-      { version: 8 },
-      { version: 9 },
-      { version: 10 },
-      { version: 11 },
-      { version: 12 },
-      { version: 13 },
-      { version: 14 },
-      { version: 15 },
-      { version: 16 },
-      { version: 17 },
-      { version: 18 },
-      { version: 19 },
-      { version: 20 },
-      { version: 21 },
-      { version: 22 },
-      { version: 23 },
-      { version: 24 },
-      { version: 25 },
-      { version: 26 },
-      { version: 27 },
-      { version: 28 },
-      { version: 29 },
-      { version: 30 },
-      { version: 31 },
-      { version: 32 },
-      { version: 33 },
-      { version: 34 },
-      { version: 35 },
-      { version: 36 },
-      { version: 37 },
-      { version: 38 },
-      { version: 39 },
-      { version: 40 },
-      { version: 41 },
-      { version: 42 },
-      { version: 43 },
-      { version: 44 },
-      { version: 45 },
-      { version: 46 },
-      { version: 47 },
-      { version: 48 },
-      { version: 49 },
-      { version: 50 },
-      { version: 51 },
-      { version: 52 },
-      { version: 53 },
-      { version: 54 },
-      { version: 55 },
-      { version: 56 },
-      { version: 57 },
-      { version: 58 },
+      ...appliedVersions(8),
     ]);
     database.close();
   });
@@ -1375,9 +1331,7 @@ describe("ZollyBotDatabase", () => {
     const legacy = new DatabaseSync(database.path);
     removeSchemaAfterVersion14(legacy);
     legacy.exec("PRAGMA journal_mode = WAL");
-    legacy
-      .prepare("DELETE FROM schema_migrations WHERE version IN (8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)")
-      .run();
+    legacy.prepare("DELETE FROM schema_migrations WHERE version >= 8").run();
     legacy
       .prepare("INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (3, ?)")
       .run("2026-08-20T10:00:00.000Z");
@@ -1478,57 +1432,7 @@ describe("ZollyBotDatabase", () => {
       { name: "projection_channels" },
     ]);
     expect(migrated.connection.prepare("SELECT version FROM schema_migrations ORDER BY version").all()).toEqual([
-      { version: 8 },
-      { version: 9 },
-      { version: 10 },
-      { version: 11 },
-      { version: 12 },
-      { version: 13 },
-      { version: 14 },
-      { version: 15 },
-      { version: 16 },
-      { version: 17 },
-      { version: 18 },
-      { version: 19 },
-      { version: 20 },
-      { version: 21 },
-      { version: 22 },
-      { version: 23 },
-      { version: 24 },
-      { version: 25 },
-      { version: 26 },
-      { version: 27 },
-      { version: 28 },
-      { version: 29 },
-      { version: 30 },
-      { version: 31 },
-      { version: 32 },
-      { version: 33 },
-      { version: 34 },
-      { version: 35 },
-      { version: 36 },
-      { version: 37 },
-      { version: 38 },
-      { version: 39 },
-      { version: 40 },
-      { version: 41 },
-      { version: 42 },
-      { version: 43 },
-      { version: 44 },
-      { version: 45 },
-      { version: 46 },
-      { version: 47 },
-      { version: 48 },
-      { version: 49 },
-      { version: 50 },
-      { version: 51 },
-      { version: 52 },
-      { version: 53 },
-      { version: 54 },
-      { version: 55 },
-      { version: 56 },
-      { version: 57 },
-      { version: 58 },
+      ...appliedVersions(8),
     ]);
     expect(migrated.connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
     migrated.close();
@@ -1555,11 +1459,7 @@ describe("ZollyBotDatabase", () => {
 
     const legacy = new DatabaseSync(database.path);
     removeProviderHistorySchema(legacy);
-    legacy
-      .prepare(
-        "DELETE FROM schema_migrations WHERE version IN (29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58)",
-      )
-      .run();
+    legacy.prepare("DELETE FROM schema_migrations WHERE version >= 29").run();
     if (failFirst) legacy.exec("CREATE TABLE provider_history_imports_thread (conflict TEXT)");
     legacy.close();
 
@@ -1661,7 +1561,7 @@ describe("ZollyBotDatabase", () => {
       ALTER TABLE projection_provider_sessions_v18 RENAME TO projection_provider_sessions;
       CREATE INDEX provider_sessions_thread
         ON projection_provider_sessions(thread_id, provider, state);
-      DELETE FROM schema_migrations WHERE version IN (19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58);
+      DELETE FROM schema_migrations WHERE version >= 19;
       PRAGMA foreign_keys = ON;
     `);
     legacy.close();
@@ -1689,7 +1589,7 @@ describe("ZollyBotDatabase", () => {
         .get(),
     ).toMatchObject({ sql: expect.not.stringContaining("CHECK(provider") });
     expect(migrated.connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-      version: 58,
+      version: LATEST_SCHEMA_VERSION,
     });
     migrated.close();
   });
@@ -1708,7 +1608,7 @@ describe("ZollyBotDatabase", () => {
     removeProviderHistorySchema(legacy);
     legacy.exec(`
       DROP TABLE projection_mcp_servers;
-      DELETE FROM schema_migrations WHERE version IN (20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58);
+      DELETE FROM schema_migrations WHERE version >= 20;
     `);
     legacy.close();
 
@@ -1733,7 +1633,7 @@ describe("ZollyBotDatabase", () => {
       { name: "Filesystem" },
     ]);
     expect(reopened.connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-      version: 58,
+      version: LATEST_SCHEMA_VERSION,
     });
     reopened.close();
   });
@@ -1775,7 +1675,7 @@ describe("ZollyBotDatabase", () => {
         DROP TABLE projection_messaging_memories;
         DROP TABLE projection_messaging_threads;
         DROP TABLE projection_messaging_connections;
-        DELETE FROM schema_migrations WHERE version IN (25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58);
+        DELETE FROM schema_migrations WHERE version >= 25;
       `);
       // The squatted name is the index's: the tables use IF NOT EXISTS, so only the index can collide.
       if (failFirst) legacy.exec("CREATE TABLE messaging_threads_agent (conflict TEXT)");
@@ -1800,7 +1700,7 @@ describe("ZollyBotDatabase", () => {
       expect(migrated.listAgents()).toEqual([agent]);
       expect(migrated.readConversation(agent.id, agent.threadId).messages).toEqual(conversation.messages);
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(connection.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
@@ -1856,7 +1756,7 @@ describe("ZollyBotDatabase", () => {
          '2026-09-14T10:00:00.000Z', '2026-09-14T10:00:00.000Z'),
         ('mcp-2', 'computer_use_saved', 'stdio', 1, 'other', '[]', '[]', '[]', '', '', '[]', 1,
          '2026-09-14T10:00:00.000Z', '2026-09-14T10:00:00.000Z');
-      DELETE FROM schema_migrations WHERE version IN (21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58);
+      DELETE FROM schema_migrations WHERE version >= 21;
     `);
     legacy.close();
 
@@ -1896,7 +1796,7 @@ describe("ZollyBotDatabase", () => {
       DROP TABLE projection_routine_triggers;
       DROP TABLE projection_agent_routines;
       DROP TABLE projection_agent_memories;
-      DELETE FROM schema_migrations WHERE version IN (8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+      DELETE FROM schema_migrations WHERE version >= 8;
       INSERT OR IGNORE INTO schema_migrations(version, applied_at)
         VALUES (4, '2026-08-20T10:00:00.000Z');
     `);
@@ -1921,57 +1821,7 @@ describe("ZollyBotDatabase", () => {
     ]);
     expect(migrated.connection.prepare("SELECT version FROM schema_migrations ORDER BY version").all()).toEqual([
       { version: 4 },
-      { version: 8 },
-      { version: 9 },
-      { version: 10 },
-      { version: 11 },
-      { version: 12 },
-      { version: 13 },
-      { version: 14 },
-      { version: 15 },
-      { version: 16 },
-      { version: 17 },
-      { version: 18 },
-      { version: 19 },
-      { version: 20 },
-      { version: 21 },
-      { version: 22 },
-      { version: 23 },
-      { version: 24 },
-      { version: 25 },
-      { version: 26 },
-      { version: 27 },
-      { version: 28 },
-      { version: 29 },
-      { version: 30 },
-      { version: 31 },
-      { version: 32 },
-      { version: 33 },
-      { version: 34 },
-      { version: 35 },
-      { version: 36 },
-      { version: 37 },
-      { version: 38 },
-      { version: 39 },
-      { version: 40 },
-      { version: 41 },
-      { version: 42 },
-      { version: 43 },
-      { version: 44 },
-      { version: 45 },
-      { version: 46 },
-      { version: 47 },
-      { version: 48 },
-      { version: 49 },
-      { version: 50 },
-      { version: 51 },
-      { version: 52 },
-      { version: 53 },
-      { version: 54 },
-      { version: 55 },
-      { version: 56 },
-      { version: 57 },
-      { version: 58 },
+      ...appliedVersions(8),
     ]);
     migrated.close();
   });
@@ -2037,57 +1887,7 @@ describe("ZollyBotDatabase", () => {
     await runCauseEffect(retried.initialize());
     expect(retried.connection.prepare("SELECT version FROM schema_migrations ORDER BY version").all()).toEqual([
       { version: 7 },
-      { version: 8 },
-      { version: 9 },
-      { version: 10 },
-      { version: 11 },
-      { version: 12 },
-      { version: 13 },
-      { version: 14 },
-      { version: 15 },
-      { version: 16 },
-      { version: 17 },
-      { version: 18 },
-      { version: 19 },
-      { version: 20 },
-      { version: 21 },
-      { version: 22 },
-      { version: 23 },
-      { version: 24 },
-      { version: 25 },
-      { version: 26 },
-      { version: 27 },
-      { version: 28 },
-      { version: 29 },
-      { version: 30 },
-      { version: 31 },
-      { version: 32 },
-      { version: 33 },
-      { version: 34 },
-      { version: 35 },
-      { version: 36 },
-      { version: 37 },
-      { version: 38 },
-      { version: 39 },
-      { version: 40 },
-      { version: 41 },
-      { version: 42 },
-      { version: 43 },
-      { version: 44 },
-      { version: 45 },
-      { version: 46 },
-      { version: 47 },
-      { version: 48 },
-      { version: 49 },
-      { version: 50 },
-      { version: 51 },
-      { version: 52 },
-      { version: 53 },
-      { version: 54 },
-      { version: 55 },
-      { version: 56 },
-      { version: 57 },
-      { version: 58 },
+      ...appliedVersions(8),
     ]);
     retried.close();
   });
@@ -2663,7 +2463,7 @@ describe("ZollyBotDatabase", () => {
       ALTER TABLE projection_provider_sessions_v6 RENAME TO projection_provider_sessions;
       CREATE INDEX provider_sessions_thread
         ON projection_provider_sessions(thread_id, provider, state);
-      DELETE FROM schema_migrations WHERE version IN (8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+      DELETE FROM schema_migrations WHERE version >= 8;
       INSERT OR IGNORE INTO schema_migrations(version, applied_at)
         VALUES (6, '2026-08-20T10:00:00.000Z');
       PRAGMA foreign_keys = ON;
@@ -2932,7 +2732,7 @@ describe("ZollyBotDatabase", () => {
       expect(migrated.connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(migrated.connection.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
       expect(migrated.connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(
         migrated.connection.prepare("SELECT provider_session_id FROM projection_turns WHERE turn_id = ?").get("turn-1"),
@@ -3073,7 +2873,7 @@ describe("ZollyBotDatabase", () => {
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(connection.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(
         connection.prepare("SELECT provider_session_id FROM projection_turns WHERE turn_id = ?").get("turn-1"),
@@ -3235,7 +3035,7 @@ describe("ZollyBotDatabase", () => {
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(connection.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(
         connection.prepare("SELECT provider_session_id FROM projection_turns WHERE turn_id = ?").get("turn-1"),
@@ -3410,7 +3210,7 @@ describe("ZollyBotDatabase", () => {
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(connection.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(
         connection.prepare("SELECT provider_session_id FROM projection_turns WHERE turn_id = ?").get("turn-1"),
@@ -3579,7 +3379,7 @@ describe("ZollyBotDatabase", () => {
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(connection.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       const agentRoutines = new AgentRoutineStore(migrated);
       expect(agentRoutines.get(agent.id, agentRoutine.id)?.limitPolicy).toBe("wait");
@@ -3744,7 +3544,7 @@ describe("ZollyBotDatabase", () => {
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(connection.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(
         connection.prepare("SELECT provider_session_id FROM projection_turns WHERE turn_id = ?").get("turn-1"),
@@ -3971,7 +3771,7 @@ describe("ZollyBotDatabase", () => {
       expect(migrated.readConversation(agent.id, agent.threadId).messages).toEqual(conversation.messages);
       expect(routineRows(connection)).toEqual(original);
       expect(connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-        version: 58,
+        version: LATEST_SCHEMA_VERSION,
       });
       expect(connection.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
       expect(connection.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
@@ -4040,9 +3840,7 @@ describe("ZollyBotDatabase", () => {
   it("checks the file after a migration at a start after a clean close", async () => {
     const database = await createDatabase();
     const userDataPath = database.userDataPath;
-    database.connection.exec(
-      "DROP TABLE projection_agent_threads; DELETE FROM schema_migrations WHERE version IN (38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58)",
-    );
+    database.connection.exec("DROP TABLE projection_agent_threads; DELETE FROM schema_migrations WHERE version >= 38");
     damageProbeTable(database);
 
     // The first start applies the migration; the second has none to run and must still check.
@@ -4194,7 +3992,7 @@ function downgradeReactionsToV7(database: DatabaseSync): void {
     );
     DROP TABLE projection_reactions;
     ALTER TABLE projection_reactions_v7 RENAME TO projection_reactions;
-    DELETE FROM schema_migrations WHERE version IN (8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+    DELETE FROM schema_migrations WHERE version >= 8;
     INSERT OR IGNORE INTO schema_migrations(version, applied_at)
       VALUES (7, '2026-08-20T10:00:00.000Z');
   `);

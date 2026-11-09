@@ -95,6 +95,8 @@ export const messages = {
   "app.rail.customAgentUsage": "{name} kullanımı. Kullanımı aç",
   "app.settingsPage.title": "Ayarlar",
   "app.settingsPage.search": "Ayarlarda ara",
+  "app.offices.lobby": "Lobi",
+  "app.offices.stripLabel": "Ofisler",
   "app.settingsPage.searchPlaceholder": "Ayarlarda ara…",
   "app.settingsPage.results": "Ayar arama sonuçları",
   "app.settingsPage.noResults": "Eşleşen ayar yok.",

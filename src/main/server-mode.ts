@@ -33,6 +33,7 @@ import { readBodyWithin } from "./http-body";
 import { createHostedMobileConnect } from "./mobile-connect-host";
 import { RemoteWorkflowError, remoteCall, toRemoteWorkflowError } from "./remote-service-effects";
 import type { ServerMemory } from "./server-memory";
+import type { OfficeMemories } from "../backend/offices/office-memory-store";
 
 const CONTROL_SOCKET_FILE = "control.sock";
 const MAX_BODY_BYTES = 4096;
@@ -110,6 +111,9 @@ export interface ServerModeOptions {
   offices?: () => readonly ServerOffice[];
   registerOffice?: (path: string, name: string | null) => OfficeRegistration;
   openOffice?: (id: string) => ServerOffice | null;
+  officeMemories?: OfficeMemories;
+  officeTasks?: { list: (i?: any)=>any[]; get:(id:string)=>any; create:(i:any)=>any; setStatus:(id:string,s:any,g?:any)=>void; pause:(id:string)=>void; resume:(id:string)=>void; setReviewPass?:(id:string,actor:string)=>void; hasReviewPass?:(id:string)=>boolean; merge?:(id:string,actor:string)=>{ok:boolean;error?:string}; };
+  officeDb?: () => import("node:sqlite").DatabaseSync | null;
   onError: (message: string, error: unknown) => void;
   /** Tests only. */
   uid?: number;
@@ -237,36 +241,128 @@ export class ServerMode {
 
   async #route(method: string | undefined, url: string | undefined, body: URLSearchParams): Promise<Answer> {
     const [path = "", query = ""] = (url ?? "").split("?");
-    const route = `${method ?? ""} ${path}`;
-    switch (route) {
-      case "GET /v1/status":
-        return this.#status();
-      case "GET /v1/agents":
-        return this.#agents(new URLSearchParams(query).get("office") ?? undefined);
-      case "GET /v1/offices":
-        return this.#offices();
-      case "POST /v1/offices":
-        return this.#registerOffice(body.get("path") ?? "", body.get("name"));
-      case "POST /v1/offices/open":
-        return this.#openOffice(body.get("id") ?? "");
-      case "POST /v1/login/start":
-        return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
-      case "POST /v1/login/verify":
-        return runCauseEffect(this.#verifyLogin(body.get("challenge") ?? "", body.get("code") ?? "", body.get("name")));
-      case "POST /v1/login/claim":
-        return runCauseEffect(this.#claimLogin(body.get("claim") ?? "", body.get("name")));
-      case "POST /v1/name":
-        return runCauseEffect(this.#rename(body.get("name") ?? ""));
-      case "POST /v1/mobile-connect":
-        return runCauseEffect(this.#mobileConnect());
-      case "POST /v1/logout":
-        await runCauseEffect(
-          this.#options.centralAuth.logout().pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause }))),
-        );
-        return this.#status();
-      default:
-        return failure(404, "not_found");
+    const m = (method ?? "");
+    const route = `${m} ${path}`;
+    if (route === "GET /v1/status") return this.#status();
+    if (route === "GET /v1/agents") return this.#agents(new URLSearchParams(query).get("office") ?? undefined);
+    if (route === "GET /v1/offices") return this.#offices();
+    if (route === "POST /v1/offices") return this.#registerOffice(body.get("path") ?? "", body.get("name"));
+    if (route === "POST /v1/offices/open") return this.#openOffice(body.get("id") ?? "");
+    if (route === "POST /v1/login/start") return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
+    if (route === "POST /v1/login/verify") return runCauseEffect(this.#verifyLogin(body.get("challenge") ?? "", body.get("code") ?? "", body.get("name")));
+    if (route === "POST /v1/login/claim") return runCauseEffect(this.#claimLogin(body.get("claim") ?? "", body.get("name")));
+    if (route === "POST /v1/name") return runCauseEffect(this.#rename(body.get("name") ?? ""));
+    if (route === "POST /v1/mobile-connect") return runCauseEffect(this.#mobileConnect());
+    if (route === "POST /v1/logout") {
+      await runCauseEffect(this.#options.centralAuth.logout().pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause }))));
+      return this.#status();
     }
+    const mem = path.match(/^\/v1\/offices\/([^/]+)\/memory$/);
+    if (mem && m === "GET") return this.#officeMemory(decodeURIComponent(mem[1] ?? ""));
+    if (mem && m === "POST") return this.#officeMemoryCreate(decodeURIComponent(mem[1] ?? ""), body.get("text") ?? "");
+    const memId = path.match(/^\/v1\/offices\/([^/]+)\/memory\/([^/]+)$/);
+    if (memId && m === "DELETE") return this.#officeMemoryForget(decodeURIComponent(memId[1] ?? ""), decodeURIComponent(memId[2] ?? ""), body.get("expectedUpdatedAt") ?? undefined);
+    const memConfirm = path.match(/^\/v1\/offices\/([^/]+)\/memory\/([^/]+)\/confirm$/);
+    if (memConfirm && m === "POST") return this.#officeMemoryConfirm(decodeURIComponent(memConfirm[1] ?? ""), decodeURIComponent(memConfirm[2] ?? ""));
+    if (route === "GET /v1/office-tasks") return this.#officeTasks(new URLSearchParams(query));
+    if (route === "POST /v1/office-tasks") return this.#officeTaskCreate(body);
+    const taskAct = path.match(/^\/v1\/office-tasks\/([^/]+)\/(pause|resume|cancel|review|merge|approve)$/);
+    if (taskAct && m === "POST") return this.#officeTaskAction(decodeURIComponent(taskAct[1] ?? ""), taskAct[2] ?? "", body);
+    const taskRuns = path.match(/^\/v1\/office-tasks\/([^/]+)\/runs$/);
+    if (taskRuns && m === "GET") return this.#officeTaskRuns(decodeURIComponent(taskRuns[1] ?? ""));
+    const taskGet = path.match(/^\/v1\/office-tasks\/([^/]+)$/);
+    if (taskGet && m === "GET") return this.#officeTaskGet(decodeURIComponent(taskGet[1] ?? ""));
+    if (route === "POST /v1/butler/office") return this.#registerOffice(body.get("path") ?? "", body.get("name"));
+    return failure(404, "not_found");
+  }
+
+  #officeMemory(officeId: string): Answer {
+    const memories = this.#options.officeMemories;
+    if (!memories) return failure(501, "office_memory_unavailable", "Office memory is not available.");
+    const items = memories.listFor(officeId);
+    const lines: Answer["lines"] = { count: items.length };
+    items.forEach((item, index) => {
+      lines[`memory.${index}`] = [item.id, item.origin, item.updatedAt, item.text.replace(/[\r\n|]+/gu, " ")].join("|");
+    });
+    return { status: 200, lines };
+  }
+
+
+  #officeMemoryCreate(officeId: string, text: string): Answer {
+    const memories = this.#options.officeMemories;
+    if (!memories) return failure(501, "office_memory_unavailable");
+    try { const memory = memories.create(officeId, text); return { status: 200, lines: { id: memory.id, updated_at: memory.updatedAt } }; }
+    catch (e) { return failure(400, "office_memory_create_failed", e instanceof Error ? e.message : null); }
+  }
+  #officeMemoryForget(officeId: string, memoryId: string, expectedUpdatedAt?: string): Answer {
+    const memories = this.#options.officeMemories;
+    if (!memories) return failure(501, "office_memory_unavailable");
+    const ok = memories.forget(officeId, memoryId, expectedUpdatedAt);
+    return { status: ok ? 200 : 404, lines: { deleted: ok ? 1 : 0 } };
+  }
+  #officeMemoryConfirm(officeId: string, memoryId: string): Answer {
+    const memories = this.#options.officeMemories;
+    if (!memories) return failure(501, "office_memory_unavailable");
+    const ok = memories.confirm(officeId, memoryId);
+    return { status: ok ? 200 : 404, lines: { confirmed: ok ? 1 : 0 } };
+  }
+
+
+  #officeTasks(q: URLSearchParams): Answer {
+    const tasks = this.#options.officeTasks;
+    if (!tasks) return failure(501, "office_tasks_unavailable");
+    const items = tasks.list({ officeId: q.get("office") ?? undefined, status: (q.get("status") as any) ?? undefined });
+    const lines: Answer["lines"] = { count: items.length };
+    items.forEach((t: any, i: number) => { lines[`task.${i}`] = [t.id,t.officeId,t.status,t.gate??"",t.priority,t.attempts,String(t.title).replace(/[\r\n|]+/g," ")].join("|"); });
+    return { status: 200, lines };
+  }
+  #officeTaskCreate(body: URLSearchParams): Answer {
+    const tasks = this.#options.officeTasks;
+    if (!tasks) return failure(501, "office_tasks_unavailable");
+    const officeId = body.get("officeId") ?? body.get("office") ?? "";
+    const title = body.get("title") ?? ""; const brief = body.get("brief") ?? title;
+    if (!officeId || !title) return failure(400, "invalid_request");
+    const t = tasks.create({ officeId, title, brief, priority: Number(body.get("priority") ?? 0) });
+    return { status: 200, lines: { id: t.id, status: t.status } };
+  }
+  #officeTaskRuns(id: string): Answer {
+    const tasks = this.#options.officeTasks as any; if (!tasks?.listRuns) return failure(501,'office_task_runs_unavailable');
+    const runs = tasks.listRuns(id) ?? [];
+    const lines: Record<string,string|number|null> = { count: runs.length };
+    runs.forEach((r:any,i:number)=> lines[`run.${i}`]=[r.id,r.started_at,r.ended_at??'',String(r.outcome??'')].join('|'));
+    return { status:200, lines };
+  }
+  #officeTaskGet(id: string): Answer {
+    const tasks = this.#options.officeTasks; if (!tasks) return failure(501, "office_tasks_unavailable");
+    const t = tasks.get(id); if (!t) return failure(404, "not_found");
+    return { status: 200, lines: { id: t.id, office_id: t.officeId, status: t.status, gate: t.gate ?? "", attempts: t.attempts, title: t.title } };
+  }
+  #officeTaskAction(id: string, action: string, _body: URLSearchParams): Answer {
+    const tasks = this.#options.officeTasks; if (!tasks) return failure(501, "office_tasks_unavailable");
+    if (action === "pause") { tasks.pause(id); return { status: 200, lines: { ok: 1 } }; }
+    if (action === "resume") { tasks.resume(id); return { status: 200, lines: { ok: 1 } }; }
+    if (action === "cancel") { tasks.setStatus(id, "failed"); return { status: 200, lines: { ok: 1 } }; }
+    if (action === "review") {
+      const actorRole = (_body.get("actorRole") ?? _body.get("role") ?? "").trim();
+      if (actorRole !== "pr-reviewer") return failure(403, "review_requires_pr_reviewer", "Only the pr-reviewer seat can set review pass.");
+      tasks.setStatus(id, "done");
+      (this.#options.officeTasks as any).setReviewPass?.(id, _body.get("actor") ?? "pr-reviewer");
+      return { status: 200, lines: { ok: 1, review_pass: 1 } };
+    }
+    if (action === "approve") { tasks.resume(id); return { status: 200, lines: { ok: 1 } }; }
+    if (action === "merge") {
+      const actorRole = (_body.get("actorRole") ?? _body.get("role") ?? "").trim();
+      if (actorRole !== "pr-reviewer") return failure(403, "merge_requires_pr_reviewer", "Only the pr-reviewer seat can merge.");
+      const actor = (_body.get("actor") ?? "pr-reviewer").trim();
+      const t = tasks.get(id); if (!t) return failure(404, "not_found");
+      const actorAgentId = (_body.get("actorAgentId") ?? _body.get("agentId") ?? "").trim();
+      if (actorAgentId && !(tasks as any).isPrReviewer?.(actorAgentId, t.officeId)) return failure(403, "merge_requires_pr_reviewer_employment");
+      const res = tasks.merge?.(id, actorAgentId || actor);
+      if (!res) return failure(501, "merge_unavailable");
+      if (!res.ok) return failure(res.error === "not_found" ? 404 : 409, res.error ?? "merge_failed");
+      return { status: 200, lines: { ok: 1, merged: 1 } };
+    }
+    return failure(400, "unknown_action");
   }
 
   #status(): Answer {

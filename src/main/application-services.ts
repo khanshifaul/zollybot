@@ -14,6 +14,10 @@ import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messagi
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
 import { discoverOffices, officeFromPath } from "../backend/offices/office-catalog";
 import { listEmployments, listOffices, upsertOffice } from "../backend/offices/office-store";
+import { OfficeMemories } from "../backend/offices/office-memory-store";
+import { OfficeTaskStore } from "../backend/office-tasks/office-task-store";
+import { OfficeTaskDispatcher } from "../backend/office-tasks/office-task-dispatcher";
+import { importOfficeMemoryMarkdown } from "../backend/offices/office-memory-import";
 import { routineFlowRoutines } from "../backend/routine-flows/routine-flow-routines";
 import { RoutineFlowStore } from "../backend/routine-flows/routine-flow-store";
 import { createRoutineFlows, type RoutineFlowsHandle } from "../backend/routine-flows/routine-flows";
@@ -3700,6 +3704,9 @@ export async function createApplicationServices({
             };
           });
         },
+        officeMemories: new OfficeMemories(store.database),
+        officeTasks: (()=>{ const st=new OfficeTaskStore(store.database); (globalThis as any).__zollyOfficeTaskDispatcher?.stop?.(); const d=new OfficeTaskDispatcher({store:st, officeIds:()=>listOffices(store.database.connection).map(o=>o.id)}); d.start(); (globalThis as any).__zollyOfficeTaskDispatcher=d; return st; })(),
+        officeDb: () => store.database.connection,
         offices: () => {
           const database = store.database.connection;
           const counts = new Map<string, number>();
@@ -3739,6 +3746,8 @@ export async function createApplicationServices({
             name: officeName,
             baseBranch: "main",
           });
+          service.syncEmploymentAssignments();
+          Effect.runFork(importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)));
           return { ok: true as const, office: { ...found, name: officeName, agents: 0 } };
         },
         openOffice: (id) => {

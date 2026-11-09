@@ -27,7 +27,9 @@ import {
   MESSAGING_MEMORY_SCHEMA_SQL,
   MESSAGING_SCHEMA_SQL,
 } from "./messaging/messaging-schema";
+import { OFFICE_MEMORY_SCHEMA_SQL } from "./offices/office-memory-schema";
 import { OFFICE_SCHEMA_SQL } from "./offices/office-schema";
+import { OFFICE_TASK_SCHEMA_SQL } from "./offices/office-task-schema";
 import { ROUTINE_FLOW_SCHEMA_SQL } from "./routine-flows/routine-flow-schema";
 import { ROUTINE_RESULT_SCHEMA_SQL } from "./routine-results/routine-result-schema";
 import { addDiscordWorkflows } from "./workflows/workflow-discord-schema";
@@ -633,7 +635,9 @@ const LATEST_SCHEMA_SQL =
   DELETED_THREAD_MESSAGES_SCHEMA_SQL +
   BROWSER_PROXY_SCHEMA_SQL +
   AGENT_SKILL_LOADS_SCHEMA_SQL +
-  OFFICE_SCHEMA_SQL;
+  OFFICE_SCHEMA_SQL +
+  OFFICE_MEMORY_SCHEMA_SQL +
+  OFFICE_TASK_SCHEMA_SQL;
 
 /** The end of the thread message table with the migration 40 columns before its PRIMARY KEY constraint. */
 function withThreadMessageOrderColumns(tableEnd: string): string {
@@ -655,7 +659,10 @@ function withRoutinePolicies(tableEnd: string): string {
 function withAgentRoutineRunPlace(tableEnd: string): string {
   return tableEnd.replace(
     `${V33_ROUTINE_MISSED_POLICY_COLUMN_SQL}\n`,
-    `${V33_ROUTINE_MISSED_POLICY_COLUMN_SQL},\n    ${V57_AGENT_ROUTINE_RUN_IN_COLUMN_SQL}\n`,
+    `${V33_ROUTINE_MISSED_POLICY_COLUMN_SQL},\n    ${V57_AGENT_ROUTINE_RUN_IN_COLUMN_SQL},\n    office_id TEXT REFERENCES offices(id) ON DELETE SET NULL\n`,
+  ).replace(
+    '  CREATE INDEX IF NOT EXISTS agent_routines_agent',
+    '  CREATE INDEX IF NOT EXISTS agent_routines_office ON projection_agent_routines(office_id);\n  CREATE INDEX IF NOT EXISTS agent_routines_agent',
   );
 }
 
@@ -988,9 +995,32 @@ const MIGRATIONS: readonly ZollyBotMigration[] = [
     // employment exists before it, so both tables start empty; the backfill runs at store initialize.
     up: (db) => db.exec(OFFICE_SCHEMA_SQL),
   },
+  {
+    version: 60,
+    // Only creates four tables and their indexes, so no foreign-key pause and no vacuum. No office
+    // memory or office task exists before it, so every table starts empty; the `.md` import runs at
+    // office registration, not here.
+    up: (db) => {
+      db.exec(OFFICE_MEMORY_SCHEMA_SQL);
+      db.exec(OFFICE_TASK_SCHEMA_SQL);
+    },
+  },
+  {
+    version: 61,
+    up: (db) => {
+      for (const [table, col] of [["projection_agent_threads","office_id"],["projection_agent_routines","office_id"]]) {
+        const cols = (db.prepare(`PRAGMA table_info(${table})`).all() as any[]).map(r=>r.name);
+        if (!cols.includes(col)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${col} TEXT REFERENCES offices(id) ON DELETE SET NULL`);
+      }
+      db.exec("CREATE INDEX IF NOT EXISTS agent_threads_office ON projection_agent_threads(office_id)");
+      db.exec("CREATE INDEX IF NOT EXISTS agent_routines_office ON projection_agent_routines(office_id)");
+    },
+  },
 ];
 
-const LATEST_SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1]?.version ?? BASELINE_SCHEMA_VERSION;
+export const MIGRATION_VERSIONS: readonly number[] = MIGRATIONS.map((migration) => migration.version);
+
+export const LATEST_SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1]?.version ?? BASELINE_SCHEMA_VERSION;
 
 export function migrateZollyBotDatabase(db: DatabaseSync, options: ZollyBotMigrationOptions = {}): void {
   validateMigrationRegistry();

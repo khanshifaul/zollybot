@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: a migration commits a database with a broken foreign key that it made; a broken foreign key from
 // before the upgrade stops a migration that does not touch it, or the upgrade deletes or changes its row; a failed
@@ -78,7 +79,7 @@ describe("migration guards", () => {
 
       migrateZollyBotDatabase(db);
 
-      expect(versions(db)).toEqual(range(8, 58));
+      expect(versions(db)).toEqual(range(8, LATEST_SCHEMA_VERSION));
       // Migration 40 adds order columns to the message; every column the row had keeps its value.
       expect(contents(db)).toMatchObject(before);
       // A rebuild moves its table in the schema, which changes only the order of the rows.
@@ -113,16 +114,16 @@ describe("migration guards", () => {
     expect(versions(db)).toEqual(range(8, 27));
     expect(db.prepare("SELECT type, name, sql FROM sqlite_master ORDER BY type, name").all()).toEqual(schemaBefore);
     expect(db.prepare("SELECT * FROM projection_threads").all()).toEqual(threadsBefore);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
 
     // The next start meets the same rows and stops again. It deletes nothing to get past them.
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 28 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
 
     db.exec("DROP TRIGGER break_reference");
     migrateZollyBotDatabase(db);
-    expect(versions(db)).toEqual(range(8, 58));
+    expect(versions(db)).toEqual(range(8, LATEST_SCHEMA_VERSION));
     expect(contents(db)).toMatchObject(before);
   });
 
@@ -134,7 +135,7 @@ describe("migration guards", () => {
     expect(() => migrateZollyBotDatabase(db)).toThrow(
       `ZollyBot database migration history is missing version ${missing}.`,
     );
-    expect(versions(db)).toEqual(range(8, 58).filter((version) => version !== missing));
+    expect(versions(db)).toEqual(range(8, LATEST_SCHEMA_VERSION).filter((version) => version !== missing));
     expect(db.prepare("SELECT type, name, sql FROM sqlite_master ORDER BY type, name").all()).toEqual(schemaBefore);
   });
 });

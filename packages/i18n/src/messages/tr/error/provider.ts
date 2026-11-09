@@ -286,6 +286,10 @@ export const messages = {
   "error.provider.hermesVersionUnreadable": "Hermes Agent sürümü okunamıyor.",
   "error.provider.hermesSignIn":
     "Hermes'i kullanmak için Nous Portal ile oturum açın veya bir terminalde `hermes setup` komutunu çalıştırın.",
+  "error.provider.ompMissing": "Oh My Pi yüklü değil. Yükleyin ve tekrar deneyin.",
+  "error.provider.ompNotStarted": "Oh My Pi başlatılamadı. Bir terminalde `omp --version` çalıştırın.",
+  "error.provider.ompVersionUnreadable": "Oh My Pi sürümü okunamadı.",
+  "error.provider.ompSignIn": "Ana bilgisayarda `omp` ile oturum açın ve tekrar deneyin.",
   "error.provider.usageLimitReached": "Hesap kullanım sınırına ulaştı.",
   "error.provider.foreignReasoning":
     "Farklı bir hesap veya API anahtarı aldığı için {provider} bu sohbetteki önceki akıl yürütmeyi kabul etmedi. ZollyBot sohbet geçmişiyle yeni bir {provider} oturumu başlattı. Tekrar deneyin.",

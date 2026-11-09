@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: a database that v0.1.12 to v0.2.1 made loses a row on its first upgrade to the migration
 // registry; the upgrade leaves a schema that a new install does not have; a foreign key or a page is broken.
@@ -231,7 +231,9 @@ function schemaShape(db: DatabaseSync) {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });

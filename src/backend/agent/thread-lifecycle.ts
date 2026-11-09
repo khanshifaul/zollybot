@@ -46,6 +46,7 @@ import {
 } from "../mcp-provider-shapes";
 import { decodeRecordResponse, decodeThreadResponse, getString, type ResponseDecoder } from "../protocol";
 import { TimeoutError, withTimeout } from "../with-timeout";
+import type { OfficeMemories } from "../offices/office-memory-store";
 import type { AgentMemories } from "./agent-memories";
 import { readCodexMcpConfig } from "./codex-mcp-config";
 import type { ContextCompaction } from "./context-compaction";
@@ -177,6 +178,7 @@ export interface ThreadLifecycleOptions {
   mailbox: MailboxStore;
   conversation: ConversationRuntime;
   memories: AgentMemories;
+  officeMemories?: OfficeMemories;
   compaction: ContextCompaction;
   hooks: ThreadLifecycleHooks;
   /**
@@ -224,6 +226,7 @@ export class ThreadLifecycle {
   readonly #store: AgentStore;
   readonly #mailbox: MailboxStore;
   readonly #conversation: ConversationRuntime;
+  readonly #officeMemories: OfficeMemories | undefined;
   readonly #memories: AgentMemories;
   readonly #compaction: ContextCompaction;
   readonly #hooks: ThreadLifecycleHooks;
@@ -1194,7 +1197,14 @@ export class ThreadLifecycle {
     mcpServers: readonly McpServerConfig[],
     instructionsFile: InstructionsFileInPrompt,
   ): DynamicRecord {
-    const memories = this.#memories.essentialFor(agent.id);
+    const employment = this.#store.database.connection
+      .prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?")
+      .get(agent.id) as { office_id: string | null } | undefined;
+    const officeId = employment?.office_id ?? null;
+    const memories: any =
+      officeId && this.#officeMemories
+        ? this.#officeMemories.essentialFor(officeId)
+        : this.#memories.essentialFor(agent.id);
     const options = {
       computerUseInOwnChat,
       sideThread,
@@ -1216,7 +1226,7 @@ export class ThreadLifecycle {
     const instructions = developerInstructions(
       agent,
       this.#store.sharedRoot,
-      memories,
+      memories as never,
       this.#store.automationRoot,
       this.#store.agentDefaults(),
       options,
@@ -1224,7 +1234,7 @@ export class ThreadLifecycle {
     return options.memoriesInTurns
       ? {
           developerInstructions: instructions,
-          memoryContext: memoryContext(memories, options),
+          memoryContext: memoryContext(memories as never, options),
           sectionTeammates: section,
         }
       : { developerInstructions: instructions };

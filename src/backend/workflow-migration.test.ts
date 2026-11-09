@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { expectSameTables, pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves a table or
 // its marker; a newer or incomplete history is accepted; an edge, trigger, step or delivery can point
@@ -96,7 +97,9 @@ function workflowTables(db: DatabaseSync) {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -152,7 +155,10 @@ describe("workflow migration", () => {
       if (version < 25) seedConnection(db);
       const before = contents(db);
       migrateZollyBotDatabase(db);
-      expect(contents(db)).toEqual({ ...before, ...EMPTY_WORKFLOW_TABLES });
+      expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_WORKFLOW_TABLES }))).toEqual({
+        ...before,
+        ...EMPTY_WORKFLOW_TABLES,
+      });
       expectHealthy(db);
     },
   );
@@ -164,13 +170,16 @@ describe("workflow migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=46
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 46 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(workflowTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=46").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...before, ...EMPTY_WORKFLOW_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_WORKFLOW_TABLES }))).toEqual({
+      ...before,
+      ...EMPTY_WORKFLOW_TABLES,
+    });
     expectHealthy(db);
   });
 
@@ -178,11 +187,13 @@ describe("workflow migration", () => {
     const db = databaseAt(45);
     seed(db, 45);
     const before = contents(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(workflowTables(db)).toEqual([]);
   });
 
@@ -309,7 +320,9 @@ describe("workflow GitHub migration", () => {
 
     migrateZollyBotDatabase(db);
 
-    expect(contents(db)).toEqual({ ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES }))).toEqual(
+      { ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES },
+    );
     expectHealthy(db);
     expect(runSourceCheck(db)).toContain("'github'");
     expect(db.prepare("SELECT name FROM sqlite_master WHERE name LIKE '%_v49'").all()).toEqual([]);
@@ -337,13 +350,15 @@ describe("workflow GitHub migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=49
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 49 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT type, name, sql FROM sqlite_master ORDER BY type, name").all()).toEqual(schemaBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=49").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES }))).toEqual(
+      { ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES },
+    );
     expectHealthy(db);
   });
 
@@ -353,11 +368,13 @@ describe("workflow GitHub migration", () => {
     seedWorkflow(db);
     const before = contents(db);
     const check = runSourceCheck(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=46");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=46`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 46");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(runSourceCheck(db)).toBe(check);
   });
 
@@ -438,7 +455,8 @@ describe("workflow Discord migration", () => {
 
     migrateZollyBotDatabase(db);
 
-    expect(contents(db)).toEqual(
+    expectSameTables(
+      contents(db),
       version >= 49
         ? { ...before, ...EMPTY_LATER_TABLES }
         : { ...before, ...EMPTY_GITHUB_TABLES, ...EMPTY_LATER_TABLES },
@@ -478,13 +496,16 @@ describe("workflow Discord migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=50
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 50 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT type, name, sql FROM sqlite_master ORDER BY type, name").all()).toEqual(schemaBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=50").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...before, ...EMPTY_LATER_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_LATER_TABLES }))).toEqual({
+      ...before,
+      ...EMPTY_LATER_TABLES,
+    });
     expectHealthy(db);
   });
 
@@ -494,11 +515,13 @@ describe("workflow Discord migration", () => {
     seedWorkflow(db);
     const before = contents(db);
     const check = runSourceCheck(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=47");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=47`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 47");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(runSourceCheck(db)).toBe(check);
   });
 });
@@ -525,7 +548,7 @@ describe("workflow Telegram migration", () => {
 
     migrateZollyBotDatabase(db);
 
-    expect(contents(db)).toEqual({
+    expectSameTables(contents(db), {
       ...before,
       ...(version >= 49 ? {} : EMPTY_GITHUB_TABLES),
       ...(version >= 51 ? EMPTY_V54_TABLES : EMPTY_LATER_TABLES),
@@ -567,13 +590,16 @@ describe("workflow Telegram migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=52
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 52 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT type, name, sql FROM sqlite_master ORDER BY type, name").all()).toEqual(schemaBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=52").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...before, ...EMPTY_V54_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_V54_TABLES }))).toEqual({
+      ...before,
+      ...EMPTY_V54_TABLES,
+    });
     expectHealthy(db);
   });
 
@@ -583,11 +609,13 @@ describe("workflow Telegram migration", () => {
     seedWorkflow(db);
     const before = contents(db);
     const check = runSourceCheck(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=48");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=48`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 48");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(runSourceCheck(db)).toBe(check);
   });
 });
@@ -621,7 +649,7 @@ describe("workflow Slack migration", () => {
 
     migrateZollyBotDatabase(db);
 
-    expect(contents(db)).toEqual({
+    expectSameTables(contents(db), {
       ...before,
       ...(version >= 49 ? {} : EMPTY_GITHUB_TABLES),
       ...(version >= 51 ? EMPTY_V54_TABLES : EMPTY_LATER_TABLES),
@@ -668,13 +696,16 @@ describe("workflow Slack migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=53
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 53 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT type, name, sql FROM sqlite_master ORDER BY type, name").all()).toEqual(schemaBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=53").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...before, ...EMPTY_V54_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...EMPTY_V54_TABLES }))).toEqual({
+      ...before,
+      ...EMPTY_V54_TABLES,
+    });
     expectHealthy(db);
   });
 
@@ -684,11 +715,13 @@ describe("workflow Slack migration", () => {
     seedWorkflow(db);
     const before = contents(db);
     const check = runSourceCheck(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=48");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=48`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 48");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(runSourceCheck(db)).toBe(check);
   });
 });

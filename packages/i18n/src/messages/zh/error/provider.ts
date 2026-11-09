@@ -252,6 +252,10 @@ export const messages = {
   "error.provider.hermesNotStarted": "无法启动 Hermes Agent。请在终端中运行 `hermes --version`。",
   "error.provider.hermesVersionUnreadable": "无法读取 Hermes Agent 的版本。",
   "error.provider.hermesSignIn": "要使用 Hermes，请使用 Nous Portal 登录，或在终端中运行 `hermes setup`。",
+  "error.provider.ompMissing": "Oh My Pi 未安装。请安装后重试。",
+  "error.provider.ompNotStarted": "Oh My Pi 无法启动。请在终端中运行 `omp --version`。",
+  "error.provider.ompVersionUnreadable": "无法读取 Oh My Pi 版本。",
+  "error.provider.ompSignIn": "请在主机上使用 `omp` 登录，然后重试。",
   "error.provider.usageLimitReached": "该账号已达到用量上限。",
   "error.provider.foreignReasoning":
     "此前的推理内容由另一个账号或 API 密钥接收，因此 {provider} 未接受它。ZollyBot 已带着聊天记录开启新的 {provider} 会话，请重试。",

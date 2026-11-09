@@ -59,10 +59,7 @@ class AutomationServerFailed extends Schema.TaggedError<AutomationServerFailed>(
 const { io: automationIO, rewrap: toAutomationServerFailed } = causeHelpers(AutomationServerFailed);
 
 /** The fields of an updated agent that a script reads back. */
-export type UpdatedAgent = Pick<
-  AgentSummary,
-  "id" | "name" | "provider" | "model" | "reasoningEffort" | "providerAccountId"
->;
+type UpdatedAgent = Pick<AgentSummary, "id" | "name" | "provider" | "model" | "reasoningEffort" | "providerAccountId">;
 
 export interface AutomationServerOptions {
   /** The folder that holds the URL and token files. Only the user can read it. */

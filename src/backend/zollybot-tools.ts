@@ -17,6 +17,7 @@ import { DATA_TOOL_DEFINITIONS } from "./agent/data-tools";
 import { HISTORY_TOOL_DEFINITIONS } from "./agent/history-tools";
 import { MCP_SERVER_TOOL_DEFINITIONS } from "./agent/mcp-tools";
 import { MEMORY_RECALL_TOOL_DEFINITIONS } from "./agent/memory-tool-inputs";
+import { OFFICE_MEMORY_TOOL_DEFINITIONS } from "./agent/office-memory-tools";
 import {
   createAgentToolSchema,
   listModelsToolSchema,
@@ -612,6 +613,7 @@ export const ZOLLYBOT_TOOL_DEFINITIONS: readonly ZollyBotToolDefinition[] = [
     shape: startTaskToolSchema.shape,
   },
   ...MEMORY_RECALL_TOOL_DEFINITIONS,
+  ...OFFICE_MEMORY_TOOL_DEFINITIONS,
   {
     name: "remember",
     description:

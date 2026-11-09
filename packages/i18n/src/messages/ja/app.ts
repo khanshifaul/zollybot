@@ -96,6 +96,8 @@ export const messages = {
   "app.rail.customAgentUsage": "{name} の使用量。使用量を開く",
   "app.settingsPage.title": "設定",
   "app.settingsPage.search": "設定を検索",
+  "app.offices.lobby": "ロビー",
+  "app.offices.stripLabel": "オフィス",
   "app.settingsPage.searchPlaceholder": "設定を検索…",
   "app.settingsPage.results": "設定の検索結果",
   "app.settingsPage.noResults": "一致する設定はありません。",

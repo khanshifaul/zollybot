@@ -45,6 +45,7 @@ export const messages = {
   "onboarding.provider.copilotAccount": "Copilot 요금제로 쓰는 다양한 모델",
   "onboarding.provider.hermesNous": "Nous Portal 요금제 또는 내 Hermes 설정",
   "onboarding.provider.inceptionKey": "Inception API 키로 쓰는 Mercury 모델",
+  "onboarding.provider.ompAccount": "Oh My Pi 계정의 모델",
   "onboarding.provider.deepseekKey": "DeepSeek API 키로 쓰는 DeepSeek 모델",
   "onboarding.provider.openrouterKey": "OpenRouter API 키로 쓰는 다양한 모델",
   "onboarding.provider.tryFree": "무료로 사용해 보기",

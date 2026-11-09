@@ -51,6 +51,7 @@ export interface AgentThreadRecord {
   branch: AgentThreadBranch | null;
   /** The routine whose runs this thread takes. Null for every other thread. */
   routineId: string | null;
+  officeId: string | null;
 }
 
 /** The `branch_*` columns: all three are set, or the thread is not a branch. */
@@ -82,6 +83,7 @@ export interface AgentThreadInput {
   titleSource: Exclude<AgentThreadTitleSource, "user">;
   /** Set only for the one thread of a routine. */
   routineId?: string;
+  officeId?: string | null;
 }
 
 const SELECT_THREAD = "SELECT *, COALESCE(legacy_task_id, thread_id) AS task_id FROM projection_agent_threads";
@@ -133,6 +135,13 @@ export class AgentThreadStore {
            ORDER BY archived_at IS NOT NULL, updated_at DESC, thread_id LIMIT ?`,
         )
         .all(agentId, INPUT_LIMITS.agentTasks),
+    ).map(decodeThread);
+  }
+  listByOffice(officeId: string): AgentThreadRecord[] {
+    return databaseRows(
+      this.#database.connection
+        .prepare(`${SELECT_THREAD} WHERE office_id = ? ORDER BY archived_at IS NOT NULL, updated_at DESC, thread_id LIMIT ?`)
+        .all(officeId, INPUT_LIMITS.agentTasks),
     ).map(decodeThread);
   }
 
@@ -376,11 +385,12 @@ export class AgentThreadStore {
           now,
           sequence,
         );
+        const officeId = input.officeId ?? (db.prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?").get(input.agentId) as any)?.office_id ?? null;
         db.prepare(
           `INSERT INTO projection_agent_threads
              (thread_id, agent_id, legacy_task_id, origin, title, title_source, outcome, error, created_at,
-              updated_at, archived_at, last_event_sequence, routine_id)
-           VALUES (?, ?, NULL, ?, ?, ?, NULL, NULL, ?, ?, NULL, ?, ?)`,
+              updated_at, archived_at, last_event_sequence, routine_id, office_id)
+           VALUES (?, ?, NULL, ?, ?, ?, NULL, NULL, ?, ?, NULL, ?, ?, ?)`,
         ).run(
           threadId,
           input.agentId,
@@ -391,6 +401,7 @@ export class AgentThreadStore {
           now,
           sequence,
           input.routineId ?? null,
+          officeId,
         );
         return null;
       },
@@ -600,5 +611,6 @@ function decodeThread(row: DynamicRecord): AgentThreadRecord {
         ? { sourceThreadId, sourceMessageId, throughMessageId }
         : null,
     routineId: optionalStringColumn(row, "routine_id"),
+    officeId: optionalStringColumn(row, "office_id"),
   };
 }

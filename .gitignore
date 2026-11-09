@@ -80,3 +80,8 @@ apps/web/out/
 *.p12
 *.key
 *.mobileprovision
+
+# Rust build output
+crates/*/target/
+# Local codegraph index
+.codegraph/

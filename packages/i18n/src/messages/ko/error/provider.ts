@@ -279,6 +279,10 @@ export const messages = {
   "error.provider.hermesVersionUnreadable": "Hermes Agent 버전을 읽을 수 없습니다.",
   "error.provider.hermesSignIn":
     "Hermes를 사용하려면 Nous Portal로 로그인하거나 터미널에서 `hermes setup`을 실행하세요.",
+  "error.provider.ompMissing": "Oh My Pi가 설치되어 있지 않습니다. 설치한 후 다시 시도하세요.",
+  "error.provider.ompNotStarted": "Oh My Pi를 시작하지 못했습니다. 터미널에서 `omp --version`을 실행하세요.",
+  "error.provider.ompVersionUnreadable": "Oh My Pi 버전을 읽을 수 없습니다.",
+  "error.provider.ompSignIn": "호스트 컴퓨터에서 `omp`로 로그인한 후 다시 시도하세요.",
   "error.provider.usageLimitReached": "계정이 사용 한도에 도달했어요.",
   "error.provider.foreignReasoning":
     "다른 계정이나 API 키가 받은 추론이라서 {provider}이(가) 이 채팅의 이전 추론을 수락하지 않았어요. ZollyBot이 채팅 기록으로 새 {provider} 세션을 시작했어요. 다시 시도해 주세요.",

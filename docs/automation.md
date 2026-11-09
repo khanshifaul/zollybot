@@ -14,46 +14,6 @@ long-job; curl -sS -X POST "$(cat "$ZOLLYBOT_AUTOMATION/url")/v1/agents/<agentId
 
 `$ZOLLYBOT_AUTOMATION` is not set by ZollyBot. It stands for the folder below.
 
-## Command line
-
-`zollybot-cli` uses this API, so you do not write the requests yourself. It needs Node 18 or later.
-ZollyBot puts it in its resources folder:
-
-- macOS: `/Applications/ZollyBot.app/Contents/Resources/cli/zollybot-cli.mjs`
-- Linux: `resources/cli/zollybot-cli.mjs` in the install folder (for an AppImage, copy it out of the image)
-- Windows: `resources\cli\zollybot-cli.mjs` in the install folder. The default folder is
-  `%LOCALAPPDATA%\Programs\ZollyBot`.
-
-```sh
-alias zollybot-cli='node "/Applications/ZollyBot.app/Contents/Resources/cli/zollybot-cli.mjs"'
-zollybot-cli list                                    # the agents with Local scripts on
-zollybot-cli run "Ada" "Run the tests and tell me what failed" --wait
-zollybot-cli run "Ada" - --wait --json < task.md     # the task from standard input, one JSON answer
-zollybot-cli status "Ada" <deliveryId>               # a delivery that an earlier run left
-zollybot-cli agent set-account "Ada" <accountId>     # or "default" for the provider's own sign-in
-zollybot-cli agent set-model "Ada" claude-opus-5-5 --effort high
-zollybot-cli agent new-chat "Ada"                    # the agent forgets the chat; its setup stays
-```
-
-`<agent>` is an agent ID or a name; case is ignored. Without `--wait`, `run` returns when the
-message is in the queue. With `--wait`, it prints the turn's answer when the turn ends. `--timeout`
-(`90s`, `5m`, `2h`; default `30m`) stops only the wait, not the work. `--id <key>` is the retry key
-of the message (see `POST /v1/agents/:agentId/messages`); without it each run sends a new message.
-With `--json`, the output is one JSON object, also for a failure (`{ "ok": false, "exitCode", "error" }`).
-
-| Exit code | Meaning |
-| --- | --- |
-| 0 | Done. For `run --wait`, the turn completed. |
-| 1 | The turn failed, was stopped or was cancelled, ZollyBot refused the request, or the delivery is unknown. |
-| 2 | The command line is wrong, or two agents have the name. |
-| 3 | The agent waits for a person: a question, an approval or a browser takeover, also of an earlier turn that this task waits behind. Answer it in ZollyBot or through the routes below, then use `status`. |
-| 4 | The wait timed out. The agent continues. |
-| 5 | ZollyBot is not running, no agent has Local scripts on, or the agent was not found. |
-
-The command reads the files below each time and sends the token only in a request header. When
-ZollyBot restarts during a wait, the command reads the new files and continues the wait.
-Set `ZOLLYBOT_AUTOMATION_DIR` to use another folder, for example the one of a development profile.
-
 ## Turn it on
 
 The setting is per agent and is off by default. Open the agent's settings, select **Permissions**,

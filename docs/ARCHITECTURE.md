@@ -3,6 +3,9 @@
 ZollyBot is a Bun workspace with desktop, browser, and mobile applications, two Cloudflare Workers,
 a self-hosted Signal service, and shared packages.
 
+New to the project? Start with [Onboarding](onboarding/README.md). It gives the setup steps, the
+mental model, the repository map, and common workflows. The notes below are the detailed reference.
+
 The architecture notes are in one file for each topic:
 
 - [Repository structure](architecture/structure.md)

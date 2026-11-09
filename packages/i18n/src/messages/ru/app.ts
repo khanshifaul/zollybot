@@ -95,6 +95,8 @@ export const messages = {
   "app.rail.customAgentUsage": "Использование {name}. Открыть использование",
   "app.settingsPage.title": "Настройки",
   "app.settingsPage.search": "Поиск в настройках",
+  "app.offices.lobby": "Вестибюль",
+  "app.offices.stripLabel": "Офисы",
   "app.settingsPage.searchPlaceholder": "Поиск в настройках…",
   "app.settingsPage.results": "Результаты поиска в настройках",
   "app.settingsPage.noResults": "Подходящих настроек нет.",

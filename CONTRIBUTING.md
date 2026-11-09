@@ -61,6 +61,9 @@ bun run check
 bun run dev
 ```
 
+New team members start with [Onboarding](docs/onboarding/README.md). It covers the development
+stack, the architecture, the repository map, and common changes.
+
 Coding agents skip `bun run check`: see [AGENTS.md, Checks](AGENTS.md#checks).
 
 The supported toolchain is pinned in `package.json`. Use stable Bun 1.4.2, TypeScript 7, Vite 7, and the

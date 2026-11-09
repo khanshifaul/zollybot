@@ -38,6 +38,7 @@ export const AGENT_PROVIDERS = [
   "kimi",
   "devin",
   "copilot",
+  "omp",
 ] as const;
 export type AgentProviderId = (typeof AGENT_PROVIDERS)[number];
 
@@ -452,6 +453,33 @@ const AGENT_PROVIDER_DESCRIPTOR_TABLE = {
     approvalsInFullAccess: true,
     foldersInFullAccess: false,
   },
+  // Oh My Pi (`omp acp`). ZollyBot does not download or pin the CLI: the user installs it, and
+  // `omp auth` keeps its credentials in `~/.omp`. `omp acp` from omp 18.8.4 ran as a custom agent
+  // in #1690, and 18.12 prints its version as `omp/18.12.6`. The skill folders and instruction
+  // files come from the paths the binary names.
+  omp: {
+    id: "omp",
+    displayName: "Oh My Pi",
+    cliName: "omp",
+    onboardingDescription: "Models with an Oh My Pi account",
+    signInMessage: "Sign in with omp on the host computer, then try again.",
+    installGuideLink: null,
+    defaultModel: "",
+    legacyModelPrefix: null,
+    authKind: "acp",
+    pickerOrder: 16,
+    localCodeSignIn: null,
+    signInPageEnd: "callback",
+    skillFolders: [".agents/skills", ".claude/skills", ".codex/skills"],
+    homeSkills: "native",
+    workspaceInstructionFiles: ["AGENTS.md", "CLAUDE.md"],
+    workspaceEnforcement: "confined-process",
+    steer: "deferred",
+    concurrentTurns: true,
+    reportsUsage: false,
+    approvalsInFullAccess: true,
+    foldersInFullAccess: false,
+  },
   pi: {
     id: "pi",
     displayName: "Pi",
@@ -711,6 +739,7 @@ export const LOCAL_ONLY_PROVIDERS = [
   "openrouter",
   "hermes",
   "acp",
+  "omp",
 ] as const satisfies readonly AgentProviderId[];
 
 export function isLocalOnlyProvider(provider: AgentProviderId): boolean {

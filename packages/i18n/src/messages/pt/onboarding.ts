@@ -48,6 +48,7 @@ export const messages = {
   "onboarding.provider.copilotAccount": "Muitos modelos com um plano do Copilot",
   "onboarding.provider.hermesNous": "Plano Nous Portal ou sua configuração do Hermes",
   "onboarding.provider.inceptionKey": "Modelos Mercury com uma chave de API da Inception",
+  "onboarding.provider.ompAccount": "Modelos com uma conta Oh My Pi",
   "onboarding.provider.deepseekKey": "Modelos da DeepSeek com uma chave de API da DeepSeek",
   "onboarding.provider.openrouterKey": "Muitos modelos com uma chave de API do OpenRouter",
   "onboarding.provider.tryFree": "Experimente grátis",

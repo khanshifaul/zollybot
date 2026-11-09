@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves a table or its
 // marker; a newer or incomplete history is accepted; a task can point to no thread, or two tasks to one
@@ -96,7 +97,10 @@ describe("agent task migration", () => {
       if (version < 37) migrateUpTo(db, 37);
       const before = contents(db);
       migrateUpTo(db, 46);
-      expect(contents(db)).toEqual({ ...before, ...TASK_TABLES });
+      expect(pickTables(contents(db), Object.keys({ ...before, ...TASK_TABLES }))).toEqual({
+        ...before,
+        ...TASK_TABLES,
+      });
       expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 46 });
       expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
       expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
@@ -110,23 +114,25 @@ describe("agent task migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=38
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 38 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(taskTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=38").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateUpTo(db, 46);
-    expect(contents(db)).toEqual({ ...before, ...TASK_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...TASK_TABLES }))).toEqual({ ...before, ...TASK_TABLES });
   });
 
   it("rejects newer and incomplete migration histories before it creates the tables", () => {
     const db = databaseAtWithSeed(37);
     const before = contents(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(taskTables(db)).toEqual([]);
   });
 

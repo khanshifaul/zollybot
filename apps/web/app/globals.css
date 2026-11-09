@@ -1,23 +1,158 @@
+/**
+ * @srcroot/ui - Blue Theme (Tailwind 3)
+ * Trustworthy corporate blue
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 221.2 83.2% 53.3%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 221.2 83.2% 53.3%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 221.2 83.2% 53.3%;
+
+        --primary: 221.2 83.2% 53.3%;
+        --primary-foreground: 210 40% 98%;
+
+        --secondary: 221.2 30% 96.1%;
+        --secondary-foreground: 221.2 83.2% 53.3%;
+
+        --muted: 221.2 30% 96.1%;
+        --muted-foreground: 221.2 10% 45%;
+
+        --accent: 221.2 30% 96.1%;
+        --accent-foreground: 221.2 83.2% 53.3%;
+
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+
+        --success: 142.1 76.2% 36.3%;
+        --success-foreground: 0 0% 98%;
+
+        --warning: 45.4 93.4% 47.5%;
+        --warning-foreground: 221.2 83.2% 53.3%;
+
+        --info: 201.3 96.3% 32.2%;
+        --info-foreground: 0 0% 98%;
+
+        --border: 221.2 20% 90%;
+        --input: 221.2 20% 90%;
+        --ring: 221.2 83.2% 53.3%;
+
+        --radius: 0.5rem;
+
+        --sidebar-width: 16rem;
+        --sidebar-width-mobile: 18rem;
+        --sidebar-width-collapsed: 3rem;
+        --sidebar-width-icon: 3rem;
+        --header-height: 3.5rem;
+
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 221.2 83.2% 53.3%;
+        --sidebar-primary: 221.2 83.2% 53.3%;
+        --sidebar-primary-foreground: 210 40% 98%;
+        --sidebar-accent: 221.2 30% 96.1%;
+        --sidebar-accent-foreground: 221.2 83.2% 53.3%;
+        --sidebar-border: 221.2 20% 90%;
+        --sidebar-ring: 221.2 83.2% 53.3%;
+    }
+
+    .dark {
+        --background: 221.2 40% 6%;
+        --foreground: 210 40% 98%;
+
+        --card: 221.2 40% 8%;
+        --card-foreground: 210 40% 98%;
+
+        --popover: 221.2 40% 8%;
+        --popover-foreground: 210 40% 98%;
+
+        --primary: 221.2 83.2% 53.3%;
+        --primary-foreground: 210 40% 98%;
+
+        --secondary: 221.2 30% 15%;
+        --secondary-foreground: 210 40% 98%;
+
+        --muted: 221.2 30% 15%;
+        --muted-foreground: 221.2 20% 65%;
+
+        --accent: 221.2 30% 15%;
+        --accent-foreground: 210 40% 98%;
+
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+
+        --success: 142.1 70.6% 45.3%;
+        --success-foreground: 221.2 83.2% 53.3%;
+
+        --warning: 48 96.5% 53.1%;
+        --warning-foreground: 221.2 83.2% 53.3%;
+
+        --info: 199.4 95.5% 53.8%;
+        --info-foreground: 221.2 83.2% 53.3%;
+
+        --border: 221.2 30% 18%;
+        --input: 221.2 30% 18%;
+        --ring: 221.2 83.2% 53.3%;
+
+        --sidebar-background: 221.2 40% 10%;
+        --sidebar-foreground: 210 40% 98%;
+        --sidebar-primary: 221.2 83.2% 53.3%;
+        --sidebar-primary-foreground: 210 40% 98%;
+        --sidebar-accent: 221.2 30% 15%;
+        --sidebar-accent-foreground: 210 40% 98%;
+        --sidebar-border: 221.2 30% 18%;
+        --sidebar-ring: 221.2 83.2% 53.3%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer utilities {
+    @keyframes accordion-down {
+        from {
+            height: 0;
+        }
+
+        to {
+            height: var(--radix-accordion-content-height);
+        }
+    }
+
+    @keyframes accordion-up {
+        from {
+            height: var(--radix-accordion-content-height);
+        }
+
+        to {
+            height: 0;
+        }
+    }
+
+    .animate-accordion-down {
+        animation: accordion-down 0.2s ease-out;
+    }
+
+    .animate-accordion-up {
+        animation: accordion-up 0.2s ease-out;
+    }
+
+    .bg-gradient-brand {
+        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    }
 }

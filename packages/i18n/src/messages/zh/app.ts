@@ -97,6 +97,8 @@ export const messages = {
   "app.rail.customAgentUsage": "{name} 用量。打开用量",
   "app.settingsPage.title": "设置",
   "app.settingsPage.search": "搜索设置",
+  "app.offices.lobby": "大厅",
+  "app.offices.stripLabel": "办公室",
   "app.settingsPage.searchPlaceholder": "搜索设置…",
   "app.settingsPage.results": "设置搜索结果",
   "app.settingsPage.noResults": "没有匹配的设置。",

@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync, type SQLOutputValue } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { expectSameTables, pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; an old agent routine runs in a thread; a
 // channel routine gets the column; a failed upgrade leaves the column or the marker; a retry adds the column
@@ -89,7 +90,9 @@ function columns(db: DatabaseSync, table: string): string[] {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -104,7 +107,7 @@ describe("agent routine run place migration", () => {
       if (source < 56) migrateUpTo(db, 56);
       const before = contents(db);
       migrateZollyBotDatabase(db);
-      expect(contents(db)).toEqual({ ...withChatRunPlace(before), ...LATER_TABLES });
+      expectSameTables(contents(db), { ...withChatRunPlace(before), ...LATER_TABLES });
       expect(columns(db, "projection_agent_routines")).toContain("run_in");
       expect(columns(db, "projection_channel_routines")).not.toContain("run_in");
       expectHealthy(db);
@@ -119,13 +122,13 @@ describe("agent routine run place migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=57
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 57 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(columns(db, "projection_agent_routines")).toEqual(columnsBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=57").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...withChatRunPlace(before), ...LATER_TABLES });
+    expectSameTables(contents(db), { ...withChatRunPlace(before), ...LATER_TABLES });
     expectHealthy(db);
   });
 
@@ -148,11 +151,13 @@ describe("agent routine run place migration", () => {
     seed(db);
     const before = contents(db);
     const columnsBefore = columns(db, "projection_agent_routines");
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=54");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=54`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 54");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(columns(db, "projection_agent_routines")).toEqual(columnsBefore);
   });
 
@@ -162,9 +167,9 @@ describe("agent routine run place migration", () => {
     migrateZollyBotDatabase(db);
     const after = contents(db);
     // An application one release older knows versions up to 58 at most: version 59 is newer than it supports.
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    expect(contents(db)).toEqual(after);
+    expectSameTables(contents(db), after);
   });
 
   it("rejects a place that the app cannot read, in an upgraded and in a new database", () => {

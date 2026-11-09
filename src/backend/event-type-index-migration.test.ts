@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: an upgrade loses or changes an event or a receipt; a partial migration survives a failure;
 // a retry fails on the index that the failed run left; a newer or incomplete history is changed.
@@ -55,7 +56,9 @@ function typeIndexColumns(db: DatabaseSync) {
 const TYPE_INDEX_COLUMNS = ["aggregate_id", "event_type", "sequence"];
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -68,7 +71,7 @@ describe("event type index migration", () => {
     seedEvents(db);
     const before = contents(db);
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(typeIndexColumns(db)).toEqual(TYPE_INDEX_COLUMNS);
     expectHealthy(db);
   });
@@ -81,11 +84,11 @@ describe("event type index migration", () => {
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 43 failed");
     expect(typeIndexColumns(db)).toEqual([]);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version = 43").all()).toEqual([]);
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(typeIndexColumns(db)).toEqual(TYPE_INDEX_COLUMNS);
     expectHealthy(db);
   });
@@ -98,10 +101,10 @@ describe("event type index migration", () => {
     db.exec("CREATE TABLE orchestration_events_thread_type (conflict TEXT)");
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 43 failed");
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version = 43").all()).toEqual([]);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     db.exec("DROP TABLE orchestration_events_thread_type");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(typeIndexColumns(db)).toEqual(TYPE_INDEX_COLUMNS);
     expectHealthy(db);
   });
@@ -110,11 +113,13 @@ describe("event type index migration", () => {
     const db = databaseAt(42);
     seedEvents(db);
     const before = contents(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59, 'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1}, 'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version = 59; DELETE FROM schema_migrations WHERE version = 20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version = ${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version = 20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(typeIndexColumns(db)).toEqual([]);
   });
 });

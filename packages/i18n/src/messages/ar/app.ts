@@ -95,6 +95,8 @@ export const messages = {
   "app.rail.customAgentUsage": "استخدام {name}. فتح الاستخدام",
   "app.settingsPage.title": "الإعدادات",
   "app.settingsPage.search": "البحث في الإعدادات",
+  "app.offices.lobby": "الردهة",
+  "app.offices.stripLabel": "المكاتب",
   "app.settingsPage.searchPlaceholder": "ابحث في الإعدادات…",
   "app.settingsPage.results": "نتائج البحث في الإعدادات",
   "app.settingsPage.noResults": "لا إعدادات مطابقة.",

@@ -53,6 +53,7 @@ import {
   resolveHermesCli,
   resolveKimiCli,
   resolveMuseCli,
+  resolveOmpCli,
   resolveOpencodeCli,
   resolvePiCli,
 } from "./cli";
@@ -94,6 +95,7 @@ import {
   kimiStatePaths,
   museStatePaths,
   OPENCODE_CONFINED_ENV,
+  ompStatePaths,
   openCodeStatePaths,
   type ProcessConfinement,
   type ProviderStatePaths,
@@ -1361,6 +1363,40 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
         servesModel: context.servesModel,
       }),
     authState: (account) => ({ kind: "hermes", email: account?.email ?? null }),
+    validateAccount: () => undefined,
+  },
+  {
+    id: "omp",
+    // Oh My Pi signs in with its own command (`omp auth`). ZollyBot only checks it again.
+    signIn: { kind: "external" },
+    resolveCli: () => resolveOmpCli(),
+    createClient: (cli, timeout, context, confinement) =>
+      new AcpAgentClient(cli, timeout, {
+        provider: "omp",
+        flavor: DEFAULT_ACP_FLAVOR,
+        argv: ["acp"],
+        env: {},
+        ...(confinement ? { confine: (target) => confineSpawnTarget(target, confinement, ompStatePaths()) } : {}),
+        extraEnv: () => ({ ...context.agentEnvironment?.() }),
+        signInMessage: sourceText("error.provider.ompSignIn"),
+        servesModel: context.servesModel,
+        mcpServers: context.mcpServers,
+        reportMcpDrops: context.reportMcpDrops,
+        mcpToolRuntimes: context.mcpToolRuntimes,
+        mcpEndpoint: context.mcpEndpoint,
+        history: context.history?.("omp"),
+      }),
+    createProfileClient: (cli, timeout, context) =>
+      new AcpAgentClient(cli, timeout, {
+        provider: "omp",
+        flavor: DEFAULT_ACP_FLAVOR,
+        argv: ["acp"],
+        profileGeneration: true,
+        env: {},
+        signInMessage: sourceText("error.provider.ompSignIn"),
+        servesModel: context.servesModel,
+      }),
+    authState: (account) => ({ kind: "acp", email: account?.email ?? null }),
     validateAccount: () => undefined,
   },
   {

@@ -76,6 +76,11 @@ export interface HermesCliInfo extends ResolvedCli {
   source?: "system" | "managed";
 }
 
+/** The user's own Oh My Pi, which ZollyBot neither downloads nor pins. */
+export interface OmpCliInfo extends ResolvedCli {
+  source?: "system" | "managed";
+}
+
 export type AgentCliInfo =
   | CodexCliInfo
   | ClaudeCliInfo
@@ -85,7 +90,8 @@ export type AgentCliInfo =
   | CursorCliInfo
   | ClineCliInfo
   | KimiCliInfo
-  | HermesCliInfo;
+  | HermesCliInfo
+  | OmpCliInfo;
 
 export class CodexCliError extends Error {
   constructor(
@@ -483,12 +489,54 @@ export const resolveHermesCli: (input?: {
 );
 
 /**
+ * Finds the user's own Oh My Pi (`omp`). ZollyBot has no copy of its own: omp ships its own
+ * updater, and it keeps its credentials, sessions and settings in `~/.omp`.
+ */
+export const resolveOmpCli: (input?: {
+  systemCandidates?: string[];
+}) => Effect.Effect<OmpCliInfo, ProviderClientOperationError> = Effect.fn("Cli.resolveOmpCli")(
+  function* (input: { systemCandidates?: string[] } = {}): Effect.fn.Return<OmpCliInfo, ProviderClientOperationError> {
+    const candidates = yield* cliCandidates("omp", input.systemCandidates, null);
+    let found = false;
+    for (const candidate of candidates) {
+      if (!(yield* isExecutable(candidate.executable))) continue;
+      found = true;
+      const attempt = yield* Effect.result(
+        Effect.gen(function* () {
+          const { stdout, launch } = yield* readCliVersion(candidate, "omp");
+          return {
+            executable: candidate.executable,
+            version: parseOmpVersion(stdout),
+            source: "system" as const,
+            ...launch,
+          };
+        }).pipe(Effect.catchDefect((cause) => Effect.fail(providerFailure(cause)))),
+      );
+      if (Result.isSuccess(attempt)) return attempt.success;
+      if (isCliTimeout(attempt.failure.cause)) throw attempt.failure;
+    }
+    throw new CodexCliError(
+      found ? sourceText("error.provider.ompNotStarted") : sourceText("error.provider.ompMissing"),
+      found ? "invalid" : "missing",
+    );
+  },
+  Effect.catchDefect((cause) => Effect.fail(providerFailure(cause))),
+);
+
+/**
  * Hermes prints its release and its build on the first line, such as
  * `Hermes Agent v0.21.5+5805.g54bc5e5 (2026.9.24) · upstream 54bc5e50`. A line about an update can follow.
  */
 function parseHermesVersion(output: string): string {
   const version = output.match(/^Hermes Agent v(\d+\.\d+\.\d+)\b/mu)?.[1];
   if (!version) throw new CodexCliError(sourceText("error.provider.hermesVersionUnreadable"), "invalid");
+  return version;
+}
+
+/** Oh My Pi prints its release as `omp/18.12.6`. */
+function parseOmpVersion(output: string): string {
+  const version = output.match(/^omp\/(\d+\.\d+\.\d+)\b/mu)?.[1];
+  if (!version) throw new CodexCliError(sourceText("error.provider.ompVersionUnreadable"), "invalid");
   return version;
 }
 

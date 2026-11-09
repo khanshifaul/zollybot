@@ -57,6 +57,11 @@ export const V54_AGENT_THREAD_ROUTINE_INDEX_SQL = `
     WHERE routine_id IS NOT NULL;
 `;
 
+// Migration 61: office scope, added with no default.
+export const V61_AGENT_THREAD_OFFICE_INDEX_SQL = `
+  CREATE INDEX IF NOT EXISTS agent_threads_office ON projection_agent_threads(office_id);
+`;
+
 // The latest table, for new databases.
 export const AGENT_THREAD_SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS projection_agent_threads (
@@ -75,10 +80,12 @@ export const AGENT_THREAD_SCHEMA_SQL = `
     branch_source_thread_id TEXT,
     branch_source_message_id TEXT,
     branch_through_message_id TEXT,
-    routine_id TEXT
+    routine_id TEXT,
+    office_id TEXT REFERENCES offices(id) ON DELETE SET NULL
   );
   ${AGENT_THREAD_INDEX_SQL}
   ${V54_AGENT_THREAD_ROUTINE_INDEX_SQL}
+  ${V61_AGENT_THREAD_OFFICE_INDEX_SQL}
 `;
 
 // Migration 47. Every task becomes a side thread with the same thread, title, state and dates: a closed

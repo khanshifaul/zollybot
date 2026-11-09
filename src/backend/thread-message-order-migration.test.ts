@@ -2,7 +2,7 @@
 import { DatabaseSync, type SQLOutputValue } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
 import { ORDER_KEY_COLUMNS, ORDER_KEY_DESC, ORDERED_THREAD_MESSAGES } from "./database/conversation-queries";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: an upgrade loses or changes a message; a stored key differs from the order that pages
 // computed before, so a page or a cursor that a client holds moves; a turn id that two threads share
@@ -160,7 +160,9 @@ function orderIndexes(db: DatabaseSync) {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -234,9 +236,11 @@ describe("thread message order migration", () => {
     seedMessages(db);
     const before = releasedRows(db);
     const columns = columnNames(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59, 'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1}, 'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version = 59; DELETE FROM schema_migrations WHERE version = 38");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version = ${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version = 38`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 38");
     expect(releasedRows(db)).toEqual(before);
     expect(columnNames(db)).toEqual(columns);

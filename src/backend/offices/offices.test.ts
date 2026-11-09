@@ -99,6 +99,62 @@ describe("employment backfill", () => {
     db.close();
   });
 
+  it("puts an office role in the primary office and the butler in the building", () => {
+    const db = database();
+    db.exec("INSERT INTO projection_agents VALUES ('a1', '{}'), ('a2', '{}')");
+    upsertOffice(db, { id: "office-a", repoPath: "/repos/a", name: "A", baseBranch: "main" }, 100);
+    upsertOffice(db, { id: "office-b", repoPath: "/repos/b", name: "B", baseBranch: "main" }, 200);
+
+    syncEmployments(
+      db,
+      [
+        { id: "a1", name: "Zolly" },
+        { id: "a2", name: "Butler" },
+      ],
+      roleForAgentName,
+      300,
+    );
+
+    const rows = listEmployments(db);
+    expect(rows.find((row) => row.agentId === "a1")).toMatchObject({
+      roleKey: "zolly",
+      scope: "office",
+      officeId: "office-a",
+    });
+    expect(rows.find((row) => row.agentId === "a2")).toMatchObject({
+      roleKey: "butler",
+      scope: "building",
+      officeId: null,
+    });
+    db.close();
+  });
+
+  it("moves a provisional unassigned desk to the primary office", () => {
+    const db = database();
+    db.exec("INSERT INTO projection_agents VALUES ('a1', '{}')");
+    syncEmployments(db, [{ id: "a1", name: "Zolly" }], roleForAgentName, 100);
+    expect(listEmployments(db)[0]?.officeId).toBe("unassigned");
+
+    upsertOffice(db, { id: "office-a", repoPath: "/repos/a", name: "A", baseBranch: "main" }, 200);
+    syncEmployments(db, [{ id: "a1", name: "Zolly" }], roleForAgentName, 300);
+
+    expect(listEmployments(db)[0]?.officeId).toBe("office-a");
+    db.close();
+  });
+
+  it("keeps a desk that is already in a real office", () => {
+    const db = database();
+    db.exec("INSERT INTO projection_agents VALUES ('a1', '{}')");
+    upsertOffice(db, { id: "office-a", repoPath: "/repos/a", name: "A", baseBranch: "main" }, 100);
+    upsertOffice(db, { id: "office-b", repoPath: "/repos/b", name: "B", baseBranch: "main" }, 200);
+    upsertEmployment(db, { agentId: "a1", officeId: "office-b", roleKey: "zolly", scope: "office" });
+
+    syncEmployments(db, [{ id: "a1", name: "Zolly" }], roleForAgentName, 300);
+
+    expect(listEmployments(db)[0]?.officeId).toBe("office-b");
+    db.close();
+  });
+
   it("knows when a single-instance role already holds a desk", () => {
     const db = database();
     db.exec("INSERT INTO projection_agents VALUES ('a1', '{}')");

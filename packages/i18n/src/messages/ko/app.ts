@@ -93,6 +93,8 @@ export const messages = {
   "app.rail.usageRings": "{name} 사용량: {windows}. 사용량 열기",
   "app.settingsPage.title": "설정",
   "app.settingsPage.search": "설정 검색",
+  "app.offices.lobby": "로비",
+  "app.offices.stripLabel": "사무소",
   "app.settingsPage.searchPlaceholder": "설정 검색…",
   "app.settingsPage.results": "설정 검색 결과",
   "app.settingsPage.noResults": "일치하는 설정이 없어요.",

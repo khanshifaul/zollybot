@@ -72,6 +72,8 @@ import {
 } from "../zollybot-tools";
 import { AgentInterruptTool } from "./agent-interrupt-tool";
 import type { AgentMemories } from "./agent-memories";
+import { handleOfficeMemoryTool } from "./office-memory-tools";
+import type { OfficeMemories } from "../offices/office-memory-store";
 import { type ApprovalAutomationPolicy, NO_APPROVAL_AUTOMATION } from "./approval-automation";
 import type { AttachmentGateway } from "./attachment-gateway";
 import type { AttentionRegistry } from "./attention-registry";
@@ -228,6 +230,8 @@ export interface ZollyBotToolRouterOptions {
   hostedSites: HostedSiteCoordinator;
   routines: RoutineScheduler;
   memories: AgentMemories;
+  officeMemories?: OfficeMemories | null;
+  officeIdForAgent?: (agentId: string) => string | null;
   waits: AgentWaits;
   tasks: AgentTasks;
   drain: DrainScheduler;
@@ -274,6 +278,8 @@ export class ZollyBotToolRouter {
   readonly #hostedSites: HostedSiteCoordinator;
   readonly #routines: RoutineScheduler;
   readonly #memories: AgentMemories;
+  readonly #officeMemories: OfficeMemories | null;
+  readonly #officeIdForAgent: (agentId: string) => string | null;
   readonly #waits: AgentWaits;
   readonly #tasks: AgentTasks;
   readonly #drain: DrainScheduler;
@@ -311,6 +317,8 @@ export class ZollyBotToolRouter {
     this.#hostedSites = options.hostedSites;
     this.#routines = options.routines;
     this.#memories = options.memories;
+    this.#officeMemories = options.officeMemories ?? null;
+    this.#officeIdForAgent = options.officeIdForAgent ?? (() => null);
     this.#waits = options.waits;
     this.#tasks = options.tasks;
     this.#drain = options.drain;
@@ -1295,6 +1303,8 @@ export class ZollyBotToolRouter {
       );
     }
 
+    const officeMemoryResult = handleOfficeMemoryTool(params, this.#officeMemories, this.#officeIdForAgent(senderAgentId));
+    if (officeMemoryResult) return officeMemoryResult;
     const memoryResult = this.#memories.handleTool(params, senderAgentId, this.#hooks.redactMcp);
     if (memoryResult) return memoryResult;
 

@@ -62,7 +62,7 @@ export function OfficeTabStrip() {
   };
 
   return (
-    <div class="office-strip">
+    <nav class="office-strip" aria-label={t("app.offices.stripLabel")}>
       <For each={tabs()}>
         {(tab) => (
           <Button
@@ -77,6 +77,6 @@ export function OfficeTabStrip() {
           </Button>
         )}
       </For>
-    </div>
+    </nav>
   );
 }

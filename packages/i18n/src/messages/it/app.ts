@@ -96,6 +96,8 @@ export const messages = {
   "app.rail.customAgentUsage": "Utilizzo di {name}. Apri utilizzo",
   "app.settingsPage.title": "Impostazioni",
   "app.settingsPage.search": "Cerca nelle impostazioni",
+  "app.offices.lobby": "Atrio",
+  "app.offices.stripLabel": "Uffici",
   "app.settingsPage.searchPlaceholder": "Cerca nelle impostazioni…",
   "app.settingsPage.results": "Risultati della ricerca nelle impostazioni",
   "app.settingsPage.noResults": "Nessuna impostazione corrispondente.",

@@ -45,6 +45,7 @@ export const messages = {
   "onboarding.provider.copilotAccount": "使用 Copilot 套餐的多种模型",
   "onboarding.provider.hermesNous": "Nous Portal 套餐或你的 Hermes 设置",
   "onboarding.provider.inceptionKey": "使用 Inception API 密钥的 Mercury 模型",
+  "onboarding.provider.ompAccount": "使用 Oh My Pi 账户的模型",
   "onboarding.provider.deepseekKey": "使用 DeepSeek API 密钥的 DeepSeek 模型",
   "onboarding.provider.openrouterKey": "使用 OpenRouter API 密钥的众多模型",
   "onboarding.provider.tryFree": "免费试用",

@@ -9,21 +9,27 @@
 #   --no-desktop     skip the desktop entry
 #   --no-cli         skip the terminal companion (zollybot-cli)
 #   --server         install and enable a user service that keeps the server running
+#   --quiet          show only errors and final result
 #
-# This installs files, the way a package manager does: the release archive is
-# unpacked under <prefix>/lib/zollybot, the launcher is linked into <prefix>/bin,
-# and nothing runs from a self-mounting AppImage. The download is verified
-# against the release's SHA256SUMS before anything is written.
+# Installs files under <prefix>/lib/zollybot and links launchers into
+# <prefix>/bin. The download is verified against the release SHA256SUMS.
+# Environment: ZOLLYBOT_BASE_URL, ZOLLYBOT_DOWNLOAD_BASE, ZOLLYBOT_PREFIX.
 
 set -eu
 
 BASE_URL="${ZOLLYBOT_BASE_URL:-https://zollybot.shifaul.dev}"
-DOWNLOAD_BASE="${ZOLLYBOT_DOWNLOAD_BASE:-$BASE_URL}"
+DOWNLOAD_BASE="${ZOLLYBOT_DOWNLOAD_BASE:-}"
+GITHUB_RELEASES="${ZOLLYBOT_GITHUB_RELEASES:-https://github.com/khanshifaul/zollybot/releases/download}"
 PREFIX="${ZOLLYBOT_PREFIX:-$HOME/.local}"
 VERSION=""
 DESKTOP=1
 CLI=1
 SERVER=0
+QUIET=0
+
+log() { [ "$QUIET" -eq 1 ] || printf '%s\n' "$*"; }
+err() { printf '%s\n' "$*" >&2; }
+run() { if [ "$QUIET" -eq 1 ]; then "$@" >/dev/null 2>&1; else "$@"; fi; }
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -32,11 +38,15 @@ while [ $# -gt 0 ]; do
 		--no-desktop) DESKTOP=0; shift ;;
 		--no-cli) CLI=0; shift ;;
 		--server) SERVER=1; shift ;;
-		*) echo "unknown option: $1" >&2; exit 2 ;;
+		--quiet|-q) QUIET=1; shift ;;
+		--help|-h)
+			sed -n '2,16p' "$0" 2>/dev/null || true
+			exit 0 ;;
+		*) err "unknown option: $1"; exit 2 ;;
 	esac
 done
 
-need() { command -v "$1" >/dev/null 2>&1 || { echo "missing dependency: $1" >&2; exit 1; }; }
+need() { command -v "$1" >/dev/null 2>&1 || { err "missing dependency: $1"; exit 1; }; }
 need curl
 need sha256sum
 need tar
@@ -45,65 +55,90 @@ arch="$(uname -m)"
 case "$arch" in
 	x86_64|amd64) asset_arch="x86_64" ;;
 	aarch64|arm64) asset_arch="arm64" ;;
-	*) echo "unsupported architecture: $arch" >&2; exit 1 ;;
+	*) err "unsupported architecture: $arch (expected x86_64 or arm64)"; exit 1 ;;
 esac
 
+log "ZollyBot Linux installer"
+log "  arch: $arch ($asset_arch)"
+log "  prefix: $PREFIX"
+log "  base URL: $BASE_URL"
+
 if [ -z "$VERSION" ]; then
-	VERSION="$(curl -fsSL "$BASE_URL/latest")" || { echo "could not read $BASE_URL/latest" >&2; exit 1; }
+	log "  version: fetching $BASE_URL/latest"
+	VERSION="$(curl -fsSL "$BASE_URL/latest")" || { err "could not read $BASE_URL/latest"; exit 1; }
+	VERSION="$(printf '%s' "$VERSION" | tr -d '\r\n')"
 fi
+log "  version: $VERSION"
 
 asset="zollybot-linux-${asset_arch}-${VERSION}.tar.gz"
-release="$DOWNLOAD_BASE/releases/$VERSION"
+if [ -n "$DOWNLOAD_BASE" ]; then
+  release="$DOWNLOAD_BASE/releases/$VERSION"
+  checksums_name="SHA256SUMS"
+else
+  release="$GITHUB_RELEASES/$VERSION"
+  checksums_name="SHA256SUMS-linux-x86_64.txt"
+fi
+log "  checksum URL: $release/$checksums_name"
+log "  archive URL: $release/$asset"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
-echo "Downloading $asset ..."
-curl -fsSL "$release/SHA256SUMS" -o "$tmp/SHA256SUMS"
+log "Downloading SHA256SUMS..."
+curl -fsSL "$release/$checksums_name" -o "$tmp/SHA256SUMS"
 expected="$(awk -v name="$asset" '{ n = $2; sub(/^[.]\//, "", n); if (n == name) { print $1; exit } }' "$tmp/SHA256SUMS")"
 if [ -z "$expected" ]; then
-	echo "no checksum for $asset in SHA256SUMS" >&2
+	err "no checksum for $asset in SHA256SUMS"
+	err "available entries:"
+	awk '{print "  - " $2}' "$tmp/SHA256SUMS" >&2 || true
 	exit 1
 fi
-# A dropped connection can still end the download quietly, so a checksum
-# mismatch retries once before failing.
+log "  expected SHA256: $expected"
+
 attempt=1
 while :; do
-	curl -fsSL "$release/$asset" -o "$tmp/$asset"
+	log "Downloading $asset (attempt $attempt)..."
+	curl -fsSLo "$tmp/$asset" "$release/$asset" </dev/null
 	actual="$(sha256sum "$tmp/$asset" | awk '{ print $1 }')"
+	log "  actual SHA256:   $actual"
 	[ "$actual" = "$expected" ] && break
 	if [ "$attempt" -ge 2 ]; then
-		echo "checksum mismatch for $asset" >&2
+		err "checksum mismatch for $asset"
 		exit 1
 	fi
 	attempt=$((attempt + 1))
 	rm -f "$tmp/$asset"
-	echo "The download did not match its checksum; downloading again ..."
+	err "checksum mismatch; downloading again..."
 done
 
+log "Extracting to $PREFIX/lib/zollybot..."
 mkdir -p "$PREFIX/lib" "$PREFIX/bin"
 rm -rf "$PREFIX/lib/zollybot"
 mkdir -p "$PREFIX/lib/zollybot"
 tar -xzf "$tmp/$asset" -C "$PREFIX/lib/zollybot"
 
-# An archive that carries a `zollybot/` wrapper is flattened, so both layouts
-# install to the same place.
 if [ -d "$PREFIX/lib/zollybot/zollybot" ]; then
 	flat="$PREFIX/lib/.zollybot-install"
 	rm -rf "$flat"
 	mv "$PREFIX/lib/zollybot/zollybot" "$flat"
 	rm -rf "$PREFIX/lib/zollybot"
 	mv "$flat" "$PREFIX/lib/zollybot"
+elif [ -x "$PREFIX/lib/zollybot/linux-unpacked/zollybot" ]; then
+	flat="$PREFIX/lib/.zollybot-install"
+	rm -rf "$flat"
+	mv "$PREFIX/lib/zollybot/linux-unpacked" "$flat"
+	rm -rf "$PREFIX/lib/zollybot"
+	mv "$flat" "$PREFIX/lib/zollybot"
 fi
 
 app="$PREFIX/lib/zollybot/zollybot"
 if [ ! -x "$app" ]; then
-	echo "the archive carried no zollybot binary" >&2
+	err "the archive carried no zollybot binary"
+	err "top-level files:"
+	ls "$PREFIX/lib/zollybot" >&2 || true
 	exit 1
 fi
-# The launcher hands the profile between the desktop window and the background
-# service, so the window shows the same sessions the service holds and the
-# service resumes after the window closes.
+
 cat > "$PREFIX/bin/zollybot" <<WRAPPER
 #!/bin/sh
 unit=zollybot-server.service
@@ -114,7 +149,6 @@ if command -v systemctl >/dev/null 2>&1 && systemctl --user is-active --quiet "\
 fi
 resume() {
 	if [ "\$handover" -eq 1 ]; then
-		# The window releases its singleton lock a moment after it exits.
 		sleep 2
 		systemctl --user start "\$unit" >/dev/null 2>&1 || true
 	fi
@@ -128,11 +162,13 @@ resume
 exit \$status
 WRAPPER
 chmod 0755 "$PREFIX/bin/zollybot"
-echo "Installed $PREFIX/bin/zollybot ($VERSION, files in $PREFIX/lib/zollybot)"
+log "Installed launcher: $PREFIX/bin/zollybot"
 
 if [ "$CLI" -eq 1 ] && [ -f "$PREFIX/lib/zollybot/zollybot-cli" ]; then
 	install -m 0755 "$PREFIX/lib/zollybot/zollybot-cli" "$PREFIX/bin/zollybot-cli"
-	echo "Installed $PREFIX/bin/zollybot-cli ($VERSION)"
+	log "Installed CLI: $PREFIX/bin/zollybot-cli"
+elif [ "$CLI" -eq 1 ]; then
+	log "CLI binary not found in archive; skipped (--no-cli to silence)"
 fi
 
 if [ "$DESKTOP" -eq 1 ]; then
@@ -141,6 +177,7 @@ if [ "$DESKTOP" -eq 1 ]; then
 	if [ -f "$PREFIX/lib/zollybot/zollybot.png" ]; then
 		mkdir -p "$data/icons"
 		install -m 0644 "$PREFIX/lib/zollybot/zollybot.png" "$data/icons/zollybot.png"
+		log "Installed icon: $data/icons/zollybot.png"
 	fi
 	icon_line=""
 	[ -f "$data/icons/zollybot.png" ] && icon_line="Icon=zollybot"
@@ -156,7 +193,7 @@ Categories=Development;
 MimeType=x-scheme-handler/zollybot;
 EOF
 	command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$data/applications" >/dev/null 2>&1 || true
-	echo "Added desktop entry"
+	log "Installed desktop entry: $data/applications/zollybot.desktop"
 fi
 
 if [ "$SERVER" -eq 1 ]; then
@@ -182,12 +219,12 @@ WantedBy=default.target
 UNIT
 	systemctl --user daemon-reload
 	systemctl --user enable --now zollybot-server.service
-	echo "ZollyBot runs in the background: systemctl --user status zollybot-server"
+	log "Enabled user service: zollybot-server.service"
 fi
 
 case ":$PATH:" in
 	*":$PREFIX/bin:"*) ;;
-	*) echo "Add $PREFIX/bin to PATH to run 'zollybot' from a terminal." ;;
+	*) log "PATH note: add $PREFIX/bin to PATH to run 'zollybot' from a terminal." ;;
 esac
 
-echo "Run 'zollybot' to start."
+log "Done. Run: zollybot"

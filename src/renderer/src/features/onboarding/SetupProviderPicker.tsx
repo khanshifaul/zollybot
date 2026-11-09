@@ -130,6 +130,7 @@ const PROVIDER_DESCRIPTION_KEYS: Readonly<Record<string, AppTextKey>> = {
   "DeepSeek models with a DeepSeek API key": "onboarding.provider.deepseekKey",
   "Many models with an OpenRouter API key": "onboarding.provider.openrouterKey",
   "Nous Portal plan or your Hermes setup": "onboarding.provider.hermesNous",
+  "Models with an Oh My Pi account": "onboarding.provider.ompAccount",
 };
 
 /**

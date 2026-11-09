@@ -246,34 +246,6 @@ jobs:
           path: .zollybot-build/signal-security-e2e/
           if-no-files-found: ignore
 
-  automation-cli-e2e:
-    # Runs `zollybot-cli` with Node against the real Local scripts server on a loopback port, with
-    # an in-memory agent service. It needs no Electron, display or external service.
-    name: Local scripts CLI E2E
-    needs: detect
-    if: needs.detect.outputs.desktop == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up Bun
-        uses: ./.github/actions/setup-bun
-        with:
-          install: ignore-scripts
-
-      - name: Run the Local scripts CLI E2E test
-        run: bun run test:automation-cli
-
-      - name: Upload the Local scripts CLI E2E report
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: automation-cli-e2e
-          path: .zollybot-build/automation-cli-e2e/
-          if-no-files-found: ignore
-
   team-api-routes-e2e:
     # Drives the real Team API server over HTTP on a loopback port, with the real team store and
     # direct-message store on temporary files and an in-memory agent service. It needs no Electron,

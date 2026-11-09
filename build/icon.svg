@@ -1,22 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <title>ZollyBot</title>
   <defs>
-    <linearGradient id="background" x1="160" y1="96" x2="864" y2="928" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#202426"/>
-      <stop offset="1" stop-color="#090b0c"/>
+    <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="55%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
     </linearGradient>
-    <linearGradient id="mark" x1="300" y1="260" x2="742" y2="778" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#ffb04d"/>
-      <stop offset="1" stop-color="#e98427"/>
-    </linearGradient>
-    <filter id="shadow" x="190" y="190" width="660" height="680" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="34" stdDeviation="34" flood-color="#000" flood-opacity=".38"/>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <radialGradient id="robotGlow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#F0F9FF" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#BAE6FD" stop-opacity="0.95"/>
+    </radialGradient>
   </defs>
-  <rect x="52" y="52" width="920" height="920" rx="214" fill="url(#background)"/>
-  <rect x="53" y="53" width="918" height="918" rx="213" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="2"/>
-  <g filter="url(#shadow)">
-    <path d="M494 238c133-6 249 83 271 220 25 152-77 288-230 310-156 22-288-80-295-231-7-145 104-292 254-299Z" fill="url(#mark)"/>
+  <!-- background -->
+  <rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#bg)"/>
+  <!-- subtle highlight -->
+  <ellipse cx="340" cy="280" rx="320" ry="220" fill="#FFFFFF" opacity="0.08"/>
+  <!-- robot group with soft glow -->
+  <g filter="url(#glow)">
+    <!-- antennae -->
+    <line x1="430" y1="310" x2="400" y2="240" stroke="#E0F2FE" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="396" cy="232" r="18" fill="#F0F9FF"/>
+    <line x1="594" y1="310" x2="624" y2="240" stroke="#E0F2FE" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="628" cy="232" r="18" fill="#F0F9FF"/>
+    <!-- head -->
+    <rect x="302" y="320" width="420" height="360" rx="96" fill="url(#robotGlow)"/>
+    <!-- eyes -->
+    <circle cx="420" cy="470" r="58" fill="#3B82F6"/>
+    <circle cx="604" cy="470" r="58" fill="#3B82F6"/>
+    <circle cx="438" cy="452" r="18" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="622" cy="452" r="18" fill="#FFFFFF" opacity="0.9"/>
+    <!-- smile -->
+    <path d="M430 585 Q512 650 594 585" fill="none" stroke="#3B82F6" stroke-width="22" stroke-linecap="round"/>
   </g>
-  <path d="M398 415c25 25 38 51 44 83M568 398c25 25 38 51 44 83" fill="none" stroke="#1b1d1e" stroke-linecap="round" stroke-width="34"/>
 </svg>

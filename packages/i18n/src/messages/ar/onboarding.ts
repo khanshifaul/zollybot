@@ -45,6 +45,7 @@ export const messages = {
   "onboarding.provider.copilotAccount": "نماذج كثيرة مع خطة Copilot",
   "onboarding.provider.hermesNous": "خطة Nous Portal أو إعداد Hermes الخاص بك",
   "onboarding.provider.inceptionKey": "نماذج Mercury مع مفتاح API من Inception",
+  "onboarding.provider.ompAccount": "نماذج بحساب Oh My Pi",
   "onboarding.provider.deepseekKey": "نماذج DeepSeek مع مفتاح API من DeepSeek",
   "onboarding.provider.openrouterKey": "نماذج كثيرة مع مفتاح API من OpenRouter",
   "onboarding.provider.tryFree": "جرّبه مجانًا",

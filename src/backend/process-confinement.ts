@@ -338,6 +338,35 @@ export function kimiStatePaths(env: NodeJS.ProcessEnv = process.env, home = home
   };
 }
 
+/** The folder where Oh My Pi keeps its sign-in, sessions, databases and caches: `~/.omp`. */
+export function ompHomeDirectory(home = homedir()): string {
+  return join(home, ".omp");
+}
+
+/**
+ * Oh My Pi writes its sessions, history, models and blobs in `~/.omp/agent`, its caches, logs, run
+ * files, downloaded tools and browser state in the sibling folders. Its settings (`config.yml`) and
+ * its extensions load settings or code for every other omp process, so they stay read-only.
+ */
+export function ompStatePaths(home = homedir()): ProviderStatePaths {
+  const root = ompHomeDirectory(home);
+  const agent = join(root, "agent");
+  return {
+    writable: unique([
+      agent,
+      join(root, "cache"),
+      join(root, "logs"),
+      join(root, "run"),
+      join(root, "natives"),
+      join(root, "puppeteer"),
+      join(root, "remote-host"),
+      join(root, "ssh-control"),
+      join(root, "browser-relay"),
+    ]),
+    protected: unique([join(agent, "config.yml"), join(agent, "extensions"), join(root, "install-id")]),
+  };
+}
+
 /** The folder of Devin's sign-in and sessions: `$XDG_DATA_HOME/devin`, on macOS too. */
 export function devinDataDirectory(env: NodeJS.ProcessEnv = process.env, home = homedir()): string {
   return join(env.XDG_DATA_HOME?.trim() || join(home, ".local", "share"), "devin");

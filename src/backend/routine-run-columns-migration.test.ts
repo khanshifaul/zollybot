@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { DatabaseSync, type SQLOutputValue } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: an upgrade loses a routine, trigger or run; an old routine gets a policy other than
 // "skip"; an old run reads as a missed-run record or gets a source; a partial migration survives a
@@ -138,7 +138,9 @@ describe("routine missed-run and run source migrations", () => {
       const before = rows(db);
       migrateZollyBotDatabase(db);
       expect(rows(db, Object.keys(before))).toEqual(withAddedColumns(before));
-      expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+      expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+        version: LATEST_SCHEMA_VERSION,
+      });
       expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
       expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
       expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -193,9 +195,11 @@ describe("routine missed-run and run source migrations", () => {
     const db = databaseAt(32);
     seedRoutines(db, 32);
     const before = rows(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59, 'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1}, 'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version = 59; DELETE FROM schema_migrations WHERE version = 27");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version = ${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version = 27`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 27");
     expect(rows(db)).toEqual(before);
   });
@@ -250,9 +254,11 @@ describe("routine run source migration", () => {
     const db = databaseAt(34);
     seedRoutines(db, 34);
     const before = rows(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59, 'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1}, 'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version = 59; DELETE FROM schema_migrations WHERE version = 33");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version = ${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version = 33`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 33");
     expect(rows(db)).toEqual(before);
   });

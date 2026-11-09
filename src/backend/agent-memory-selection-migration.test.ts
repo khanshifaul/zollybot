@@ -3,7 +3,7 @@ import { DatabaseSync } from "node:sqlite";
 import { AGENT_MEMORY_CONTEXT_BUDGET_BYTES, essentialMemoryBytes } from "@zollybot/contracts/agent-memory-context";
 import { afterEach, describe, expect, it } from "vitest";
 import { databaseRows, requiredStringColumn } from "./database/database-rows";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: upgrade loses text; selection exceeds budget; a partial migration survives failure;
 // invalid history is accepted; selection/index outlive a deleted memory. These fixtures cover each.
@@ -67,7 +67,9 @@ describe("agent memory selection migration", () => {
       const before = rows(db);
       migrateZollyBotDatabase(db);
       expect(rows(db)).toEqual(before);
-      expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+      expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+        version: LATEST_SCHEMA_VERSION,
+      });
       const selected = databaseRows(
         db
           .prepare(`SELECT m.memory_id, m.text, m.origin FROM projection_agent_memories m
@@ -133,9 +135,11 @@ describe("agent memory selection migration", () => {
     const db = databaseAt(31);
     seedMemories(db);
     const before = rows(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
     expect(rows(db)).toEqual(before);
   });

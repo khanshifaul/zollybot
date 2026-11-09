@@ -6,8 +6,9 @@ import { DatabaseSync, type StatementSync } from "node:sqlite";
 import type { AgentSummary, ConversationMessage } from "@zollybot/contracts/ipc";
 import { afterEach, describe, expect, it } from "vitest";
 import { runCauseEffect } from "./effect-boundary";
+import { expectSameTables, pickTables } from "./migration-test-rows";
 import { ZollyBotDatabase } from "./zollybot-database";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade deletes a reconcile event that is not a repeat, or the last event of a run,
 // or an event of another type or thread; it leaves the activity or receipt of a deleted event; it changes
@@ -137,8 +138,10 @@ describe("mailbox reconcile cleanup migration", () => {
       if (version < 38) migrateUpTo(db, 38);
       const before = contents(db);
       migrateZollyBotDatabase(db);
-      expect(contents(db)).toEqual(withoutRepeats(before));
-      expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+      expectSameTables(contents(db), withoutRepeats(before));
+      expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+        version: LATEST_SCHEMA_VERSION,
+      });
       expect(db.prepare("SELECT name FROM sqlite_temp_master").all()).toEqual([]);
       expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
       expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
@@ -153,23 +156,25 @@ describe("mailbox reconcile cleanup migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=39
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 39 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=39").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(withoutRepeats(before));
+    expectSameTables(contents(db), withoutRepeats(before));
   });
 
   it("rejects newer and incomplete migration histories before it deletes events", () => {
     const db = databaseAt(38);
     seed(db);
     const before = contents(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
   });
 
   it("keeps the messages and what a replay rebuilds from the writes of a page read", async () => {
@@ -206,9 +211,7 @@ describe("mailbox reconcile cleanup migration", () => {
 
     const legacy = new DatabaseSync(path);
     // From 38 on: migration 47 reads the task table that 38 creates.
-    legacy.exec(
-      "DELETE FROM schema_migrations WHERE version IN (38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58)",
-    );
+    legacy.exec("DELETE FROM schema_migrations WHERE version >= 38");
     legacy.close();
     const migrated = new ZollyBotDatabase(root);
     await runCauseEffect(migrated.initialize());
@@ -224,7 +227,7 @@ describe("mailbox reconcile cleanup migration", () => {
     expect(kept).toEqual(events.filter((event) => !reconciled.slice(0, 2).includes(event)));
     expect(migrated.rebuildThreadProjection("zollybot-thread-chief")).toEqual(replayed);
     expect(migrated.connection.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
-      version: 58,
+      version: LATEST_SCHEMA_VERSION,
     });
     migrated.close();
   });

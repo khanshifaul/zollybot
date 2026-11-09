@@ -302,6 +302,10 @@ export const messages = {
   "error.provider.hermesVersionUnreadable": "Impossible de lire la version de Hermes Agent.",
   "error.provider.hermesSignIn":
     "Connectez-vous avec Nous Portal ou exécutez `hermes setup` dans un terminal pour utiliser Hermes.",
+  "error.provider.ompMissing": "Oh My Pi n'est pas installé. Installez-le, puis réessayez.",
+  "error.provider.ompNotStarted": "Oh My Pi n'a pas pu démarrer. Exécutez `omp --version` dans un terminal.",
+  "error.provider.ompVersionUnreadable": "Impossible de lire la version d'Oh My Pi.",
+  "error.provider.ompSignIn": "Connectez-vous avec `omp` sur l'ordinateur hôte, puis réessayez.",
   "error.provider.usageLimitReached": "Le compte a atteint sa limite d’utilisation.",
   "error.provider.foreignReasoning":
     "{provider} n’a pas accepté le raisonnement précédent de cette conversation, car un autre compte ou une autre clé API l’a reçu. ZollyBot a ouvert une nouvelle session {provider} avec l’historique de la conversation. Réessayez.",

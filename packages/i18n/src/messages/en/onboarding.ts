@@ -46,6 +46,7 @@ export const messages = defineMessages("onboarding", {
   "onboarding.provider.copilotAccount": "Many models with a Copilot plan",
   "onboarding.provider.hermesNous": "Nous Portal plan or your Hermes setup",
   "onboarding.provider.inceptionKey": "Mercury models with an Inception API key",
+  "onboarding.provider.ompAccount": "Models with an Oh My Pi account",
   "onboarding.provider.deepseekKey": "DeepSeek models with a DeepSeek API key",
   "onboarding.provider.openrouterKey": "Many models with an OpenRouter API key",
   "onboarding.provider.tryFree": "Try it free",

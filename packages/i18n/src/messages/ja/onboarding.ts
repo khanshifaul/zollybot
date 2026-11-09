@@ -48,6 +48,7 @@ export const messages = {
   "onboarding.provider.copilotAccount": "Copilot プランで使える多数のモデル",
   "onboarding.provider.hermesNous": "Nous Portal プランまたはお使いの Hermes の設定",
   "onboarding.provider.inceptionKey": "Inception API キーで Mercury モデル",
+  "onboarding.provider.ompAccount": "Oh My Pi アカウントのモデル",
   "onboarding.provider.deepseekKey": "DeepSeek API キーで使う DeepSeek モデル",
   "onboarding.provider.openrouterKey": "OpenRouter API キーで使う多数のモデル",
   "onboarding.provider.tryFree": "無料で試す",

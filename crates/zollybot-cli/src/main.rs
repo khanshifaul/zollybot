@@ -45,6 +45,12 @@ struct Cli {
 enum Command {
     /// Print the agents the app lists, one per line.
     Agents,
+    /// Print office memory facts (reads the app over the control socket).
+    Brief {
+        /// Office id; omit to list offices first.
+        #[arg(long)]
+        office: Option<String>,
+    },
 }
 
 /// The account service, for the case where no app runs on this machine.
@@ -164,9 +170,34 @@ fn config_dir() -> PathBuf {
     base.join("zollybot")
 }
 
-fn session_path() -> PathBuf {
-    config_dir().join("session.json")
+fn session_path() -> PathBuf { config_dir().join("session.json") }
+fn tui_config_path() -> PathBuf { config_dir().join("tui.json") }
+
+#[derive(Clone, serde::Serialize, serde::Deserialize, Default)]
+struct TuiConfig {
+    #[serde(default)]
+    language: String,
+    #[serde(default)]
+    onboarding_done: bool,
 }
+
+fn load_tui_config() -> TuiConfig {
+    fs::read_to_string(tui_config_path()).ok()
+        .and_then(|t| serde_json::from_str(&t).ok()).unwrap_or_default()
+}
+
+fn save_tui_config(cfg: &TuiConfig) -> std::io::Result<()> {
+    let dir = config_dir(); fs::create_dir_all(&dir)?;
+    fs::write(tui_config_path(), serde_json::to_string_pretty(cfg)?)?;
+    Ok(())
+}
+
+const LANGUAGES: &[(&str,&str)] = &[
+    ("en","English"),("es","Español"),("fr","Français"),("de","Deutsch"),
+    ("ja","日本語"),("ko","한국어"),("zh","中文"),("pt","Português"),
+    ("ru","Русский"),("it","Italiano"),("nl","Nederlands"),("pl","Polski"),
+    ("tr","Türkçe"),("ar","العربية"),
+];
 
 fn load_session() -> Option<Session> {
     let text = fs::read_to_string(session_path()).ok()?;
@@ -366,6 +397,9 @@ struct OfficeRow {
     agents: usize,
 }
 
+#[derive(Clone, Copy, PartialEq)]
+enum OnboardingStep { Language, SignIn, Done }
+
 struct App {
     server: ServerInfo,
     all_agents: Vec<AgentRow>,
@@ -383,6 +417,9 @@ struct App {
     prefix: bool,
     session: Option<Session>,
     sign_in: Option<SignIn>,
+    tui_config: TuiConfig,
+    onboarding: OnboardingStep,
+    lang_selected: usize,
 }
 
 impl App {
@@ -404,9 +441,19 @@ impl App {
             prefix: false,
             session: load_session(),
             sign_in: None,
+            tui_config: load_tui_config(),
+            onboarding: OnboardingStep::Language,
+            lang_selected: 0,
         };
+        let cfg = app.tui_config.clone();
+        app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
+        if cfg.onboarding_done || !cfg.language.is_empty() {
+            app.onboarding = if app.session.is_some() { OnboardingStep::Done } else { OnboardingStep::SignIn };
+            if app.onboarding == OnboardingStep::Done { app.office_filter = Some("building".to_string()); }
+        }
         app.refresh_account();
         app.load();
+        if app.onboarding == OnboardingStep::Done { app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
         app
     }
 
@@ -804,6 +851,28 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .direction(Direction::Vertical)
         .constraints([Constraint::Length(1), Constraint::Min(3), Constraint::Length(1)])
         .split(frame.area());
+    if app.onboarding == OnboardingStep::Language {
+        let area = centered_rect(60, 70, frame.area());
+        frame.render_widget(Clear, area);
+        let mut lines = vec![
+            Line::from(Span::styled("Choose your language", Style::default().add_modifier(Modifier::BOLD))),
+            Line::from(Span::styled("This follows the desktop app setup. Continue to sign in.", Style::default().fg(Color::DarkGray))),
+            Line::from(""),
+        ];
+        for (i,(code,name)) in LANGUAGES.iter().enumerate() {
+            let marker = if i == app.lang_selected { "› " } else { "  " };
+            let style = if i == app.lang_selected { Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD) } else { Style::default() };
+            lines.push(Line::from(Span::styled(format!("{marker}{name} ({code})"), style)));
+        }
+        lines.push(Line::from(""));
+        lines.push(Line::from(Span::styled("j/k or ↑/↓ move · Enter continue · q quit", Style::default().fg(Color::DarkGray))));
+        let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" ZollyBot · Language ");
+        frame.render_widget(Paragraph::new(lines).block(block), area);
+        return;
+    }
+    if app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none() && app.session.is_none() {
+        // show sign-in prompt as onboarding step
+    }
 
     // The floor strip: the lobby and every office, the open one raised.
     let mut strip: Vec<Span> = Vec::new();
@@ -896,7 +965,11 @@ fn draw(frame: &mut Frame, app: &mut App) {
                 chat.push(Line::from(format!("via     {}", agent.provider)));
                 chat.push(Line::from(""));
                 chat.push(Line::from(Span::styled(
-                    "The butler sets up offices. Open one from the list on the right.",
+                    "Predefined Butler (Lobby). Can create offices and agents, and help with chores.",
+                    Style::default().fg(Color::DarkGray),
+                )));
+                chat.push(Line::from(Span::styled(
+                    "No new-agent setup here: ask Butler to create an office or hire agents.",
                     Style::default().fg(Color::DarkGray),
                 )));
             }
@@ -1108,9 +1181,60 @@ fn run_tui() -> std::io::Result<i32> {
     result.map(|_| 0)
 }
 
+fn brief_text(office: Option<&str>) -> String {
+    if control_socket().is_none() {
+        return "The ZollyBot app is not running. Start ZollyBot and try again.\n".to_string();
+    }
+    let office_id = match office {
+        Some(id) if !id.trim().is_empty() => id.trim().to_string(),
+        _ => {
+            match control_call("GET", "/v1/offices", &[]) {
+                Ok((200, lines)) => {
+                    let count = line_value(&lines, "count").and_then(|c| c.parse::<usize>().ok()).unwrap_or(0);
+                    let mut text = String::from("Name an office with --office <id>. Offices:\n");
+                    for index in 0..count {
+                        if let Some(raw) = line_value(&lines, &format!("office.{index}")) {
+                            let mut parts = raw.split('|');
+                            let id = parts.next().unwrap_or("");
+                            let name = parts.next().unwrap_or("");
+                            text.push_str(&format!("  {id}\t{name}\n"));
+                        }
+                    }
+                    return text;
+                }
+                Ok((status, lines)) => return answer_error(status, &lines),
+                Err(error) => return error,
+            }
+        }
+    };
+    let path = format!("/v1/offices/{}/memory", office_id);
+    match control_call("GET", &path, &[]) {
+        Ok((200, lines)) => {
+            let count = line_value(&lines, "count").and_then(|c| c.parse::<usize>().ok()).unwrap_or(0);
+            if count == 0 { return "No office memory.\n".to_string(); }
+            let mut text = String::new();
+            for index in 0..count {
+                if let Some(raw) = line_value(&lines, &format!("memory.{index}")) {
+                    let mut parts = raw.splitn(4, '|');
+                    let _id = parts.next().unwrap_or("");
+                    let origin = parts.next().unwrap_or("");
+                    let updated = parts.next().unwrap_or("");
+                    let body = parts.next().unwrap_or("");
+                    text.push_str(&format!("- [{origin}] {body} ({updated})\n"));
+                }
+            }
+            text
+        }
+        Ok((404, _)) => "No office has that id.\n".to_string(),
+        Ok((501, lines)) => answer_error(501, &lines),
+        Ok((status, lines)) => answer_error(status, &lines),
+        Err(error) => format!("The ZollyBot app is not running. Start ZollyBot and try again. ({error})\n"),
+    }
+}
+
 fn agents_text() -> String {
     if control_socket().is_none() {
-        return "The app is not running. Start ZollyBot and try again.\n".to_string();
+        return "The ZollyBot app is not running. Start ZollyBot and try again.\n".to_string();
     }
     match control_call("GET", "/v1/agents", &[]) {
         Ok((200, lines)) => {
@@ -1140,6 +1264,21 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
             }
             if let Event::Key(key) = event {
                 if key.kind != KeyEventKind::Press {
+                    continue;
+                }
+                if app.onboarding == OnboardingStep::Language {
+                    match key.code {
+                        KeyCode::Char('q') | KeyCode::Esc => { app.quit = true; }
+                        KeyCode::Char('j') | KeyCode::Down => { app.lang_selected = (app.lang_selected + 1).min(LANGUAGES.len()-1); }
+                        KeyCode::Char('k') | KeyCode::Up => { app.lang_selected = app.lang_selected.saturating_sub(1); }
+                        KeyCode::Enter => {
+                            app.tui_config.language = LANGUAGES[app.lang_selected].0.to_string();
+                            let _ = save_tui_config(&app.tui_config);
+                            if app.session.is_some() { app.onboarding = OnboardingStep::Done; app.tui_config.onboarding_done = true; let _ = save_tui_config(&app.tui_config); app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
+                            else { app.onboarding = OnboardingStep::SignIn; app.open_sign_in(); }
+                        }
+                        _ => {}
+                    }
                     continue;
                 }
                 if app.office_picker.is_some() {
@@ -1254,6 +1393,10 @@ fn main() {
     let code = match cli.command {
         Some(Command::Agents) => {
             print!("{}", agents_text());
+            0
+        }
+        Some(Command::Brief { office }) => {
+            print!("{}", brief_text(office.as_deref()));
             0
         }
         None => match run_tui() {

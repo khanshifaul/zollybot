@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync, type SQLOutputValue } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { expectSameTables, pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; an old thread reads as a branch; a
 // failed upgrade leaves a column or the marker; a retry adds a column twice; a newer or incomplete
@@ -87,7 +88,9 @@ function threadColumns(db: DatabaseSync): string[] {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -99,7 +102,7 @@ describe("agent thread branch migration", () => {
     seed(db);
     const before = contents(db);
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(withBranchLink(before));
+    expectSameTables(contents(db), withBranchLink(before));
     expect(threadColumns(db).slice(-4, -1)).toEqual(BRANCH_COLUMNS);
     expectHealthy(db);
   });
@@ -112,13 +115,13 @@ describe("agent thread branch migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=48
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 48 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(threadColumns(db)).toEqual(columnsBefore);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=48").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual(withBranchLink(before));
+    expectSameTables(contents(db), withBranchLink(before));
     expectHealthy(db);
   });
 
@@ -158,11 +161,13 @@ describe("agent thread branch migration", () => {
     seed(db);
     const before = contents(db);
     const columnsBefore = threadColumns(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=46");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=46`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 46");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(threadColumns(db)).toEqual(columnsBefore);
   });
 
@@ -172,9 +177,9 @@ describe("agent thread branch migration", () => {
     migrateZollyBotDatabase(db);
     const after = contents(db);
     // An application one release older knows versions up to 47: version 48 is newer than it supports.
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    expect(contents(db)).toEqual(after);
+    expectSameTables(contents(db), after);
   });
 
   it("keeps a branch when its source thread is deleted", () => {

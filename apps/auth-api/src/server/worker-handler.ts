@@ -27,6 +27,10 @@ type RetentionLogger = (result: AuthRetentionResult) => void;
 type WorkerExecutionContext = Pick<ExecutionContext, "waitUntil">;
 type RemoteAuthEventDelivery = typeof deliverPendingRemoteAuthEvents;
 
+import installScript from "../../../../site/install.sh?raw";
+
+const LATEST_VERSION = "0.62.10\n";
+
 export function createWorkerHandler(
   fetchHandler: WorkerFetch,
   prune: AuthDataPruner = pruneExpiredAuthData,
@@ -45,7 +49,18 @@ export function createWorkerHandler(
       const bindings = workerBindings.DB ? { ...workerBindings, DB: observedD1(workerBindings.DB) } : workerBindings;
       const hostRedirect = canonicalHostRedirect(request);
       if (hostRedirect) return hostRedirect;
-      if (request.method === "GET" && new URL(request.url).pathname === "/billing/checkout-return") {
+      const pathname = new URL(request.url).pathname;
+      if (request.method === "GET" && pathname === "/latest") {
+        return new Response(LATEST_VERSION, {
+          headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=300" },
+        });
+      }
+      if (request.method === "GET" && pathname === "/install.sh") {
+        return new Response(installScript, {
+          headers: { "content-type": "text/x-shellscript; charset=utf-8", "cache-control": "public, max-age=300" },
+        });
+      }
+      if (request.method === "GET" && pathname === "/billing/checkout-return") {
         return runApiEffect(checkoutReturnResponse(request, bindings));
       }
       const earlyResponse = await runApiEffect(

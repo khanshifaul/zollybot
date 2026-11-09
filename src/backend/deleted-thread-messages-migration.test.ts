@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
-import { migrateZollyBotDatabase } from "./zollybot-database-schema";
+import { pickTables } from "./migration-test-rows";
+import { LATEST_SCHEMA_VERSION, migrateZollyBotDatabase } from "./zollybot-database-schema";
 
 // Failure modes: the upgrade changes or loses a row of any table; a failed upgrade leaves the table
 // or its marker; a newer or incomplete history is accepted; a deleted id can point to no thread, be
@@ -79,7 +80,9 @@ function deletedTables(db: DatabaseSync) {
 }
 
 function expectHealthy(db: DatabaseSync): void {
-  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({ version: 58 });
+  expect(db.prepare("SELECT MAX(version) AS version FROM schema_migrations").get()).toEqual({
+    version: LATEST_SCHEMA_VERSION,
+  });
   expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
   expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
   expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
@@ -96,7 +99,10 @@ describe("deleted thread messages migration", () => {
       const before = contents(db);
       expect(before.projection_thread_messages).toHaveLength(2);
       migrateZollyBotDatabase(db);
-      expect(contents(db)).toEqual({ ...before, ...LATER_TABLES });
+      expect(pickTables(contents(db), Object.keys({ ...before, ...LATER_TABLES }))).toEqual({
+        ...before,
+        ...LATER_TABLES,
+      });
       expectHealthy(db);
     },
   );
@@ -108,13 +114,16 @@ describe("deleted thread messages migration", () => {
     db.exec(`CREATE TEMP TRIGGER fail_marker BEFORE INSERT ON schema_migrations WHEN new.version=55
       BEGIN SELECT RAISE(ABORT, 'late failure'); END;`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("migration to version 55 failed");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(deletedTables(db)).toEqual([]);
     expect(db.prepare("SELECT version FROM schema_migrations WHERE version=55").all()).toEqual([]);
     expect(db.prepare("PRAGMA foreign_keys").get()).toEqual({ foreign_keys: 1 });
     db.exec("DROP TRIGGER fail_marker");
     migrateZollyBotDatabase(db);
-    expect(contents(db)).toEqual({ ...before, ...LATER_TABLES });
+    expect(pickTables(contents(db), Object.keys({ ...before, ...LATER_TABLES }))).toEqual({
+      ...before,
+      ...LATER_TABLES,
+    });
     expectHealthy(db);
   });
 
@@ -122,11 +131,13 @@ describe("deleted thread messages migration", () => {
     const db = databaseAt(54);
     seed(db);
     const before = contents(db);
-    db.exec("INSERT INTO schema_migrations VALUES(59,'now')");
+    db.exec(`INSERT INTO schema_migrations VALUES(${LATEST_SCHEMA_VERSION + 1},'now')`);
     expect(() => migrateZollyBotDatabase(db)).toThrow("newer than this application supports");
-    db.exec("DELETE FROM schema_migrations WHERE version=59; DELETE FROM schema_migrations WHERE version=20");
+    db.exec(
+      `DELETE FROM schema_migrations WHERE version=${LATEST_SCHEMA_VERSION + 1}; DELETE FROM schema_migrations WHERE version=20`,
+    );
     expect(() => migrateZollyBotDatabase(db)).toThrow("missing version 20");
-    expect(contents(db)).toEqual(before);
+    expect(pickTables(contents(db), Object.keys(before))).toEqual(before);
     expect(deletedTables(db)).toEqual([]);
   });
 

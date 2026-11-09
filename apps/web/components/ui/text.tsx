@@ -1,6 +1,6 @@
 "use client";
-import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const textVariants = cva("", {
@@ -46,9 +46,17 @@ interface TextProps extends TextVariants {
  * // Muted text
  * <Text variant="muted">Secondary information</Text>
  */
-const Text = React.forwardRef<HTMLElement, TextProps>(({ as: Component = "p", className, variant, ...props }, ref) => {
-  return <Component ref={ref as any} className={cn(textVariants({ variant }), className)} {...props} />;
-});
+const Text = React.forwardRef<HTMLElement, TextProps>(
+  ({ as: Component = "p", className, variant, ...props }, ref) => {
+    return (
+      <Component
+        ref={ref as any}
+        className={cn(textVariants({ variant }), className)}
+        {...props}
+      />
+    );
+  },
+);
 Text.displayName = "Text";
 
 export { Text, textVariants };

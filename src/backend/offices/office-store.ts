@@ -24,6 +24,15 @@ export interface EmploymentRecord {
 
 export const UNASSIGNED_OFFICE_ID = "unassigned";
 
+/**
+ * The office that a new employment lands in when the caller names none: the
+ * first registered repository. `null` means no repository is registered yet.
+ */
+export function primaryOfficeId(db: DatabaseSync): string | null {
+  const row = db.prepare("SELECT id FROM offices WHERE repo_path <> '' ORDER BY created_at ASC, id ASC LIMIT 1").get();
+  return isDynamicRecord(row) ? String(row.id) : null;
+}
+
 export function listOffices(db: DatabaseSync): OfficeRecord[] {
   const rows: unknown[] = db
     .prepare("SELECT id, repo_path, name, remote, base_branch FROM offices ORDER BY name")
@@ -92,7 +101,9 @@ export function upsertEmployment(db: DatabaseSync, employment: EmploymentRecord)
 }
 
 /**
- * Gives every agent an employment once. An agent that already has one keeps it,
+ * Gives every agent an employment once. An office role lands in the primary
+ * office, or in Unassigned when no repository is registered. A provisional
+ * Unassigned desk moves to the primary office; any other existing desk is kept,
  * so a later manual move is not undone on the next start.
  */
 export function syncEmployments(
@@ -101,11 +112,20 @@ export function syncEmployments(
   roleFor: (name: string) => Pick<Role, "key" | "scope"> | undefined,
   now = Date.now(),
 ): void {
-  db.prepare(
-    `INSERT INTO offices (id, repo_path, name, remote, base_branch, created_at, last_opened_at)
-     VALUES (?, '', 'Unassigned', NULL, 'main', ?, NULL)
-     ON CONFLICT(id) DO NOTHING`,
-  ).run(UNASSIGNED_OFFICE_ID, now);
+  const primary = primaryOfficeId(db);
+  if (primary === null) {
+    db.prepare(
+      `INSERT INTO offices (id, repo_path, name, remote, base_branch, created_at, last_opened_at)
+       VALUES (?, '', 'Unassigned', NULL, 'main', ?, NULL)
+       ON CONFLICT(id) DO NOTHING`,
+    ).run(UNASSIGNED_OFFICE_ID, now);
+  } else {
+    // Unassigned was a holding desk, not a choice. Move it to the first real office.
+    db.prepare("UPDATE agent_employments SET office_id = ? WHERE office_id = ? AND scope = 'office'").run(
+      primary,
+      UNASSIGNED_OFFICE_ID,
+    );
+  }
 
   const employed = new Set(listEmployments(db).map((employment) => employment.agentId));
   for (const agent of agents) {
@@ -114,7 +134,7 @@ export function syncEmployments(
     const scope: RoleScope = role?.scope ?? "office";
     upsertEmployment(db, {
       agentId: agent.id,
-      officeId: scope === "building" ? null : UNASSIGNED_OFFICE_ID,
+      officeId: scope === "building" ? null : (primary ?? UNASSIGNED_OFFICE_ID),
       roleKey: role?.key ?? "worker",
       scope,
     });

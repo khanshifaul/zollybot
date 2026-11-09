@@ -273,6 +273,10 @@ export const messages = defineMessages("error.provider", {
   "error.provider.hermesNotStarted": "Hermes Agent could not start. Run `hermes --version` in a terminal.",
   "error.provider.hermesVersionUnreadable": "Unable to read the Hermes Agent version.",
   "error.provider.hermesSignIn": "Sign in with Nous Portal, or run `hermes setup` in a terminal, to use Hermes.",
+  "error.provider.ompMissing": "Oh My Pi is not installed. Install it, then try again.",
+  "error.provider.ompNotStarted": "Oh My Pi could not start. Run `omp --version` in a terminal.",
+  "error.provider.ompVersionUnreadable": "Unable to read the Oh My Pi version.",
+  "error.provider.ompSignIn": "Sign in with `omp` on the host computer, then try again.",
   "error.provider.usageLimitReached": "The account reached its usage limit.",
   "error.provider.foreignReasoning":
     "{provider} did not accept the earlier reasoning in this chat, because a different account or API key received it. ZollyBot started a new {provider} session with the chat history. Try again.",

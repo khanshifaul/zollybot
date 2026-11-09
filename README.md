@@ -19,6 +19,15 @@ as they are.
 
 Status: base imported, integration not started.
 
+## Commands
+
+`bun run dev` starts the account API, Signal and the Electron app for this worktree. `bun run
+dev:stop` stops it, and `bun run dev:status` lists every local stack and its ports.
+
+The inherited command reference and its flags are in
+[README.upstream.md — Commands](README.upstream.md#commands). The current, shorter guide is
+[Onboarding: set up](docs/onboarding/setup.md).
+
 ## Base
 
 The desktop shell, runtime adapters, queue substrate and mobile client come from
@@ -27,8 +36,11 @@ build and contributor docs are kept in `README.upstream.md` and `docs/`.
 
 ## Design
 
-- [docs/architecture.md](docs/architecture.md) — how zollybot works, the
-  platform split, the ZollyBot reuse map, and the gate and memory invariants.
+- [docs/architecture/initial-design.md](docs/architecture/initial-design.md) — the initial design
+  record: how zollybot works, the platform split, the ZollyBot reuse map, and the gate and memory
+  invariants.
+- [docs/onboarding/README.md](docs/onboarding/README.md) — start here as a new
+  team member: setup, architecture, repository map, and common workflows.
 
 ## Next
 

@@ -37,6 +37,12 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   new conversation and asks its teammates. A **messaging thread** is one external conversation (a Slack thread) that one agent
   answers in its own execution thread (`projection_messaging_threads`, `MessagingLink`). A Slack
   channel is a `platformChannelId`, never a **channel**.
+- **office**: one repository that carries the zolly office kit (`.agents/zolly/config.toml`). Its row
+  in `offices` holds `repo_path`, name, remote and base branch. An **employment**
+  (`agent_employments`) puts one role in one office, and `AgentSummary.officeId`/`officeName` expose
+  it. An office is not a machine, a server or an agent's **workspace**. The **building** is the set of
+  offices plus a role with `scope = "building"`, such as the butler (`office_id` is null); a profile
+  with no repository uses `UNASSIGNED_OFFICE_ID`.
 - **server**: a joined team server (`ServerSummary`, `servers:*`), the local Team API host
   (`HostStatus`, `host:*`, `src/main/team-api-server.ts`), the account API (`apps/auth-api`,
   `auth:*`), or an MCP server (`createSdkMcpServer`).
@@ -59,6 +65,13 @@ table, IPC channel or product string, or when a term in the code disagrees with 
 - **routine**: a saved instruction for an agent or channel, with one schedule or webhook trigger
   (`EventRoutineTrigger`). Agent routines use `projection_agent_routines`. This is not Claude Code
   `/schedule`.
+- **workspace**: the writable directory of one agent (`AgentSummary.workspacePath`,
+  `~/ZollyBot/Agents/<id>`, created by `AgentStore`). **Workspace only** (`access: "workspace"`)
+  limits writes to that directory, the shared folder, the folders that the user added
+  (`additionalFolders`) and the temporary folders (`workspaceWritableRoots`). It is not the **office**
+  repository, the whole data set of a server (the docs call that a separate workspace), the desktop
+  `WorkspaceShell`, or a **messaging connection**'s Slack workspace. Provider sessions call their
+  additional roots `workspaceRoots`.
 - **webhook routine**: a routine with a webhook trigger (`RoutineWebhookTrigger`). A signed request
   to its URL starts a run. The trigger can require one event type and data filters
   (`projection_routine_webhooks`, `projection_channel_routine_webhooks`). There is no shared event
