@@ -536,6 +536,31 @@ impl App {
         for _ in 0..20 { std::thread::sleep(Duration::from_millis(250)); if control_socket().is_some() { break; } }
     }
 
+    fn load_selected_chat(&mut self) {
+        // Generic selected-agent chat (office 3-pane middle). Butler in lobby uses its own loader.
+        if control_socket().is_none() { return; }
+        if self.chat_last_load.elapsed() < Duration::from_millis(900) { return; }
+        let sel = self.agents.get(self.selected).cloned();
+        let Some(agent) = sel else { return; };
+        if agent.id.is_empty() { return; }
+        self.chat_last_load = Instant::now();
+        let id = control_call("GET",&format!("/v1/agents/{}/messages", agent.id),&[("limit","20")]).ok().and_then(|(s,l)| if s==200 { Some(l) } else { None });
+        if let Some(lines) = id {
+            self.chat_messages.clear();
+            let count = line_value(&lines,"count").and_then(|v| v.parse::<usize>().ok()).unwrap_or(0);
+            for i in 0..count {
+                if let Some(raw)=line_value(&lines,&format!("msg.{i}")) {
+                    let mut pp=raw.splitn(4,'|');
+                    let _id=pp.next().unwrap_or("");
+                    let role=pp.next().unwrap_or("").to_string();
+                    let _at=pp.next().unwrap_or("");
+                    let text=pp.next().unwrap_or("").to_string();
+                    self.chat_messages.push((role,text));
+                }
+            }
+        }
+    }
+
     fn load_butler_chat(&mut self) {
         if control_socket().is_none() { return; }
         if self.chat_last_load.elapsed() < Duration::from_millis(900) { return; }
@@ -1093,21 +1118,62 @@ fn draw(frame: &mut Frame, app: &mut App) {
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
     if !lobby {
-        frame.render_stateful_widget(table, body[0], &mut app.table_state);
-    }
-
-    if !lobby && app.agents.is_empty() {
-        let area = body[0];
-        let inner = ratatui::layout::Rect {
-            x: area.x + 2,
-            y: area.y + 2,
-            width: area.width.saturating_sub(4),
-            height: 2,
-        };
-        frame.render_widget(
-            Paragraph::new(app.message.clone()).style(Style::default().fg(Color::DarkGray)),
-            inner,
-        );
+        // Office 3-pane: left agents, middle chat (terminal), right description. Chat pane is always a terminal.
+        let outer = Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(34), Constraint::Percentage(36), Constraint::Percentage(30)]).split(body[0]);
+        frame.render_stateful_widget(table, outer[0], &mut app.table_state);
+        if app.agents.is_empty() {
+            let area = outer[0];
+            let inner = ratatui::layout::Rect { x: area.x + 2, y: area.y + 2, width: area.width.saturating_sub(4), height: 2 };
+            frame.render_widget(Paragraph::new(app.message.clone()).style(Style::default().fg(Color::DarkGray)), inner);
+        }
+        // sync chat_agent_id to selected agent for middle pane
+        if let Some(agent) = app.agents.get(app.selected).cloned() {
+            if !agent.id.is_empty() && agent.id != app.chat_agent_id {
+                app.chat_agent_id = agent.id.clone();
+                app.chat_input.clear();
+                app.chat_last_load = Instant::now() - Duration::from_secs(99);
+            }
+        }
+        app.load_selected_chat();
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3), Constraint::Length(3)]).split(outer[1]);
+        let mut chat: Vec<Line> = Vec::new();
+        if let Some(agent) = app.agents.get(app.selected) {
+            chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
+            chat.push(Line::from(""));
+        } else {
+            chat.push(Line::from("Select an agent (j/k)."));
+        }
+        if app.chat_messages.is_empty() {
+            chat.push(Line::from(Span::styled("No messages yet. Press / to chat (terminal).", Style::default().fg(Color::DarkGray))));
+        } else {
+            for (role,text) in app.chat_messages.iter().rev().take(14).rev() {
+                let who = if role=="user" { "you" } else { "agent" };
+                let style = if role=="user" { Style::default().fg(Color::Cyan) } else { Style::default().fg(Color::White) };
+                chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
+            }
+        }
+        frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · agent (terminal) ")), chat_layout[0]);
+        let input_title = if app.chat_composing { " message (/ sends) " } else { " / chat · j/k agent " };
+        let input = if app.chat_composing { format!("› {}", app.chat_input) } else { "Press / to write to agent (terminal chat).".to_string() };
+        frame.render_widget(Paragraph::new(input).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(input_title)), chat_layout[1]);
+        // right: description
+        let mut detail: Vec<Line> = Vec::new();
+        match app.agents.get(app.selected) {
+            Some(agent) => {
+                detail.push(Line::from(Span::styled(agent_label(agent), Style::default().add_modifier(Modifier::BOLD))));
+                detail.push(Line::from(agent.title.clone()));
+                detail.push(Line::from(""));
+                detail.push(Line::from(format!("role    {}", if agent.role.is_empty() { "-" } else { &agent.role })));
+                detail.push(Line::from(format!("scope   {}", if agent.scope.is_empty() { "-" } else { &agent.scope })));
+                detail.push(Line::from(format!("office  {}", if agent.office.is_empty() { "-" } else { &agent.office })));
+                detail.push(Line::from(format!("model   {}", agent.model)));
+                detail.push(Line::from(format!("via     {}", agent.provider)));
+                detail.push(Line::from(""));
+                detail.push(Line::from(Span::styled("Learn/teach: user teaches Butler/agent about self/business/work/env. Butler can self-improve instructions and switch provider/model/effort when asked.", Style::default().fg(Color::DarkGray))));
+            }
+            None => detail.push(Line::from("No seat selected.")),
+        }
+        frame.render_widget(Paragraph::new(detail).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" agent ")), outer[2]);
     }
 
     if lobby {
@@ -1163,8 +1229,9 @@ fn draw(frame: &mut Frame, app: &mut App) {
             .border_type(ratatui::widgets::BorderType::Rounded)
             .title(" offices ");
         frame.render_widget(Paragraph::new(offices).block(offices_block), body[1]);
-    } else {
-    // The right pane: the selected seat, the way the app shows an agent's details.
+    }
+    if false {
+    // legacy right pane (now in 3-pane above)
     let selected = app.agents.get(app.selected);
     let mut detail: Vec<Line> = Vec::new();
     match selected {
