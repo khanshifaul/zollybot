@@ -1335,14 +1335,14 @@ fn draw(frame: &mut Frame, app: &mut App) {
         format!(" {} agents · {} ", app.agents.len(), app.agents[current].name)
     };
     let hints = if app.prefix {
-        "PREFIX · o floors · a all · l lobby · c connect · i account · q quit".to_string()
+        "LEADER · f floors · a all · l lobby · c connect · i account · w window · s split · q quit".to_string()
     } else if let Some(session) = &app.session {
         format!(
-            "{} · ctrl+space q quit · prefix+j/k agent · prefix+f office · prefix+r refresh · prefix+i account · prefix+o sign out · prefix+c connect ",
+            "{} · leader=ctrl+space · j/k motion · f floors · w window · s split · r refresh · q quit ",
             session.email
         )
     } else {
-        "ctrl+space q quit · prefix+j/k agent · prefix+f office ".to_string()
+        "leader=ctrl+space · j/k motion · f floors · q quit ".to_string()
     };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
@@ -1553,7 +1553,8 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     app.prefix = true;
                     continue;
                 }
-                // Everything after onboarding is prefix-only. Bare keys (typing, search, chat) pass through.
+                // Neovim-style: motions are bare (j/k/h/l/arrows), actions are Leader-prefixed.
+                // This lets typing/search/terminal text flow without triggering shortcuts. Leader = Ctrl+Space (nvim leader).
                 if app.prefix {
                     app.prefix = false;
                     match key.code {
@@ -1564,14 +1565,26 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                         KeyCode::Char('i') => app.open_sign_in(),
                         KeyCode::Char('u') => app.sign_out(),
                         KeyCode::Char('r') => { app.load(); app.load_butler_chat(); app.refresh_account(); }
-                        KeyCode::Char('r') => { app.load(); app.load_butler_chat(); app.refresh_account(); }
                         KeyCode::Char('q') => app.quit = true,
-                        KeyCode::Char('j') | KeyCode::Down => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
-                        KeyCode::Char('k') | KeyCode::Up => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(-1); } else { app.table_previous(); } }
+                        KeyCode::Char('w') => { app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
+                        KeyCode::Char('s') => { app.open_office_picker(); }
                         KeyCode::Enter => { if app.office_filter.as_deref() == Some("building") { app.open_lobby_selection(); } }
                         _ => {}
                     }
                     continue;
+                }
+                // Bare Neovim motions (no Leader) for navigation.
+                match key.code {
+                    KeyCode::Char('j') | KeyCode::Down => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
+                    KeyCode::Char('k') | KeyCode::Up => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(-1); } else { app.table_previous(); } }
+                    KeyCode::Char('h') | KeyCode::Left => { app.table_previous(); }
+                    KeyCode::Char('l') if !key.modifiers.is_empty() => {}
+                    KeyCode::Char('l') => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
+                    KeyCode::Char('f') | KeyCode::Char('c') | KeyCode::Char('i') | KeyCode::Char('o') | KeyCode::Char('r') | KeyCode::Char('q') | KeyCode::Char('a') | KeyCode::Char('w') | KeyCode::Char('s') | KeyCode::Esc => {
+                        // No bare action keys: these need Leader (Ctrl+Space). Ignore so typing/search/terminal remains.
+                        continue;
+                    }
+                    _ => {}
                 }
                 // No bare action keys: q, j/k, f, r, c, i, o, Esc do nothing without prefix.
                 if let Event::Key(_) = event {
