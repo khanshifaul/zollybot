@@ -121,23 +121,31 @@ export function syncEmployments(
     ).run(UNASSIGNED_OFFICE_ID, now);
   } else {
     // Unassigned was a holding desk, not a choice. Move it to the first real office.
+    // Building scope (Butler) is never moved into an office; it stays in the building.
     db.prepare("UPDATE agent_employments SET office_id = ? WHERE office_id = ? AND scope = 'office'").run(
       primary,
       UNASSIGNED_OFFICE_ID,
     );
   }
-
-  const employed = new Set(listEmployments(db).map((employment) => employment.agentId));
+  const byId = new Map(listEmployments(db).map((employment) => [employment.agentId, employment]));
   for (const agent of agents) {
-    if (employed.has(agent.id)) continue;
     const role = roleFor(agent.name);
-    const scope: RoleScope = role?.scope ?? "office";
-    upsertEmployment(db, {
+    if (role?.scope === "building") {
+      const employment: EmploymentRecord = { agentId: agent.id, officeId: null, roleKey: role.key, scope: "building" };
+      const prev = byId.get(agent.id);
+      if (!prev || prev.roleKey !== employment.roleKey || prev.scope !== "building" || prev.officeId !== null) upsertEmployment(db, employment);
+      continue;
+    }
+    const existing = byId.get(agent.id);
+    if (existing) continue;
+    const scope: RoleScope = "office";
+    const employment: EmploymentRecord = {
       agentId: agent.id,
-      officeId: scope === "building" ? null : (primary ?? UNASSIGNED_OFFICE_ID),
+      officeId: primary ?? UNASSIGNED_OFFICE_ID,
       roleKey: role?.key ?? "worker",
       scope,
-    });
+    };
+    upsertEmployment(db, employment);
   }
   // An employment of an agent that is gone is a desk nobody holds.
   db.exec("DELETE FROM agent_employments WHERE agent_id NOT IN (SELECT agent_id FROM projection_agents)");

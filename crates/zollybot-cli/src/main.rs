@@ -540,9 +540,11 @@ impl App {
         if control_socket().is_none() { return; }
         if self.chat_last_load.elapsed() < Duration::from_millis(900) { return; }
         self.chat_last_load = Instant::now();
-        let butler = self.all_agents.iter().find(|a| a.scope=="building" || a.role=="butler" || a.name.eq_ignore_ascii_case("butler")).cloned();
-        let Some(b) = butler else { self.chat_messages.clear(); self.chat_agent_id.clear(); return; };
-        self.chat_agent_id = b.id.clone();
+        if self.chat_agent_id.is_empty() {
+            let butler = self.all_agents.iter().find(|a| a.scope=="building" || a.role=="butler" || a.name.eq_ignore_ascii_case("butler")).cloned();
+            if let Some(b) = butler { self.chat_agent_id = b.id.clone(); }
+        }
+        if self.chat_agent_id.is_empty() { self.chat_messages.clear(); return; }
         let id = control_call("GET",&format!("/v1/agents/{}/messages", self.chat_agent_id),&[("limit","20")]).ok().and_then(|(s,l)| if s==200 { Some(l) } else if self.chat_agent_id.is_empty() { control_call("GET","/v1/butler/messages",&[("limit","20")]).ok().and_then(|(s2,l2)| if s2==200 { Some(l2)} else {None}) } else { None });
         if let Some(lines) = id {
             self.chat_messages.clear();
@@ -600,7 +602,7 @@ impl App {
             .iter()
             .filter(|agent| match self.office_filter.as_deref() {
                 None => true,
-                Some("building") => agent.scope == "building",
+                Some("building") => agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || !agent.id.is_empty() && agent.id == self.chat_agent_id,
                 Some(id) => agent.office_id == id,
             })
             .cloned()
@@ -615,13 +617,17 @@ impl App {
     /// `(filter, label, headcount)`; the first is every floor, the second the lobby.
     fn floor_choices(&self) -> Vec<(Option<String>, String, usize)> {
         // The lobby leads and is never a closable floor: it is the building itself.
-        let lobby = self.all_agents.iter().filter(|agent| agent.scope == "building").count();
+        let lobby = self
+            .all_agents
+            .iter()
+            .filter(|agent| agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || !agent.id.is_empty() && agent.id == self.chat_agent_id)
+            .count();
         let mut choices = vec![(Some("building".to_string()), "Lobby".to_string(), lobby)];
         // Then every floor that holds a seat, named from the employment; a discovered
         // office with no staff still gets a floor so it can be opened.
         let mut seen: Vec<String> = Vec::new();
         for agent in &self.all_agents {
-            if agent.scope == "building" || agent.office_id.is_empty() || seen.contains(&agent.office_id) {
+            if agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || (!agent.id.is_empty() && agent.id == self.chat_agent_id) || agent.office_id.is_empty() || seen.contains(&agent.office_id) {
                 continue;
             }
             seen.push(agent.office_id.clone());
@@ -1052,12 +1058,16 @@ fn draw(frame: &mut Frame, app: &mut App) {
 
     if lobby {
         // The lobby is the butler's room: the chat in the middle, the offices beside it.
-        let butler = app.all_agents.iter().find(|agent| agent.scope == "building");
+        let butler = app.all_agents.iter().find(|agent| agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || (!agent.id.is_empty() && agent.id == app.chat_agent_id));
         let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3), Constraint::Length(3)]).split(body[0]);
         let mut chat: Vec<Line> = Vec::new();
         if let Some(agent) = butler {
             chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
             chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment. Butler can self-improve its instructions and change provider, model, and effort when you ask.", Style::default().fg(Color::DarkGray))));
+            chat.push(Line::from(""));
+        } else if !app.chat_agent_id.is_empty() {
+            chat.push(Line::from(Span::styled("Butler · Concierge", Style::default().add_modifier(Modifier::BOLD))));
+            chat.push(Line::from(Span::styled("Butler agent is connected. Chat is available below.", Style::default().fg(Color::DarkGray))));
             chat.push(Line::from(""));
         } else {
             chat.push(Line::from(Span::styled("Butler · Concierge", Style::default().add_modifier(Modifier::BOLD))));
