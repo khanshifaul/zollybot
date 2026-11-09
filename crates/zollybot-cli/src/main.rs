@@ -815,6 +815,20 @@ impl App {
                     }
                     return;
                 }
+                // (1) 5% icon gutter: leftmost columns select agent; click sets selected/chat.
+                if mouse.column < 5 && mouse.row >= 2 {
+                    let index = (mouse.row - 2) as usize;
+                    if index < self.agents.len() {
+                        self.select(index);
+                        if let Some(agent) = self.agents.get(index).cloned() {
+                            if !agent.id.is_empty() {
+                                self.chat_agent_id = agent.id.clone();
+                                self.chat_last_load = Instant::now() - Duration::from_secs(99);
+                            }
+                        }
+                    }
+                    return;
+                }
                 if mouse.row >= 2 {
                     let index = (mouse.row - 2) as usize;
                     if index < self.agents.len() {
