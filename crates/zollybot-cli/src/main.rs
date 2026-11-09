@@ -1338,11 +1338,11 @@ fn draw(frame: &mut Frame, app: &mut App) {
         "PREFIX · o floors · a all · l lobby · c connect · i account · q quit".to_string()
     } else if let Some(session) = &app.session {
         format!(
-            "{} · j/k agent · f office · c connect · i account · o sign out · r refresh · q quit ",
+            "{} · ctrl+space q quit · prefix+j/k agent · prefix+f office · prefix+r refresh · prefix+i account · prefix+o sign out · prefix+c connect ",
             session.email
         )
     } else {
-        "j/k agent · f office · c connect · i sign in · r refresh · q quit ".to_string()
+        "ctrl+space q quit · prefix+j/k agent · prefix+f office ".to_string()
     };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
@@ -1491,34 +1491,30 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 if key.kind != KeyEventKind::Press {
                     continue;
                 }
-                if app.onboarding == OnboardingStep::Language {
+                if app.onboarding == OnboardingStep::Language || (app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none()) {
+                    // Onboarding is the only non-prefix mode: letters for setup, Enter to continue.
+                    // After onboarding, every action needs Ctrl+Space prefix (Herdr-style).
+                    let is_lang = app.onboarding == OnboardingStep::Language;
                     match key.code {
-                        KeyCode::Char('q') => { app.quit = true; }
-                        KeyCode::Char('j') | KeyCode::Down => { app.lang_selected = (app.lang_selected + 1).min(LANGUAGES.len()-1); }
-                        KeyCode::Char('k') | KeyCode::Up => { app.lang_selected = app.lang_selected.saturating_sub(1); }
-                        KeyCode::Enter => {
+                        KeyCode::Char('q') if !key.modifiers.is_empty() => { app.quit = true; }
+                        KeyCode::Char('j') | KeyCode::Down if is_lang => { app.lang_selected = (app.lang_selected + 1).min(LANGUAGES.len()-1); }
+                        KeyCode::Char('k') | KeyCode::Up if is_lang => { app.lang_selected = app.lang_selected.saturating_sub(1); }
+                        KeyCode::Enter if is_lang => {
                             app.tui_config.language = LANGUAGES[app.lang_selected].0.to_string();
                             let _ = save_tui_config(&app.tui_config);
                             if app.session.is_some() { app.onboarding = OnboardingStep::Done; app.tui_config.onboarding_done = true; let _ = save_tui_config(&app.tui_config); app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
                             else { app.onboarding = OnboardingStep::SignIn; app.open_sign_in(); }
                         }
-                        _ => {}
-                    }
-                    continue;
-                }
-                if app.onboarding == OnboardingStep::SignIn && app.sign_in.is_none() {
-                    match key.code {
-                        KeyCode::Char('q') => { app.quit = true; }
-                        KeyCode::Esc => { app.onboarding = OnboardingStep::Language; }
-                        KeyCode::Char('s') => { app.onboarding = OnboardingStep::Done; app.tui_config.onboarding_done = true; let _ = save_tui_config(&app.tui_config); app.office_filter = Some("building".to_string()); app.apply_office_filter(); app.message = "Skipped sign-in. Press i to sign in later.".to_string(); }
-                        KeyCode::Enter | KeyCode::Char('i') => { app.open_sign_in(); }
+                        KeyCode::Esc if !is_lang => { app.onboarding = OnboardingStep::Language; }
+                        KeyCode::Char('s') if !is_lang => { app.onboarding = OnboardingStep::Done; app.tui_config.onboarding_done = true; let _ = save_tui_config(&app.tui_config); app.office_filter = Some("building".to_string()); app.apply_office_filter(); app.message = "Skipped sign-in. Press prefix+i to sign in later.".to_string(); }
+                        KeyCode::Enter | KeyCode::Char('i') if !is_lang => { app.open_sign_in(); }
                         _ => {}
                     }
                     continue;
                 }
                 if app.office_picker.is_some() {
                     match key.code {
-                        KeyCode::Esc | KeyCode::Char('f') => app.office_picker = None,
+                        KeyCode::Esc | KeyCode::Char('f') if key.modifiers.is_empty() => app.office_picker = None,
                         KeyCode::Enter => app.choose_office(),
                         KeyCode::Char('j') | KeyCode::Down => app.move_office_picker(1),
                         KeyCode::Char('k') | KeyCode::Up => app.move_office_picker(-1),
@@ -1528,19 +1524,15 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 }
                 if app.sign_in.is_some() {
                     match key.code {
-                        KeyCode::Char('q') if key.modifiers.is_empty() && false => { app.quit = true; } // keep q for email/code input
                         KeyCode::Esc => app.sign_in = None,
                         KeyCode::Enter => app.submit_sign_in(),
                         KeyCode::Backspace => {
                             if let Some(sign_in) = app.sign_in.as_mut() {
                                 match sign_in.stage {
-                                    SignInStage::Email => {
-                                        sign_in.email.pop();
-                                    }
-                                    SignInStage::Code => {
-                                        sign_in.code.pop();
-                                    }
+                                    SignInStage::Email => { sign_in.email.pop(); }
+                                    SignInStage::Code => { sign_in.code.pop(); }
                                 }
+                                let _ = ();
                             }
                         }
                         KeyCode::Char(character) => {
@@ -1555,63 +1547,36 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     }
                     continue;
                 }
-                if key.modifiers.contains(KeyModifiers::CONTROL) && key.code == KeyCode::Char('b') {
+                // Prefix: Ctrl+Space (Herdr-style). Tmux also sends Ctrl+B; accept both as local prefix.
+                let prefixed = key.modifiers.contains(KeyModifiers::CONTROL) && (key.code == KeyCode::Char(' ') || key.code == KeyCode::Char('\u{0}') || key.code == KeyCode::Char('b'));
+                if prefixed {
                     app.prefix = true;
                     continue;
                 }
+                // Everything after onboarding is prefix-only. Bare keys (typing, search, chat) pass through.
                 if app.prefix {
                     app.prefix = false;
                     match key.code {
                         KeyCode::Char('o') | KeyCode::Char('f') => app.open_office_picker(),
-                        KeyCode::Char('a') => {
-                            app.office_filter = None;
-                            app.apply_office_filter();
-                        }
-                        KeyCode::Char('l') => {
-                            app.office_filter = Some("building".to_string());
-                            app.apply_office_filter();
-                        }
+                        KeyCode::Char('a') => { app.office_filter = None; app.apply_office_filter(); }
+                        KeyCode::Char('l') => { app.office_filter = Some("building".to_string()); app.apply_office_filter(); }
                         KeyCode::Char('c') => app.toggle_connect(),
                         KeyCode::Char('i') => app.open_sign_in(),
-                        KeyCode::Char('r') => {
-                            app.load();
-                            app.refresh_account();
-                        }
+                        KeyCode::Char('u') => app.sign_out(),
+                        KeyCode::Char('r') => { app.load(); app.load_butler_chat(); app.refresh_account(); }
+                        KeyCode::Char('r') => { app.load(); app.load_butler_chat(); app.refresh_account(); }
                         KeyCode::Char('q') => app.quit = true,
+                        KeyCode::Char('j') | KeyCode::Down => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
+                        KeyCode::Char('k') | KeyCode::Up => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(-1); } else { app.table_previous(); } }
+                        KeyCode::Enter => { if app.office_filter.as_deref() == Some("building") { app.open_lobby_selection(); } }
                         _ => {}
                     }
                     continue;
                 }
-                match key.code {
-                    KeyCode::Esc if app.connect.is_some() => app.connect = None,
-                    KeyCode::Char('c') => app.toggle_connect(),
-                    KeyCode::Char('i') => app.open_sign_in(),
-                    KeyCode::Char('o') => app.sign_out(),
-                    KeyCode::Char('q') | KeyCode::Esc => app.quit = true,
-                    KeyCode::Char('j') | KeyCode::Down => {
-                        if app.office_filter.as_deref() == Some("building") {
-                            app.move_lobby_selection(1);
-                        } else {
-                            app.table_next();
-                        }
-                    }
-                    KeyCode::Char('k') | KeyCode::Up => {
-                        if app.office_filter.as_deref() == Some("building") {
-                            app.move_lobby_selection(-1);
-                        } else {
-                            app.table_previous();
-                        }
-                    }
-                    KeyCode::Enter if app.office_filter.as_deref() == Some("building") => {
-                        app.open_lobby_selection();
-                    }
-                    KeyCode::Char('f') => app.open_office_picker(),
-                    KeyCode::Char('r') => {
-                        app.load();
-                        app.refresh_account();
-                        app.message = "refreshed".into();
-                    }
-                    _ => {}
+                // No bare action keys: q, j/k, f, r, c, i, o, Esc do nothing without prefix.
+                if let Event::Key(_) = event {
+                    // fall through: ignore stray bare keys (typing for search/terminal remains via harness)
+                    continue;
                 }
             }
         }
