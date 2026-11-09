@@ -684,14 +684,18 @@ impl App {
     fn handle_mouse(&mut self, mouse: MouseEvent) {
         match mouse.kind {
             MouseEventKind::ScrollDown => {
-                if self.office_filter.as_deref() == Some("building") {
+                if mouse.column > 62 {
+                    self.move_lobby_selection(1);
+                } else if self.office_filter.as_deref() == Some("building") {
                     self.move_lobby_selection(1);
                 } else {
                     self.table_next();
                 }
             }
             MouseEventKind::ScrollUp => {
-                if self.office_filter.as_deref() == Some("building") {
+                if mouse.column > 62 {
+                    self.move_lobby_selection(-1);
+                } else if self.office_filter.as_deref() == Some("building") {
                     self.move_lobby_selection(-1);
                 } else {
                     self.table_previous();
@@ -703,12 +707,62 @@ impl App {
                         let filter = self.floor_choices()[index].0.clone();
                         self.office_filter = filter;
                         self.apply_office_filter();
+                        return;
                     }
-                } else if mouse.row >= 2 {
+                }
+                if self.office_filter.as_deref() == Some("building") {
+                    if mouse.column > 62 {
+                        let lane = self.lobby_targets();
+                        let row = mouse.row.saturating_sub(1) as usize;
+                        if row < lane.len() {
+                            self.lobby_selected = row;
+                            self.message = "Selected office.".to_string();
+                        }
+                        return;
+                    }
+                    if mouse.row > 15 {
+                        self.chat_composing = true;
+                    } else if mouse.row >= 2 {
+                        let index = (mouse.row - 2) as usize;
+                        if index < self.agents.len() {
+                            self.select(index);
+                        }
+                    }
+                    return;
+                }
+                if mouse.row >= 2 {
                     let index = (mouse.row - 2) as usize;
                     if index < self.agents.len() {
                         self.select(index);
                     }
+                }
+            }
+            MouseEventKind::Drag(MouseButton::Left) => {
+                if self.office_filter.as_deref() == Some("building") {
+                    if mouse.column > 62 {
+                        let row = mouse.row.saturating_sub(1) as usize;
+                        let len = self.lobby_targets().len();
+                        if row < len {
+                            self.lobby_selected = row;
+                        }
+                    } else if mouse.row >= 2 {
+                        let index = (mouse.row - 2) as usize;
+                        if index < self.agents.len() {
+                            self.select(index);
+                        }
+                    }
+                }
+            }
+            MouseEventKind::Down(MouseButton::Right) => {
+                if mouse.column > 62 {
+                    let lane = self.lobby_targets();
+                    let row = mouse.row.saturating_sub(1) as usize;
+                    if row < lane.len() {
+                        self.lobby_selected = row;
+                        self.open_lobby_selection();
+                    }
+                } else if self.office_filter.as_deref() == Some("building") {
+                    self.chat_composing = true;
                 }
             }
             _ => {}
