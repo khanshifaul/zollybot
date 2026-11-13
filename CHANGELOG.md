@@ -6,6 +6,16 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.63.0] - 2026-11-13
+
+### Added
+
+- Local-only auth: desktop runs without a Cloudflare account.
+- Butler agent: 13 skills, human-like memory, ponder service, memory inspector.
+- TUI: interactive butler chat, PTY harness toggle, input forwarding, mouse support.
+- Office merge: IPC, web office screen, mobile capability.
+- Mobile: no-login connect via private network.
+
 ## [0.62.10] - 2026-11-07
 
 ### Added
