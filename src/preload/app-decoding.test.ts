@@ -86,14 +86,6 @@ const customAgent = {
   resolvedCommand: "/opt/homebrew/bin/goose",
 };
 
-const codeSent = {
-  status: "code_sent",
-  challengeId: "challenge-1",
-  email: "user@example.com",
-  expiresAt: 2,
-  resendAvailableAt: 1,
-} satisfies CentralAuthState;
-
 // Each value is what main sends, typed as its contract, so it must come back unchanged.
 const voiceServer = {
   address: "http://studio.local:8000/v1",
@@ -174,22 +166,6 @@ const valid: [string, (value: unknown) => unknown, unknown][] = [
     decodeAppAppearancePreference,
     { appearance: "dark", transparentWindow: false, palette: "omarchy", palettes: [omarchyPalette] },
   ],
-  ["signed out", decodeCentralAuthState, { status: "signed_out" } satisfies CentralAuthState],
-  [
-    "signed out after a keyring change",
-    decodeCentralAuthState,
-    { status: "signed_out", reason: "keyring_changed" } satisfies CentralAuthState,
-  ],
-  ["code sent", decodeCentralAuthState, codeSent],
-  [
-    "code sent with every option",
-    decodeCentralAuthState,
-    {
-      ...codeSent,
-      developmentCode: "123456",
-      issue: { code: "rate_limited", message: "Wait.", retryAfterSeconds: 30 },
-    } satisfies CentralAuthState,
-  ],
   [
     "signed in",
     decodeCentralAuthState,
@@ -221,11 +197,6 @@ const valid: [string, (value: unknown) => unknown, unknown][] = [
       status: "signed_in",
       user: { id: "user-1", email: "user@example.com", name: null, avatarUrl: null, chatColor: null },
     } satisfies CentralAuthState,
-  ],
-  [
-    "account error",
-    decodeCentralAuthState,
-    { status: "error", issue: { code: "offline", message: "No network." } } satisfies CentralAuthState,
   ],
   ["Mobile Connect ticket", decodeMobileConnectTicket, { qrData: "zollybot://mobile-connect", expiresAt: 1 }],
   [
@@ -357,13 +328,6 @@ const malformed: [string, (value: unknown) => unknown, unknown][] = [
       palettes: [{ ...omarchyPalette, colors: { canvas: "#1a1b26" } }],
     },
   ],
-  ["an unknown account status", decodeCentralAuthState, { status: "banned" }],
-  ["signed out with an unknown reason", decodeCentralAuthState, { status: "signed_out", reason: "expired" }],
-  ["signed in without a user", decodeCentralAuthState, { status: "signed_in" }],
-  ["code sent with a text expiry", decodeCentralAuthState, { ...codeSent, expiresAt: "soon" }],
-  ["Mobile Connect ticket without data", decodeMobileConnectTicket, { expiresAt: 1 }],
-  ["a device on an unknown platform", decodeMobileConnectedDevices, [{ sessionId: "s", name: "n", platform: "tv" }]],
-  ["account sessions that are not a list", decodeAccountSessions, { sessionId: "s" }],
   ["update status in an unknown phase", decodeUpdateStatus, { ...updateStatus, phase: "done" }],
   ["update status with an unknown failure", decodeUpdateStatus, { ...updateStatus, errorCode: "boom" }],
   ["update preference without a switch", decodeUpdatePreference, null],

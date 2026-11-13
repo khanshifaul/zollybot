@@ -2,7 +2,6 @@ import { TEAM_AGENT_CREATE_MODEL_CAPABILITY } from "@zollybot/contracts/team-pro
 import { FIRST_AGENT_SUGGESTIONS, FirstAgentSetup } from "@zollybot/ui/features/agents/FirstAgentSetup";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import { useProviders } from "../../providers";
-import { useAuth } from "../account/account-context";
 import { useCustomAgents } from "../custom-agents/custom-agents-context";
 import { useSetup } from "../onboarding/onboarding-context";
 import { useServerSettings } from "../servers/server-settings";
@@ -10,7 +9,6 @@ import { useServers } from "../servers/servers-context";
 import { useAgentActions } from "./agent-actions";
 import { resolveCreationModel } from "./agent-creation-model";
 import { useAgents } from "./agents-context";
-
 /**
  * The create-an-agent form, which takes over the conversation pane instead of
  * opening over it. `mode` is derived from the agent list rather than passed in
@@ -43,7 +41,6 @@ export function WorkspaceAgentSetup() {
     activeCustomProviders,
   } = useProviders();
   const { openServerSettings } = useServerSettings();
-  const auth = useAuth();
   /**
    * The released Team API create route does not carry the account, so only an agent of this computer
    * can start on an account other than the provider's own sign-in.
@@ -112,7 +109,7 @@ export function WorkspaceAgentSetup() {
       modelOptions={createModelSupported() ? modelOptions() : undefined}
       agentStatus={agentStatus()}
       accountChoice={accountChoice()}
-      accountUsage={accountChoice() ? auth.accountUsage() : undefined}
+      accountUsage={undefined}
       runtimeStatuses={localProviderDownloads() ? providerRuntimeStatuses() : undefined}
       customProviders={activeCustomProviders()}
       // The custom agents are this computer's. A joined host's picker counts its own from its models.

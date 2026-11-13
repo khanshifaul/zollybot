@@ -199,7 +199,7 @@ import {
   withStoryForeignProvider,
 } from "./fixtures";
 import { mockAgentAnalytics, mockHostAnalytics } from "./mock-agent-analytics";
-import { createMockAuth, type MockAuthOptions } from "./mock-auth";
+
 import { createMockBilling, previewBillingServers } from "./mock-billing";
 import { createMockBitwardenConnector } from "./mock-bitwarden-connector";
 import { createMockBrowser, type MockBrowserOptions } from "./mock-browser";
@@ -231,7 +231,6 @@ import { type MockWorkflowSeed, mockWorkflows } from "./mock-workflows";
 export interface MockZollyBotOptions
   extends MockProviderRuntimeOptions,
     MockVoiceOptions,
-    MockAuthOptions,
     MockBrowserOptions,
     MockTeamOptions,
     MockSkillsOptions,
@@ -1156,7 +1155,7 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
   );
   const mockProviderRuntimes = createMockProviderRuntimes(options, runtime);
   const mockVoice = createMockVoice(options, runtime);
-  const mockAuth = createMockAuth(options, runtime);
+  const mockAuth = { emitAuthState: () => {}, dispose: () => {} };
   const mockSkills = createMockSkills(options, (agentId) => emitAgentEvent({ type: "skills-changed", agentId }));
   const { installedSkills, readInstalledSkills } = mockSkills;
   const mockBrowser = createMockBrowser(options, runtime, emitAgentEvent);
@@ -1506,7 +1505,6 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
     routineResults: mockRoutineResults(routines, options, (agentId) =>
       emitAgentEvent({ type: "routines-changed", agentId }),
     ),
-    auth: mockAuth.auth,
     skills: mockSkills.skills,
     hostedSites: {
       // The preview server is on the Starter plan.
@@ -3556,6 +3554,13 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
       discard: async () => undefined,
     },
     remoteDesktop: mockTeam.remoteDesktop,
+    officeTasks: {
+      list: async () => [],
+      get: async () => null,
+      setReviewPass: async () => undefined,
+      merge: async () => ({ ok: true }),
+      isPrReviewer: async () => false,
+    },
   };
 
   return {

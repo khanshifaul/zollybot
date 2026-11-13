@@ -8,7 +8,7 @@ import {
 import { useText } from "@zollybot/ui/text";
 import { createMemo, Show, untrack } from "solid-js";
 import { desktopAnalytics } from "../../analytics";
-import { useAuth } from "../account/account-context";
+
 import { useAgents } from "../agents/agents-context";
 import { serverRoleCanAdminister, serverSupportsCapability } from "../servers/server-capabilities";
 import { useServers } from "../servers/servers-context";
@@ -54,7 +54,7 @@ export function WorkflowsPage(props: { serverId: string }) {
 /** `admin`: an owner or admin of the server, who may make a webhook secret. The host checks it again. */
 function WorkflowsCanvas(props: { host: WorkflowHost; admin: boolean }) {
   const { agentList, agentStatus, modelOptions } = useAgents();
-  const { signedInAccount } = useAuth();
+
   // The keyed parent mounts a new canvas for each server, so the host does not change.
   const workflows = createWorkflowsController(
     untrack(() => props.host),
@@ -85,7 +85,7 @@ function WorkflowsCanvas(props: { host: WorkflowHost; admin: boolean }) {
     imageModels: [],
     files: [],
     get self() {
-      return signedInAccount()?.name ?? undefined;
+      return undefined;
     },
   };
   // A channel output needs a messaging place. Without one, a new output posts a notification. Only an

@@ -1,4 +1,3 @@
-import type { CentralAuthUser } from "@zollybot/contracts/ipc";
 import { AGENT_TASKS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-tasks-v1";
 import {
   ConversationLoadNotice,
@@ -9,6 +8,7 @@ import {
 import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, Show } from "solid-js";
 import { useAccountUsagePolling } from "./features/account/account-usage-polling";
+import type { LocalAuthUser } from "./features/account/local-auth-context";
 import { useAgents } from "./features/agents/agents-context";
 import { WorkspaceAgentSetup } from "./features/agents/WorkspaceAgentSetup";
 import { useChannels } from "./features/channels/channels-context";
@@ -20,6 +20,8 @@ import { WorkspaceConversation } from "./features/conversation/WorkspaceConversa
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
 import { OfficeTabStrip } from "./features/offices/OfficeTabStrip";
+import { OfficeScreen } from "./features/offices/OfficeScreen";
+import { ButlerMemoryInspector } from "./features/offices/ButlerMemoryInspector";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
 import { WorkspaceRoutineFlows } from "./features/routine-flows/WorkspaceRoutineFlows";
@@ -51,21 +53,12 @@ import { WorkspaceOverlays } from "./WorkspaceOverlays";
  *
  * Each pane below reads the domains it needs through its own `use*()`, so this
  * component reads only what the frame itself decides with. That is the point of
- * the split - the shell used to call every context in the renderer because it
- * assembled every pane's props, and a change to any one pane went through here.
- * Two derived values stay because they choose *which* pane renders, and one of
- * them is passed on rather than derived twice.
+ * the panes: they do not need to be passed data from above.
  *
- * The order of the children is the paint order the stylesheet expects, and the
- * middle-pane `<Show>`s are mutually exclusive by construction: a blocked remote
- * server wins over everything, then the Tasks page of the rail, then a joined server's provider step,
- * then the Agent form, then a channel, then a person, then a Agent: its chat, or on the Routines view
- * its routine canvas. The Tasks page hides the agent list until the user shows it. A row of the list
- * closes the page, as each row calls `showAgents`. The other pages of the rail - schedule, usage or settings - sit outside that
- * group and inert it.
+ * The frame has no account; it is local-only now.
  */
 export function WorkspaceShell(props: {
-  account: () => CentralAuthUser;
+  account: () => LocalAuthUser;
   /**
    * The startup splash covers the window and does not let heavy views mount yet. The first load then
    * shows no screen of its own, only its toast, and the chat waits to mount.
@@ -97,7 +90,8 @@ export function WorkspaceShell(props: {
     refreshServers,
   } = useServers();
   const { remoteDesktopWorkspaceVisible } = useRemoteDesktop();
-  const { agentSetupOpen, serverOnboardingOpen, activeAgent, agentList, agentListSettled } = useAgents();
+  const agents = useAgents();
+  const { agentSetupOpen, serverOnboardingOpen, activeAgent, agentList, agentListSettled } = agents;
   const { conversations, retryConversation } = useConversation();
   const activeConversation = () => conversations[activeAgent()?.id ?? ""];
   const { activeDirectMember } = useDirectMessages();
@@ -233,6 +227,8 @@ export function WorkspaceShell(props: {
   // first load after its exit mounts a new screen.
   const [loadingCover, setLoadingCover] = createSignal(false);
   const [coverOpen, setCoverOpen] = createSignal(false);
+  const [showOfficeScreen, setShowOfficeScreen] = createSignal(false);
+  const [showButlerMemory, setShowButlerMemory] = createSignal(false);
   // The chat is the heaviest view to mount. It waits while a loading screen moves its crew, so they do
   // not stutter, and mounts while the screen fades.
   const chatHeld = () => !!props.behindSplash?.() || (loadingCover() && !coverOpen());
@@ -306,9 +302,11 @@ export function WorkspaceShell(props: {
     <ConnectorsProvider>
       {/* The page rail sits at the left of the frame. The frame is the card of the page that the rail selects. */}
       <div class="app-window">
-        <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
+        <Show when={!(agents.activeOfficeId() === "building" || agents.activeOfficeId() === null)}>
+          <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
+        </Show>
         <WorkspaceFrame
-          strip={chatWindow ? undefined : <OfficeTabStrip />}
+          strip={chatWindow ? undefined : <><OfficeTabStrip /><button onClick={() => setShowOfficeScreen(true)}>Offices</button><button onClick={() => setShowButlerMemory(true)}>Butler memory</button></>}
           class={chatWindow ? "app-frame-chat-window" : undefined}
           compact={layout.leftPanelCompact()}
           initialLoading={!serversLoaded() || !scope.connection.synced}
@@ -383,6 +381,22 @@ export function WorkspaceShell(props: {
         <Show when={loadingCover()}>{connectionNotice(true)}</Show>
         <Show when={fullWindowLoading() && !loadingCover() && props.behindSplash?.()}>
           {connectionNotice(true, false)}
+        </Show>
+        <Show when={showOfficeScreen()}>
+          <div class="office-screen-overlay" style={{ position: "fixed", inset: "0", "z-index": "1000", background: "rgba(0,0,0,0.5)" }}>
+            <div style={{ margin: "40px auto", "max-width": "800px", background: "white", padding: "20px", "border-radius": "8px" }}>
+              <button onClick={() => setShowOfficeScreen(false)}>Close</button>
+              <OfficeScreen />
+            </div>
+          </div>
+        </Show>
+        <Show when={showButlerMemory()}>
+          <div class="office-screen-overlay" style={{ position: "fixed", inset: "0", "z-index": "1000", background: "rgba(0,0,0,0.5)" }}>
+            <div style={{ margin: "40px auto", "max-width": "800px", background: "white", padding: "20px", "border-radius": "8px" }}>
+              <button onClick={() => setShowButlerMemory(false)}>Close</button>
+              <ButlerMemoryInspector />
+            </div>
+          </div>
         </Show>
       </div>
     </ConnectorsProvider>

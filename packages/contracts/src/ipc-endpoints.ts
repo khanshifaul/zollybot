@@ -70,7 +70,7 @@ import type {
   BrowseAgentFoldersInput,
   ChooseAgentFolderInput,
 } from "./ipc-agent-folders";
-import type { AvatarColor, ClientAgentModelOption } from "./ipc-agent-identity";
+import type { ClientAgentModelOption } from "./ipc-agent-identity";
 import type {
   AgentImportPreview,
   AgentImportResult,
@@ -139,7 +139,6 @@ import type {
 import type { AgentWaitsSnapshot, CancelAgentWaitInput } from "./ipc-agent-waits";
 import type {
   AgentDefaults,
-  AvatarImageInput,
   ClientAgentSummary,
   CreateAgentInput,
   DuplicateAgentResult,
@@ -151,10 +150,7 @@ import type {
   AppInfo,
   AppSetupState,
   BackgroundProcess,
-  CentralAuthState,
   ChatWindowTarget,
-  CompanySignInScimToken,
-  CompanySignInSettings,
   ComputerUseHighlightPlacement,
   ComputerUsePermissionApp,
   ComputerUseState,
@@ -172,14 +168,10 @@ import type {
   SaveSetupInput,
   SentMessageStats,
   SetAnalyticsPreferenceInput,
-  SetCompanySignInEnabledInput,
-  TestCompanySignInInput,
-  TestCompanySignInResult,
   UpdatePreference,
   UpdatePreferenceChange,
   UpdateRestartMode,
   UpdateStatus,
-  VerifyEmailCodeInput,
 } from "./ipc-app-auth";
 import type { AppBehaviorPreference, AppBehaviorPreferenceChange } from "./ipc-app-behavior";
 import type {
@@ -416,6 +408,7 @@ import type {
 } from "./ipc-messaging";
 import type { ProviderModelVisibility, ProviderModelVisibilityChange } from "./ipc-model-visibility";
 import type { NotificationOpenedEvent, NotificationPreference } from "./ipc-notifications";
+import type { MergeTaskInput, OfficeTask, SetReviewPassInput } from "./ipc-office-tasks";
 import type {
   OnePasswordConnectInput,
   OnePasswordConnectorStatus,
@@ -607,7 +600,6 @@ import type {
   LicenseUsersRequest,
 } from "./license";
 import type { MarketplaceListingLink } from "./marketplace-links";
-import type { AccountSession, MobileConnectedDevice, MobileConnectLink, MobileConnectTicket } from "./mobile-connect";
 
 declare const payloadType: unique symbol;
 declare const resultType: unique symbol;
@@ -1478,38 +1470,6 @@ export const IPC_ENDPOINTS = {
     takePendingLink: request<undefined, string | null>()("agent-templates:take-pending-link"),
     openLink: event<string>()("agent-templates:open-link"),
   },
-  auth: {
-    getState: request<undefined, CentralAuthState>()("auth:get-state"),
-    retry: request<undefined, CentralAuthState>()("auth:retry"),
-    requestEmailCode: request<string, CentralAuthState>()("auth:request-email-code"),
-    verifyEmailCode: request<VerifyEmailCodeInput, CentralAuthState>()("auth:verify-email-code"),
-    updateName: request<string, CentralAuthState>()("auth:update-name"),
-    updateAvatar: request<AvatarImageInput | null, CentralAuthState>()("auth:update-avatar"),
-    updateChatColor: request<AvatarColor | null, CentralAuthState>()("auth:update-chat-color"),
-    createMobileConnect: request<undefined, MobileConnectTicket>()("auth:create-mobile-connect"),
-    cancelMobileConnect: request<undefined, void>()("auth:cancel-mobile-connect"),
-    getMobileConnectLink: request<undefined, MobileConnectLink | null>()("auth:get-mobile-connect-link"),
-    createMobileConnectLink: request<undefined, MobileConnectLink>()("auth:create-mobile-connect-link"),
-    revokeMobileConnectLink: request<undefined, void>()("auth:revoke-mobile-connect-link"),
-    listMobileConnectedDevices: request<undefined, MobileConnectedDevice[]>()("auth:list-mobile-connected-devices"),
-    listAccountSessions: request<undefined, AccountSession[]>()("auth:list-account-sessions"),
-    revokeAccountSession: request<string, void>()("auth:revoke-account-session"),
-    revokeMobileConnectedDevice: request<string, void>()("auth:revoke-mobile-connected-device"),
-    logout: request<undefined, CentralAuthState>()("auth:logout"),
-    // Company sign-in. `openCompanySignIn` opens the provider page again for the email in the state.
-    openCompanySignIn: request<undefined, CentralAuthState>()("auth:open-company-sign-in"),
-    // The setup of a server that the user owns, by server id. `testCompanySignIn` waits for the browser.
-    getCompanySignIn: request<string, CompanySignInSettings>()("auth:company-sign-in:get"),
-    testCompanySignIn: request<TestCompanySignInInput, TestCompanySignInResult>()("auth:company-sign-in:test"),
-    cancelCompanySignInTest: request<undefined, void>()("auth:company-sign-in:cancel-test"),
-    setCompanySignInEnabled: request<SetCompanySignInEnabledInput, CompanySignInSettings>()(
-      "auth:company-sign-in:set-enabled",
-    ),
-    removeCompanySignIn: request<string, CompanySignInSettings>()("auth:company-sign-in:remove"),
-    createCompanySignInScimToken: request<string, CompanySignInScimToken>()("auth:company-sign-in:create-scim-token"),
-    revokeCompanySignInScimToken: request<string, CompanySignInSettings>()("auth:company-sign-in:revoke-scim-token"),
-    event: event<CentralAuthState>()("auth:event"),
-  },
   update: {
     getStatus: request<undefined, UpdateStatus>()("update:get-status"),
     check: request<undefined, UpdateStatus>()("update:check"),
@@ -2125,6 +2085,13 @@ export const IPC_ENDPOINTS = {
     disconnect: request<string, void>()("remote-desktop:disconnect"),
     event: event<RemoteDesktopSession[]>()("remote-desktop:event"),
   },
+  officeTasks: {
+    list: request<{ officeId?: string; status?: string }, OfficeTask[]>()("office-tasks:list"),
+    get: request<string, OfficeTask | null>()("office-tasks:get"),
+    setReviewPass: request<SetReviewPassInput, void>()("office-tasks:set-review-pass"),
+    merge: request<MergeTaskInput, { ok: boolean; error?: string }>()("office-tasks:merge"),
+    isPrReviewer: request<{ agentId: string; officeId: string }, boolean>()("office-tasks:is-pr-reviewer"),
+  },
 } as const;
 
 export type IpcEndpoints = typeof IPC_ENDPOINTS;
@@ -2172,7 +2139,6 @@ export const IPC_GROUP_PATHS = {
   localServers: "localServers",
   marketplaceAgents: "marketplaceAgents",
   agentTemplates: "agentTemplates",
-  auth: "auth",
   update: "update",
   notifications: "notifications",
   agent: "agent",
@@ -2199,6 +2165,7 @@ export const IPC_GROUP_PATHS = {
   host: "host",
   events: "events",
   remoteDesktop: "remoteDesktop",
+  officeTasks: "officeTasks",
 } as const satisfies { readonly [Group in keyof IpcEndpoints]: string | null };
 
 export type IpcGroupName = keyof IpcEndpoints;

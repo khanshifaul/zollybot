@@ -22,22 +22,18 @@ import type { Socket } from "node:net";
 import { dirname, isAbsolute, join } from "node:path";
 import { parseHostedServerName } from "@zollybot/contracts/hosted-servers";
 import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
-import type { CentralAuthState } from "@zollybot/contracts/ipc";
 import { sourceText } from "@zollybot/i18n/source";
 import { Deferred, Effect } from "effect";
-import QRCode from "qrcode";
 import { runCauseEffect } from "../backend/effect-boundary";
-import type { CentralAuthManager } from "./central-auth-manager";
+import type { OfficeMemories } from "../backend/offices/office-memory-store";
 import type { HostService } from "./host-service";
 import { readBodyWithin } from "./http-body";
-import { createHostedMobileConnect } from "./mobile-connect-host";
-import { RemoteWorkflowError, remoteCall, toRemoteWorkflowError } from "./remote-service-effects";
+import type { LocalAuthManager } from "./local-auth-manager";
+import { RemoteWorkflowError, remoteCall } from "./remote-service-effects";
 import type { ServerMemory } from "./server-memory";
-import type { OfficeMemories } from "../backend/offices/office-memory-store";
 
 const CONTROL_SOCKET_FILE = "control.sock";
 const MAX_BODY_BYTES = 4096;
-const MAX_EMAIL_LENGTH = 254;
 /** The name of a server whose owner signed in without one. The same default as a mobile connect. */
 const DEFAULT_SERVER_NAME = "ZollyBot";
 
@@ -51,7 +47,10 @@ export function takeServerModeEnvironment(
   _isPackaged: boolean,
   platform: NodeJS.Platform,
 ): ServerModeEnvironment | null {
-  const explicit = environment.ZOLLYBOT_SERVER === "1" || process.argv.includes("--server") || environment.ZOLLYBOT_CONTROL_SOCKET === "1";
+  const explicit =
+    environment.ZOLLYBOT_SERVER === "1" ||
+    process.argv.includes("--server") ||
+    environment.ZOLLYBOT_CONTROL_SOCKET === "1";
   if (!explicit || platform !== "linux") return null;
   // A hosted server signs in with its claim, not from a terminal.
   if (environment.ZOLLYBOT_HOSTED_SERVER === "1") return null;
@@ -93,17 +92,7 @@ export type OfficeRegistration = { ok: true; office: ServerOffice } | { ok: fals
 export interface ServerModeOptions {
   environment: ServerModeEnvironment;
   version: string;
-  centralAuth: Pick<
-    CentralAuthManager,
-    | "getState"
-    | "requestEmailCode"
-    | "cancelCompanySignIn"
-    | "verifyEmailCode"
-    | "canPersistSession"
-    | "redeemServerClaim"
-    | "logout"
-    | "createMobileConnect"
-  >;
+  centralAuth: Pick<LocalAuthManager, "getState" | "canPersistSession" | "logout">;
   host: Pick<HostService, "getStatus" | "configure" | "start" | "updateIdentity" | "getMobileConnectHost">;
   /** The memory guard, so that `status` shows the memory ceiling and the turn limit. */
   memory: Pick<ServerMemory, "level" | "sample" | "turnLimit"> | null;
@@ -114,11 +103,27 @@ export interface ServerModeOptions {
   registerOffice?: (path: string, name: string | null) => OfficeRegistration;
   openOffice?: (id: string) => ServerOffice | null;
   officeMemories?: OfficeMemories;
-  officeTasks?: { list: (i?: any)=>any[]; get:(id:string)=>any; create:(i:any)=>any; setStatus:(id:string,s:any,g?:any)=>void; pause:(id:string)=>void; resume:(id:string)=>void; setReviewPass?:(id:string,actor:string)=>void; hasReviewPass?:(id:string)=>boolean; merge?:(id:string,actor:string)=>{ok:boolean;error?:string}; };
+  officeTasks?: {
+    list: (i?: any) => any[];
+    get: (id: string) => any;
+    create: (i: any) => any;
+    setStatus: (id: string, s: any, g?: any) => void;
+    pause: (id: string) => void;
+    resume: (id: string) => void;
+    setReviewPass?: (id: string, actor: string) => void;
+    hasReviewPass?: (id: string) => boolean;
+    merge?: (id: string, actor: string) => { ok: boolean; error?: string };
+  };
   officeDb?: () => import("node:sqlite").DatabaseSync | null;
   chat?: {
-    listMessages: (agentId: string, limit?: number) => Promise<{ messages: { id: string; role: string; text: string; at?: string }[] } | { error: string }>;
-    sendMessage: (agentId: string, text: string) => Promise<{ ok: true; deliveryId?: string } | { ok: false; error: string }>;
+    listMessages: (
+      agentId: string,
+      limit?: number,
+    ) => Promise<{ messages: { id: string; role: string; text: string; at?: string }[] } | { error: string }>;
+    sendMessage: (
+      agentId: string,
+      text: string,
+    ) => Promise<{ ok: true; deliveryId?: string } | { ok: false; error: string }>;
   };
   onError: (message: string, error: unknown) => void;
   /** Tests only. */
@@ -247,40 +252,56 @@ export class ServerMode {
 
   async #route(method: string | undefined, url: string | undefined, body: URLSearchParams): Promise<Answer> {
     const [path = "", query = ""] = (url ?? "").split("?");
-    const m = (method ?? "");
+    const m = method ?? "";
     const route = `${m} ${path}`;
     if (route === "GET /v1/status") return this.#status();
     if (route === "GET /v1/agents") return this.#agents(new URLSearchParams(query).get("office") ?? undefined);
     if (route === "GET /v1/offices") return this.#offices();
     if (route === "POST /v1/offices") return this.#registerOffice(body.get("path") ?? "", body.get("name"));
     if (route === "POST /v1/offices/open") return this.#openOffice(body.get("id") ?? "");
-    if (route === "POST /v1/login/start") return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
-    if (route === "POST /v1/login/verify") return runCauseEffect(this.#verifyLogin(body.get("challenge") ?? "", body.get("code") ?? "", body.get("name")));
-    if (route === "POST /v1/login/claim") return runCauseEffect(this.#claimLogin(body.get("claim") ?? "", body.get("name")));
+    if (route === "POST /v1/login/start")
+      return runCauseEffect(this.#startLogin(body.get("email") ?? "", body.get("name")));
+    if (route === "POST /v1/login/verify")
+      return runCauseEffect(this.#verifyLogin(body.get("challenge") ?? "", body.get("code") ?? "", body.get("name")));
+    if (route === "POST /v1/login/claim")
+      return runCauseEffect(this.#claimLogin(body.get("claim") ?? "", body.get("name")));
     if (route === "POST /v1/name") return runCauseEffect(this.#rename(body.get("name") ?? ""));
     if (route === "POST /v1/mobile-connect") return runCauseEffect(this.#mobileConnect());
     if (route === "POST /v1/logout") {
-      await runCauseEffect(this.#options.centralAuth.logout().pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause }))));
+      await runCauseEffect(
+        this.#options.centralAuth.logout().pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause }))),
+      );
       return this.#status();
     }
     const mem = path.match(/^\/v1\/offices\/([^/]+)\/memory$/);
     if (mem && m === "GET") return this.#officeMemory(decodeURIComponent(mem[1] ?? ""));
     if (mem && m === "POST") return this.#officeMemoryCreate(decodeURIComponent(mem[1] ?? ""), body.get("text") ?? "");
     const memId = path.match(/^\/v1\/offices\/([^/]+)\/memory\/([^/]+)$/);
-    if (memId && m === "DELETE") return this.#officeMemoryForget(decodeURIComponent(memId[1] ?? ""), decodeURIComponent(memId[2] ?? ""), body.get("expectedUpdatedAt") ?? undefined);
+    if (memId && m === "DELETE")
+      return this.#officeMemoryForget(
+        decodeURIComponent(memId[1] ?? ""),
+        decodeURIComponent(memId[2] ?? ""),
+        body.get("expectedUpdatedAt") ?? undefined,
+      );
     const memConfirm = path.match(/^\/v1\/offices\/([^/]+)\/memory\/([^/]+)\/confirm$/);
-    if (memConfirm && m === "POST") return this.#officeMemoryConfirm(decodeURIComponent(memConfirm[1] ?? ""), decodeURIComponent(memConfirm[2] ?? ""));
+    if (memConfirm && m === "POST")
+      return this.#officeMemoryConfirm(
+        decodeURIComponent(memConfirm[1] ?? ""),
+        decodeURIComponent(memConfirm[2] ?? ""),
+      );
     if (route === "GET /v1/office-tasks") return this.#officeTasks(new URLSearchParams(query));
     if (route === "POST /v1/office-tasks") return this.#officeTaskCreate(body);
     const taskAct = path.match(/^\/v1\/office-tasks\/([^/]+)\/(pause|resume|cancel|review|merge|approve)$/);
-    if (taskAct && m === "POST") return this.#officeTaskAction(decodeURIComponent(taskAct[1] ?? ""), taskAct[2] ?? "", body);
+    if (taskAct && m === "POST")
+      return this.#officeTaskAction(decodeURIComponent(taskAct[1] ?? ""), taskAct[2] ?? "", body);
     const taskRuns = path.match(/^\/v1\/office-tasks\/([^/]+)\/runs$/);
     if (taskRuns && m === "GET") return this.#officeTaskRuns(decodeURIComponent(taskRuns[1] ?? ""));
     const taskGet = path.match(/^\/v1\/office-tasks\/([^/]+)$/);
     if (taskGet && m === "GET") return this.#officeTaskGet(decodeURIComponent(taskGet[1] ?? ""));
     if (route === "POST /v1/butler/office") return this.#registerOffice(body.get("path") ?? "", body.get("name"));
     const chatList = path.match(/^\/v1\/agents\/([^/]+)\/messages$/);
-    if (chatList && m === "GET") return await this.#agentMessages(decodeURIComponent(chatList[1] ?? ""), new URLSearchParams(query));
+    if (chatList && m === "GET")
+      return await this.#agentMessages(decodeURIComponent(chatList[1] ?? ""), new URLSearchParams(query));
     const chatSend = path.match(/^\/v1\/agents\/([^/]+)\/messages$/);
     if (chatSend && m === "POST") return await this.#agentSendMessage(decodeURIComponent(chatSend[1] ?? ""), body);
     if (route === "GET /v1/butler/messages") return await this.#butlerMessages(new URLSearchParams(query));
@@ -288,31 +309,52 @@ export class ServerMode {
     return failure(404, "not_found");
   }
 
-
   #findButlerId(): string | null {
-    const butler = (this.#options.agents?.() ?? []).find((a) => a.scope === "building" || a.role === "butler" || a.name.toLowerCase() === "butler");
+    const butler = (this.#options.agents?.() ?? []).find(
+      (a) => a.scope === "building" || a.role === "butler" || a.name.toLowerCase() === "butler",
+    );
     return butler?.id ?? null;
   }
   async #butlerMessages(q: URLSearchParams): Promise<Answer> {
-    const id = this.#findButlerId(); if (!id) return failure(404, "butler_not_found", "No Butler agent is available. Start the desktop app and let it seed Butler.");
+    const id = this.#findButlerId();
+    if (!id)
+      return failure(
+        404,
+        "butler_not_found",
+        "No Butler agent is available. Start the desktop app and let it seed Butler.",
+      );
     return this.#agentMessages(id, q);
   }
   async #butlerSendMessage(body: URLSearchParams): Promise<Answer> {
-    const id = this.#findButlerId(); if (!id) return failure(404, "butler_not_found", "No Butler agent is available.");
+    const id = this.#findButlerId();
+    if (!id) return failure(404, "butler_not_found", "No Butler agent is available.");
     return this.#agentSendMessage(id, body);
   }
   async #agentMessages(agentId: string, q: URLSearchParams): Promise<Answer> {
-    const chat = this.#options.chat; if (!chat) return failure(501, "chat_unavailable", "Chat is not available on this server.");
+    const chat = this.#options.chat;
+    if (!chat) return failure(501, "chat_unavailable", "Chat is not available on this server.");
     const limit = Math.max(1, Math.min(100, Number(q.get("limit") ?? 30) || 30));
     const res = await chat.listMessages(agentId, limit);
     if ("error" in res) return failure(400, "chat_read_failed", res.error);
     const lines: Answer["lines"] = { count: res.messages.length, agent_id: agentId };
-    res.messages.forEach((m, i) => { lines[`msg.${i}`] = [m.id, m.role, (m.at ?? ""), String(m.text ?? "").replace(/[\r\n]+/g, " ").replace(/[|]/g, "/")].join("|"); });
+    res.messages.forEach((m, i) => {
+      const role = String(m.role ?? "").trim() || "assistant";
+      lines[`msg.${i}`] = [
+        m.id,
+        role,
+        m.at ?? "",
+        String(m.text ?? "")
+          .replace(/[\r\n]+/g, " ")
+          .replace(/[|]/g, "/"),
+      ].join("|");
+    });
     return { status: 200, lines };
   }
   async #agentSendMessage(agentId: string, body: URLSearchParams): Promise<Answer> {
-    const chat = this.#options.chat; if (!chat) return failure(501, "chat_unavailable", "Chat is not available on this server.");
-    const text = (body.get("text") ?? "").trim(); if (!text) return failure(400, "invalid_request", "text is required");
+    const chat = this.#options.chat;
+    if (!chat) return failure(501, "chat_unavailable", "Chat is not available on this server.");
+    const text = (body.get("text") ?? "").trim();
+    if (!text) return failure(400, "invalid_request", "text is required");
     const res = await chat.sendMessage(agentId, text);
     if (!res.ok) return failure(400, "chat_send_failed", res.error);
     return { status: 200, lines: { ok: 1, delivery_id: res.deliveryId ?? "" } };
@@ -329,12 +371,15 @@ export class ServerMode {
     return { status: 200, lines };
   }
 
-
   #officeMemoryCreate(officeId: string, text: string): Answer {
     const memories = this.#options.officeMemories;
     if (!memories) return failure(501, "office_memory_unavailable");
-    try { const memory = memories.create(officeId, text); return { status: 200, lines: { id: memory.id, updated_at: memory.updatedAt } }; }
-    catch (e) { return failure(400, "office_memory_create_failed", e instanceof Error ? e.message : null); }
+    try {
+      const memory = memories.create(officeId, text);
+      return { status: 200, lines: { id: memory.id, updated_at: memory.updatedAt } };
+    } catch (e) {
+      return failure(400, "office_memory_create_failed", e instanceof Error ? e.message : null);
+    }
   }
   #officeMemoryForget(officeId: string, memoryId: string, expectedUpdatedAt?: string): Answer {
     const memories = this.#options.officeMemories;
@@ -349,56 +394,99 @@ export class ServerMode {
     return { status: ok ? 200 : 404, lines: { confirmed: ok ? 1 : 0 } };
   }
 
-
   #officeTasks(q: URLSearchParams): Answer {
     const tasks = this.#options.officeTasks;
     if (!tasks) return failure(501, "office_tasks_unavailable");
     const items = tasks.list({ officeId: q.get("office") ?? undefined, status: (q.get("status") as any) ?? undefined });
     const lines: Answer["lines"] = { count: items.length };
-    items.forEach((t: any, i: number) => { lines[`task.${i}`] = [t.id,t.officeId,t.status,t.gate??"",t.priority,t.attempts,String(t.title).replace(/[\r\n|]+/g," ")].join("|"); });
+    items.forEach((t: any, i: number) => {
+      lines[`task.${i}`] = [
+        t.id,
+        t.officeId,
+        t.status,
+        t.gate ?? "",
+        t.priority,
+        t.attempts,
+        String(t.title).replace(/[\r\n|]+/g, " "),
+      ].join("|");
+    });
     return { status: 200, lines };
   }
   #officeTaskCreate(body: URLSearchParams): Answer {
     const tasks = this.#options.officeTasks;
     if (!tasks) return failure(501, "office_tasks_unavailable");
     const officeId = body.get("officeId") ?? body.get("office") ?? "";
-    const title = body.get("title") ?? ""; const brief = body.get("brief") ?? title;
+    const title = body.get("title") ?? "";
+    const brief = body.get("brief") ?? title;
     if (!officeId || !title) return failure(400, "invalid_request");
     const t = tasks.create({ officeId, title, brief, priority: Number(body.get("priority") ?? 0) });
     return { status: 200, lines: { id: t.id, status: t.status } };
   }
   #officeTaskRuns(id: string): Answer {
-    const tasks = this.#options.officeTasks as any; if (!tasks?.listRuns) return failure(501,'office_task_runs_unavailable');
+    const tasks = this.#options.officeTasks as any;
+    if (!tasks?.listRuns) return failure(501, "office_task_runs_unavailable");
     const runs = tasks.listRuns(id) ?? [];
-    const lines: Record<string,string|number|null> = { count: runs.length };
-    runs.forEach((r:any,i:number)=> lines[`run.${i}`]=[r.id,r.started_at,r.ended_at??'',String(r.outcome??'')].join('|'));
-    return { status:200, lines };
+    const lines: Record<string, string | number | null> = { count: runs.length };
+    runs.forEach(
+      (r: any, i: number) =>
+        (lines[`run.${i}`] = [r.id, r.started_at, r.ended_at ?? "", String(r.outcome ?? "")].join("|")),
+    );
+    return { status: 200, lines };
   }
   #officeTaskGet(id: string): Answer {
-    const tasks = this.#options.officeTasks; if (!tasks) return failure(501, "office_tasks_unavailable");
-    const t = tasks.get(id); if (!t) return failure(404, "not_found");
-    return { status: 200, lines: { id: t.id, office_id: t.officeId, status: t.status, gate: t.gate ?? "", attempts: t.attempts, title: t.title } };
+    const tasks = this.#options.officeTasks;
+    if (!tasks) return failure(501, "office_tasks_unavailable");
+    const t = tasks.get(id);
+    if (!t) return failure(404, "not_found");
+    return {
+      status: 200,
+      lines: {
+        id: t.id,
+        office_id: t.officeId,
+        status: t.status,
+        gate: t.gate ?? "",
+        attempts: t.attempts,
+        title: t.title,
+      },
+    };
   }
   #officeTaskAction(id: string, action: string, _body: URLSearchParams): Answer {
-    const tasks = this.#options.officeTasks; if (!tasks) return failure(501, "office_tasks_unavailable");
-    if (action === "pause") { tasks.pause(id); return { status: 200, lines: { ok: 1 } }; }
-    if (action === "resume") { tasks.resume(id); return { status: 200, lines: { ok: 1 } }; }
-    if (action === "cancel") { tasks.setStatus(id, "failed"); return { status: 200, lines: { ok: 1 } }; }
+    const tasks = this.#options.officeTasks;
+    if (!tasks) return failure(501, "office_tasks_unavailable");
+    if (action === "pause") {
+      tasks.pause(id);
+      return { status: 200, lines: { ok: 1 } };
+    }
+    if (action === "resume") {
+      tasks.resume(id);
+      return { status: 200, lines: { ok: 1 } };
+    }
+    if (action === "cancel") {
+      tasks.setStatus(id, "failed");
+      return { status: 200, lines: { ok: 1 } };
+    }
     if (action === "review") {
       const actorRole = (_body.get("actorRole") ?? _body.get("role") ?? "").trim();
-      if (actorRole !== "pr-reviewer") return failure(403, "review_requires_pr_reviewer", "Only the pr-reviewer seat can set review pass.");
+      if (actorRole !== "pr-reviewer")
+        return failure(403, "review_requires_pr_reviewer", "Only the pr-reviewer seat can set review pass.");
       tasks.setStatus(id, "done");
       (this.#options.officeTasks as any).setReviewPass?.(id, _body.get("actor") ?? "pr-reviewer");
       return { status: 200, lines: { ok: 1, review_pass: 1 } };
     }
-    if (action === "approve") { tasks.resume(id); return { status: 200, lines: { ok: 1 } }; }
+    if (action === "approve") {
+      tasks.resume(id);
+      return { status: 200, lines: { ok: 1 } };
+    }
     if (action === "merge") {
       const actorRole = (_body.get("actorRole") ?? _body.get("role") ?? "").trim();
-      if (actorRole !== "pr-reviewer") return failure(403, "merge_requires_pr_reviewer", "Only the pr-reviewer seat can merge.");
+      if (actorRole !== "pr-reviewer")
+        return failure(403, "merge_requires_pr_reviewer", "Only the pr-reviewer seat can merge.");
       const actor = (_body.get("actor") ?? "pr-reviewer").trim();
-      const t = tasks.get(id); if (!t) return failure(404, "not_found");
+      const t = tasks.get(id);
+      if (!t) return failure(404, "not_found");
       const actorAgentId = (_body.get("actorAgentId") ?? _body.get("agentId") ?? "").trim();
-      if (actorAgentId && !(tasks as any).isPrReviewer?.(actorAgentId, t.officeId)) return failure(403, "merge_requires_pr_reviewer_employment");
+      if (actorAgentId && !(tasks as any).isPrReviewer?.(actorAgentId, t.officeId))
+        return failure(403, "merge_requires_pr_reviewer_employment");
       const res = tasks.merge?.(id, actorAgentId || actor);
       if (!res) return failure(501, "merge_unavailable");
       if (!res.ok) return failure(res.error === "not_found" ? 404 : 409, res.error ?? "merge_failed");
@@ -415,8 +503,8 @@ export class ServerMode {
       lines: {
         version: this.#options.version,
         account: account.status,
-        email: account.status === "signed_in" ? account.user.email : null,
-        account_message: account.status === "error" ? account.issue.message : null,
+        email: account.user.email,
+        account_message: null,
         server: host.phase,
         server_name: host.serverName ?? this.#pendingName,
         server_message: this.#publishError ?? host.message,
@@ -489,97 +577,59 @@ export class ServerMode {
     return { status: 200, lines: officeFields(office) };
   }
 
+  /** Not available in local-only mode. Use Tailscale for remote access. */
   readonly #startLogin = Effect.fn("ServerMode.startLogin")(function* (
     this: ServerMode,
-    email: string,
-    name: string | null,
+    _email: string,
+    _name: string | null,
   ): Effect.fn.Return<Answer, RemoteWorkflowError> {
-    const normalized = email.trim();
-    if (!normalized.includes("@") || normalized.length > MAX_EMAIL_LENGTH) return failure(400, "invalid_email");
-    // The name is stored only at the code check. A check here refuses it before an email is sent.
-    if (name !== null && !parseHostedServerName(name)) return nameFailure(name);
-    if (this.#options.centralAuth.getState().status === "signed_in") return failure(409, "signed_in");
-    const state = yield* this.#options.centralAuth
-      .requestEmailCode(normalized)
-      .pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause })));
-    if (state.status === "code_sent" && !state.issue) {
-      return { status: 200, lines: { challenge: state.challengeId, expires_at: state.expiresAt } };
-    }
-    // A server has no browser for the company provider. The owner signs in with another email.
-    if (state.status === "company_sign_in") {
-      yield* this.#options.centralAuth.cancelCompanySignIn();
-      return failure(409, "company_sign_in_required");
-    }
-    return issueFailure(state);
+    return failure(
+      501,
+      "email_sign_in_unavailable",
+      "Email sign-in not available in local-only mode. Use Tailscale for remote access.",
+    );
   });
 
+  /** Not available in local-only mode. Use Tailscale for remote access. */
   readonly #verifyLogin = Effect.fn("ServerMode.verifyLogin")(function* (
     this: ServerMode,
-    challenge: string,
-    code: string,
-    name: string | null,
+    _challenge: string,
+    _code: string,
+    _name: string | null,
   ): Effect.fn.Return<Answer, RemoteWorkflowError> {
-    if (!challenge.trim() || !code.trim()) return failure(400, "invalid_request");
-    if (name !== null) {
-      // The host refuses such a name only when it publishes, after the sign-in.
-      const serverName = parseHostedServerName(name);
-      if (!serverName) return nameFailure(name);
-      this.#pendingName = serverName;
-    }
-    const state = yield* this.#options.centralAuth
-      .verifyEmailCode(challenge.trim(), code.trim())
-      .pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause })));
-    // The entry point publishes the host when the account change is applied. `status` shows it.
-    if (state.status === "signed_in") return this.#status();
-    return issueFailure(state);
+    return failure(
+      501,
+      "email_sign_in_unavailable",
+      "Email sign-in not available in local-only mode. Use Tailscale for remote access.",
+    );
   });
 
-  /** Signs in with a one-time claim that an operator made for the owner's email. */
+  /** Not available in local-only mode. Use Tailscale for remote access. */
   readonly #claimLogin = Effect.fn("ServerMode.claimLogin")(function* (
     this: ServerMode,
-    claim: string,
-    name: string | null,
+    _claim: string,
+    _name: string | null,
   ): Effect.fn.Return<Answer, RemoteWorkflowError> {
-    if (!claim.trim()) return failure(400, "invalid_request");
-    let serverName: string | null = null;
-    if (name !== null) {
-      serverName = parseHostedServerName(name);
-      if (!serverName) return nameFailure(name);
-    }
-    const { centralAuth } = this.#options;
-    const status = centralAuth.getState().status;
-    if (status === "signed_in") return failure(409, "signed_in");
-    // Another state can hold a stored session, which a failed claim would remove.
-    if (status !== "signed_out" && status !== "code_sent") return failure(409, `account_${status}`);
-    // The claim works once. A session that is not stored would end at the next start.
-    if (!centralAuth.canPersistSession()) return failure(409, "session_not_storable");
-    const previousName = this.#pendingName;
-    if (serverName) this.#pendingName = serverName;
-    const issue = yield* centralAuth
-      .redeemServerClaim(claim.trim())
-      .pipe(Effect.mapError(({ cause }) => new RemoteWorkflowError({ cause })));
-    if (issue) {
-      this.#pendingName = previousName;
-      return failure(issue.code === "server_claim_invalid" ? 400 : 502, issue.code, issue.message);
-    }
-    // The entry point publishes the host when the account change is applied. `status` shows it.
-    return this.#status();
+    return failure(
+      501,
+      "email_sign_in_unavailable",
+      "Email sign-in not available in local-only mode. Use Tailscale for remote access.",
+    );
   });
 
   /**
    * A Mobile Connect code as a QR code for a terminal, in base64 because an answer line holds no line
    * break. The terminal has no other way to show the code to a phone.
    */
+  /** Not available in local-only mode. Use Tailscale for remote access. */
   readonly #mobileConnect = Effect.fn("ServerMode.mobileConnect")(function* (
     this: ServerMode,
   ): Effect.fn.Return<Answer, RemoteWorkflowError> {
-    const account = this.#options.centralAuth.getState();
-    if (account.status !== "signed_in") return issueFailure(account);
-    // A publish that runs now can give the host its name. The code binds the host that it publishes.
-    yield* this.publish();
-    const ticket = yield* createHostedMobileConnect(this.#options).pipe(toRemoteWorkflowError);
-    const qr = yield* remoteCall(() => QRCode.toString(ticket.qrData, { type: "terminal", small: true }));
-    return { status: 200, lines: { qr: Buffer.from(qr).toString("base64"), expires_at: ticket.expiresAt } };
+    return failure(
+      501,
+      "mobile_connect_unavailable",
+      "Mobile Connect not available in local-only mode. Use Tailscale for remote access.",
+    );
   });
 
   readonly #rename = Effect.fn("ServerMode.rename")(function* (
@@ -617,13 +667,6 @@ function nameFailure(name: string): Answer {
       ? sourceText("error.team.serverNameLength", { min: INPUT_LIMITS.serverNameMin, max: INPUT_LIMITS.serverName })
       : sourceText("error.team.serverNameHostname");
   return failure(400, "invalid_name", message);
-}
-
-function issueFailure(state: CentralAuthState): Answer {
-  if ((state.status === "code_sent" || state.status === "error") && state.issue) {
-    return failure(state.status === "error" ? 502 : 400, state.issue.code, state.issue.message);
-  }
-  return failure(409, `account_${state.status}`);
 }
 
 /** One `key=value` line for each value. A value never breaks its line. */

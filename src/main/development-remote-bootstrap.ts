@@ -19,9 +19,9 @@ import { Effect, Result } from "effect";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { z } from "zod";
-import type { CentralAuthManager } from "./central-auth-manager";
 import { developmentRemoteConnectionPath } from "./development-runtime-directory";
 import { DEVELOPMENT_REMOTE_CLIENT_USERNAME, type HostService } from "./host-service";
+import type { LocalAuthManager } from "./local-auth-manager";
 import type { DevelopmentRemoteServerConnection, RemoteServerManager } from "./remote-server-manager";
 import { RemoteWorkflowError, remoteCall, remoteDecode, toRemoteWorkflowError } from "./remote-service-effects";
 import { writeSetupState } from "./setup-store";
@@ -52,7 +52,7 @@ export interface DevelopmentRemoteAccountOptions {
   role: DevelopmentRemoteRole;
   testClientEnabled: boolean;
   clientTransport: DevelopmentClientTransport;
-  centralAuth: CentralAuthManager;
+  centralAuth: LocalAuthManager;
   teamStore: TeamStore;
   setupFile: string;
   setupCompleted: boolean;
@@ -119,36 +119,14 @@ export const startDevelopmentRemoteRole = Effect.fn("DevelopmentRemote.startRole
 });
 
 const ensureDevelopmentAccount = Effect.fn("DevelopmentRemote.ensureAccount")(function* (
-  manager: Pick<CentralAuthManager, "initialize" | "logout" | "requestEmailCode" | "verifyEmailCode">,
-  email: string,
+  manager: Pick<LocalAuthManager, "getState" | "initialize">,
+  _email: string,
 ) {
+  const state = manager.getState();
+  if (state.status === "signed_in") return state.user;
   const initialized = yield* manager.initialize().pipe(toRemoteWorkflowError);
-  if (initialized.status === "signed_in" && initialized.user.email === email) return initialized.user;
-  if (initialized.status === "signed_in") yield* manager.logout().pipe(toRemoteWorkflowError);
-  let challenge = yield* manager.requestEmailCode(email).pipe(toRemoteWorkflowError);
-  if (
-    challenge.status === "error" &&
-    challenge.issue.code === "code_recently_sent" &&
-    challenge.issue.retryAfterSeconds !== undefined &&
-    challenge.issue.retryAfterSeconds > 0 &&
-    challenge.issue.retryAfterSeconds <= 60
-  ) {
-    yield* Effect.sleep(challenge.issue.retryAfterSeconds * 1000);
-    challenge = yield* manager.requestEmailCode(email).pipe(toRemoteWorkflowError);
-  }
-  if (challenge.status === "error")
-    return yield* new RemoteWorkflowError({ cause: new Error(challenge.issue.message) });
-  if (challenge.status !== "code_sent" || !challenge.developmentCode)
-    return yield* new RemoteWorkflowError({
-      cause: new Error("The local account API did not return a development sign-in code."),
-    });
-  const verified = yield* manager
-    .verifyEmailCode(challenge.challengeId, challenge.developmentCode)
-    .pipe(toRemoteWorkflowError);
-  if (verified.status === "error") return yield* new RemoteWorkflowError({ cause: new Error(verified.issue.message) });
-  if (verified.status !== "signed_in")
-    return yield* new RemoteWorkflowError({ cause: new Error("The local development account could not sign in.") });
-  return verified.user;
+  if (initialized.status === "signed_in") return initialized.user;
+  return yield* new RemoteWorkflowError({ cause: new Error("Local auth should always be signed in") });
 });
 
 const writeDevelopmentRemoteConnection = Effect.fn("DevelopmentRemote.writeConnection")(

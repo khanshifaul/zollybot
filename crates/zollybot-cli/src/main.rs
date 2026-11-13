@@ -29,32 +29,50 @@ use std::sync::{Arc, Mutex};
 use portable_pty::{CommandBuilder, PtySize, MasterPty, Child};
 use avt::Terminal as VtTerminal;
 
-fn harness_for(agent: &AgentRow) -> String {
-    let provider = agent.provider.trim().to_lowercase();
-    let executable = std::env::var("ZOLLYBOT_HARNESS").unwrap_or_else(|_| provider.clone());
-    if !executable.is_empty() { executable } else { "sh".to_string() }
+fn key_to_bytes(key: &crossterm::event::KeyEvent) -> Option<Vec<u8>> {
+    use crossterm::event::KeyCode;
+    match key.code {
+        KeyCode::Char(c) => {
+            let mut b = [0u8; 4];
+            let s = c.encode_utf8(&mut b);
+            Some(s.as_bytes().to_vec())
+        }
+        KeyCode::Enter => Some(b"\r".to_vec()),
+        KeyCode::Backspace => Some(vec![0x7f]),
+        KeyCode::Tab => Some(b"\t".to_vec()),
+        KeyCode::Esc => Some(vec![0x1b]),
+        KeyCode::Up => Some(b"\x1b[A".to_vec()),
+        KeyCode::Down => Some(b"\x1b[B".to_vec()),
+        KeyCode::Right => Some(b"\x1b[C".to_vec()),
+        KeyCode::Left => Some(b"\x1b[D".to_vec()),
+        _ => None,
+    }
 }
 
-fn spawn_pty_session(agent: &AgentRow, cols: u16, rows: u16) -> std::io::Result<PtySession> {
+fn harness_for() -> String {
+    let executable = std::env::var("ZOLLYBOT_HARNESS").unwrap_or_else(|_| "opencode".to_string());
+    if !executable.is_empty() { executable } else { "opencode".to_string() }
+}
+
+fn spawn_pty_session(agent: &AgentRow, cols: u16, rows: u16, cwd: Option<std::path::PathBuf>) -> std::io::Result<PtySession> {
     let size = PtySize { rows: rows.max(1), cols: cols.max(1), pixel_width: 0, pixel_height: 0 };
     let pty = portable_pty::native_pty_system().openpty(size).map_err(|e| std::io::Error::other(e.to_string()))?;
-    let mut cmd = CommandBuilder::new(harness_for(agent));
+    let mut cmd = CommandBuilder::new(harness_for());
     cmd.env("TERM", "xterm-256color");
     cmd.env("COLORTERM", "truecolor");
     cmd.env("TERM_PROGRAM", "zollybot-tui");
     cmd.env("ZOLLYBOT_AGENT_ID", &agent.id);
     cmd.env("ZOLLYBOT_PROVIDER", &agent.provider);
     cmd.env("ZOLLYBOT_MODEL", &agent.model);
-    cmd.env("ZOLLYBOT_HARNESS", harness_for(agent));
-    if let Ok(cwd) = std::env::current_dir() { cmd.cwd(cwd); }
+    cmd.env("ZOLLYBOT_HARNESS", harness_for());
+    let resolved_cwd = cwd.or_else(|| std::env::current_dir().ok()).unwrap_or_default();
+    if !resolved_cwd.as_os_str().is_empty() { cmd.cwd(resolved_cwd); }
     let child = pty.slave.spawn_command(cmd).map_err(|e| std::io::Error::other(e.to_string()))?;
     drop(pty.slave);
     let mut reader = pty.master.try_clone_reader().map_err(|e| std::io::Error::other(e.to_string()))?;
     let writer = pty.master.take_writer().map_err(|e| std::io::Error::other(e.to_string()))?;
     let vt = Arc::new(Mutex::new(VtTerminal::with_scrollback(cols as usize, rows as usize, Some(5000)).map_err(|e| std::io::Error::other(e.to_string()))?));
-    let output: Arc<Mutex<Vec<u8>>> = Arc::new(Mutex::new(Vec::new()));
     let vt_thread = vt.clone();
-    let output_thread = output.clone();
     std::thread::spawn(move || {
         use std::io::Read;
         let mut buf = [0u8; 8192];
@@ -62,7 +80,6 @@ fn spawn_pty_session(agent: &AgentRow, cols: u16, rows: u16) -> std::io::Result<
             match reader.read(&mut buf) {
                 Ok(0) | Err(_) => break,
                 Ok(n) => {
-                    output_thread.lock().unwrap().extend_from_slice(&buf[..n]);
                     if let Ok(mut term) = vt_thread.lock() {
                         term.feed(String::from_utf8_lossy(&buf[..n]).into_owned());
                     }
@@ -70,24 +87,31 @@ fn spawn_pty_session(agent: &AgentRow, cols: u16, rows: u16) -> std::io::Result<
             }
         }
     });
-    Ok(PtySession { master: pty.master, child, writer, vt, output })
+    Ok(PtySession { master: pty.master, child, writer, vt })
 }
 
 impl App {
-    fn ensure_pty(&mut self, cols: u16, rows: u16) {
-        let Some(agent) = self.agents.get(self.selected).cloned() else { return; };
+    fn ensure_pty(&mut self, agent: &AgentRow, cols: u16, rows: u16, cwd: Option<std::path::PathBuf>) {
         if agent.id.is_empty() { return; }
-        let stale = self.pty.as_ref().map(|p| self.pty_agent_id != agent.id).unwrap_or(false);
+        let stale = self.pty.as_ref().map(|_| self.pty_agent_id != agent.id).unwrap_or(false);
         let missing = self.pty.is_none();
         if stale || missing {
             if let Some(old) = self.pty.take() {
                 let mut child = old.child;
                 let _ = child.kill();
             }
-            match spawn_pty_session(&agent, cols.max(20), rows.max(4)) {
+            let is_butler = agent.name.eq_ignore_ascii_case("butler") || agent.role == "butler" || agent.scope == "building";
+            match spawn_pty_session(&agent, cols.max(20), rows.max(4), cwd) {
                 Ok(session) => {
                     self.pty = Some(session);
                     self.pty_agent_id = agent.id.clone();
+                    self.pty_scroll = 0;
+                    if is_butler {
+                        let flag = std::path::PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(".config/ZollyBot/.butler-introduced");
+                        if !flag.exists() {
+                            self.butler_intro_pending = Some(std::time::Instant::now());
+                        }
+                    }
                 }
                 Err(e) => {
                     self.message = format!("PTY failed for {}: {e}", agent.name);
@@ -109,6 +133,8 @@ impl App {
         }
         Ok(())
     }
+
+
 }
 
 // Additional office-pane methods split for readability; state lives in the primary App struct below.
@@ -121,7 +147,6 @@ struct PtySession {
     child: Box<dyn Child + Send + Sync>,
     writer: Box<dyn std::io::Write + Send>,
     vt: Arc<Mutex<VtTerminal>>,
-    output: Arc<Mutex<Vec<u8>>>,
 }
 
 #[derive(Parser)]
@@ -498,6 +523,55 @@ struct OfficeRow {
 #[derive(Clone, Copy, PartialEq)]
 enum OnboardingStep { Language, SignIn, Done }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum IconMode {
+    Agents,
+    Tasks,
+    Thread,
+    Routines,
+}
+
+impl IconMode {
+    fn all() -> [IconMode; 4] {
+        [IconMode::Agents, IconMode::Tasks, IconMode::Thread, IconMode::Routines]
+    }
+    fn label(self) -> &'static str {
+        match self {
+            IconMode::Agents => "Agents",
+            IconMode::Tasks => "Tasks",
+            IconMode::Thread => "Thread",
+            IconMode::Routines => "Routines",
+        }
+    }
+    fn glyph(self) -> &'static str {
+        match self {
+            IconMode::Agents => "A",
+            IconMode::Tasks => "T",
+            IconMode::Thread => "H",
+            IconMode::Routines => "R",
+        }
+    }
+}
+
+#[derive(Clone, Default)]
+struct TaskRow {
+    id: String,
+    office_id: String,
+    status: String,
+    gate: String,
+    priority: String,
+    attempts: String,
+    title: String,
+}
+
+#[derive(Clone, Default)]
+struct RoutineRow {
+    id: String,
+    name: String,
+    active: String,
+    schedule: String,
+}
+
 struct App {
     server: ServerInfo,
     all_agents: Vec<AgentRow>,
@@ -520,6 +594,9 @@ struct App {
     lang_selected: usize,
     chat_messages: Vec<(String,String)>,
     chat_agent_id: String,
+    lobby_input: String,
+    butler_reply_pending: bool,
+    butler_pty_mode: bool,
     chat_last_load: Instant,
     profile_field: usize,
     profile_models: Vec<(String, String, String)>,
@@ -527,6 +604,17 @@ struct App {
     terminal_pct: u16,
     pty: Option<PtySession>,
     pty_agent_id: String,
+    pty_scroll: usize,
+    pty_pane_rect: Option<ratatui::layout::Rect>,
+    pty_selection: Option<((u16,u16),(u16,u16))>,
+    butler_intro_pending: Option<std::time::Instant>,
+    icon_mode: IconMode,
+    icon_selected: usize,
+    tasks: Vec<TaskRow>,
+    task_selected: usize,
+    routines: Vec<RoutineRow>,
+    routine_selected: usize,
+    detail_scroll: usize,
 }
 
 impl App {
@@ -553,6 +641,9 @@ impl App {
             lang_selected: 0,
             chat_messages: Vec::new(),
             chat_agent_id: String::new(),
+            lobby_input: String::new(),
+            butler_reply_pending: false,
+            butler_pty_mode: false,
             chat_last_load: Instant::now() - Duration::from_secs(99),
             profile_field: 0,
             profile_models: Vec::new(),
@@ -560,6 +651,17 @@ impl App {
             pty: None,
             terminal_pct: 50,
             pty_agent_id: String::new(),
+            pty_scroll: 0,
+            pty_pane_rect: None,
+            pty_selection: None,
+            butler_intro_pending: None,
+            icon_mode: IconMode::Agents,
+            icon_selected: 0,
+            tasks: Vec::new(),
+            task_selected: 0,
+            routines: Vec::new(),
+            routine_selected: 0,
+            detail_scroll: 0,
         };
         let cfg = app.tui_config.clone();
         app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
@@ -723,7 +825,7 @@ impl App {
 
     fn load_butler_chat(&mut self) {
         if control_socket().is_none() { return; }
-        if self.chat_last_load.elapsed() < Duration::from_millis(900) { return; }
+        if !self.butler_reply_pending && self.chat_last_load.elapsed() < Duration::from_millis(900) { return; }
         self.chat_last_load = Instant::now();
         if self.chat_agent_id.is_empty() {
             let butler = self.all_agents.iter().find(|a| a.scope=="building" || a.role=="butler" || a.name.eq_ignore_ascii_case("butler")).cloned();
@@ -745,16 +847,23 @@ impl App {
                 }
             }
         }
+        if self.butler_reply_pending {
+            if let Some((role, _)) = self.chat_messages.last() {
+                if role != "user" {
+                    self.butler_reply_pending = false;
+                }
+            }
+        }
     }
 
-    fn send_butler_chat(&mut self) {
-        let text = std::env::var("ZOLLYBOT_CHAT_TEXT").unwrap_or_default();
-        if text.trim().is_empty() { return; }
-        let text = text.trim().to_string();
+    fn send_butler_text(&mut self, text: &str) {
+        let text = text.trim();
+        if text.is_empty() { return; }
+        let text = text.to_string();
         self.chat_messages.push(("user".to_string(), text.clone()));
         let path = if self.chat_agent_id.is_empty() { "/v1/butler/messages".to_string() } else { format!("/v1/agents/{}/messages", self.chat_agent_id) };
         match control_call("POST",&path,&[("text",&text)]) {
-            Ok((200,_)) => { self.chat_last_load = Instant::now()-Duration::from_secs(99); self.load_butler_chat(); self.message = "Sent to Butler.".to_string(); }
+            Ok((200,_)) => { self.chat_last_load = Instant::now()-Duration::from_secs(99); self.load_butler_chat(); self.butler_reply_pending = true; self.message = "Sent to Butler.".to_string(); }
             Ok((_,l)) => self.message = answer_error(400,&l),
             Err(e) => self.message = e,
         }
@@ -830,7 +939,6 @@ impl App {
             }
             choices.push((Some(office.id.clone()), office.name.clone(), office.agents));
         }
-        choices.push((None, "All floors".to_string(), self.all_agents.len()));
         choices
     }
 
@@ -867,6 +975,73 @@ impl App {
     }
 
     fn handle_mouse(&mut self, mouse: MouseEvent) {
+        // PTY pane: scrollback, selection, paste.
+        if let Some(rect) = self.pty_pane_rect {
+            let inner = ratatui::layout::Rect { x: rect.x + 1, y: rect.y + 1, width: rect.width.saturating_sub(2), height: rect.height.saturating_sub(2) };
+            if mouse.column >= inner.x && mouse.column < inner.x + inner.width && mouse.row >= inner.y && mouse.row < inner.y + inner.height {
+                use crossterm::event::{MouseButton, MouseEventKind};
+                match mouse.kind {
+                    MouseEventKind::ScrollUp => { self.pty_scroll = self.pty_scroll.saturating_add(3); return; }
+                    MouseEventKind::ScrollDown => { self.pty_scroll = self.pty_scroll.saturating_sub(3); return; }
+                    MouseEventKind::Down(MouseButton::Left) => {
+                        let col = mouse.column - inner.x;
+                        let row = mouse.row - inner.y;
+                        self.pty_selection = Some(((col, row), (col, row)));
+                        return;
+                    }
+                    MouseEventKind::Drag(MouseButton::Left) => {
+                        if let Some(sel) = &mut self.pty_selection {
+                            let col = mouse.column - inner.x;
+                            let row = mouse.row - inner.y;
+                            sel.1 = (col, row);
+                        }
+                        return;
+                    }
+                    MouseEventKind::Up(MouseButton::Left) => {
+                        if let Some(((sc, sr), (ec, er))) = self.pty_selection.take() {
+                            // Extract the selected text from the PTY screen.
+                            let mut lines_out: Vec<String> = Vec::new();
+                            if let Some(pty) = &self.pty {
+                                if let Ok(vt) = pty.vt.lock() {
+                                    let screen = vt.screen();
+                                    let all: Vec<_> = screen.all_lines().collect();
+                                    let (r0, r1) = if sr <= er { (sr as usize, er as usize) } else { (er as usize, sr as usize) };
+                                    let (c0, c1) = if sr <= er { (sc as usize, ec as usize) } else { (ec as usize, sc as usize) };
+                                    for r in r0..=r1 {
+                                        if r >= all.len() { break; }
+                                        let line = all[r].text();
+                                        let chars: Vec<char> = line.chars().collect();
+                                        let start = if r == r0 { c0.min(chars.len()) } else { 0 };
+                                        let end = if r == r1 { (c1 + 1).min(chars.len()) } else { chars.len() };
+                                        lines_out.push(chars[start..end].iter().collect());
+                                    }
+                                }
+                            }
+                            let text = lines_out.join("\n");
+                            let _ = std::process::Command::new("xclip")
+                                .args(["-selection", "clipboard"])
+                                .stdin(std::process::Stdio::piped())
+                                .spawn()
+                                .and_then(|mut c| {
+                                    use std::io::Write;
+                                    if let Some(stdin) = c.stdin.as_mut() { let _ = stdin.write_all(text.as_bytes()); }
+                                    c.wait()
+                                });
+                        }
+                        return;
+                    }
+                    MouseEventKind::Down(MouseButton::Middle) => {
+                        if let Ok(out) = std::process::Command::new("xclip").args(["-selection", "clipboard", "-o"]).output() {
+                            if out.status.success() {
+                                let _ = self.write_pty(&out.stdout);
+                            }
+                        }
+                        return;
+                    }
+                    _ => return,
+                }
+            }
+        }
         match mouse.kind {
             MouseEventKind::ScrollDown => {
                 if mouse.column > 62 {
@@ -1317,11 +1492,11 @@ fn draw(frame: &mut Frame, app: &mut App) {
             Constraint::Percentage(100 - 5 - 20 - app.terminal_pct.min(80).max(20)),  // (4) profile/description tied to (3)
         ]).split(body[0]);
         // (1) icon-only agents/threads: mirrors GUI icon rail; selection lives here and drives 2/3/4.
-        let icons: Vec<Line> = app.agents.iter().enumerate().map(|(i, a)| {
-            let marker = if i == app.selected { "●" } else { "○" };
-            let style = if i == app.selected { Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD) } else { Style::default().fg(Color::DarkGray) };
-            Line::from(Span::styled(format!("{marker}{}", a.name.chars().take(1).collect::<String>().to_uppercase()), style))
-        }).collect();
+        let lobby = app.office_filter.as_deref() == Some("building");
+        let icons: Vec<Line> = vec![
+            Line::from(Span::styled(if lobby { "> A" } else { "  A" }, if lobby { Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD) } else { Style::default().fg(Color::DarkGray) })),
+            Line::from(Span::styled(if lobby { "  O" } else { "> O" }, if lobby { Style::default().fg(Color::DarkGray) } else { Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD) })),
+        ];
         frame.render_widget(Paragraph::new(icons).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" i ")), outer[0]);
         // (2) agent/thread list tied to (1): j/k changes selection here; (3) and (4) follow.
         frame.render_stateful_widget(table, outer[1], &mut app.table_state);
@@ -1342,9 +1517,12 @@ fn draw(frame: &mut Frame, app: &mut App) {
         let pane_area = outer[2];
         let cols = pane_area.width.saturating_sub(2) as usize;
         let rows = pane_area.height.saturating_sub(2) as usize;
-        app.ensure_pty(cols as u16, rows as u16);
+        if let Some(agent) = app.agents.get(app.selected).cloned() {
+            app.ensure_pty(&agent, cols as u16, rows as u16, None);
+        }
         let pty_title = app.agents.get(app.selected).map(|a| format!(" terminal · {} · {} ", a.provider, a.model)).unwrap_or_else(|| " terminal · harness ".to_string());
         let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(pty_title);
+        app.pty_pane_rect = Some(pane_area);
         let inner = block.inner(pane_area);
         frame.render_widget(block, pane_area);
         if let Some(pty) = &app.pty {
@@ -1399,34 +1577,68 @@ fn draw(frame: &mut Frame, app: &mut App) {
     }
 
     if lobby {
-        // The lobby is the butler's room: the chat in the middle, the offices beside it.
-        let butler = app.all_agents.iter().find(|agent| agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || (!agent.id.is_empty() && agent.id == app.chat_agent_id));
-        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(body[0]);
-        let mut chat: Vec<Line> = Vec::new();
-        if let Some(agent) = butler {
-            chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
-            chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment. Butler can self-improve its instructions and change provider, model, and effort when you ask.", Style::default().fg(Color::DarkGray))));
-            chat.push(Line::from(""));
-        } else if !app.chat_agent_id.is_empty() {
-            chat.push(Line::from(Span::styled("Butler · Concierge", Style::default().add_modifier(Modifier::BOLD))));
-            chat.push(Line::from(Span::styled("Butler agent is connected. Chat is available below.", Style::default().fg(Color::DarkGray))));
-            chat.push(Line::from(""));
-        } else {
-            chat.push(Line::from(Span::styled("Butler · Concierge", Style::default().add_modifier(Modifier::BOLD))));
-            chat.push(Line::from(Span::styled("No Butler agent visible yet. The app/server should create it by default; start server if needed.", Style::default().fg(Color::DarkGray))));
-            chat.push(Line::from(""));
-        }
-        if app.chat_messages.is_empty() {
-            chat.push(Line::from(Span::styled("No messages yet. Press / to chat with Butler.", Style::default().fg(Color::DarkGray))));
-        } else {
-            for (role, text) in app.chat_messages.iter().rev().take(12).rev() {
-                let who = if role=="user" { "you" } else { "butler" };
-                let style = if role=="user" { Style::default().fg(Color::Cyan) } else { Style::default().fg(Color::White) };
-                chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
+        // The lobby is the butler's room: chat (default) or raw PTY harness (toggle with Leader+t).
+        let butler = app.all_agents.iter().find(|agent| agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || (!agent.id.is_empty() && agent.id == app.chat_agent_id)).cloned();
+        // Lobby: no icon gutter (page rail) — only office mode has it. Chat + offices side by side.
+        let lobby_outer = Layout::default().direction(Direction::Horizontal).constraints([
+            Constraint::Percentage(75),
+            Constraint::Percentage(25),
+        ]).split(body[0]);
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(lobby_outer[0]);
+        if app.butler_pty_mode {
+            // Raw PTY harness mode.
+            let pane_area = chat_layout[0];
+            let cols = pane_area.width.saturating_sub(2) as usize;
+            let rows = pane_area.height.saturating_sub(2) as usize;
+            if let Some(agent) = butler.clone() {
+                let home = std::env::var("HOME").unwrap_or_default();
+                let ws = std::path::PathBuf::from(format!("{}/ZollyBot/Agents/agent-butler-default", home));
+                let cwd = if ws.exists() { Some(ws) } else { None };
+                app.ensure_pty(&agent, cols as u16, rows as u16, cwd);
             }
+            let pty_title = butler.as_ref().map(|a| format!(" chat · butler · {} · {}  [PTY] (Leader+t to switch) ", a.provider, a.model)).unwrap_or_else(|| " chat · butler · harness ".to_string());
+            let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(pty_title);
+            app.pty_pane_rect = Some(pane_area);
+            let inner = block.inner(pane_area);
+            frame.render_widget(block, pane_area);
+            if let Some(pty) = &app.pty {
+                if let Ok(vt) = pty.vt.lock() {
+                    let screen = vt.screen();
+                    for (r, line) in screen.visible_lines().enumerate() {
+                        if r >= (rows as usize) { break; }
+                        let text = line.text();
+                        if !text.trim().is_empty() {
+                            frame.render_widget(Paragraph::new(text), ratatui::layout::Rect::new(inner.x, inner.y + r as u16, inner.width, 1));
+                        }
+                    }
+                }
+            } else {
+                frame.render_widget(Paragraph::new("Starting PTY…").style(Style::default().fg(Color::DarkGray)), inner);
+            }
+        } else {
+            // Chat messages mode with composer.
+            let mut chat: Vec<Line> = Vec::new();
+            if let Some(agent) = butler.as_ref() {
+                chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
+                chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment.", Style::default().fg(Color::DarkGray))));
+                chat.push(Line::from(""));
+            }
+            if app.chat_messages.is_empty() {
+                chat.push(Line::from(Span::styled("No messages yet. Type below and press Enter.", Style::default().fg(Color::DarkGray))));
+            } else {
+                for (role, text) in app.chat_messages.iter().rev().take(12).rev() {
+                    let who = if role == "user" { "you" } else { "butler" };
+                    let style = if role == "user" { Style::default().fg(Color::Cyan) } else { Style::default().fg(Color::White) };
+                    chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
+                }
+                if app.butler_reply_pending {
+                    chat.push(Line::from(Span::styled("butler: …", Style::default().fg(Color::DarkGray))));
+                }
+            }
+            chat.push(Line::from(""));
+            chat.push(Line::from(vec![Span::styled("> ", Style::default().fg(Color::Yellow)), Span::styled(app.lobby_input.clone(), Style::default().fg(Color::White)), Span::styled("█", Style::default().fg(Color::DarkGray))]));
+            frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler  (Leader+t for PTY harness) ")).wrap(ratatui::widgets::Wrap { trim: true }), chat_layout[0]);
         }
-        frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler ")), chat_layout[0]);
-        frame.render_widget(Paragraph::new("chat is the terminal (harness owns input).").block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler ")), chat_layout[0]);
 
         let mut offices: Vec<Line> = Vec::new();
         for (index, (_, label, headcount)) in app.lobby_targets().iter().enumerate() {
@@ -1448,7 +1660,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
             .borders(Borders::ALL)
             .border_type(ratatui::widgets::BorderType::Rounded)
             .title(" offices ");
-        frame.render_widget(Paragraph::new(offices).block(offices_block), body[1]);
+        frame.render_widget(Paragraph::new(offices).block(offices_block), lobby_outer[1]);
     }
     if false {
     // legacy right pane (now in 3-pane above)
@@ -1709,6 +1921,17 @@ fn agents_text() -> String {
 fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mut App) -> std::io::Result<()> {
     loop {
         terminal.draw(|frame| draw(frame, app))?;
+        // Butler first-run introduction.
+        if let Some(t) = app.butler_intro_pending {
+            if t.elapsed() >= Duration::from_secs(3) {
+                app.butler_intro_pending = None;
+                let prompt = "Introduce yourself briefly and ask me about myself and my work.\n";
+                let _ = app.write_pty(prompt.as_bytes());
+                let flag = std::path::PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(".config/ZollyBot/.butler-introduced");
+                let _ = std::fs::create_dir_all(flag.parent().unwrap());
+                let _ = std::fs::write(&flag, "1");
+            }
+        }
         if event::poll(Duration::from_millis(200))? {
             let event = event::read()?;
             if let Event::Mouse(mouse) = event {
@@ -1799,7 +2022,7 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                         KeyCode::Char('m') => { app.load_profile_models(); app.switch_selected_profile(true); }
                         KeyCode::Char('n') => { app.load_profile_models(); app.switch_selected_profile(false); }
                         KeyCode::Char('e') => { app.terminal_pct = app.terminal_pct.saturating_sub(5).max(20); }
-                        KeyCode::Char('t') => { app.terminal_pct = (app.terminal_pct + 5).min(80); }
+                        KeyCode::Char('t') => { if app.office_filter.as_deref() == Some("building") { app.butler_pty_mode = !app.butler_pty_mode; } else { app.terminal_pct = (app.terminal_pct + 5).min(80); } }
                         KeyCode::Char('.') => { app.terminal_pct = (app.terminal_pct + 5).min(80); }
                         KeyCode::Char(',') => { app.terminal_pct = app.terminal_pct.saturating_sub(5).max(20); }
                         KeyCode::Enter => { if app.office_filter.as_deref() == Some("building") { app.open_lobby_selection(); } }
@@ -1807,25 +2030,72 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                     }
                     continue;
                 }
-                // Bare Neovim motions (no Leader) for navigation.
-                match key.code {
-                    KeyCode::Char('j') | KeyCode::Down => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
-                    KeyCode::Char('k') | KeyCode::Up => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(-1); } else { app.table_previous(); } }
-                    KeyCode::Char('h') | KeyCode::Left => { app.table_previous(); }
-                    KeyCode::Char('l') if !key.modifiers.is_empty() => {}
-                    KeyCode::Char('l') => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
-                    KeyCode::Char('f') | KeyCode::Char('c') | KeyCode::Char('i') | KeyCode::Char('o') | KeyCode::Char('r') | KeyCode::Char('q') | KeyCode::Char('a') | KeyCode::Char('w') | KeyCode::Char('s') | KeyCode::Esc => {
-                        // No bare action keys: these need Leader (Ctrl+Space). Ignore so typing/search/terminal remains.
+                // When a PTY harness is active, forward keystrokes to it (Herdr-style).
+                if app.pty.is_some() {
+                    if let Some(bytes) = key_to_bytes(&key) {
+                        let _ = app.write_pty(&bytes);
+                        app.pty_scroll = 0;
                         continue;
                     }
-                    _ => {}
+                    if let crossterm::event::KeyCode::PageUp = key.code {
+                        app.pty_scroll = app.pty_scroll.saturating_add(5);
+                        continue;
+                    }
+                    if let crossterm::event::KeyCode::PageDown = key.code {
+                        app.pty_scroll = app.pty_scroll.saturating_sub(5);
+                        continue;
+                    }
+                }
+                // All shortcuts require the Leader prefix (Ctrl+Space); bare keys are never swallowed.
+                // Lobby chat composer input (interactive butler chat).
+                if app.office_filter.as_deref() == Some("building") && app.pty.is_none() {
+                    match key.code {
+                        KeyCode::Char(c) => { app.lobby_input.push(c); continue; }
+                        KeyCode::Backspace => { app.lobby_input.pop(); continue; }
+                        KeyCode::Enter => {
+                            let text = app.lobby_input.clone();
+                            app.lobby_input.clear();
+                            app.send_butler_text(&text);
+                            continue;
+                        }
+                        _ => {}
+                    }
+                }
+                // Bare motions for navigation only when no PTY is active.
+                if app.pty.is_none() {
+                    match key.code {
+                        KeyCode::Char('j') | KeyCode::Down => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
+                        KeyCode::Char('k') | KeyCode::Up => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(-1); } else { app.table_previous(); } }
+                        KeyCode::Char('h') | KeyCode::Left => { app.table_previous(); }
+                        KeyCode::Char('l') => { if app.office_filter.as_deref() == Some("building") { app.table_next(); } else { app.table_next(); } }
+                        _ => {}
+                    }
                 }
                 // No bare action keys: q, j/k, f, r, c, i, o, Esc do nothing without prefix.
-                if let Event::Key(_) = event {
+                if let Event::Key(key) = event {
+                    // Scrollback navigation for the PTY pane.
+                if let crossterm::event::KeyCode::PageUp = key.code {
+                    app.pty_scroll = app.pty_scroll.saturating_add(5);
+                    continue;
+                }
+                if let crossterm::event::KeyCode::PageDown = key.code {
+                    app.pty_scroll = app.pty_scroll.saturating_sub(5);
+                    continue;
+                }
+                // Forward stray keystrokes to the active PTY harness (Herdr-style input ownership).
+                    if app.pty.is_some() {
+                        if let Some(bytes) = key_to_bytes(&key) {
+                            let _ = app.write_pty(&bytes);
+                            continue;
+                        }
+                    }
                     // fall through: ignore stray bare keys (typing for search/terminal remains via harness)
                     continue;
                 }
             }
+        }
+        if app.butler_reply_pending {
+            app.load_butler_chat();
         }
         if app.last_refresh.elapsed() >= REFRESH_EVERY {
             app.load();
@@ -1868,7 +2138,7 @@ fn run_embedded_terminal() -> std::io::Result<i32> {
     use std::sync::{Arc, Mutex};
     // Minimal PTY via /usr/bin/script is preferred; fall back to ratatui notice.
     let harness = std::env::var("ZOLLYBOT_HARNESS").unwrap_or_else(|_| "zollybot-cli".to_string());
-    let mut child = Command::new(harness)
+    let child = Command::new(harness)
         .env("ZOLLYBOT_BIN", std::env::var("ZOLLYBOT_BIN").unwrap_or_default())
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())

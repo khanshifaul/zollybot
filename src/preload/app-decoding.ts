@@ -32,7 +32,6 @@ import {
   type AppThemePalette,
   type BitwardenConnectorStatus,
   type BusyMessageModePreference,
-  type CentralAuthIssue,
   type CentralAuthState,
   type CentralAuthUser,
   type ChatWindowTarget,
@@ -274,42 +273,8 @@ export function decodeChatWindowTargets(value: unknown): ChatWindowTarget[] {
 
 export function decodeCentralAuthState(value: unknown): CentralAuthState {
   const state = decodeRecord(value, "account state");
-  switch (state.status) {
-    case "loading":
-    case "signing_in":
-      return { status: state.status };
-    case "signed_out":
-      if (state.reason === undefined) return { status: "signed_out" };
-      if (state.reason !== "keyring_changed") throw new Error("Invalid signed-out reason.");
-      return { status: "signed_out", reason: state.reason };
-    case "code_sent": {
-      const { developmentCode, issue } = state;
-      if (developmentCode !== undefined && !isString(developmentCode)) throw new Error("Invalid developmentCode.");
-      return {
-        status: "code_sent",
-        challengeId: requiredString(state, "challengeId"),
-        email: requiredString(state, "email"),
-        expiresAt: requiredNumber(state, "expiresAt"),
-        resendAvailableAt: requiredNumber(state, "resendAvailableAt"),
-        ...(developmentCode === undefined ? {} : { developmentCode }),
-        ...(issue === undefined ? {} : { issue: decodeCentralAuthIssue(issue) }),
-      };
-    }
-    case "company_sign_in": {
-      const { issue } = state;
-      return {
-        status: "company_sign_in",
-        email: requiredString(state, "email"),
-        ...(issue === undefined ? {} : { issue: decodeCentralAuthIssue(issue) }),
-      };
-    }
-    case "signed_in":
-      return { status: "signed_in", user: decodeCentralAuthUser(state.user) };
-    case "error":
-      return { status: "error", issue: decodeCentralAuthIssue(state.issue) };
-    default:
-      throw new Error("Invalid account status.");
-  }
+  if (state.status !== "signed_in") throw new Error("Invalid account status. Expected signed_in.");
+  return { status: "signed_in", user: decodeCentralAuthUser(state.user) };
 }
 
 function decodeCentralAuthUser(value: unknown): CentralAuthUser {
@@ -336,19 +301,6 @@ function optionalAnalyticsEnabled(user: DynamicRecord): Pick<CentralAuthUser, "a
   if (analyticsEnabled === undefined) return {};
   if (analyticsEnabled !== null && !isBoolean(analyticsEnabled)) throw new Error("Invalid analyticsEnabled.");
   return { analyticsEnabled };
-}
-
-function decodeCentralAuthIssue(value: unknown): CentralAuthIssue {
-  const issue = decodeRecord(value, "account issue");
-  const { retryAfterSeconds, reference } = issue;
-  if (retryAfterSeconds !== undefined && !isNumber(retryAfterSeconds)) throw new Error("Invalid retryAfterSeconds.");
-  if (reference !== undefined && !isString(reference)) throw new Error("Invalid reference.");
-  return {
-    code: requiredString(issue, "code"),
-    message: requiredString(issue, "message"),
-    ...(retryAfterSeconds === undefined ? {} : { retryAfterSeconds }),
-    ...(reference === undefined ? {} : { reference }),
-  };
 }
 
 export function decodeMobileConnectTicket(value: unknown): MobileConnectTicket {
@@ -812,3 +764,6 @@ export function decodeBitwardenConnectorStatus(value: unknown): BitwardenConnect
     throw new Error("Invalid Bitwarden connector response.");
   return { connected: value.connected, connecting: value.connecting, serverUrl: value.serverUrl, error: value.error };
 }
+
+export const decodeOfficeTask = (value: unknown): any => value;
+export const decodeOfficeTasks = (value: unknown): any[] => (Array.isArray(value) ? value : []);

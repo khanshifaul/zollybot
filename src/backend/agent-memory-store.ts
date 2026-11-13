@@ -60,8 +60,14 @@ function agentMemoryTables(limit: () => number): MemoryTables {
 
 /** Owns saved agent memories, their selection, and local recall. Channel memories remain separate. */
 export class AgentMemoryStore extends MemoryStore {
-  constructor(database: ZollyBotDatabase, limit: () => number = () => DEFAULT_AGENT_MEMORY_LIMIT) {
+  readonly #onRecall: ((memoryId: string) => void) | null;
+  constructor(
+    database: ZollyBotDatabase,
+    limit: () => number = () => DEFAULT_AGENT_MEMORY_LIMIT,
+    onRecall: ((memoryId: string) => void) | null = null,
+  ) {
     super(database, agentMemoryTables(limit));
+    this.#onRecall = onRecall;
   }
 
   override list(agentId: string): AgentMemory[] {
@@ -363,6 +369,7 @@ export class AgentMemoryStore extends MemoryStore {
     const selection = this.getSelection(agentId, memoryId);
     if (!memory || !selection)
       throw new AgentMemorySelectionError({ code: "missing", message: sourceText("error.backend.memoryGone") });
+    this.#onRecall?.(memoryId);
     return {
       ...memory,
       inclusion: selection.inclusion,

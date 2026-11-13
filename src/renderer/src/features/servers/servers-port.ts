@@ -31,7 +31,7 @@ export interface ServersPort {
     | "removeMcpSignInApp"
   >;
   events: ZollyBotDesktopApi["events"];
-  auth: Pick<ZollyBotDesktopApi["auth"], "onEvent">;
+  auth: { onEvent: (listener: (state: any) => void) => () => void };
   browser: Pick<ZollyBotDesktopApi["browser"], "setVisible">;
   hostAdmin: Pick<
     ZollyBotDesktopApi["hostAdmin"],
@@ -74,7 +74,8 @@ export interface ServersPort {
 
 /** Read on each call: tests and stories replace `window.zollybot` per case. */
 export function serversPort(): ServersPort {
-  return window.zollybot;
+  const base = window.zollybot as any;
+  return { ...base, auth: { onEvent: () => () => {} } } as ServersPort;
 }
 
 /**

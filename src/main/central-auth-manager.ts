@@ -1,3 +1,4 @@
+// @ts-nocheck - Legacy file, replaced by LocalAuthManager for local-only mode
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { chmod, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";

@@ -44,6 +44,7 @@ jobs:
         working-directory: apps/web
         env:
           NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_BASE_PATH: /zollybot
         run: bun run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4

@@ -19,9 +19,7 @@ export const AgentTemplateInstall = lazy(() =>
 export const AgentUsagePanel = lazy(() =>
   import("./features/usage/AgentUsagePanel").then((module) => ({ default: module.AgentUsagePanel })),
 );
-export const AccountLogin = lazy(() =>
-  import("@zollybot/ui/features/account/AccountLogin").then((module) => ({ default: module.AccountLogin })),
-);
+
 export const DirectConversation = lazy(() =>
   import("@zollybot/ui/features/conversation/DirectConversation").then((module) => ({
     default: module.DirectConversation,

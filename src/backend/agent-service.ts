@@ -144,7 +144,6 @@ import { createZollyBotLogger } from "@zollybot/logging";
 import { classifyFailure } from "@zollybot/telemetry";
 import { Cause, Deferred, Effect, Exit, Fiber, Result, Schema, Scope, Semaphore } from "effect";
 import { AgentMemories } from "./agent/agent-memories";
-import { OfficeMemories } from "./offices/office-memory-store";
 import { AgentRemoval, AgentRemovalFailed } from "./agent/agent-removal";
 import { AgentSettingsRefused } from "./agent/agent-settings-refused";
 import type { ApprovalAutomationPolicy } from "./agent/approval-automation";
@@ -229,12 +228,14 @@ import { ZollyBotToolRouter } from "./agent/zollybot-tool-router";
 import type { AgentApiKeys } from "./agent-api-keys";
 import type { AgentProvider } from "./agent-client";
 import type { AgentTables } from "./agent-data/agent-tables";
+import { AgentMemoryStore } from "./agent-memory-store";
 import type { AgentStore } from "./agent-store";
 import { type AgentTaskBranchFailed, AgentTasks } from "./agent-tasks/agent-tasks";
 import { type AgentThreadRecord, AgentThreadStore } from "./agent-threads/agent-thread-store";
 import { AgentWaitStore } from "./agent-waits/agent-wait-store";
 import { AgentWaits } from "./agent-waits/agent-waits";
 import { automationRunCommand } from "./automation-command";
+import { ButlerPonderService } from "./butler-ponder";
 import { toChannelOperationError } from "./channel-effects";
 import { type ChannelImageFile, ChannelImages } from "./channel-images";
 import { ChannelRoutineScheduler } from "./channel-routine-scheduler";
@@ -252,6 +253,7 @@ import type { McpSignInOpener } from "./mcp-oauth-provider";
 import { McpServerStore } from "./mcp-server-store";
 import type { MessageDeleteAccess, MessageDeleteRefused } from "./message-delete";
 import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging/messaging-threads";
+import { OfficeMemories } from "./offices/office-memory-store";
 import {
   isRoleEmployed,
   listEmployments,
@@ -1716,7 +1718,16 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       routines: this.#routines,
       memories: this.#memories,
       officeMemories: new OfficeMemories(store.database),
-      officeIdForAgent: (agentId: string) => { try { const row = store.database.connection.prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?").get(agentId) as any; return row?.office_id ?? null; } catch { return null; } },
+      officeIdForAgent: (agentId: string) => {
+        try {
+          const row = store.database.connection
+            .prepare("SELECT office_id FROM agent_employments WHERE agent_id = ?")
+            .get(agentId) as any;
+          return row?.office_id ?? null;
+        } catch {
+          return null;
+        }
+      },
       waits: this.#waits,
       tasks: this.#tasks,
       drain: this.#drain,
@@ -3996,8 +4007,11 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     const database = this.#store.database.connection;
     if (listEmployments(database).some((employment) => employment.scope === "building")) return;
     if (this.#store.list().some((agent) => roleForAgentName(agent.name)?.scope === "building")) return;
-    const description = "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices and help hire agents, and never reads office chats or approves gates.";
-    const existing = this.#store.list().find((agent) => agent.name.toLowerCase() === "butler" || roleForAgentName(agent.name)?.key === "butler");
+    const description =
+      "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices and help hire agents, and never reads office chats or approves gates.";
+    const existing = this.#store
+      .list()
+      .find((agent) => agent.name.toLowerCase() === "butler" || roleForAgentName(agent.name)?.key === "butler");
     if (existing) {
       upsertEmployment(database, { agentId: existing.id, officeId: null, roleKey: "butler", scope: "building" });
       yield* Effect.ignore(this.#store.updateAgent({ agentId: existing.id, title: "Concierge", description } as any));
@@ -4006,11 +4020,36 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     }
     const created = yield* this.#store
       .createAgent({ name: "Butler", description, avatarSeed: "zollybot:butler", avatarHue: null })
-      .pipe(Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "create the butler", cause: failure.cause })));
-    yield* this.#store.updateAgent({ agentId: created.id, title: "Concierge" } as any)
-      .pipe(Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title the butler", cause: failure.cause })));
+      .pipe(
+        Effect.mapError(
+          (failure) => new AgentLifecycleFailed({ operation: "create the butler", cause: failure.cause }),
+        ),
+      );
+    yield* this.#store
+      .updateAgent({ agentId: created.id, title: "Concierge" } as any)
+      .pipe(
+        Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "title the butler", cause: failure.cause })),
+      );
     upsertEmployment(database, { agentId: created.id, officeId: null, roleKey: "butler", scope: "building" });
     this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
+  });
+
+  /** Runs one ponder cycle for the Butler agent: decay, archive cold memories, generate curiosity. */
+  readonly runButlerPonder = Effect.fn("AgentService.runButlerPonder")(function* (this: AgentService) {
+    const butler = this.#store.list().find((a) => a.name.toLowerCase() === "butler" || a.role === "butler");
+    if (!butler) return;
+    const stateDir = butler.workspacePath ? `${butler.workspacePath}/.zollybot` : ".";
+    const holder: { ponder: ButlerPonderService | null } = { ponder: null };
+    const store = new AgentMemoryStore(
+      this.#store.database,
+      () => 20,
+      (id) => holder.ponder?.recall(id),
+    );
+    const ponder = new ButlerPonderService({ store, agentId: butler.id, stateDir });
+    holder.ponder = ponder;
+    yield* Effect.promise(() => ponder.load());
+    const result = yield* Effect.promise(() => ponder.ponder());
+    logger.info(`Butler ponder: ${result.questions.length} questions, ${result.archived} cold.`);
   });
 
   readonly initialize = Effect.fn("AgentService.initialize")(function* (

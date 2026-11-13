@@ -31,17 +31,6 @@ import { causeHelpers } from "../backend/effect-boundary";
 import type { CentralAuthOperationError } from "./central-auth-effects";
 import type { SkillMarketplaceFailure } from "./skill-marketplace-service";
 
-interface AgentMarketplaceAuth {
-  requestAuthorized<T>(
-    path: string,
-    init: RequestInit,
-    decoder: (value: unknown) => T,
-    timeoutMs?: number,
-  ): Effect.Effect<T, CentralAuthOperationError>;
-  downloadAuthorized(path: string): Effect.Effect<Uint8Array, CentralAuthOperationError>;
-  resolveApiUrl(path: string): string;
-}
-
 interface AgentMarketplaceAgents {
   listAgents(): AgentSummary[];
   listRoutines(agentId: string): Array<{
@@ -100,7 +89,16 @@ interface AgentMarketplaceSkills {
 
 export class AgentMarketplaceService {
   constructor(
-    private readonly auth: AgentMarketplaceAuth,
+    private readonly auth: {
+      requestAuthorized<T>(
+        path: string,
+        init: RequestInit,
+        decoder: (value: unknown) => T,
+        timeoutMs?: number,
+      ): Effect.Effect<T, CentralAuthOperationError>;
+      downloadAuthorized(path: string): Effect.Effect<Uint8Array, CentralAuthOperationError>;
+      resolveApiUrl(path: string): string;
+    },
     private readonly agents: AgentMarketplaceAgents,
     private readonly skills: AgentMarketplaceSkills,
   ) {}

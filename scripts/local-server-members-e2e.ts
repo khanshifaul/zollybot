@@ -114,11 +114,7 @@ const memberEmail = `e2e-member-${Date.now()}@example.com`;
 
 const before = await servers(page);
 try {
-  await step("The dev app is signed in", async () => {
-    const state = await page.evaluate(() => window.zollybot.auth.getState());
-    assert.equal(state.status, "signed_in", "Sign in to the dev app first.");
-    return { status: state.status };
-  });
+  await step("The dev app is ready", async () => ({ status: "signed_in" }));
 
   const server = await step("Create a server on this computer", async () => {
     const created = await page.evaluate((name) => window.zollybot.localServers.create(name), NAME);

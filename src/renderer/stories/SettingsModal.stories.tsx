@@ -199,14 +199,13 @@ function SettingsModalStory(props: {
             onCreateMobileConnect={createMobileConnect}
             onCancelMobileConnect={async () => {
               window.clearTimeout(scanTimer);
-              await mock.api.auth.cancelMobileConnect();
             }}
-            onGetMobileConnectLink={mock.api.auth.getMobileConnectLink}
-            onCreateMobileConnectLink={mock.api.auth.createMobileConnectLink}
-            onRevokeMobileConnectLink={mock.api.auth.revokeMobileConnectLink}
+            onGetMobileConnectLink={async () => null}
+            onCreateMobileConnectLink={async () => ({ token: "", url: "", qrData: "", createdAt: 0 })}
+            onRevokeMobileConnectLink={async () => {}}
             onListMobileConnectedDevices={async () => mobileDevices()}
-            onListAccountSessions={mock.api.auth.listAccountSessions}
-            onRevokeAccountSession={mock.api.auth.revokeAccountSession}
+            onListAccountSessions={async () => []}
+            onRevokeAccountSession={async () => {}}
             onRevokeMobileConnectedDevice={async (sessionId) => {
               setMobileDevices((current) => current.filter((device) => device.sessionId !== sessionId));
             }}

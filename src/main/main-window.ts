@@ -344,7 +344,6 @@ export function createMainWindowController({
     window.webContents.on("did-stop-loading", () => {
       const services = getServices();
       if (!services) return;
-      sendToRenderer(window, IPC_ENDPOINTS.auth.event, services.centralAuth.getState());
       sendToRenderer(
         window,
         IPC_ENDPOINTS.servers.event,

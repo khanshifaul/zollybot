@@ -201,10 +201,6 @@ export const Onboarding: Story = {
   ),
 };
 
-export const SignedOut: Story = {
-  render: () => <ZollyBotPlayground options={{ authState: { status: "signed_out" } }} />,
-};
-
 export const AgentStarting: Story = {
   render: () => (
     <ZollyBotPlayground

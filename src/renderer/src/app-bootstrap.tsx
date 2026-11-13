@@ -1,7 +1,6 @@
 import type { MarketplaceListingLink } from "@zollybot/contracts/marketplace-links";
 import { createEffect, flush, onSettled } from "solid-js";
 import { appPort } from "./app-port";
-import { useAuth } from "./features/account/account-context";
 import { useSetup } from "./features/onboarding/onboarding-context";
 import { useServers } from "./features/servers/servers-context";
 import { useSettings } from "./features/settings/settings-context";
@@ -28,37 +27,28 @@ import { useSettings } from "./features/settings/settings-context";
  * workspace, and it has to reach a user who never opens the MCP panel.
  */
 export function AppBootstrap() {
-  const { centralAuth } = useAuth();
   const { setupState, pendingInviteUrl, setPendingInviteUrl } = useSetup();
   const { setJoinServerOpen } = useServers();
-  const { setPendingAgentTemplateId, setPendingPluginSlug, setPendingMarketplaceListing, setSkillsMarketplaceOpen } =
-    useSettings();
+  const { setPendingAgentTemplateId, setPendingPluginSlug, setPendingMarketplaceListing } = useSettings();
 
   onSettled(() => {
     const receiveInvite = (inviteUrl: string) => {
       flush(() => {
         setPendingInviteUrl(inviteUrl);
-        if (setupState()?.completed === true && centralAuth().status === "signed_in") setJoinServerOpen(true);
       });
     };
     const unsubscribeInvite = appPort().servers.onInvite((inviteUrl) => {
       receiveInvite(inviteUrl);
     });
     const receivePluginSlug = (slug: string) => {
-      flush(() => {
-        setPendingPluginSlug(slug);
-        setSkillsMarketplaceOpen(true);
-      });
+      flush(() => setPendingPluginSlug(slug));
     };
     const unsubscribePlugin = appPort().plugins.onOpenListing((slug) => {
       receivePluginSlug(slug);
     });
     // A Marketplace link opens the agent or skill page. Only Add on that page adds it.
     const receiveMarketplaceListing = (link: MarketplaceListingLink) => {
-      flush(() => {
-        setPendingMarketplaceListing(link);
-        setSkillsMarketplaceOpen(true);
-      });
+      flush(() => setPendingMarketplaceListing(link));
     };
     const unsubscribeMarketplace = appPort().marketplace.onOpenListing((link) => {
       receiveMarketplaceListing(link);
@@ -99,7 +89,7 @@ export function AppBootstrap() {
     () => ({
       inviteUrl: pendingInviteUrl(),
       setupCompleted: setupState()?.completed === true,
-      signedIn: centralAuth().status === "signed_in",
+      signedIn: true, // always signed in locally
     }),
     ({ inviteUrl, setupCompleted, signedIn }) => {
       if (inviteUrl && setupCompleted && signedIn) {

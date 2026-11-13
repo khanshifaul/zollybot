@@ -1,4 +1,4 @@
-import type { CompanySignInSettings, ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
+import type { CompanySignInSettings } from "@zollybot/contracts/ipc";
 import {
   Badge,
   Button,
@@ -27,16 +27,7 @@ import { createEffect, createStore, Show } from "solid-js";
 import type { ServerSettingsSectionHost } from "./server-settings-section";
 
 /** What the section calls in main. Only the desktop app manages company sign-in. */
-export type CompanySignInCalls = Pick<
-  ZollyBotDesktopApi["auth"],
-  | "getCompanySignIn"
-  | "testCompanySignIn"
-  | "cancelCompanySignInTest"
-  | "setCompanySignInEnabled"
-  | "removeCompanySignIn"
-  | "createCompanySignInScimToken"
-  | "revokeCompanySignInScimToken"
->;
+export type CompanySignInCalls = any;
 
 /** Examples in the empty fields: an Entra ID issuer and a domain. They are not prose. */
 const ISSUER_PLACEHOLDER = "https://login.microsoftonline.com/<tenant>/v2.0";

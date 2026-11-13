@@ -2,7 +2,6 @@ import type { TeamPresenceSnapshot } from "@zollybot/contracts/ipc";
 import { createMemo, createSignal, flush, onSettled } from "solid-js";
 import { EMPTY_TEAM_PRESENCE } from "../../app-defaults";
 import { createSimpleContext } from "../../simple-context";
-import { useAuth } from "../account/account-context";
 import { teamPort } from "./team-port";
 
 /**
@@ -27,13 +26,10 @@ import { teamPort } from "./team-port";
 const Presence = createSimpleContext({
   name: "Presence",
   init: () => {
-    const { centralAuth } = useAuth();
     const [teamPresence, setTeamPresence] = createSignal<TeamPresenceSnapshot>(EMPTY_TEAM_PRESENCE);
 
     const currentTeamMember = createMemo(() => {
-      const state = centralAuth();
-      if (state.status !== "signed_in") return undefined;
-      const email = state.user.email.trim().toLowerCase();
+      const email = "local@zollybot.local";
       return teamPresence().members.find(
         (member) => member.email?.trim().toLowerCase() === email || member.username.trim().toLowerCase() === email,
       );

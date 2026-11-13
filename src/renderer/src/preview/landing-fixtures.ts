@@ -718,10 +718,6 @@ export function createLandingPreviewOptions(now: Date): MockZollyBotOptions {
     Object.entries(LANDING_CONTEXT_TOKENS).map(([agentId, tokens]) => [agentId, tokens.before]),
   );
   return {
-    authState: {
-      status: "signed_in",
-      user: { id: "user-1", email: LANDING_PREVIEW_EMAIL, name: "Norbert", avatarUrl: null },
-    },
     agentStatus: landingAgentStatus(),
     usage: landingUsage(nowMs),
     updateStatus: landingUpdateStatus(at),

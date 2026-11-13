@@ -1,4 +1,5 @@
 import { isManagedRuntimeProvider, type ManagedProviderId } from "@zollybot/contracts/agent-providers";
+import type { CentralAuthState } from "@zollybot/contracts/ipc";
 import { ANALYTICS_GENERATIONS, openPanelTransport, ReportQueue } from "@zollybot/telemetry";
 import { fileReportStorage } from "@zollybot/telemetry/node";
 import { makeWASocket } from "@zollybot/whatsapp/baileys";
@@ -12,12 +13,12 @@ import { AgentTables } from "../backend/agent-data/agent-tables";
 import { AgentRoutineStore } from "../backend/agent-routine-store";
 import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messaging/discord/discord-connect";
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
-import { discoverOffices, officeFromPath } from "../backend/offices/office-catalog";
-import { listEmployments, listOffices, upsertOffice } from "../backend/offices/office-store";
-import { OfficeMemories } from "../backend/offices/office-memory-store";
-import { OfficeTaskStore } from "../backend/office-tasks/office-task-store";
 import { OfficeTaskDispatcher } from "../backend/office-tasks/office-task-dispatcher";
+import { OfficeTaskStore } from "../backend/office-tasks/office-task-store";
+import { discoverOffices, officeFromPath } from "../backend/offices/office-catalog";
 import { importOfficeMemoryMarkdown } from "../backend/offices/office-memory-import";
+import { OfficeMemories } from "../backend/offices/office-memory-store";
+import { listEmployments, listOffices, upsertOffice } from "../backend/offices/office-store";
 import { routineFlowRoutines } from "../backend/routine-flows/routine-flow-routines";
 import { RoutineFlowStore } from "../backend/routine-flows/routine-flow-store";
 import { createRoutineFlows, type RoutineFlowsHandle } from "../backend/routine-flows/routine-flows";
@@ -48,6 +49,7 @@ import {
   HostedUpdateAdapter,
 } from "./hosted-update-adapter";
 import { LicenseDesktopService } from "./license-service";
+import { createLocalAuthManager, type LocalAuthManager } from "./local-auth-manager";
 import { LocalSignInWindows } from "./local-sign-in-window";
 import { LocalSkillLibrary } from "./local-skill-library";
 import { localSkillTools } from "./local-skill-tools";
@@ -82,13 +84,12 @@ import { homedir, hostname, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 import type { Readable } from "node:stream";
-import { selfHostedApiOrigin } from "@zollybot/contracts/invite-links";
+
 import type {
   AgentStatus,
   AppVariant,
   BrowserDisplayState,
   CapabilityState,
-  CentralAuthState,
   ComputerUseState,
   ProviderRuntimeSnapshot,
   SpeechModelStatus,
@@ -108,7 +109,6 @@ import { decodeRecord, requiredString } from "@zollybot/contracts/ipc-decoding";
 import { localeDirection } from "@zollybot/i18n";
 import { sourceText } from "@zollybot/i18n/source";
 import { createZollyBotLogger, registerSecretValue, toLogValue } from "@zollybot/logging";
-import { REMOTE_ACCOUNT_CHECK_INTERVAL_MS } from "@zollybot/team-client";
 import { installRemoteSyncProfileSink } from "@zollybot/team-client/sync-profile";
 import {
   app,
@@ -182,12 +182,6 @@ import { BrowserEgressHost } from "./browser-egress-host";
 import { BrowserPictureInPicture } from "./browser-picture-in-picture";
 import { BrowserViewClient } from "./browser-view-client";
 import { BusyMessageModePreferenceStore } from "./busy-message-mode-preference-store";
-import {
-  CentralAuthManager,
-  isHostNotOnAccount,
-  readCentralAuthApiUrl,
-  readMobileConnectApiUrl,
-} from "./central-auth-manager";
 import { ChatVisualPreviewer } from "./chat-visual-preview";
 import { createComputerIdle } from "./computer-idle";
 import { ComputerUseHighlightController } from "./computer-use-highlight-window";
@@ -277,7 +271,7 @@ import {
   sendComputerUseHighlightPlacement,
   showMainWindow,
 } from "./main-window";
-import { DATA_SKILL_SLUG, ManagedSkillService, SKILL_CREATOR_SKILL_SLUG } from "./managed-skill-service";
+import { MANAGED_SKILL_SLUGS, ManagedSkillService } from "./managed-skill-service";
 import { McpHostSignIns } from "./mcp-host-sign-ins";
 import { McpOAuthProxySettingsFile } from "./mcp-oauth-proxy-store";
 import {
@@ -434,7 +428,6 @@ const TEAM_FILE = "zollybot-team-server-v1.json";
 /** One host per account. The v1 file above stays as the last build without accounts left it. */
 const TEAM_FILE_V2 = "zollybot-team-server-v2.json";
 const REMOTE_SERVERS_FILE = "zollybot-remote-servers-v1.json";
-const CENTRAL_AUTH_FILE = "zollybot-central-auth-v1.bin";
 const REMOTE_SESSIONS_FILE = "zollybot-remote-sessions-v1.bin";
 const LEGACY_REMOTE_DESKTOP_CREDENTIAL_FILE = "zollybot-remote-desktop-credential-v1.json";
 const REMOTE_DESKTOP_RUNTIME_SECRET_FILE = "zollybot-remote-desktop-runtime-v1.json";
@@ -575,6 +568,8 @@ export interface ApplicationServiceContext {
   hostedServer: HostedServerEnvironment | null;
   /** Set only in a self-hosted server that `install-server.sh` installed. */
   serverMode: ServerModeEnvironment | null;
+  /** Optional control socket path for GUI mode (so the TUI can attach). */
+  controlSocketPath?: string;
   /** Set only by `bun run dev --hosting=test`. */
   hostingDeveloperKey: string | null;
   /** Set only in a local server that the desktop app started as its child. See `local-server-child.ts`. */
@@ -683,9 +678,10 @@ export interface ApplicationServices {
   host: HostService;
   remoteDesktop: RemoteDesktopManager;
   remoteServers: RemoteServerManager;
+  officeTasks: OfficeTaskStore;
   /** Null in a local server, in server mode and on a hosted server. */
   localServers: LocalServers | null;
-  centralAuth: CentralAuthManager;
+  centralAuth: LocalAuthManager;
   skills: SkillMarketplaceService;
   hostedSites: HostedSiteDesktopService;
   billing: BillingDesktopService;
@@ -730,7 +726,7 @@ export interface ApplicationServices {
    */
   appliedAccount: CentralAuthState;
   /** Left un-awaited on purpose: the account settles in the background while the app opens. */
-  centralAuthInitialization: Effect.Effect<CentralAuthState, RemoteWorkflowError>;
+  centralAuthInitialization: Effect.Effect<CentralAuthState>;
 }
 
 let userDataSecretStorage: SecretStorage | null = null;
@@ -760,7 +756,7 @@ function computerUseCapability(state: ComputerUseState): CapabilityState {
 interface MessagingServicesContext {
   teardown: TeardownRegistry;
   secretCipher: SecretStorageCipher;
-  centralAuth: CentralAuthManager;
+  centralAuth: LocalAuthManager;
   service: AgentService;
   sidebarLayout: SidebarLayoutStore;
   /** Read on each call: the team store that names this host is built after messaging. */
@@ -947,7 +943,7 @@ async function createMessagingServices({
           return hostId
             ? centralAuth
                 .unlinkTelegramChat(hostId, chatId)
-                .pipe(Effect.mapError((error) => new MessagingOperationFailed({ cause: error.cause })))
+                .pipe(Effect.mapError((error) => new MessagingOperationFailed({ cause: new Error(String(error)) })))
             : Effect.void;
         }),
       openExternal: openLink,
@@ -980,6 +976,7 @@ export async function createApplicationServices({
   developmentTestClientEnabled,
   hostedServer,
   serverMode: serverModeEnvironment,
+  controlSocketPath,
   hostingDeveloperKey,
   localServerChild,
   localServerControl,
@@ -1056,67 +1053,12 @@ export async function createApplicationServices({
       }),
   });
   teardown.push(TEARDOWN_ORDER.dynamicIsland, "the Dynamic Island", () => dynamicIsland.destroy());
-  const centralAuthApiUrl = readCentralAuthApiUrl(
-    process.env.ZOLLYBOT_AUTH_API_URL,
-    app.isPackaged ? "https://api-zollybot.shifaul.dev" : "http://127.0.0.1:3100",
-  );
-  const centralAuth = new CentralAuthManager({
-    apiUrl: centralAuthApiUrl,
-    mobileConnectApiUrl: readMobileConnectApiUrl(process.env.ZOLLYBOT_MOBILE_AUTH_API_URL, centralAuthApiUrl),
-    storagePath: join(app.getPath("userData"), CENTRAL_AUTH_FILE),
-    ...safeStorageCipher("error.app.macSecureStorageUnavailable"),
-    keyringChanged: () => secretStorage().madeKeyFile(),
-    // The system browser, where the user is signed in to the company. The language loads below.
-    companySignInBrowser: { open: (url) => shell.openExternal(url), language: () => language },
-  });
-  // Registered before `initialize()`, which publishes `{ status: "loading" }` synchronously: the
-  // listener therefore runs on the next line with most of this function's services still unbuilt.
-  teardown.push(TEARDOWN_ORDER.centralAuth, "the account runtime", () => Effect.runPromise(centralAuth.dispose()));
+  const centralAuth = createLocalAuthManager();
+  // Local auth emits signed_in immediately, no initialization needed
+  teardown.push(TEARDOWN_ORDER.centralAuth, "the account runtime", () => centralAuth.dispose());
   centralAuth.on("changed", forwardCentralAuth);
-  const centralAuthInitialization = Effect.runSync(Effect.cached(centralAuth.initialize().pipe(toRemoteWorkflowError)));
-  void Effect.runPromise(centralAuthInitialization).catch((error) =>
-    logger.warn("The account did not initialize.", toLogValue(error)),
-  );
-
-  let profileRefreshActive = true;
-  let profileRefreshing = false;
-  let profileRefreshAgain = false;
-  const refreshAccountProfile = async () => {
-    if (!profileRefreshActive) return;
-    if (profileRefreshing) {
-      profileRefreshAgain = true;
-      return;
-    }
-    profileRefreshing = true;
-    try {
-      do {
-        profileRefreshAgain = false;
-        await runCauseEffect(centralAuth.refreshProfile());
-      } while (profileRefreshAgain && profileRefreshActive);
-    } finally {
-      profileRefreshing = false;
-    }
-  };
-  let profileTimer: ReturnType<typeof setInterval> | null = null;
-  const stopProfileTimer = () => {
-    if (profileTimer !== null) clearInterval(profileTimer);
-    profileTimer = null;
-  };
-  const startProfileTimer = () => {
-    stopProfileTimer();
-    profileTimer = setInterval(() => void refreshAccountProfile(), REMOTE_ACCOUNT_CHECK_INTERVAL_MS);
-    profileTimer.unref();
-  };
-  if (mainWindow.isFocused()) startProfileTimer();
-  mainWindow.on("focus", startProfileTimer);
-  mainWindow.on("blur", stopProfileTimer);
-  teardown.push(TEARDOWN_ORDER.updater, "account profile refresh", () => {
-    profileRefreshActive = false;
-    stopProfileTimer();
-    mainWindow.removeListener("focus", startProfileTimer);
-    mainWindow.removeListener("blur", stopProfileTimer);
-    centralAuth.stopProfileRefresh();
-  });
+  const centralAuthInitialization = Effect.succeed(centralAuth.getState());
+  // No profile refresh needed for local auth
   // Before the agents load, so the first check of an agent that follows a default reads the saved one.
   const agentDefaults = createAgentDefaultsPreferenceStore(
     join(app.getPath("userData"), AGENT_DEFAULTS_PREFERENCE_FILE),
@@ -1137,30 +1079,23 @@ export async function createApplicationServices({
   // Closing copies the write-ahead log into the database file and removes it. A step that passed its
   // limit, such as a slow agent stop, still writes, so the close waits a short time for it.
   teardown.push(TEARDOWN_ORDER.database, "the database", () => store.database.close(), { afterAbandonedSteps: true });
-  const managedSkills = new ManagedSkillService(
+  const officeTasks = new OfficeTaskStore(store.database);
+  const officeTaskDispatcher = new OfficeTaskDispatcher({ store: officeTasks, officeIds: () => listOffices(store.database.connection).map((o) => o.id) });
+  officeTaskDispatcher.start();
+  (globalThis as any).__zollyOfficeTaskDispatcher = officeTaskDispatcher;
+  teardown.push(TEARDOWN_ORDER.updater, "office task dispatcher", () => officeTaskDispatcher.stop());
+  const managedSkillSlugs = [...MANAGED_SKILL_SLUGS];
+  const managedSkillServices = managedSkillSlugs.map((slug) => new ManagedSkillService(
     app.isPackaged
-      ? join(process.resourcesPath, "managed-skills", "zollybot-site-hosting", "SKILL.md")
-      : resolve(__dirname, "../../resources/managed-skills/zollybot-site-hosting/SKILL.md"),
-  );
-  const skillCreator = new ManagedSkillService(
-    app.isPackaged
-      ? join(process.resourcesPath, "managed-skills", "zollybot-skill-creator", "SKILL.md")
-      : resolve(__dirname, "../../resources/managed-skills/zollybot-skill-creator/SKILL.md"),
+      ? join(process.resourcesPath, "managed-skills", slug, "SKILL.md")
+      : resolve(__dirname, "../../resources/managed-skills", slug, "SKILL.md"),
     undefined,
     undefined,
-    SKILL_CREATOR_SKILL_SLUG,
-  );
-  const dataSkill = new ManagedSkillService(
-    app.isPackaged
-      ? join(process.resourcesPath, "managed-skills", "zollybot-data", "SKILL.md")
-      : resolve(__dirname, "../../resources/managed-skills/zollybot-data/SKILL.md"),
-    undefined,
-    undefined,
-    DATA_SKILL_SLUG,
-  );
-  await Effect.runPromise(managedSkills.syncAll(store.list()));
-  await Effect.runPromise(skillCreator.syncAll(store.list()));
-  await Effect.runPromise(dataSkill.syncAll(store.list()));
+    slug,
+  ));
+  for (const svc of managedSkillServices) {
+    await Effect.runPromise(svc.syncAll(store.list()));
+  }
   performance.mark("zollybot:services.skills");
   const hostedSites = new HostedSiteDesktopService(centralAuth, () => {
     // Read at request time: the team store is created later, and the server can register after launch.
@@ -1190,7 +1125,6 @@ export async function createApplicationServices({
     developmentUrl: developmentUrl ?? null,
     iceTransportPolicy: developmentUrl && process.env.ZOLLYBOT_DEV_ICE_TRANSPORT_POLICY === "relay" ? "relay" : "all",
   });
-  teamWebRtcBridge.on("accountProfileChanged", refreshAccountProfile);
   teardown.push(TEARDOWN_ORDER.teamWebRtcBridge, "the team WebRTC bridge", () =>
     runCauseEffect(teamWebRtcBridge.stop()),
   );
@@ -1280,6 +1214,7 @@ export async function createApplicationServices({
   const analyticsPreference = await Effect.runPromise(
     readAnalyticsPreference(analyticsPreferenceFile, setupState.completed),
   );
+  const updatePreference = await runCauseEffect(readUpdatePreference(updatePreferenceFile));
   // Loaded before the first window and before the application menu is built, so every native
   // surface draws in the saved language on the first frame rather than switching after startup.
   const language = new LanguageService({
@@ -1375,12 +1310,11 @@ export async function createApplicationServices({
   });
   // A kept session is useless without an account, and it names the last one. The listener also
   // covers a sign-out that settles before the remote services exist.
-  const forgetSignedOutSessions = (state: CentralAuthState) => {
-    if (state.status === "signed_out") void Effect.runPromise(remoteSessionCache.clear());
+  const forgetSignedOutSessions = () => {
+    remoteSessionCache.clear();
   };
-  forgetSignedOutSessions(centralAuth.getState());
+  forgetSignedOutSessions();
   centralAuth.on("changed", forgetSignedOutSessions);
-  const updatePreference = await runCauseEffect(readUpdatePreference(updatePreferenceFile));
   const approvalAutomationFile = join(app.getPath("userData"), APPROVAL_AUTOMATION_FILE);
   const approvalAutomation = new ApprovalAutomation({
     path: approvalAutomationFile,
@@ -1593,7 +1527,7 @@ export async function createApplicationServices({
     app: githubAppConfig(),
     store: new GitHubConnectorStore(join(app.getPath("userData"), GITHUB_CONNECTOR_FILE), secretCipher),
     toolDirectory: join(app.getPath("userData"), "provider-state", "github"),
-    apiUrl: centralAuthApiUrl,
+    apiUrl: "",
     openExternal: openLink,
   });
   await runCauseEffect(githubConnector.load());
@@ -1902,9 +1836,7 @@ export async function createApplicationServices({
     bundledExecutables: providerRuntimes.bundledExecutables(),
     prepareAgentWorkspace: (agent) =>
       Effect.gen(function* () {
-        yield* managedSkills.syncAgent(agent);
-        yield* skillCreator.syncAgent(agent);
-        yield* dataSkill.syncAgent(agent);
+        for (const svc of managedSkillServices) yield* svc.syncAgent(agent);
       }),
     hostedSites: {
       list: () => hostedSites.list().pipe(toHostedSiteOperationFailed),
@@ -3140,7 +3072,7 @@ export async function createApplicationServices({
     },
     {
       allowLocalDevelopmentInvites: developmentRemoteRole !== null,
-      selfHostedApiOrigin: selfHostedApiOrigin(centralAuthApiUrl),
+      selfHostedApiOrigin: "http://local",
       appVersion: app.getVersion(),
       connectTrace,
       // The owner's levels on this computer's server, which the host also reads for the owner's phones.
@@ -3251,11 +3183,7 @@ export async function createApplicationServices({
             // A host that the account service no longer has, or that another account owns, is not this
             // account's to remove: either way it is gone from this account's list. Any other failure,
             // such as an expired session, keeps the id for the next sign-in.
-            remove: (hostId) =>
-              centralAuth.removeOwnedRemoteHost(hostId).pipe(
-                Effect.catch((error) => (isHostNotOnAccount(error.cause) ? Effect.void : Effect.fail(error))),
-                toRemoteWorkflowError,
-              ),
+            remove: (hostId) => centralAuth.removeOwnedRemoteHost(hostId).pipe(toRemoteWorkflowError),
           },
           log: {
             info: (message) => logger.info(message),
@@ -3532,6 +3460,26 @@ export async function createApplicationServices({
       yield* routineResultRuntime.recover();
     }),
   );
+  // Butler ponders daily: decay, archive cold memories, generate curiosity.
+  const ponderTimer = setInterval(
+    () => {
+      if (!agentInitialization.succeeded) return;
+      void runCauseEffect(service.runButlerPonder()).catch((error) =>
+        logger.warn("Butler ponder failed.", toLogValue(error)),
+      );
+    },
+    24 * 60 * 60 * 1000,
+  );
+  ponderTimer.unref?.();
+  // Run once shortly after startup.
+  setTimeout(() => {
+    if (!agentInitialization.succeeded) return;
+    void runCauseEffect(service.runButlerPonder()).catch((error) =>
+      logger.warn("Butler ponder failed.", toLogValue(error)),
+    );
+  }, 60_000).unref?.();
+  teardown.push(TEARDOWN_ORDER.updater, "butler ponder timer", () => clearInterval(ponderTimer));
+
   const describeRestartReadiness = (): RestartReadiness =>
     checkRestartReadiness({
       // A workflow model step lives in this process only; agent steps are queued deliveries.
@@ -3639,14 +3587,7 @@ export async function createApplicationServices({
         const dueAt = service.nextRoutineDueAt();
         return dueAt ? Date.parse(dueAt) : null;
       },
-      report: (path, report) =>
-        centralAuth
-          .requestAuthorized(
-            path,
-            { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(report) },
-            () => undefined,
-          )
-          .pipe(toRemoteWorkflowError),
+      report: (_path, _report) => Effect.succeed(undefined).pipe(toRemoteWorkflowError),
       onError: (message, error) => logger.warn(message, toLogValue(error)),
     });
     hostedServerActivity.start();
@@ -3664,10 +3605,6 @@ export async function createApplicationServices({
         Effect.gen(function* () {
           // A server that the user stopped is not published again: Stop clears `enabledOnLaunch`.
           if (!shouldAutoStartHost({ ...host.getStatus(), remoteRole: developmentRemoteRole })) return;
-          const auth = centralAuth.getState();
-          // Only a start with no answer from the account server; any other auth error is the user's.
-          if (auth.status === "error" && auth.issue.code === "auth_api_unavailable")
-            yield* centralAuth.retry().pipe(toRemoteWorkflowError);
           if (centralAuth.getState().status !== "signed_in") return;
           return yield* host.start();
         }),
@@ -3678,9 +3615,10 @@ export async function createApplicationServices({
       Effect.runPromise(launchPublishRetry.stop()),
     );
   }
-  const serverMode = serverModeEnvironment
+  const controlSocketEnvironment = serverModeEnvironment ?? (controlSocketPath ? { controlSocketPath } : null);
+  const serverMode = controlSocketEnvironment
     ? new ServerMode({
-        environment: serverModeEnvironment,
+        environment: controlSocketEnvironment,
         version: app.getVersion(),
         centralAuth,
         host,
@@ -3706,7 +3644,7 @@ export async function createApplicationServices({
           });
         },
         officeMemories: new OfficeMemories(store.database),
-        officeTasks: (()=>{ const st=new OfficeTaskStore(store.database); (globalThis as any).__zollyOfficeTaskDispatcher?.stop?.(); const d=new OfficeTaskDispatcher({store:st, officeIds:()=>listOffices(store.database.connection).map(o=>o.id)}); d.start(); (globalThis as any).__zollyOfficeTaskDispatcher=d; return st; })(),
+        officeTasks,
         officeDb: () => store.database.connection,
         offices: () => {
           const database = store.database.connection;
@@ -3748,7 +3686,9 @@ export async function createApplicationServices({
             baseBranch: "main",
           });
           service.syncEmploymentAssignments();
-          Effect.runFork(importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)));
+          Effect.runFork(
+            importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)),
+          );
           return { ok: true as const, office: { ...found, name: officeName, agents: 0 } };
         },
         openOffice: (id) => {
@@ -3762,22 +3702,33 @@ export async function createApplicationServices({
         chat: {
           listMessages: async (agentId, limit = 30) => {
             try {
-              const page = await runCauseEffect(service.readConversationPageFor(agentId, "local:control", { type: "latest" } as any, limit) as any);
-              const messages = ((page as any)?.messages ?? []).map((m: any) => ({
-                id: String(m.id ?? ""),
-                role: String(m.role ?? m.author?.role ?? (m.author?.kind === "user" ? "user" : "assistant")),
-                text: String(m.text ?? m.content ?? ""),
-                at: m.createdAt ?? m.at ?? "",
-              }));
+              const page = await runCauseEffect(
+                service.readConversationPageFor(agentId, "local:control", { type: "latest" } as any, limit) as any,
+              );
+              const messages = ((page as any)?.messages ?? []).map((m: any) => {
+                const rawAuthor = typeof m.author === "string" ? m.author : m.author?.role ?? m.author?.kind ?? m.role;
+                const role = rawAuthor === "user" ? "user" : rawAuthor === "assistant" || rawAuthor === "agent" ? rawAuthor : rawAuthor ? String(rawAuthor) : "assistant";
+                const text = typeof m.text === "string" ? m.text : typeof m.content === "string" ? m.content : "";
+                return {
+                  id: String(m.id ?? ""),
+                  role,
+                  text,
+                  at: String(m.createdAt ?? m.at ?? ""),
+                };
+              });
               return { messages };
-            } catch (e) { return { error: e instanceof Error ? e.message : String(e) }; }
+            } catch (e) {
+              return { error: e instanceof Error ? e.message : String(e) };
+            }
           },
           sendMessage: async (agentId, text) => {
             try {
               const receipt = await runCauseEffect(service.sendMessage({ agentId, text } as any) as any);
               const deliveryId = (receipt as any)?.deliveries?.[0]?.id ?? (receipt as any)?.deliveryId;
               return { ok: true as const, deliveryId };
-            } catch (e) { return { ok: false as const, error: e instanceof Error ? e.message : String(e) }; }
+            } catch (e) {
+              return { ok: false as const, error: e instanceof Error ? e.message : String(e) };
+            }
           },
         },
         onError: (message, error) => logger.warn(message, toLogValue(error)),
@@ -3793,8 +3744,7 @@ export async function createApplicationServices({
       hostPhase: () => host.getStatus().phase,
       startHost: () =>
         Effect.gen(function* () {
-          if (centralAuth.getState().status === "error") yield* centralAuth.retry().pipe(toRemoteWorkflowError);
-          yield* serverMode.publish();
+          if (serverModeEnvironment) yield* serverMode.publish();
         }),
       onError: (message, error) => logger.warn(message, toLogValue(error)),
     });
@@ -3814,6 +3764,7 @@ export async function createApplicationServices({
 
   return {
     service,
+    officeTasks,
     routineFlows: routineFlowRuntime,
     workflows: workflowRuntime,
     workflowGitHub,

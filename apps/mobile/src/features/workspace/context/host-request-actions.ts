@@ -36,6 +36,7 @@ import {
 import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import { AGENT_ACCESS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-access-v1";
+import { ZOLLY_OFFICE_CAPABILITY } from "@zollybot/contracts/ipc";
 import { AGENT_ADMIN_CAPABILITY, AGENT_ADMIN_ROUTES } from "@zollybot/contracts/team-protocol/agent-admin-v1";
 import {
   AGENT_BACKUP_MODELS_CAPABILITY,
@@ -1431,4 +1432,8 @@ export async function requestAgentAvatar(
     serverId,
   );
   return saveAgentAvatar(serverId, agentId, avatarUrl, dataUrl);
+}
+
+export function hasOfficeCapability(capabilities: readonly string[]): boolean {
+  return capabilities.includes(ZOLLY_OFFICE_CAPABILITY);
 }

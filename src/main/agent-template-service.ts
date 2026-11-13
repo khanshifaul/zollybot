@@ -1,5 +1,5 @@
 import type { AgentLifecycleFailed } from "../backend/agent-service";
-import type { CentralAuthOperationError } from "./central-auth-effects";
+
 import type { SkillMarketplaceFailure } from "./skill-marketplace-service";
 // Link-only agent templates on the account Worker.
 //
@@ -43,6 +43,7 @@ import { redactText } from "@zollybot/logging";
 import { Effect, Result, Schema } from "effect";
 import { causeHelpers } from "../backend/effect-boundary";
 import { imageMimeType, localSchedule, toArrayBuffer, validTimezone } from "./agent-marketplace-service";
+import type { CentralAuthOperationError } from "./central-auth-effects";
 import type { LocalSkillLibrary } from "./local-skill-library";
 import { MANAGED_SKILL_SLUGS } from "./managed-skill-service";
 import { inspectSkillMarkdown, normalizedFiles } from "./skill-package";
@@ -80,17 +81,6 @@ function snapshotProblemText(problem: AgentTemplateSnapshotProblem): string {
 
 /** Embedded skills are written here in the new agent's workspace, added to the library, and removed. */
 const SKILL_STAGING = ".zollybot/template-skills";
-
-interface AgentTemplateAuth {
-  requestAuthorized<T>(
-    path: string,
-    init: RequestInit,
-    decoder: (value: unknown) => T,
-    timeoutMs?: number,
-  ): Effect.Effect<T, CentralAuthOperationError>;
-  downloadAuthorized(path: string): Effect.Effect<Uint8Array, CentralAuthOperationError>;
-  resolveApiUrl(path: string): string;
-}
 
 interface AgentTemplateAgents {
   listAgents(): AgentSummary[];
@@ -147,7 +137,16 @@ interface OwnedTemplate {
 
 export class AgentTemplateService {
   constructor(
-    private readonly auth: AgentTemplateAuth,
+    private readonly auth: {
+      requestAuthorized<T>(
+        path: string,
+        init: RequestInit,
+        decoder: (value: unknown) => T,
+        timeoutMs?: number,
+      ): Effect.Effect<T, CentralAuthOperationError>;
+      downloadAuthorized(path: string): Effect.Effect<Uint8Array, CentralAuthOperationError>;
+      resolveApiUrl(path: string): string;
+    },
     private readonly agents: AgentTemplateAgents,
     private readonly skills: AgentTemplateSkills,
   ) {}

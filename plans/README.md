@@ -9,7 +9,7 @@ changes, and respect the `STOP` conditions.
 | Plan | Title | Priority | Size | Dependencies | State |
 |------|-------|----------|------|--------------|-------|
 | 001 | Add a central account API and a host whitelist | P1 | L | — | SUPERSEDED BY 002 |
-| 002 | TanStack Start, Solid 2, Cloudflare Workers and D1 | P1 | L | — | IN PROGRESS |
+| 002 | TanStack Start, Solid 2, Cloudflare Workers and D1 | P1 | L | — | REJECTED: superseded by local-only auth (no central account on desktop) |
 | 003 | MCP is robust and future-proof | P1 | M | — | DONE |
 | 004 | Fade the mobile search results and notices in and out | MEDIUM | S | — | DONE |
 | 005 | An invitation cannot disconnect a host or revive a removed member | P1 | M | maintainer decision (revoked member) | DONE |
@@ -17,7 +17,8 @@ changes, and respect the `STOP` conditions.
 | 007 | The web client keeps only the latest page of a conversation that is not open | P2 | S | — | DONE |
 | 008 | Mailbox reads of one delivery do not sort or scan the whole mailbox | P2 | S | — | DONE |
 | 009 | An HTTPS sign-out or session revoke also closes the browser views of that session | P2 | S | — | DONE |
-| 010 | Branch a conversation from a message | P1 | L | — | IN PROGRESS |
+| 010 | Branch a conversation from a message | P1 | L | — | DONE |
+| 011 | Local AI on the Android app | P2 | L | developer decisions in the plan | TODO |
 
 Allowed states: `TODO`, `IN PROGRESS`, `DONE`, `BLOCKED: <reason>`,
 `REJECTED: <reason>`.

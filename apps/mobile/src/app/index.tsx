@@ -1,1 +1,1 @@
-export { SignInScreen as default } from "@/features/auth/screens/sign-in-screen";
+export { default } from "@/features/auth/screens/connect-screen";

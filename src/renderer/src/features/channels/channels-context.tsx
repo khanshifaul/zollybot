@@ -1,7 +1,6 @@
 import { CHANNEL_CHATS_CAPABILITY, CHANNEL_TASK_CANCEL_CAPABILITY } from "@zollybot/contracts/ipc";
 import { MESSAGE_DELETE_CAPABILITY } from "@zollybot/contracts/team-protocol/message-delete-v1";
 import { createContext, type ParentProps, untrack, useContext } from "solid-js";
-import { useAuth } from "../account/account-context";
 import { useAgents } from "../agents/agents-context";
 import { useDirectMessages } from "../conversation/direct-messages-context";
 import { saveRemoteFrameChannels } from "../servers/remote-workspace-frame";
@@ -33,12 +32,8 @@ export function ChannelsProvider(props: ParentProps) {
   const { agentList, setAgentSetupOpen } = useAgents();
   const { clearDirectSelection, setDirectTyping } = useDirectMessages();
   const windowPage = useWindowPage();
-  const { centralAuth } = useAuth();
   const selectionServerId = untrack(activeServerId);
-  const accountKey = () => {
-    const auth = centralAuth();
-    return auth.status === "signed_in" ? auth.user.id : auth.status;
-  };
+  const accountKey = () => "local";
   const controller = createChannelsController({
     port: channelsPort,
     agents: agentList,
@@ -48,10 +43,7 @@ export function ChannelsProvider(props: ParentProps) {
         ? null
         : (readChannelSelection()[account]?.[selectionServerId] ?? null),
     writeSelection: (channelId) => {
-      const status = centralAuth().status;
-      if (status === "signed_in" || status === "signed_out") {
-        writeChannelSelection(accountKey(), selectionServerId, channelId);
-      }
+      writeChannelSelection(accountKey(), selectionServerId, channelId);
     },
     supported: () => activeServerSupportsCapability(CHANNEL_CHATS_CAPABILITY),
     deletionSupported: () => activeServer()?.kind !== "remote" || serverRoleCanAdminister(activeServer()),
@@ -76,9 +68,8 @@ export function ChannelsProvider(props: ParentProps) {
     // The rows of a joined server's channels go to its frame for the next start.
     onList: (channels) => {
       const server = activeServer();
-      const auth = centralAuth();
-      if (server?.kind === "remote" && auth.status === "signed_in")
-        saveRemoteFrameChannels(auth.user.id, server.id, channels);
+      // local-only: no account
+      if (server?.kind === "remote") saveRemoteFrameChannels("local", server.id, channels);
     },
   });
   return <ChannelsControllerProvider controller={controller}>{props.children}</ChannelsControllerProvider>;

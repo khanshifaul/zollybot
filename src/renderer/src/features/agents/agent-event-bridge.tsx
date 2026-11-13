@@ -14,7 +14,6 @@ import { useProviders } from "../../providers";
 import { queueAfterTurnCompleted } from "../../queue-reconciliation";
 import { useTurns } from "../../turns";
 import { useUiErrors } from "../../ui-errors";
-import { useAuth } from "../account/account-context";
 import { useAgentTasks } from "../agent-tasks/agent-tasks-context";
 import { useBrowserTabs } from "../browser/browser-context";
 import { useChannels } from "../channels/channels-context";
@@ -58,7 +57,6 @@ export function AgentEventBridge() {
   const channels = useChannels();
   const platform = usePlatform();
   const { activeServer, activeServerId } = useServers();
-  const { applyAccountUsage } = useAuth();
   const { applyAgentStatus, refreshAgentProviders } = useProviders();
   const { agentList, setModelOptions, explicitlyOpenedAgentChatId, applyStoredAgents, applyUserHiddenAgents } =
     useAgents();
@@ -133,7 +131,7 @@ export function AgentEventBridge() {
         }
         return;
       case "usage-changed":
-        applyAccountUsage(event.usage);
+        // no-op: local-only, no account usage
         return;
       case "agents-changed":
         applyStoredAgents(event.agents);

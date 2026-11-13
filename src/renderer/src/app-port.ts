@@ -1,5 +1,4 @@
 import type { ZollyBotDesktopApi } from "@zollybot/contracts/ipc";
-import type { CompanySignInCalls } from "./features/servers/ServerCompanySignInSection";
 
 /**
  * What the app shell and the cross-domain root modules reach in main, plus the shell actions
@@ -36,7 +35,6 @@ export interface AppPort {
   hostedSites: ZollyBotDesktopApi["hostedSites"];
   billing: ZollyBotDesktopApi["billing"];
   license: ZollyBotDesktopApi["license"];
-  auth: CompanySignInCalls;
   hostedServers: ZollyBotDesktopApi["hostedServers"];
   routineFeed: ZollyBotDesktopApi["routineFeed"];
   events: ZollyBotDesktopApi["events"];

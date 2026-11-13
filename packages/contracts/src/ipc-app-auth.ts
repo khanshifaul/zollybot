@@ -275,27 +275,8 @@ export interface CentralAuthIssue {
 
 export type CentralAuthSignedOutReason = "keyring_changed";
 
-export type CentralAuthState =
-  | { status: "loading" }
-  /**
-   * `keyring_changed`: the Linux keyring did not open the saved sign-in, so ZollyBot now keeps its
-   * secrets in its own key file and the user signs in one more time.
-   */
-  | { status: "signed_out"; reason?: CentralAuthSignedOutReason }
-  | { status: "signing_in" }
-  | {
-      status: "code_sent";
-      challengeId: string;
-      email: string;
-      expiresAt: number;
-      resendAvailableAt: number;
-      developmentCode?: string;
-      issue?: CentralAuthIssue | undefined;
-    }
-  /** The email signs in with the company's provider. The browser has the sign-in page. */
-  | { status: "company_sign_in"; email: string; issue?: CentralAuthIssue | undefined }
-  | { status: "signed_in"; user: CentralAuthUser }
-  | { status: "error"; issue: CentralAuthIssue };
+/** The local-only auth state. Always signed in as a local user. */
+export type CentralAuthState = { status: "signed_in"; user: CentralAuthUser };
 
 /** The company provider (OpenID Connect) that a server owner connected. */
 export interface CompanySignInConnection {

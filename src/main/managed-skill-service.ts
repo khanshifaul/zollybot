@@ -18,6 +18,17 @@ export const MANAGED_SKILL_SLUGS: ReadonlySet<string> = new Set([
   MANAGED_SKILL_SLUG,
   SKILL_CREATOR_SKILL_SLUG,
   DATA_SKILL_SLUG,
+  "zollybot-offices",
+  "zollybot-hiring",
+  "zollybot-profile",
+  "zollybot-memory",
+  "zollybot-web-browse",
+  "zollybot-research",
+  "zollybot-self-learn",
+  "zollybot-ponder",
+  "zollybot-improvise",
+  "zollybot-learn-from-experience",
+  "zollybot-host",
 ]);
 export const OWNERSHIP_MARKER = ".zollybot-managed.json";
 /** The workspace skill folders ZollyBot writes. Each provider reads at least one of them. */

@@ -398,13 +398,8 @@ const ServerScope = createSimpleContext({
       },
     );
 
-    // The frames go with the account, with a server that leaves the list, and with ended access.
-    createEffect(
-      () => centralAuth().status === "signed_out",
-      (signedOut) => {
-        if (signedOut) deleteRemoteWorkspaceFrames(null);
-      },
-    );
+    // Local-only mode: no account sign-out. Frames are never cleared by account change.
+    void deleteRemoteWorkspaceFrames;
     createEffect(
       createMemo(() => {
         const account = signedInAccount();

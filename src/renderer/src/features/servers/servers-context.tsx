@@ -306,19 +306,8 @@ const Servers = createSimpleContext({
         .catch(() => undefined);
       void refreshHostedServersAvailable();
       // Another account can sign in after the start, so the plus button reads its access again.
-      let signedInUserId: string | null = null;
-      const unsubscribeAuth = serversPort().auth.onEvent((state) => {
-        if (state.status !== "signed_in" && state.status !== "signed_out") return;
-        const userId = state.status === "signed_in" ? state.user.id : null;
-        if (userId === signedInUserId) return;
-        signedInUserId = userId;
-        if (userId) void refreshHostedServersAvailable();
-        else {
-          setHostedServersAvailable(false);
-          setHostedServerIds(new Set<string>());
-          setHostedServersLoaded(false);
-        }
-      });
+      const unsubscribeAuth = () => {};
+      void refreshHostedServersAvailable();
       return () => {
         unsubscribeServers();
         unsubscribeHost();

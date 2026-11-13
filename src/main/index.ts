@@ -52,7 +52,6 @@ import { filePreviewPages } from "./file-preview-pages";
 import { hostAllowsTenantLaunch } from "./host-update-coordinator";
 import { takeHostedServerEnvironment } from "./hosted-server-bootstrap";
 import { takeHostingDeveloperKey } from "./hosted-server-service";
-import { accountIpcHandlers } from "./ipc/account-handlers";
 import { acpRegistryIpcHandlers } from "./ipc/acp-registry-handlers";
 import { agentAdminIpcHandlers } from "./ipc/agent-admin-handlers";
 import { agentFolderIpcHandlers } from "./ipc/agent-folder-handlers";
@@ -90,6 +89,7 @@ import { mcpServerIpcHandlers } from "./ipc/mcp-server-handlers";
 import { memoryIpcHandlers } from "./ipc/memory-handlers";
 import { messagingIpcHandlers } from "./ipc/messaging-handlers";
 import { notificationIpcHandlers } from "./ipc/notification-handlers";
+import { officeTaskIpcHandlers } from "./ipc/office-task-handlers";
 import { onePasswordConnectorIpcHandlers } from "./ipc/onepassword-connector-handlers";
 import { passwordManagersIpcHandlers } from "./ipc/password-managers-handlers";
 import { pluginIpcHandlers } from "./ipc/plugin-handlers";
@@ -690,7 +690,6 @@ function registerIpcHandlers({
   host,
   remoteDesktop,
   remoteServers,
-  centralAuth,
   skills,
   hostedSites,
   githubConnector,
@@ -703,6 +702,7 @@ function registerIpcHandlers({
   license,
   hostedServers,
   localServers,
+  officeTasks,
   routineFeed,
   events,
   customProviderChanges,
@@ -790,7 +790,6 @@ function registerIpcHandlers({
     ...backgroundProcessIpcHandlers({ platform: process.platform, agents: () => service.listAgents() }),
     ...providerIpcHandlers({ service, providerRuntimes, credentials: providerCredentials, openLink }),
     ...voiceIpcHandlers({ voice, speech, server: voiceServer, service }),
-    ...accountIpcHandlers({ centralAuth, host }),
     ...skillIpcHandlers({ skills, getMainWindow: getDialogParent, translate: language.translate }),
     ...agentFolderIpcHandlers({
       folders: agentFolders,
@@ -817,6 +816,7 @@ function registerIpcHandlers({
     ...eventsIpcHandlers({ events, remoteServers }),
     ...hostedServerIpcHandlers({ hostedServers }),
     ...localServerIpcHandlers({ localServers }),
+    ...officeTaskIpcHandlers({ officeTasks }),
     ...customProviderIpcHandlers(customProviderChanges),
     ...customAgentIpcHandlers(customAgentChanges),
     ...acpRegistryIpcHandlers(acpRegistry, remoteServers),
@@ -1089,7 +1089,7 @@ function forwardCentralAuth(state: CentralAuthState): void {
               ),
             );
         // A self-hosted server exists to be a host, so its first sign-in names and starts it too.
-        if (host && services?.serverMode) yield* services.serverMode.publish();
+        if (host && services?.serverMode && serverMode) yield* services.serverMode.publish();
         else if (host && shouldAutoStartHost({ ...host.getStatus(), remoteRole: developmentRemoteRole }))
           yield* host.start();
       }),
@@ -1097,11 +1097,6 @@ function forwardCentralAuth(state: CentralAuthState): void {
   ).catch((error) => {
     logger.error("Unable to synchronize the signed-in account:", toLogValue(error));
   });
-  // A chat window shows the workspace only while the account is signed in, as the main window does.
-  for (const chatWindow of windows.getChatWindows()) sendToRenderer(chatWindow, IPC_ENDPOINTS.auth.event, state);
-  const window = windowHolder.current;
-  if (!window || window.isDestroyed()) return;
-  sendToRenderer(window, IPC_ENDPOINTS.auth.event, state);
 }
 
 /**
@@ -1293,6 +1288,9 @@ if (!hasSingleInstanceLock) {
         developmentTestClientEnabled,
         hostedServer,
         serverMode,
+        controlSocketPath: process.platform === "linux"
+          ? join(process.env.XDG_RUNTIME_DIR || `/run/user/${process.getuid?.() ?? 1000}`, "control.sock")
+          : undefined,
         hostingDeveloperKey,
         localServerChild,
         localServerControl,

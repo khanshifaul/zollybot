@@ -174,7 +174,7 @@ const Settings = createSimpleContext({
         if (landingPreview) return;
         desktopAnalytics.setTrackingEnabled(analyticsEnabled);
         desktopAnalytics.setUser(auth.status === "signed_in" ? auth.user : null);
-        if (!platform.appInfoLoadedFromHost() || !info || !setup || auth.status === "loading") return;
+        if (!platform.appInfoLoadedFromHost() || !info || !setup) return;
         if (!desktopAnalytics.configure(info)) return;
         if (!analyticsVersionRecorded) {
           analyticsVersionRecorded = true;

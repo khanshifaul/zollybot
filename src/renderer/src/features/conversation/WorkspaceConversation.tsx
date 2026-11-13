@@ -385,10 +385,9 @@ export function WorkspaceConversation(props: { account: () => CentralAuthUser })
 
   /** Whether the reader is the sender `senderId`: a member on a joined server, or anyone on this computer. */
   const isOwnSender = (senderId: string) => {
-    const state = auth.centralAuth();
     return isReaderAuthor(senderId, {
       memberId: currentTeamMember()?.id ?? null,
-      accountUserId: state.status === "signed_in" ? state.user.id : null,
+      accountUserId: "local",
       onOwnComputer: activeServer()?.kind === "local",
     });
   };

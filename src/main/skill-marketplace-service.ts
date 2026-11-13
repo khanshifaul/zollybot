@@ -33,7 +33,7 @@ import type { AgentLifecycleFailed } from "../backend/agent-service";
 import { writeFileAtomically } from "../backend/atomic-json-file";
 import { causeHelpers } from "../backend/effect-boundary";
 import { toArrayBuffer } from "./agent-marketplace-service";
-import type { CentralAuthManager } from "./central-auth-manager";
+import type { CentralAuthOperationError } from "./central-auth-effects";
 import type { LocalSkillLibrary } from "./local-skill-library";
 import { listManagedSkillsForChat, MANAGED_SKILL_FOLDERS, MANAGED_SKILL_SLUGS } from "./managed-skill-service";
 import { listFolderSkills, listHomeFolderSkills } from "./skill-folder-discovery";
@@ -85,7 +85,16 @@ export class SkillMarketplaceService {
   );
 
   constructor(
-    private readonly auth: CentralAuthManager,
+    private readonly auth: {
+      resolveApiUrl: (path: string) => string;
+      requestAuthorized: <T>(
+        path: string,
+        init: RequestInit,
+        decoder: (value: unknown) => T,
+        timeoutMs?: number,
+      ) => Effect.Effect<T, CentralAuthOperationError>;
+      downloadAuthorized: (path: string) => Effect.Effect<Uint8Array, CentralAuthOperationError>;
+    },
     private readonly listAgents: () => AgentSummary[],
     private readonly refreshAgentRuntime: (agentId: string) => Effect.Effect<void, AgentLifecycleFailed> = () =>
       Effect.void,

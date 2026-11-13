@@ -41,8 +41,6 @@ export interface BrowserDesktopApi extends GroupApi<IpcEndpoints["browser"]> {
  */
 export type ComputerUseDesktopApi = GroupApi<IpcEndpoints["computerUse"]>;
 
-export type CentralAuthDesktopApi = GroupApi<IpcEndpoints["auth"]>;
-
 export type UpdateDesktopApi = GroupApi<IpcEndpoints["update"]>;
 
 export type NotificationsDesktopApi = GroupApi<IpcEndpoints["notifications"]>;
