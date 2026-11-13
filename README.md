@@ -1,51 +1,92 @@
-# zollybot
+# ZollyBot
+
+[![CI](https://github.com/khanshifaul/zollybot/actions/workflows/ci.yml/badge.svg)](https://github.com/khanshifaul/zollybot/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-PolyForm_Noncommercial_1.0.0-blue.svg)](LICENSE)
 
 **A governed, memory-driven agent office you can reach from any device.**
 
-zollybot is the cross-platform front end to [zolly](https://github.com/khanshifaul/zolly)'s
-per-repo offices. zolly itself is unchanged: the office kit, the CLI, the
-queue/result contracts, the reviewer gate and the git-native state stay exactly
-as they are.
+ZollyBot is a local-first desktop and mobile workspace for persistent AI teammates. It runs agents
+backed by Codex, Claude, OpenCode, Grok, Gemini, Cursor, Cline, Kimi, Devin, GitHub Copilot, Hermes,
+and more through ACP, gives every agent its own workspace and conversation, and provides local queues,
+file transfers, an embedded browser, and agent-to-agent messaging in one app.
 
-- **Five platforms** — macOS, Windows, Linux (Electron desktop) and Android, iOS
-  (Expo mobile).
-- **Gates, not danger-full-access** — an office task cannot merge without the
-  reviewer step, and money/production/publishing/customers stay `gate: human`.
-  The gate engine sits in the backend path, not in a prompt.
-- **Memory-driven, like zolly** — the bounded, git-committed store in
-  `.agents/memory/` is the source of truth; zollybot reads it, surfaces it and
-  writes only through the same atomic, secret-refusing CLI.
-- **Per-repo offices** — an office is a repository, not a machine.
+> [!WARNING]
+> ZollyBot is a development preview. Agents currently run with `danger-full-access` and
+> `approvalPolicy: never`. They can read and modify files, run commands, use the network, and control
+> the embedded browser without per-action confirmations after the explicit first-launch consent.
+> Run only agents and tasks you trust, keep backups, and review [Security](#security) before use.
 
-Status: base imported, integration not started.
+## What works
 
-## Commands
+- **Local-first agents** — persistent AI teammates with independent sessions and workspaces, on
+  desktop (macOS, Windows, Linux) and mobile (Android, iOS).
+- **Governed offices** — per-repo offices with a queue, a reviewer gate, and human approval for
+  money/production/publishing/customers. No merge without the reviewer step.
+- **Memory-driven** — a bounded, git-committed store (`.agents/memory/`) is the source of truth;
+  Butler (the concierge agent) learns from teaching, remembers, reflects, and consolidates memories
+  with decay and recall, like a human.
+- **Multi-provider** — Codex, Claude, OpenCode, Grok, Gemini, Cursor, Cline, Kimi, Devin, GitHub
+  Copilot, Hermes, plus custom OpenAI-compatible endpoints and custom ACP agents.
+- **Local model servers** — detection of Ollama, LM Studio, and other local providers.
+- **Agent-to-agent messaging** — replies, reactions, images, managed file transfers.
+- **Shared channel chats** — one task owner, explicit delegation, shared history, Stop/Resume/
+  Reassign/Archive/Restore.
+- **Embedded browser** — agents can open, inspect, and control a persistent browser.
+- **Computer Use** — optional desktop control on macOS, Windows, and Linux via `cua-driver`.
+- **Local AI on phone** — on-device GGUF inference on Android (privacy-first, no network).
+- **Terminal frontend** — `zollybot-cli` attaches to a running server from any terminal.
+- **Optional accounts** — mobile sign-in through private networks (Tailscale, WireGuard, Cloudflare
+  tunnel, OpenVPN); desktop runs fully local.
 
-`bun run dev` starts the account API, Signal and the Electron app for this worktree. `bun run
-dev:stop` stops it, and `bun run dev:status` lists every local stack and its ports.
+## Install
 
-The inherited command reference and its flags are in
-[README.upstream.md — Commands](README.upstream.md#commands). The current, shorter guide is
-[Onboarding: set up](docs/onboarding/setup.md).
+ZollyBot supports macOS 13+, Windows 10+ (x64), and x64/arm64 Linux as an AppImage.
 
-## Base
+### macOS / Windows / Linux
 
-The desktop shell, runtime adapters, queue substrate and mobile client come from
-**ZollyBot 0.62.0** (upstream commit `9539f15`, 2026-11-06). Its original README,
-build and contributor docs are kept in `README.upstream.md` and `docs/`.
+Download the latest release from [GitHub Releases](https://github.com/khanshifaul/zollybot/releases).
 
-## Design
+- **macOS**: drag ZollyBot to Applications and open it.
+- **Windows**: run the installer.
+- **Linux**: `chmod +x ZollyBot-*.AppImage`, then run it. No libfuse2 needed.
 
-- [docs/architecture/initial-design.md](docs/architecture/initial-design.md) — the initial design
-  record: how zollybot works, the platform split, the ZollyBot reuse map, and the gate and memory
-  invariants.
-- [docs/onboarding/README.md](docs/onboarding/README.md) — start here as a new
-  team member: setup, architecture, repository map, and common workflows.
+### From source
 
-## Next
+```bash
+git clone https://github.com/khanshifaul/zollybot.git
+cd zollybot
+bun install --frozen-lockfile
+bun run build
+```
 
-1. `src/backend/zolly/` adapter: discover offices (repos with `.agents/`),
-   invoke the unchanged `zolly` CLI, map its queue and gates onto the backend.
-2. `packages/contracts`: a `zolly-office-v1` capability (offices, queue, gate,
-   approve, recall) alongside the existing `storage-v1` pattern.
-3. Renderer: Offices screen, queue board, gate card.
+For the terminal frontend:
+
+```bash
+cd crates/zollybot-cli
+cargo build --release
+cargo install --path .
+```
+
+## Development
+
+```bash
+bun run dev          # start the account API, Signal, and Electron app
+bun run dev:stop     # stop the local stack
+bun run dev:status   # list local stacks and ports
+```
+
+See [Onboarding: set up](docs/onboarding/setup.md) for the full guide.
+
+## Security
+
+Agents run with `danger-full-access` and `approvalPolicy: never` after explicit first-launch consent.
+Review [SECURITY.md](SECURITY.md) before use. The renderer-to-main trust boundary (sandboxing,
+context isolation, IPC validation) is non-negotiable.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/onboarding/README.md](docs/onboarding/README.md).
+
+## License
+
+[PolyForm Noncommercial 1.0.0](LICENSE). See [NOTICE](NOTICE).
