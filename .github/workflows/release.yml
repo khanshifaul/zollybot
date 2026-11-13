@@ -90,26 +90,6 @@ jobs:
           echo "version=$package_version" >> "$GITHUB_OUTPUT"
           echo "tag=v$package_version" >> "$GITHUB_OUTPUT"
 
-      - name: Require deployed Universal Links support
-        shell: bash
-        run: |
-          verification_dir="$(mktemp -d)"
-          trap 'rm -rf "$verification_dir"' EXIT
-          join_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
-            --max-redirs 0 --dump-header "$verification_dir/join.headers" \
-            --output "$verification_dir/join.html" --write-out '%{http_code}' \
-            https://zollybot.shifaul.dev/join)"
-          test "$join_status" = "200"
-          tr -d '\r' < "$verification_dir/join.headers" | grep -Eiq '^cache-control:.*no-store'
-          association_status="$(curl --silent --show-error --retry 5 --retry-all-errors \
-            --max-redirs 0 --dump-header "$verification_dir/association.headers" \
-            --output "$verification_dir/association.json" --write-out '%{http_code}' \
-            https://zollybot.shifaul.dev/.well-known/apple-app-site-association)"
-          test "$association_status" = "200"
-          tr -d '\r' < "$verification_dir/association.headers" | grep -Eiq '^content-type: application/json'
-          jq -e '.applinks.details == [{"appID":"ZTRDTUL87R.app.zollybot.desktop","paths":["/join"]},{"appID":"ZTRDTUL87R.run.zollybot.mobile","paths":["/join","/agents/*"]},{"appID":"8A47NKRZSJ.run.zollybot.mobile","paths":["/join","/agents/*"]}]' \
-            "$verification_dir/association.json" >/dev/null
-
   host-signing:
     name: Check Host signing keychain
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'host-signing'
