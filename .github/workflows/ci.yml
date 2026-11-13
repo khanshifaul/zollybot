@@ -37,7 +37,6 @@ jobs:
       code: ${{ steps.lanes.outputs.code }}
       docs: ${{ steps.lanes.outputs.docs }}
       desktop: ${{ steps.lanes.outputs.desktop }}
-      api: ${{ steps.lanes.outputs.api }}
       remote: ${{ steps.lanes.outputs.remote }}
       storybook: ${{ steps.lanes.outputs.storybook }}
       surfaces: ${{ steps.lanes.outputs.surfaces }}
@@ -92,7 +91,7 @@ jobs:
             echo "docs=false" >> "$GITHUB_OUTPUT"
           fi
           lane_unless desktop '^(apps/(mobile|site-router|status)|docker|remote)/'
-          lane api '^(apps/site-router|src/renderer|resources)/|^(apps/mobile/)?CHANGELOG\.md$'
+
           lane remote '^(remote|scripts)/'
           lane storybook '^(src|apps/status|\.storybook|resources|marketplace|build)/'
           lane surfaces '^(apps/(mobile|site-router|status)|remote|scripts)/'
