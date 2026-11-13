@@ -89,4 +89,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/onboarding/README.md](docs/onbo
 
 ## License
 
-[PolyForm Noncommercial 1.0.0](LICENSE). See [NOTICE](NOTICE).
+[Apache License 2.0](LICENSE). See [NOTICE](NOTICE).
