@@ -921,33 +921,65 @@
   }
 }
 
-/* The floor strip: one row above the panes, a tab per office. */
-.app-frame-with-strip {
-  grid-template-rows: 34px minmax(0, 1fr);
+/* Two-row top bar: logo + floor tabs (row 1), agent name + settings (row 2). */
+.app-frame-with-topbar {
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
-.app-frame-with-strip > .office-strip {
-  grid-row: 1;
-  grid-column: 1 / -1;
-}
-
-.app-frame-with-strip > :not(.office-strip) {
-  grid-row: 2;
-}
-
-.office-strip {
+.top-bar {
   display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  padding: 4px 8px 0;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-direction: column;
   background: var(--zollybot-bg-canvas);
-  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  border-bottom: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 12%, transparent));
   -webkit-app-region: drag;
 }
 
-.office-tab {
+/* Row 1: Logo + floor tabs */
+.top-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  min-height: 34px;
+}
+
+.top-bar-row-floors {
+  -webkit-app-region: drag;
+}
+
+.top-bar-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+
+.top-bar-logo-btn {
+  -webkit-app-region: no-drag;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--zollybot-radius-logo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-bar-logo-btn:hover {
+  background: var(--zollybot-bg-control-hover);
+}
+
+.top-bar-tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-app-region: no-drag;
+}
+
+.top-bar-tab {
   -webkit-app-region: no-drag;
   display: flex;
   align-items: center;
@@ -956,28 +988,275 @@
   height: 26px;
   padding: 0 12px;
   border: 0;
+  border-radius: var(--zollybot-radius-md, 6px) var(--zollybot-radius-md, 6px) 0 0;
   background: transparent;
-  color: color-mix(in srgb, currentColor 60%, transparent);
+  color: var(--zollybot-text-secondary, color-mix(in srgb, currentColor 60%, transparent));
   cursor: pointer;
 }
 
-.office-tab:hover {
-  background: color-mix(in srgb, currentColor 8%, transparent);
+.top-bar-tab:hover {
+  background: var(--zollybot-bg-control-hover, color-mix(in srgb, currentColor 8%, transparent));
+  color: var(--zollybot-text-primary, inherit);
 }
 
-.office-tab-active {
-  background: color-mix(in srgb, currentColor 14%, transparent);
-  color: inherit;
-  box-shadow: inset 0 2px 0 currentColor;
+.top-bar-tab-active {
+  background: var(--zollybot-bg-surface, color-mix(in srgb, currentColor 14%, transparent));
+  color: var(--zollybot-text-primary, inherit);
+  box-shadow: inset 0 2px 0 var(--zollybot-accent, currentColor);
 }
 
-.office-tab-name {
+.top-bar-tab-name {
   max-width: 160px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.office-tab-count {
-  opacity: 0.65;
+.top-bar-tab-count {
+  min-width: 18px;
+  padding: 0 6px;
+  border-radius: var(--zollybot-radius-pill, 999px);
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  color: inherit;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  -webkit-app-region: no-drag;
+}
+
+.top-bar-action {
+  -webkit-app-region: no-drag;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 14%, transparent));
+  border-radius: var(--zollybot-radius-md, 6px);
+  background: transparent;
+  color: var(--zollybot-text-secondary, color-mix(in srgb, currentColor 70%, transparent));
+  font-size: var(--zollybot-text-sm, 12px);
+  cursor: pointer;
+}
+
+.top-bar-action:hover {
+  background: var(--zollybot-bg-control-hover, color-mix(in srgb, currentColor 8%, transparent));
+  color: var(--zollybot-text-primary, inherit);
+}
+
+/* Row 2: Agent name + settings */
+.top-bar-row-agent {
+  padding-inline: 12px;
+  border-top: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 12%, transparent));
+  -webkit-app-region: no-drag;
+}
+
+.top-bar-agent-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-md, 13px);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-bar-agent-settings {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 14%, transparent));
+  border-radius: var(--zollybot-radius-md, 6px);
+  background: transparent;
+  color: var(--zollybot-text-secondary, color-mix(in srgb, currentColor 70%, transparent));
+  font-size: var(--zollybot-text-sm, 12px);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.top-bar-agent-settings:hover {
+  background: var(--zollybot-bg-control-hover, color-mix(in srgb, currentColor 8%, transparent));
+  color: var(--zollybot-text-primary, inherit);
+}
+
+.app-frame-with-topbar > .top-bar {
+  grid-row: 1;
+  grid-column: 1 / -1;
+}
+
+.app-frame-with-topbar > :not(.top-bar) {
+  grid-row: 2;
+}
+
+.office-overlay-backdrop {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  text-align: inherit;
+  font: inherit;
+  color: inherit;
+  position: fixed;
+  inset: 0;
+  z-index: var(--zollybot-layer-dialog, 1000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--zollybot-dialog-overlay, rgba(0, 0, 0, 0.35));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.office-overlay-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(820px, 100%);
+  max-height: min(720px, 100%);
+  overflow: hidden;
+  border: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 12%, transparent));
+  border-radius: var(--zollybot-radius-card, 12px);
+  background: var(--zollybot-bg-surface, #fff);
+  color: var(--zollybot-text-primary, inherit);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
+}
+
+.office-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 12%, transparent));
+}
+
+.office-overlay-title {
+  margin: 0;
+  font-size: var(--zollybot-text-lg, 16px);
+  font-weight: 600;
+}
+
+.office-overlay-close {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 14%, transparent));
+  border-radius: var(--zollybot-radius-md, 6px);
+  background: transparent;
+  color: var(--zollybot-text-secondary, inherit);
+  cursor: pointer;
+}
+
+.office-overlay-close:hover {
+  background: var(--zollybot-bg-control-hover, color-mix(in srgb, currentColor 8%, transparent));
+  color: var(--zollybot-text-primary, inherit);
+}
+
+.office-overlay-body {
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+}
+
+.office-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.office-screen-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.office-screen-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.office-screen-subtitle {
+  margin: 0;
+  color: var(--zollybot-text-muted, color-mix(in srgb, currentColor 55%, transparent));
+  font-size: 13px;
+}
+
+.office-screen-empty {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--zollybot-border, color-mix(in srgb, currentColor 14%, transparent));
+  border-radius: var(--zollybot-radius-md, 8px);
+  color: var(--zollybot-text-muted, color-mix(in srgb, currentColor 55%, transparent));
+}
+
+.office-tasks,
+.office-memory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.office-task,
+.office-memory-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 12%, transparent));
+  border-radius: var(--zollybot-radius-md, 8px);
+  background: var(--zollybot-bg-canvas, transparent);
+}
+
+.office-task-main,
+.office-memory-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.office-task-title {
+  font-size: 14px;
+}
+
+.office-task-status,
+.office-task-gate,
+.office-memory-meta {
+  color: var(--zollybot-text-muted, color-mix(in srgb, currentColor 55%, transparent));
+  font-size: 12px;
+}
+
+.office-task-actions,
+.office-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.office-task-action {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--zollybot-border, color-mix(in srgb, currentColor 14%, transparent));
+  border-radius: var(--zollybot-radius-md, 6px);
+  background: transparent;
+  color: var(--zollybot-text-secondary, inherit);
+  cursor: pointer;
+}
+
+.office-task-action:hover {
+  background: var(--zollybot-bg-control-hover, color-mix(in srgb, currentColor 8%, transparent));
+  color: var(--zollybot-text-primary, inherit);
+}
+
+.office-memory-text {
+  white-space: pre-wrap;
+  word-break: break-word;
 }

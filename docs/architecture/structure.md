@@ -4,13 +4,13 @@
 
 ```text
 apps/
-  auth-api/          Public web and /app browser entry, accounts, memberships, connection tickets, and billing
   discord-app/       Developer Portal settings of the ZollyBot Discord app (no code)
   mobile/            Expo React Native client for remote team hosts
   site-router/       Cloudflare Worker that serves published sites from private R2 storage
   slack-app/         Slack CLI projects with the ZollyBot Slack app manifests (production, development)
-  status/            Public status page on GitHub Pages, and the check and webhook scripts of its workflow
+  status/            Public status page app and scripts
   telegram-app/      BotFather settings of the ZollyBot Telegram bot (no code)
+  web/               Web/marketing site app (Next.js) in this checkout
 packages/
   ui/                Shared SolidJS controls and primitive styles for desktop, web, and Storybook
   brand/             Shared logos, avatars, and design tokens
@@ -22,17 +22,21 @@ packages/
   user-errors/       Shared user-facing error messages for desktop and mobile
   whatsapp/          WhatsApp client: vendored Baileys without its copyleft parts, clean-room Signal code, device store
 remote/
-  api/               Bun Signal service for SDP, ICE, ticket checks, TURN credentials, and the Slack, Discord, Telegram and webhook relays
+  api/               Bun Signal service for SDP, ICE, ticket checks, TURN credentials, and messaging/webhook relay ingress
   scripts/           Bun checks and update commands for Signal and coturn
 src/
   backend/           Agent runtime, provider adapters, event storage, queues, and browser host
   main/              Electron lifecycle, trusted IPC, host server, and operating-system adapters
   preload/           Narrow typed bridge from Electron main to the renderer
   renderer/          SolidJS user interface
+crates/
+  zollybot-cli/      Rust terminal client that attaches to a running server
 scripts/             Development, smoke, release, and package verification entry points
-tools/               Biome GritQL rules, the UI foundation check, the vitest sequencer and setup, and the type baseline
-.agents/skills/      Task instructions for coding agents, such as release and smoke checks
+tools/               Biome GritQL rules, the UI foundation check, Vitest helpers, and type-check tooling
+.agents/skills/      Task instructions for coding agents
 ```
+
+> Note: some architecture and deployment docs in this repository also describe an account service / `account service` workspace used by hosted deployments. That workspace is not present in this checkout; treat those sections as deployment-specific context and verify against the active deployment repo/environment.
 
 The desktop application stays at the repository root. Its package metadata is also the release
 metadata used by Electron Builder and GitHub releases. Moving it into `apps/desktop` would create a
@@ -45,7 +49,7 @@ Dependencies point toward stable boundaries:
 ```text
 renderer ──► @zollybot/contracts ◄── preload ◄── main ──► backend
                         ▲                             │
-                        └──────── auth-api ──────────┘
+                        └──────── account/web service (deployment-specific) ──────────┘
 ```
 
 - `packages/contracts` has no Electron, Node.js, SolidJS, provider, or Cloudflare dependency.
@@ -54,13 +58,11 @@ renderer ──► @zollybot/contracts ◄── preload ◄── main ──�
 - Electron main validates untrusted IPC input before it calls a service.
 - Provider code cannot write UI state. It sends events to `AgentService`, which writes SQLite
   projections before the main process sends changes to the renderer.
-- The auth API server cannot import desktop implementation files. Browser-only route composition
-  can import renderer UI through the explicit preview and web aliases. These entry points do not
-  load Electron, preload, setup, or updater providers.
+- Account/web service code used by deployments must not import desktop implementation internals. Browser-only route composition may import renderer/shared UI only through explicit preview/web-safe boundaries and must not load Electron, preload, setup, or updater providers.
 
 `noRestrictedImports` overrides in `biome.json` enforce the import rules above: renderer and shared
 UI to main, backend, and preload; main, backend, and preload to renderer; contracts to Electron,
-SolidJS, provider, Cloudflare, and application code; and the account server to desktop code.
+SolidJS, provider, Cloudflare, and application code; and account/web service code to desktop internals where that boundary applies.
 `noNodejsModules` keeps Node.js out of contracts and the team client.
 
 ## State ownership

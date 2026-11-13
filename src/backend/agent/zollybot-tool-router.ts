@@ -46,6 +46,7 @@ import type { MailboxStore } from "../mailbox-store";
 import { agentMcpServers, codexDeferredMcpServers } from "../mcp-provider-shapes";
 import type { MessagingThreads } from "../messaging/messaging-threads";
 import { MESSAGING_OUTBOUND_TOOLS } from "../messaging/messaging-tools";
+import type { OfficeMemories } from "../offices/office-memory-store";
 import { type AppServerRequest, type DynamicToolCallParams, type DynamicToolResult, isRecord } from "../protocol";
 import { handleRoutineFlowTool, type RoutineFlowTools } from "../routine-flows/routine-flow-tools";
 import type { StoredStateFailure } from "../stored-state-effects";
@@ -72,8 +73,6 @@ import {
 } from "../zollybot-tools";
 import { AgentInterruptTool } from "./agent-interrupt-tool";
 import type { AgentMemories } from "./agent-memories";
-import { handleOfficeMemoryTool } from "./office-memory-tools";
-import type { OfficeMemories } from "../offices/office-memory-store";
 import { type ApprovalAutomationPolicy, NO_APPROVAL_AUTOMATION } from "./approval-automation";
 import type { AttachmentGateway } from "./attachment-gateway";
 import type { AttentionRegistry } from "./attention-registry";
@@ -112,6 +111,7 @@ import {
   requestedToolModel,
   requireReasoningEffort,
 } from "./model-tools";
+import { handleOfficeMemoryTool } from "./office-memory-tools";
 import {
   createAgentToolSchema,
   listModelsToolSchema,
@@ -1303,7 +1303,11 @@ export class ZollyBotToolRouter {
       );
     }
 
-    const officeMemoryResult = handleOfficeMemoryTool(params, this.#officeMemories, this.#officeIdForAgent(senderAgentId));
+    const officeMemoryResult = handleOfficeMemoryTool(
+      params,
+      this.#officeMemories,
+      this.#officeIdForAgent(senderAgentId),
+    );
     if (officeMemoryResult) return officeMemoryResult;
     const memoryResult = this.#memories.handleTool(params, senderAgentId, this.#hooks.redactMcp);
     if (memoryResult) return memoryResult;

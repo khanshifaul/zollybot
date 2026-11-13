@@ -5,7 +5,7 @@
 // ID (`team_id`) from the body, and passes the request to the `ingress` socket that holds a route
 // ticket for that workspace.
 //
-// The route ticket is an ES256 JWT that `apps/auth-api` mints for a host that proves its machine
+// The route ticket is an ES256 JWT that `account service` mints for a host that proves its machine
 // token. It names only the workspaces that the account service links to that host, so a host cannot
 // claim another host's workspace. It is signed with its own key, not the ticket key, and it expires:
 // the host asks for a new one each time its `ingress` socket connects.

@@ -65,7 +65,7 @@ Findings that were confirmed but not planned, in rank order:
    the whole idempotency JSON on each persist. A fix needs a table, so a migration.
 2. `solid-recharts` carries a 4264-line patch for two charts (`packages/ui/src/chart.tsx`, `UsageChart.tsx`).
 3. `solid-js` is not in the Bun catalog.
-4. `vitest.config.ts:91` leaves `apps/auth-api` out of `test:changed`.
+4. `vitest.config.ts:91` leaves `account service` out of `test:changed`.
 5. The auth-event retries of the account service have no cap.
 6. `WebWorkspace.tsx:1603` sets `platform="darwin"`, and the web MCP refresh differs from desktop.
 7. `application-services.ts` holds too many services.

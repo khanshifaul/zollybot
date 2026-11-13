@@ -2,7 +2,7 @@
 
 ## Browser client
 
-`apps/auth-api` serves `/app`. Its lazy route mounts the interactive client after browser startup.
+`account service` serves `/app`. Its lazy route mounts the interactive client after browser startup.
 `src/renderer/src/features/web-client` owns the browser composition and its typed
 `WebWorkspaceRuntime` interface. It mounts the existing account login, page rail, server rail,
 sidebar, and full conversation view. `ConversationRuntime` routes host actions through
@@ -428,7 +428,7 @@ hidden page that holds the Team peer (`features/browser/model/browser-view-bridg
 sends each frame to the screen as base64 and holds the newest frame until the screen has drawn the
 previous one. Back, forward, reload, new tab and close tab use the released `browser-control`
 routes. The account server's `browser` mobile feature flag turns the phone's browser off for an app
-version (`apps/auth-api/src/server/mobile-features-config.ts`).
+version (`mobile feature configuration`).
 
 ## Secure browser authentication
 

@@ -55,7 +55,7 @@ Keep the private JWK secret. With it, a person can open each host that uses your
 
    ```sh
    bun install --frozen-lockfile
-   cd apps/auth-api
+   cd account service
    bunx wrangler login
    bunx wrangler d1 create zollybot-auth
    bunx wrangler r2 bucket create zollybot-avatars
@@ -63,7 +63,7 @@ Keep the private JWK secret. With it, a person can open each host that uses your
    bunx wrangler r2 bucket create zollybot-sites
    ```
 
-2. Edit the top level of `apps/auth-api/wrangler.jsonc`. Do not change the `env` section.
+2. Edit the top level of `deployment configuration`. Do not change the `env` section.
    - `routes`: replace all entries with `{ "pattern": "api.example.com", "custom_domain": true }`.
    - `d1_databases`: set `database_id` to the ID that `d1 create` printed.
    - `r2_buckets`: set the bucket names, if you used other names.
@@ -75,7 +75,7 @@ Keep the private JWK secret. With it, a person can open each host that uses your
      - `REMOTE_AUTH_WEBHOOK_URL`: `https://signal.example.com/internal/auth-events`.
      - `HOSTED_SERVERS_ENABLED`: `"false"`.
 
-3. Put the Worker secrets in `apps/auth-api/.env.self-hosted`. Git ignores this file name.
+3. Put the Worker secrets in `account service/.env.self-hosted`. Git ignores this file name.
 
    ```sh
    EMAIL_SMTP_PASSWORD=...
@@ -89,7 +89,7 @@ Keep the private JWK secret. With it, a person can open each host that uses your
 4. Deploy. The script puts the secrets, applies the D1 migrations, builds and deploys the Worker:
 
    ```sh
-   bunx dotenvx run -f .env.self-hosted -- bun ../../scripts/deploy-auth-api.ts
+   bunx dotenvx run -f .env.self-hosted -- bun ../../scripts/deploy-account service.ts
    ```
 
 5. Check the service. Each command must return `200`:

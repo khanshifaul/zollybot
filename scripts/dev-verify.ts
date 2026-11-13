@@ -48,7 +48,7 @@ export function surfacesForFiles(files: string[]): VerificationSurface[] {
       surfaces.add("desktop");
     }
     if (file.startsWith("apps/mobile/")) surfaces.add("mobile");
-    if (file.startsWith("apps/auth-api/") || file.startsWith("apps/site-router/")) surfaces.add("api");
+    if (file.startsWith("apps/site-router/")) surfaces.add("api");
     if (file.startsWith("remote/")) surfaces.add("remote");
     if (file.startsWith("packages/contracts/")) surfaces.add("contracts");
     if (file.startsWith("docs/") || file === "README.md") surfaces.add("docs");
@@ -73,12 +73,8 @@ function isDesktopTest(file: string): boolean {
   ].some((prefix) => file.startsWith(prefix));
 }
 
-function isDelegatedTest(file: string): boolean {
-  return file.startsWith("apps/auth-api/test/") && isTestFile(file);
-}
-
 function isSupportedTest(file: string): boolean {
-  return isDesktopTest(file) || isDelegatedTest(file);
+  return isDesktopTest(file);
 }
 
 export function suggestedTestsForFiles(files: string[], projectRoot = process.cwd()): string[] {
@@ -110,31 +106,13 @@ function formatBunCommand(args: string[]): string {
 
 function testCommandArgs(tests: string[]): string[][] {
   const desktop = tests.filter(isDesktopTest);
-  const auth = tests.filter((file) => file.startsWith("apps/auth-api/test/"));
   const commands: string[][] = [];
   if (desktop.length > 0) commands.push(["run", "test:desktop", "--", ...desktop]);
-  if (auth.length > 0) {
-    commands.push([
-      "run",
-      "--cwd",
-      "apps/auth-api",
-      "test",
-      "--",
-      ...auth.map((file) => file.slice("apps/auth-api/".length)),
-    ]);
-  }
   return commands;
 }
 
-function workspaceTestCommandArgs(files: string[], suggestedTests: string[]): string[][] {
-  const commands: string[][] = [];
-  if (
-    files.some((file) => file.startsWith("apps/auth-api/")) &&
-    !suggestedTests.some((file) => file.startsWith("apps/auth-api/"))
-  ) {
-    commands.push(["run", "test:api"]);
-  }
-  return commands;
+function workspaceTestCommandArgs(_files: string[], _suggestedTests: string[]): string[][] {
+  return [];
 }
 
 export function verificationCommands(

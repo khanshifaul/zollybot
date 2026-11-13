@@ -1,6 +1,6 @@
 // The remote ticket: the ES256 JWT that authorises one peer to open a Signal socket.
 //
-// Three parties handle it and none of them ships together. `apps/auth-api` mints it
+// Three parties handle it and none of them ships together. `account service` mints it
 // (`remote-control-plane.ts`), the Signal service verifies it before it will relay anything
 // (`remote/api/src/tokens.ts`), and the desktop host verifies the copy a client presents over the
 // data channel (`src/main/central-auth-manager.ts`). Every one of them used to spell the audience

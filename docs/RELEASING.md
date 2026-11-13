@@ -82,48 +82,6 @@ The release workflow checks anonymous access to the version, `v<version>` and `l
 including both Linux architectures. A failure leaves the GitHub Release and pushed images in
 place. Correct the package settings, then run the failed job again.
 
-## Hosted-server snapshots
-
-After GitHub publication, `Publish boat server snapshot` builds the Linux x64 release into a boat
-named snapshot (`zollybot-server-production-<version>` with dots replaced by hyphens), then selects
-it for new production servers. It uses the tagged hosting scripts,
-the published `SHA256SUMS-linux.txt`, and `https://api-zollybot.shifaul.dev`. The builder checks the AppImage
-checksum and installed version and requires an empty host profile before saving the snapshot.
-Existing servers and the test Worker do not change.
-
-Before the first release with this job, configure the `cloudflare-production` GitHub Environment:
-
-- Add `BOAT_TEMPLATE_API_KEY`, a separate boat key with sandbox, file, command and named snapshot
-  access. Keep the limited `BOAT_API_KEY` on the Worker.
-- Keep `CLOUDFLARE_PRODUCTION_DEPLOY_TOKEN` and the `CLOUDFLARE_ACCOUNT_ID` variable used by deployment.
-- Permit the tag pattern `v*.*.*` in addition to the `main` branch. The release job runs on a tag.
-
-`release:preflight` checks these settings. The hosted job and production Worker deployment share
-one concurrency group. The job checks GitHub's latest stable release before building and again
-before selection. It writes only the Worker's `HOSTED_SERVER_TEMPLATE` secret. Normal CI and local
-production deployments preserve it; the old GitHub variable is ignored. `hosting:setup` now sets
-up billing and webhooks only and no longer accepts `--template`.
-
-A failed hosted job leaves the GitHub Release published and the previous template selected.
-Run the failed job again after correcting the cause. A ready snapshot is reused; a save in progress
-is polled; a failed snapshot requires operator inspection. The builder never replaces an existing
-snapshot. It stops at 10 snapshots even if boat permits paid storage above that count.
-
-Before the build, the job removes production snapshots of older releases. It keeps the 2 newest
-ready ones, so 3 releases remain with the new one; the newest of them stays selected until the new
-release replaces it. A failed snapshot of an older release is removed too. It keeps a snapshot that
-is saving or has an unknown status, any snapshot newer than the release, and each
-`provider_template` of a production server that is not deleted and has no sandbox yet, because a
-create retry sends its first request again. The job reads these from the production D1
-database and stops if it cannot. Servers already made from a removed snapshot keep running. Names
-without the `zollybot-server-production-` prefix are never removed; confirm that neither Worker nor
-any pending create needs one before removing it by hand.
-
-A successful job reports the selected version in its Actions summary. Verify the first rollout by
-creating a temporary production server and checking its initial installed version. Record the
-result under `.zollybot-build/`; remove only that temporary server after the check. This remote check
-is separate from local checks and requires production access.
-
 ## Windows signing
 
 A tag build signs the Windows release with Azure Artifact Signing. It needs no secret:
@@ -436,10 +394,7 @@ A store that a newer version replaced is `Skipped (Android)`, and `/changelog` s
 `bun run mobile:release` does each step from a menu and opens the pull request
 (`apps/mobile/README.md#release-menu`).
 
-The same step sets that version for the store in `MOBILE_LATEST_VERSIONS` and in the `upTo` of each
-feature in `apps/auth-api/src/server/mobile-features-config.ts`. The merge deploys the account
-service. An app with an older version then shows the update header on home. Set it only after the
-store has the build: before, Update opens a store page that cannot install the version.
+The same step may update store/version-gating config in the account-service deployment (for example mobile feature/version config in a deployment workspace). Deploy that service only after the store build is available, or clients may be offered an unavailable update.
 
 `scripts/check-release-notes.ts` stops a release when the section is missing, empty or appears two
 times, or when it has an unknown group, a group with no items, an item with no text or outside a
@@ -484,45 +439,6 @@ its own local marker when post-update notes are added there. Desktop notes must 
 version or the version of a connected server. This desktop feature does not change mobile,
 public web, Signal, database schemas, or Team API contracts.
 
-### Discord announcement
-
-Each desktop release posts a message in the ZollyBot Discord. Before publishing a desktop release,
-select the 3 to 5 changes in its `CHANGELOG.md` section that have the largest effect on users, and
-write them with the version in `.github/release-announcement.json`:
-
-```json
-{ "version": "x.y.z", "highlights": ["...", "...", "..."] }
-```
-
-Write each highlight as one short, plain sentence that tells the user what they can do now. Put a
-required upgrade step first. Use the rules of the post-update notes: do not copy commit messages,
-developer setup, internal paths, credentials, or unpublished plans. Replace the highlights of the
-previous release; the file holds only one version.
-
-`scripts/discord-release-announcement.ts` builds the message: a mention of the `Release Pings`
-role, the title `ZollyBot vx.y.z is out`, the highlights, and a link to the version on `/changelog`.
-It notifies only that role, not `@everyone` or `@here`. Run
-`bun scripts/discord-release-announcement.ts check x.y.z` to see it. The tag workflow and
-`bun run release:preflight` stop when the file is not for the release version, has fewer than 3 or
-more than 5 highlights, has a highlight that is empty or has a placeholder, a line break or a
-mention, or makes a message longer than 2000 characters. They also stop when the
-`DISCORD_RELEASE_ROLE_ID` repository variable is not set or is not a Discord role ID. After the GitHub Release, the Docker image and the
-boat snapshot are published, the `discord-announce` job posts the message as ZollyBot through the
-channel webhook in the `DISCORD_RELEASE_WEBHOOK_URL` secret of the `release` environment. The job
-fails, and posts nothing, when `DISCORD_RELEASE_ROLE_ID` is not set. A failed post does not undo the
-release: re-run the job. A re-run after a successful post posts the message again.
-
-One-time setup:
-
-1. In Discord, open the settings of the announcement channel, then Integrations > Webhooks. Make a
-   webhook named `ZollyBot` with the ZollyBot icon. Add its URL as the secret
-   `DISCORD_RELEASE_WEBHOOK_URL` of the `release` environment.
-2. In Discord, turn on Developer Mode, open Server Settings > Roles, right-click `Release Pings` and
-   select Copy Role ID. Add the ID as the repository variable `DISCORD_RELEASE_ROLE_ID`.
-
-The mobile app has its own post, file, webhook and workflow. It waits until both stores have the
-version. See [the mobile Discord announcement](../apps/mobile/README.md#discord-announcement).
-
 ## Publish a version
 
 Start from a clean, up-to-date `main` branch. For the first release, `package.json` and
@@ -547,7 +463,7 @@ under the new dated version heading, and deletes the `changelog.d` files. Review
 preparation before creating the tag:
 
 ```bash
-git add package.json CHANGELOG.md changelog.d .github/release-announcement.json
+git add package.json CHANGELOG.md changelog.d
 git commit -m "release: prepare vX.Y.Z"
 git push origin main
 bun run release:preflight
@@ -718,7 +634,7 @@ Before creating the first tag or any later release:
     confirm the AppImage starts with the sandbox on, that `xdg-open 'zollybot://join?...'` focuses the
     running application, that a provider downloads in-app, that the page rail is drawn, and that the
     microphone control is absent;
-14. confirm `CHANGELOG.md` and `.github/release-announcement.json` describe the version and the
+14. confirm `CHANGELOG.md` describes the version and the
     working tree is clean;
 15. create and push the version commit, and create the tag locally, only after CI passes on `main`;
 16. read the running Signal commit from `curl -fsS https://signal-zollybot.shifaul.dev/health/live`. If it is

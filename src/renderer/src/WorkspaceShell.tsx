@@ -19,9 +19,9 @@ import { useDirectMessages } from "./features/conversation/direct-messages-conte
 import { WorkspaceConversation } from "./features/conversation/WorkspaceConversation";
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
-import { OfficeTabStrip } from "./features/offices/OfficeTabStrip";
-import { OfficeScreen } from "./features/offices/OfficeScreen";
 import { ButlerMemoryInspector } from "./features/offices/ButlerMemoryInspector";
+import { OfficeScreen } from "./features/offices/OfficeScreen";
+import { TopBar } from "./features/offices/OfficeTabStrip";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
 import { WorkspaceRoutineFlows } from "./features/routine-flows/WorkspaceRoutineFlows";
@@ -302,11 +302,25 @@ export function WorkspaceShell(props: {
     <ConnectorsProvider>
       {/* The page rail sits at the left of the frame. The frame is the card of the page that the rail selects. */}
       <div class="app-window">
-        <Show when={!(agents.activeOfficeId() === "building" || agents.activeOfficeId() === null)}>
-          <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
-        </Show>
+        <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
         <WorkspaceFrame
-          strip={chatWindow ? undefined : <><OfficeTabStrip /><button onClick={() => setShowOfficeScreen(true)}>Offices</button><button onClick={() => setShowButlerMemory(true)}>Butler memory</button></>}
+          topBar={
+            chatWindow ? undefined : (
+              <TopBar
+                logo={logo()}
+                actions={
+                  <>
+                    <button type="button" class="top-bar-action" onClick={() => setShowOfficeScreen(true)}>
+                      {t("app.offices.tasks")}
+                    </button>
+                    <button type="button" class="top-bar-action" onClick={() => setShowButlerMemory(true)}>
+                      {t("app.offices.butlerMemory")}
+                    </button>
+                  </>
+                }
+              />
+            )
+          }
           class={chatWindow ? "app-frame-chat-window" : undefined}
           compact={layout.leftPanelCompact()}
           initialLoading={!serversLoaded() || !scope.connection.synced}
@@ -383,18 +397,62 @@ export function WorkspaceShell(props: {
           {connectionNotice(true, false)}
         </Show>
         <Show when={showOfficeScreen()}>
-          <div class="office-screen-overlay" style={{ position: "fixed", inset: "0", "z-index": "1000", background: "rgba(0,0,0,0.5)" }}>
-            <div style={{ margin: "40px auto", "max-width": "800px", background: "white", padding: "20px", "border-radius": "8px" }}>
-              <button onClick={() => setShowOfficeScreen(false)}>Close</button>
-              <OfficeScreen />
+          <div
+            class="office-overlay-backdrop"
+            role="button"
+            tabIndex={0}
+            aria-label={t("common.close")}
+            onClick={() => setShowOfficeScreen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter" || e.key === " ") setShowOfficeScreen(false);
+            }}
+          >
+            <div
+              class="office-overlay-panel"
+              role="dialog"
+              aria-modal="true"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              <div class="office-overlay-header">
+                <h2 class="office-overlay-title">{t("app.offices.tasks")}</h2>
+                <button type="button" class="office-overlay-close" onClick={() => setShowOfficeScreen(false)}>
+                  {t("common.close")}
+                </button>
+              </div>
+              <div class="office-overlay-body">
+                <OfficeScreen />
+              </div>
             </div>
           </div>
         </Show>
         <Show when={showButlerMemory()}>
-          <div class="office-screen-overlay" style={{ position: "fixed", inset: "0", "z-index": "1000", background: "rgba(0,0,0,0.5)" }}>
-            <div style={{ margin: "40px auto", "max-width": "800px", background: "white", padding: "20px", "border-radius": "8px" }}>
-              <button onClick={() => setShowButlerMemory(false)}>Close</button>
-              <ButlerMemoryInspector />
+          <div
+            class="office-overlay-backdrop"
+            role="button"
+            tabIndex={0}
+            aria-label={t("common.close")}
+            onClick={() => setShowButlerMemory(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter" || e.key === " ") setShowButlerMemory(false);
+            }}
+          >
+            <div
+              class="office-overlay-panel"
+              role="dialog"
+              aria-modal="true"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              <div class="office-overlay-header">
+                <h2 class="office-overlay-title">{t("app.offices.butlerMemory")}</h2>
+                <button type="button" class="office-overlay-close" onClick={() => setShowButlerMemory(false)}>
+                  {t("common.close")}
+                </button>
+              </div>
+              <div class="office-overlay-body">
+                <ButlerMemoryInspector />
+              </div>
             </div>
           </div>
         </Show>

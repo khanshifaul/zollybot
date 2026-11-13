@@ -424,7 +424,7 @@ review a build on their own, and each can take days. When testers can install th
 store, run `bun run mobile:release` and select 3, or `bun run mobile:release:published ios` (or
 `android`). It writes today's date for that store, for example `## [x.y.z] - 2026-10-14 (Android)`,
 and raises that store's `cloudServers` and `browser` flags and newest version in
-`apps/auth-api/src/server/mobile-features-config.ts`. Merge that change to `main`. After the Worker
+`mobile feature configuration`. Merge that change to `main`. After the Worker
 deploy, the site shows the version with that store, the other store as "In review", and Discord gets
 the post of that store. When the other store makes the build available, do the same for that store.
 The heading becomes `## [x.y.z] - 2026-10-14 (Android), 2026-10-16 (iOS)`, or `## [x.y.z] - 2026-10-14`
@@ -496,7 +496,7 @@ One-time setup:
 7. Commit `apps/mobile/google-services.json`, the Firebase file of the Android app
    `run.zollybot.mobile`. `app.config.js` adds it when it exists. Without it the build has no Firebase,
    and Android gets no notifications. The file has public identifiers only. The account service has
-   the key that sends (`FCM_SERVICE_ACCOUNT` in [the account service](../auth-api/README.md)).
+   the key that sends (`FCM_SERVICE_ACCOUNT` in the account-service deployment environment).
 
 After this workflow is merged into `main`, run from the repository root:
 
@@ -521,64 +521,6 @@ upload store metadata, screenshots or release notes. Write the release notes in 
 To build a signed `.aab` on your computer, run `bun run mobile:android:build:local`. It needs JDK 17
 and the Android SDK, and writes `/private/tmp/zollybot-play.aab`.
 See [Fastlane Google Play upload](https://docs.fastlane.tools/actions/upload_to_play_store/).
-
-### Discord announcement
-
-Each store gets its own post in the ZollyBot Discord when users of that store can see the version.
-The source is `apps/mobile/CHANGELOG.md`; the gate is production. The `Announce mobile release on
-Discord` workflow (`mobile-release-announcement.yml`) runs after each CI run on `main`, at minutes
-17 and 47 of each hour, and on a manual dispatch. It posts a version for a store only when the
-account Worker lists the version in `/v1/mobile/changelog?platform=<store>` and gives it the newest
-version and the flags of `apps/auth-api/src/server/mobile-features-config.ts` in
-`/v1/mobile/features`. Thus the post never comes before the deploy of the flags, the browser and
-`/changelog`. A newer push to `main` cancels an older CI run, and that does not lose a post: the next
-deploy or the schedule sends it.
-
-A tag `mobile-announced/v<version>/<store>` records each post. The workflow creates the tag, then
-posts; a failed post removes the tag, so the next run tries again. A version with a tag gets no post
-again. Only the newest dated version of each store gets a post, from 1.4.7 on. The desktop release
-has its own post and its own workflow (`docs/RELEASING.md#discord-announcement`).
-
-| Event | Title | Line under the title |
-| --- | --- | --- |
-| The first store | `ZollyBot vx.y.z is out on iOS` | `The Android version comes out later.` |
-| The second store | `ZollyBot vx.y.z is out on Android` | `It is already out on iOS.` |
-| Both stores in the same run | `ZollyBot vx.y.z is out on iOS and Android` | none |
-| The other store skipped the version | `ZollyBot vx.y.z is out on iOS` | none |
-
-The message mentions the `Mobile Release Pings` role, then has the title, the highlights, and one
-line of links to each store that has the version and to `Full Changelog`, the version on the Mobile
-tab of `/changelog`. It notifies only that role.
-
-Before the first store has the build, select the 3 to 5 changes in the version section that have
-the largest effect on users, and write them with the version in `apps/mobile/release-announcement.json`:
-
-```json
-{ "version": "x.y.z", "highlights": ["...", "...", "..."] }
-```
-
-Use the highlight rules of the desktop announcement. Both posts of a version use the same file.
-Replace the highlights of the previous version; the file holds only one version. Run
-`bun scripts/discord-mobile-release-announcement.ts check x.y.z` to see the posts.
-`bun run mobile:release` and `bun run mobile:release:published` stop while the file is not ready,
-and the Changelog workflow stops a pull request that adds a store date before the file is ready.
-
-`bun scripts/discord-mobile-release-announcement.ts plan` shows the posts that are due and why the
-others wait. To post a version again, or an older one, run
-`gh workflow run mobile-release-announcement.yml --ref main -f version=x.y.z -f stores=ios -f again=true`.
-For a post that you sent by hand, run
-`bun scripts/discord-mobile-release-announcement.ts mark-posted x.y.z ios`, so the workflow does not send it again.
-
-One-time setup:
-
-1. In GitHub repository settings, create the `release-mobile` environment. Under deployment branches
-   and tags, select only the `main` branch.
-2. In Discord, open the settings of the announcement channel, then Integrations > Webhooks. Make a
-   webhook named `ZollyBot` with the ZollyBot icon. Add its URL as the environment secret
-   `DISCORD_MOBILE_RELEASE_WEBHOOK_URL`. It can be the same channel as the desktop post.
-3. In Discord, turn on Developer Mode, open Server Settings > Roles, right-click `Mobile Release Pings`
-   and select Copy Role ID. Add the ID as the environment variable `DISCORD_MOBILE_RELEASE_ROLE_ID`.
-4. A tag ruleset must let GitHub Actions create and delete tags that start with `mobile-announced/`.
 
 ## OpenPanel product analytics
 

@@ -2,7 +2,7 @@
 // so a client that trusts the previous key can trust the new key without a new pairing.
 //
 // The host signs (`src/main/team-store.ts`), the account service checks and stores the chain
-// (`apps/auth-api`), and every client follows it from the key it already trusts
+// (`account service`), and every client follows it from the key it already trusts
 // (`packages/team-client/src/host-key-handover.ts`). The account service only relays the chain: it
 // has no key that can sign a step, so it cannot hand a host to a key of its own.
 //

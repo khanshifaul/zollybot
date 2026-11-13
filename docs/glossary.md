@@ -44,8 +44,8 @@ table, IPC channel or product string, or when a term in the code disagrees with 
   offices plus a role with `scope = "building"`, such as the butler (`office_id` is null); a profile
   with no repository uses `UNASSIGNED_OFFICE_ID`.
 - **server**: a joined team server (`ServerSummary`, `servers:*`), the local Team API host
-  (`HostStatus`, `host:*`, `src/main/team-api-server.ts`), the account API (`apps/auth-api`,
-  `auth:*`), or an MCP server (`createSdkMcpServer`).
+  (`HostStatus`, `host:*`, `src/main/team-api-server.ts`), the account/control-plane service used by a deployment
+  (`auth:*` in related code/docs), or an MCP server (`createSdkMcpServer`).
 - **thread**: durable `projection_threads` record. **conversation**: its read projection, with no
   separate table. **provider session**: private CLI resume state (`projection_provider_sessions`).
   **team session**: authenticated remote connection. **turn**: one exchange in a thread.

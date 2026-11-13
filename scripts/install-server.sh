@@ -7,7 +7,7 @@
 #   --user <name>             The user that runs ZollyBot and its agents. Default: the user of the
 #                             installed server, else zollybot, which the install makes when it does
 #                             not exist.
-#   --auth-api-url <origin>   Another account server, for development. Default: the one of the
+#   --account service-url <origin>   Another account server, for development. Default: the one of the
 #                             installed server, else the one in the build.
 #   --display-size <W>x<H>    The size of the virtual display that computer use reads, from 640x480
 #                             to 2576x2576. Default: the one of the installed server, else 1280x800.
@@ -40,8 +40,8 @@ while [ "$#" -gt 0 ]; do
       service_user=$2
       shift 2
       ;;
-    --auth-api-url)
-      [ "$#" -ge 2 ] || fail "Add a URL after --auth-api-url."
+    --account service-url)
+      [ "$#" -ge 2 ] || fail "Add a URL after --account service-url."
       auth_api_url=$2
       shift 2
       ;;

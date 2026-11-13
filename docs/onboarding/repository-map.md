@@ -22,12 +22,12 @@ direction.
 | `packages/team-client` | Team directory, WebRTC peer, recovery, framing, routines, usage series | `packages/team-client/src/` |
 | `packages/user-errors` | User-facing error messages shared by desktop and mobile | `packages/user-errors/src/` |
 | `packages/whatsapp` | Vendored WhatsApp client, Signal code, device store | `packages/whatsapp/src/` |
-| `apps/auth-api` | Account Worker, D1, R2 avatars, Stripe, `/app` web client | `apps/auth-api/src/`, `migrations/`, `wrangler.jsonc` |
+| `apps/web` | Web/marketing site app in this checkout (Next.js) | `apps/web/app/`, `apps/web/package.json` |
 | `apps/mobile` | Expo and React Native phone client | `apps/mobile/src/app/`, `apps/mobile/src/features/` |
 | `apps/site-router` | Worker that serves published sites from R2 | `apps/site-router/src/` |
 | `apps/status` | Public status page and its workflow scripts | `apps/status/` |
 | `remote/api` | Bun Signal service and relay ingress | `remote/api/src/` |
-| `crates/zollybot-cli` | Rust terminal client for offices and agents | `crates/zollybot-cli/src/main.rs` |
+| `crates/zollybot-cli` | Rust terminal client | `crates/zollybot-cli/Cargo.toml`, `crates/zollybot-cli/src/` |
 | `scripts` | Development, E2E, release, and packaging entry points | `scripts/dev-services.ts`, `scripts/*-e2e.ts` |
 | `tools` | Biome GritQL rules, UI check, Vitest setup, type baseline | `tools/biome/`, `tools/ui-foundation/` |
 | `.agents/skills` | Task instructions for coding agents | `.agents/skills/<skill>/SKILL.md` |
@@ -94,7 +94,7 @@ a view or context. Add the call to the domain port.
 | New SQLite column or table | `src/backend/zollybot-database-schema.ts`, `LATEST_SCHEMA_SQL`, the schema history, and migration fixtures |
 | New provider | `src/backend/provider-drivers.ts`, a provider adapter, and a conformance or E2E check |
 | New Team API capability | `packages/contracts/src/team-protocol/`, the host route, and the client |
-| New account Worker route | `apps/auth-api/src/` and a D1 migration when it stores data |
+| New account Worker route | Account-service/deployment workspace (not present in this checkout) and a D1 migration when it stores data |
 | New Signal behavior | `remote/api/src/`, `packages/contracts/src/signal-protocol` |
 | New office behavior | `src/backend/offices/`, `agent-service.ts`, `src/main/server-mode.ts`, and the desktop feature |
 | New dev or release command | `package.json` and `scripts/` |

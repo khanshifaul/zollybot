@@ -514,7 +514,7 @@ the answer. Every answer comes from ZollyBot.
   signing secret is bound to its app, and a route is one app in one workspace, so the production and
   development apps can share a workspace. It passes the exact body to the `ingress` socket (`SignalIngress` in main, a plain `ws` client: no WebRTC, so no hidden
   window) that holds a route ticket for that workspace, and returns the host's answer within 2.5 s,
-  or 503 so that Slack sends it again. The route ticket is an ES256 JWT that `apps/auth-api` signs
+  or 503 so that Slack sends it again. The route ticket is an ES256 JWT that `account service` signs
   with its own key for a host that proves its machine token. It names only the workspaces that D1
   links to that host, expires after 5 minutes, and the host asks for a new one each time the socket
   connects. Each workspace in the ticket carries the time D1 linked it. When a workspace is unlinked

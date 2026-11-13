@@ -1,5 +1,7 @@
 # ZollyBot merge — specification
 
+> **Historical/design note:** This document records earlier design, merge, or import context. It may not describe the current checked-in implementation. Use `docs/architecture/structure.md`, `docs/onboarding/`, and source code for current behavior.
+
 Date: 2026-11-08. Status: spec, no code. Base: OpenBot (multi-platform). Governance: zolly.
 Evidence and corrections: [merge-impact.md](merge-impact.md).
 

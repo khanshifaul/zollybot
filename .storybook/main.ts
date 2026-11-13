@@ -8,11 +8,7 @@ const config = {
   // The desktop renderer, the public site's article components and the status page. A site
   // or status story brings its own stylesheet with it, because the stylesheets set the same
   // global rules to different values and cannot all be loaded for every story.
-  stories: [
-    "../src/renderer/**/*.stories.@(ts|tsx)",
-    "../apps/auth-api/src/**/*.stories.@(ts|tsx)",
-    "../apps/status/src/**/*.stories.@(ts|tsx)",
-  ],
+  stories: ["../src/renderer/**/*.stories.@(ts|tsx)", "../apps/status/src/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-a11y"],
   // The story iframe has no icon of its own. Without this link, Chrome requests /favicon.ico when
   // the iframe opens as a page, and the console shows a 404.

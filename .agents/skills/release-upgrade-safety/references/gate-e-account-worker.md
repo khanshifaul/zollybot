@@ -1,32 +1,32 @@
-# Gate E — Account Worker — `apps/auth-api/`
+# Gate E — Account Worker — `account service/`
 
-Triggered by **any** addition, modification, deletion or rename under `apps/auth-api/migrations/`,
-a change to any non-UI file under `apps/auth-api/src/`, or a change to any of the four files that
-decide the deploy order: `.github/workflows/ci.yml`, `scripts/deploy-auth-api.ts`,
-`apps/auth-api/package.json` and `apps/auth-api/wrangler.jsonc`.
+Triggered by **any** addition, modification, deletion or rename under `account service migrations`,
+a change to any non-UI file under `account service source`, or a change to any of the four files that
+decide the deploy order: `.github/workflows/ci.yml`, `scripts/deploy-account service.ts`,
+`account service package configuration` and `deployment configuration`.
 
 The `src/` half is wider than `routes/` and `server/` on purpose: `worker-entry.ts` is the deployed
 Worker's default export and `router.tsx` builds the router from `routeTree.gen.ts`, so a `/v1` or
 `/v2` endpoint can be removed or shadowed there while every file under `routes/` is untouched.
 
 The deploy-order files are in the list because the deploy-race hazard below is a property of *how
-the deploy runs*, not of `apps/auth-api/`. **There are two independent paths and they must both
+the deploy runs*, not of `account service/`. **There are two independent paths and they must both
 hold:**
 
 - `.github/workflows/ci.yml` — "Apply production D1 migrations" runs before the Worker deploy in
   the same job.
-- `scripts/deploy-auth-api.ts` — applies remote D1 migrations, then builds, then runs
-  `wrangler deploy`. `apps/auth-api/package.json` `deploy` and `deploy:test` are its entrypoints,
+- `scripts/deploy-account service.ts` — applies remote D1 migrations, then builds, then runs
+  `wrangler deploy`. `account service package configuration` `deploy` and `deploy:test` are its entrypoints,
   so a change to either can redirect or reorder the whole sequence.
 
 Reorder those operations, drop the migration step, or split them across jobs, and production runs a
-Worker against a schema it was never deployed against — with nothing under `apps/auth-api/src/`
+Worker against a schema it was never deployed against — with nothing under `account service source`
 modified and the gate otherwise reporting "not triggered". Re-read the order in **both** paths every
 time one of these files changes; do not assume the order described here still holds, and do not
 assume fixing one path covers the other.
 
 ```bash
-git diff --stat --diff-filter=AMDR <tag>..HEAD -- apps/auth-api/migrations
+git diff --stat --diff-filter=AMDR <tag>..HEAD -- account service/migrations
 ```
 
 Three separate hazards; check all three.
@@ -56,7 +56,7 @@ Three separate hazards; check all three.
 - **Installed desktop builds never update**, in *both* directions. A build from a year ago keeps
   calling `auth:*` against the current Worker forever, and unlike a D1 mistake that is not
   recoverable by a redeploy.
-  - *Responses*: a removed or renamed field in a handler under `apps/auth-api/src/routes/v1/` or
+  - *Responses*: a removed or renamed field in a handler under `account service routesv1/` or
     `v2/` breaks the clients that still read it.
   - *Requests*: an old build also keeps sending its original routes, methods, headers and bodies.
     Making an optional request field required, tightening a validator, rejecting a value that used
@@ -64,9 +64,9 @@ Three separate hazards; check all three.
     shape is untouched. Diff the request parsers and route registrations, not only the responses.
 
 ```bash
-bun run --cwd apps/auth-api test -- test/mobile-auth-migration.test.ts
+bun run --cwd account service test -- test/mobile-auth-migration.test.ts
 ```
 
-`apps/auth-api` has its own vitest config, so `bun run test:desktop` does not reach it. Run the
-sibling `*-migration.test.ts` files in `apps/auth-api/test/` that cover what you touched.
+`account service` has its own vitest config, so `bun run test:desktop` does not reach it. Run the
+sibling `*-migration.test.ts` files in `account service tests` that cover what you touched.
 `bun run check:api` is CI's job, not yours.

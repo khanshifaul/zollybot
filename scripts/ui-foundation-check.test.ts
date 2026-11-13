@@ -117,7 +117,7 @@ describe("ui foundation check", () => {
   it("reads markup outside the walked tree for reachability", () => {
     // The walked root holds the stylesheets; the reachable roots hold the markup that can
     // name a class, and in the repository they are `src` and `apps` rather than the renderer
-    // alone - src/main injects a class into the picture-in-picture window and apps/auth-api
+    // alone - src/main injects a class into the picture-in-picture window and apps/web
     // renders the preview shell. Point reachability at the tree next door and every class in
     // this one goes dark, including the five the other test proves are reached.
     const { failures } = checkUiFoundation(fixtureRenderer, fixtureRenderer, [cleanRenderer]);

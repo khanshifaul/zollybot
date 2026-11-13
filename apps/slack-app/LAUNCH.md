@@ -45,7 +45,7 @@ What the workflows do, checked on 2026-10-01:
   applies the D1 migrations, then deploys with `--secrets-file`. The file holds only GitHub Actions
   secrets of the `cloudflare-production` environment, and it has no Slack secret. Wrangler adds those
   secrets to the existing ones and deletes none, so the Slack secrets that `bun run deploy`
-  (`scripts/deploy-auth-api.ts`, from the Dotenvx `.env.production`) uploads stay.
+  (`scripts/deploy-account service.ts`, from the Dotenvx `.env.production`) uploads stay.
 - **But** `REMOTE_TICKET_PUBLIC_JWKS` is in that file. Each CI deploy writes the GitHub secret's value,
   which was last changed on 2026-08-31 and does not have the Slack route key. Signal then refuses every
   route ticket.
@@ -61,7 +61,7 @@ return 404.
 Do the steps in this order:
 
 1. **GitHub secret.** Set `REMOTE_TICKET_PUBLIC_JWKS` in the `cloudflare-production` environment to the
-   decrypted value from `apps/auth-api/.env.production`. It lists `zollybot-remote-1` and
+   decrypted value from `production environment configuration`. It lists `zollybot-remote-1` and
    `zollybot-slack-route-1`.
 2. **Merge** the `slack-messaging` PR. CI applies D1 migration `0025` and deploys the Worker.
 3. **Worker Slack secrets**, one time: `bun run api:deploy` from `main`. It uploads `SLACK_CLIENT_ID`,

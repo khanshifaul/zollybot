@@ -377,7 +377,7 @@ Exit criteria:
 1. `packages/contracts/src/mobile-features.ts`:
    - Add `"localAi"` to `MOBILE_FEATURES`.
    - Add `localAi: false` to `mobileFeaturesOff()`.
-2. `apps/auth-api/src/server/mobile-features-config.ts`: add the row. Start with
+2. `mobile feature configuration`: add the row. Start with
    `android: { upTo: "0" }`, `ios: { upTo: "0" }`. Enable Android with a Worker deploy when the build
    is live. `upTo` is the last version that has the feature, so use the released version.
 3. `apps/mobile/src/shared/lib/dev-feature-overrides.ts`: add `localAi: true` for development.
@@ -453,7 +453,7 @@ apps/mobile/src/shared/lib/dev-feature-overrides.ts
 package.json                                  trustedDependencies
 bunfig.toml                                   comment for the trust list
 packages/contracts/src/mobile-features.ts
-apps/auth-api/src/server/mobile-features-config.ts
+mobile feature configuration
 packages/i18n/src/messages/en/mobile.ts
 packages/i18n/untranslated.json
 PRIVACY.md

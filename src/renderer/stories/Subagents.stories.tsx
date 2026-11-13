@@ -21,11 +21,11 @@ function steps(id: string, items: [ConversationSubagentStep["kind"], string][]):
 const PRICING = steps("pricing", [
   ["thinking", "The pricing page probably reads its limits from a shared plan table. I find that first."],
   ["search", "agentLimit"],
-  ["read", "apps/auth-api/src/components/pricing/PricingPage.tsx"],
+  ["read", "account service sourcecomponents/pricing/PricingPage.tsx"],
   ["read", "packages/contracts/src/plans.ts"],
   ["thinking", "The page shows “5 agents” for Pro, but the contract allows 10. The page has its own copy."],
   ["search", "5 agents"],
-  ["read", "apps/auth-api/src/components/pricing/plan-copy.ts"],
+  ["read", "account service sourcecomponents/pricing/plan-copy.ts"],
   [
     "text",
     "Two differences. Pro: the page says 5 agents, the contract allows 10 (plan-copy.ts:18). Team: the page says 20 agents, the contract allows 25 (plan-copy.ts:31).",

@@ -77,7 +77,7 @@ const LUCIDE_ICON_IMPORT = /["']lucide-solid\/icons\/([a-z0-9-]+)["']/gu;
  * `rendererRoot` in both directions. The renderer's four `.html` entry points and its
  * `stories/` tree sit beside `src/` rather than inside it, and a class can be named from
  * outside the renderer altogether: `src/main` injects one into a picture-in-picture window
- * and `apps/auth-api` renders the preview shell. So the CLI passes `src` and `apps` whole,
+ * and `apps/web` renders the preview shell. So the CLI passes `src` and `apps` whole,
  * rather than a list of the three directories that happen to do it today.
  */
 /**

@@ -15,7 +15,7 @@ Report a finding when the diff:
   exists. *Exception:* fixed integration colours, generated assets, inline SVG payloads, and platform
   chrome are allowed to carry literals at their boundary.
 - Adds a token to one palette only. `--zollybot-*` is declared separately in
-  `src/renderer/src/styles.css`, `apps/auth-api/src/styles.css`, and `apps/mobile/global.css`. Flag
+  `src/renderer/src/styles.css` and `apps/mobile/global.css`. Flag
   this only when the change plainly needs the token on more than one surface.
 - Adds an inline SVG or a local icon component where a `lucide-solid` icon exists, without a comment
   explaining why Lucide does not fit.

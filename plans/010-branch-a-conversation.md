@@ -231,7 +231,7 @@ Released protocols are frozen (`packages/contracts/AGENTS.md`). New optional cap
 |---|---|---|
 | Desktop renderer, local server | Yes | Menu item, IPC, tab opens with focus. |
 | Desktop renderer, joined server | Yes, when the host has the capability | Same, over Team API. |
-| Web client (`apps/auth-api` loads `@zollybot/renderer-web`) | Yes, when the host has the capability | `webAgentTasksPort` gets an optional `branchTask`. |
+| Web client (`account service` loads `@zollybot/renderer-web`) | Yes, when the host has the capability | `webAgentTasksPort` gets an optional `branchTask`. |
 | Mobile (`apps/mobile`) | **Later** | An optional Branch button in `ChatMessageActions` (`chat-message-actions.tsx:63-256`), then `router.push("/task/[taskId]")`. Hermes puts it in the "More actions" menu on touch. |
 | Hosted site router, Signal | No change | — |
 | Docs | Yes | `docs/architecture/agents.md` "Agent threads", `docs/glossary.md` ("branch": a side thread with copied history; not a git branch). `PRIVACY.md`: no change, no new outbound data. |

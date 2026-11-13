@@ -7,7 +7,7 @@ agent on that ZollyBot server asks the right agent and answers. No code runs her
 settings of the bot in @BotFather.
 
 Only Signal (`remote/api`) has the bot token. Telegram posts each update to Signal, and Signal makes
-each Bot API call for the hosts. The account Worker (`apps/auth-api`) has only the bot ID and the
+each Bot API call for the hosts. The account Worker (`account service`) has only the bot ID and the
 username. Hosts have no Telegram secret.
 
 ## BotFather settings
@@ -62,8 +62,8 @@ Do not set a webhook by hand. Signal sets it when it starts.
 | Signal | `TELEGRAM_WEBHOOK_SECRET` | A random value of at least 32 bytes. Signal derives the webhook secret of each bot from it. |
 | Signal | `TELEGRAM_WEBHOOK_ORIGIN` | `https://signal-zollybot.shifaul.dev`. Signal sets each bot's webhook to `<origin>/v1/telegram/updates/<bot ID>`. |
 
-The Worker values are in the encrypted `apps/auth-api/.env.production` and `.env.dev`, and the Signal
-values in the encrypted `remote/.env.production`. `scripts/deploy-auth-api.ts` (`bun run api:deploy`)
+The Worker values are in the encrypted `production environment configuration` and `.env.dev`, and the Signal
+values in the encrypted `remote/.env.production`. `scripts/deploy-account service.ts` (`bun run api:deploy`)
 sets the Worker values. Without them, the Telegram routes answer 503 `telegram_not_configured`.
 
 Production and development use the same bot now. A bot has one webhook, so a local test (see

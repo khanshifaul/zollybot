@@ -25,26 +25,24 @@ bun run dev
 `bun install` runs the package hooks. `postinstall` restores or downloads the Electron binary and
 writes an install stamp. `prepare` installs the Git hooks in `.githooks/`.
 
-`bun run dev` prepares the worktree and then starts the stack:
+`bun run dev` prepares the worktree and starts the local development stack defined by this checkout:
 
-1. It copies the files named in `.worktreeinclude` from the main checkout.
+1. It copies files named in `.worktreeinclude` from the main checkout when applicable.
 2. It creates `.zollybot/dev-state.json` with a stable local identity when the file is missing.
 3. It runs `bun install --frozen-lockfile` again only when the install stamp is stale.
-4. It applies the local D1 migrations to `apps/auth-api/.wrangler/state/`.
+4. It prepares local service state required by available services (for example local migrations/state when the corresponding service workspace exists).
 5. It seeds the app profile only when that profile is missing.
 
-Basic desktop development needs no `.env` file. The account Worker starts with generated local
-defaults when `DOTENV_PRIVATE_KEY_DEV` is not set. Optional services need keys. See
-[Optional services](#optional-services).
+Basic desktop development usually needs no extra secrets in this checkout. Optional hosted/account integrations depend on deployment-specific services and credentials not fully included here. See [Optional services](#optional-services).
 
 ## What `bun run dev` starts
 
-| Service | Default port | Notes |
+| Service | Typical default port | Notes |
 | --- | --- | --- |
-| Account API (`apps/auth-api`) | 3100 | Local D1. The web client is at `/app`. |
-| Signal (`remote/api`) | 3101 | SDP, ICE, TURN credentials, and relay ingress. Health on 3102. |
-| Desktop app (Electron and Vite) | 5173 | Renderer HMR. Chrome DevTools protocol on 9333. |
-| Test client (`dev:test-client`) | 5174 | A second isolated client. Debug port 9334. |
+| Desktop app (Electron and Vite) | 5173 | Renderer HMR. Chrome DevTools protocol commonly 9333. |
+| Test client (`dev:test-client`) | 5174 | Second isolated client (when enabled). Debug port commonly 9334. |
+| Signal (`remote/api`) | 3101 | SDP/ICE/TURN credentials and relay ingress when started. Health commonly 3102. |
+| Local account/API service | 3100 | Started only when the corresponding service workspace exists in this checkout (historically `account service`). |
 
 The stack allocates ports through the registry in `scripts/dev-automation/stack-registry.ts`. A
 busy default port moves the service. Read the URLs that the supervisor prints. Do not hardcode a
@@ -100,7 +98,7 @@ profile keyed to the worktree path.
 
 | Need | Action |
 | --- | --- |
-| Shared development secrets and Stripe sandbox | Set `DOTENV_PRIVATE_KEY_DEV` in the shell. See [account service setup](../../apps/auth-api/README.md). |
+| Shared deployment/account secrets | Use deployment-specific documentation and encrypted env stores for the active account service environment (not fully present in this checkout). |
 | Slack events | Run `bun run dev:slack`. It reads `ZOLLYBOT_DEV_SLACK_SIGNING_SECRET` from `.env.slack-dev` or the shell, and needs `SLACK_ROUTE_PRIVATE_JWK` and `SLACK_ROUTE_KEY_ID`. |
 | iPhone Live Activity | Run `bun run dev:apns-key -- <AuthKey_ID.p8> [KEY_ID]`, then restart the stack. |
 | A real hosted server from a development build | Run `bun run dev --hosting=test`. It signs in to the test account Worker. |

@@ -22,8 +22,8 @@ To repeat the read-only checks, run from this repository:
 ```sh
 ssh sui-alexandria 'docker inspect zollybot-remote-remote-api-1 --format "{{.Image}} {{.Created}}"'
 ssh sui-alexandria 'docker exec zollybot-remote-remote-api-1 sha256sum /app/remote/api/src/signal-service.ts'
-bunx wrangler deployments list --cwd apps/auth-api --json
-bunx wrangler d1 execute zollybot-auth --cwd apps/auth-api --remote \
+bunx wrangler deployments list --cwd account service --json
+bunx wrangler d1 execute zollybot-auth --cwd account service --remote \
   --command "SELECT name, applied_at FROM d1_migrations WHERE name = '0018_remote_device_sessions.sql'" --json
 ```
 
@@ -82,7 +82,7 @@ variables, resume tokens, tickets, or raw connection logs.
 The capacity reporter (`capacity-report`) uses the Signal image and sends `signal_capacity`
 (ANALYTICS.md) every 5 minutes. It reads the coturn metrics on `127.0.0.1:9641` and the Signal metrics
 on `127.0.0.1:9642`. It needs `OPENPANEL_CLIENT_ID` and `OPENPANEL_CLIENT_SECRET` in the host
-`.env.production`, the server client of `apps/auth-api/.env.production`; without them it exits at start
+`.env.production`, the server client of `production environment configuration`; without them it exits at start
 and stays stopped. Build and start it after `remote-api`, with the same `--build-arg`:
 
 ```sh
@@ -186,7 +186,7 @@ change, and each one needs its own approval.
    Cloudflare API token with only `Zone.DNS:Edit` on `zollybot.shifaul.dev`, and set it as the Worker secret
    `SIGNAL_ENTRY_DNS_TOKEN` (`wrangler secret put`, never in a file or a log). `SIGNAL_ENTRY_ZONE_ID`
    is in `wrangler.jsonc`. The cron `*/1 * * * *` then runs the check
-   (`apps/auth-api/src/server/signal-entry-failover.ts`); without the token, it does nothing.
+   (`account service codesignal-entry-failover.ts`); without the token, it does nothing.
 
 Order: a Signal without `SIGNAL_ID` accepts every `signal` claim, and an older Signal ignores the
 claim. So deploy Signal before the Worker variables. To roll back, empty `REMOTE_SIGNAL_HOMES`: new

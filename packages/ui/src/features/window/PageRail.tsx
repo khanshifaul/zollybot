@@ -222,6 +222,8 @@ export interface PageRailProps {
    * `href`, the logo is a link to the ZollyBot site.
    */
   logo?: { variant: AppLogoVariant; href?: string | undefined } | undefined;
+  /** When true, only show bottom group (marketplace, help, settings) — used in lobby. */
+  lobby?: boolean;
 }
 
 /** A page that the user can pin to the rail. */
@@ -380,20 +382,29 @@ export function PageRail(props: PageRailProps) {
   });
   return (
     <nav class="window-rail" aria-label={t("app.rail.label")} hidden={props.hidden}>
-      <Show when={props.logo}>{(logo) => <RailLogo variant={logo().variant} href={logo().href} />}</Show>
-      <div class="window-rail-group">
-        <RailButton label={t("app.rail.agents")} current={props.current === "agents"} onClick={props.onAgents}>
-          <Bot aria-hidden="true" />
-        </RailButton>
-        <For each={pages().filter((page) => props.pinned.includes(page.id))} keyed={(page) => page.id}>
-          {(page) => (
-            <RailButton label={page().label} current={props.current === page().id} onClick={page().open}>
-              <Dynamic component={page().icon} aria-hidden="true" />
+      {!props.lobby && (
+        <>
+          <Show when={props.logo}>{(logo) => <RailLogo variant={logo().variant} href={logo().href} />}</Show>
+          <div class="window-rail-group">
+            <RailButton label={t("app.rail.agents")} current={props.current === "agents"} onClick={props.onAgents}>
+              <Bot aria-hidden="true" />
             </RailButton>
-          )}
-        </For>
-        <RailMoreMenu pages={pages()} current={props.current} pinned={props.pinned} onPinChange={props.onPinChange} />
-      </div>
+            <For each={pages().filter((page) => props.pinned.includes(page.id))} keyed={(page) => page.id}>
+              {(page) => (
+                <RailButton label={page().label} current={props.current === page().id} onClick={page().open}>
+                  <Dynamic component={page().icon} aria-hidden="true" />
+                </RailButton>
+              )}
+            </For>
+            <RailMoreMenu
+              pages={pages()}
+              current={props.current}
+              pinned={props.pinned}
+              onPinChange={props.onPinChange}
+            />
+          </div>
+        </>
+      )}
       <div class="window-rail-group">
         {/* A status update builds new rows. The key keeps each ring, and its open hover card, mounted. */}
         <For each={rings()} keyed={(ring) => accountUsageRowKey(ring.row)}>

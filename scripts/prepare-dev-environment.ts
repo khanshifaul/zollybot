@@ -22,11 +22,6 @@ export const supportedBunVersion = "1.4.2";
 // The install stamp is in `node_modules`, so deleting `node_modules` installs again. The root
 // `postinstall` writes it too, so a plain `bun install` on another branch does not leave it stale.
 const INSTALL_STAMP = join("node_modules", ".zollybot-install-stamp");
-// Wrangler's local D1 state. Without it the local database is empty, whatever the stamp says.
-const LOCAL_D1_STATE = join("apps", "auth-api", ".wrangler", "state", "v3", "d1");
-// Inside the D1 state, so a state directory made again also loses the stamp.
-const MIGRATION_STAMP = join(LOCAL_D1_STATE, ".zollybot-migrate-local-stamp");
-const MIGRATIONS_DIRECTORY = join("apps", "auth-api", "migrations");
 
 export interface DevelopmentPreparationInput {
   projectRoot?: string;
@@ -54,11 +49,6 @@ export function prepareDevelopmentEnvironment(input: DevelopmentPreparationInput
     join(projectRoot, INSTALL_STAMP),
     () => installFingerprint(projectRoot),
     () => run(executable, ["install", "--frozen-lockfile"], options),
-  );
-  runUnlessStamped(
-    join(projectRoot, MIGRATION_STAMP),
-    () => (existsSync(join(projectRoot, LOCAL_D1_STATE)) ? migrationFingerprint(projectRoot) : null),
-    () => run(executable, ["run", "api:migrate:local"], options),
   );
   return stateOutcome;
 }
@@ -106,17 +96,6 @@ export function installFingerprint(projectRoot: string): string {
     }
   }
   return fingerprintFiles(projectRoot, files, [`bun ${process.versions.bun ?? "unknown"}`]);
-}
-
-/** The names and contents of the Account API migrations that `api:migrate:local` applies. */
-export function migrationFingerprint(projectRoot: string): string {
-  const directory = join(projectRoot, MIGRATIONS_DIRECTORY);
-  const names = existsSync(directory) ? readdirSync(directory) : [];
-  return fingerprintFiles(
-    projectRoot,
-    names.map((name) => join(MIGRATIONS_DIRECTORY, name)),
-    [],
-  );
 }
 
 // `apps/*`-style workspace patterns from the root `package.json`, which is all the repository uses.

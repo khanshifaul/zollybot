@@ -25,6 +25,18 @@ export interface PonderState {
   lastPonderAt: string | null;
 }
 
+function isPonderState(value: unknown): value is PonderState {
+  if (!value || typeof value !== "object") return false;
+  const obj = value as Record<string, unknown>;
+  return (
+    typeof obj.entries === "object" &&
+    obj.entries !== null &&
+    Array.isArray(obj.questions) &&
+    (typeof obj.insight === "string" || obj.insight === null) &&
+    (typeof obj.lastPonderAt === "string" || obj.lastPonderAt === null)
+  );
+}
+
 const DECAY_PER_DAY = 0.05;
 const COLD_THRESHOLD = 0.15;
 const BOOST_ON_RECALL = 0.3;
@@ -49,7 +61,8 @@ export class ButlerPonderService {
   async load(): Promise<void> {
     try {
       const raw = await readFile(this.#statePath, "utf8");
-      this.#state = JSON.parse(raw) as PonderState;
+      const parsed = JSON.parse(raw);
+      this.#state = isPonderState(parsed) ? parsed : { entries: {}, questions: [], insight: null, lastPonderAt: null };
     } catch {
       this.#state = { entries: {}, questions: [], insight: null, lastPonderAt: null };
     }

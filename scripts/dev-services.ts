@@ -43,8 +43,8 @@ import { prepareDevelopmentEnvironment } from "./prepare-dev-environment";
 
 const logger = createZollyBotLogger("dev-services");
 
-export type DevelopmentService = "api" | "remote" | "app" | "test-client";
-type DevelopmentTarget = Exclude<DevelopmentService, "remote"> | "all";
+export type DevelopmentService = "remote" | "app" | "test-client";
+type DevelopmentTarget = DevelopmentService | "all";
 type DevelopmentNetworkInterfaces = NodeJS.Dict<Array<Pick<NetworkInterfaceInfo, "address" | "family" | "internal">>>;
 
 export interface DevelopmentServiceSpec {
@@ -92,7 +92,6 @@ export function developmentEnvironmentForTarget(
 const scriptsRoot = dirname(fileURLToPath(import.meta.url));
 export const projectRoot = dirname(scriptsRoot);
 
-const DEFAULT_API_PORT = 3_100;
 const DEFAULT_REMOTE_SIGNAL_PORT = 3_101;
 const DEFAULT_REMOTE_HEALTH_PORT = 3_102;
 const DEFAULT_RENDERER_PORTS = {
@@ -105,10 +104,10 @@ const DEFAULT_REMOTE_DEBUGGING_PORTS = {
 } as const;
 
 export function servicesForTarget(target: DevelopmentTarget): DevelopmentService[] {
-  if (target === "all") return ["api", "remote", "app"];
-  if (target === "test-client") return ["api", "remote", "app", "test-client"];
-  if (target === "api") return ["api"];
-  return ["api", "remote", "app"];
+  if (target === "all") return ["remote", "app"];
+  if (target === "test-client") return ["remote", "app", "test-client"];
+
+  return ["remote", "app"];
 }
 
 export function createDevelopmentServiceSpec(
@@ -120,16 +119,6 @@ export function createDevelopmentServiceSpec(
   // app/test-client children relaunch Electron, so the runtime flags are
   // stripped once here rather than at each spawn.
   const childEnvironment = withoutElectronRuntimeFlags(developmentChildEnvironment(environment, name));
-  if (name === "api") {
-    return {
-      name,
-      executable: process.execPath,
-      args: ["run", "--cwd", join(projectRoot, "apps", "auth-api"), "dev"],
-      cwd: projectRoot,
-      env: { ...childEnvironment },
-    };
-  }
-
   if (name === "remote") {
     return {
       name,
@@ -230,8 +219,6 @@ function seedDevelopmentProfile(profile: string, environment: NodeJS.ProcessEnv)
 }
 
 const DEVELOPMENT_OPTIONS = ["--dry-run", "--force", "--shared", "--isolated", "--hosting=test", "--slack"] as const;
-/** The deployed `test` account Worker. It creates real hosted server VMs for the accounts on its allow list. */
-const TEST_ACCOUNT_API_URL = "https://zollybot-auth-api-test.internal9671.workers.dev";
 
 export interface DevelopmentInvocation {
   target: DevelopmentTarget;
@@ -257,7 +244,7 @@ export interface DevelopmentInvocation {
 
 export function parseDevelopmentTarget(args: string[]): DevelopmentInvocation {
   const target = args.find((argument) => !argument.startsWith("--")) ?? "all";
-  if (target !== "api" && target !== "app" && target !== "test-client" && target !== "all") {
+  if (target !== "app" && target !== "test-client" && target !== "all") {
     throw new Error(`Unknown development target: ${target}. Use api, app, test-client, or all.`);
   }
   const unsupportedOption = args.find(
@@ -800,9 +787,6 @@ function readPort(value: string | undefined): number | undefined {
 
 function validateServiceSpecs(specs: DevelopmentServiceSpec[]): void {
   for (const spec of specs) {
-    if (spec.name === "api" && !existsSync(join(projectRoot, "apps", "auth-api", "package.json"))) {
-      throw new Error("The auth API package is missing at apps/auth-api/package.json.");
-    }
     if (spec.name === "remote" && !existsSync(join(projectRoot, "remote", "api", "package.json"))) {
       throw new Error("The Remote API package is missing at remote/api/package.json.");
     }

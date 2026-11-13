@@ -94,20 +94,9 @@ state, `.env` files, credentials, real conversations, or user attachments.
 
 ## Writing guides
 
-Public guides live in `apps/auth-api/src/content/guides/`. To add one:
+Public website and guide content is maintained in the web/account surface used by this project’s deployments. In this checkout, the account-service source tree referenced by older docs (`account service`) may not be present; follow the active content pipeline in the current workspace (for example `apps/web`, site/content packages, or deployment-specific repos) and keep guides tied to current app behavior.
 
-1. Write the body as a TSX component in that directory, using the article slug for the file name.
-2. Add the article metadata to `apps/auth-api/src/lib/guides.ts` and the body to
-   `apps/auth-api/src/content/guides/index.ts`.
-3. Run `bun run api:images` and commit the generated files in `apps/auth-api/content-art`.
-4. Open the guide in a local preview and check the guide index, article page, feed and social card.
-
-Write for someone who has ZollyBot open and is trying to complete a task. Use short paragraphs, plain English and the
-exact names of buttons, settings and files. Keep product claims tied to the current app. Use `ArticleImage` only
-when the picture adds information that the text does not.
-
-Use `ZOLLYBOT_LINKS` for external links and include useful `alt` text for every image. Do not paste bare URLs into a
-guide.
+Write for someone who has ZollyBot open and is trying to complete a task. Use short paragraphs, plain English and the exact names of buttons, settings and files. Keep product claims tied to the current app. Use images only when they add information that the text does not, and include useful alt text. Do not paste bare URLs into a guide.
 
 ### Answering the NorbiAI review
 

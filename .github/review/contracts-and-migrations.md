@@ -3,7 +3,6 @@ include:
   - "src/backend/zollybot-database-schema.ts"
   - "src/backend/zollybot-database.ts"
   - "src/backend/database/**"
-  - "apps/auth-api/migrations/**"
   - "packages/contracts/**"
 ---
 
@@ -34,9 +33,6 @@ Report a finding when the diff:
 - Makes a malformed known payload anything other than a fail-closed `protocol_error`, or fails on an
   unknown optional event instead of ignoring it.
 - Puts a type in `packages/contracts` that does not cross a process or application boundary.
-- Adds a D1 migration under `apps/auth-api/migrations/` that the currently live Worker would not
-  tolerate. CI applies D1 migrations **before** deploying the new Worker, so a migration that is not
-  backward compatible needs a test proving the old Worker survives it, or a two-step release.
 
 Do **not** report:
 

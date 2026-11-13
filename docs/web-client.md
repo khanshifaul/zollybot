@@ -26,8 +26,8 @@ Review and ship in this order. PRs 1–4 form the first usable release.
 
 | PR | Scope | Main owners |
 | --- | --- | --- |
-| 1 | Browser entry, shared shell, typed runtime boundary, preview | `apps/auth-api/src/routes/app*`, renderer `web-client`, shared sidebar, approval and preview components |
-| 2 | Email code, cookie sessions, closed account endpoints, CSRF and revocation | `apps/auth-api/src/server/browser-api.ts`, browser API route, remote session binding |
+| 1 | Browser entry, shared shell, typed runtime boundary, preview | browser/account entry routes (deployment-specific), renderer `web-client`, shared sidebar, approval and preview components |
+| 2 | Email code, cookie sessions, closed account endpoints, CSRF and revocation | `the browser/account API`, browser API route, remote session binding |
 | 3 | Directory cookie mode, host trust, invitations, connection and setup states | `packages/team-client/src/remote-directory.ts`, renderer `web-runtime.ts`, Web Lock |
 | 4 | History, live updates, text, stop, questions, approvals, draft recovery | `web-client-context.tsx`, `WebWorkspace.tsx` |
 | 5 | Files, cancellation, shared previews, search, pin/hide and reverse actions | Shared file sender, web runtime, shared file panel, search component |

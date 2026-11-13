@@ -2,7 +2,6 @@ FROM oven/bun:1.4.2-alpine AS dependencies
 WORKDIR /app
 COPY package.json bun.lock ./
 COPY patches ./patches
-COPY apps/auth-api/package.json ./apps/auth-api/package.json
 COPY packages/ui/package.json ./packages/ui/package.json
 COPY packages/brand/package.json ./packages/brand/package.json
 COPY packages/contracts/package.json ./packages/contracts/package.json

@@ -102,7 +102,7 @@ account is deleted. The unlinked bucket has no custom limit. No route writes the
 delete it by hand (`zollybot-auth-test` for the test Worker):
 
 ```sh
-bunx wrangler d1 execute zollybot-auth --cwd apps/auth-api --remote --command \
+bunx wrangler d1 execute zollybot-auth --cwd account service --remote --command \
   "INSERT INTO server_site_limits(server_id, owner_user_id, site_limit, created_at, updated_at)
    SELECT host_id, owner_user_id, 200, unixepoch() * 1000, unixepoch() * 1000
      FROM remote_hosts WHERE host_id = '<server id>'
@@ -874,7 +874,7 @@ has no page or date filter.
 
 Company sign-in connects one server to the company's OpenID Connect provider (Entra ID, Okta, Google
 Workspace or another one). The account service does all provider work
-(`apps/auth-api/src/server/company-sign-in.ts`); the host and the clients see only ZollyBot sessions.
+(`account service codecompany-sign-in.ts`); the host and the clients see only ZollyBot sessions.
 Migration `0047_company_sign_in.sql` adds the tables. SAML is not supported.
 
 Setup is desktop only: Server settings → Members → Company sign-in (`ServerCompanySignInSection.tsx`),
@@ -967,14 +967,14 @@ settings are not synchronized between devices.
 ## Billing
 
 Billing is per server. One account can pay for several servers; each server has its own Stripe
-subscription. The Account Worker (`apps/auth-api/src/server/billing-service.ts`) talks to the Stripe
+subscription. The Account Worker (`account service codebilling-service.ts`) talks to the Stripe
 REST API with `fetch`; there is no Stripe SDK. The plan catalog in `packages/contracts/src/billing.ts`
 holds the plan IDs, storage, member and site limits, relative speed and lookup keys, and no amounts. The amounts are six Stripe Prices with the lookup
 keys `zollybot_{plan}_{interval}`. `bun run api:stripe:bootstrap` (`scripts/stripe-bootstrap.ts`)
 creates them and the Customer Portal settings.
 
 - The add server dialog starts a plan. The hosting service
-  (`apps/auth-api/src/server/hosted-billing.ts`) makes the Stripe customer before the Checkout, so
+  (`account service codehosted-billing.ts`) makes the Stripe customer before the Checkout, so
   two open Checkouts use one customer. The Checkout sets the subscription metadata
   `zollybot_user_id` and `zollybot_server_id` (`BILLING_METADATA`). The billing service calls the
   `onSubscriptionSynced` hook after each subscription sync; the hosting side uses it to provision,
@@ -1005,7 +1005,7 @@ creates them and the Customer Portal settings.
 - Without `STRIPE_SECRET_KEY` billing is off: the state is `available: false`, and the Portal route
   and the webhook answer 503.
 
-Rule: plan limits read `getServerEntitlement` (`apps/auth-api/src/server/billing-entitlement.ts`)
+Rule: plan limits read `getServerEntitlement` (`account service codebilling-entitlement.ts`)
 only. It decides which statuses and grace periods give a server a plan, and it counts a plan only
 for a server that the paying account owns. Do not read `billing_subscriptions` or a Stripe status in
 another place.
@@ -1083,7 +1083,7 @@ the tiers used the same lookup key. The license terms allow 3 devices for each u
   `license_users_full`. A person that the license already counts can join another server of the
   owner. Members who joined before are never removed. Without an open license, only the server plan
   limit (`getServerEntitlement`) applies.
-- `apps/auth-api/src/server/license-service.ts` owns the `licenses` D1 table (migration `0038`).
+- `account service codelicense-service.ts` owns the `licenses` D1 table (migration `0038`).
   The billing webhook gives a subscription with the license lookup key to `LicenseService.sync` and
   writes nothing to `billing_subscriptions`. A Worker before the license sees an unknown plan and
   skips the event, so an old Worker keeps working.

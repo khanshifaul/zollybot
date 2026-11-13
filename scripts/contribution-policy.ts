@@ -21,7 +21,7 @@ import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
 // `zollybotgit[bot]` is the ZollyBot GitHub App. The account Worker gives its installation token only for
-// repositories where the signed-in user can push (`apps/auth-api/src/server/github-installation-tokens.ts`).
+// repositories where the signed-in user can push (`account service codegithub-installation-tokens.ts`).
 const TRUSTED_BOTS = new Set(["infeld-ai[bot]", "dependabot[bot]", "zollybotgit[bot]"]);
 const TRUSTED_ASSOCIATIONS = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
 const TRUSTED_PERMISSIONS = new Set(["admin", "maintain", "write"]);

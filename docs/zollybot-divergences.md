@@ -1,5 +1,7 @@
 # ZollyBot ↔ OpenBot: the divergence register
 
+> **Historical/design note:** This document records earlier design, merge, or import context. It may not describe the current checked-in implementation. Use `docs/architecture/structure.md`, `docs/onboarding/`, and source code for current behavior.
+
 ZollyBot started as OpenBot (`nightly-labs/openbot`). The runtime is shared; the
 identity, hosting, distribution and several behaviour choices are not. This file
 is the list of those differences, so a later change does not silently drift back
@@ -13,7 +15,7 @@ Upstream README is kept untouched at `README.upstream.md`, and attribution stays
 |---|---|---|---|
 | Product identity | OpenBot | ZollyBot, `app.zollybot.desktop`, scheme `zollybot` | `electron-builder.yml`, `package.json` |
 | Web + API hosts | `openbot.run` | `zollybot.shifaul.dev`, `api-zollybot.shifaul.dev` | `electron-builder.yml`, `site/` |
-| Sign-in email | upstream account service | our auth-api, Resend, sender `hello@zollybot.shifaul.dev` | `apps/auth-api/src/server/email-delivery.ts`, `wrangler.jsonc` |
+| Sign-in email | upstream account service | our account service, Resend, sender `hello@zollybot.shifaul.dev` | `account service codeemail-delivery.ts`, `wrangler.jsonc` |
 | Update feed | GitHub Releases (`nightly-labs/openbot`) | `https://zollybot.shifaul.dev/releases/<version>` | `electron-builder.yml` |
 | Release assets | upstream names | every artifact carries its version (`zollybot-linux-x86_64-0.62.2.tar.gz`, …) | `scripts/publish-release.sh`, `site/install.sh` |
 | Linux install | AppImage from GitHub Releases | files: `.tar.gz` unpacks to `<prefix>/lib/zollybot`, launcher linked | `site/install.sh` |

@@ -22,7 +22,7 @@ const logger = createZollyBotLogger("agent-template-page-e2e");
 const run = promisify(execFile);
 
 const ROOT = resolve(import.meta.dirname, "..");
-const SITE = resolve(ROOT, "apps/auth-api");
+const SITE = resolve(ROOT, "account service");
 const OUT = resolve(ROOT, ".zollybot-build/agent-template-page-e2e");
 const option = (name: string) => process.argv.find((arg) => arg.startsWith(`--${name}=`))?.slice(name.length + 3);
 const browserExecutable = option("browser-executable");

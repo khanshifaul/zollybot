@@ -115,9 +115,9 @@ a gate can be selected without opening anything:
   `src/main/ipc/`, `src/preload/index.ts`, `src/renderer/src/preview/mock-zollybot.ts`. Deleting a
   handler or an `invoke` breaks a live channel without touching the list at all.
 - **E. Account Worker** → [gate-e-account-worker.md](references/gate-e-account-worker.md)
-  any change under `apps/auth-api/migrations/`, any non-UI file under `apps/auth-api/src/`, and the
-  four files that decide deploy order: `.github/workflows/ci.yml`, `scripts/deploy-auth-api.ts`,
-  `apps/auth-api/package.json`, `apps/auth-api/wrangler.jsonc`.
+  any change under `account service migrations`, any non-UI file under `account service source`, and the
+  four files that decide deploy order: `.github/workflows/ci.yml`, `scripts/deploy-account service.ts`,
+  `account service package configuration`, `deployment configuration`.
 - **F. The updater itself** → [gate-f-updater.md](references/gate-f-updater.md)
   `electron-builder.yml`, `src/main/update-service.ts`, `package.json` (including its dependencies),
   and the two files that enforce the gate at release time: `scripts/verify-update-artifacts.ts` and

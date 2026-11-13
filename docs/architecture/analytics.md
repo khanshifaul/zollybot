@@ -23,7 +23,7 @@ semantics and native verification steps are in [the mobile README](../../apps/mo
 
 ## Website analytics
 
-Public website tracking lives in `apps/auth-api/src/lib/analytics.ts`. It runs only on the
+Public website tracking lives in `website analytics code`. It runs only on the
 production `zollybot.shifaul.dev` hostname. Landing and invitation events carry a bounded
 `source_platform`, the existing `acquisition_source` category, and a domain-only referrer.
 

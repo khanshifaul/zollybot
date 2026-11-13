@@ -27,7 +27,7 @@ import { startRenderRecording } from "./dev-automation/render-metrics";
 
 const logger = createZollyBotLogger("web-client-perf-e2e");
 const ROOT = resolve(import.meta.dirname, "..");
-const API_DIR = resolve(ROOT, "apps/auth-api");
+const API_DIR = resolve(ROOT, "apps/web");
 const CLIENT_DIR = resolve(API_DIR, "dist/client");
 const MANIFEST = resolve(CLIENT_DIR, ".vite/manifest.json");
 

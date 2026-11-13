@@ -37,13 +37,13 @@ has its own Stripe plan. Its machine comes from the plan
 
 | Part | Where | Job |
 | --- | --- | --- |
-| Account Worker | `apps/auth-api/src/server/hosted-server-service.ts`, `boat-client.ts` | Creates, restarts and deletes sandboxes. Stores state in D1 (`0023_hosted_servers.sql`, `0028_hosted_server_lifecycle.sql`). |
+| Account Worker | `account service codehosted-server-service.ts`, `boat-client.ts` | Creates, restarts and deletes sandboxes. Stores state in D1 (`0023_hosted_servers.sql`, `0028_hosted_server_lifecycle.sql`). |
 | Server template | `scripts/hosting/` | Builds the boat named snapshot that each server starts from. |
 | Server bootstrap | `src/main/hosted-server-bootstrap.ts` | On the first start, redeems the claim, signs in, and publishes the host. |
 | Start retry | `src/main/hosted-server-start-retry.ts` | Publishes the host again after a failed start. |
 | Activity report | `src/main/hosted-server-activity.ts` | Tells the Worker that the server is in use, and when its next routine runs. |
 | Memory guard | `src/main/server-memory.ts`, `src/backend/agent/memory-hold.ts`, `turn-slots.ts` | Reads the memory of the server, holds new turns when it is low, and limits the turns that run at the same time. See [Memory](#memory). |
-| Billing link | `apps/auth-api/src/server/hosted-billing.ts`, `billing-service.ts` | Opens Stripe Checkout for a new server. Tells the hosting service when a subscription changes. |
+| Billing link | `account service codehosted-billing.ts`, `billing-service.ts` | Opens Stripe Checkout for a new server. Tells the hosting service when a subscription changes. |
 | Desktop and web clients | `AddServerOverlay`, `SettingsHostedServersTab`, `hosted-server-service.ts`, `web-hosted-servers.ts`, `web-hosted-server-wake.ts` | Pick a plan, pay, list, start, renew and delete. The web app shows the list in Billing. Start a stopped server when a connection fails. |
 | Mobile client | `mobile-workspace-context.tsx` | Starts the selected stopped server when a connection fails. |
 | Shared wake logic | `packages/team-client/src/hosted-server-wake.ts` | The web and mobile clients use it to ask for a wake and to limit the reconnects. |
@@ -328,7 +328,7 @@ self-hosted host that has a plan.
   writes it; add, change or delete it by hand (`zollybot-auth-test` for the test Worker):
 
   ```sh
-  bunx wrangler d1 execute zollybot-auth --cwd apps/auth-api --remote --command \
+  bunx wrangler d1 execute zollybot-auth --cwd account service --remote --command \
     "INSERT INTO server_member_limits(server_id, owner_user_id, member_limit, created_at, updated_at)
      SELECT host_id, owner_user_id, 50, unixepoch() * 1000, unixepoch() * 1000
        FROM remote_hosts WHERE host_id = '<server id>'
@@ -349,13 +349,13 @@ self-hosted host that has a plan.
 
 ## Configure the test Worker
 
-`HOSTED_SERVERS_ENABLED` is `true` in `env.test` of `apps/auth-api/wrangler.jsonc`.
+`HOSTED_SERVERS_ENABLED` is `true` in `env.test` of `deployment configuration`.
 `bun run api:deploy:test` loads `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `BOAT_API_KEY` and
-`BOAT_WEBHOOK_SECRET` from the encrypted `apps/auth-api/.env.dev` on each deploy, so a
+`BOAT_WEBHOOK_SECRET` from the encrypted `development environment configuration` on each deploy, so a
 value that you set by hand for these four is replaced. Set `DOTENV_PRIVATE_KEY_DEV` in the shell.
 `bun run hosting:setup --target=test` makes the two webhooks and writes their secrets to that file. `api:deploy:test` also sets the allow list from
 `HOSTED_SERVERS_TEST_ALLOW_LIST` in that file. Set the template with
-`wrangler secret put HOSTED_SERVER_TEMPLATE --env test` from `apps/auth-api`:
+`wrangler secret put HOSTED_SERVER_TEMPLATE --env test` from `account service`:
 
 | Name | Value |
 | --- | --- |
@@ -486,7 +486,7 @@ snapshots automatically. For a separate test template, build one from a release:
 ```sh
 BOAT_TEMPLATE_API_KEY=... bun run hosting:template --version=0.9.0 \
   --appimage-url=https://.../ZollyBot-0.9.0-x86_64.AppImage --appimage-sha256=<hex> \
-  --auth-api-url=https://<test Worker origin>
+  --account service-url=https://<test Worker origin>
 ```
 
 `BOAT_TEMPLATE_API_KEY` is a different key from the Worker key: it needs sandbox, file, command and
@@ -767,7 +767,7 @@ start a server: their sender sends again after a 503.
 
 ## Tested on boat
 
-The `boat` scenario of `scripts/stripe-flows-e2e.ts` (see `apps/auth-api/README.md`) passed on
+The `boat` scenario of `scripts/stripe-flows-e2e.ts` (see `account service documentation`) passed on
 2026-09-28 with a local Worker, the Stripe sandbox and a boat trial account. It confirmed:
 
 - the builder user has passwordless `sudo`, and AppArmor is enabled in the boat VM;

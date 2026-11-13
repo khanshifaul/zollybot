@@ -3,7 +3,7 @@
 // web app at `/app` of the local Auth API reaches it through Signal and WebRTC. It changes the data of
 // the host profile and starts real provider turns, so the prompts are short. Pass an agent of the host
 // whose provider is signed in, and the Auth API address that the stack log prints:
-// `bun scripts/web-client-threads-e2e.ts --allow-mutations --agent=<agent id> --auth-api=http://localhost:<port>
+// `bun scripts/web-client-threads-e2e.ts --allow-mutations --agent=<agent id> --web-url=http://localhost:<port>
 //  [--email=zollybot-dev-host@example.com] [--browser-executable=<path>]`
 //
 // 1. The test client starts a thread on the host, renames it, archives and restores it. The host shows
@@ -30,9 +30,9 @@ mkdirSync(OUT, { recursive: true });
 const UI_WAIT_MS = 30_000;
 const english = translateFor("en");
 const agentArgument = argument("agent");
-const authApi = argument("auth-api")?.replace(/\/$/, "");
+const webUrl = argument("web-url")?.replace(/\/$/, "");
 assert.ok(agentArgument, "Pass --agent=<agent id> of a host agent whose provider is signed in.");
-assert.ok(authApi, "Pass --auth-api=<url> from the dev:test-client log.");
+assert.ok(webUrl, "Pass --web-url=<url> from the dev:test-client log.");
 const agentId: string = agentArgument;
 const email = argument("email") ?? "zollybot-dev-host@example.com";
 const browserExecutable = argument("browser-executable");

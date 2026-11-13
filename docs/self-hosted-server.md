@@ -85,7 +85,7 @@ Install options go after `sudo bash -s --`:
 | Option | Default | Use |
 | --- | --- | --- |
 | `--user <name>` | the installed user, else `zollybot` | The user that runs ZollyBot and its agents. The install makes it when it does not exist, with its home folder in `/var/lib/<name>`. |
-| `--auth-api-url <origin>` | the installed one, else the URL in the build | Another account server, for example the `test` Worker or a [self-hosted account service](self-hosting.md). |
+| `--account service-url <origin>` | the installed one, else the URL in the build | Another account server, for example the `test` Worker or a [self-hosted account service](self-hosting.md). |
 | `--display-size <W>x<H>` | the installed one, else `1280x800` | The size of the virtual display that computer use reads (see [Display size](#display-size)). |
 
 Run the install again to reinstall or upgrade. The data stays in the home folder of the service

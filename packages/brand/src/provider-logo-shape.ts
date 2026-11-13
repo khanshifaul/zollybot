@@ -1,5 +1,5 @@
 // Provider marks as plain data, so that a canvas, the desktop SVG and the mobile app draw the same
-// mark. The comparisons in apps/auth-api draw them on a canvas.
+// mark. The comparisons in account service draw them on a canvas.
 
 // The path of claude.ai/favicon.svg, on a 248 by 248 grid.
 

@@ -31,7 +31,6 @@ const secretPattern =
 export interface PluginCatalogPaths {
   sourceRoot: string;
   rendererPath: string;
-  workerPath: string;
   mobilePath: string;
   snapshotDir: string;
 }
@@ -40,7 +39,6 @@ export function defaultPluginCatalogPaths(root: string = projectRoot): PluginCat
   return {
     sourceRoot: join(root, "marketplace", "plugin-catalog"),
     rendererPath: join(root, "src", "renderer", "src", "features", "settings", "marketplace-plugin-catalog.ts"),
-    workerPath: join(root, "apps", "auth-api", "src", "lib", "plugin-catalog.generated.ts"),
     mobilePath: join(root, "apps", "mobile", "src", "features", "marketplace", "model", "plugin-catalog.generated.ts"),
     snapshotDir: join(root, "resources", "plugin-catalog"),
   };
@@ -165,7 +163,7 @@ export async function buildPluginCatalog(options?: {
     return { plugins: plugins.length, catalogVersion: spec.catalogVersion };
   }
   await writeFile(paths.rendererPath, renderer);
-  await writeFile(paths.workerPath, worker);
+  await writeFile(worker);
   await mkdir(dirname(paths.mobilePath), { recursive: true });
   await writeFile(paths.mobilePath, mobile);
   await writeSnapshot(paths.snapshotDir, snapshot);
@@ -880,7 +878,7 @@ async function checkGenerated(
   for (const file of snapshot) expected.set(resolve(join(paths.snapshotDir, file.path)), file.content);
   const actual = new Map<string, string>();
   actual.set(resolve(paths.rendererPath), await readFile(paths.rendererPath, "utf8"));
-  actual.set(resolve(paths.workerPath), await readFile(paths.workerPath, "utf8"));
+  actual.set(resolve(paths.workerPath), await readFile("utf8"));
   actual.set(resolve(paths.mobilePath), await readFile(paths.mobilePath, "utf8").catch(() => ""));
   for (const file of snapshot) {
     actual.set(resolve(join(paths.snapshotDir, file.path)), await readFile(join(paths.snapshotDir, file.path), "utf8"));

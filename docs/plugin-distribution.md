@@ -74,7 +74,7 @@ marketplace/plugin-catalog/
 
 ### 2.2 What the app gets
 
-The Account Worker (`apps/auth-api`) serves the catalog from its own bundle. The catalog is public, so requests do not use a session token.
+The Account Worker (`account service`) serves the catalog from its own bundle. The catalog is public, so requests do not use a session token.
 
 | URL | Content | Cache-Control |
 | --- | --- | --- |
@@ -153,10 +153,10 @@ version identifiers. Thus the install reuses `installVersion` in
 A new `scripts/build-plugin-catalog.ts` reads `marketplace/plugin-catalog/`. It follows
 `scripts/build-production-catalog.ts`. It hashes the icons and the details, and it writes:
 
-- a generated module in `apps/auth-api`, which the routes import. The module is committed;
+- a generated module in `account service`, which the routes import. The module is committed;
 - the offline snapshot in `resources/plugin-catalog/`.
 
-The existing `scripts/deploy-auth-api.ts` then ships the catalog with the Worker. There is no D1
+The existing `scripts/deploy-account service.ts` then ships the catalog with the Worker. There is no D1
 step, no R2 step and no admin token. This is the reason for the static route.
 
 The build script refuses:
@@ -297,18 +297,18 @@ stated in the confirmation instead. A receipt store (3.1) would allow the narrow
 
 ### 4.1 The page
 
-`apps/auth-api/src/routes/plugins/$slug.tsx` shows one plugin. `apps/auth-api/src/routes/plugins/index.tsx`
+`account service routesplugins/$slug.tsx` shows one plugin. `account service routesplugins/index.tsx`
 lists them. Both read the same generated module as the JSON routes, so there is one source.
 
-The page follows `apps/auth-api/src/routes/guides/$slug.tsx`:
+The page follows `account service routesguides/$slug.tsx`:
 
 - the `loader` finds the plugin and throws `notFound()` when the slug is unknown, so the status is a
   true 404. The page for a missing plugin gives a next step: the plugin list, and the download link;
-- the head tags follow `articleHead` in `apps/auth-api/src/lib/content-metadata.ts`. The canonical
+- the head tags follow `articleHead` in `account service sourcelib/content-metadata.ts`. The canonical
   URL comes from the site URL of the server that answers, so a preview does not name production;
 - `SoftwareApplication` structured data gives the name, the description and the version. When the
   plugin has a written guide, `FAQPage` structured data gives the guide's questions;
-- `contentSitemapXml()` in `apps/auth-api/src/server/content-feed.ts` gets `/plugins` and one entry
+- `contentSitemapXml()` in `account service codecontent-feed.ts` gets `/plugins` and one entry
   for each plugin. The JSON URLs stay out of the sitemap, because they are data and not pages.
 
 The page is indexable and cacheable. `/join` is neither, because an invite URL holds a token. A
@@ -320,10 +320,10 @@ server address. A reader must not learn how to add the server by hand and miss t
 
 Two sections come between the listing text and the example prompts. "What an agent can do" comes
 from the written guide. "How to connect" is built from the catalog's `auth` entries only, by
-`pluginConnectSteps` in `apps/auth-api/src/lib/plugins.ts`. It never reads the server address. The
+`pluginConnectSteps` in `plugin metadata helpers`. It never reads the server address. The
 guide's questions and sources come after the information table.
 
-The written guide for a plugin is `apps/auth-api/src/content/plugins/<slug>.ts`, listed in `index.ts`
+The written guide for a plugin is `account service sourcecontent/plugins/<slug>.ts`, listed in `index.ts`
 there. Add one when you add a listing. Each statement in it needs a vendor page in `sources`. A
 listing with no guide still gets the generated "How to connect" section, but no uses, questions or
 sources, and nothing warns about it.
@@ -472,7 +472,7 @@ Ordered by cost.
    over HTTP, which the main process signs in to itself), and the build writes the renderer literal,
    the Worker module, and the offline snapshot. No CI job runs `--check` yet.
 3. The Worker routes: the JSON first, then the page and the sitemap entries. Partly done: the pages
-   (`apps/auth-api/src/routes/plugins/`) and the sitemap entries (`apps/auth-api/src/server/content-feed.ts`)
+   (`account service routesplugins/`) and the sitemap entries (`account service codecontent-feed.ts`)
    read the generated catalog. The JSON route does not exist.
 4. The contract types, the channels, the decoders, the preload and the mock.
 5. `src/main/plugin-catalog-service.ts`: the request, the cache and the snapshot.
@@ -492,4 +492,4 @@ Ordered by cost.
    kind an `zollybot://` link is, `zollybot://plugins/<slug>` opens that app's page in the Apps tab
    and installs nothing, and `zollybot.shifaul.dev/plugins/<slug>` now answers, so the detail page offers
    `Copy link` again. The public pages read the same catalog source as the tab, through the generated
-   `apps/auth-api/src/lib/plugin-catalog.generated.ts`.
+   `the generated plugin catalog module`.

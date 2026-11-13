@@ -9,7 +9,7 @@ One developer bundle per directory: `plugins/<slug>/plugin.json`.
 generated outputs; never edit those by hand:
 
 - `src/renderer/src/features/settings/marketplace-plugin-catalog.ts` (Apps tab)
-- `apps/auth-api/src/lib/plugin-catalog.generated.ts` (Worker JSON routes)
+- `the generated plugin catalog module` (Worker JSON routes)
 - `resources/plugin-catalog/` (offline snapshot shipped with the app)
 
 ```sh

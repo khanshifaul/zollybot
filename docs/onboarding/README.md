@@ -53,7 +53,7 @@ Do not start a new feature on day 1. Read the owner instructions in the director
 | Change the Team API or a released protocol | [Contract rules](../../packages/contracts/AGENTS.md), [Team API](../architecture/team-api.md) |
 | Change the database schema | [Backend rules](../../src/backend/AGENTS.md), [Change rules](../architecture/change-rules.md#change-rules) |
 | Change the Electron trust boundary | [Main rules](../../src/main/AGENTS.md), [Security](../../SECURITY.md) |
-| Change the account Worker or D1 | [Account service rules](../../apps/auth-api/AGENTS.md) |
+| Change the account Worker or D1 | Account-service rules in the deployment workspace (not present in this checkout) |
 | Change the phone app | [Mobile rules](../../apps/mobile/AGENTS.md) |
 | Change Signal or TURN | [Signal rules](../../remote/api/AGENTS.md) |
 | Add a provider, MCP app, or connector | [Integrations](../architecture/integrations.md#add-a-provider) |
@@ -73,7 +73,7 @@ the developer.
 - **Redact secrets.** Every log, export, send, and diagnostic path must remove tokens, tickets, and
   credentials.
 - **Interface text comes from `@zollybot/i18n`.** Do not write a literal that a user reads.
-- **Keep PolyForm Noncommercial 1.0.0.** Do not add an incompatible dependency.
+- **Keep license compatibility (Apache 2.0).** Do not add an incompatible dependency.
 - **Use Biome only.** Do not add a second linter, formatter, state library, or UI kit.
 - **Do not run broad checks locally.** Run the narrow check for the changed files. CI owns the
   full suite. See [Checks](../../AGENTS.md#checks).

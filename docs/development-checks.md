@@ -110,7 +110,7 @@ Its main jobs are:
 | Team API and reverse actions E2E | `ubuntu-latest` | `test:team-legacy-clients`, `test:team-session-revoke`, `test:sign-in-relay-paste`, `test:server-mute`, `test:routine-pause-resume`, `test:agent-hide-restore`, `test:messaging-pause-resume`, `test:messaging-discord-access`, `test:turn-input`, `test:provider-update-busy`, `test:provider-update-after-app-upgrade`, `test:provider-runtime-remove`, `test:provider-exit-session`, `test:acp-subagents`, `test:codex-subagent-steps`, `test:subagent-status`, `test:codex-hung-app-server`, `test:codex-missing-rollout`, `test:zip-attachments`, `test:mp4-attachments` and `test:svg-attachments`, each with `bun run` in its own step, when the `desktop` lane runs |
 | Provider fakes E2E | `ubuntu-latest` | `test:custom-agents`, `test:custom-agents:login-path`, `test:acp-directories`, `test:acp-flavors`, `test:acp-turn-stall`, `test:agent-database-host-start`, `test:acp-mcp-names`, `test:provider-conformance`, `test:opencode-expired-key`, `test:opencode-downgraded-session`, `test:cline-free-models` and `test:provider-transcript-replay`, each with `bun run` in its own step, when the `desktop` lane runs. The fake agents are in `scripts/provider-fakes/`; the replayed transcripts of released CLIs are in `scripts/provider-fakes/transcripts/`, and `bun scripts/record-provider-transcript.ts` records a new one |
 | Surfaces | `ubuntu-latest` | Parallel groups described below, then `bun run remote:check:compose` |
-| API | `ubuntu-latest` | `bun run check:api`, then, for a pull request from this repository, upload `apps/auth-api/dist` |
+| API | `ubuntu-latest` | `bun run check:api` (and uploads account-service build artifacts when that workspace/job path is present in the active CI/deployment setup) |
 | Storybook build | `ubuntu-latest` | `bun run build-storybook` |
 
 CI uses native GitHub Actions `parallel` groups. Each group waits for all its steps and fails
@@ -164,10 +164,10 @@ renderer bundles it. Then it selects the lanes:
 | --- | --- | --- |
 | `code` | Check, Tests (desktop) | anything that is left |
 | `docs` | Check, with only `check:doc-links` when `code` is off | any Markdown file, before the removal above, or `scripts/check-doc-links.ts` |
-| `desktop` | Browser smoke, Team API and reverse actions E2E | outside `apps/auth-api`, `apps/mobile`, `apps/site-router`, `apps/status`, `remote` and `docker` |
-| `api` | API | in `apps/auth-api`, `apps/site-router`, `src/renderer` or `resources`, or a `CHANGELOG.md` |
+| `desktop` | Browser smoke, Team API and reverse actions E2E | outside `account service`, `apps/mobile`, `apps/site-router`, `apps/status`, `remote` and `docker` |
+| `api` | API | in account-service paths (for example `account service` when present), `apps/site-router`, `src/renderer` or `resources`, or a `CHANGELOG.md` |
 | `remote` | Signal E2E | in `remote` or `scripts` |
-| `storybook` | Storybook build | in `src`, `apps/auth-api`, `apps/status`, `.storybook`, `resources`, `marketplace` or `build` |
+| `storybook` | Storybook build | in `src`, account-service paths when present, `apps/status`, `.storybook`, `resources`, `marketplace` or `build` |
 | `surfaces` | Surfaces | in `apps/mobile`, `apps/site-router`, `apps/status`, `remote` or `scripts` |
 
 A path every workspace reads (`package.json`, `bun.lock`, `bunfig.toml`, `.nvmrc`, `tsconfig*.json`, `biome.json`,
@@ -317,9 +317,7 @@ to 141.5s, and reached 2.64 on four. Use it, or repeat the run, before believing
 phase is this repository's own module graph re-executing per file rather than dependency resolution.
 
 The development setup script checks Bun, migrates local D1, and creates missing local state in
-`.zollybot/dev-state.json`. The committed `apps/auth-api/.env.dev` is encrypted; a missing
-development key does not block ordinary local setup. Existing state is reused. Values stored only
-in the old generated `.env.dev` are reset on update.
+`.zollybot/dev-state.json`. If an account-service workspace is present, its committed development env may be encrypted; local setup should still work with generated defaults when keys are unavailable. Existing local state is reused.
 
 ## Lint and UI rules
 

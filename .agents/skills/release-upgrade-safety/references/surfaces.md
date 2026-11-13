@@ -161,14 +161,14 @@ untouched — they already spell the agent `agent` on both sides.
 
 | Path | Note |
 | --- | --- |
-| `apps/auth-api/migrations/` | `0001` to `0018`; applied **before** the new Worker deploys |
-| `apps/auth-api/src/routes/v1/`, `v2/` | the response shapes installed desktop builds keep reading forever |
-| `apps/auth-api/src/server/` | the handlers behind those routes |
-| `apps/auth-api/test/*-migration.test.ts` | `email-challenge-delivery-migration`, `marketplace-migration`, `mobile-auth-migration` |
+| `account service migrations` | `0001` to `0018`; applied **before** the new Worker deploys |
+| `account service routesv1/`, `v2/` | the response shapes installed desktop builds keep reading forever |
+| `account service code` | the handlers behind those routes |
+| `account service tests*-migration.test.ts` | `email-challenge-delivery-migration`, `marketplace-migration`, `mobile-auth-migration` |
 | `.github/workflows/ci.yml` | the CI deploy path: "Apply production D1 migrations" before the Worker deploy, one job |
-| `scripts/deploy-auth-api.ts` | the manual deploy path: remote D1 migrations, build, then `wrangler deploy` |
-| `apps/auth-api/package.json` | `deploy` and `deploy:test` — the entrypoints into that script |
-| `apps/auth-api/wrangler.jsonc` | the D1 binding and environments both paths deploy against |
+| `scripts/deploy-account service.ts` | the manual deploy path: remote D1 migrations, build, then `wrangler deploy` |
+| `account service package configuration` | `deploy` and `deploy:test` — the entrypoints into that script |
+| `deployment configuration` | the D1 binding and environments both paths deploy against |
 
 Two deploy paths, both ordered migrations-then-deploy. Neither one covers the other, and the
 deploy-race reasoning in gate E only holds while *both* keep that order.

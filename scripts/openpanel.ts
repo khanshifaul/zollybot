@@ -4,7 +4,7 @@ import { Schema } from "effect";
 import { loadSharedDevelopmentEnvironment } from "./development-environment";
 
 // Calls the OpenPanel MCP server for the openpanel skill. The token is OPENPANEL_MCP_TOKEN, the same
-// root client in apps/auth-api/.env.dev and apps/auth-api/.env.production. It reads analytics and
+// root client. It reads analytics and
 // changes dashboards and reports. It is decrypted for each run and is never written to disk or output.
 //
 //   bun scripts/openpanel.ts tools [name]

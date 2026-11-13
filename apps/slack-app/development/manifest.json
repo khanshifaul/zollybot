@@ -15,7 +15,7 @@
     }
   },
   "oauth_config": {
-    "redirect_urls": ["https://zollybot-auth-api-test.internal9671.workers.dev/v2/slack/callback"],
+    "redirect_urls": ["http://localhost:3100/v2/slack/callback"],
     "scopes": {
       "bot": [
         "app_mentions:read",

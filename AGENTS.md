@@ -132,7 +132,7 @@ and the separate Node and Bun type environments. Read them when changing checks 
 
 State which surfaces a change touches. Check all affected consumers and reverse actions.
 
-- Desktop renderer (`src/renderer`), mobile (`apps/mobile`), public web (`apps/auth-api`; no separate
+- Desktop renderer (`src/renderer`), mobile (`apps/mobile`), public web (`account service`; no separate
   landing app), hosted-site routing (`apps/site-router`), and Signal (`remote/api`).
 - IPC contracts (`packages/contracts`) and their preview implementation
   (`src/renderer/src/preview/mock-zollybot.ts`).
@@ -145,7 +145,7 @@ State which surfaces a change touches. Check all affected consumers and reverse 
 
 ### Account service environment settings
 
-- Maintain only `apps/auth-api/.env.dev` and `apps/auth-api/.env.production` for shared account
+- Maintain only `development environment configuration` and `production environment configuration` for shared account
   service settings. Add new settings to these files; do not add another environment file.
 - Keep both files encrypted. Development uses `DOTENV_PRIVATE_KEY_DEV`; production uses
   `DOTENV_PRIVATE_KEY_PRODUCTION`. Never use production credentials as local development defaults.
@@ -159,14 +159,14 @@ State which surfaces a change touches. Check all affected consumers and reverse 
 - The root `.env.keys` holds the only two keys: `DOTENV_PRIVATE_KEY_PRODUCTION` and
   `DOTENV_PRIVATE_KEY_DEV`. Every encrypted env file, `remote/.env.production` included, uses one of
   them. Never make a new key pair. Pass `-fk` with the root `.env.keys` so Dotenvx does not make one.
-- For direct Cloudflare changes, `apps/auth-api/.env.production` holds `CLOUDFLARE_API_TOKEN`
+- For direct Cloudflare changes, `production environment configuration` holds `CLOUDFLARE_API_TOKEN`
   (write access to all resources in the ZollyBot account) and `CLOUDFLARE_ACCOUNT_ID`. Load them
-  with `bunx dotenvx run -f apps/auth-api/.env.production -fk <root>/.env.keys -- <command>`. A worktree
+  with `bunx dotenvx run -f production environment configuration -fk <root>/.env.keys -- <command>`. A worktree
   has no `.env.keys`; use the one in the main checkout. Never print the token: do not use
   `dotenvx get` or `echo`. Ask before a change that deletes data or affects production users.
   Deploy scripts remove the token, so Wrangler deploys keep the developer's `wrangler login`.
 
-See [account service setup](apps/auth-api/README.md) for loading and deployment details.
+For account-service setup in deployments that include that workspace, use the account service docs in that deployment environment (not present in this checkout).
 
 ### Local processes
 
@@ -183,7 +183,7 @@ See [account service setup](apps/auth-api/README.md) for loading and deployment 
 - Reuse a running dev instance. `bun run dev` opens a profile tied to this worktree; `--shared`
   opens the shared `ZollyBot Dev` profile. Use the ports the stack reports rather than a fixed port.
 
-See [README.md — Commands](README.md#commands) for the flags these commands take, and
+See [README.md — Development](README.md#development) for common local commands, and
 [docs/architecture/change-rules.md](docs/architecture/change-rules.md#change-rules) for why the registry works this way, when a dev command
 does not behave as expected.
 
@@ -208,7 +208,7 @@ Read the instruction file for each directory you change. Use the
 | [src/main/ipc/AGENTS.md](src/main/ipc/AGENTS.md) | Handler binding and endpoint registration |
 | [src/backend/AGENTS.md](src/backend/AGENTS.md) | SQLite migrations and database creation |
 | [packages/contracts/AGENTS.md](packages/contracts/AGENTS.md) | Frozen Team API protocols and IPC mirrors |
-| [apps/auth-api/AGENTS.md](apps/auth-api/AGENTS.md) | Account Worker and D1 deployment races |
+| `account service instructions` (deployment workspace, not in this checkout) | Account Worker and D1 deployment races |
 | [src/preload/AGENTS.md](src/preload/AGENTS.md) | Preload bridge and payload decoding |
 | [packages/ui/AGENTS.md](packages/ui/AGENTS.md) | Shared SolidJS controls and feature components |
 | [packages/team-client/AGENTS.md](packages/team-client/AGENTS.md) | Team WebRTC client and framing |

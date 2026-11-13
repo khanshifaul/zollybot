@@ -36,7 +36,7 @@ continue without the user.
    | Surface | Story location | Stylesheet |
    | --- | --- | --- |
    | Desktop renderer, shared UI | `src/renderer/stories/` | Global; `.storybook/preview.tsx` loads it |
-   | Public web (`apps/auth-api`) | Beside the page, in `apps/auth-api/src/components/<area>/`. For a new page, use `landing/` | Import `apps/auth-api/src/styles.css` in the story, as `DiscordConnectPage.stories.tsx` does |
+   | Public web (`account service`) | Beside the page, in `account service sourcecomponents/<area>/`. For a new page, use `landing/` | Import `account service sourcestyles.css` in the story, as `DiscordConnectPage.stories.tsx` does |
 
    A pricing page, landing page, or article is public web. A dialog, panel,
    sidebar, or settings screen is desktop.
@@ -44,7 +44,7 @@ continue without the user.
    A public web page with the site header needs a router stand-in. Copy the
    `WithRouter` pattern from `AgentTemplatePage.stories.tsx`.
 4. Read `packages/ui/AGENTS.md` and `src/renderer/AGENTS.md`. For public web,
-   also read `apps/auth-api/AGENTS.md`.
+   also read `account service instructions`.
 5. Take a reference screenshot of the place where the feature lives in the
    current app. For desktop, use the `App` story (`app--expanded-sidebar` and
    the other `app--*` ids), the real container story (for example
@@ -61,7 +61,7 @@ Before you write UI, list the parts that already exist:
 - Primitives from `@zollybot/ui` (`packages/ui/src/`).
 - Feature components from `@zollybot/ui/features/<domain>/...`.
 - For public web: existing site components and classes in
-  `apps/auth-api/src/components/` and `apps/auth-api/src/styles.css`. Import
+  `account service sourcecomponents/` and `account service sourcestyles.css`. Import
   only explicit `@zollybot/ui/...` subpaths there. The `@zollybot/ui` barrel
   fails the Worker typecheck.
 - Data that already exists, such as plans, prices, and limits in
@@ -183,7 +183,7 @@ Rules:
 - When a state is important to the decision (empty, error, loading), add it
   as an extra story with the same letter, for example `A2. Plan cards, empty`.
 - Draft new copy as literals. `no-hardcoded-ui-text.grit` does not check
-  stories, prototype files beside them, or `apps/auth-api`. On desktop, use
+  stories, prototype files beside them, or `account service`. On desktop, use
   existing i18n keys when they fit; the chosen variant moves its other text
   to catalog keys in Step 7.
 - When you reuse a shared class, check its media queries at phone width.

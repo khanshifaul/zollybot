@@ -189,7 +189,7 @@ token. Codex gets these values through `shell_environment_policy.set` in the thr
 
 A user token makes GitHub show "user with ZollyBotGit". To show `zollybotgit[bot]`, the desktop sends
 the user token to `POST /v1/github/installation-tokens` on the account Worker
-(`apps/auth-api/src/server/github-installation-tokens.ts`). The Worker holds the app's private key
+(`account service codegithub-installation-tokens.ts`). The Worker holds the app's private key
 (`GITHUB_APP_PRIVATE_KEY`, PKCS #8) and signs an app JWT. It mints one installation token for each
 installation of this app, limited to the repositories where the user can push, maintain or
 administer, and stores nothing. The request names the permissions that the installation granted,

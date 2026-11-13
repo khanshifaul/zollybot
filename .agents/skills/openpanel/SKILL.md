@@ -8,7 +8,7 @@ description: Query ZollyBot product analytics (events, sessions, profiles, funne
 `scripts/openpanel.ts` calls the OpenPanel MCP server at `https://analytics-zollybot.shifaul.dev/api/mcp`.
 The token is a `root` client. It reads analytics and makes, changes and deletes dashboards and
 reports (`create_dashboard`, `create_report`, `update_report_layout`, `delete_dashboard` and others).
-`apps/auth-api/.env.dev` and `apps/auth-api/.env.production` hold the same token as
+`development environment configuration` and `production environment configuration` hold the same token as
 `OPENPANEL_MCP_TOKEN`, so either key works.
 
 ## Run
@@ -25,7 +25,7 @@ When the key is not in the shell, use the root `.env.keys` of the main checkout.
 
 ```sh
 MAIN="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
-./node_modules/.bin/dotenvx run -q -f apps/auth-api/.env.dev -fk "$MAIN/.env.keys" -- bun scripts/openpanel.ts call list_event_names '{"projectId":"zollybot"}'
+./node_modules/.bin/dotenvx run -q -f development environment configuration -fk "$MAIN/.env.keys" -- bun scripts/openpanel.ts call list_event_names '{"projectId":"zollybot"}'
 ```
 
 If no key is available, stop and ask the developer. Never print the token, a key, or `.env.keys`.
@@ -57,7 +57,7 @@ memory or 100,000 result rows, gives it 4 threads, and allows 300 queries per ho
 
 ```sh
 MAIN="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
-SQL() { ./node_modules/.bin/dotenvx run -q -f apps/auth-api/.env.dev -fk "$MAIN/.env.keys" -- bun scripts/openpanel-sql.ts "$@"; }
+SQL() { ./node_modules/.bin/dotenvx run -q -f development environment configuration -fk "$MAIN/.env.keys" -- bun scripts/openpanel-sql.ts "$@"; }
 SQL presets                                          # list the presets
 SQL preset turn-duration                             # completed turns, duration_ms by provider, 30 days
 SQL preset resources --by platform,app_version --min-n 200
@@ -130,8 +130,8 @@ the two units and the script.
 ## Rotate the token
 
 In OpenPanel, open the ZollyBot project, then Settings, Clients. Make a new `root` client. Encrypt
-`base64(<client id>:<client secret>)` as `OPENPANEL_MCP_TOKEN` into both `apps/auth-api/.env.dev`
-and `apps/auth-api/.env.production` with `dotenvx set ... -fk <main checkout>/.env.keys`. Then delete
+`base64(<client id>:<client secret>)` as `OPENPANEL_MCP_TOKEN` into both `development environment configuration`
+and `production environment configuration` with `dotenvx set ... -fk <main checkout>/.env.keys`. Then delete
 the old client.
 
 ## Rotate the ClickHouse password

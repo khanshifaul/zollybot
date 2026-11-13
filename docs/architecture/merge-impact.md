@@ -1,5 +1,7 @@
 # Merge impact analysis — zollybot
 
+> **Historical/design note:** This document records earlier design, merge, or import context. It may not describe the current checked-in implementation. Use `docs/architecture/structure.md`, `docs/onboarding/`, and source code for current behavior.
+
 Date: 2026-11-08. Scope: `merge-spec.md` checked against the code and against GitNexus impact.
 Method: `node .gitnexus/run.cjs impact <symbol> --direction upstream --repo .` plus source reads.
 

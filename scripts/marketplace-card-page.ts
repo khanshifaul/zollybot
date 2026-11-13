@@ -3,7 +3,7 @@
 // the avatar or icon arrives in the job as a `data:` URL.
 //
 // It draws the "A Dark" card of the prototype in
-// apps/auth-api/src/components/marketplace/MarketplaceShareCardPrototype.{tsx,css}: on the flat
+// account service sourcecomponents/marketplace/MarketplaceShareCardPrototype.{tsx,css}: on the flat
 // canvas colour, the avatar large on the left, and in the column on the right the ZollyBot mark and
 // wordmark, the name with the verified shield after its last word, the role, and "by <creator>".
 // The numbers below are the prototype's CSS lengths, in pixels of the 1200-wide card.

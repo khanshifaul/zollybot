@@ -9,7 +9,7 @@ import type { sourceTranslation as SourceTranslation } from "./source-catalogs";
 
 /**
  * The catalogs of the public web build: `app-catalogs.ts`, `source-catalogs.ts`,
- * `format-catalogs.ts` and `locale-loading.ts` in one module, which `apps/auth-api/vite.config.ts`
+ * `format-catalogs.ts` and `locale-loading.ts` in one module, which `account service/vite.config.ts`
  * puts in their place.
  *
  * The site shows the desktop app as a demo and as the web client. All fourteen languages are more than

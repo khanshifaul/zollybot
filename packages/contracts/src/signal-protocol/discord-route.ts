@@ -6,7 +6,7 @@
 // Signal passes an event of a guild to the `ingress` socket that holds a route ticket for that
 // guild, and accepts an API call only for a guild that is routed to the caller's socket.
 //
-// The route ticket is an ES256 JWT that `apps/auth-api` mints for a host that proves its machine
+// The route ticket is an ES256 JWT that `account service` mints for a host that proves its machine
 // token. It names only the guilds that the account service links to that host, and it expires: the
 // host asks for a new one each time its `ingress` socket connects.
 

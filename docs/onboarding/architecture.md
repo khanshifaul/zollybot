@@ -19,7 +19,7 @@ flowchart LR
   R --> P --> M --> B
   B --> D
   B --> C[Provider CLI or SDK]
-  M --> A[Account API<br/>Cloudflare Worker and D1]
+  M --> A[Account service<br/>deployment-specific]
   M --> S[Signal<br/>tickets, ICE, TURN, relays]
   W[Mobile and web clients] <--> S
   W <-->|WebRTC Team API| M
@@ -37,8 +37,8 @@ flowchart LR
 | Agent database host | The shared SQLite file that agents create for themselves | A separate killable process. Its runtime imports are only `node:*` and `effect`. |
 | Provider CLI or SDK | One coding agent process, its login, and its session state | Provider payloads stay in the adapter. They do not leak into contracts. |
 | Mobile (`apps/mobile`) | Expo and React Native client | No agent execution. It uses the Team API over WebRTC. |
-| Web client | The renderer UI served at `/app` | It connects to a host over the same Team API. |
-| Account API (`apps/auth-api`) | Accounts, avatars, memberships, invitations, sessions, billing | A Worker and D1 hold no chats, files, or commands. |
+| Web client (deployment) | Browser client surface served by deployment account/web service | Connects to a host over Team API/WebRTC-capable flows where supported. |
+| Account service (deployment) | Accounts, avatars, memberships, invitations, sessions, billing | A hosted service may hold account/control-plane state, not chats/files/commands. Not present as `account service` in this checkout. |
 | Site router (`apps/site-router`) | Published sites from private R2 storage | A Worker cannot run Git or touch a repository. |
 | Signal (`remote/api`) | Ticket checks, TURN credentials, SDP and ICE relay, and signed messaging ingress | It does not carry chats, files, or commands. It passes Slack, Discord, Telegram, and GitHub event bodies to the host ingress socket. |
 | `zollybot-cli` (`crates/zollybot-cli`) | The terminal TUI | It reads the control socket. It keeps no office state. |

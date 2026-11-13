@@ -1,5 +1,5 @@
 // The ZollyBot mark as plain data, so that a canvas can draw the same mark that
-// `AppLogo` draws as SVG: the social cards in apps/auth-api do.
+// `AppLogo` draws as SVG: the social cards in account service do.
 
 /** The mark is a square of this side, in its own units. */
 export const APP_LOGO_SIZE = 240;

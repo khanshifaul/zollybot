@@ -15,8 +15,6 @@ coverage/
 .dev.vars
 .dev.vars.*
 !.env.example
-!apps/auth-api/.env.production
-!apps/auth-api/.env.dev
 !remote/.env.production
 *.key
 *.p12
@@ -39,7 +37,6 @@ index-*.css
 .zollybot-build/
 # The home page beam, a React Bits port. Its license forbids a public copy; CI checks it out
 # from the private nightly-labs/zollybot-laser-flow repository.
-/apps/auth-api/src/vendor/laser-flow/
 .worktrees/
 # Claude Code creates git worktrees here; they carry a nested biome.json.
 .claude/worktrees/

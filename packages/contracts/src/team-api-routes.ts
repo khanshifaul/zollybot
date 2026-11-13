@@ -17,7 +17,7 @@
 // rename here followed into it, the meaning of a shipped protocol would change, and that is the one
 // thing a released adapter may never do. The duplication there is the point - do not "fix" it.
 //
-// The cloud account API in `apps/auth-api` serves `/v1/...` paths of its own. It is an unrelated
+// The cloud account API in `account service` serves `/v1/...` paths of its own. It is an unrelated
 // service reached by `central-auth-manager.ts` and the marketplace services, and its routes do not
 // belong here.
 

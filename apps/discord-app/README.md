@@ -6,7 +6,7 @@ channel, and the Discord Orchestrator agent on that ZollyBot server asks the rig
 No code runs here: this file lists the settings of the app in the Discord Developer Portal.
 
 Only Signal (`remote/api`) has the bot token. Signal keeps the bot's Gateway connection and makes
-each Discord call for the hosts. The account Worker (`apps/auth-api`) has the client secret for the
+each Discord call for the hosts. The account Worker (`account service`) has the client secret for the
 install. Hosts have no Discord secret.
 
 ## Developer Portal settings
@@ -49,7 +49,7 @@ embed links, attach files, read message history and add reactions. Signal asks f
 | Signal | `DISCORD_APPLICATION_ID` | The application ID. |
 | Signal | `DISCORD_MESSAGE_CONTENT` | Optional. `false` stops Signal asking for the Message Content intent. Not a secret. |
 
-`scripts/deploy-auth-api.ts` (`bun run --cwd apps/auth-api deploy`) sets the Worker secrets when they are in the environment. Without them, the
+`scripts/deploy-account service.ts` (`bun run --cwd account service deploy`) sets the Worker secrets when they are in the environment. Without them, the
 Discord routes answer 503 `discord_not_configured`. Without the Signal values, Signal keeps no Gateway
 connection and Discord calls answer 503 `unavailable`; Slack and remote access continue to work.
 

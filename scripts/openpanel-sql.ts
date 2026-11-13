@@ -14,7 +14,7 @@ import { readScriptArguments } from "./script-arguments";
 // readonly=1 and the time, memory, thread and result limits. ClickHouse has no public port: the script
 // opens an SSH tunnel to the container, or uses OPENPANEL_CLICKHOUSE_URL when a tunnel is already open.
 // The credentials are OPENPANEL_CLICKHOUSE_USER and OPENPANEL_CLICKHOUSE_PASSWORD in
-// apps/auth-api/.env.dev and .env.production. They are decrypted for each run and never written out.
+// a configured environment. They are decrypted for each run and never written out.
 
 const USAGE = `Usage:
   bun scripts/openpanel-sql.ts query '<sql>' [options]   SELECT from \`events\` (no FORMAT clause)

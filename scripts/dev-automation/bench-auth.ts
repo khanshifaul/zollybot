@@ -82,7 +82,7 @@ export async function ensureBenchAuthApi(
     return { url: `http://127.0.0.1:${running}`, stop: async () => undefined };
   }
   await mkdir(logDirectory, { recursive: true });
-  const logPath = join(logDirectory, "auth-api.log");
+  const logPath = join(logDirectory, "account service.log");
   const log = createWriteStream(logPath, { flags: "a", mode: 0o600 });
   logger.info(`starting the Auth API (log: ${logPath})`);
   const child = spawn("bun", ["scripts/dev-services.ts", "api"], {

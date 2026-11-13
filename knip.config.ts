@@ -16,8 +16,6 @@ const config: KnipConfig = {
     "packages/contracts/src/team-protocol/v*.ts": ["exports", "types"],
     "packages/contracts/src/team-protocol/*-v*.ts": ["exports", "types"],
     "packages/contracts/src/team-protocol/provider-aware-codec.ts": ["exports", "types"],
-    // A generator writes this file.
-    "apps/auth-api/src/lib/plugin-catalog.generated.ts": ["exports", "types"],
   },
   // Host tools that scripts and tests call. They are not npm packages.
   ignoreBinaries: [
@@ -98,14 +96,6 @@ const config: KnipConfig = {
       // root. Every file in scripts/ is already an entry.
       ignoreUnresolved: ["scripts/.+\\.ts"],
     },
-    "apps/auth-api": {
-      // The wrangler plugin of knip reads `main` (src/worker-entry.ts) from wrangler.jsonc only. The
-      // email relay Worker's `main` is in wrangler.email-relay.jsonc.
-      entry: ["*.ts", "src/email-relay-entry.ts"],
-      project: ["src/**/*.{ts,tsx,css}", "test/**/*.ts", "*.ts"],
-      // `cloudflare:workers` is a runtime module of the Workers platform, not an npm package.
-      ignoreDependencies: ["cloudflare"],
-    },
     // The wrangler plugin of knip reads `main` from wrangler.jsonc.
     "apps/site-router": {
       project: ["src/**/*.ts"],
@@ -141,7 +131,6 @@ const config: KnipConfig = {
       project: ["src/**/*.ts"],
     },
     "packages/i18n": {
-      // apps/auth-api/vite.config.ts puts this file in place of the static catalog modules by path.
       // Metro resolves mobile-catalogs.native.ts in place of mobile-catalogs.ts.
       entry: ["src/lazy-catalogs.ts", "src/mobile-catalogs.native.ts"],
       project: ["src/**/*.{ts,tsx,css}"],

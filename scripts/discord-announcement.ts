@@ -66,7 +66,7 @@ export function roleIdProblems(name: string, roleId: string | undefined, require
   return ROLE_ID.test(roleId) ? [] : [`${name} is not a Discord role ID.`];
 }
 
-/** The anchor of `version` on /changelog, as `releaseAnchor` in `apps/auth-api/src/lib/changelog.ts` makes it. */
+/** The anchor of `version` on /changelog, as the changelog page makes it. */
 export function releaseAnchor(version: string): string {
   return `v${version.replace(/[^0-9a-z]+/gi, "-").toLowerCase()}`;
 }
@@ -101,7 +101,7 @@ export async function postAnnouncement(
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         username: "ZollyBot",
-        avatar_url: "https://zollybot.shifaul.dev/icon-512x512.png",
+        avatar_url: "https://openbot.run/icon-512x512.png",
         content,
         allowed_mentions: allowedMentions,
       }),

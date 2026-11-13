@@ -1,6 +1,6 @@
 // The hand-off of the ZollyBot Slack app's bot token from the account Worker to one desktop host.
 //
-// The ZollyBot Slack app's client secret lives only on the Worker (`apps/auth-api`), so the Worker
+// The ZollyBot Slack app's client secret lives only on the Worker (`account service`), so the Worker
 // exchanges the OAuth code. It must not keep the token, and the browser that carries the
 // result back to `zollybot://` must not be able to read it, so the Worker seals it to the host
 // (`./host-grant.ts`).

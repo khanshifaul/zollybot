@@ -1,5 +1,7 @@
 # zollybot vs OpenBot vs zolly vs herdr — comparison
 
+> **Historical/design note:** This document records earlier design, merge, or import context. It may not describe the current checked-in implementation. Use `docs/architecture/structure.md`, `docs/onboarding/`, and source code for current behavior.
+
 Date: 2026-11-08. This file compares the four systems. The plan is in
 [merge-spec.md](merge-spec.md); the evidence and corrections are in [merge-impact.md](merge-impact.md).
 

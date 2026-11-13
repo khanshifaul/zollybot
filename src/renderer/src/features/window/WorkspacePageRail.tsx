@@ -5,7 +5,7 @@ import { PageRail, type PageRailPage } from "@zollybot/ui/features/window/PageRa
 import { useText } from "@zollybot/ui/text";
 import { appPort } from "../../app-port";
 import { useLayout } from "../../layout";
-import { usePlatform } from "../../platform";
+import { useAgents } from "../agents/agents-context";
 import { useChannels } from "../channels/channels-context";
 import { useCustomAgents } from "../custom-agents/custom-agents-context";
 import { serverSupportsCapability } from "../servers/server-capabilities";
@@ -30,11 +30,14 @@ export function WorkspacePageRail(props: { hidden: boolean }) {
   const channels = useChannels();
   const whatsNew = useWhatsNew();
   const { activeServer } = useServers();
-  const platform = usePlatform();
-  /** macOS draws the window buttons in the top row of the rail. Windows and Linux show the logo there. */
-  const logo = () => {
-    const info = platform.appInfo();
-    return info && info.platform !== "darwin" ? { variant: info.variant } : undefined;
+  const { activeOfficeId } = useAgents();
+  // Logo moved to TopBar component; rail no longer shows logo
+  // Lobby mode: show bottom-only rail when in building/lobby
+  const isLobby = () => activeOfficeId() === "building";
+  const current = (): PageRailPage | null => {
+    const page = windowPage.page();
+    if (page === "agents") return layout.sidebarView();
+    return page === "server-settings" ? null : page;
   };
   /** Agents and Routines show the same page; they set the list of the sidebar. */
   function showSidebarView(view: SidebarView) {
@@ -58,11 +61,6 @@ export function WorkspacePageRail(props: { hidden: boolean }) {
     const server = activeServer();
     return !server || server.kind === "local" || serverSupportsCapability(server, AGENT_TASKS_CAPABILITY);
   };
-  const current = (): PageRailPage | null => {
-    const page = windowPage.page();
-    if (page === "agents") return layout.sidebarView();
-    return page === "server-settings" ? null : page;
-  };
   return (
     <PageRail
       hidden={props.hidden}
@@ -81,7 +79,7 @@ export function WorkspacePageRail(props: { hidden: boolean }) {
       onMarketplace={() => setSkillsMarketplaceOpen(true)}
       onSettings={(button) => (updateNotice() ? openAppSettings(button, "updates") : windowPage.openSettings(button))}
       settingsNotice={updateNotice()}
-      logo={logo()}
+      lobby={isLobby()}
       help={
         <RailHelpMenu
           version={whatsNew.state.version}

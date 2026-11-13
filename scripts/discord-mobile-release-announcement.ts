@@ -28,7 +28,19 @@
 
 import { execFileSync } from "node:child_process";
 import { appendFileSync, readFileSync } from "node:fs";
-import { MOBILE_FEATURE_CONFIG } from "../apps/auth-api/src/server/mobile-features-config";
+import type { MobileFeatureConfig } from "../packages/contracts/src/mobile-features";
+
+const MOBILE_FEATURE_CONFIG: MobileFeatureConfig = {
+  cloudServers: {
+    ios: { upTo: "1.4.7" },
+    android: { upTo: "1.4.6" },
+  },
+  browser: {
+    ios: { upTo: "1.4.7" },
+    android: { upTo: "1.4.6" },
+  },
+};
+
 import {
   isNewerMobileVersion,
   MOBILE_CHANGELOG_PATH,
@@ -64,7 +76,7 @@ const DOCS = "apps/mobile/README.md#discord-announcement";
 /** The ID of the "Mobile Release Pings" role. A GitHub variable of the `release-mobile` environment. */
 const ROLE_VARIABLE = "DISCORD_MOBILE_RELEASE_ROLE_ID";
 const WEBHOOK_VARIABLE = "DISCORD_MOBILE_RELEASE_WEBHOOK_URL";
-const PRODUCTION_SITE = "https://zollybot.shifaul.dev";
+const PRODUCTION_SITE = "https://openbot.run";
 const GITHUB_API = "https://api.github.com";
 export const ANNOUNCED_TAG_PREFIX = "mobile-announced/";
 /**
@@ -113,7 +125,7 @@ export function mobileAnnouncementProblems(announcement: string, version: string
 }
 
 function changelogUrl(version: string): string {
-  return `https://zollybot.shifaul.dev/changelog?platform=mobile#mobile-${releaseAnchor(version)}`;
+  return `https://openbot.run/changelog?platform=mobile#mobile-${releaseAnchor(version)}`;
 }
 
 const storeList = (stores: readonly MobileStore[]) => stores.map((store) => MOBILE_STORE_NAMES[store]).join(" and ");

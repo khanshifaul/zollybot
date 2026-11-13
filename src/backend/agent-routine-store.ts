@@ -38,7 +38,7 @@ export class AgentRoutineStore extends RoutineStore {
     return this.listRoutines(agentId).map(toRoutine);
   }
   listByOffice(officeId: string): Routine[] {
-    return (this as any).listRoutinesByOffice(officeId).map(toRoutine);
+    return this.listRoutinesByOffice(officeId).map(toRoutine);
   }
 
   get(agentId: string, routineId: string): Routine | null {

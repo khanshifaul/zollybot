@@ -1,7 +1,7 @@
 # ZollyBot
 
 [![CI](https://github.com/khanshifaul/zollybot/actions/workflows/ci.yml/badge.svg)](https://github.com/khanshifaul/zollybot/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/license-PolyForm_Noncommercial_1.0.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
 
 **A governed, memory-driven agent office you can reach from any device.**
 
@@ -70,8 +70,10 @@ cargo install --path .
 ## Development
 
 ```bash
-bun run dev          # start the account API, Signal, and Electron app
-bun run dev:stop     # stop the local stack
+bun install --frozen-lockfile
+bun run dev          # start local dev services (Electron app and, when available, API/Signal)
+bun run dev:api     # start only the local account/API service (if present in this checkout)
+bun run dev:stop     # stop this worktree's local stack
 bun run dev:status   # list local stacks and ports
 ```
 

@@ -36,8 +36,8 @@ support ticket. Do not weaken it; a new DDL migration means editing `LATEST_SCHE
 change.
 
 The account service has a second, unrelated database — Cloudflare D1 — and its rule is the opposite
-shape: those migrations are reversible but race a deploy. `apps/auth-api/AGENTS.md` owns it — nothing in this
-directory touches `apps/auth-api/migrations/`.
+shape: those migrations are reversible but race a deploy. `account service instructions` owns it — nothing in this
+directory touches `account service migrations`.
 
 ## Size
 

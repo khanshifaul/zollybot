@@ -14,7 +14,7 @@
 // Telegram then sends `/start <code>` in that chat. Signal asks the account service to link the chat
 // to the host that asked for the code, and routes the chat to that host's socket at once.
 //
-// The route ticket is an ES256 JWT that `apps/auth-api` mints for a host that proves its machine
+// The route ticket is an ES256 JWT that `account service` mints for a host that proves its machine
 // token, with the key of the Slack route ticket and its own audience. It names only the chats that
 // the account service links to that host, and it expires: the host asks for a new one each time its
 // `ingress` socket connects.

@@ -14,7 +14,6 @@ const ROOT = resolve(import.meta.dirname, "..");
 const PROJECTS = [
   "tsconfig.node.json",
   "tsconfig.web.json",
-  "apps/auth-api/tsconfig.json",
   "packages/brand/tsconfig.json",
   "packages/contracts/tsconfig.json",
   "packages/i18n/tsconfig.json",

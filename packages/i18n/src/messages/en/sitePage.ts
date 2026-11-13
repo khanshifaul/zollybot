@@ -2,7 +2,7 @@ import { defineMessages } from "../../message";
 
 /**
  * The public web pages that do one task: join a server, return from Slack or Discord, return from
- * billing, report a hosted site, and the load error page. `apps/auth-api` renders
+ * billing, report a hosted site, and the load error page. `account service` renders
  * them on the server in the visitor's language.
  */
 export const messages = defineMessages("sitePage", {

@@ -1,9 +1,9 @@
 # Upstream
 
 - Source: https://github.com/khanshifaul/zollybot
-- Version: 0.62.0
+- Version: 0.63.0 (this checkout; upstream snapshot metadata below may lag)
 - Commit: 9539f15d1c0924b9922060b6f4090e00a950b5bb (2026-11-06)
-- Imported: 2026-11-06, working tree only (no ZollyBot history in this repo).
+- Imported snapshot recorded: 2026-11-06, working tree only (no upstream git history in this repo).
 
 To compare against a later release, clone upstream and diff the working tree:
 

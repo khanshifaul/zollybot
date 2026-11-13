@@ -17,7 +17,7 @@
 ## Verification
 
 - [ ] Narrow checks for what changed: `biome check <paths>`, a targeted `tsc`, and the affected test files — CI owns the full suite
-- [ ] Surfaces touched are named under "What changed": renderer, mobile, `apps/auth-api`, the three `--zollybot-*` palettes, IPC contracts and `mock-zollybot.ts`, reverse states, migrations and the latest schema, documentation
+- [ ] Surfaces touched are named under "What changed": renderer, mobile, the three `--zollybot-*` palettes, IPC contracts and `mock-zollybot.ts`, reverse states, migrations and the latest schema, documentation
 - [ ] Relevant manual smoke test completed, or not applicable
 - [ ] No credentials, private data, generated output, or real user files are included
 

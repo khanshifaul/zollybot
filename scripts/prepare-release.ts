@@ -40,7 +40,7 @@ const DESKTOP: ReleaseTarget = {
   fragmentDir: FRAGMENT_DIR,
   versionFiles: ["package.json"],
   inReview: false,
-  next: "write the Discord highlights in .github/release-announcement.json (docs/RELEASING.md#discord-announcement), commit package.json, CHANGELOG.md, changelog.d and the announcement, push, run preflight, then tag it",
+  next: "commit package.json, CHANGELOG.md and changelog.d, push to main, run preflight, then push tag vX.Y.Z to publish GitHub release artifacts with CI",
 };
 
 const MOBILE: ReleaseTarget = {
@@ -50,7 +50,7 @@ const MOBILE: ReleaseTarget = {
   versionFiles: MOBILE_VERSION_FILES,
   lockWorkspace: "apps/mobile",
   inReview: true,
-  next: "commit the files, merge them to main, then build with bun run mobile:release (step 2). When a store makes the build available, mark it with step 3, and again for the other store. Before the first store, write the Discord highlights in apps/mobile/release-announcement.json (apps/mobile/README.md#discord-announcement)",
+  next: "commit the files, merge them to main, then build with bun run mobile:release (step 2). When a store makes the build available, mark it with step 3, and again for the other store.",
 };
 
 /** The first `"version"` in the file, which is the top-level one in each file that this script changes. */

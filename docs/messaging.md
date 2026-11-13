@@ -204,7 +204,7 @@ Telegram must reach Signal over public HTTPS.
 2. Start a tunnel to the local Signal, for example `cloudflared tunnel --url http://127.0.0.1:<signal port>`.
 3. Give Signal `TELEGRAM_BOT_TOKENS` (the bot token), `TELEGRAM_WEBHOOK_SECRET` (32 bytes or more) and
    `TELEGRAM_WEBHOOK_ORIGIN` (the tunnel address). Signal sets the bot's webhook when it starts.
-4. In `apps/auth-api/.env.dev`, set `TELEGRAM_BOT_ID` (the part of the token before `:`),
+4. In `development environment configuration`, set `TELEGRAM_BOT_ID` (the part of the token before `:`),
    `TELEGRAM_BOT_USERNAME`, and the Slack route key (see below): it signs the Telegram route ticket too.
 
 Not confirmed: this flow end to end against Telegram. The tests use a fake Signal and a fake Bot API.

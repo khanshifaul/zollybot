@@ -193,7 +193,7 @@ sudo systemctl enable --now zollybot-remote-nginx-reload.path
 ```
 
 Production secrets are stored in the tracked `.env.production` file as encrypted Dotenvx values.
-They use the same key pair as `apps/auth-api/.env.production`: `DOTENV_PRIVATE_KEY_PRODUCTION` in the
+They use the same key pair as `production environment configuration`: `DOTENV_PRIVATE_KEY_PRODUCTION` in the
 root `.env.keys`. Do not make a new key pair. On the server, the ignored `remote/.env.keys` holds only a
 copy of that key. On a development computer, decrypt with `-fk .env.keys`. Do not pass the encrypted
 file straight to `docker compose --env-file`, because Compose will not decrypt the values.

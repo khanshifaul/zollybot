@@ -1,5 +1,7 @@
 # zollybot — how it will work
 
+> **Historical/design note:** This document records earlier design, merge, or import context. It may not describe the current checked-in implementation. Use `docs/architecture/structure.md`, `docs/onboarding/`, and source code for current behavior.
+
 Date: 2026-11-06 · status: design, before any code.
 
 `zollybot` is the cross-platform front end to zolly's per-repo offices. **zolly

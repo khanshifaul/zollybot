@@ -88,7 +88,6 @@ export default defineConfig({
     ],
     exclude: [
       ...configDefaults.exclude,
-      "apps/auth-api/**",
       "tests/visual/**",
       ".zollybot-build/**",
       // Agent tools put git worktrees inside the checkout. The renderer project's

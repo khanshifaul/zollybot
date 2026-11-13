@@ -1,5 +1,5 @@
 // The Electron half of the Marketplace share cards. Plain JavaScript because Electron runs this file
-// directly. It works as apps/auth-api/content-image-electron.mjs does: one hidden `about:blank`
+// directly. It works as account service/content-image-electron.mjs does: one hidden `about:blank`
 // window with context isolation, the bundle that marketplace-card.ts built injected into it, and one
 // PNG written per job. No file is ever loaded into the page.
 

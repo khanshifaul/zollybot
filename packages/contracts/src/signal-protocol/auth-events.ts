@@ -1,4 +1,4 @@
-// The signed webhook body that the account server (`apps/auth-api`) posts to Signal
+// The signed webhook body that the account server (`account service`) posts to Signal
 // (`remote/api`) at `/internal/auth-events`. Signal closes or refreshes the sockets it names.
 // Types only: the account server writes these events, and Signal checks them with its own schema.
 

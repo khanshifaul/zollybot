@@ -101,7 +101,7 @@ impl App {
                 let _ = child.kill();
             }
             let is_butler = agent.name.eq_ignore_ascii_case("butler") || agent.role == "butler" || agent.scope == "building";
-            match spawn_pty_session(&agent, cols.max(20), rows.max(4), cwd) {
+            match spawn_pty_session(agent, cols.max(20), rows.max(4), cwd) {
                 Ok(session) => {
                     self.pty = Some(session);
                     self.pty_agent_id = agent.id.clone();
@@ -564,6 +564,54 @@ struct TaskRow {
     title: String,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum RailPage {
+    Agents,
+    Routines,
+    Workflows,
+    Tasks,
+    Schedule,
+    Usage,
+    Marketplace,
+    Help,
+    Settings,
+}
+
+impl Default for RailPage {
+    fn default() -> Self {
+        RailPage::Agents
+    }
+}
+
+impl RailPage {
+    fn label(&self) -> &'static str {
+        match self {
+            RailPage::Agents => "Agents",
+            RailPage::Routines => "Routines",
+            RailPage::Workflows => "Workflows",
+            RailPage::Tasks => "Tasks",
+            RailPage::Schedule => "Schedule",
+            RailPage::Usage => "Usage",
+            RailPage::Marketplace => "Marketplace",
+            RailPage::Help => "Help",
+            RailPage::Settings => "Settings",
+        }
+    }
+    fn icon(&self) -> &'static str {
+        match self {
+            RailPage::Agents => "🤖",
+            RailPage::Routines => "⚡",
+            RailPage::Workflows => "🔀",
+            RailPage::Tasks => "📋",
+            RailPage::Schedule => "📅",
+            RailPage::Usage => "📊",
+            RailPage::Marketplace => "🏪",
+            RailPage::Help => "❓",
+            RailPage::Settings => "⚙️",
+        }
+    }
+}
+
 #[derive(Clone, Default)]
 struct RoutineRow {
     id: String,
@@ -608,14 +656,24 @@ struct App {
     pty_pane_rect: Option<ratatui::layout::Rect>,
     pty_selection: Option<((u16,u16),(u16,u16))>,
     butler_intro_pending: Option<std::time::Instant>,
-    icon_mode: IconMode,
-    icon_selected: usize,
-    tasks: Vec<TaskRow>,
-    task_selected: usize,
-    routines: Vec<RoutineRow>,
-    routine_selected: usize,
-    detail_scroll: usize,
+    _icon_mode: IconMode,
+    _icon_selected: usize,
+    _tasks: Vec<TaskRow>,
+    _task_selected: usize,
+    _routines: Vec<RoutineRow>,
+    _routine_selected: usize,
+    _detail_scroll: usize,
+    // Rail state (mirrors desktop PageRail)
+    rail_page: RailPage,
+    rail_pinned: Vec<RailPage>,
+    rail_more_open: bool,
+    rail_more_selected: usize,
+    // Animation state
+    cursor_frame: usize,
+    cursor_visible: bool,
+    spinner_frame: usize,
 }
+
 
 impl App {
     fn new() -> Self {
@@ -655,13 +713,22 @@ impl App {
             pty_pane_rect: None,
             pty_selection: None,
             butler_intro_pending: None,
-            icon_mode: IconMode::Agents,
-            icon_selected: 0,
-            tasks: Vec::new(),
-            task_selected: 0,
-            routines: Vec::new(),
-            routine_selected: 0,
-            detail_scroll: 0,
+            _icon_mode: IconMode::Agents,
+            _icon_selected: 0,
+            _tasks: Vec::new(),
+            _task_selected: 0,
+            _routines: Vec::new(),
+            _routine_selected: 0,
+            _detail_scroll: 0,
+            // Rail state (mirrors desktop PageRail)
+            rail_page: RailPage::Agents,
+            rail_pinned: vec![RailPage::Routines, RailPage::Workflows],
+            rail_more_open: false,
+            rail_more_selected: 0,
+            // Animation state
+            cursor_frame: 0,
+            cursor_visible: true,
+            spinner_frame: 0,
         };
         let cfg = app.tui_config.clone();
         app.lang_selected = LANGUAGES.iter().position(|(c,_)| *c == cfg.language.as_str()).unwrap_or(0);
@@ -686,9 +753,7 @@ impl App {
             self.ensure_local_server();
         }
         if control_socket().is_none() {
-            self.agents.clear();
-            self.table_state.select(None);
-            self.message = "Local server is starting… if this stays, run: zollybot --server".to_string();
+            self.message = "Local server is starting in background… (waiting for control socket)".to_string();
             return;
         }
         if let Ok((200, lines)) = control_call("GET", "/v1/status", &[]) {
@@ -741,7 +806,8 @@ impl App {
         cmd.arg("--server").env("ZOLLYBOT_SERVER","1").env("ZOLLYBOT_CONTROL_SOCKET","1");
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
         let _ = cmd.spawn();
-        for _ in 0..20 { std::thread::sleep(Duration::from_millis(250)); if control_socket().is_some() { break; } }
+        // Server may need time to boot and bind control socket; wait long enough when TUI starts alone.
+        for _ in 0..60 { std::thread::sleep(Duration::from_millis(250)); if control_socket().is_some() { break; } }
     }
 
     fn load_profile_models(&mut self) {
@@ -1366,10 +1432,17 @@ impl App {
 }
 
 fn draw(frame: &mut Frame, app: &mut App) {
+    // 4-row layout: [logo+floors] [agent+settings] [body] [status]
     let outer = Layout::default()
         .direction(Direction::Vertical)
-        .constraints([Constraint::Length(1), Constraint::Min(3), Constraint::Length(1)])
+        .constraints([
+            Constraint::Length(1),  // Row 1: logo + floor tabs
+            Constraint::Length(1),  // Row 2: agent name + settings
+            Constraint::Min(3),     // Row 3: body
+            Constraint::Length(1),  // Row 4: status/LEADER bar
+        ])
         .split(frame.area());
+
     if app.onboarding == OnboardingStep::Language {
         let area = centered_rect(60, 70, frame.area());
         frame.render_widget(Clear, area);
@@ -1417,8 +1490,16 @@ fn draw(frame: &mut Frame, app: &mut App) {
         return;
     }
 
-    // The floor strip: the lobby and every office, the open one raised.
+    // Row 1: Logo + floor tabs
     let mut strip: Vec<Span> = Vec::new();
+    // Logo as dropdown button (emoji + text, blue bg always)
+    let logo_open = app.office_picker.is_some();
+    let logo_text = if logo_open { " ▼ ZollyBot " } else { " ▸ ZollyBot " };
+    strip.push(Span::styled(
+        logo_text,
+        Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD)
+    ));
+    strip.push(Span::raw(" "));
     for (filter, label, headcount) in app.floor_choices() {
         let active = filter == app.office_filter;
         let text = format!(" {label} {headcount} ");
@@ -1439,15 +1520,26 @@ fn draw(frame: &mut Frame, app: &mut App) {
     }
     frame.render_widget(Paragraph::new(Line::from(strip)), outer[0]);
 
-    let lobby = app.office_filter.as_deref() == Some("building");
-    let body = if lobby {
-        Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints([Constraint::Percentage(62), Constraint::Percentage(38)])
-            .split(outer[1])
+    // Row 2: Agent name + settings
+    let agent_name = if let Some(agent) = app.agents.get(app.selected) {
+        agent_label(agent)
+    } else if !app.agents.is_empty() {
+        agent_label(&app.agents[app.selected.min(app.agents.len() - 1)])
     } else {
-        Layout::default().direction(Direction::Horizontal).constraints([Constraint::Percentage(100)]).split(outer[1])
+        "no agent".to_string()
     };
+    let mut row2: Vec<Span> = Vec::new();
+    row2.push(Span::styled(format!(" {} ", agent_name), Style::default().fg(Color::White).add_modifier(Modifier::BOLD)));
+    row2.push(Span::raw(" "));
+    row2.push(Span::styled(" [s] settings ", Style::default().fg(Color::DarkGray)));
+    frame.render_widget(Paragraph::new(Line::from(row2)), outer[1]);
+
+    let lobby = app.office_filter.as_deref() == Some("building");
+    // Lobby and office views both use full body width; lobby splits chat/offices inside.
+    let body = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(100)])
+        .split(outer[2]);
 
     let widths = [
         Constraint::Length(26),
@@ -1468,13 +1560,8 @@ fn draw(frame: &mut Frame, app: &mut App) {
         })
         .collect();
     let table = Table::new(rows, widths)
-        .header(Row::new(vec!["AGENT", "PROVIDER", "MODEL", "TITLE"]).style(Style::default().fg(Color::DarkGray)))
-        .block(
-            Block::default()
-                .borders(Borders::ALL)
-                .border_type(ratatui::widgets::BorderType::Rounded)
-                .title(" agents "),
-        )
+        .header(Row::new(vec!["AGENT", "PROVIDER", "MODEL", "TITLE"]).style(Style::default().fg(Color::DarkGray).bg(Color::Rgb(25, 35, 45))))
+        .block(Block::default().borders(Borders::NONE).style(Style::default().bg(Color::Rgb(25, 35, 45))))
         .row_highlight_style(Style::default().bg(Color::DarkGray).fg(Color::White))
         .highlight_symbol(" ");
     if !lobby {
@@ -1485,25 +1572,99 @@ fn draw(frame: &mut Frame, app: &mut App) {
         //  (4) 25% agent/profile tied to 3.
         // Ratatui has no true overlapping terminal layers, so (1) is a narrow icon gutter
         // and (2)-(4) share the same selected agent/thread/arm state.
-        let outer = Layout::default().direction(Direction::Horizontal).constraints([
-            Constraint::Percentage(5),   // (1) icon gutter
+        let _outer = Layout::default().direction(Direction::Horizontal).constraints([
+            Constraint::Percentage(8),   // (1) icon gutter - wider for larger icons
             Constraint::Percentage(20),  // (2) agent/thread list tied to (1)
             Constraint::Percentage(app.terminal_pct.min(80).max(20)),  // (3) terminal: resizable, tied to (1)/(2)
-            Constraint::Percentage(100 - 5 - 20 - app.terminal_pct.min(80).max(20)),  // (4) profile/description tied to (3)
+            Constraint::Percentage(100 - 8 - 20 - app.terminal_pct.min(80).max(20)),  // (4) profile/description tied to (3)
         ]).split(body[0]);
-        // (1) icon-only agents/threads: mirrors GUI icon rail; selection lives here and drives 2/3/4.
-        let lobby = app.office_filter.as_deref() == Some("building");
-        let icons: Vec<Line> = vec![
-            Line::from(Span::styled(if lobby { "> A" } else { "  A" }, if lobby { Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD) } else { Style::default().fg(Color::DarkGray) })),
-            Line::from(Span::styled(if lobby { "  O" } else { "> O" }, if lobby { Style::default().fg(Color::DarkGray) } else { Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD) })),
+        
+        // Draw single outer border for the entire office area
+        let office_border = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Plain);
+        frame.render_widget(office_border, body[0]);
+        
+        // Inner areas (inset by 1 for border)
+        let inner_outer = Layout::default().direction(Direction::Horizontal).constraints([
+            Constraint::Percentage(8),
+            Constraint::Percentage(20),
+            Constraint::Percentage(app.terminal_pct.min(80).max(20)),
+            Constraint::Percentage(100 - 8 - 20 - app.terminal_pct.min(80).max(20)),
+        ]).split({
+            let mut r = body[0];
+            r.x += 1;
+            r.y += 1;
+            r.width = r.width.saturating_sub(2);
+            r.height = r.height.saturating_sub(2);
+            r
+        });
+
+        // (1) Full rail: top group (Agents + pinned) + bottom group (Usage, Marketplace, Help, Settings)
+        let rail_pages = [
+            RailPage::Agents,
+            RailPage::Routines,
+            RailPage::Workflows,
+            RailPage::Tasks,
+            RailPage::Schedule,
+            RailPage::Usage,
         ];
-        frame.render_widget(Paragraph::new(icons).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" i ")), outer[0]);
+        let bottom_pages = [
+            RailPage::Marketplace,
+            RailPage::Help,
+            RailPage::Settings,
+        ];
+        let mut rail_lines: Vec<Line> = Vec::new();
+        // Top group - emoji icons
+        let agents_style = Style::default().fg(if app.rail_page == RailPage::Agents { Color::Yellow } else { Color::DarkGray }).add_modifier(if app.rail_page == RailPage::Agents { Modifier::BOLD } else { Modifier::empty() });
+        rail_lines.push(Line::from(Span::styled(" 🤖 ", agents_style)));
+        for page in rail_pages.iter().skip(1) {
+            let is_pinned = app.rail_pinned.contains(page);
+            let is_active = app.rail_page == *page;
+            let prefix = if is_pinned { "●" } else { "○" };
+            let style = if is_active {
+                Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+            } else if is_pinned {
+                Style::default().fg(Color::White)
+            } else {
+                Style::default().fg(Color::DarkGray)
+            };
+            let icon = page.icon();
+            rail_lines.push(Line::from(Span::styled(format!(" {}{} ", prefix, icon), style)));
+        }
+        // Separator
+        rail_lines.push(Line::from(Span::styled(" ─── ", Style::default().fg(Color::DarkGray))));
+        // Bottom group - emoji icons
+        for page in bottom_pages.iter() {
+            let is_active = app.rail_page == *page;
+            let style = if is_active {
+                Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+            } else {
+                Style::default().fg(Color::DarkGray)
+            };
+            let icon = page.icon();
+            rail_lines.push(Line::from(Span::styled(format!(" {} ", icon), style)));
+        }
+        // More indicator
+        if app.rail_more_open {
+            rail_lines.push(Line::from(Span::styled(" ▼ More ", Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD))));
+        } else {
+            rail_lines.push(Line::from(Span::styled(" ▸ More ", Style::default().fg(Color::DarkGray))));
+        }
+        frame.render_widget(
+            Paragraph::new(rail_lines).style(Style::default().bg(Color::Rgb(30, 30, 40))),
+            inner_outer[0],
+        );
         // (2) agent/thread list tied to (1): j/k changes selection here; (3) and (4) follow.
-        frame.render_stateful_widget(table, outer[1], &mut app.table_state);
+        frame.render_stateful_widget(
+            table
+                .block(Block::default().borders(Borders::NONE).style(Style::default().bg(Color::Rgb(25, 35, 45))))
+                .style(Style::default().bg(Color::Rgb(25, 35, 45))),
+            inner_outer[1],
+            &mut app.table_state,
+        );
         if app.agents.is_empty() {
-            let area = outer[1];
+            let area = inner_outer[1];
             let inner = ratatui::layout::Rect { x: area.x + 2, y: area.y + 2, width: area.width.saturating_sub(4), height: 2 };
-            frame.render_widget(Paragraph::new(app.message.clone()).style(Style::default().fg(Color::DarkGray)), inner);
+            frame.render_widget(Paragraph::new(app.message.clone()).style(Style::default().fg(Color::DarkGray).bg(Color::Rgb(25, 35, 45))), inner);
         }
         if let Some(agent) = app.agents.get(app.selected).cloned() {
             if !agent.id.is_empty() && agent.id != app.chat_agent_id {
@@ -1514,37 +1675,40 @@ fn draw(frame: &mut Frame, app: &mut App) {
         app.load_selected_chat();
         // (3) REAL terminal pane: a portable-pty child running the selected harness.
         // Herdr-style: the PTY owns the pane; Ratatui only draws its VT cells.
-        let pane_area = outer[2];
+        let pane_area = inner_outer[2];
         let cols = pane_area.width.saturating_sub(2) as usize;
         let rows = pane_area.height.saturating_sub(2) as usize;
         if let Some(agent) = app.agents.get(app.selected).cloned() {
             app.ensure_pty(&agent, cols as u16, rows as u16, None);
         }
-        let pty_title = app.agents.get(app.selected).map(|a| format!(" terminal · {} · {} ", a.provider, a.model)).unwrap_or_else(|| " terminal · harness ".to_string());
-        let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(pty_title);
         app.pty_pane_rect = Some(pane_area);
-        let inner = block.inner(pane_area);
-        frame.render_widget(block, pane_area);
+        let inner = ratatui::layout::Rect { x: pane_area.x + 1, y: pane_area.y + 1, width: pane_area.width.saturating_sub(2), height: pane_area.height.saturating_sub(2) };
+        frame.render_widget(
+            Paragraph::new("").style(Style::default().bg(Color::Rgb(20, 25, 35))),
+            pane_area,
+        );
         if let Some(pty) = &app.pty {
             if let Ok(vt) = pty.vt.lock() {
                 let screen = vt.screen();
                 for (r, line) in screen.visible_lines().enumerate() {
-                    if r >= ((rows) as usize) { break; }
+                    if r >= (rows) { break; }
                     let text = line.text();
                     if !text.trim().is_empty() {
-                        frame.render_widget(Paragraph::new(text), ratatui::layout::Rect::new(inner.x, inner.y + r as u16, inner.width, 1));
+                        frame.render_widget(Paragraph::new(text).style(Style::default().bg(Color::Rgb(20, 25, 35))), ratatui::layout::Rect::new(inner.x, inner.y + r as u16, inner.width, 1));
                     }
                 }
             }
         } else {
-            frame.render_widget(Paragraph::new("Starting PTY… select an agent (j/k).").style(Style::default().fg(Color::DarkGray)), inner);
+            let spinner = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"][app.spinner_frame % 10];
+            let cursor = if app.cursor_visible { "█" } else { " " };
+            frame.render_widget(Paragraph::new(format!("{} Starting PTY… select an agent (j/k). {}", spinner, cursor)).style(Style::default().fg(Color::DarkGray).bg(Color::Rgb(20, 25, 35))), inner);
         }
         // (4) profile/description tied to (3): shows selected agent + harness/model/effort switcher.
         app.load_profile_models();
         let mut detail: Vec<Line> = Vec::new();
         match app.agents.get(app.selected) {
             Some(agent) => {
-                detail.push(Line::from(Span::styled(agent_label(agent), Style::default().add_modifier(Modifier::BOLD))));
+                detail.push(Line::from(Span::styled(agent_label(agent), Style::default().add_modifier(Modifier::BOLD).fg(Color::White))));
                 detail.push(Line::from(agent.title.clone()));
                 detail.push(Line::from(""));
                 detail.push(Line::from(format!("role    {}", if agent.role.is_empty() { "-" } else { &agent.role })));
@@ -1556,7 +1720,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
                     detail.push(Line::from(format!("effort  {}", agent.reasoning_effort)));
                 }
                 detail.push(Line::from(""));
-                detail.push(Line::from(Span::styled("Harness / model / effort switcher (profile)", Style::default().add_modifier(Modifier::BOLD))));
+                detail.push(Line::from(Span::styled("Harness / model / effort switcher (profile)", Style::default().add_modifier(Modifier::BOLD).fg(Color::Yellow))));
                 detail.push(Line::from(format!("Current: {}/{} · effort {}", agent.provider, agent.model, if agent.reasoning_effort.is_empty() { "default" } else { agent.reasoning_effort.as_str() })));
                 detail.push(Line::from(Span::styled("Click/right-click this pane or use j/k, then Enter/leader m to apply next choice.", Style::default().fg(Color::DarkGray))));
                 if app.profile_models.is_empty() {
@@ -1564,7 +1728,7 @@ fn draw(frame: &mut Frame, app: &mut App) {
                 } else {
                     for (i, (p, m, d)) in app.profile_models.iter().enumerate().take(12) {
                         let marker = if i == app.profile_field { "› " } else { "  " };
-                        let style = if i == app.profile_field { Style::default().add_modifier(Modifier::BOLD).bg(Color::DarkGray) } else { Style::default() };
+                        let style = if i == app.profile_field { Style::default().add_modifier(Modifier::BOLD).bg(Color::DarkGray).fg(Color::White) } else { Style::default().fg(Color::White) };
                         detail.push(Line::from(Span::styled(format!("{marker}{} / {} {}", p, m, d), style)));
                     }
                 }
@@ -1573,18 +1737,72 @@ fn draw(frame: &mut Frame, app: &mut App) {
             }
             None => detail.push(Line::from("No seat selected.")),
         }
-        frame.render_widget(Paragraph::new(detail).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" agent ")), outer[3]);
+        frame.render_widget(
+            Paragraph::new(detail).style(Style::default().bg(Color::Rgb(30, 30, 40))),
+            inner_outer[3],
+        );
     }
 
     if lobby {
         // The lobby is the butler's room: chat (default) or raw PTY harness (toggle with Leader+t).
         let butler = app.all_agents.iter().find(|agent| agent.scope == "building" || agent.role == "butler" || agent.name.eq_ignore_ascii_case("butler") || (!agent.id.is_empty() && agent.id == app.chat_agent_id)).cloned();
-        // Lobby: no icon gutter (page rail) — only office mode has it. Chat + offices side by side.
-        let lobby_outer = Layout::default().direction(Direction::Horizontal).constraints([
-            Constraint::Percentage(75),
-            Constraint::Percentage(25),
+        // Lobby now has icon gutter (page rail) showing bottom options: settings, marketplace, help
+        let _lobby_outer = Layout::default().direction(Direction::Horizontal).constraints([
+            Constraint::Percentage(8),   // icon gutter / rail - wider
+            Constraint::Percentage(92),  // chat + offices
         ]).split(body[0]);
-        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(lobby_outer[0]);
+        
+        // Draw single outer border for the entire lobby area
+        let lobby_border = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Plain);
+        frame.render_widget(lobby_border, body[0]);
+        
+        // Inner areas (inset by 1 for border)
+        let inner_lobby = Layout::default().direction(Direction::Horizontal).constraints([
+            Constraint::Percentage(8),
+            Constraint::Percentage(92),
+        ]).split({
+            let mut r = body[0];
+            r.x += 1;
+            r.y += 1;
+            r.width = r.width.saturating_sub(2);
+            r.height = r.height.saturating_sub(2);
+            r
+        });
+
+        // Icon gutter: bottom options only (settings, marketplace, help) - enhanced with box drawing
+        let mut rail_lines: Vec<Line> = Vec::new();
+        // Empty space at top
+        rail_lines.push(Line::from(Span::styled("      ", Style::default())));
+        rail_lines.push(Line::from(Span::styled("      ", Style::default())));
+        // Settings
+        rail_lines.push(Line::from(Span::styled(" ┌─┐ ", Style::default().fg(Color::DarkGray))));
+        rail_lines.push(Line::from(Span::styled(" ⚙ ", Style::default().fg(Color::DarkGray))));
+        rail_lines.push(Line::from(Span::styled(" └─┘ ", Style::default().fg(Color::DarkGray))));
+        // Marketplace
+        rail_lines.push(Line::from(Span::styled(" ┌─┐ ", Style::default().fg(Color::DarkGray))));
+        rail_lines.push(Line::from(Span::styled(" 🏪 ", Style::default().fg(Color::DarkGray))));
+        rail_lines.push(Line::from(Span::styled(" └─┘ ", Style::default().fg(Color::DarkGray))));
+        // Help
+        rail_lines.push(Line::from(Span::styled(" ┌─┐ ", Style::default().fg(Color::DarkGray))));
+        rail_lines.push(Line::from(Span::styled(" ❓ ", Style::default().fg(Color::DarkGray))));
+        rail_lines.push(Line::from(Span::styled(" └─┘ ", Style::default().fg(Color::DarkGray))));
+        frame.render_widget(
+            Paragraph::new(rail_lines).style(Style::default().bg(Color::Rgb(30, 30, 40))),
+            inner_lobby[0],
+        );
+
+        let targets = app.lobby_targets();
+        let chat_outer = if targets.is_empty() {
+            Layout::default().direction(Direction::Horizontal).constraints([
+                Constraint::Percentage(100),
+            ]).split(inner_lobby[1])
+        } else {
+            Layout::default().direction(Direction::Horizontal).constraints([
+                Constraint::Percentage(75),
+                Constraint::Percentage(25),
+            ]).split(inner_lobby[1])
+        };
+        let chat_layout = Layout::default().direction(Direction::Vertical).constraints([Constraint::Min(3)]).split(chat_outer[0]);
         if app.butler_pty_mode {
             // Raw PTY harness mode.
             let pane_area = chat_layout[0];
@@ -1596,71 +1814,99 @@ fn draw(frame: &mut Frame, app: &mut App) {
                 let cwd = if ws.exists() { Some(ws) } else { None };
                 app.ensure_pty(&agent, cols as u16, rows as u16, cwd);
             }
-            let pty_title = butler.as_ref().map(|a| format!(" chat · butler · {} · {}  [PTY] (Leader+t to switch) ", a.provider, a.model)).unwrap_or_else(|| " chat · butler · harness ".to_string());
-            let block = Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(pty_title);
             app.pty_pane_rect = Some(pane_area);
-            let inner = block.inner(pane_area);
-            frame.render_widget(block, pane_area);
+            let inner = ratatui::layout::Rect { x: pane_area.x + 1, y: pane_area.y + 1, width: pane_area.width.saturating_sub(2), height: pane_area.height.saturating_sub(2) };
+            frame.render_widget(
+                Paragraph::new("").style(Style::default().bg(Color::Rgb(20, 25, 35))),
+                pane_area,
+            );
             if let Some(pty) = &app.pty {
                 if let Ok(vt) = pty.vt.lock() {
                     let screen = vt.screen();
                     for (r, line) in screen.visible_lines().enumerate() {
-                        if r >= (rows as usize) { break; }
+                        if r >= rows { break; }
                         let text = line.text();
                         if !text.trim().is_empty() {
-                            frame.render_widget(Paragraph::new(text), ratatui::layout::Rect::new(inner.x, inner.y + r as u16, inner.width, 1));
+                            frame.render_widget(Paragraph::new(text).style(Style::default().bg(Color::Rgb(20, 25, 35))), ratatui::layout::Rect::new(inner.x, inner.y + r as u16, inner.width, 1));
                         }
                     }
                 }
             } else {
-                frame.render_widget(Paragraph::new("Starting PTY…").style(Style::default().fg(Color::DarkGray)), inner);
+                frame.render_widget(Paragraph::new("Starting PTY…").style(Style::default().fg(Color::DarkGray).bg(Color::Rgb(20, 25, 35))), inner);
             }
         } else {
-            // Chat messages mode with composer.
+            // Chat messages mode with composer - improved design like Claude/OMP
             let mut chat: Vec<Line> = Vec::new();
             if let Some(agent) = butler.as_ref() {
-                chat.push(Line::from(Span::styled(format!("{} · {} · {} / {}", agent_label(agent), agent.role, agent.provider, agent.model), Style::default().add_modifier(Modifier::BOLD))));
-                chat.push(Line::from(Span::styled("Teach Butler about you, your business, work, and environment.", Style::default().fg(Color::DarkGray))));
+                chat.push(Line::from(Span::styled(
+                    format!("┌─ {} · {} · {} / {} ─┐", agent_label(agent), agent.role, agent.provider, agent.model),
+                    Style::default().fg(Color::DarkGray)
+                )));
+                chat.push(Line::from(Span::styled("│ Teach Butler about you, your business, work, and environment. │", Style::default().fg(Color::DarkGray))));
+                chat.push(Line::from(Span::styled("└──────────────────────────────────────────────────────────────┘", Style::default().fg(Color::DarkGray))));
                 chat.push(Line::from(""));
             }
             if app.chat_messages.is_empty() {
-                chat.push(Line::from(Span::styled("No messages yet. Type below and press Enter.", Style::default().fg(Color::DarkGray))));
+                chat.push(Line::from(Span::styled("  No messages yet. Type below and press Enter.", Style::default().fg(Color::DarkGray))));
             } else {
-                for (role, text) in app.chat_messages.iter().rev().take(12).rev() {
-                    let who = if role == "user" { "you" } else { "butler" };
-                    let style = if role == "user" { Style::default().fg(Color::Cyan) } else { Style::default().fg(Color::White) };
-                    chat.push(Line::from(vec![Span::styled(format!("{who}: "), Style::default().fg(Color::DarkGray)), Span::styled(text.clone(), style)]));
+                for (_idx, (role, text)) in app.chat_messages.iter().rev().take(12).rev().enumerate() {
+                    let is_user = role == "user";
+                    let (prefix, bubble_color, text_color) = if is_user {
+                        ("┌─ you ", Color::Cyan, Color::Cyan)
+                    } else {
+                        ("┌─ butler ", Color::Green, Color::White)
+                    };
+                    chat.push(Line::from(Span::styled(format!("{}─┐", prefix), Style::default().fg(bubble_color))));
+                    // Wrap long messages
+                    let wrapped: Vec<String> = text.as_str().chars().collect::<Vec<_>>().chunks(70).map(|c| c.iter().collect::<String>()).collect::<Vec<_>>();
+                    for (li, line) in wrapped.iter().enumerate() {
+                        let side = if li == 0 { "│" } else { "│" };
+                        let end = if li == wrapped.len() - 1 { "└─┘" } else { "" };
+                        chat.push(Line::from(Span::styled(format!("{} {} {}", side, line, end), Style::default().fg(text_color))));
+                    }
+                    chat.push(Line::from(""));
                 }
                 if app.butler_reply_pending {
-                    chat.push(Line::from(Span::styled("butler: …", Style::default().fg(Color::DarkGray))));
+                    let spinner = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"][app.spinner_frame % 10];
+                    chat.push(Line::from(Span::styled(format!("┌─ butler {}─┐", spinner), Style::default().fg(Color::Green))));
+                    chat.push(Line::from(Span::styled("│ thinking…  │", Style::default().fg(Color::DarkGray))));
+                    chat.push(Line::from(Span::styled("└────────────┘", Style::default().fg(Color::Green))));
+                    chat.push(Line::from(""));
                 }
             }
-            chat.push(Line::from(""));
-            chat.push(Line::from(vec![Span::styled("> ", Style::default().fg(Color::Yellow)), Span::styled(app.lobby_input.clone(), Style::default().fg(Color::White)), Span::styled("█", Style::default().fg(Color::DarkGray))]));
-            frame.render_widget(Paragraph::new(chat).block(Block::default().borders(Borders::ALL).border_type(ratatui::widgets::BorderType::Rounded).title(" chat · butler  (Leader+t for PTY harness) ")).wrap(ratatui::widgets::Wrap { trim: true }), chat_layout[0]);
+            // Composer with animated cursor
+            let cursor = if app.cursor_visible { "█" } else { " " };
+            chat.push(Line::from(Span::styled("┌─ composer ────────────────────────────────────────────────────┐", Style::default().fg(Color::DarkGray))));
+            chat.push(Line::from(Span::styled(format!("│ > {}{} │", app.lobby_input, cursor), Style::default().fg(Color::White))));
+            chat.push(Line::from(Span::styled("└──────────────────────────────────────────────────────────────┘", Style::default().fg(Color::DarkGray))));
+            let pane_area = chat_layout[0];
+            frame.render_widget(
+                Paragraph::new(chat)
+                    .style(Style::default().bg(Color::Rgb(20, 25, 35)))
+                    .wrap(ratatui::widgets::Wrap { trim: true }),
+                pane_area,
+            );
         }
 
-        let mut offices: Vec<Line> = Vec::new();
-        for (index, (_, label, headcount)) in app.lobby_targets().iter().enumerate() {
-            let marker = if index == app.lobby_selected { "› " } else { "  " };
-            let style = if index == app.lobby_selected {
-                Style::default().add_modifier(Modifier::BOLD)
-            } else {
-                Style::default()
-            };
-            offices.push(Line::from(Span::styled(
-                format!("{marker}{label}  ({headcount})"),
-                style,
-            )));
+        if !targets.is_empty() && chat_outer.len() > 1 {
+            let mut offices: Vec<Line> = Vec::new();
+            for (index, (_, label, headcount)) in targets.iter().enumerate() {
+                let marker = if index == app.lobby_selected { "› " } else { "  " };
+                let style = if index == app.lobby_selected {
+                    Style::default().add_modifier(Modifier::BOLD).fg(Color::Yellow)
+                } else {
+                    Style::default().fg(Color::White)
+                };
+                offices.push(Line::from(Span::styled(
+                    format!("{marker}{label}  ({headcount})"),
+                    style,
+                )));
+            }
+            frame.render_widget(
+                Paragraph::new(offices).style(Style::default().bg(Color::Rgb(30, 30, 40))),
+                chat_outer[1],
+            );
         }
-        if offices.is_empty() {
-            offices.push(Line::from("No offices yet."));
-        }
-        let offices_block = Block::default()
-            .borders(Borders::ALL)
-            .border_type(ratatui::widgets::BorderType::Rounded)
-            .title(" offices ");
-        frame.render_widget(Paragraph::new(offices).block(offices_block), lobby_outer[1]);
     }
     if false {
     // legacy right pane (now in 3-pane above)
@@ -1774,24 +2020,48 @@ fn draw(frame: &mut Frame, app: &mut App) {
         let current = app.selected.min(app.agents.len() - 1);
         format!(" {} agents · {} ", app.agents.len(), app.agents[current].name)
     };
+    let lobby = app.office_filter.as_deref() == Some("building");
     let hints = if app.prefix {
-        "LEADER · f floors · a all · l lobby · c connect · i account · w window · s split · q quit".to_string()
+        let mut opts = vec![
+            "f floors", "a all", "l lobby", "c connect", "i account", "w window", "s split", "r refresh", "q quit",
+        ];
+        if lobby {
+            opts.insert(0, "t pty/chat");
+        }
+        if !lobby && !app.agents.is_empty() {
+            opts.insert(0, "o tasks");
+        }
+        // Rail options
+        if !lobby {
+            opts.push("p pin");
+            opts.push("M more");
+            opts.push("Enter open rail");
+        }
+        format!(" LEADER  {}  ·  Esc cancel ", opts.join("  ·  "))
     } else if let Some(session) = &app.session {
         format!(
-            "{} · leader=ctrl+space · j/k motion · f floors · w window · s split · r refresh · q quit ",
-            session.email
+            "{} · leader=ctrl+space · j/k motion · f floors · w window · s split · r refresh · q quit{} ",
+            session.email,
+            if !lobby { " · p pin · M more" } else { "" }
         )
     } else {
-        "leader=ctrl+space · j/k motion · f floors · q quit ".to_string()
+        " leader=ctrl+space · j/k motion · f floors · q quit ".to_string()
     };
     let status = Paragraph::new(Line::from(vec![
         Span::styled(summary, Style::default().bg(Color::DarkGray).fg(Color::White)),
-        Span::styled(format!("{hints:>60}"), Style::default().fg(Color::DarkGray)),
+        Span::styled(if app.prefix { " ".to_string() } else { String::new() }, Style::default().fg(Color::DarkGray)),
+        Span::styled(
+            hints,
+            if app.prefix {
+                Style::default().bg(Color::Blue).fg(Color::White).add_modifier(Modifier::BOLD)
+            } else {
+                Style::default().fg(Color::DarkGray)
+            },
+        ),
     ]))
-    .style(Style::default().bg(Color::DarkGray));
-    frame.render_widget(status, outer[2]);
+    .style(if app.prefix { Style::default().bg(Color::Blue) } else { Style::default().bg(Color::DarkGray) });
+    frame.render_widget(status, outer[3]);
 }
-
 /// `name@office` for an office seat, `name@building` for the butler, a bare name
 /// while employments are not stored yet.
 fn agent_label(agent: &AgentRow) -> String {
@@ -1932,6 +2202,12 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 let _ = std::fs::write(&flag, "1");
             }
         }
+        // Animation tick
+        app.cursor_frame = app.cursor_frame.wrapping_add(1);
+        app.spinner_frame = app.spinner_frame.wrapping_add(1);
+        if app.cursor_frame % 30 == 0 {
+            app.cursor_visible = !app.cursor_visible;
+        }
         if event::poll(Duration::from_millis(200))? {
             let event = event::read()?;
             if let Event::Mouse(mouse) = event {
@@ -2025,7 +2301,10 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                         KeyCode::Char('t') => { if app.office_filter.as_deref() == Some("building") { app.butler_pty_mode = !app.butler_pty_mode; } else { app.terminal_pct = (app.terminal_pct + 5).min(80); } }
                         KeyCode::Char('.') => { app.terminal_pct = (app.terminal_pct + 5).min(80); }
                         KeyCode::Char(',') => { app.terminal_pct = app.terminal_pct.saturating_sub(5).max(20); }
-                        KeyCode::Enter => { if app.office_filter.as_deref() == Some("building") { app.open_lobby_selection(); } }
+                        KeyCode::Char('p') => { if !app.rail_pinned.contains(&app.rail_page) { app.rail_pinned.push(app.rail_page); } else { app.rail_pinned.retain(|p| *p != app.rail_page); } }
+                        KeyCode::Char('M') => { app.rail_more_open = !app.rail_more_open; }
+                        KeyCode::Enter if app.office_filter.as_deref() == Some("building") => { app.open_lobby_selection(); }
+                        KeyCode::Enter => { app.rail_page = match app.rail_page { RailPage::Agents => RailPage::Agents, _ => app.rail_page }; }
                         _ => {}
                     }
                     continue;
@@ -2063,11 +2342,41 @@ fn run_loop(terminal: &mut Terminal<CrosstermBackend<std::io::Stdout>>, app: &mu
                 }
                 // Bare motions for navigation only when no PTY is active.
                 if app.pty.is_none() {
+                    let lobby = app.office_filter.as_deref() == Some("building");
                     match key.code {
-                        KeyCode::Char('j') | KeyCode::Down => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(1); } else { app.table_next(); } }
-                        KeyCode::Char('k') | KeyCode::Up => { if app.office_filter.as_deref() == Some("building") { app.move_lobby_selection(-1); } else { app.table_previous(); } }
+                        KeyCode::Char('j') | KeyCode::Down => { 
+                            if lobby { 
+                                app.move_lobby_selection(1); 
+                            } else if app.rail_more_open { 
+                                app.rail_more_selected = (app.rail_more_selected + 1).min(3); 
+                            } else { 
+                                app.table_next(); 
+                            } 
+                        }
+                        KeyCode::Char('k') | KeyCode::Up => { 
+                            if lobby { 
+                                app.move_lobby_selection(-1); 
+                            } else if app.rail_more_open { 
+                                app.rail_more_selected = app.rail_more_selected.saturating_sub(1); 
+                            } else { 
+                                app.table_previous(); 
+                            } 
+                        }
                         KeyCode::Char('h') | KeyCode::Left => { app.table_previous(); }
-                        KeyCode::Char('l') => { if app.office_filter.as_deref() == Some("building") { app.table_next(); } else { app.table_next(); } }
+                        KeyCode::Char('l') => { if lobby { app.table_next(); } else { app.table_next(); } }
+                        KeyCode::Enter => { if !lobby && !app.rail_more_open { 
+                            app.rail_page = match app.rail_page { 
+                                RailPage::Agents => RailPage::Agents, 
+                                RailPage::Routines => RailPage::Routines, 
+                                RailPage::Workflows => RailPage::Workflows, 
+                                RailPage::Tasks => RailPage::Tasks, 
+                                RailPage::Schedule => RailPage::Schedule, 
+                                RailPage::Usage => RailPage::Usage, 
+                                RailPage::Marketplace => RailPage::Marketplace, 
+                                RailPage::Help => RailPage::Help, 
+                                RailPage::Settings => RailPage::Settings 
+                            }; 
+                        } }
                         _ => {}
                     }
                 }

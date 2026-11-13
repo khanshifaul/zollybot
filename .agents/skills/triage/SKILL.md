@@ -171,7 +171,7 @@ of evidence.
   evidence is the reporter, Reach is 0 or 1.
 - **Cost** counts these surfaces: backend, main and preload, IPC
   contracts, renderer with `packages/ui` (desktop and web), mobile,
-  `apps/auth-api`, and Signal. New i18n keys and their translations do
+  `account service`, and Signal. New i18n keys and their translations do
   not add cost.
 
 **Value score** = Impact + Reach + Fit + Cost, from 0 to 12. It answers
