@@ -1,0 +1,12 @@
+# Stages the newest release, or stops ZollyBot, moves the staged release into place and starts ZollyBot
+# again, when an owner, an admin or a permitted member asks for it in Server Settings > Updates.
+[Unit]
+Description=Update ZollyBot on request
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/ZollyBot/hosted/zollybot-hosted-update request
+# A download and an apply: the limits of zollybot-update.service and zollybot-update-apply.service.
+TimeoutStartSec=45min

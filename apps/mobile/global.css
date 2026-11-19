@@ -1,0 +1,123 @@
+@import "tailwindcss";
+@import "uniwind";
+
+@import "heroui-native/styles";
+
+@import "@zollybot/brand/tokens.css";
+@import "@zollybot/brand/tokens-native.css";
+
+@theme inline {
+  --color-sheet: var(--zollybot-bg-sheet);
+  --color-grouped: var(--zollybot-bg-grouped);
+  --color-grouped-secondary: var(--zollybot-text-grouped-secondary);
+  --color-grouped-border: var(--zollybot-border-grouped);
+  --radius-grouped: var(--zollybot-radius-grouped);
+  --color-canvas: var(--zollybot-bg-native-canvas);
+  --color-sidebar: var(--zollybot-bg-native-sidebar);
+  --color-control: var(--zollybot-bg-control);
+  --color-control-active: var(--zollybot-bg-control-active);
+  --color-raised: var(--zollybot-bg-surface-raised);
+  --color-text-secondary: var(--zollybot-text-secondary);
+  --color-text-dim: var(--zollybot-text-dim);
+  --color-accent-text: var(--zollybot-accent-text);
+  --color-success-text: var(--zollybot-success-text);
+  --color-warning-text: var(--zollybot-warning-text);
+  --color-danger-text: var(--zollybot-danger-text);
+  --color-brand-logo: var(--zollybot-logo-production);
+  --color-action: var(--zollybot-action);
+  --color-action-foreground: var(--zollybot-action-foreground);
+  --color-drawer-scrim: var(--zollybot-drawer-scrim);
+  --color-scroll-edge-overlay: var(--zollybot-scroll-edge-overlay);
+
+  --text-display: 2rem;
+  --text-display--line-height: 2.375rem;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.75rem;
+  --text-heading: 1.5rem;
+  --text-heading--line-height: 1.875rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.125rem;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+
+  --tracking-zollybot-tight: var(--zollybot-tracking-tight);
+  --tracking-zollybot-wide: var(--zollybot-tracking-wide);
+}
+
+@layer theme {
+  :root {
+    color-scheme: light dark;
+
+    /* uniwind reads theme values only from @variant blocks, so a plain :root alias
+     * loses to HeroUI's own near-black dark --background. */
+    @variant dark {
+      --background: var(--zollybot-bg-native-canvas);
+      /* Only the Android menu draws on --overlay. HeroUI's light value is already #ffffff. */
+      --overlay: var(--zollybot-bg-surface-raised);
+    }
+
+    /* HeroUI consumes these aliases; ZollyBot tokens remain the source of truth. */
+    --foreground: var(--zollybot-text-primary);
+    --surface: var(--zollybot-bg-surface);
+    --surface-foreground: var(--zollybot-text-primary);
+    --surface-secondary: var(--zollybot-bg-control);
+    --surface-secondary-foreground: var(--zollybot-text-primary);
+    --surface-tertiary: var(--zollybot-bg-surface-raised);
+    --surface-tertiary-foreground: var(--zollybot-text-primary);
+    --overlay-foreground: var(--zollybot-text-primary);
+    --backdrop: var(--zollybot-bg-overlay);
+    --muted: var(--zollybot-text-muted);
+    --default: var(--zollybot-bg-control);
+    --default-foreground: var(--zollybot-text-primary);
+    --accent: var(--zollybot-accent);
+    --accent-foreground: var(--zollybot-text-on-accent);
+    --success: var(--zollybot-success);
+    --success-foreground: var(--zollybot-text-on-status);
+    --warning: var(--zollybot-warning);
+    --warning-foreground: var(--zollybot-text-on-status);
+    --danger: var(--zollybot-danger);
+    --danger-foreground: var(--zollybot-text-on-accent);
+    --border: var(--zollybot-border);
+    --separator: var(--zollybot-border-strong);
+    --focus: var(--zollybot-accent);
+    --link: var(--zollybot-accent-text);
+    --field-background: var(--zollybot-bg-control);
+    --field-foreground: var(--zollybot-text-primary);
+    --field-placeholder: var(--zollybot-text-muted);
+    --field-border: var(--zollybot-border-strong);
+
+    /* A 4 pt base produces the 8 / 12 / 16 px radius family used on desktop. */
+    --radius: 0.25rem;
+    --field-radius: 0.75rem;
+    --surface-shadow: var(--zollybot-shadow-card);
+    --overlay-shadow: var(--zollybot-shadow-overlay);
+    --field-shadow: 0 0 0 0 transparent inset;
+  }
+}
+
+/* Inter is the desktop and web font. The expo-font plugin in app.json embeds it as one family, so
+ * `fontWeight` picks the face. A build without the files falls back to the system font. HeroUI
+ * reads --font-normal to --font-bold. */
+@media ios {
+  :root {
+    --font-sans: Inter;
+    --font-normal: Inter;
+    --font-medium: Inter;
+    --font-semibold: Inter;
+    --font-bold: Inter;
+    --font-mono: ui-monospace;
+  }
+}
+
+@media android {
+  :root {
+    --font-sans: Inter;
+    --font-normal: Inter;
+    --font-medium: Inter;
+    --font-semibold: Inter;
+    --font-bold: Inter;
+    --font-mono: monospace;
+  }
+}

@@ -1,0 +1,118 @@
+/* Chat action card: the shell of a chat record the person can act on. Variants add a body. */
+
+/* Keyboard focus is a muted ring: an accent ring looks like a selection here. The same weight as
+ * the accent outline rule in auth.css, which loads earlier. */
+.chat-action-card :is(button, input, textarea):focus-visible {
+  outline: 0;
+}
+
+.chat-action-card .ui-button:focus-visible {
+  box-shadow: 0 0 0 1px var(--zollybot-text-muted);
+}
+
+.chat-action-card.conversation-interaction-card {
+  min-width: min(100%, 320px);
+}
+
+.chat-action-card {
+  display: grid;
+  width: fit-content;
+  max-width: min(100%, 520px);
+  gap: var(--zollybot-space-3);
+}
+
+.chat-action-card-header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--zollybot-space-2);
+}
+
+.chat-action-card-icon {
+  display: inline-flex;
+  width: var(--zollybot-control-md);
+  height: var(--zollybot-control-md);
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--zollybot-radius-pill);
+  background: var(--zollybot-accent);
+  color: var(--zollybot-text-on-accent);
+}
+
+.chat-action-card-icon svg {
+  width: var(--zollybot-icon-md);
+  height: var(--zollybot-icon-md);
+}
+
+.chat-action-card-heading {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
+
+.chat-action-card-eyebrow {
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+}
+
+.chat-action-card-title {
+  overflow: hidden;
+  margin: 0;
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-lg);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-action-card-open svg {
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+}
+
+.chat-action-card-footer {
+  display: flex;
+  min-height: var(--zollybot-leading-md);
+  align-items: center;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
+}
+
+/* Without a status the footer holds only its empty live region, so it takes no space. */
+.chat-action-card-footer-empty {
+  min-height: 0;
+  margin-top: calc(-1 * var(--zollybot-space-3));
+}
+
+.chat-action-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zollybot-space-1-5);
+}
+
+.chat-action-card-status svg {
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+}
+
+.chat-action-card-footer-action {
+  margin-inline-start: auto;
+}
+
+.chat-action-card-error {
+  color: var(--zollybot-danger-text);
+}
+
+.chat-action-card-removed .chat-action-card-title {
+  color: var(--zollybot-text-muted);
+  text-decoration: line-through;
+}
+
+/* Open points to the end side. */
+:dir(rtl) .chat-action-card-open svg[class~="lucide-chevron-right"] {
+  transform: scaleX(-1);
+}

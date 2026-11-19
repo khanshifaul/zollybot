@@ -1,0 +1,455 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to upload assets to (defaults to the release event tag)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
+
+jobs:
+  meta:
+    name: Resolve release metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+        with:
+          install: none
+
+      - name: Resolve version
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${RELEASE_TAG}"
+          version="${tag#v}"
+          pkg_version="$(bun -p 'require("./package.json").version')"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$pkg_version" >> "$GITHUB_OUTPUT"
+          echo "Release tag: $tag"
+          echo "Package version: $pkg_version"
+
+  desktop-linux-x64:
+    name: Desktop Linux x64
+    needs: meta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Install Linux build dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config curl git python3 python3-jinja2 python3-setuptools \
+            clang libclang-dev gcc-14 g++-14 \
+            libcap-dev libcurl4-openssl-dev libdrm-dev libevdev-dev libgbm-dev libminiupnpc-dev libnuma-dev \
+            libopus-dev libpulse-dev libssl-dev libsystemd-dev libudev-dev libva-dev libwayland-dev \
+            libx11-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev libxfixes-dev libxrandr-dev libxtst-dev \
+            rpm libarchive-tools
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Build Linux x64 distributables
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CC: gcc-14
+          CXX: g++-14
+          CMAKE_GENERATOR: Ninja
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun run dist:linux
+
+      - name: Collect artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          shopt -s nullglob
+          for f in out/desktop/dist/*.AppImage out/desktop/dist/*.deb out/desktop/dist/*.rpm out/desktop/dist/*.pacman \
+                   out/desktop/dist/*.snap out/desktop/dist/latest-linux.yml out/desktop/dist/*.blockmap; do
+            [ -e "$f" ] && cp "$f" release-assets/
+          done
+          (cd release-assets && sha256sum * > SHA256SUMS-linux-x64.txt) || true
+          ls -la release-assets || true
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(release-assets/*)
+          if [ ${#files[@]} -eq 0 ]; then echo "No Linux x64 artifacts found"; exit 1; fi
+          gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+  desktop-linux-arm64:
+    name: Desktop Linux arm64
+    needs: meta
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Install Linux build dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config curl git python3 \
+            clang libclang-dev \
+            libcap-dev libcurl4-openssl-dev libdrm-dev libevdev-dev libgbm-dev libminiupnpc-dev libnuma-dev \
+            libopus-dev libpulse-dev libssl-dev libsystemd-dev libudev-dev libva-dev libwayland-dev \
+            libx11-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev libxfixes-dev libxrandr-dev libxtst-dev \
+            rpm libarchive-tools
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Build Linux arm64 distributables
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CMAKE_GENERATOR: Ninja
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun run dist:linux:arm64
+
+      - name: Collect artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          shopt -s nullglob
+          for f in out/desktop/dist/*.AppImage out/desktop/dist/*.deb out/desktop/dist/*.rpm out/desktop/dist/*.pacman \
+                   out/desktop/dist/latest-linux-arm64.yml out/desktop/dist/*.blockmap; do
+            [ -e "$f" ] && cp "$f" release-assets/
+          done
+          (cd release-assets && sha256sum * > SHA256SUMS-linux-arm64.txt) || true
+          ls -la release-assets || true
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(release-assets/*)
+          if [ ${#files[@]} -eq 0 ]; then echo "No Linux arm64 artifacts found"; exit 1; fi
+          gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+  desktop-windows-x64:
+    name: Desktop Windows x64
+    needs: meta
+    runs-on: windows-2025
+    timeout-minutes: 90
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Build Windows x64 installer
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          bun run dist:win
+
+      - name: Collect artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release-assets | Out-Null
+          Get-ChildItem out/desktop/dist -File -Include *.exe,*.msi,*.zip,latest.yml,*.blockmap -ErrorAction SilentlyContinue |
+            Copy-Item -Destination release-assets
+          $files = Get-ChildItem release-assets -File
+          if ($files) {
+            $hashes = $files | ForEach-Object { "$( (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() )  $($_.Name)" }
+            $hashes | Set-Content -Encoding ascii release-assets/SHA256SUMS-windows-x64.txt
+          }
+          Get-ChildItem release-assets
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(release-assets/*)
+          if [ ${#files[@]} -eq 0 ]; then echo "No Windows artifacts found"; exit 1; fi
+          gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+  desktop-macos-arm64:
+    name: Desktop macOS arm64
+    needs: meta
+    runs-on: macos-14
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Build macOS arm64 distributables
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun run dist:mac
+
+      - name: Collect artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          shopt -s nullglob
+          for f in out/desktop/dist/*.dmg out/desktop/dist/*.zip out/desktop/dist/*.pkg \
+                   out/desktop/dist/latest-mac.yml out/desktop/dist/*.blockmap; do
+            [ -e "$f" ] && cp "$f" release-assets/
+          done
+          (cd release-assets && shasum -a 256 * > SHA256SUMS-macos-arm64.txt) || true
+          ls -la release-assets || true
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(release-assets/*)
+          if [ ${#files[@]} -eq 0 ]; then echo "No macOS arm64 artifacts found"; exit 1; fi
+          gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+  desktop-macos-x64:
+    name: Desktop macOS x64
+    needs: meta
+    runs-on: macos-15-intel
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Build macOS x64 distributables
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun run dist:mac
+
+      - name: Collect artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          shopt -s nullglob
+          for f in out/desktop/dist/*.dmg out/desktop/dist/*.zip out/desktop/dist/*.pkg \
+                   out/desktop/dist/latest-mac.yml out/desktop/dist/*.blockmap; do
+            [ -e "$f" ] && cp "$f" release-assets/
+          done
+          # Avoid clobbering arm64 manifest name; keep arch-specific copy.
+          if [ -f release-assets/latest-mac.yml ]; then mv release-assets/latest-mac.yml release-assets/latest-mac-x64.yml; fi
+          (cd release-assets && shasum -a 256 * > SHA256SUMS-macos-x64.txt) || true
+          ls -la release-assets || true
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(release-assets/*)
+          if [ ${#files[@]} -eq 0 ]; then echo "No macOS x64 artifacts found"; exit 1; fi
+          gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+  mobile-android:
+    name: Mobile Android
+    needs: meta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Free runner disk
+        shell: bash
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/local/share/boost /opt/hostedtoolcache/CodeQL || true
+          df -h "$GITHUB_WORKSPACE" || true
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+        with:
+          install: none
+
+      - name: Set up Java
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Tune Gradle memory
+        shell: bash
+        run: |
+          mkdir -p ~/.gradle
+          printf '%s\n' 'org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8' >> ~/.gradle/gradle.properties
+          printf '%s\n' 'org.gradle.workers.max=2' >> ~/.gradle/gradle.properties
+
+      - name: Build Android AAB
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_LOCAL_BUILD_ARTIFACT: ${{ runner.temp }}/zollybot-android-${{ needs.meta.outputs.version }}.aab
+          CI: "1"
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun run mobile:android:build:local
+
+      - name: Upload Android release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact="${RUNNER_TEMP}/zollybot-android-${{ needs.meta.outputs.version }}.aab"
+          if [ ! -f "$artifact" ]; then
+            echo "Android artifact not found at $artifact"
+            find . -name '*.aab' -o -name '*.apk' | head -20 || true
+            exit 1
+          fi
+          sha256sum "$artifact" > "${artifact}.sha256"
+          gh release upload "${RELEASE_TAG}" "$artifact" "${artifact}.sha256" --clobber --repo "$GITHUB_REPOSITORY"
+
+  mobile-ios:
+    name: Mobile iOS
+    needs: meta
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+        with:
+          install: none
+
+      - name: Select Xcode
+        shell: bash
+        run: |
+          if [ -d /Applications/Xcode_16.4.app ]; then sudo xcode-select --switch /Applications/Xcode_16.4.app/Contents/Developer; fi
+          xcodebuild -version || true
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build iOS IPA
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_LOCAL_BUILD_ARTIFACT: ${{ runner.temp }}/zollybot-ios-${{ needs.meta.outputs.version }}.ipa
+          CI: "1"
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun run mobile:ios:build:local
+
+      - name: Upload iOS release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact="${RUNNER_TEMP}/zollybot-ios-${{ needs.meta.outputs.version }}.ipa"
+          if [ ! -f "$artifact" ]; then
+            echo "iOS artifact not found at $artifact"
+            find . -name '*.ipa' | head -20 || true
+            exit 1
+          fi
+          shasum -a 256 "$artifact" > "${artifact}.sha256"
+          gh release upload "${RELEASE_TAG}" "$artifact" "${artifact}.sha256" --clobber --repo "$GITHUB_REPOSITORY"

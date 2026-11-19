@@ -1,0 +1,154 @@
+/*
+ * The mobile theme layer. Only apps/mobile imports this file. The desktop app and
+ * the web client have their own light layer, tokens-light.css, which a root
+ * attribute turns on; the public site is always dark.
+ *
+ * It cannot be folded into tokens.css. `@variant light` is not a Tailwind v4
+ * variant at all; uniwind registers it as a custom variant, so desktop and web
+ * would fail to compile the block. And `@variant dark` in stock Tailwind means
+ * `prefers-color-scheme: dark`, which would turn the public site light for anyone
+ * running a light system.
+ *
+ * The dark block repeats the base values from tokens.css instead of inheriting
+ * them, which looks like something to tidy up. It is not. uniwind hard-codes its
+ * theme list to ['light', 'dark'] and discovers a theme's variables only by
+ * reading `@variant` at-rules, so a name present in one block and absent from the
+ * other is a theme that cannot resolve it. uniwind notices, but only writes a red
+ * line to the console - it does not fail the build. Keep every value here equal to
+ * the base, so that mobile dark does not drift away from desktop.
+ */
+
+:root {
+  @variant light {
+    --zollybot-bg-canvas: #f5f5f7;
+    --zollybot-bg-native-canvas: #f5f5f7;
+    --zollybot-bg-native-sidebar: #ffffff;
+    --zollybot-bg-sidebar: #ffffff;
+    --zollybot-bg-surface: #ffffff;
+    --zollybot-bg-surface-raised: #f0f0f3;
+    --zollybot-bg-control: #e9e9ed;
+    --zollybot-bg-control-active: #dedee4;
+    --zollybot-bg-overlay: rgba(20, 20, 20, 0.28);
+    --zollybot-border: rgba(20, 20, 20, 0.1);
+    --zollybot-border-strong: rgba(20, 20, 20, 0.16);
+    --zollybot-text-primary: #141414;
+    --zollybot-text-secondary: rgba(20, 20, 20, 0.72);
+    --zollybot-text-muted: rgba(20, 20, 20, 0.64);
+    --zollybot-text-dim: rgba(20, 20, 20, 0.34);
+    --zollybot-text-on-accent: #ffffff;
+    --zollybot-text-on-light: #141414;
+    --zollybot-text-on-status: #07130c;
+    --zollybot-action: #141414;
+    --zollybot-action-foreground: #f2f2f2;
+    --zollybot-accent: #6960f1;
+    --zollybot-accent-text: #5b52df;
+    --zollybot-logo-production: #2dd4bf;
+    --zollybot-logo-eye: #042f2e;
+    --zollybot-success: #32a85d;
+    --zollybot-warning: #c58a23;
+    --zollybot-danger: #d85f58;
+    --zollybot-success-text: #1e6f3b;
+    --zollybot-warning-text: #865700;
+    --zollybot-danger-text: #b02a2f;
+    --zollybot-drawer-scrim: #000000;
+    --zollybot-scroll-edge-overlay: rgba(245, 245, 247, 0.46);
+    --zollybot-shadow-card: 0 1px 2px rgba(20, 20, 20, 0.05);
+    --zollybot-shadow-overlay: 0 12px 32px rgba(20, 20, 20, 0.12);
+
+    /* Not a colour, and identical in both themes. uniwind only ever learns a
+     * variable from a @variant block, so a token @theme inline reaches through
+     * var() has to be declared here or the utility resolves to nothing on native.
+     * These two back tracking-zollybot-tight and tracking-zollybot-wide. */
+    --zollybot-tracking-tight: -0.1px;
+    --zollybot-tracking-wide: 0.02em;
+    --zollybot-bg-sheet: #fcfcfc;
+    --zollybot-bg-grouped: #f2f2f2;
+    --zollybot-text-grouped-secondary: #69696e;
+    --zollybot-border-grouped: #dddddf;
+    --zollybot-radius-grouped: 16px;
+    --zollybot-bg-chrome-glass: rgba(250, 250, 252, 0.94);
+    --zollybot-border-chrome-glass: rgba(20, 20, 20, 0.1);
+    --zollybot-bg-chrome-blur: rgba(255, 255, 255, 0.55);
+    /* File references: the same hues as dark, darker so the name reads on a light surface. */
+    --zollybot-file-blue: #1f6fd1;
+    --zollybot-file-blue-soft: rgba(31, 111, 209, 0.12);
+    --zollybot-file-yellow: #865700;
+    --zollybot-file-yellow-soft: rgba(197, 138, 35, 0.14);
+    --zollybot-file-orange: #b55a1f;
+    --zollybot-file-orange-soft: rgba(181, 90, 31, 0.12);
+    --zollybot-file-teal: #1c7f92;
+    --zollybot-file-teal-soft: rgba(28, 127, 146, 0.12);
+    --zollybot-file-green: #1e6f3b;
+    --zollybot-file-green-soft: rgba(50, 168, 93, 0.14);
+    --zollybot-file-red: #b02a2f;
+    --zollybot-file-red-soft: rgba(216, 95, 88, 0.14);
+    --zollybot-file-pink: #a3478f;
+    --zollybot-file-pink-soft: rgba(163, 71, 143, 0.12);
+    --zollybot-file-default: #5b52df;
+    --zollybot-file-default-soft: rgba(91, 82, 223, 0.12);
+  }
+
+  @variant dark {
+    /* biome-ignore lint/suspicious/noDuplicateCustomProperties: Theme variants intentionally share semantic token names. */
+    --zollybot-bg-canvas: #1a1a1a;
+    --zollybot-bg-native-canvas: #141414;
+    --zollybot-bg-native-sidebar: #141414;
+    --zollybot-bg-sidebar: #1a1a1a;
+    --zollybot-bg-surface: #212121;
+    --zollybot-bg-surface-raised: #242424;
+    --zollybot-bg-control: #212121;
+    --zollybot-bg-control-active: #2a2a2a;
+    --zollybot-bg-overlay: rgba(26, 26, 26, 0.92);
+    --zollybot-border: rgba(255, 255, 255, 0.035);
+    --zollybot-border-strong: rgba(255, 255, 255, 0.045);
+    --zollybot-text-primary: #ffffff;
+    --zollybot-text-secondary: #dcdcdc;
+    --zollybot-text-muted: #979797;
+    --zollybot-text-dim: #6a6a6a;
+    --zollybot-text-on-accent: #ffffff;
+    --zollybot-text-on-light: #141414;
+    --zollybot-text-on-status: #07130c;
+    --zollybot-action: #f0f0f0;
+    --zollybot-action-foreground: #141414;
+    --zollybot-accent: #007cf7;
+    --zollybot-accent-text: #42a0ff;
+    --zollybot-logo-production: #2dd4bf;
+    --zollybot-logo-eye: #042f2e;
+    --zollybot-success: #31cf76;
+    --zollybot-warning: #ff9412;
+    --zollybot-danger: #fd2f3b;
+    --zollybot-success-text: #31cf76;
+    --zollybot-warning-text: #ff9412;
+    --zollybot-danger-text: #ff6069;
+    --zollybot-drawer-scrim: #000000;
+    --zollybot-scroll-edge-overlay: rgba(0, 0, 0, 0.72);
+    --zollybot-shadow-card: 0 0 0 transparent;
+    --zollybot-shadow-overlay: 0 12px 32px rgba(0, 0, 0, 0.48);
+    --zollybot-tracking-tight: -0.1px;
+    --zollybot-tracking-wide: 0.02em;
+    --zollybot-bg-sheet: #141414;
+    --zollybot-bg-grouped: #212121;
+    --zollybot-text-grouped-secondary: #96969b;
+    --zollybot-border-grouped: #333335;
+    --zollybot-radius-grouped: 16px;
+    --zollybot-bg-chrome-glass: rgba(38, 38, 40, 0.96);
+    --zollybot-border-chrome-glass: rgba(255, 255, 255, 0.08);
+    --zollybot-bg-chrome-blur: rgba(26, 26, 28, 0.62);
+    --zollybot-file-blue: #74b9ff;
+    --zollybot-file-blue-soft: rgba(116, 185, 255, 0.14);
+    --zollybot-file-yellow: #ff9412;
+    --zollybot-file-yellow-soft: rgba(255, 148, 18, 0.12);
+    --zollybot-file-orange: #f0a06a;
+    --zollybot-file-orange-soft: rgba(240, 160, 106, 0.14);
+    --zollybot-file-teal: #6bc7d9;
+    --zollybot-file-teal-soft: rgba(107, 199, 217, 0.14);
+    --zollybot-file-green: #31cf76;
+    --zollybot-file-green-soft: rgba(49, 207, 118, 0.12);
+    --zollybot-file-red: #fd2f3b;
+    --zollybot-file-red-soft: rgba(253, 47, 59, 0.16);
+    --zollybot-file-pink: #d98ac9;
+    --zollybot-file-pink-soft: rgba(217, 138, 201, 0.14);
+    --zollybot-file-default: #42a0ff;
+    --zollybot-file-default-soft: rgba(0, 124, 247, 0.14);
+  }
+}

@@ -1,0 +1,546 @@
+/* Interactive blocks an agent draws: confirm, choice, quick replies and form. Tokens only. */
+
+.ui-block-card {
+  display: flex;
+  max-width: 600px;
+  flex-direction: column;
+  gap: var(--zollybot-space-3);
+  border-color: var(--zollybot-border-strong);
+  background: var(--zollybot-bg-surface);
+  transition: border-color var(--zollybot-duration-slow) var(--zollybot-ease-out);
+}
+
+/* Only an open block warns: a closed one has nothing left to press. */
+.ui-block-card[data-danger][data-status="pending"] {
+  border-color: var(--zollybot-danger-border);
+}
+
+.ui-block-card[data-status="expired"],
+.ui-block-card[data-status="closed"] {
+  color: var(--zollybot-text-muted);
+}
+
+.ui-block-header {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--zollybot-space-3);
+}
+
+.ui-block-heading {
+  min-width: 0;
+}
+
+.ui-block-title {
+  margin: 0;
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-xl);
+  font-weight: var(--zollybot-weight-semibold);
+  line-height: var(--zollybot-leading-xl);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.ui-block-subtitle {
+  margin: var(--zollybot-space-0-5) 0 0;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
+}
+
+.ui-block-status[data-slot="badge"] {
+  flex: 0 0 auto;
+  gap: var(--zollybot-space-1-5);
+  border-radius: var(--zollybot-radius-pill);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-medium);
+}
+
+.ui-block-status svg {
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  flex: 0 0 auto;
+  stroke-width: var(--zollybot-icon-stroke);
+}
+
+.ui-block-body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--zollybot-space-3);
+}
+
+.ui-block-body:empty {
+  display: none;
+}
+
+/* The line a frozen block ends with. */
+/* One quiet line: the answer, or why there is none. The icon carries the color. */
+.ui-block-outcome {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--zollybot-space-2);
+  margin: 0;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
+}
+
+.ui-block-outcome[data-status="answered"] {
+  color: var(--zollybot-text-secondary);
+}
+
+.ui-block-outcome svg {
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  flex: 0 0 auto;
+}
+
+.ui-block-outcome-check {
+  color: var(--zollybot-success-text);
+}
+
+.ui-block-outcome-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The end of an open block: a failed answer and the skip button. */
+.ui-block-footer {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zollybot-space-2);
+}
+
+.ui-block-error {
+  min-width: 0;
+  flex: 1 1 auto;
+  margin: 0;
+  color: var(--zollybot-danger-text);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+  overflow-wrap: anywhere;
+}
+
+.ui-block-skip {
+  margin-inline-start: auto;
+}
+
+.ui-block-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--zollybot-space-2);
+}
+
+/* A block that answers itself has no Skip, so its last button, such as Cancel, sits at the far end. */
+.ui-block-actions-auto > button:last-of-type {
+  margin-inline-start: auto;
+}
+
+.ui-block-confirm-step {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ui-block-confirm-question {
+  padding: 0;
+  margin-bottom: var(--zollybot-space-2);
+  font-weight: var(--zollybot-weight-medium);
+}
+
+.ui-block-hint,
+.ui-block-counter,
+.ui-block-sending {
+  margin: 0;
+  color: var(--zollybot-text-dim);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+}
+
+.ui-block-sending {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zollybot-space-1-5);
+}
+
+/* Confirm */
+.ui-block-fields {
+  display: grid;
+  grid-template-columns: minmax(64px, max-content) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--zollybot-space-2) var(--zollybot-space-3);
+  margin: 0;
+  font-size: var(--zollybot-text-lg);
+}
+
+.ui-block-fields dt {
+  color: var(--zollybot-text-muted);
+}
+
+.ui-block-fields dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* A long draft stops at a fixed height. "Show all" under it opens the rest. */
+.ui-block-preview {
+  max-height: 16em;
+  overflow-y: auto;
+  padding: var(--zollybot-space-3);
+  border: 1px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-lg);
+}
+
+.ui-block-preview[data-expanded="true"] {
+  max-height: none;
+}
+
+/* A cut-off draft does not scroll, so the chat is the only part that scrolls. `clip` also stops
+   focus, find and selection from scrolling the box to a place that the user cannot scroll back from. */
+.ui-block-preview[data-clamped="true"] {
+  position: relative;
+  overflow: clip;
+}
+
+/* The fade over the last line shows that the draft goes on. The border stays. */
+.ui-block-preview[data-clamped="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2.5em;
+  background: linear-gradient(to bottom, transparent, var(--zollybot-bg-surface-raised));
+  pointer-events: none;
+}
+
+/* The control that opens the rest of a long draft sits under it, at the start of the line. */
+.ui-block-preview-toggle {
+  align-self: flex-start;
+  margin-top: calc(var(--zollybot-space-2) * -1);
+}
+
+.ui-block-preview-text {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* A button held to press. The fill grows from the left while it is held. */
+.ui-block-hold {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+
+.ui-block-hold-fill {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, currentColor 22%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--zollybot-duration-fast) var(--zollybot-ease-out);
+  pointer-events: none;
+}
+
+/* The hold fill grows from the start side. */
+:dir(rtl) .ui-block-hold-fill {
+  transform-origin: right;
+}
+
+.ui-block-hold[data-holding] .ui-block-hold-fill {
+  transform: scaleX(1);
+  transition: transform var(--ui-block-hold-duration) linear;
+}
+
+.ui-block-hold-label {
+  position: relative;
+}
+
+/* Choice */
+.ui-block-options {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-card);
+}
+
+.ui-block-option {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--zollybot-control-xs) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--zollybot-space-3);
+  padding: var(--zollybot-space-3);
+  cursor: pointer;
+  transition: background var(--zollybot-duration-fast) var(--zollybot-ease-out);
+}
+
+.ui-block-option + .ui-block-option {
+  border-top: 1px solid var(--zollybot-border-strong);
+}
+
+.ui-block-option:hover {
+  background: var(--zollybot-hover);
+}
+
+.ui-block-option[data-checked] {
+  background: var(--zollybot-question-option-soft);
+}
+
+.ui-block-option[data-disabled] {
+  cursor: default;
+}
+
+.ui-block-option[data-disabled]:not([data-checked]) {
+  opacity: 0.5;
+}
+
+.ui-block-option:focus-within {
+  outline: 2px solid var(--zollybot-border-focus);
+  outline-offset: -2px;
+}
+
+.ui-block-option .ui-block-option-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.ui-block-option-key {
+  display: grid;
+  width: var(--zollybot-control-xs);
+  height: var(--zollybot-control-xs);
+  place-items: center;
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface-raised);
+  color: var(--zollybot-text-muted);
+  font-family: var(--zollybot-font-sans);
+  font-size: var(--zollybot-text-sm);
+  font-weight: var(--zollybot-weight-semibold);
+}
+
+.ui-block-option[data-checked] .ui-block-option-key {
+  border-color: var(--zollybot-question-option);
+  background: var(--zollybot-question-option);
+  color: var(--zollybot-text-on-light);
+}
+
+.ui-block-option-label {
+  min-width: 0;
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-lg);
+  font-weight: var(--zollybot-weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.ui-block-option-meta {
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Quick replies */
+.ui-block-quick {
+  display: flex;
+  max-width: 600px;
+  flex-direction: column;
+  gap: var(--zollybot-space-2);
+}
+
+.ui-block-quick-title {
+  margin: 0;
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+}
+
+.ui-block-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--zollybot-space-2);
+}
+
+.ui-block-chip[data-faded] {
+  opacity: 0.35;
+}
+
+.ui-block-chip[data-chosen] {
+  border-color: var(--zollybot-accent);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-text-primary);
+  opacity: 1;
+}
+
+.ui-block-quick-text {
+  display: flex;
+  align-items: center;
+  gap: var(--zollybot-space-2);
+}
+
+.ui-block-quick-text > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Form */
+.ui-block-form-fields {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--zollybot-space-3);
+}
+
+.ui-block-field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zollybot-space-1-5);
+}
+
+.ui-block-field-label {
+  padding: 0;
+  margin-bottom: var(--zollybot-space-1-5);
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-md);
+}
+
+.ui-block-required {
+  margin-inline-start: var(--zollybot-space-0-5);
+  color: var(--zollybot-danger-text);
+}
+
+.ui-block-field-error {
+  margin: 0;
+  color: var(--zollybot-danger-text);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+}
+
+.ui-block-segmented {
+  display: flex;
+  gap: var(--zollybot-space-0-5);
+  padding: var(--zollybot-space-0-5);
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-surface-raised);
+}
+
+.ui-block-segment {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--zollybot-text-muted);
+}
+
+.ui-block-segment[aria-pressed="true"] {
+  background: var(--zollybot-bg-control-active);
+  color: var(--zollybot-text-primary);
+}
+
+/* An answered form that asked for a secret: a key before the title, and the answer as rows in one
+   inset group, not as disabled inputs. */
+.ui-block-header:has(> .ui-block-icon) {
+  align-items: center;
+}
+
+.ui-block-header:has(> .ui-block-icon) > .ui-block-heading {
+  flex: 1;
+}
+
+.ui-block-header:has(> .ui-block-icon) .ui-block-title {
+  font-size: var(--zollybot-text-lg);
+  line-height: var(--zollybot-leading-lg);
+}
+
+.ui-block-header:has(> .ui-block-icon) > .ui-block-status {
+  align-self: flex-start;
+}
+
+.ui-block-answer-rows {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  margin: 0;
+  border: 1px solid var(--zollybot-border-grouped);
+  border-radius: var(--zollybot-radius-lg);
+  background: var(--zollybot-bg-canvas);
+}
+
+.ui-block-answer-row {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--zollybot-space-4);
+  padding: var(--zollybot-space-2) var(--zollybot-space-3);
+  font-size: var(--zollybot-text-md);
+  line-height: var(--zollybot-leading-md);
+}
+
+.ui-block-answer-row + .ui-block-answer-row {
+  border-top: 1px solid var(--zollybot-border-grouped);
+}
+
+.ui-block-answer-row > dt {
+  flex: none;
+  color: var(--zollybot-text-muted);
+}
+
+.ui-block-answer-row > dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
+  text-align: end;
+}
+
+.ui-block-answer-value {
+  overflow-wrap: anywhere;
+}
+
+.ui-block-answer-hidden {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zollybot-space-1-5);
+  color: var(--zollybot-text-dim);
+  vertical-align: top;
+}
+
+.ui-block-answer-hidden > svg {
+  width: var(--zollybot-icon-sm);
+  height: var(--zollybot-icon-sm);
+  flex: none;
+  color: var(--zollybot-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-block-card,
+  .ui-block-option,
+  .ui-block-hold-fill {
+    transition: none;
+  }
+}

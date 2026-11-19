@@ -1,0 +1,2 @@
+- TUI: onboarding starts with language selector, then sign-in (desktop flow). Lands in Lobby with predefined Butler (no new-agent creation step); Butler can help create offices/agents/chores.
+- Office tasks: control-socket routes for office memory confirm/create/delete and office-tasks list/create/actions (skeleton dispatcher wired in server mode). Step-5 dispatcher/store/gates scaffolded.

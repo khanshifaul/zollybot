@@ -1,0 +1,123 @@
+/* Settings > Harnesses. The settings card and row classes do the layout; these rules add only what
+   they do not have. */
+
+.harness-settings-stack {
+  display: grid;
+  gap: var(--zollybot-space-6);
+}
+
+/* The select value is a block; the logo and the name center in it. */
+.harness-settings-select {
+  width: 168px;
+}
+
+.harness-settings-select .ui-select-value,
+.harness-settings-select-option {
+  display: flex;
+  align-items: center;
+  gap: var(--zollybot-space-2);
+}
+
+.harness-settings-logo-off {
+  opacity: 0.44;
+}
+
+.harness-settings-stack .ui-item-description.harness-settings-warning {
+  color: var(--zollybot-warning-text);
+}
+
+.harness-settings-stack .ui-item-description.harness-settings-error {
+  color: var(--zollybot-danger-text);
+}
+
+/* An account with two lines of text keeps its buttons on the title line. */
+.harness-settings-account.ui-item {
+  align-items: flex-start;
+}
+
+.harness-settings-account .ui-item-content {
+  gap: var(--zollybot-space-1);
+}
+
+.harness-settings-account .provider-picker-account-rename {
+  max-width: 280px;
+}
+
+/* The usage badge is a shared badge that opens the usage popover of the app. */
+.harness-settings-usage-badge {
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--zollybot-text-sm);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--zollybot-weight-medium);
+  line-height: var(--zollybot-leading-sm);
+}
+
+.harness-settings-usage-badge:focus-visible {
+  outline: 2px solid var(--zollybot-focus-ring);
+  outline-offset: 2px;
+}
+
+.harness-settings-progress {
+  max-width: 320px;
+}
+
+/* Models: one compact row for each model, with a scroll for the long lists of OpenCode. */
+.harness-settings-models.settings-modal-card {
+  max-height: 360px;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.harness-settings-models-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--zollybot-space-1) 0;
+  list-style: none;
+}
+
+.harness-settings-models-row {
+  display: flex;
+  align-items: center;
+  gap: var(--zollybot-space-2);
+  min-height: 32px;
+  padding: 0 var(--zollybot-space-3);
+}
+
+.harness-settings-models-row:hover {
+  background: var(--zollybot-bg-control-hover);
+}
+
+.harness-settings-models-name {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: var(--zollybot-space-2);
+  min-width: 0;
+}
+
+.harness-settings-models-name > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.harness-settings-models-name > :first-child {
+  flex: none;
+  max-width: 70%;
+}
+
+.harness-settings-models-id {
+  min-width: 0;
+  font-family: var(--zollybot-font-mono);
+}
+
+.harness-settings-models-empty {
+  display: block;
+  padding: var(--zollybot-space-3);
+}
+
+.harness-settings-models-error {
+  color: var(--zollybot-danger-text);
+}

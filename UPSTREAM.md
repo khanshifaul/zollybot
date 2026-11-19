@@ -1,0 +1,16 @@
+# Upstream
+
+- Source: https://github.com/khanshifaul/zollybot
+- Version: 0.63.0 (this checkout; upstream snapshot metadata below may lag)
+- Commit: 9539f15d1c0924b9922060b6f4090e00a950b5bb (2026-11-06)
+- Imported snapshot recorded: 2026-11-06, working tree only (no upstream git history in this repo).
+
+To compare against a later release, clone upstream and diff the working tree:
+
+```sh
+git clone --depth 1 https://github.com/khanshifaul/zollybot /tmp/zollybot
+diff -rq --exclude=.git /tmp/zollybot ~/Projects/zollybot | grep -v node_modules
+```
+
+The imported tree keeps ZollyBot's `LICENSE` and `NOTICE`. zollybot adds its own
+work on top; the licensing strategy for that combination is the owner's call.

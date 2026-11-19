@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <title>ZollyBot</title>
+  <rect width="240" height="240" fill="#2dd4bf"/>
+  <path d="M 120 61 Q 134 40 126 30" fill="none" stroke="#042f2e" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="126" cy="28" r="8" fill="#042f2e"/>
+  <rect x="48" y="80.0" width="24" height="36" rx="12" fill="#042f2e"/>
+  <rect x="168" y="80.0" width="24" height="36" rx="12" fill="#042f2e"/>
+  <rect x="52.0" y="63.0" width="136" height="114" rx="38" fill="#042f2e"/>
+  <circle cx="90" cy="110" r="14" fill="#2dd4bf"/>
+  <circle cx="150" cy="110" r="14" fill="#2dd4bf"/>
+  <path d="M 100 142 Q 120 157 140 142" fill="none" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZollyBot — governed agent offices</title>
+<style>
+  :root { --fg:#1b1b1b; --muted:#5b5b5b; --border:#e3e3e3; --surface:#f7f7f7; --accent:#0b5fff; }
+  * { box-sizing:border-box; }
+  body { font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--fg);
+         max-width:52rem; margin:0 auto; padding:4rem 1.25rem 6rem; }
+  header { margin-bottom:3.5rem; }
+  h1 { font-size:2.6rem; line-height:1.1; margin:0 0 .6rem; letter-spacing:-.02em; }
+  h2 { font-size:1.15rem; margin:2.75rem 0 .75rem; padding-bottom:.35rem; border-bottom:1px solid var(--border); }
+  h3 { font-size:1rem; margin:1.5rem 0 .4rem; }
+  p, li { color:var(--fg); }
+  .lead { font-size:1.15rem; color:var(--muted); margin:0; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.88em;
+         background:var(--surface); padding:.12rem .38rem; border-radius:4px; }
+  pre { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+        padding:1rem 1.1rem; overflow:auto; margin:.6rem 0 1rem; }
+  pre code { background:none; padding:0; font-size:.86rem; }
+  table { border-collapse:collapse; width:100%; font-size:.95rem; margin:.5rem 0 1rem; }
+  th, td { text-align:left; padding:.55rem .6rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { font-weight:600; color:var(--muted); font-size:.85rem; text-transform:uppercase; letter-spacing:.03em; }
+  a { color:var(--accent); }
+  .note { border-left:3px solid var(--border); padding:.2rem 0 .2rem 1rem; color:var(--muted); }
+  footer { margin-top:4rem; padding-top:1rem; border-top:1px solid var(--border); color:var(--muted); font-size:.85rem; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e8e8e8; --muted:#a0a0a0; --border:#2e2e2e; --surface:#1c1c1c; --accent:#6ea8ff; }
+    body { background:#111; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ZollyBot</h1>
+  <p class="lead">Governed agent offices for your repositories. The agents run on your machine; you work them from any device.</p>
+</header>
+
+<h2>Install on Linux</h2>
+<pre><code>curl -fsSL https://zollybot.shifaul.dev/install.sh | sh</code></pre>
+<p>Installs two binaries into <code>~/.local/bin</code>, verified against the release checksum:</p>
+<ul>
+  <li><code>zollybot</code> — the desktop app (AppImage).</li>
+  <li><code>zollybot-cli</code> — the terminal companion.</li>
+</ul>
+<p>Then add the directory to your <code>PATH</code> if it is not there already, and run:</p>
+<pre><code>zollybot</code></pre>
+
+<h2>First run</h2>
+<ol>
+  <li>Create or open a repository.</li>
+  <li>Inside it, run <code>zolly init</code> to give that repository an office. The office is the
+      <code>.agents/</code> directory: rules, memory, queue and results, committed with the code.</li>
+  <li>Start <code>zollybot</code> and pick the office. Every repository you open is its own office;
+      nothing is shared between them.</li>
+</ol>
+
+<h2>Usage</h2>
+
+<h3>Terminal UI</h3>
+<pre><code>zollybot-cli</code></pre>
+<p>A tab strip of offices, the selected office's queue or gates, and a status bar — the terminal
+version of the app. It reads the same <code>.agents/</code> files and never writes to them.</p>
+<table>
+  <tr><th>Key</th><th>Does</th></tr>
+  <tr><td><code>h</code> / <code>l</code></td><td>previous / next office</td></tr>
+  <tr><td><code>1</code>–<code>9</code></td><td>jump to an office</td></tr>
+  <tr><td><code>j</code> / <code>k</code></td><td>move down / up a row</td></tr>
+  <tr><td><code>v</code></td><td>switch between queue and gates</td></tr>
+  <tr><td><code>c</code></td><td>show the connect QR for a phone, and the URL beneath it</td></tr>
+  <tr><td><code>i</code></td><td>sign in with an email code — the same steps as the app, against the same server</td></tr>
+  <tr><td><code>r</code></td><td>refresh now (it also refreshes every 3 seconds)</td></tr>
+  <tr><td><code>q</code></td><td>quit</td></tr>
+</table>
+
+<h3>Scripts and SSH</h3>
+<pre><code>zollybot-cli offices
+zollybot-cli queue shifaul-dev
+zollybot-cli gates shifaul-dev</code></pre>
+<p>Each subcommand prints one view and exits. Add <code>--json</code> for machines; a piped
+invocation prints the table instead of drawing the TUI.</p>
+<table>
+  <tr><th>Command</th><th>Answers</th></tr>
+  <tr><td><code>offices</code></td><td>Which repositories have an office, and how many tasks are queued, dispatched or blocked in each.</td></tr>
+  <tr><td><code>queue &lt;office&gt;</code></td><td>Every queued brief with its status and gate.</td></tr>
+  <tr><td><code>gates &lt;office&gt;</code></td><td>Results waiting for a human decision, and whether they were approved.</td></tr>
+</table>
+
+<h3>Gates and memory</h3>
+<p>Money, production, publishing and customers always stop for you. Code reaches the main branch
+only through the reviewer step. The app cannot skip either — the block lives in the backend, not in
+a prompt. Each office remembers its own decisions and lessons in
+<code>.agents/memory/</code>, written atomically and never by the UI directly.</p>
+
+<h2>Download</h2>
+<p id="assets">Loading release…</p>
+<p>Checksums: <a href="/releases/0.62.1/SHA256SUMS">SHA256SUMS</a>. The installer unpacks the
+<code>.tar.gz</code> into <code>~/.local/lib/zollybot</code> and links the launcher — real files,
+no self-mounting AppImage.</p>
+
+<h2>Platforms</h2>
+<table>
+  <tr><th>Platform</th><th>Package</th><th>State</th></tr>
+  <tr><td>Linux</td><td><code>zollybot</code> + <code>zollybot-cli</code></td><td>available — installer unpacks the bundle; AppImage also published</td></tr>
+  <tr><td>macOS</td><td><code>zollybot</code></td><td>not published yet</td></tr>
+  <tr><td>Windows</td><td><code>zollybot</code></td><td>not published yet</td></tr>
+  <tr><td>Android</td><td>remote</td><td>available — arm64 release APK</td></tr>
+  <tr><td>iOS</td><td>remote</td><td>not published yet</td></tr>
+</table>
+
+<h2>How it fits together</h2>
+<ul>
+  <li><strong>An office is a repository, not a machine.</strong> Remove the app and the office still
+      works from the terminal.</li>
+  <li><strong>Files are the truth.</strong> Queue briefs, results, memory and the merge SHA live in
+      git. There is no second database to trust.</li>
+  <li><strong>Local first.</strong> Agents and files stay on the machine that owns the repository;
+      remote devices are controls, not workers.</li>
+</ul>
+
+<footer>ZollyBot · private build · <a href="/install.sh">installer</a> · <a href="/latest">latest version</a></footer>
+
+<script>
+fetch("/latest")
+  .then((r) => r.text())
+  .then((v) => {
+    const ver = v.trim();
+    document.getElementById("assets").innerHTML =
+      `<a href="/releases/${ver}/zollybot-gui-${ver}-x64.AppImage">AppImage ${ver} (x64)</a> · ` +
+      `<a href="/releases/${ver}/zollybot-linux-x86_64-${ver}.tar.gz">bundle .tar.gz (GUI + CLI)</a> · ` +
+      `<a href="/releases/${ver}/zollybot-cli-linux-x86_64-${ver}">CLI only</a> · ` +
+      `<a href="/releases/${ver}/zollybot-android-arm64-${ver}.apk">Android APK (arm64)</a>`;
+  })
+  .catch(() => {
+    document.getElementById("assets").textContent = "No release published yet.";
+  });
+</script>
+
+</body>
+</html>

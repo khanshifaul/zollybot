@@ -1,0 +1,236 @@
+.app-logo {
+  --app-logo-accent: #e6fffb;
+  --app-logo-accent-shape: #ccfbf1;
+  --app-logo-bg: var(--zollybot-logo-production);
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--app-logo-bg);
+}
+
+.app-logo[data-interactive="true"]:focus {
+  outline: none;
+}
+
+.app-logo[data-interactive="true"]:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--zollybot-text-primary);
+}
+
+/* Variants distinguish builds via background color. */
+.app-logo[data-variant="production"] {
+  --app-logo-bg: var(--zollybot-logo-production);
+  --app-logo-accent: #e6fffb;
+  --app-logo-accent-shape: #ccfbf1;
+}
+
+.app-logo[data-variant="dev"] {
+  --app-logo-bg: var(--zollybot-logo-dev);
+  --app-logo-accent: #fffbeb;
+  --app-logo-accent-shape: #fef3c7;
+}
+
+.app-logo[data-variant="preview"] {
+  --app-logo-bg: var(--zollybot-logo-preview);
+  --app-logo-accent: #f5f3ff;
+  --app-logo-accent-shape: #ede9fe;
+}
+
+.app-logo-background {
+  fill: currentColor;
+}
+
+.app-logo-bg-fill {
+  fill: currentColor;
+}
+
+.app-logo-bg-stroke {
+  stroke: currentColor;
+}
+
+.app-logo-accent-stroke {
+  stroke: var(--app-logo-accent);
+}
+
+.app-logo-accent-shape {
+  fill: var(--app-logo-accent-shape);
+}
+
+.app-logo-accent-shape circle:first-child,
+circle.app-logo-accent-shape {
+  fill: var(--app-logo-accent);
+}
+
+.app-logo-eye {
+  pointer-events: none;
+  transform-box: fill-box;
+}
+
+.app-logo-eye-motion {
+  pointer-events: none;
+  transform: translate(var(--app-logo-eye-x, 0%), var(--app-logo-eye-y, 0%)) scaleY(var(--app-logo-eye-squint, 1));
+  transition: transform var(--zollybot-duration-normal, 200ms) cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.app-logo[data-animation="blink"]:where([data-blink]) .app-logo-eye {
+  animation: app-logo-blink 192ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.app-logo[data-animation="look-around"] .app-logo-eye-motion {
+  animation: app-logo-look-around 6s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+
+.app-logo[data-animation="surprised"] .app-logo-eye {
+  animation: app-logo-surprised 5.4s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+
+.app-logo[data-click-reaction="wink"] .app-logo-eye-left {
+  animation: app-logo-wink-left 360ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.app-logo[data-click-reaction="wink"] .app-logo-eye-right {
+  animation: app-logo-wink-right 360ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.app-logo[data-easter-egg="party"] .app-logo-accent-shape {
+  animation: app-logo-party-colors 1.2s cubic-bezier(0.77, 0, 0.175, 1) both;
+}
+
+.app-logo[data-easter-egg="party"] .app-logo-eye-left {
+  animation: app-logo-party-left 1.2s cubic-bezier(0.77, 0, 0.175, 1) both;
+}
+
+.app-logo[data-easter-egg="party"] .app-logo-eye-right {
+  animation: app-logo-party-right 1.2s cubic-bezier(0.77, 0, 0.175, 1) both;
+}
+
+@keyframes app-logo-blink {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes app-logo-look-around {
+  0%,
+  30%,
+  47%,
+  64%,
+  100% {
+    transform: translateX(0) translate(var(--app-logo-eye-x, 0%), var(--app-logo-eye-y, 0%));
+  }
+  35%,
+  42% {
+    transform: translateX(-3.5%) translate(var(--app-logo-eye-x, 0%), var(--app-logo-eye-y, 0%));
+  }
+  52%,
+  59% {
+    transform: translateX(3.5%) translate(var(--app-logo-eye-x, 0%), var(--app-logo-eye-y, 0%));
+  }
+}
+
+@keyframes app-logo-surprised {
+  0%,
+  40%,
+  56%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  44%,
+  51% {
+    transform: translateY(-1.5%) scaleX(0.94) scaleY(1.12);
+  }
+}
+
+@keyframes app-logo-wink-left {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  38%,
+  58% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes app-logo-wink-right {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  48% {
+    transform: translateY(-1%) scaleX(0.96) scaleY(1.08);
+  }
+}
+
+@keyframes app-logo-party-colors {
+  0%,
+  100% {
+    fill: var(--app-logo-accent-shape);
+  }
+  22% {
+    fill: var(--zollybot-logo-dev);
+  }
+  48% {
+    fill: var(--zollybot-logo-preview);
+  }
+  74% {
+    fill: var(--zollybot-logo-production);
+  }
+}
+
+@keyframes app-logo-party-left {
+  0%,
+  100% {
+    transform: translate(0) rotate(0);
+  }
+  25% {
+    transform: translateY(-6%) rotate(-8deg);
+  }
+  50% {
+    transform: translate(4%, 2%) rotate(8deg);
+  }
+  75% {
+    transform: translate(-4%, -2%) rotate(-4deg);
+  }
+}
+
+@keyframes app-logo-party-right {
+  0%,
+  100% {
+    transform: translate(0) rotate(0);
+  }
+  25% {
+    transform: translateY(6%) rotate(8deg);
+  }
+  50% {
+    transform: translate(-4%, -2%) rotate(-8deg);
+  }
+  75% {
+    transform: translate(4%, 2%) rotate(4deg);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .app-logo[data-interactive="true"] {
+    cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-logo[data-animation] .app-logo-eye,
+  .app-logo[data-animation] .app-logo-eye-motion,
+  .app-logo[data-click-reaction] .app-logo-eye,
+  .app-logo[data-easter-egg] .app-logo-eye,
+  .app-logo[data-easter-egg] .app-logo-accent-shape {
+    animation: none;
+  }
+
+  .app-logo-eye-motion {
+    transition: none;
+    transform: none;
+  }
+}

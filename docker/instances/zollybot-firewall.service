@@ -1,0 +1,14 @@
+# Applies the firewall of the ZollyBot instances before Docker starts their containers.
+# `zollybot-instance setup` installs it. See docs/docker.md#several-instances-on-one-host.
+[Unit]
+Description=Firewall of the ZollyBot Docker instances
+After=ufw.service
+Before=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/zollybot-docker/instances/zollybot-firewall
+
+[Install]
+WantedBy=multi-user.target docker.service

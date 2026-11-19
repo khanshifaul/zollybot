@@ -1,0 +1,14 @@
+# Downloads and unpacks a newer ZollyBot release next to the running one. zollybot-update.timer starts
+# it; zollybot-update-apply.service moves the release into place at the next start of the server.
+[Unit]
+Description=Stage an ZollyBot update
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/ZollyBot/hosted/zollybot-hosted-update stage
+Nice=19
+IOSchedulingClass=idle
+CPUWeight=idle
+TimeoutStartSec=30min

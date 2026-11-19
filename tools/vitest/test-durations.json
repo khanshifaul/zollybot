@@ -1,0 +1,15 @@
+{
+  "packages/logging/src/redaction.test.ts": 0.08,
+  "scripts/anti-slop-rules.test.ts": 1.44,
+  "scripts/ui-foundation-check.test.ts": 0.02,
+  "apps/desktop/src/backend/browser-diagnostics.test.ts": 0,
+  "apps/desktop/src/backend/zollybot-database-schema-parity.test.ts": 0.16,
+  "apps/desktop/src/backend/zollybot-database.test.ts": 1.81,
+  "apps/desktop/src/backend/stderr-diagnostics.test.ts": 0,
+  "apps/desktop/src/main/content-security-policy.test.ts": 0,
+  "apps/desktop/src/main/ipc-channel-coverage.test.ts": 0.01,
+  "apps/desktop/src/main/ipc/define-ipc-group.test.ts": 0,
+  "apps/desktop/src/main/renderer-permissions.test.ts": 0,
+  "apps/desktop/src/main/trusted-ipc.test.ts": 0,
+  "apps/desktop/src/preload/provider-runtime.test.ts": 0
+}

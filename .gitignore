@@ -1,0 +1,93 @@
+node_modules/
+*.tsbuildinfo
+out/
+out-*/
+dist/
+apps/*/dist/
+apps/*/.wrangler/
+apps/*/worker-configuration.d.ts
+coverage/
+.DS_Store
+*.log
+*.local
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+!.env.example
+!remote/.env.production
+*.key
+*.p12
+*.pem
+.idea/
+# Keep shared VS Code settings while ignoring other editor state.
+**/.vscode/*
+!/.vscode/settings.json
+!/.vscode/extensions.json
+!/apps/mobile/.vscode/settings.json
+!/apps/mobile/.vscode/extensions.json
+playwright-report/
+test-results/
+storybook-static/
+Shared/
+!apps/mobile/src/shared/
+!apps/mobile/src/shared/**
+index-*.css
+.zollybot-browser-test/
+.zollybot-build/
+# The home page beam, a React Bits port. Its license forbids a public copy; CI checks it out
+# from the private nightly-labs/zollybot-laser-flow repository.
+.worktrees/
+# Claude Code creates git worktrees here; they carry a nested biome.json.
+.claude/worktrees/
+.claude/settings.local.json
+/build/cloudflared/
+/build/cua-driver/
+/build/codex/
+/build/claude/
+/build/grok/
+/build/remote-desktop-runtime/
+/build/remote-desktop-release/
+Bots
+# Local dev-profile agent workspaces; root only, so tracked */agents/ paths stay visible.
+/Agents/
+!apps/mobile/src/features/bots/
+!apps/mobile/src/features/bots/**
+mise.local.toml
+# Local provider credential export. Never commit.
+keys
+# A Firebase service account key sends Android notifications. It goes into the encrypted account
+# service settings only. Never commit.
+*firebase-adminsdk*.json
+# Agent task checklist. Local to one worktree.
+/TASKS.md
+
+# Persistent local development identity and migration recovery.
+.zollybot/
+
+# The Next.js site (apps/web) builds into .next and out.
+apps/web/.next/
+apps/web/out/
+
+# Secret/key material (local). Never commit.
+.env
+.env.local
+.env.*.local
+*.pem
+*.p12
+*.key
+*.mobileprovision
+
+# Rust build output
+crates/*/target/
+# Local codegraph index
+.codegraph/
+
+out-dev-app/
+
+# root stray bundles/artifacts
+/index-*.js
+/index-*.cjs
+
+# Rust build artifacts
+apps/desktop/tui/target/
