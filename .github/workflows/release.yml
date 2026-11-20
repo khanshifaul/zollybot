@@ -458,10 +458,10 @@ jobs:
 
       - name: Tune Gradle memory
         shell: bash
-        run: |
           mkdir -p ~/.gradle
-          printf '%s\n' 'org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8' >> ~/.gradle/gradle.properties
+          printf '%s\n' 'org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8' >> ~/.gradle/gradle.properties
           printf '%s\n' 'org.gradle.workers.max=2' >> ~/.gradle/gradle.properties
+          printf '%s\n' 'org.gradle.daemon=false' >> ~/.gradle/gradle.properties
 
       - name: Build Android AAB
         env:
