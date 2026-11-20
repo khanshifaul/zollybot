@@ -247,7 +247,7 @@ jobs:
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
             bun run build
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-            electron-builder --win nsis --x64 --publish never --config apps/desktop/electron-builder.yml
+            bunx electron-builder --win nsis --x64 --publish never --config apps/desktop/electron-builder.yml
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
 
@@ -319,7 +319,7 @@ jobs:
             bun run verify:remote-desktop-runtime
             bun scripts/install-cua-driver.ts darwin "$arch"
             bun run build
-            electron-builder --mac --config.mac.identity=null --config.mac.notarize=false --config apps/desktop/electron-builder.yml
+            bunx electron-builder --mac --config.mac.identity=null --config.mac.notarize=false --config apps/desktop/electron-builder.yml
           fi
 
       - name: Collect artifacts
@@ -391,7 +391,7 @@ jobs:
             bun run verify:remote-desktop-runtime
             bun scripts/install-cua-driver.ts darwin "$arch"
             bun run build
-            electron-builder --mac --config.mac.identity=null --config.mac.notarize=false --config apps/desktop/electron-builder.yml
+            bunx electron-builder --mac --config.mac.identity=null --config.mac.notarize=false --config apps/desktop/electron-builder.yml
           fi
 
       - name: Collect artifacts
