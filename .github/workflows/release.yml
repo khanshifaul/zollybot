@@ -255,7 +255,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path release-assets | Out-Null
-          Get-ChildItem out/desktop/dist -File -Include *.exe,*.msi,*.zip,latest.yml,*.blockmap -ErrorAction SilentlyContinue |
+          Get-ChildItem out/desktop/dist -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '\.(exe|msi|zip|blockmap)$' -or $_.Name -eq 'latest.yml' } |
             Copy-Item -Destination release-assets
           $files = Get-ChildItem release-assets -File
           if ($files) {
