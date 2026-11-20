@@ -120,7 +120,8 @@ try {
   }
   if (platform === "linux") bundledLibraries = bundleLinuxRuntimeDependencies(outputRoot);
 
-  const licenses = resolve("build/remote-desktop-runtime/licenses");
+  const distributionRoot = resolve("apps/desktop/build-resources/remote-desktop-runtime");
+  const licenses = join(distributionRoot, "licenses");
   await mkdir(licenses, { recursive: true });
   await Promise.all([
     cp(join(sunshineSource, "LICENSE"), join(licenses, "Sunshine-GPL-3.0.txt")),
@@ -132,7 +133,7 @@ try {
       ({ file, source }) => cp(source, join(licenses, file)),
     ),
     writeFile(
-      resolve("build/remote-desktop-runtime/source-manifest.json"),
+      join(distributionRoot, "source-manifest.json"),
       `${JSON.stringify(createRemoteDesktopSourceManifest(lock), null, 2)}\n`,
     ),
   ]);
@@ -148,7 +149,7 @@ async function packageCorrespondingSource(
   moonlightSource: string,
   lock: Awaited<ReturnType<typeof loadNativeRuntimeLock>>,
 ): Promise<void> {
-  const sourceOutput = resolve("build/remote-desktop-runtime/sources");
+  const sourceOutput = resolve("apps/desktop/build-resources/remote-desktop-runtime/sources");
   await rm(sourceOutput, { recursive: true, force: true });
   await mkdir(sourceOutput, { recursive: true });
   const exclusions = [

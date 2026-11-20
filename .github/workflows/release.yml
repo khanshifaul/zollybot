@@ -53,6 +53,16 @@ jobs:
           echo "Release tag: $tag"
           echo "Package version: $pkg_version"
 
+      - name: Ensure GitHub release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view "${RELEASE_TAG}" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "${RELEASE_TAG}" --repo "$GITHUB_REPOSITORY" --title "${RELEASE_TAG}" --notes "Automated release ${RELEASE_TAG}" --verify-tag
+          fi
+
   desktop-linux-x64:
     name: Desktop Linux x64
     needs: meta
