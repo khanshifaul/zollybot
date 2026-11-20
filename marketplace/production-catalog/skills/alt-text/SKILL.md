@@ -1,4 +1,5 @@
 ---
+
 name: "Alt Text"
 description: "Write short, copyable alt text for images: the purpose of the image in its context first, 125 characters or less by default. Handles decorative images, charts, images of text, logos and linked images. Returns one copy block per image."
 ---

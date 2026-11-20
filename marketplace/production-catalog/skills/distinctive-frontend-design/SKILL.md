@@ -1,4 +1,5 @@
 ---
+
 name: distinctive-frontend-design
 description: Give new or substantially redesigned interfaces a deliberate visual direction grounded in their subject, audience, content, and purpose. Do not use for minor styling fixes.
 ---

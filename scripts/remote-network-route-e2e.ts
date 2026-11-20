@@ -114,7 +114,7 @@ async function signIn(page: Page): Promise<void> {
   const prefix = english("account.login.developmentCode", { code: "" });
   const notice = page.getByText(new RegExp(`^${literal(prefix)}`));
   await notice.waitFor({ timeout: UI_WAIT_MS });
-  const code = (await notice.innerText()).slice(prefix.length).replaceAll("-", "").trim();
+  const code = ((await notice.textContent()) ?? "").slice(prefix.length).replaceAll("-", "").trim();
   assert.ok(code.length > 0, "The account service showed no development code.");
   // The code field takes the focus when it shows.
   await page.keyboard.type(code);

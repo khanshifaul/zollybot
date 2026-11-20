@@ -79,8 +79,7 @@ Do the steps in this order:
          `A0C5H5C95NH`. To add the development app, change the repository file with `-fk .env.keys`,
          then copy it to the server.
    - [ ] Deploy as `docs/remote-session-deployment.md` says, with `remote/nginx/signal-zollybot.shifaul.dev.conf`.
-   - [ ] `POST https://signal-zollybot.shifaul.dev/v1/slack/events` without a signature gives 401, not 404 or
-         503.
+   - [ ] `POST https://signal-zollybot.shifaul.dev/v1/slack/events` without a signature gives 401, not 404 or 503.
 5. **Slack app settings** for `A0C5H5C95NH`:
    - [ ] Verify the request URL in **Event Subscriptions** and **Interactivity**.
    - [ ] **Manage Distribution**: turn on distribution, unlisted, for the pilot.
@@ -120,16 +119,16 @@ Then the same with production, in the unlisted pilot.
 
 ## Status
 
-| Item | State |
-| --- | --- |
-| Slack CLI login | `hello` in `zollybotdev` (`T0C5B1XG542`) |
-| Apps | `A0C5H5C95NH` (production), `A0C5G5XGS83` (development). ZollyBot manifest and icons applied on 2026-10-01. Distribution off. |
-| Old apps | `A0C5K4J6AUW`, `A0C5QNZTWLC` in `zollybot-dev` (`T0C5443H7CP`). Not used, not deleted. |
-| Code | #1152 merged on 2026-10-01 (`e9c04806`). No desktop release has it yet. |
-| Worker | Deployed by CI with D1 `0025`. Slack secrets set, and the JWKS lists `zollybot-slack-route-1`. GitHub `REMOTE_TICKET_PUBLIC_JWKS` has the route key. |
-| Signal | Release `e9c04806` on `sui-alexandria`, with `SLACK_SIGNING_SECRET` for both apps and the `/v1/slack/` nginx block. Rollback image `zollybot-remote-api:before-slack`. |
-| End-to-end | A dev build of `main` connected a workspace on production on 2026-10-01 and answered in Slack. The `zollybot://` return reached the installed release, so the link was sent to the dev app by hand. |
-| Not done | Request URL check in the production app settings, distribution, device checks after the Signal restart, desktop release. |
+| Item            | State                                                                                                                                                                                               |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Slack CLI login | `hello` in `zollybotdev` (`T0C5B1XG542`)                                                                                                                                                            |
+| Apps            | `A0C5H5C95NH` (production), `A0C5G5XGS83` (development). ZollyBot manifest and icons applied on 2026-10-01. Distribution off.                                                                       |
+| Old apps        | `A0C5K4J6AUW`, `A0C5QNZTWLC` in `zollybot-dev` (`T0C5443H7CP`). Not used, not deleted.                                                                                                              |
+| Code            | #1152 merged on 2026-10-01 (`e9c04806`). No desktop release has it yet.                                                                                                                             |
+| Worker          | Deployed by CI with D1 `0025`. Slack secrets set, and the JWKS lists `zollybot-slack-route-1`. GitHub `REMOTE_TICKET_PUBLIC_JWKS` has the route key.                                                |
+| Signal          | Release `e9c04806` on `sui-alexandria`, with `SLACK_SIGNING_SECRET` for both apps and the `/v1/slack/` nginx block. Rollback image `zollybot-remote-api:before-slack`.                              |
+| End-to-end      | A dev build of `main` connected a workspace on production on 2026-10-01 and answered in Slack. The `zollybot://` return reached the installed release, so the link was sent to the dev app by hand. |
+| Not done        | Request URL check in the production app settings, distribution, device checks after the Signal restart, desktop release.                                                                            |
 
 ## Sources
 

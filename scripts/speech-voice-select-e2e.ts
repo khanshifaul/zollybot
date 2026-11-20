@@ -85,7 +85,7 @@ async function closeSettings(page: Page) {
 }
 
 async function shownVoice(page: Page): Promise<string> {
-  return (await (await openVoiceSelect(page)).innerText()).trim();
+  return ((await (await openVoiceSelect(page)).textContent()) ?? "").trim();
 }
 
 async function chooseVoice(page: Page, voice: SpeechVoice) {

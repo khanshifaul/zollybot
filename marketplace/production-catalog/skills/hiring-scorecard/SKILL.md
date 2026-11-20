@@ -1,4 +1,5 @@
 ---
+
 name: "Hiring Scorecard"
 description: "Turn role requirements into competencies, structured questions for each interviewer, a 1 to 4 scale with behavioral anchors, and an evidence-only debrief. Use when you plan an interview loop or summarize interview feedback."
 ---

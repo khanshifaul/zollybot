@@ -1,4 +1,5 @@
 ---
+
 name: zollybot-export
 description: Export the user's Hermes Agent profiles into one .zip file that ZollyBot imports, with each profile's persona, memories, skills, and cron jobs. Use when the user asks to export, move, or migrate their Hermes agents to ZollyBot.
 example-prompt: Export my agents for ZollyBot
@@ -119,16 +120,16 @@ with a hyphen. Each key is unique. All paths for an agent start with `agents/<ke
 
 Field rules:
 
-| Field | Rule |
-| --- | --- |
-| `name` | Required. 80 characters or fewer. |
-| `title` | Optional. 120 characters or fewer. |
-| `description` | Required. 2,000 characters or fewer. |
-| `avatar` | `null`. Hermes profiles have no avatar. |
-| `skills` | Up to 32 folder paths. Each folder has `SKILL.md` at its root, which starts with YAML frontmatter that has `name` (80 characters or fewer) and `description`. Each skill folder is 10 MB and 200 files or fewer. |
-| `routines` | Up to 64. `name` is 80 characters or fewer: the job's `name`, or the first words of its prompt. `instruction` is the job's `prompt`. `timezone` is the computer's IANA time zone, such as `Europe/Warsaw`. |
-| `memories` | Up to 64 strings, 500 characters or fewer each. |
-| `files` | `agents/<key>/files` or `null`. ZollyBot copies it to `imported/` in the agent's workspace. |
+| Field         | Rule                                                                                                                                                                                                             |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | Required. 80 characters or fewer.                                                                                                                                                                                |
+| `title`       | Optional. 120 characters or fewer.                                                                                                                                                                               |
+| `description` | Required. 2,000 characters or fewer.                                                                                                                                                                             |
+| `avatar`      | `null`. Hermes profiles have no avatar.                                                                                                                                                                          |
+| `skills`      | Up to 32 folder paths. Each folder has `SKILL.md` at its root, which starts with YAML frontmatter that has `name` (80 characters or fewer) and `description`. Each skill folder is 10 MB and 200 files or fewer. |
+| `routines`    | Up to 64. `name` is 80 characters or fewer: the job's `name`, or the first words of its prompt. `instruction` is the job's `prompt`. `timezone` is the computer's IANA time zone, such as `Europe/Warsaw`.       |
+| `memories`    | Up to 64 strings, 500 characters or fewer each.                                                                                                                                                                  |
+| `files`       | `agents/<key>/files` or `null`. ZollyBot copies it to `imported/` in the agent's workspace.                                                                                                                      |
 
 The whole archive must be 500 MB and 5,000 files or fewer.
 
@@ -136,11 +137,11 @@ The whole archive must be 500 MB and 5,000 files or fewer.
 
 A Hermes job's `schedule` has a `kind`:
 
-| Hermes schedule | ZollyBot schedule |
-| --- | --- |
-| `{"kind": "cron", "expr": "0 9 * * 1-5"}` | `{ "kind": "custom", "expression": "0 9 * * 1-5" }` |
-| `{"kind": "interval", "minutes": 30}` | `{ "kind": "interval", "amount": 30, "unit": "minutes" }`. Use `hours` or `days` when the minutes divide evenly. |
-| `{"kind": "once", "run_at": "…"}` | Skip it, and tell the user. |
+| Hermes schedule                           | ZollyBot schedule                                                                                                |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `{"kind": "cron", "expr": "0 9 * * 1-5"}` | `{ "kind": "custom", "expression": "0 9 * * 1-5" }`                                                              |
+| `{"kind": "interval", "minutes": 30}`     | `{ "kind": "interval", "amount": 30, "unit": "minutes" }`. Use `hours` or `days` when the minutes divide evenly. |
+| `{"kind": "once", "run_at": "…"}`         | Skip it, and tell the user.                                                                                      |
 
 A schedule cannot run more often than every 3 minutes. ZollyBot skips a routine with an invalid
 schedule and tells the user; the rest of the agent still imports.

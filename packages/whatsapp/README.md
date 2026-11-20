@@ -4,14 +4,14 @@ The WhatsApp client of the WhatsApp connector: a fork of Baileys without its cop
 own Signal-protocol code, and the encrypted store of one linked device. The connector itself
 (`apps/desktop/src/backend/messaging/whatsapp/`) uses this package; see [docs/messaging.md](../../docs/messaging.md).
 
-| Path | What it is | License |
-| --- | --- | --- |
-| `vendor/baileys/` | Baileys v7.0.0-rc14, with the patches in `vendor/baileys/ZOLLYBOT-PATCHES.md` | MIT (`vendor/baileys/LICENSE`) |
-| `vendor/baileys/types/` | Declarations of the vendor, made by `bun run vendor:types` | MIT |
-| `src/signal/`, `src/signal-repository.ts` | Signal sessions and sender keys, clean-room | PolyForm Noncommercial 1.0.0 |
-| `src/auth-store.ts` | The device's encrypted SQLite store | PolyForm Noncommercial 1.0.0 |
-| `docs/signal-protocol-notes.md` | The protocol facts that the Signal code is written from | PolyForm Noncommercial 1.0.0 |
-| `test-vectors/` | Known-answer data for `scripts/whatsapp-signal-e2e.ts` | Data |
+| Path                                      | What it is                                                                    | License                        |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------ |
+| `vendor/baileys/`                         | Baileys v7.0.0-rc14, with the patches in `vendor/baileys/ZOLLYBOT-PATCHES.md` | MIT (`vendor/baileys/LICENSE`) |
+| `vendor/baileys/types/`                   | Declarations of the vendor, made by `bun run vendor:types`                    | MIT                            |
+| `src/signal/`, `src/signal-repository.ts` | Signal sessions and sender keys, clean-room                                   | PolyForm Noncommercial 1.0.0   |
+| `src/auth-store.ts`                       | The device's encrypted SQLite store                                           | PolyForm Noncommercial 1.0.0   |
+| `docs/signal-protocol-notes.md`           | The protocol facts that the Signal code is written from                       | PolyForm Noncommercial 1.0.0   |
+| `test-vectors/`                           | Known-answer data for `scripts/whatsapp-signal-e2e.ts`                        | Data                           |
 
 ## Why a fork
 

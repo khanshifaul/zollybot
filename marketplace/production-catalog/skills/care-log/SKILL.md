@@ -1,4 +1,5 @@
 ---
+
 name: "Care Log"
 description: "Keep a private care log for plants, pets, filters and appliances: what needs doing, how often, when it was last done and when it is next due. Add items by chat or photo, mark tasks done, list what is due, and show a journal on request. The log stays on the user's computer."
 ---

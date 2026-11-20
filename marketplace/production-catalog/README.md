@@ -49,81 +49,81 @@ Do not use the separate `skills:seed`, `agents:seed`, or `dev:seed` demo scripts
 
 ## Agents
 
-| Agent | Slug | Category | Result | Skills | Routines |
-| --- | --- | --- | --- | --- | --- |
-| Change Reviewer ★ | `code-review-partner` | coding | Bugs that will break, with trigger and fix — before you merge | `change-review`, `secure-code-guidance` | — |
-| Bug Fixer | `debugging-partner` | coding | From a bug report to a fix that is proven on the original failure | `bug-triage`, `change-review` | — |
-| Security Reviewer | `application-security-reviewer` | coding | Security risks ranked by impact, each with code evidence and a fix | `secure-code-guidance`, `repository-threat-model` | — |
-| QA Tester | `qa-tester` | coding | Pass or fail for a release, with screenshots and repro steps | `acceptance-check`, `bug-triage` | weekdays 09:00 |
-| PR Shepherd | `pr-shepherd` | coding | Open pull requests kept moving to green; you only decide what to merge | `pr-follow-up`, `change-review` | weekdays 10:00; weekdays 15:00 |
-| Skill Smith | `skill-smith` | automation | An API or a repeated task turned into a tested ZollyBot skill | `api-skill-builder` | — |
-| Scope Writer ★ | `project-partner` | productivity | A dated scope with what is in, what is out and how done is measured; work waits for your approval | `project-plan`, `decision-quality-check` | — |
-| Prototype Builder | `prototype-builder` | design | A clickable prototype of your idea, with click-path screenshots and a short video; published only when you say | `prototype-build`, `distinctive-frontend-design` | — |
-| Launch Coordinator ★ | `launch-coordinator` | productivity | Release notes from merged work and a launch checklist with owners and checks, kept as a draft | `launch-notes`, `project-plan` | — |
-| Design Critic | `design-critic` | design | Ranked, concrete fixes for a screen from a screenshot, a live page or a Figma frame; never edits your files | `interface-critique` | — |
-| Accessibility Desk | `accessibility-desk` | design | Copyable alt text for your images and a page audit with WCAG 2.2 criteria and evidence for each finding | `alt-text`, `accessibility-audit` | — |
-| Handoff Spec Writer | `handoff-spec-writer` | design | A build spec from a design frame, with components, tokens, states and every value that drifts from the system | `build-spec`, `interface-critique` | — |
-| Copy Editor | `copy-editor` | documents | Your draft in your own voice, with a change log that gives the reason for each edit | `voice-edit` | — |
-| Search Content Planner | `search-content-planner` | documents | Writer-ready briefs for search results and AI answers, from your keywords or Search Console | `search-content-brief`, `competitor-comparison` | — |
-| Campaign Analyst | `campaign-analyst` | data-analytics | What drove the change in your campaign results, and the next 1 to 3 experiments to run | `campaign-analysis`, `data-quality-review` | Mondays 09:00 |
-| Prospect Researcher | `prospect-researcher` | research | Companies that match your ideal customer, with evidence and a first message to each; nothing sends | `account-brief`, `outreach-draft`, `evidence-brief` | — |
-| Call Coach | `call-coach` | other | A scored sales call with quoted evidence and the top 3 fixes for the next call | `call-scorecard` | — |
-| Research Desk ★ | `research-analyst` | research | Sourced, dated answers with facts kept apart from inference | `evidence-brief`, `competitor-comparison` | — |
-| Support Reply Desk | `customer-support-partner` | documents | A customer reply draft, an internal note, and a complete escalation when one is needed | `support-reply`, `bug-triage` | — |
-| Interview Coordinator | `hiring-partner` | other | Interview loops with prep packs, anchored scorecards and an evidence-only debrief | `hiring-scorecard`, `meeting-actions` | — |
-| Chief of Staff | `chief-of-staff` | productivity | A one-screen morning brief: meetings with prep, commitments due, replies waiting | `daily-brief`, `meeting-actions` | weekdays 08:00 |
-| Spend Auditor | `spend-auditor` | data-analytics | Unused seats, duplicates and near renewals in your software spend, each with evidence and the saving | `spend-audit`, `data-quality-review` | day 1 of each month 09:00 |
-| Request Triage Desk | `request-triage-desk` | automation | Yes, maybe or no for each event, sponsorship or speaking request, with scores and a reply draft | `request-scoring` | — |
-| Ops Digest | `ops-digest` | automation | A Friday digest of overdue, due, done and new operations items | `workflow-playbook` | Fridays 15:00 |
-| Home Care Log | `home-care-log` | other | A private care log for plants, pets and filters, with a weekend due list | `care-log` | Saturdays 09:00 |
-| Bill Tracker | `bill-tracker` | other | Recurring charges, price changes and renewals from your statements, with the statement lines | `recurring-charges` | Mondays 09:15 |
-| Dr. Eggbot | `dr-eggbot` | automation | Designs focused agents, skills and routines | `agent-designer`, `eggbot-getting-started`, `routine-healthcheck`, `agent-chat-healthcheck`, `working-with-teammate-agents`, `pstack` | weekdays 08:44 (paused); Mondays 08:49 (paused) |
+| Agent                  | Slug                            | Category       | Result                                                                                                         | Skills                                                                                                                                | Routines                                        |
+| ---------------------- | ------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Change Reviewer ★      | `code-review-partner`           | coding         | Bugs that will break, with trigger and fix — before you merge                                                  | `change-review`, `secure-code-guidance`                                                                                               | —                                               |
+| Bug Fixer              | `debugging-partner`             | coding         | From a bug report to a fix that is proven on the original failure                                              | `bug-triage`, `change-review`                                                                                                         | —                                               |
+| Security Reviewer      | `application-security-reviewer` | coding         | Security risks ranked by impact, each with code evidence and a fix                                             | `secure-code-guidance`, `repository-threat-model`                                                                                     | —                                               |
+| QA Tester              | `qa-tester`                     | coding         | Pass or fail for a release, with screenshots and repro steps                                                   | `acceptance-check`, `bug-triage`                                                                                                      | weekdays 09:00                                  |
+| PR Shepherd            | `pr-shepherd`                   | coding         | Open pull requests kept moving to green; you only decide what to merge                                         | `pr-follow-up`, `change-review`                                                                                                       | weekdays 10:00; weekdays 15:00                  |
+| Skill Smith            | `skill-smith`                   | automation     | An API or a repeated task turned into a tested ZollyBot skill                                                  | `api-skill-builder`                                                                                                                   | —                                               |
+| Scope Writer ★         | `project-partner`               | productivity   | A dated scope with what is in, what is out and how done is measured; work waits for your approval              | `project-plan`, `decision-quality-check`                                                                                              | —                                               |
+| Prototype Builder      | `prototype-builder`             | design         | A clickable prototype of your idea, with click-path screenshots and a short video; published only when you say | `prototype-build`, `distinctive-frontend-design`                                                                                      | —                                               |
+| Launch Coordinator ★   | `launch-coordinator`            | productivity   | Release notes from merged work and a launch checklist with owners and checks, kept as a draft                  | `launch-notes`, `project-plan`                                                                                                        | —                                               |
+| Design Critic          | `design-critic`                 | design         | Ranked, concrete fixes for a screen from a screenshot, a live page or a Figma frame; never edits your files    | `interface-critique`                                                                                                                  | —                                               |
+| Accessibility Desk     | `accessibility-desk`            | design         | Copyable alt text for your images and a page audit with WCAG 2.2 criteria and evidence for each finding        | `alt-text`, `accessibility-audit`                                                                                                     | —                                               |
+| Handoff Spec Writer    | `handoff-spec-writer`           | design         | A build spec from a design frame, with components, tokens, states and every value that drifts from the system  | `build-spec`, `interface-critique`                                                                                                    | —                                               |
+| Copy Editor            | `copy-editor`                   | documents      | Your draft in your own voice, with a change log that gives the reason for each edit                            | `voice-edit`                                                                                                                          | —                                               |
+| Search Content Planner | `search-content-planner`        | documents      | Writer-ready briefs for search results and AI answers, from your keywords or Search Console                    | `search-content-brief`, `competitor-comparison`                                                                                       | —                                               |
+| Campaign Analyst       | `campaign-analyst`              | data-analytics | What drove the change in your campaign results, and the next 1 to 3 experiments to run                         | `campaign-analysis`, `data-quality-review`                                                                                            | Mondays 09:00                                   |
+| Prospect Researcher    | `prospect-researcher`           | research       | Companies that match your ideal customer, with evidence and a first message to each; nothing sends             | `account-brief`, `outreach-draft`, `evidence-brief`                                                                                   | —                                               |
+| Call Coach             | `call-coach`                    | other          | A scored sales call with quoted evidence and the top 3 fixes for the next call                                 | `call-scorecard`                                                                                                                      | —                                               |
+| Research Desk ★        | `research-analyst`              | research       | Sourced, dated answers with facts kept apart from inference                                                    | `evidence-brief`, `competitor-comparison`                                                                                             | —                                               |
+| Support Reply Desk     | `customer-support-partner`      | documents      | A customer reply draft, an internal note, and a complete escalation when one is needed                         | `support-reply`, `bug-triage`                                                                                                         | —                                               |
+| Interview Coordinator  | `hiring-partner`                | other          | Interview loops with prep packs, anchored scorecards and an evidence-only debrief                              | `hiring-scorecard`, `meeting-actions`                                                                                                 | —                                               |
+| Chief of Staff         | `chief-of-staff`                | productivity   | A one-screen morning brief: meetings with prep, commitments due, replies waiting                               | `daily-brief`, `meeting-actions`                                                                                                      | weekdays 08:00                                  |
+| Spend Auditor          | `spend-auditor`                 | data-analytics | Unused seats, duplicates and near renewals in your software spend, each with evidence and the saving           | `spend-audit`, `data-quality-review`                                                                                                  | day 1 of each month 09:00                       |
+| Request Triage Desk    | `request-triage-desk`           | automation     | Yes, maybe or no for each event, sponsorship or speaking request, with scores and a reply draft                | `request-scoring`                                                                                                                     | —                                               |
+| Ops Digest             | `ops-digest`                    | automation     | A Friday digest of overdue, due, done and new operations items                                                 | `workflow-playbook`                                                                                                                   | Fridays 15:00                                   |
+| Home Care Log          | `home-care-log`                 | other          | A private care log for plants, pets and filters, with a weekend due list                                       | `care-log`                                                                                                                            | Saturdays 09:00                                 |
+| Bill Tracker           | `bill-tracker`                  | other          | Recurring charges, price changes and renewals from your statements, with the statement lines                   | `recurring-charges`                                                                                                                   | Mondays 09:15                                   |
+| Dr. Eggbot             | `dr-eggbot`                     | automation     | Designs focused agents, skills and routines                                                                    | `agent-designer`, `eggbot-getting-started`, `routine-healthcheck`, `agent-chat-healthcheck`, `working-with-teammate-agents`, `pstack` | weekdays 08:44 (paused); Mondays 08:49 (paused) |
 
 ## Skills
 
-| Skill | Category | Source |
-| --- | --- | --- |
-| [secure-code-guidance](skills/secure-code-guidance/SKILL.md) | coding | openai |
-| [repository-threat-model](skills/repository-threat-model/SKILL.md) | coding | openai |
-| [distinctive-frontend-design](skills/distinctive-frontend-design/SKILL.md) | design | anthropic |
-| [internal-communications](skills/internal-communications/SKILL.md) | documents | anthropic |
-| [decision-quality-check](skills/decision-quality-check/SKILL.md) | productivity | anthropic |
-| [change-review ★](skills/change-review/SKILL.md) | coding | zollybot |
-| [bug-triage](skills/bug-triage/SKILL.md) | coding | zollybot |
-| [interface-critique](skills/interface-critique/SKILL.md) | design | zollybot |
-| [evidence-brief ★](skills/evidence-brief/SKILL.md) | research | zollybot |
-| [competitor-comparison](skills/competitor-comparison/SKILL.md) | research | zollybot |
-| [launch-notes ★](skills/launch-notes/SKILL.md) | documents | zollybot |
-| [meeting-actions ★](skills/meeting-actions/SKILL.md) | productivity | zollybot |
-| [project-plan](skills/project-plan/SKILL.md) | productivity | zollybot |
-| [support-reply](skills/support-reply/SKILL.md) | documents | zollybot |
-| [account-brief](skills/account-brief/SKILL.md) | research | zollybot |
-| [outreach-draft](skills/outreach-draft/SKILL.md) | documents | zollybot |
-| [campaign-analysis](skills/campaign-analysis/SKILL.md) | data-analytics | zollybot |
-| [data-quality-review](skills/data-quality-review/SKILL.md) | data-analytics | zollybot |
-| [workflow-playbook](skills/workflow-playbook/SKILL.md) | automation | zollybot |
-| [hiring-scorecard](skills/hiring-scorecard/SKILL.md) | other | zollybot |
-| [acceptance-check](skills/acceptance-check/SKILL.md) | coding | zollybot |
-| [pr-follow-up](skills/pr-follow-up/SKILL.md) | coding | zollybot |
-| [api-skill-builder](skills/api-skill-builder/SKILL.md) | automation | zollybot |
-| [prototype-build](skills/prototype-build/SKILL.md) | design | zollybot |
-| [alt-text](skills/alt-text/SKILL.md) | design | zollybot |
-| [accessibility-audit](skills/accessibility-audit/SKILL.md) | design | zollybot |
-| [build-spec](skills/build-spec/SKILL.md) | design | zollybot |
-| [voice-edit](skills/voice-edit/SKILL.md) | documents | zollybot |
-| [search-content-brief](skills/search-content-brief/SKILL.md) | documents | zollybot |
-| [call-scorecard](skills/call-scorecard/SKILL.md) | other | zollybot |
-| [daily-brief](skills/daily-brief/SKILL.md) | productivity | zollybot |
-| [spend-audit](skills/spend-audit/SKILL.md) | data-analytics | zollybot |
-| [request-scoring](skills/request-scoring/SKILL.md) | automation | zollybot |
-| [care-log](skills/care-log/SKILL.md) | other | zollybot |
-| [recurring-charges](skills/recurring-charges/SKILL.md) | other | zollybot |
-| [agent-designer](skills/agent-designer/SKILL.md) | automation | zollybot |
-| [eggbot-getting-started](skills/eggbot-getting-started/SKILL.md) | automation | zollybot |
-| [routine-healthcheck](skills/routine-healthcheck/SKILL.md) | automation | zollybot |
-| [agent-chat-healthcheck](skills/agent-chat-healthcheck/SKILL.md) | automation | zollybot |
-| [working-with-teammate-agents](skills/working-with-teammate-agents/SKILL.md) | automation | zollybot |
-| `pstack`, with the 52 skills `pstack-<name>` of [bundles/pstack/skills](bundles/pstack/skills) | coding | cursor |
+| Skill                                                                                          | Category       | Source    |
+| ---------------------------------------------------------------------------------------------- | -------------- | --------- |
+| [secure-code-guidance](skills/secure-code-guidance/SKILL.md)                                   | coding         | openai    |
+| [repository-threat-model](skills/repository-threat-model/SKILL.md)                             | coding         | openai    |
+| [distinctive-frontend-design](skills/distinctive-frontend-design/SKILL.md)                     | design         | anthropic |
+| [internal-communications](skills/internal-communications/SKILL.md)                             | documents      | anthropic |
+| [decision-quality-check](skills/decision-quality-check/SKILL.md)                               | productivity   | anthropic |
+| [change-review ★](skills/change-review/SKILL.md)                                               | coding         | zollybot  |
+| [bug-triage](skills/bug-triage/SKILL.md)                                                       | coding         | zollybot  |
+| [interface-critique](skills/interface-critique/SKILL.md)                                       | design         | zollybot  |
+| [evidence-brief ★](skills/evidence-brief/SKILL.md)                                             | research       | zollybot  |
+| [competitor-comparison](skills/competitor-comparison/SKILL.md)                                 | research       | zollybot  |
+| [launch-notes ★](skills/launch-notes/SKILL.md)                                                 | documents      | zollybot  |
+| [meeting-actions ★](skills/meeting-actions/SKILL.md)                                           | productivity   | zollybot  |
+| [project-plan](skills/project-plan/SKILL.md)                                                   | productivity   | zollybot  |
+| [support-reply](skills/support-reply/SKILL.md)                                                 | documents      | zollybot  |
+| [account-brief](skills/account-brief/SKILL.md)                                                 | research       | zollybot  |
+| [outreach-draft](skills/outreach-draft/SKILL.md)                                               | documents      | zollybot  |
+| [campaign-analysis](skills/campaign-analysis/SKILL.md)                                         | data-analytics | zollybot  |
+| [data-quality-review](skills/data-quality-review/SKILL.md)                                     | data-analytics | zollybot  |
+| [workflow-playbook](skills/workflow-playbook/SKILL.md)                                         | automation     | zollybot  |
+| [hiring-scorecard](skills/hiring-scorecard/SKILL.md)                                           | other          | zollybot  |
+| [acceptance-check](skills/acceptance-check/SKILL.md)                                           | coding         | zollybot  |
+| [pr-follow-up](skills/pr-follow-up/SKILL.md)                                                   | coding         | zollybot  |
+| [api-skill-builder](skills/api-skill-builder/SKILL.md)                                         | automation     | zollybot  |
+| [prototype-build](skills/prototype-build/SKILL.md)                                             | design         | zollybot  |
+| [alt-text](skills/alt-text/SKILL.md)                                                           | design         | zollybot  |
+| [accessibility-audit](skills/accessibility-audit/SKILL.md)                                     | design         | zollybot  |
+| [build-spec](skills/build-spec/SKILL.md)                                                       | design         | zollybot  |
+| [voice-edit](skills/voice-edit/SKILL.md)                                                       | documents      | zollybot  |
+| [search-content-brief](skills/search-content-brief/SKILL.md)                                   | documents      | zollybot  |
+| [call-scorecard](skills/call-scorecard/SKILL.md)                                               | other          | zollybot  |
+| [daily-brief](skills/daily-brief/SKILL.md)                                                     | productivity   | zollybot  |
+| [spend-audit](skills/spend-audit/SKILL.md)                                                     | data-analytics | zollybot  |
+| [request-scoring](skills/request-scoring/SKILL.md)                                             | automation     | zollybot  |
+| [care-log](skills/care-log/SKILL.md)                                                           | other          | zollybot  |
+| [recurring-charges](skills/recurring-charges/SKILL.md)                                         | other          | zollybot  |
+| [agent-designer](skills/agent-designer/SKILL.md)                                               | automation     | zollybot  |
+| [eggbot-getting-started](skills/eggbot-getting-started/SKILL.md)                               | automation     | zollybot  |
+| [routine-healthcheck](skills/routine-healthcheck/SKILL.md)                                     | automation     | zollybot  |
+| [agent-chat-healthcheck](skills/agent-chat-healthcheck/SKILL.md)                               | automation     | zollybot  |
+| [working-with-teammate-agents](skills/working-with-teammate-agents/SKILL.md)                   | automation     | zollybot  |
+| `pstack`, with the 52 skills `pstack-<name>` of [bundles/pstack/skills](bundles/pstack/skills) | coding         | cursor    |
 
 ★ Featured on first publication. Existing Featured settings are preserved on reruns.
 

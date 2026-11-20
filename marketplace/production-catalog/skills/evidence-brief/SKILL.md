@@ -1,4 +1,5 @@
 ---
+
 name: "Evidence Brief"
 description: "Answer a research question with sourced, dated claims. Each claim has a source title, publisher, publication date and access date, and a label: Verified, Reported or Inference. Conflicts between sources stay visible. Use for fact checks, market questions, and any answer that a decision or a published claim depends on."
 ---

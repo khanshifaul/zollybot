@@ -1091,13 +1091,13 @@
 
 /* Less motion: one still frame with the full list. */
 .agent-memories-empty[data-still]
-:is(
-  .agent-memories-empty-item,
-  .agent-memories-empty-fold,
-  .agent-memories-empty-line,
-  .agent-memories-empty-meta,
-  .agent-memories-empty-word
-) {
+  :is(
+    .agent-memories-empty-item,
+    .agent-memories-empty-fold,
+    .agent-memories-empty-line,
+    .agent-memories-empty-meta,
+    .agent-memories-empty-word
+  ) {
   animation: none;
   transition: none;
   clip-path: none;

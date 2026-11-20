@@ -13,5 +13,10 @@
     "packages/contracts/src/**/*.ts",
     "packages/ui/src/**/*.ts",
     "packages/ui/src/**/*.tsx"
+  ],
+  "exclude": [
+    "apps/desktop/src/renderer/**/*.stories.ts",
+    "apps/desktop/src/renderer/**/*.stories.tsx",
+    "apps/desktop/src/renderer/stories/**"
   ]
 }

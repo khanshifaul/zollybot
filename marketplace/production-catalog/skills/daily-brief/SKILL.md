@@ -1,4 +1,5 @@
 ---
+
 name: "Daily Brief"
 description: "Write a one-screen morning brief from the signed-in calendar and inbox and installed task tools: today's meetings with prep notes, commitments due, replies waiting, and conflicts. Drafts replies and never sends. Use each morning or before a busy day."
 ---

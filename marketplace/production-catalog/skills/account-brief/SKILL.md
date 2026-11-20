@@ -1,4 +1,5 @@
 ---
+
 name: "Account Brief"
 description: "Score a company against the user's ideal customer profile with a fixed rubric, using evidence from public company pages. Lists disqualifiers, gaps and discovery questions. Named people come only from public business pages, with no private details. Use before outreach or a first sales call."
 ---
@@ -37,14 +38,14 @@ description: "Score a company against the user's ideal customer profile with a f
 
 Score each criterion 0, 1 or 2. Evidence is required for 1 or 2.
 
-| Criterion | 0 | 1 | 2 |
-| --- | --- | --- | --- |
-| Industry | outside ICP or unknown | adjacent | inside ICP |
-| Size | outside range or unknown | near range | inside range |
-| Region | not served or unknown | partly served | served |
-| Need signal | none found | indirect (job post, docs) | stated problem on a public page |
-| Trigger | none found | older than 6 months | in the last 6 months (hire, launch, funding, expansion) |
-| Product fit | conflicts or unknown | needs work | fits the user's stated use case |
+| Criterion   | 0                        | 1                         | 2                                                       |
+| ----------- | ------------------------ | ------------------------- | ------------------------------------------------------- |
+| Industry    | outside ICP or unknown   | adjacent                  | inside ICP                                              |
+| Size        | outside range or unknown | near range                | inside range                                            |
+| Region      | not served or unknown    | partly served             | served                                                  |
+| Need signal | none found               | indirect (job post, docs) | stated problem on a public page                         |
+| Trigger     | none found               | older than 6 months       | in the last 6 months (hire, launch, funding, expansion) |
+| Product fit | conflicts or unknown     | needs work                | fits the user's stated use case                         |
 
 - **Tier:** A = 9 to 12, B = 6 to 8, C = 0 to 5. Any disqualifier = Disqualified, whatever the score.
 - Four or more criteria at 0 because of missing evidence: write "Insufficient evidence" next to the tier.

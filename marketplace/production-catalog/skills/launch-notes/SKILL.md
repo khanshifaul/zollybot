@@ -1,4 +1,5 @@
 ---
+
 name: "Launch Notes"
 description: "Write release notes from merged work, with a launch checklist that has owners and acceptance checks. Keeps done, planned and blocked work apart. Use before a release or a launch announcement. It never publishes."
 ---

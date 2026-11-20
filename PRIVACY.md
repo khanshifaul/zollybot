@@ -319,7 +319,7 @@ The local host also records how the agents are used:
   key, target or position); and the computer's memory and processor class, architecture, and whether
   it is a server. Memory is rounded to 50 MB. Process IDs, program names, command lines and paths
   are not sent. A day that ends while analytics is off is sent with the install ID, and is not sent
-when there is no install ID.
+  when there is no install ID.
 - **Startup time.** Once per start, the host sends how long the start took, rounded: until the
   window could show, until the services were ready, and until the workspace loaded; the name of the
   slowest startup step from a fixed list; and whether it was the first start since the computer
@@ -1920,7 +1920,6 @@ release manifest from GitHub for its operating system and architecture. The requ
 account data, chats, files, commands, or credentials. GitHub receives the host IP address as part
 of the connection. Connected administrators receive the installed version, release version,
 check status, and installation method.
-
 
 ## Pi, Muse, and ACP registry setup
 

@@ -1,4 +1,5 @@
 ---
+
 name: zollybot-data
 description: Keep structured information in the shared database that every ZollyBot agent reads and writes. Use when you must look up, update, or count records such as people, tasks, messages, or results across turns.
 ---

@@ -31,12 +31,12 @@ pull request with `Closes #<number>`.
 
 The `Contribution policy` workflow applies these labels:
 
-| Label | Meaning |
-| --- | --- |
-| `external` | The author is outside the organization. The workflow adds it. |
+| Label                  | Meaning                                                                                                                                                                                                                                             |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `external`             | The author is outside the organization. The workflow adds it.                                                                                                                                                                                       |
 | `needs-approved-issue` | A maintainer decided that the pull request needs an approved issue. The `Contribution policy` check fails until the pull request closes an issue with the `approved` label. If it does not do this in 7 days, the workflow closes the pull request. |
-| `approved` | A maintainer accepts the issue. Pull requests that close it pass the check. |
-| `policy-exempt` | A maintainer turned off the check for this pull request. |
+| `approved`             | A maintainer accepts the issue. Pull requests that close it pass the check.                                                                                                                                                                         |
+| `policy-exempt`        | A maintainer turned off the check for this pull request.                                                                                                                                                                                            |
 
 A maintainer who reopens a closed pull request starts a new 7-day period.
 
@@ -97,7 +97,6 @@ state, `.env` files, credentials, real conversations, or user attachments.
 Public website and guide content is maintained in the web/account surface used by this project’s deployments. In this checkout, the account-service source tree referenced by older docs (`account service`) may not be present; follow the active content pipeline in the current workspace (for example `apps/web`, site/content packages, or deployment-specific repos) and keep guides tied to current app behavior.
 
 Write for someone who has ZollyBot open and is trying to complete a task. Use short paragraphs, plain English and the exact names of buttons, settings and files. Keep product claims tied to the current app. Use images only when they add information that the text does not, and include useful alt text. Do not paste bare URLs into a guide.
-
 
 ### The reviewer
 

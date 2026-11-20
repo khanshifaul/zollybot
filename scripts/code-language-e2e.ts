@@ -66,7 +66,7 @@ async function observe(locator: Locator, expected: string): Promise<Observation>
   try {
     await locator.waitFor({ state: "visible" });
     observation.visible = true;
-    observation.text = await locator.innerText();
+    observation.text = await locator.textContent();
     assert.equal(observation.text, expected, "Visible text must keep the original text.");
   } catch (error) {
     observation.error = errorText(error);
@@ -159,7 +159,7 @@ async function main() {
       } finally {
         if (page) {
           try {
-            result.visibleText = await page.locator("body").innerText();
+            result.visibleText = await page.locator("body").textContent();
           } catch (error) {
             result.errors.push(`Visible text: ${errorText(error)}`);
           }

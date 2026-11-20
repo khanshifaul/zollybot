@@ -11,18 +11,18 @@ recomputation from these notes gave the same bytes as the reference implementati
 
 ## Source tags
 
-| Tag | Source |
-| --- | --- |
-| [SPEC-X3DH] | signal.org/docs/specifications/x3dh (public domain) |
-| [SPEC-DR] | signal.org/docs/specifications/doubleratchet (public domain) |
-| [SPEC-XEDDSA] | signal.org/docs/specifications/xeddsa (public domain) |
-| [SPEC-SESAME] | signal.org/docs/specifications/sesame (public domain) |
-| [WA-WP] | WhatsApp Encryption Overview (technical white paper). Cited from memory; the PDF text was not machine-checked in this work. |
-| [RFC5869] | HKDF |
-| [RFC7748] | X25519 |
-| [BAILEYS-MIT:path] | File under `packages/whatsapp/vendor/baileys/` (MIT) |
-| [BAILEYS-MIT-UPSTREAM:path] | File in the published `baileys@7.0.0-rc14` npm package (MIT) that our fork deleted (`lib/Signal/libsignal.js`, `lib/Signal/Group/*`) |
-| [IMPL-FACT] | Interop fact found only by reading or running an existing implementation (libsignal-node 6.0.0, libsignal-protocol-java, signalapp/libsignal Rust) |
+| Tag                         | Source                                                                                                                                             |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [SPEC-X3DH]                 | signal.org/docs/specifications/x3dh (public domain)                                                                                                |
+| [SPEC-DR]                   | signal.org/docs/specifications/doubleratchet (public domain)                                                                                       |
+| [SPEC-XEDDSA]               | signal.org/docs/specifications/xeddsa (public domain)                                                                                              |
+| [SPEC-SESAME]               | signal.org/docs/specifications/sesame (public domain)                                                                                              |
+| [WA-WP]                     | WhatsApp Encryption Overview (technical white paper). Cited from memory; the PDF text was not machine-checked in this work.                        |
+| [RFC5869]                   | HKDF                                                                                                                                               |
+| [RFC7748]                   | X25519                                                                                                                                             |
+| [BAILEYS-MIT:path]          | File under `packages/whatsapp/vendor/baileys/` (MIT)                                                                                               |
+| [BAILEYS-MIT-UPSTREAM:path] | File in the published `baileys@7.0.0-rc14` npm package (MIT) that our fork deleted (`lib/Signal/libsignal.js`, `lib/Signal/Group/*`)               |
+| [IMPL-FACT]                 | Interop fact found only by reading or running an existing implementation (libsignal-node 6.0.0, libsignal-protocol-java, signalapp/libsignal Rust) |
 
 "Unconfirmed" marks a fact that was not checked against a source in this work.
 
@@ -50,14 +50,14 @@ recomputation from these notes gave the same bytes as the reference implementati
 
 ## 2. Public key encodings
 
-| Where | Form |
-| --- | --- |
-| Inside every Signal protobuf: ratchet key, base key, identity key (PreKeySignalMessage), signing key (SenderKeyDistributionMessage) | 33 bytes: type byte 0x05, then the 32-byte X25519 u-coordinate [IMPL-FACT] **(vector)** |
-| MAC input of a SignalMessage (both identity keys) | 33 bytes with 0x05 [IMPL-FACT] **(vector: `derived.message0.macInput`)** |
-| Message signed by a signed-prekey signature | 33 bytes with 0x05 (the signed prekey public key) [BAILEYS-MIT:src/Utils/crypto.ts] |
-| WhatsApp stanza prekey upload and prekey fetch nodes (`identity`, `skey/value`, `key/value`) | 32 bytes, no prefix. A separate `type` node holds the single byte 0x05 [BAILEYS-MIT:src/Utils/signal.ts] |
-| Baileys credential store (`signedIdentityKey`, `signedPreKey.keyPair`, `pre-key` entries) | 32-byte public keys [BAILEYS-MIT:src/Utils/crypto.ts] |
-| Retry-receipt key bundle | 32-byte keys; `type` node must be exactly 0x05 [BAILEYS-MIT:src/Utils/signal.ts] |
+| Where                                                                                                                               | Form                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Inside every Signal protobuf: ratchet key, base key, identity key (PreKeySignalMessage), signing key (SenderKeyDistributionMessage) | 33 bytes: type byte 0x05, then the 32-byte X25519 u-coordinate [IMPL-FACT] **(vector)**                  |
+| MAC input of a SignalMessage (both identity keys)                                                                                   | 33 bytes with 0x05 [IMPL-FACT] **(vector: `derived.message0.macInput`)**                                 |
+| Message signed by a signed-prekey signature                                                                                         | 33 bytes with 0x05 (the signed prekey public key) [BAILEYS-MIT:src/Utils/crypto.ts]                      |
+| WhatsApp stanza prekey upload and prekey fetch nodes (`identity`, `skey/value`, `key/value`)                                        | 32 bytes, no prefix. A separate `type` node holds the single byte 0x05 [BAILEYS-MIT:src/Utils/signal.ts] |
+| Baileys credential store (`signedIdentityKey`, `signedPreKey.keyPair`, `pre-key` entries)                                           | 32-byte public keys [BAILEYS-MIT:src/Utils/crypto.ts]                                                    |
+| Retry-receipt key bundle                                                                                                            | 32-byte keys; `type` node must be exactly 0x05 [BAILEYS-MIT:src/Utils/signal.ts]                         |
 
 Baileys adds the 0x05 prefix to a 32-byte key and keeps a 33-byte key as is
 [BAILEYS-MIT:src/Utils/crypto.ts `generateSignalPubKey`]. libsignal-node accepts a 33-byte key only
@@ -152,7 +152,7 @@ OPK = one-time prekey, EK = Alice's base key.
    - DH(EK private, IK_B public),
    - DH(EK private, SPK_B public),
    - DH(EK private, OPK_B public), only if the bundle has a one-time prekey.
-   Total 128 bytes without OPK, 160 bytes with OPK.
+     Total 128 bytes without OPK, 160 bytes with OPK.
 5. HKDF: input = master secret input, salt = 32 zero bytes, info = `WhisperText`, length 64.
    Bytes 0–31 are root key RK0. Bytes 32–63 are a chain key that neither side uses for messages
    in practice [IMPL-FACT] **(vector: `hkdfWhisperText_rootKey`, `..._chainKey_unused`)**.
@@ -248,12 +248,12 @@ message only if both nibbles are 3.
 
 Protobuf fields [BAILEYS-MIT:WAProto/WAProto.proto `SignalMessage`]:
 
-| Field | Number | Type | Content |
-| --- | --- | --- | --- |
-| ratchetKey | 1 | bytes | sender's current ratchet public key, 33 bytes |
-| counter | 2 | uint32 | message index in the sending chain |
-| previousCounter | 3 | uint32 | PN (section 6.5) |
-| ciphertext | 4 | bytes | AES-256-CBC output |
+| Field           | Number | Type   | Content                                       |
+| --------------- | ------ | ------ | --------------------------------------------- |
+| ratchetKey      | 1      | bytes  | sender's current ratchet public key, 33 bytes |
+| counter         | 2      | uint32 | message index in the sending chain            |
+| previousCounter | 3      | uint32 | PN (section 6.5)                              |
+| ciphertext      | 4      | bytes  | AES-256-CBC output                            |
 
 Serialized form: version byte (0x33) ‖ protobuf ‖ MAC (8 bytes) [IMPL-FACT] **(vector)**.
 
@@ -271,14 +271,14 @@ message with a 32-byte ciphertext is 82 bytes.
 
 Protobuf fields [BAILEYS-MIT:WAProto/WAProto.proto `PreKeySignalMessage`]:
 
-| Field | Number | Type | Content |
-| --- | --- | --- | --- |
-| preKeyId | 1 | uint32 | one-time prekey ID; omit the field when none was used |
-| baseKey | 2 | bytes | EK public, 33 bytes |
-| identityKey | 3 | bytes | sender identity public key, 33 bytes |
-| message | 4 | bytes | the complete serialized SignalMessage (with its own version byte and MAC) |
-| registrationId | 5 | uint32 | sender registration ID |
-| signedPreKeyId | 6 | uint32 | signed prekey ID |
+| Field          | Number | Type   | Content                                                                   |
+| -------------- | ------ | ------ | ------------------------------------------------------------------------- |
+| preKeyId       | 1      | uint32 | one-time prekey ID; omit the field when none was used                     |
+| baseKey        | 2      | bytes  | EK public, 33 bytes                                                       |
+| identityKey    | 3      | bytes  | sender identity public key, 33 bytes                                      |
+| message        | 4      | bytes  | the complete serialized SignalMessage (with its own version byte and MAC) |
+| registrationId | 5      | uint32 | sender registration ID                                                    |
+| signedPreKeyId | 6      | uint32 | signed prekey ID                                                          |
 
 Serialized form: version byte (0x33) ‖ protobuf. There is no MAC or signature on the outer
 message [IMPL-FACT] **(vector)**. libsignal-node emits the fields in the order 1, 2, 3, 4, 5, 6
@@ -291,7 +291,7 @@ message [IMPL-FACT] **(vector)**. libsignal-node emits the fields in the order 1
 - The Signal plaintext is a serialized WhatsApp `Message` protobuf followed by 1–16 padding bytes,
   each byte equal to the padding length. Baileys adds it before Signal encryption and removes it
   after decryption [BAILEYS-MIT:src/Utils/generics.ts `writeRandomPadMax16`,
-  src/Utils/decode-wa-message.ts]. This padding is separate from the AES PKCS#7 padding. The
+src/Utils/decode-wa-message.ts]. This padding is separate from the AES PKCS#7 padding. The
   Signal layer must not add or remove it.
 - libsignal numbers the message types 3 (prekey) and 1 or 2 (normal); only the `type` attribute
   string goes on the wire [BAILEYS-MIT-UPSTREAM:lib/Signal/libsignal.js].
@@ -358,7 +358,7 @@ message [IMPL-FACT] **(vector)**. libsignal-node emits the fields in the order 1
    key [IMPL-FACT] **(vector)**. Field order 1, 2, 3; `iteration` 0 is emitted [IMPL-FACT]
    **(vector: message 0 protobuf starts `08 .. 10 00 1a`)**.
 6. SenderKeyDistributionMessage fields [BAILEYS-MIT:WAProto/WAProto.proto
-   `SenderKeyDistributionMessage`]: 1 `id` uint32, 2 `iteration` uint32, 3 `chainKey` bytes (32),
+`SenderKeyDistributionMessage`]: 1 `id` uint32, 2 `iteration` uint32, 3 `chainKey` bytes (32),
    4 `signingKey` bytes (33, with 0x05). Serialized: version byte 0x33 ‖ protobuf, with no signature
    [IMPL-FACT] **(vector)**. The SKDM states the sender's current iteration and the chain key at
    that iteration, so a receiver seeded by it cannot decrypt older messages
@@ -382,7 +382,7 @@ message [IMPL-FACT] **(vector)**. libsignal-node emits the fields in the order 1
    - iteration below the current chain iteration: use the kept key for that iteration and delete
      it; fail if none **(vector: duplicate delivery fails)**;
    - iteration more than 2000 above the current chain iteration: fail [IMPL-FACT: Java,
-     Baileys upstream];
+Baileys upstream];
    - otherwise derive forward, keep the skipped message keys (at most 2000 per state, oldest
      removed), use the key for this iteration, and set the chain to iteration + 1
      [IMPL-FACT] [BAILEYS-MIT-UPSTREAM:lib/Signal/Group/group_cipher.js, sender-key-state.js]
@@ -408,13 +408,13 @@ message [IMPL-FACT] **(vector)**. libsignal-node emits the fields in the order 1
      `<user>_<n>` user part on another server also gives domain type n;
    - device 99 is valid only on `hosted` / `hosted.lid` servers; otherwise it is an error.
 
-   | JID | Address |
-   | --- | --- |
-   | `15551234567@s.whatsapp.net` | `15551234567.0` |
-   | `15551234567:3@s.whatsapp.net` | `15551234567.3` |
-   | `123456789012345@lid` | `123456789012345_1.0` |
-   | `123456789012345:2@lid` | `123456789012345_1.2` |
-   | `15551234567:99@hosted` | `15551234567_128.99` |
+   | JID                             | Address                  |
+   | ------------------------------- | ------------------------ |
+   | `15551234567@s.whatsapp.net`    | `15551234567.0`          |
+   | `15551234567:3@s.whatsapp.net`  | `15551234567.3`          |
+   | `123456789012345@lid`           | `123456789012345_1.0`    |
+   | `123456789012345:2@lid`         | `123456789012345_1.2`    |
+   | `15551234567:99@hosted`         | `15551234567_128.99`     |
    | `123456789012345:99@hosted.lid` | `123456789012345_129.99` |
 
 3. Upstream Baileys resolves a phone-number address to the LID address when it knows the

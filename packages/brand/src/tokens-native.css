@@ -89,7 +89,6 @@
   }
 
   @variant dark {
-    /* biome-ignore lint/suspicious/noDuplicateCustomProperties: Theme variants intentionally share semantic token names. */
     --zollybot-bg-canvas: #1a1a1a;
     --zollybot-bg-native-canvas: #141414;
     --zollybot-bg-native-sidebar: #141414;

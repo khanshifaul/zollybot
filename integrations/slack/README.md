@@ -5,10 +5,10 @@ Slack CLI projects for the one ZollyBot Slack app. A workspace installs it throu
 People mention @ZollyBot or send it a direct message, and the Slack Orchestrator agent on that server
 asks the right agent and answers. No code runs here: each directory holds only the manifest.
 
-| Directory | App | App ID | Home team | Redirect URL |
-| --- | --- | --- | --- | --- |
-| `production` | `ZollyBot` | `A0C5H5C95NH` | `zollybotdev` (`T0C5B1XG542`) | `https://api-zollybot.shifaul.dev/v2/slack/callback` |
-| `development` | `ZollyBot (dev)` | `A0C5G5XGS83` | `zollybotdev` (`T0C5B1XG542`) | Test Worker (`bun run deploy:test`) |
+| Directory     | App              | App ID        | Home team                     | Redirect URL                                         |
+| ------------- | ---------------- | ------------- | ----------------------------- | ---------------------------------------------------- |
+| `production`  | `ZollyBot`       | `A0C5H5C95NH` | `zollybotdev` (`T0C5B1XG542`) | `https://api-zollybot.shifaul.dev/v2/slack/callback` |
+| `development` | `ZollyBot (dev)` | `A0C5G5XGS83` | `zollybotdev` (`T0C5B1XG542`) | Test Worker (`bun run deploy:test`)                  |
 
 `.slack/apps.json` links each directory to its app. Run the Slack CLI from inside a directory.
 

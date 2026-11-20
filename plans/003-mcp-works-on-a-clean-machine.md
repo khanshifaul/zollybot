@@ -13,25 +13,25 @@ are the ones being implemented.
 
 ## Status
 
-| Stage | What it does | State |
-|-------|--------------|-------|
-| 1 | Make every failure visible | DONE |
-| 2 | Ship Bun as a managed tool runtime | DONE |
-| 2b | Pin `mcp-remote` in the catalog | DONE |
-| 3 | Close the second configuration door | DONE |
-| 4 | Native MCP OAuth, and delete `mcp-remote` | DONE |
+| Stage | What it does                              | State |
+| ----- | ----------------------------------------- | ----- |
+| 1     | Make every failure visible                | DONE  |
+| 2     | Ship Bun as a managed tool runtime        | DONE  |
+| 2b    | Pin `mcp-remote` in the catalog           | DONE  |
+| 3     | Close the second configuration door       | DONE  |
+| 4     | Native MCP OAuth, and delete `mcp-remote` | DONE  |
 
 ## Decisions taken by the developer
 
-| Decision | Choice |
-|----------|--------|
-| Managed JavaScript runtime | Bun, one file, no symlinks to repair |
-| Bun version and cadence | 1.4.2, moved at release preparation by `bun run pin:bun-runtime` |
-| x64 build variant | `baseline`, because a plain x64 Bun needs AVX2 |
-| Configuration policy | The panel is authoritative. No opt-out |
-| Reach | Through native OAuth, not through `mcp-remote` |
-| Download moment | At onboarding, beside the provider CLIs |
-| Snapshot shape | `toolRuntimes`, a second field, not a wider `providers` |
+| Decision                   | Choice                                                           |
+| -------------------------- | ---------------------------------------------------------------- |
+| Managed JavaScript runtime | Bun, one file, no symlinks to repair                             |
+| Bun version and cadence    | 1.4.2, moved at release preparation by `bun run pin:bun-runtime` |
+| x64 build variant          | `baseline`, because a plain x64 Bun needs AVX2                   |
+| Configuration policy       | The panel is authoritative. No opt-out                           |
+| Reach                      | Through native OAuth, not through `mcp-remote`                   |
+| Download moment            | At onboarding, beside the provider CLIs                          |
+| Snapshot shape             | `toolRuntimes`, a second field, not a wider `providers`          |
 
 Bun was chosen over Node against the recommendation. The reason for the
 recommendation stands and is mitigated, not argued again: a server that reaches

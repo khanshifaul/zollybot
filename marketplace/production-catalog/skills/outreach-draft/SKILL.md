@@ -1,4 +1,5 @@
 ---
+
 name: "Outreach Draft"
 description: "Draft a first business message built on one verified reason to write and one clear request. Length fits the channel. Without evidence, it writes an honest general draft instead of fake personalization, and it lists the claims the user must confirm. It never sends."
 ---

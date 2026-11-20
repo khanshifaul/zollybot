@@ -53,6 +53,7 @@ There is no persistent index, so the 18 places that assign
 `src/backend/mailbox-store.ts` (2699 lines):
 
 - Lines 2241-2250:
+
   ```ts
   #context(delivery: StoredDelivery): DeliveryContext {
     const message = this.#requireMessage(delivery.messageId);
@@ -73,6 +74,7 @@ There is no persistent index, so the 18 places that assign
 - Lines 2428-2434, `compareQueueOrder`: `queueOrder`, then `createdAt`, then `id`.
   It is a total order (ids are unique).
 - Lines 2344-2348:
+
   ```ts
   #requireMessage(id: string, messages?: ReadonlyMap<string, StoredMessage>): StoredMessage {
     const message = messages ? messages.get(id) : this.#state.messages.find((candidate) => candidate.id === id);
@@ -88,6 +90,7 @@ There is no persistent index, so the 18 places that assign
   `unresolvedDeliveries`; 418-431 `unresolvedMessagingDeliveries`. Each maps
   results through `this.#context(delivery)`.
 - Exemplar of the "index once per read" pattern (lines 673-688, `listQueue`):
+
   ```ts
   const positions = this.#queuedPositions();
   const messages = this.#messagesById();
@@ -102,25 +105,27 @@ There is no persistent index, so the 18 places that assign
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---------|---------|---------------------|
-| Install (fresh worktree only) | `bun install --frozen-lockfile` | exit 0 |
-| Scale E2E | `bun scripts/mailbox-queue-scale-e2e.ts` | `PASS: ...`, exit 0 |
-| Incremental persist E2E (neighbor) | `bun scripts/mailbox-incremental-persist-e2e.ts` | exit 0 |
-| Related tests | `bun run test:related -- src/backend/mailbox-store.ts` | exit 0 |
-| Typecheck | `bun run typecheck:node` | exit 0 |
-| Lint changed files | `biome check --write --max-diagnostics=none src/backend/mailbox-store.ts scripts/mailbox-queue-scale-e2e.ts` | exit 0 |
+| Purpose                            | Command                                                                                                      | Expected on success |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------- |
+| Install (fresh worktree only)      | `bun install --frozen-lockfile`                                                                              | exit 0              |
+| Scale E2E                          | `bun scripts/mailbox-queue-scale-e2e.ts`                                                                     | `PASS: ...`, exit 0 |
+| Incremental persist E2E (neighbor) | `bun scripts/mailbox-incremental-persist-e2e.ts`                                                             | exit 0              |
+| Related tests                      | `bun run test:related -- src/backend/mailbox-store.ts`                                                       | exit 0              |
+| Typecheck                          | `bun run typecheck:node`                                                                                     | exit 0              |
+| Lint changed files                 | `biome check --write --max-diagnostics=none src/backend/mailbox-store.ts scripts/mailbox-queue-scale-e2e.ts` | exit 0              |
 
 Do not run `bun run typecheck`, builds or full suites.
 
 ## Scope
 
 **In scope**:
+
 - `src/backend/mailbox-store.ts` (private helpers and the read methods named above)
 - `scripts/mailbox-queue-scale-e2e.ts` (new checks and timings)
 - `changelog.d/<branch>.md` (create)
 
 **Out of scope**:
+
 - Any public method signature or return shape of `MailboxStore`.
 - Callers in `channel-service.ts`, `routine-scheduler.ts`, `agent-service.ts`.
   Do not add a `deliveryStatus` method in this plan.
@@ -156,7 +161,7 @@ In `scripts/mailbox-queue-scale-e2e.ts`:
      returns those 3 ids, and `unresolvedDeliveries()` contains them. Then assert
      that `listQueue` positions of the remaining queued deliveries still start at 1.
    - Push one line to `report.checks` for each group.
-   Run it before the timing.
+     Run it before the timing.
 2. Extend `timeQueueChanges` (or add `timeDeliveryReads`) to time, for 200 rounds:
    `getDelivery` of a queued id, `nextQueued(AGENT)`, and
    `findDeliveriesByTurn(AGENT, turnId)`. Add the per-call milliseconds to the
@@ -173,6 +178,7 @@ If a correctness check fails before Step 2, STOP: that is a real bug to report.
 In `mailbox-store.ts`:
 
 1. Add a private method beside `#queuedPositions`:
+
    ```ts
    /** The queue position of one queued delivery, without sorting the whole mailbox. */
    #queuedPosition(delivery: StoredDelivery): number {
@@ -212,6 +218,7 @@ In `mailbox-store.ts`:
    `#taskIdOf` calls inside the filter.
 
 **Verify**:
+
 - `bun run typecheck:node` → exit 0.
 - `bun scripts/mailbox-queue-scale-e2e.ts` → `PASS`. Compare with
   `/tmp/mailbox-scale-before.json`: `getDeliveryMs` and `findDeliveriesByTurnMs`

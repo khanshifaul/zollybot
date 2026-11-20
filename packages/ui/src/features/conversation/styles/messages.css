@@ -385,7 +385,7 @@
 
 /* A menu, a tooltip or a popover that opens in a bubble with a chat color covers the chat, so it stays plain. */
 .ui-bubble.message-bubble-colored
-:is([data-popper-positioner], [role="dialog"], [role="menu"], [role="listbox"], [role="tooltip"]) {
+  :is([data-popper-positioner], [role="dialog"], [role="menu"], [role="listbox"], [role="tooltip"]) {
   --zollybot-bg-canvas: var(--message-plain-canvas);
   --zollybot-bg-sidebar: var(--message-plain-sidebar);
   --zollybot-bg-surface: var(--message-plain-surface);
@@ -401,9 +401,10 @@
  * card keeps its neutral control tile, which takes the tint of the bubble as the other cards do.
  */
 :is(
-  .message-entry-user .ui-bubble.message-bubble-colored > .ui-bubble-content,
-  .message-entry-agent .ui-bubble-variant-muted.message-bubble-colored > .ui-bubble-content
-) :is(.attachment-file-visual, .attachment-reference-visual):not(.message-attachment[data-media] *) {
+    .message-entry-user .ui-bubble.message-bubble-colored > .ui-bubble-content,
+    .message-entry-agent .ui-bubble-variant-muted.message-bubble-colored > .ui-bubble-content
+  )
+  :is(.attachment-file-visual, .attachment-reference-visual):not(.message-attachment[data-media] *) {
   background: linear-gradient(var(--file-reference-soft) 0 0), var(--message-plain-control);
 }
 

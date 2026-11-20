@@ -25,7 +25,7 @@
 
 <!-- Remove this section unless the PR adds or changes a vitest file. Write the list before the code: one line per way the system can fail, with the test that covers it. -->
 
-- 
+-
 
 ## Risk and security impact
 

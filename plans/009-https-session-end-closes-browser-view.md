@@ -48,6 +48,7 @@ close it. This plan makes the two HTTPS routes do the same.
     There is no `browserView` field.
   - Lines 45-56, the destructured dependencies of `routeTeam`.
   - Lines 81-86:
+
     ```ts
     if (method === "POST" && url.pathname === TEAM_API_ROUTES.auth.logout) {
       await runCauseEffect(store.logout(token));
@@ -57,6 +58,7 @@ close it. This plan makes the two HTTPS routes do the same.
     }
     ```
   - Lines 200-213 (DELETE session):
+
     ```ts
     await runCauseEffect(store.revokeSession(revokedSessionId));
     await (onSessionRevoked ? runCauseEffect(onSessionRevoked(revokedSessionId)) : undefined);
@@ -64,11 +66,13 @@ close it. This plan makes the two HTTPS routes do the same.
     refreshPresence();
     return empty(204);
     ```
+
 - `src/main/team-api-server.ts:861-872`, `#routeTeam`: passes `store`,
   `remoteScreen`, `createInvite`, `updateMember`, `removeMember`,
   `onSessionRevoked`, `getPresence`, `refreshPresence`. Line 894 shows that
   `this.#options.browserView` exists (it is passed to `routeBrowser`).
 - `src/main/team-api/dependencies.ts:311-314`:
+
   ```ts
   export type TeamApiBrowserView = Pick<
     BrowserViewGateway,
@@ -87,25 +91,27 @@ close it. This plan makes the two HTTPS routes do the same.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---------|---------|---------------------|
-| Install (fresh worktree only) | `bun install --frozen-lockfile` | exit 0 |
-| New E2E | `bun scripts/team-session-end-e2e.ts` | `PASS`, exit 0 |
-| Related tests | `bun run test:related -- src/main/team-api/route-team.ts` | exit 0 |
-| Typecheck | `bun run typecheck:node` | exit 0 |
-| Lint changed files | `biome check --write --max-diagnostics=none src/main/team-api/route-team.ts src/main/team-api-server.ts scripts/team-session-end-e2e.ts` | exit 0 |
+| Purpose                       | Command                                                                                                                                  | Expected on success |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Install (fresh worktree only) | `bun install --frozen-lockfile`                                                                                                          | exit 0              |
+| New E2E                       | `bun scripts/team-session-end-e2e.ts`                                                                                                    | `PASS`, exit 0      |
+| Related tests                 | `bun run test:related -- src/main/team-api/route-team.ts`                                                                                | exit 0              |
+| Typecheck                     | `bun run typecheck:node`                                                                                                                 | exit 0              |
+| Lint changed files            | `biome check --write --max-diagnostics=none src/main/team-api/route-team.ts src/main/team-api-server.ts scripts/team-session-end-e2e.ts` | exit 0              |
 
 Do not run `bun run typecheck`, builds or full suites.
 
 ## Scope
 
 **In scope**:
+
 - `src/main/team-api/route-team.ts`
 - `src/main/team-api-server.ts` (only `#routeTeam`)
 - `scripts/team-session-end-e2e.ts` (create)
 - `changelog.d/<branch>.md` (create)
 
 **Out of scope**:
+
 - `browser-view-gateway.ts`. Do not add a per-message token check in this plan.
 - `host-service.ts`, `team-store.ts` (plan 002 owns local password sign-in).
 - Push notification and Live Activity registrations on HTTPS logout (see
@@ -149,6 +155,7 @@ with recording stand-ins:
   Do not use type assertions (`as`) to skip fields.
 
 Scenarios:
+
 1. `POST TEAM_API_ROUTES.auth.logout` → status 204, `store.logout` got the
    token, `remoteScreen.revokeTeamSession` got `session-a`,
    **`browserView.revokeTeamSession` got `session-a`**.
@@ -180,6 +187,7 @@ fails because it loads Electron, STOP and report.
 5. Remove the temporary type widening from the E2E, if you added it.
 
 **Verify**:
+
 - `bun run typecheck:node` → exit 0.
 - `bun scripts/team-session-end-e2e.ts` → `PASS`, exit 0.
 - `bun run test:related -- src/main/team-api/route-team.ts` → exit 0.

@@ -16,7 +16,11 @@ services:
       - acme-data:/acme
       - ./acme/renew.sh:/opt/zollybot/renew.sh:ro
     healthcheck:
-      test: ["CMD-SHELL", "test -s /acme/certificates/$${SIGNAL_DOMAIN}.crt && test -s /acme/certificates/$${SIGNAL_DOMAIN}.key"]
+      test:
+        [
+          "CMD-SHELL",
+          "test -s /acme/certificates/$${SIGNAL_DOMAIN}.crt && test -s /acme/certificates/$${SIGNAL_DOMAIN}.key",
+        ]
       interval: 10s
       timeout: 3s
       retries: 30

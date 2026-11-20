@@ -24,13 +24,13 @@ The agent keeps its identity, workspace, memories and provider settings. Nothing
 
 ## What exists today
 
-| Feature | Where | Why it is not a branch |
-|---|---|---|
-| Duplicate agent | `src/backend/agent/duplication-gate.ts:249` | Makes a new agent; "the copy carries no conversation". |
-| Side question | `packages/contracts/src/ipc-agent-side-question.ts` | Not persisted as a thread. |
-| Side threads | `docs/architecture/agents.md` "Agent threads"; `AgentTasks.create` (`src/backend/agent-tasks.ts:150`) | Start empty. **This is the base for a branch.** |
-| "Run in new thread" | `AgentService.runQueuedMessageAsTask` (`agent-service.ts:4279`), tab `open()` in `agent-thread-tabs.ts:389` | Closest UI flow: makes a thread and opens its tab with focus. |
-| Transcript handoff | `src/backend/agent/handoff-history.ts`, `ThreadLifecycle.buildProviderHandoff` (`thread-lifecycle.ts:1496`) | Seeds a new session of the **same** thread. Returns `null` for a thread with no sessions (`:1503`), and has no "up to message X" cut. |
+| Feature             | Where                                                                                                       | Why it is not a branch                                                                                                                |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Duplicate agent     | `src/backend/agent/duplication-gate.ts:249`                                                                 | Makes a new agent; "the copy carries no conversation".                                                                                |
+| Side question       | `packages/contracts/src/ipc-agent-side-question.ts`                                                         | Not persisted as a thread.                                                                                                            |
+| Side threads        | `docs/architecture/agents.md` "Agent threads"; `AgentTasks.create` (`src/backend/agent-tasks.ts:150`)       | Start empty. **This is the base for a branch.**                                                                                       |
+| "Run in new thread" | `AgentService.runQueuedMessageAsTask` (`agent-service.ts:4279`), tab `open()` in `agent-thread-tabs.ts:389` | Closest UI flow: makes a thread and opens its tab with focus.                                                                         |
+| Transcript handoff  | `src/backend/agent/handoff-history.ts`, `ThreadLifecycle.buildProviderHandoff` (`thread-lifecycle.ts:1496`) | Seeds a new session of the **same** thread. Returns `null` for a thread with no sessions (`:1503`), and has no "up to message X" cut. |
 
 No code copies messages between threads (searched `src/backend`; migration 47 moves task rows only).
 
@@ -62,11 +62,11 @@ The cut is a **whole turn**: the turn of the chosen agent message, through its l
 New side thread, created by `AgentThreadStore.create` with `origin = 'user'`. Three new nullable
 columns on `projection_agent_threads`:
 
-| Column | Meaning |
-|---|---|
-| `branch_source_thread_id` | The source thread (main chat `projection_agents.thread_id`, or a side thread). No foreign key: the source can be deleted, and the branch stays. |
-| `branch_source_message_id` | The message the user chose, in the source thread. |
-| `branch_through_message_id` | The last copied row in the branch. The UI shows the branch marker after it. |
+| Column                      | Meaning                                                                                                                                         |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `branch_source_thread_id`   | The source thread (main chat `projection_agents.thread_id`, or a side thread). No foreign key: the source can be deleted, and the branch stays. |
+| `branch_source_message_id`  | The message the user chose, in the source thread.                                                                                               |
+| `branch_through_message_id` | The last copied row in the branch. The UI shows the branch marker after it.                                                                     |
 
 All three are null for a thread that is not a branch, or all three are set.
 
@@ -135,14 +135,14 @@ CLIs, so the same result comes from a native provider fork: the provider keeps i
 Hermes resets file-edit approval to "ask" in a branch. ZollyBot does not: permissions are one agent
 setting (#2337), and a branch keeps the agent as it is.
 
-| Provider | Fork at a point | v1 strategy | Evidence |
-|---|---|---|---|
-| Claude | Yes, any chain entry | **Native**: `forkSession(sourceSessionId, { upToMessageId })`, or `resume` + `forkSession: true` + `resumeSessionAt`. Fork at the last chain entry of the kept turn, found with `getSessionMessages` (ZollyBot sends the turn id as the prompt uuid, `claude-client.ts:1034`). | `sdk.d.ts:847-879, 2124-2186` in SDK 0.3.309 (node_modules). **Not confirmed** for CLI 2.1.263 in `native-runtime.lock.json`. |
-| Codex | Yes, through a turn | **Native**: `thread/fork { threadId, lastTurnId }`. Stored `turn_id` values are Codex turn ids (`turn-lifecycle.ts:540-566`). | `ThreadForkParams.lastTurnId` "Optional last turn id to fork through, inclusive" in the schema from `codex app-server generate-json-schema`, Codex 0.166.0. **Not confirmed** for the locked 0.160.1 (no binary on disk; strings of 0.153.4 have it). |
-| Pi, Inception, DeepSeek, OpenRouter | Yes, before a user entry (`fork`), or whole branch (`clone`) | Handoff in v1; native later. | Pi `docs/rpc-commands.md:610-680` in installed 1.4.0. **Not confirmed** for locked 1.1.0. |
-| Grok | Maybe (`x.ai/session/fork`, `targetPromptIndex`) | Handoff. | Undocumented extension in installed 1.0.70. **Not confirmed**. |
-| OpenCode, Cursor, Cline, Antigravity, custom ACP | Whole session only (`unstable_forkSession`, no message id) | Handoff. | `@agentclientprotocol/sdk` 1.9.0 `acp.d.ts:1055`, `types.gen.d.ts:4780`. |
-| Muse | No | Handoff. | `muse-protocol.ts`: start, resume, read, compact only. |
+| Provider                                         | Fork at a point                                              | v1 strategy                                                                                                                                                                                                                                                                    | Evidence                                                                                                                                                                                                                                              |
+| ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude                                           | Yes, any chain entry                                         | **Native**: `forkSession(sourceSessionId, { upToMessageId })`, or `resume` + `forkSession: true` + `resumeSessionAt`. Fork at the last chain entry of the kept turn, found with `getSessionMessages` (ZollyBot sends the turn id as the prompt uuid, `claude-client.ts:1034`). | `sdk.d.ts:847-879, 2124-2186` in SDK 0.3.309 (node_modules). **Not confirmed** for CLI 2.1.263 in `native-runtime.lock.json`.                                                                                                                         |
+| Codex                                            | Yes, through a turn                                          | **Native**: `thread/fork { threadId, lastTurnId }`. Stored `turn_id` values are Codex turn ids (`turn-lifecycle.ts:540-566`).                                                                                                                                                  | `ThreadForkParams.lastTurnId` "Optional last turn id to fork through, inclusive" in the schema from `codex app-server generate-json-schema`, Codex 0.166.0. **Not confirmed** for the locked 0.160.1 (no binary on disk; strings of 0.153.4 have it). |
+| Pi, Inception, DeepSeek, OpenRouter              | Yes, before a user entry (`fork`), or whole branch (`clone`) | Handoff in v1; native later.                                                                                                                                                                                                                                                   | Pi `docs/rpc-commands.md:610-680` in installed 1.4.0. **Not confirmed** for locked 1.1.0.                                                                                                                                                             |
+| Grok                                             | Maybe (`x.ai/session/fork`, `targetPromptIndex`)             | Handoff.                                                                                                                                                                                                                                                                       | Undocumented extension in installed 1.0.70. **Not confirmed**.                                                                                                                                                                                        |
+| OpenCode, Cursor, Cline, Antigravity, custom ACP | Whole session only (`unstable_forkSession`, no message id)   | Handoff.                                                                                                                                                                                                                                                                       | `@agentclientprotocol/sdk` 1.9.0 `acp.d.ts:1055`, `types.gen.d.ts:4780`.                                                                                                                                                                              |
+| Muse                                             | No                                                           | Handoff.                                                                                                                                                                                                                                                                       | `muse-protocol.ts`: start, resume, read, compact only.                                                                                                                                                                                                |
 
 **Handoff** (all other cases): a new session seeded with the copied history, through the existing
 path: `renderProviderHandoff` (32,000 characters), stored as a pending handoff and put in front of
@@ -227,14 +227,14 @@ Released protocols are frozen (`packages/contracts/AGENTS.md`). New optional cap
 
 ### Surfaces
 
-| Surface | v1 | How |
-|---|---|---|
-| Desktop renderer, local server | Yes | Menu item, IPC, tab opens with focus. |
-| Desktop renderer, joined server | Yes, when the host has the capability | Same, over Team API. |
-| Web client (`account service` loads `@zollybot/renderer-web`) | Yes, when the host has the capability | `webAgentTasksPort` gets an optional `branchTask`. |
-| Mobile (`apps/mobile`) | **Later** | An optional Branch button in `ChatMessageActions` (`chat-message-actions.tsx:63-256`), then `router.push("/task/[taskId]")`. Hermes puts it in the "More actions" menu on touch. |
-| Hosted site router, Signal | No change | — |
-| Docs | Yes | `docs/architecture/agents.md` "Agent threads", `docs/glossary.md` ("branch": a side thread with copied history; not a git branch). `PRIVACY.md`: no change, no new outbound data. |
+| Surface                                                       | v1                                    | How                                                                                                                                                                               |
+| ------------------------------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Desktop renderer, local server                                | Yes                                   | Menu item, IPC, tab opens with focus.                                                                                                                                             |
+| Desktop renderer, joined server                               | Yes, when the host has the capability | Same, over Team API.                                                                                                                                                              |
+| Web client (`account service` loads `@zollybot/renderer-web`) | Yes, when the host has the capability | `webAgentTasksPort` gets an optional `branchTask`.                                                                                                                                |
+| Mobile (`apps/mobile`)                                        | **Later**                             | An optional Branch button in `ChatMessageActions` (`chat-message-actions.tsx:63-256`), then `router.push("/task/[taskId]")`. Hermes puts it in the "More actions" menu on touch.  |
+| Hosted site router, Signal                                    | No change                             | —                                                                                                                                                                                 |
+| Docs                                                          | Yes                                   | `docs/architecture/agents.md` "Agent threads", `docs/glossary.md` ("branch": a side thread with copied history; not a git branch). `PRIVACY.md`: no change, no new outbound data. |
 
 Reverse action: delete the branch thread (existing delete with Undo). The source never changes.
 
@@ -274,20 +274,20 @@ menu, and takes the rest from Hermes:
 
 Source: `NousResearch/hermes-agent` at `6bb377a` (2026-10-30), clone in `/tmp/hermes-research/src`.
 
-| Topic | Hermes | ZollyBot design |
-|---|---|---|
-| Entry | `/branch [--here] [name]`, alias `/fork` (`hermes_cli/commands.py:108`); desktop "Branch in new chat" per turn; sidebar "Branch from here" | Message menu "Branch from here", once per turn |
-| Storage | New `sessions` row, `parent_session_id`, `model_config._branched_from`; rows copied with `_clone_message_rows` through `through_message_id` (`hermes_state_mutation_branch.py`) | New side thread, `branch_source_*` columns, rows copied with new ids |
-| Cut | Assistant boundary keeps the tool results after it | Whole turn |
-| Busy source | Refused: "Stop the current turn before branching this chat." | Item disabled |
-| Title | Given name, else "{parent} #N" | Same for a side-thread source; last user message for the main chat |
-| Model and context | Parent's frozen policy, exact system prompt and wire bytes (warm cache) | Native provider fork, else handoff |
-| Permissions | File-edit approval resets to "ask" | Unchanged (agent setting) |
-| MCP | Connections prepared again for the child | Each side thread already starts its own provider session |
-| Request | `idempotency_key` | Client request id |
-| After branch | Opens as a tab; takes focus when the source is the open chat | Same |
-| Lineage view | Sidebar nests branches with `├─` / `└─` | Thread menu nests branches |
-| Files | Not rolled back; `/rollback` with opt-in checkpoints is separate | Not rolled back; rewind is separate |
+| Topic             | Hermes                                                                                                                                                                          | ZollyBot design                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Entry             | `/branch [--here] [name]`, alias `/fork` (`hermes_cli/commands.py:108`); desktop "Branch in new chat" per turn; sidebar "Branch from here"                                      | Message menu "Branch from here", once per turn                       |
+| Storage           | New `sessions` row, `parent_session_id`, `model_config._branched_from`; rows copied with `_clone_message_rows` through `through_message_id` (`hermes_state_mutation_branch.py`) | New side thread, `branch_source_*` columns, rows copied with new ids |
+| Cut               | Assistant boundary keeps the tool results after it                                                                                                                              | Whole turn                                                           |
+| Busy source       | Refused: "Stop the current turn before branching this chat."                                                                                                                    | Item disabled                                                        |
+| Title             | Given name, else "{parent} #N"                                                                                                                                                  | Same for a side-thread source; last user message for the main chat   |
+| Model and context | Parent's frozen policy, exact system prompt and wire bytes (warm cache)                                                                                                         | Native provider fork, else handoff                                   |
+| Permissions       | File-edit approval resets to "ask"                                                                                                                                              | Unchanged (agent setting)                                            |
+| MCP               | Connections prepared again for the child                                                                                                                                        | Each side thread already starts its own provider session             |
+| Request           | `idempotency_key`                                                                                                                                                               | Client request id                                                    |
+| After branch      | Opens as a tab; takes focus when the source is the open chat                                                                                                                    | Same                                                                 |
+| Lineage view      | Sidebar nests branches with `├─` / `└─`                                                                                                                                         | Thread menu nests branches                                           |
+| Files             | Not rolled back; `/rollback` with opt-in checkpoints is separate                                                                                                                | Not rolled back; rewind is separate                                  |
 
 Others: ChatGPT "Branch in new chat" (copy up to the message; third-party sources only); Claude Code
 `/branch`, `--fork-session`, and the `Esc Esc` rewind; Codex `/fork`, `codex fork`, and `Esc Esc` to

@@ -290,18 +290,18 @@ try {
   const typedDuringTurn = ownChatRuns(await listQueue());
   assert.ok(typedDuringTurn, "The agent's own chat runs a turn while the text is typed.");
   await waitFor(page, "the own chat's turn ends", listQueue, (snapshot) => !ownChatRuns(snapshot));
-  const afterTurn = (await unsentComposer.innerText()).trim();
+  const afterTurn = ((await unsentComposer.textContent()) ?? "").trim();
   await shot("11-unsent-after-turn");
   await button(english("conversation.header.mainChat")).click();
   await unsentComposer.waitFor({ state: "detached", timeout: UI_WAIT_MS });
   await tab(english("conversation.threads.new")).click();
-  const afterSwitch = (await unsentComposer.innerText()).trim();
+  const afterSwitch = ((await unsentComposer.textContent()) ?? "").trim();
   await page.reload();
   // A new thread tab is not kept after a restart, but its text is.
   await button(english("conversation.threads.new"))
     .first()
     .click({ timeout: UI_WAIT_MS * 2 });
-  const afterReload = (await unsentComposer.innerText()).trim();
+  const afterReload = ((await unsentComposer.textContent()) ?? "").trim();
   report.unsentDraft = { typedDuringTurn, afterTurn, afterSwitch, afterReload };
   // The text is stored in the profile, so it is removed before the checks can stop the script.
   await unsentComposer.fill("");
