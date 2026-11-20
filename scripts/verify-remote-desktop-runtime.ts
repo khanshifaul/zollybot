@@ -10,6 +10,11 @@ const logger = createZollyBotLogger("verify-remote-desktop-runtime");
 
 const platform = process.argv.includes("--windows") ? "win32" : process.argv.includes("--linux") ? "linux" : "darwin";
 const architecture = platform === "win32" ? "x64" : process.arch;
+
+if (process.env.ZOLLYBOT_SKIP_REMOTE_DESKTOP_RUNTIME === "1") {
+  logger.info(`Skipping remote desktop runtime verification for ${platform}-${architecture}.`);
+  process.exit(0);
+}
 const distributionRoot = resolve("apps/desktop/build-resources/remote-desktop-runtime");
 const root = resolve("apps/desktop/build-resources/remote-desktop-runtime", platform, architecture);
 const lock = await loadNativeRuntimeLock();

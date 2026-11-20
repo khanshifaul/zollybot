@@ -377,7 +377,7 @@ function buildSunshine(source: string, version: string, commit: string): void {
   const build = join(source, "build-zollybot");
   const depsRoot = join(source, "..", "deps");
   const generator = process.env.CMAKE_GENERATOR ?? (hasExecutable("ninja") ? "Ninja" : "Unix Makefiles");
-  const extraEnv = platform === "linux" ? ensureMiniupnpc(depsRoot) : process.env;
+  const extraEnv = platform === "linux" || platform === "darwin" ? ensureMiniupnpc(depsRoot) : process.env;
   const gladPython = ensureGladPython(depsRoot);
   const buildEnvironment = {
     ...extraEnv,
@@ -403,9 +403,14 @@ function buildSunshine(source: string, version: string, commit: string): void {
       "-DGLAD_SKIP_PIP_INSTALL=ON",
       `-DPython3_EXECUTABLE=${gladPython}`,
       `-DPython_EXECUTABLE=${gladPython}`,
+      ...(platform === "linux" || platform === "darwin"
+        ? [
+            `-DCMAKE_PREFIX_PATH=${[join(depsRoot, "miniupnpc-prefix"), extraEnv.CMAKE_PREFIX_PATH].filter(Boolean).join(":")}`,
+            `-DCMAKE_LIBRARY_PATH=${[join(depsRoot, "miniupnpc-prefix", "lib"), join(depsRoot, "miniupnpc-prefix", "lib64"), extraEnv.CMAKE_LIBRARY_PATH].filter(Boolean).join(":")}`,
+          ]
+        : []),
       ...(platform === "linux"
         ? [
-            `-DCMAKE_LIBRARY_PATH=${[join(depsRoot, "miniupnpc-prefix", "lib"), join(depsRoot, "miniupnpc-prefix", "lib64")].join(";")}`,
             `-DCMAKE_EXE_LINKER_FLAGS=${[join(depsRoot, "miniupnpc-prefix", "lib"), join(depsRoot, "miniupnpc-prefix", "lib64")].map((dir) => `-L${dir}`).join(" ")}`,
             `-DCMAKE_SHARED_LINKER_FLAGS=${[join(depsRoot, "miniupnpc-prefix", "lib"), join(depsRoot, "miniupnpc-prefix", "lib64")].map((dir) => `-L${dir}`).join(" ")}`,
             ...LINUX_SUNSHINE_OPTIONS,
