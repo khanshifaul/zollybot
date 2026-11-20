@@ -74,6 +74,7 @@ const THREADS = [
     branch_source_message_id: null,
     branch_through_message_id: null,
     routine_id: null,
+    office_id: null,
   },
   {
     thread_id: "zollybot-thread-open",
@@ -92,6 +93,7 @@ const THREADS = [
     branch_source_message_id: null,
     branch_through_message_id: null,
     routine_id: null,
+    office_id: null,
   },
 ];
 
@@ -177,6 +179,7 @@ describe("agent thread migration", () => {
       expect(threads(db)).toEqual(THREADS);
       expect(agentTables(db)).toEqual([
         { type: "index", name: "agent_threads_agent" },
+        { type: "index", name: "agent_threads_office" },
         { type: "index", name: "agent_threads_open" },
         { type: "index", name: "agent_threads_routine" },
         { type: "table", name: "projection_agent_threads" },
