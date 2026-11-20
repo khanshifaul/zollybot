@@ -98,7 +98,7 @@ function contents(db: DatabaseSync): Contents {
 function withChatRunPlace(tables: Contents): Contents {
   const routines = tables.projection_agent_routines;
   return routines
-    ? { ...tables, projection_agent_routines: routines.map((row) => ({ ...row, run_in: "chat" })) }
+    ? { ...tables, projection_agent_routines: routines.map((row) => ({ ...row, run_in: "chat", office_id: null })) }
     : tables;
 }
 
