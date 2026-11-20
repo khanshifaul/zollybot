@@ -1,0 +1,148 @@
+name: Release Desktop Windows
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to upload assets to (defaults to the release event tag)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-desktop-windows-${{ github.event.release.tag_name || github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag || github.ref_name }}
+
+jobs:
+  meta:
+    name: Resolve release metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+        with:
+          install: none
+
+      - name: Resolve version
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${RELEASE_TAG}"
+          pkg_version="$(bun -p 'require("./package.json").version')"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$pkg_version" >> "$GITHUB_OUTPUT"
+          echo "Release tag: $tag"
+          echo "Package version: $pkg_version"
+
+      - name: Ensure GitHub release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view "${RELEASE_TAG}" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "${RELEASE_TAG}" --repo "$GITHUB_REPOSITORY" --title "${RELEASE_TAG}" --notes "Automated release ${RELEASE_TAG}" --verify-tag
+          fi
+
+  desktop-windows-x64:
+    name: Desktop Windows x64
+    needs: meta
+    runs-on: windows-2025
+    timeout-minutes: 90
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+          persist-credentials: false
+
+      - name: Install Windows build dependencies
+        shell: pwsh
+        run: |
+          choco install openssl --no-progress -y
+          $openssl = "C:\Program Files\OpenSSL-Win64"
+          if (Test-Path $openssl) {
+            "OPENSSL_ROOT_DIR=$openssl" | Out-File -FilePath $env:GITHUB_ENV -Append
+            "OPENSSL_DIR=$openssl" | Out-File -FilePath $env:GITHUB_ENV -Append
+            "$openssl\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+          }
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Build Windows x64 installer
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Continue"
+          if ($env:OPENSSL_ROOT_DIR) {
+            $env:CMAKE_PREFIX_PATH = "$env:OPENSSL_ROOT_DIR;$env:CMAKE_PREFIX_PATH"
+          }
+          bun run dist:win
+          $distExit = $LASTEXITCODE
+          if ($distExit -ne 0) {
+            Write-Warning "dist:win with remote desktop runtime failed (exit $distExit). Retrying without remote desktop runtime..."
+            $env:ZOLLYBOT_SKIP_REMOTE_DESKTOP_RUNTIME = "1"
+            Remove-Item Env:ZOLLYBOT_ALLOW_RUNTIME_SOURCE_BUILD -ErrorAction SilentlyContinue
+            bun run voice:prepare-runtime
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            bun scripts/prepare-remote-desktop-runtime.ts win32 x64
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            bun run verify:remote-desktop-runtime --windows
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            bun scripts/install-cua-driver.ts win32 x64
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            bun run build
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            bunx electron-builder --win nsis --x64 --publish never --config apps/desktop/electron-builder.yml
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
+      - name: Collect artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release-assets | Out-Null
+          Get-ChildItem out/desktop/dist -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '\.(exe|msi|zip|blockmap)$' -or $_.Name -eq 'latest.yml' } |
+            Copy-Item -Destination release-assets
+          $files = Get-ChildItem release-assets -File
+          if ($files) {
+            $hashes = $files | ForEach-Object { "$( (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() )  $($_.Name)" }
+            $hashes | Set-Content -Encoding ascii release-assets/SHA256SUMS-windows-x64.txt
+          }
+          Get-ChildItem release-assets
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(release-assets/*)
+          if [ ${#files[@]} -eq 0 ]; then echo "No Windows artifacts found"; exit 1; fi
+          gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
