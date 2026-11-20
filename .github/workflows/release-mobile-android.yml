@@ -105,15 +105,15 @@ jobs:
           printf '%s\n' 'org.gradle.workers.max=2' >> ~/.gradle/gradle.properties
           printf '%s\n' 'org.gradle.daemon=false' >> ~/.gradle/gradle.properties
 
-      - name: Build Android AAB
+      - name: Build Android APK
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          EAS_LOCAL_BUILD_ARTIFACT: ${{ runner.temp }}/zollybot-android-${{ needs.meta.outputs.version }}.aab
+          EAS_LOCAL_BUILD_ARTIFACT: ${{ runner.temp }}/zollybot-android-${{ needs.meta.outputs.version }}.apk
           CI: "1"
         shell: bash
         run: |
           set -euo pipefail
-          bun run mobile:android:build:local
+          bun run mobile:android:build:apk:local
 
       - name: Upload Android release asset
         env:
@@ -121,7 +121,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          artifact="${RUNNER_TEMP}/zollybot-android-${{ needs.meta.outputs.version }}.aab"
+          artifact="${RUNNER_TEMP}/zollybot-android-${{ needs.meta.outputs.version }}.apk"
           if [ ! -f "$artifact" ]; then
             echo "Android artifact not found at $artifact"
             find . -name '*.aab' -o -name '*.apk' | head -20 || true
