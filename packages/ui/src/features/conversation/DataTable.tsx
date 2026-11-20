@@ -49,7 +49,7 @@ export function DataTable(props: { table: DataTableBlock; renderCell?: (text: st
     const text =
       format === "markdown"
         ? dataTableMarkdown(props.table)
-        : dataTableCsv([...(table?.rows ?? [])].map((row) => [...row.cells].map((cell) => cell.innerText.trim())));
+        : dataTableCsv([...(table?.rows ?? [])].map((row) => [...row.cells].map((cell) => cell.textContent.trim())));
     try {
       await navigator.clipboard.writeText(text);
       setCopied(format);

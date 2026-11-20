@@ -12,7 +12,7 @@
    the native outline goes. This rule has the same weight as the accent outline rule in auth.css,
    which loads earlier. */
 :is(.routine-schedule-picker, .routine-popover, .routine-chip-select-content)
-:is(button, input, textarea):focus-visible {
+  :is(button, input, textarea):focus-visible {
   outline: 0;
 }
 

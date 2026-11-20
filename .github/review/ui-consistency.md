@@ -1,7 +1,10 @@
 ---
+
 include:
-  - "apps/desktop/src/renderer/**"
-  - ".storybook/**"
+
+- "apps/desktop/src/renderer/**"
+- ".storybook/**"
+
 ---
 
 ## Renderer UI review
@@ -12,7 +15,7 @@ repository actually does, not against React or shadcn habits.
 Report a finding when the diff:
 
 - Introduces a colour literal where a semantic `--zollybot-*` token from `apps/desktop/src/renderer/src/styles.css`
-  exists. *Exception:* fixed integration colours, generated assets, inline SVG payloads, and platform
+  exists. _Exception:_ fixed integration colours, generated assets, inline SVG payloads, and platform
   chrome are allowed to carry literals at their boundary.
 - Adds a token to one palette only. `--zollybot-*` is declared separately in
   `apps/desktop/src/renderer/src/styles.css` and `apps/mobile/global.css`. Flag

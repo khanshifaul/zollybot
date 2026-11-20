@@ -15,12 +15,12 @@
 
 Combine all four agent-control flavors into a single zollybot surface:
 
-| Flavor | What zollybot gains | Code home |
-|---|---|---|
-| **zollybot reviewer gates** | Per-stage SDLC approval gates (spec → plan → code → review → publish), Butler as COO memory concierge | `src/backend/offices/`, `packages/contracts/src/ipc-approvals.ts` |
-| **Orca parallel worktrees** | Fan one task across N isolated agent workspaces, compare diffs, merge the winner | `src/backend/agent-orchestration/worktree-manager.ts` |
-| **T3 Code simple control surface** | Bring-your-own-provider agent registry, start/stop/monitor from one surface, install-free feel | `src/backend/agent/provider-runtime.ts`, new `control-surface.ts` |
-| **Sandboxed coworkers (upstream flavor)** | Per-agent sandboxed browser + file container, policy gateway, human takeover at login/2FA | `src/backend/agent-orchestration/sandbox-port.ts`, `policy-gateway.ts` |
+| Flavor                                    | What zollybot gains                                                                                   | Code home                                                              |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **zollybot reviewer gates**               | Per-stage SDLC approval gates (spec → plan → code → review → publish), Butler as COO memory concierge | `src/backend/offices/`, `packages/contracts/src/ipc-approvals.ts`      |
+| **Orca parallel worktrees**               | Fan one task across N isolated agent workspaces, compare diffs, merge the winner                      | `src/backend/agent-orchestration/worktree-manager.ts`                  |
+| **T3 Code simple control surface**        | Bring-your-own-provider agent registry, start/stop/monitor from one surface, install-free feel        | `src/backend/agent/provider-runtime.ts`, new `control-surface.ts`      |
+| **Sandboxed coworkers (upstream flavor)** | Per-agent sandboxed browser + file container, policy gateway, human takeover at login/2FA             | `src/backend/agent-orchestration/sandbox-port.ts`, `policy-gateway.ts` |
 
 Plus a **Gemini-like offline mobile assistant** (voice + screen + video, on-device GGUF via llama.rn) that can remote-control the desktop fleet.
 
@@ -128,6 +128,7 @@ export interface AgentRuntimeSnapshot {
 ### 4.3 `packages/contracts/src/ipc-agents.ts` — Agent summary extensions
 
 Add to `AgentSummary`:
+
 - `sandboxId?: string | null`
 - `worktreePath?: string | null`
 - `fanoutGroupId?: string | null` — which parallel fan-out group this agent belongs to
@@ -138,9 +139,9 @@ Add to `AgentSummary`:
 ```typescript
 export const MOBILE_FEATURES = [
   // ... existing ...
-  "localAi",          // Plan 011: on-device chat
-  "assistant",        // NEW: Gemini-like voice+screen+video assistant
-  "orchestration",    // NEW: mobile fan-out / reviewer-gate views
+  "localAi", // Plan 011: on-device chat
+  "assistant", // NEW: Gemini-like voice+screen+video assistant
+  "orchestration", // NEW: mobile fan-out / reviewer-gate views
 ] as const;
 ```
 
@@ -164,11 +165,11 @@ export interface AgentWorktree {
 }
 
 export class WorktreeManager {
-  createWorktree(groupId, agentId, repoPath, baseRef): Promise<AgentWorktree>
-  listWorktrees(groupId): readonly AgentWorktree[]
-  removeWorktree(worktreePath): Promise<void>
-  mergeWorktree(worktreePath, targetBranch, approverAgentId): Promise<MergeResult>
-  diffWorktrees(groupId): readonly WorktreeDiff[]  // side-by-side compare
+  createWorktree(groupId, agentId, repoPath, baseRef): Promise<AgentWorktree>;
+  listWorktrees(groupId): readonly AgentWorktree[];
+  removeWorktree(worktreePath): Promise<void>;
+  mergeWorktree(worktreePath, targetBranch, approverAgentId): Promise<MergeResult>;
+  diffWorktrees(groupId): readonly WorktreeDiff[]; // side-by-side compare
 }
 ```
 
@@ -189,9 +190,9 @@ export interface FanoutGroup {
 }
 
 export class FanoutRouter {
-  fanout(specId, agentIds): Promise<FanoutGroup>
-  aggregate(groupId): Promise<AggregatedResult>  // compare diffs, pick winner
-  requestMerge(groupId, winnerAgentId, approverAgentId): Promise<void>
+  fanout(specId, agentIds): Promise<FanoutGroup>;
+  aggregate(groupId): Promise<AggregatedResult>; // compare diffs, pick winner
+  requestMerge(groupId, winnerAgentId, approverAgentId): Promise<void>;
 }
 ```
 
@@ -233,9 +234,9 @@ export interface PolicyRule {
 }
 
 export class PolicyGateway {
-  evaluate(agentId, action): Promise<PolicyDecision>
-  recordDecision(agentId, action, decision): Promise<void>
-  requestTakeover(agentId, reason): Promise<void>  // pauses agent, notifies human
+  evaluate(agentId, action): Promise<PolicyDecision>;
+  recordDecision(agentId, action, decision): Promise<void>;
+  requestTakeover(agentId, reason): Promise<void>; // pauses agent, notifies human
 }
 ```
 
@@ -330,6 +331,7 @@ closed → starting → listening → transcribing → thinking → speaking
 Add `isFullView` / `isBar` presentation (PocketPal `VoicePresentation`). Add `voice-conversation.ts` for continuous turn-taking (listen, transcribe, local LLM reply, TTS speak, repeat).
 
 **Local voice models** (offline-first, per Plan 011 Phase 1.5):
+
 - STT: Whisper tiny/base ("wispr") or Parakeet-Redux — runs on the phone via `local-ai-voice.ts`, VAD-gated to ignore silence.
 - TTS: Kokoro (82M) — runs on the phone, speaks the assistant reply.
 - Model slot: only one heavy model in RAM at a time. `local-ai-voice` unloads the GGUF LLM before loading STT/TTS, reloads it after the voice turn ends.
@@ -351,6 +353,7 @@ Extend `chat-video.native.tsx` poster logic (720px thumbnails, 24 max) to extrac
 ### 7.6 Desktop integration from mobile
 
 When online, the mobile assistant can:
+
 - Start a fan-out group on desktop (`fanout_start`)
 - Create worktrees on desktop repos (`worktree_create`)
 - Submit reviewer approvals (`respond_to_approval`)
@@ -544,15 +547,15 @@ apps/mobile/package.json, app.json               # llama.rn, expo-sqlite
 
 ## 11. Risks
 
-| Risk | Effect | Mitigation |
-|---|---|---|
-| Virtual offices break git assumptions | Worktree merge fails for office with no repo | Gate git operations behind `hasRepoPath`; virtual offices use sandbox only |
-| Parallel worktrees + reviewer gates = slow | N agents × review gates × merge conflicts | Fan-out limited to small N (default 3); reviewer gate can auto-approve low-risk stages |
-| Sandboxed browser per agent = memory heavy | N browser profiles | One sandbox per active agent; idle sandboxes suspend |
-| Mobile local AI model size | App install grows | GGUF models downloaded on demand, not bundled; 1–4B quantized models |
-| Voice + screen + video on phone = battery | Drain | Screen awake only during completion; voice conversation can be paused; offline-first |
-| Reviewer gate on mobile = poor UX | Small screen, complex diffs | Mobile merge-review shows condensed diff + approve/decline only |
-| Human takeover pauses agent indefinitely | Agent stuck | Takeover timeout; agent can be resumed or abandoned |
+| Risk                                       | Effect                                       | Mitigation                                                                             |
+| ------------------------------------------ | -------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Virtual offices break git assumptions      | Worktree merge fails for office with no repo | Gate git operations behind `hasRepoPath`; virtual offices use sandbox only             |
+| Parallel worktrees + reviewer gates = slow | N agents × review gates × merge conflicts    | Fan-out limited to small N (default 3); reviewer gate can auto-approve low-risk stages |
+| Sandboxed browser per agent = memory heavy | N browser profiles                           | One sandbox per active agent; idle sandboxes suspend                                   |
+| Mobile local AI model size                 | App install grows                            | GGUF models downloaded on demand, not bundled; 1–4B quantized models                   |
+| Voice + screen + video on phone = battery  | Drain                                        | Screen awake only during completion; voice conversation can be paused; offline-first   |
+| Reviewer gate on mobile = poor UX          | Small screen, complex diffs                  | Mobile merge-review shows condensed diff + approve/decline only                        |
+| Human takeover pauses agent indefinitely   | Agent stuck                                  | Takeover timeout; agent can be resumed or abandoned                                    |
 
 ---
 
@@ -569,16 +572,16 @@ apps/mobile/package.json, app.json               # llama.rn, expo-sqlite
 
 ## 13. Verification
 
-| Check | When |
-|---|---|
-| `bun install --frozen-lockfile` | Phase 0, once |
-| `bun run typecheck` | Each phase |
-| Desktop: start fan-out, compare 3 worktrees, approve merge | Phase 1 & 2 |
-| Desktop: human takeover at login/2FA, agent resumes | Phase 2 |
-| Mobile: GGUF download, local chat offline | Phase 3 |
-| Mobile: continuous voice conversation, screen context | Phase 4 |
-| Mobile: start fan-out on desktop from phone | Phase 5 |
-| `scripts/local-ai-android-e2e.ts` (extend for assistant) | Phase 4 & 5, on device |
+| Check                                                      | When                   |
+| ---------------------------------------------------------- | ---------------------- |
+| `bun install --frozen-lockfile`                            | Phase 0, once          |
+| `bun run typecheck`                                        | Each phase             |
+| Desktop: start fan-out, compare 3 worktrees, approve merge | Phase 1 & 2            |
+| Desktop: human takeover at login/2FA, agent resumes        | Phase 2                |
+| Mobile: GGUF download, local chat offline                  | Phase 3                |
+| Mobile: continuous voice conversation, screen context      | Phase 4                |
+| Mobile: start fan-out on desktop from phone                | Phase 5                |
+| `scripts/local-ai-android-e2e.ts` (extend for assistant)   | Phase 4 & 5, on device |
 
 ---
 

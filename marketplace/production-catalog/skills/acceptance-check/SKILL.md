@@ -1,4 +1,5 @@
 ---
+
 name: "Acceptance Check"
 description: "Test a live web app against an acceptance checklist in a real browser and return PASS, FAIL or BLOCKED with screenshots and repro steps. Use before a release, after a deploy, or for a scheduled smoke check of a saved site."
 ---

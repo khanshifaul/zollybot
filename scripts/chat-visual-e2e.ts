@@ -162,7 +162,7 @@ try {
   // 1. Full screen and back keeps the page state.
   await counter.click();
   await counter.click();
-  const countBefore = await counter.innerText();
+  const countBefore = (await counter.textContent()) ?? "";
   await conversation(desktop)
     .getByRole("button", { name: english("chat.visual.fullScreen"), exact: true })
     .click();
@@ -192,7 +192,7 @@ try {
     Boolean,
     UI_WAIT_MS,
   );
-  const countAfter = await counter.innerText();
+  const countAfter = (await counter.textContent()) ?? "";
   report.fullScreen = { opened: true, countBefore, countAfter, closedWithEscape };
   assert.equal(countBefore, "Count: 2");
   assert.equal(countAfter, "Count: 3", "The page loaded again in full screen.");
@@ -213,14 +213,14 @@ try {
   await waitFor(
     desktop,
     "the composer holds the page's text",
-    () => composer(desktop).innerText(),
-    (text) => text.includes(PICK_TEXT),
+    () => composer(desktop).textContent(),
+    (text) => (text ?? "").includes(PICK_TEXT),
     UI_WAIT_MS,
   );
   const replyingToPage = (await conversation(desktop).getByText(english("composer.reply.toAgent")).count()) > 0;
   const messagesAfter = (await client.read(channel.id)).messages.length;
   report.pick = {
-    composerText: await composer(desktop).innerText(),
+    composerText: (await composer(desktop).textContent()) ?? "",
     replyingToPage,
     messagesBefore,
     messagesAfter,

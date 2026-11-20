@@ -5,10 +5,10 @@
 ZollyBot is currently a development preview. Security fixes are made on `main` and included in the
 next release. No older release line is guaranteed to receive backports.
 
-| Version | Supported |
-| --- | --- |
-| `main` / latest release | Yes |
-| Older releases | No guaranteed backports |
+| Version                 | Supported               |
+| ----------------------- | ----------------------- |
+| `main` / latest release | Yes                     |
+| Older releases          | No guaranteed backports |
 
 ## Reporting a vulnerability
 

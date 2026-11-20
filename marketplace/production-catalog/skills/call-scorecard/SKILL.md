@@ -1,4 +1,5 @@
 ---
+
 name: "Call Scorecard"
 description: "Score a sales call transcript from 1 to 5 on seven named criteria, each with a timestamped quote as evidence, then give the top 3 fixes for the next call with a better line to try. Works from a pasted or uploaded transcript, or a transcript in a signed-in call recorder tab. Never invents quotes."
 ---

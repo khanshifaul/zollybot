@@ -1,4 +1,5 @@
 ---
+
 name: "Request Scoring"
 description: "Score inbound event, sponsorship, speaking and partnership requests 0 to 2 on criteria the user sets once, turn the total into yes, maybe or no, and draft a reply for each. Keeps a log and never sends. Use when requests pile up in a channel or inbox."
 ---

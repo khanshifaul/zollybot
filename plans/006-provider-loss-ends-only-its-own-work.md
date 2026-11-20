@@ -43,6 +43,7 @@ scoped work with `this.#compaction.clientEnded(client)`. This plan makes
 ## Current state
 
 - `src/backend/agent-service.ts:588-600` — the hook:
+
   ```ts
   onProviderLost: (client) => {
     this.#boot.orphanDeliveriesOf(client.provider, (agentId) => this.#providers.runsOnOwnProcess(agentId));
@@ -68,6 +69,7 @@ scoped work with `this.#compaction.clientEnded(client)`. This plan makes
   the only caller of `onProviderLost`. It runs only for the shared client of a
   provider (`this.#clients.get(client.provider) === client`).
 - `src/backend/agent/context-compaction.ts:377-386` — the scoped release:
+
   ```ts
   /** The client stopped or exited, so the compactions and refusals it held end with it. */
   clientEnded(client: AgentClient): void {
@@ -80,6 +82,7 @@ scoped work with `this.#compaction.clientEnded(client)`. This plan makes
     for (const [agentId, hold] of this.#refusals) if (hold.client === client) this.#endRefusal(agentId);
   }
   ```
+
   `dispose()` at lines 388-400 clears every map and sends no event.
   `mayDrain(agentId)` at line 185 is `!this.#compactingAgents.has(agentId) && !this.#refusals.has(agentId)`.
 - `src/backend/agent/turn-lifecycle.ts:283-307` — `interruptTurnsOf(client, { keepRecoverable })`.
@@ -103,26 +106,28 @@ scoped work with `this.#compaction.clientEnded(client)`. This plan makes
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---------|---------|---------------------|
-| Install (fresh worktree only) | `bun install --frozen-lockfile` | exit 0 |
-| New E2E | `bun scripts/provider-loss-scope-e2e.ts` | exit 0, report `"passed": true` |
-| Existing E2E | `bun scripts/codex-compaction-queue-e2e.ts` | exit 0 |
-| Related tests | `bun run test:related -- src/backend/agent-service.ts` | exit 0 |
-| Typecheck | `bun run typecheck:node` | exit 0 |
-| Lint changed files | `biome check --write --max-diagnostics=none <changed paths>` | exit 0 |
+| Purpose                       | Command                                                      | Expected on success             |
+| ----------------------------- | ------------------------------------------------------------ | ------------------------------- |
+| Install (fresh worktree only) | `bun install --frozen-lockfile`                              | exit 0                          |
+| New E2E                       | `bun scripts/provider-loss-scope-e2e.ts`                     | exit 0, report `"passed": true` |
+| Existing E2E                  | `bun scripts/codex-compaction-queue-e2e.ts`                  | exit 0                          |
+| Related tests                 | `bun run test:related -- src/backend/agent-service.ts`       | exit 0                          |
+| Typecheck                     | `bun run typecheck:node`                                     | exit 0                          |
+| Lint changed files            | `biome check --write --max-diagnostics=none <changed paths>` | exit 0                          |
 
 Do not run `bun run typecheck`, builds or full suites.
 
 ## Scope
 
 **In scope**:
+
 - `src/backend/agent-service.ts` (`onProviderLost` only)
 - `src/backend/agent/turn-lifecycle.ts` (`interruptTurnsOf` only)
 - `scripts/provider-loss-scope-e2e.ts` (create)
 - `changelog.d/<branch>.md` (create; see `changelog.d/README.md`)
 
 **Out of scope**:
+
 - `stop()` and `dispose()` in `agent-service.ts`. Shutdown must clear everything.
 - `this.#conversation.clearLoadedThreads()` in `provider-runtime.ts`. It only makes
   threads load again; it loses no state.
@@ -184,12 +189,14 @@ In `onProviderLost`, replace `this.#compaction.dispose();` with
 2. In `TurnLifecycle.interruptTurnsOf`, in the `keepRecoverable` branch, end the
    control session of the skipped turn before `continue`. The client is gone, so
    no browser tool of that turn can run. Target shape:
+
    ```ts
    if (options.keepRecoverable && /* existing delivery check */) {
      this.#browser.endControl(this.#conversation.publicThreadId(turn.agentId, turn.threadId), turnId);
      continue;
    }
    ```
+
    Use the same call as line 696. Keep the existing condition as it is.
 
 **Verify**: `bun run typecheck:node` → exit 0. `bun scripts/provider-loss-scope-e2e.ts`
@@ -198,6 +205,7 @@ In `onProviderLost`, replace `this.#compaction.dispose();` with
 ### Step 4: Run the neighbors and write the release note
 
 **Verify**:
+
 - `bun scripts/codex-compaction-queue-e2e.ts` → exit 0.
 - `bun run test:related -- src/backend/agent-service.ts` → exit 0. If it selects
   no test file, write that in the PR body.

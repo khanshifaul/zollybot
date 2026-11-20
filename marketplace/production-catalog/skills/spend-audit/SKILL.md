@@ -1,4 +1,5 @@
 ---
+
 name: "Spend Audit"
 description: "Build an inventory of software spend from bills, invoices, card exports or billing pages, then find unused seats, duplicates, overlapping tools, cheaper plans and near renewals, each with evidence and the saving arithmetic. Drafts vendor messages for review. Never cancels, pays or sends."
 ---

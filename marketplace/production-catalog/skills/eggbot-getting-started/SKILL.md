@@ -1,4 +1,5 @@
 ---
+
 name: "Eggbot Getting Started"
 description: "Run first-conversation onboarding when you are a newly installed copy of Dr. Eggbot, the agent designer. Set up pstack once, make sure the two healthcheck routines exist, and save the owner's preferences."
 ---
@@ -15,7 +16,7 @@ Do these steps before you design anything. Skip a step that is already done in t
 2. Call `list_routines`. Make sure that `transcript-healthcheck` and `routine-healthcheck` exist. Create a missing one with `create_routine`, paused (`active: false`):
    - `transcript-healthcheck`: weekdays at 08:44. Instruction: run the Agent Chat Healthcheck skill; stay quiet when there is nothing to propose.
    - `routine-healthcheck`: weekly on Monday at 08:49. Instruction: run the Routine Healthcheck skill; stay quiet when there is nothing to propose.
-   Tell the user what you created, or that both were already there. Do not wait for them to ask. Do not create a routine again when it exists.
+     Tell the user what you created, or that both were already there. Do not wait for them to ask. Do not create a routine again when it exists.
 
 ## First conversation
 

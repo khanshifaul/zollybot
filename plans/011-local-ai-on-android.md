@@ -24,20 +24,20 @@ the only path that touches the host, and only when online.
 
 ## 1. What the ZollyBot Android app is today
 
-| Fact | Evidence |
-| --- | --- |
-| Expo SDK 58 (`~58.0.17`), React Native `0.88.0`, React `19.3.0` | `apps/mobile/package.json` |
-| New Architecture and Hermes are on | `apps/mobile/android/gradle.properties` (generated) |
-| Native projects are generated (CNG). `android/` and `ios/` are git-ignored | `apps/mobile/.gitignore` |
-| The app has no AI runtime. Every answer comes from a ZollyBot host over the Team API and WebRTC | `apps/mobile/src/features/workspace/context/mobile-workspace-context.tsx` |
-| Chat is host-coupled. `ChatMessageList` needs a target, agent activity, approvals, browser requests, host history state, turn summaries, message aliases and branch points | `apps/mobile/src/features/chat/components/chat-message-list.tsx:235` |
-| `ChatMarkdown` is self-contained and reusable. It takes `body`, `color`, `streaming` and `finished` | `apps/mobile/src/features/chat/components/chat-markdown.tsx:806` |
-| The app starts at the sign-in screen. `(app)` is the signed-in app | `apps/mobile/src/app/index.tsx`, `src/app/_layout.tsx` |
-| Mobile feature flags come from the account server, with a development override | `packages/contracts/src/mobile-features.ts`, `apps/mobile/src/shared/lib/dev-feature-overrides.ts` |
-| Local native modules live in `apps/mobile/modules/*` and are autolinked | `apps/mobile/modules/app-lock`, `modules/speech` |
-| No `expo-sqlite` dependency. Cache data uses `expo-file-system/legacy` | `apps/mobile/package.json`, `src/features/workspace/model/workspace-cache.ts` |
-| Release builds enable R8 shrinking | `apps/mobile/app.json` `expo-build-properties` |
-| Android releases build on a CI runner with `eas build --local` | `.github/workflows/release-android.yml` |
+| Fact                                                                                                                                                                       | Evidence                                                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Expo SDK 58 (`~58.0.17`), React Native `0.88.0`, React `19.3.0`                                                                                                            | `apps/mobile/package.json`                                                                         |
+| New Architecture and Hermes are on                                                                                                                                         | `apps/mobile/android/gradle.properties` (generated)                                                |
+| Native projects are generated (CNG). `android/` and `ios/` are git-ignored                                                                                                 | `apps/mobile/.gitignore`                                                                           |
+| The app has no AI runtime. Every answer comes from a ZollyBot host over the Team API and WebRTC                                                                            | `apps/mobile/src/features/workspace/context/mobile-workspace-context.tsx`                          |
+| Chat is host-coupled. `ChatMessageList` needs a target, agent activity, approvals, browser requests, host history state, turn summaries, message aliases and branch points | `apps/mobile/src/features/chat/components/chat-message-list.tsx:235`                               |
+| `ChatMarkdown` is self-contained and reusable. It takes `body`, `color`, `streaming` and `finished`                                                                        | `apps/mobile/src/features/chat/components/chat-markdown.tsx:806`                                   |
+| The app starts at the sign-in screen. `(app)` is the signed-in app                                                                                                         | `apps/mobile/src/app/index.tsx`, `src/app/_layout.tsx`                                             |
+| Mobile feature flags come from the account server, with a development override                                                                                             | `packages/contracts/src/mobile-features.ts`, `apps/mobile/src/shared/lib/dev-feature-overrides.ts` |
+| Local native modules live in `apps/mobile/modules/*` and are autolinked                                                                                                    | `apps/mobile/modules/app-lock`, `modules/speech`                                                   |
+| No `expo-sqlite` dependency. Cache data uses `expo-file-system/legacy`                                                                                                     | `apps/mobile/package.json`, `src/features/workspace/model/workspace-cache.ts`                      |
+| Release builds enable R8 shrinking                                                                                                                                         | `apps/mobile/app.json` `expo-build-properties`                                                     |
+| Android releases build on a CI runner with `eas build --local`                                                                                                             | `.github/workflows/release-android.yml`                                                            |
 
 Two consequences:
 
@@ -49,16 +49,16 @@ Two consequences:
 
 ## 2. What PocketPal does today
 
-| Area | How PocketPal does it | Take it? |
-| --- | --- | --- |
-| Runtime | `llama.rn` (`initLlama`, `context.completion`), one `LlamaContext` at a time | Yes |
-| Model storage | `DocumentDirectoryPath/models/{preset,hf}/<author>/<repo>/<file>.gguf` | Yes, simpler layout |
-| Model download | A native Android module with WorkManager, Room, notifications, pause/resume | Phase 2. Phase 1 uses `expo-file-system` |
-| Local agent | `src/services/agent/AgentRunner.ts`: tool calls, 5 turns, 4 parallel calls | No. Phase 1 has no tools |
-| Stores | MobX plus WatermelonDB | No. Use zustand, which this app already uses |
-| Speech | `whisper.rn` | No. Later |
-| Vision | ONNX Runtime plus `mmproj` | No. Later |
-| Model catalog | Hugging Face search inside the app | No. Use a small pinned catalog |
+| Area           | How PocketPal does it                                                        | Take it?                                     |
+| -------------- | ---------------------------------------------------------------------------- | -------------------------------------------- |
+| Runtime        | `llama.rn` (`initLlama`, `context.completion`), one `LlamaContext` at a time | Yes                                          |
+| Model storage  | `DocumentDirectoryPath/models/{preset,hf}/<author>/<repo>/<file>.gguf`       | Yes, simpler layout                          |
+| Model download | A native Android module with WorkManager, Room, notifications, pause/resume  | Phase 2. Phase 1 uses `expo-file-system`     |
+| Local agent    | `src/services/agent/AgentRunner.ts`: tool calls, 5 turns, 4 parallel calls   | No. Phase 1 has no tools                     |
+| Stores         | MobX plus WatermelonDB                                                       | No. Use zustand, which this app already uses |
+| Speech         | `whisper.rn`                                                                 | No. Later                                    |
+| Vision         | ONNX Runtime plus `mmproj`                                                   | No. Later                                    |
+| Model catalog  | Hugging Face search inside the app                                           | No. Use a small pinned catalog               |
 
 PocketPal also carries a 1071-line `patches/llama.rn+0.13.0-rc.9.patch`. Read it before you decide on a
 version:
@@ -71,28 +71,30 @@ version:
 
 ## 3. Options and decision
 
-| Option | Cost | Verdict |
-| --- | --- | --- |
-| A. Dedicated on-device chat surface with `llama.rn` | Medium. One native dependency, one local database, new screens | **Recommended** |
-| B. Run a Team API host on the phone | Very high. Host stack, WebRTC, foreground service, second process, battery | Rejected |
-| C. Register local models as a provider of a desktop host | The phone has no host. Desktop already does this with Ollama and LM Studio | Rejected for the phone |
-| D. Fake a host so `ChatMessageList` renders local messages | Large fake capability surface. Breaks "host is the source of truth" | Rejected |
-| E. Local agent with tools and file access | Android scoped storage makes safe file access hard. No safe tool set in phase 1 | Rejected for phase 1 |
+| Option                                                     | Cost                                                                            | Verdict                |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------- |
+| A. Dedicated on-device chat surface with `llama.rn`        | Medium. One native dependency, one local database, new screens                  | **Recommended**        |
+| B. Run a Team API host on the phone                        | Very high. Host stack, WebRTC, foreground service, second process, battery      | Rejected               |
+| C. Register local models as a provider of a desktop host   | The phone has no host. Desktop already does this with Ollama and LM Studio      | Rejected for the phone |
+| D. Fake a host so `ChatMessageList` renders local messages | Large fake capability surface. Breaks "host is the source of truth"             | Rejected               |
+| E. Local agent with tools and file access                  | Android scoped storage makes safe file access hard. No safe tool set in phase 1 | Rejected for phase 1   |
 
 Note: ZollyBot desktop already detects local providers (`ollama`, `lmstudio` in
 `packages/contracts/src/ipc-provider-detection.ts`). The gap is the phone, which has no host and no
+
 ### Voice model options (offline-first)
 
-| Role | Model | Size | Android runtime | Notes |
-|------|-------|------|-----------------|-------|
-| STT | Whisper tiny / base ("wispr") | ~75–250 MB | `whisper.rn` custom native module, NNAPI delegate | VAD gate before STT to avoid processing silence |
-| STT (alt) | Parakeet-Redux (Nemo CTC/transducer) | ~100–300 MB | ONNX Runtime / ExecuTorch | Better streaming quality, larger download |
-| TTS | Kokoro (82M) | ~50–150 MB | ONNX Runtime Mobile / TFLite | CPU-friendly, high quality, 82M params |
+| Role      | Model                                | Size        | Android runtime                                   | Notes                                           |
+| --------- | ------------------------------------ | ----------- | ------------------------------------------------- | ----------------------------------------------- |
+| STT       | Whisper tiny / base ("wispr")        | ~75–250 MB  | `whisper.rn` custom native module, NNAPI delegate | VAD gate before STT to avoid processing silence |
+| STT (alt) | Parakeet-Redux (Nemo CTC/transducer) | ~100–300 MB | ONNX Runtime / ExecuTorch                         | Better streaming quality, larger download       |
+| TTS       | Kokoro (82M)                         | ~50–150 MB  | ONNX Runtime Mobile / TFLite                      | CPU-friendly, high quality, 82M params          |
 
 **Model concurrency:** only one heavy model in RAM at a time on most phones. A 1–2B GGUF
 (~1–2 GB quantized) + Whisper base (~150 MB) + Kokoro (~50 MB) will OOM if loaded together.
 The engine unloads the LLM before loading a voice model, or runs voice on NPU/GPU delegate while
 LLM holds CPU. Total native footprint target: < 1.5 GB on a 4–6 GB phone.
+
 ### Non-goals for phase 1
 
 - No local agent, tools, MCP, browser, files, or shell.
@@ -140,13 +142,9 @@ composer -> local-ai-chats (insert user row)
          -> finish: update row status and text
 ```
 
+voice: mic -> VAD -> local-ai-voice.stt (Whisper/Parakeet) -> local-ai-engine.complete -> local-ai-voice.tts (Kokoro) -> audio -> if host-bound task: local-ai-scheduler.enqueue(pending, on_connect)
 
-voice: mic -> VAD -> local-ai-voice.stt (Whisper/Parakeet) -> local-ai-engine.complete
-         -> local-ai-voice.tts (Kokoro) -> audio
-         -> if host-bound task: local-ai-scheduler.enqueue(pending, on_connect)
-
-scheduler: enqueue host-bound task -> expo-sqlite `voice_tasks` (status pending)
-           -> on reconnect: flush to desktop via Team API / Signal, mark sent/failed
+scheduler: enqueue host-bound task -> expo-sqlite `voice_tasks` (status pending) -> on reconnect: flush to desktop via Team API / Signal, mark sent/failed
 
 The engine has no React state. The store has no native calls. Screens read the store.
 
@@ -410,13 +408,13 @@ Exit criteria:
 4. `host_preferences`: on any host action executed from a flushed task, write distilled preference (preferred agent, approved stage, office context) keyed by task kind.
 
 Exit criteria:
+
 - Mic → local STT → text transcript appears on screen, fully offline.
 - Local LLM answer → local TTS → spoken audio, fully offline.
 - Host-bound task created offline → `voice_tasks` row `pending`; on reconnect → `sent` after host acknowledgement.
 - Voice model load/unload does not crash; LLM reloads after voice turn.
 
 ### Phase 2: local chat
-
 
 1. `local-ai-chats.ts`: create, list, rename, delete, load messages, append, update status, title from
    the first user message (first 40 characters).
@@ -449,6 +447,7 @@ Exit criteria:
 
 - Add `"voiceLocal"` to `MOBILE_FEATURES`.
 - Add `voiceLocal: false` to `mobileFeaturesOff()`.
+
 2. `mobile feature configuration`: add the row. Start with
    `android: { upTo: "0" }`, `ios: { upTo: "0" }`. Enable Android with a Worker deploy when the build
    is live. `upTo` is the last version that has the feature, so use the released version.
@@ -477,9 +476,10 @@ Exit criteria:
    - Opens a chat, sends "Hello", waits for the first token, then stops.
 
 - Turns on voice mode: speaks "ping", verifies local STT transcript appears, verifies local TTS audio plays (no host request in logcat).
-   - Pulls the SQLite file with `adb` and checks the two message rows and the model row.
-   - Checks `adb logcat` for no request to the account API or a host during generation.
-   - Writes `.zollybot-build/local-ai-android-e2e/report.json` and exits non-zero on a failure.
+  - Pulls the SQLite file with `adb` and checks the two message rows and the model row.
+  - Checks `adb logcat` for no request to the account API or a host during generation.
+  - Writes `.zollybot-build/local-ai-android-e2e/report.json` and exits non-zero on a failure.
+
 2. `changelog.d/<branch>.md` with the user-visible change, the model support, the size cost and the
    32-bit drop.
 3. `PRIVACY.md`: a model download is a network request to the model host. Local inference is not.
@@ -559,36 +559,36 @@ plans/README.md
 
 ## 8. Risks
 
-| Risk | Effect | Mitigation |
-| --- | --- | --- |
-| `llama.rn` is a release candidate | API or crash changes between builds | Pin an exact version. Wrap the engine in one module. |
-| Use-after-free on release while a completion runs | App crash | Always stop and await the completion before release. Copy the stop-during-prompt fix. |
-| 32-bit ABI drop | Some old devices cannot install | Play already requires 64-bit. Confirm the drop. |
-| R8 removes the native module | Release crash, debug works | Add the keep rule in the config plugin. Test a release build. |
-| App size grows | Larger download and install | Measure the AAB. Keep one ABI pair. Consider iOS exclusion. |
-| Out of memory on a small phone | Load failure | Mark large models, check `totalMemory`, keep `n_ctx` small. |
-| Download is interrupted | Broken model file | `.part` file, size and SHA-256 check, resume state. |
-| Sign-in gate | A user with no account cannot use Local AI | Keep the gate in phase 1. Decide separately whether to allow offline use. |
-| New native module breaks Expo Go | The whole app fails in Expo Go | Lazy import, typed "native module missing" error, other screens unaffected. |
-| Model host changes a file | Hash mismatch | Pin a commit URL and a hash. Show a clear error. |
-| Voice STT/TTS not available on Android | Local voice falls back to text-only | Verify whisper.rn / ONNX Runtime build in Phase 0; disable voiceLocal flag if missing |
-| Voice model + GGUF LLM OOM | Load failure, crash | One voice model slot at a time; unload LLM before voice models; target < 1.5 GB footprint |
-| Task flush duplicates on reconnect | Duplicate approvals / fan-out starts | Idempotency keys on voice_tasks; host is source of truth; never auto-retry publish/release |
+| Risk                                              | Effect                                     | Mitigation                                                                                 |
+| ------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `llama.rn` is a release candidate                 | API or crash changes between builds        | Pin an exact version. Wrap the engine in one module.                                       |
+| Use-after-free on release while a completion runs | App crash                                  | Always stop and await the completion before release. Copy the stop-during-prompt fix.      |
+| 32-bit ABI drop                                   | Some old devices cannot install            | Play already requires 64-bit. Confirm the drop.                                            |
+| R8 removes the native module                      | Release crash, debug works                 | Add the keep rule in the config plugin. Test a release build.                              |
+| App size grows                                    | Larger download and install                | Measure the AAB. Keep one ABI pair. Consider iOS exclusion.                                |
+| Out of memory on a small phone                    | Load failure                               | Mark large models, check `totalMemory`, keep `n_ctx` small.                                |
+| Download is interrupted                           | Broken model file                          | `.part` file, size and SHA-256 check, resume state.                                        |
+| Sign-in gate                                      | A user with no account cannot use Local AI | Keep the gate in phase 1. Decide separately whether to allow offline use.                  |
+| New native module breaks Expo Go                  | The whole app fails in Expo Go             | Lazy import, typed "native module missing" error, other screens unaffected.                |
+| Model host changes a file                         | Hash mismatch                              | Pin a commit URL and a hash. Show a clear error.                                           |
+| Voice STT/TTS not available on Android            | Local voice falls back to text-only        | Verify whisper.rn / ONNX Runtime build in Phase 0; disable voiceLocal flag if missing      |
+| Voice model + GGUF LLM OOM                        | Load failure, crash                        | One voice model slot at a time; unload LLM before voice models; target < 1.5 GB footprint  |
+| Task flush duplicates on reconnect                | Duplicate approvals / fan-out starts       | Idempotency keys on voice_tasks; host is source of truth; never auto-retry publish/release |
 
 ## 9. Verification
 
-| Check | When |
-| --- | --- |
-| `bun install --frozen-lockfile` in a fresh worktree | Phase 0, once |
-| `bunx expo prebuild --platform android --clean` and inspect the output | Phase 0, once |
-| One debug dev build on an Android device or emulator | Phase 0 and each phase, on request |
-| `biome check --write --max-diagnostics=none <changed paths>` | Before a commit |
-| `bun run i18n:check` | After a text change |
-| Pre-commit hook (`check:staged`, `check:ui`, staged typecheck) | Each commit |
-| `bun run test:changed` | Before a PR |
-| `scripts/local-ai-android-e2e.ts` | Before the PR, on a device |
-| Release AAB build and R8 check | Before the release |
-| CI: full lint, typecheck, mobile tests, Android release build | PR and release |
+| Check                                                                  | When                               |
+| ---------------------------------------------------------------------- | ---------------------------------- |
+| `bun install --frozen-lockfile` in a fresh worktree                    | Phase 0, once                      |
+| `bunx expo prebuild --platform android --clean` and inspect the output | Phase 0, once                      |
+| One debug dev build on an Android device or emulator                   | Phase 0 and each phase, on request |
+| `biome check --write --max-diagnostics=none <changed paths>`           | Before a commit                    |
+| `bun run i18n:check`                                                   | After a text change                |
+| Pre-commit hook (`check:staged`, `check:ui`, staged typecheck)         | Each commit                        |
+| `bun run test:changed`                                                 | Before a PR                        |
+| `scripts/local-ai-android-e2e.ts`                                      | Before the PR, on a device         |
+| Release AAB build and R8 check                                         | Before the release                 |
+| CI: full lint, typecheck, mobile tests, Android release build          | PR and release                     |
 
 Do not run repository-wide lint, the aggregate typecheck, builds, or full test suites locally.
 

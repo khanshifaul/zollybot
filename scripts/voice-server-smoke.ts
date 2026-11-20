@@ -222,7 +222,7 @@ async function setUpServer(page: Page) {
     () => switches.evaluateAll((items) => items.map((item) => item.getAttribute("aria-checked"))),
     (states) => states.length === 2 && states.every((state) => state === "true"),
   );
-  const shown = (await routes.innerText()).replace(/\s+/gu, " ");
+  const shown = ((await routes.textContent()) ?? "").replace(/\s+/gu, " ");
   check(
     "a server with both routes turns both on, with its first models and voice",
     shown.includes("faster-whisper-small") && shown.includes("Kokoro-82M-v1.0-ONNX") && shown.includes(VOICES[0] ?? ""),
@@ -264,7 +264,7 @@ try {
     saved,
   );
   check("the saved settings do not hold the key", !JSON.stringify(saved).includes(KEY));
-  const summary = (await serverSection(page).innerText()).replace(/\s+/gu, " ");
+  const summary = ((await serverSection(page).textContent()) ?? "").replace(/\s+/gu, " ");
   check(
     "the Voice tab shows the server, its models and its voice",
     summary.includes(host) &&
@@ -356,7 +356,7 @@ try {
     await stop.click();
     const composer = page.getByRole("textbox").first();
     const text = await waitFor(
-      async () => (await composer.innerText().catch(() => "")) || (await composer.inputValue().catch(() => "")),
+      async () => (await composer.textContent().catch(() => "")) || (await composer.inputValue().catch(() => "")),
       (value) => value.includes(TRANSCRIPT),
     );
     const sent = requests.slice(before).filter((entry) => entry.path === "/v1/audio/transcriptions");
@@ -404,7 +404,7 @@ try {
     afterEdit?.routes.dictation === false && afterEdit.routes.speech && afterEdit.hasApiKey,
     afterEdit,
   );
-  const summaryAfterEdit = (await serverSection(page).innerText()).replace(/\s+/gu, " ");
+  const summaryAfterEdit = ((await serverSection(page).textContent()) ?? "").replace(/\s+/gu, " ");
   check(
     "the Voice tab no longer shows server dictation",
     !summaryAfterEdit.includes(t("settings.voice.server.dictationSummary", { model: "faster-whisper-small" })),

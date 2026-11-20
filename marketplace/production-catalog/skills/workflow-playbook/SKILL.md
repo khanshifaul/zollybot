@@ -1,4 +1,5 @@
 ---
+
 name: "Workflow Playbook"
 description: "Track a recurring operations list (shipments, facilities issues, key dates) in a shared table, keep a short playbook for each item type, and write a weekly digest of overdue, due, done and new items. Use for office or team operations that repeat every week."
 ---

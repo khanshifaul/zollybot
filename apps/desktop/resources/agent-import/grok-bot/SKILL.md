@@ -1,4 +1,5 @@
 ---
+
 name: zollybot-export
 description: Export the user's Grok Bot agents into one .zip file that ZollyBot imports, with instructions, avatars, skills, routines, memories, group chats, and optional workspace files. Use when the user asks to export, move, or migrate their agents to ZollyBot.
 example-prompt: Export my agents for ZollyBot
@@ -129,29 +130,29 @@ agent must start with `agents/<key>/`.
 
 Field rules:
 
-| Field | Rule |
-| --- | --- |
-| `name` | Required. 80 characters or fewer. |
-| `title` | Optional. 120 characters or fewer. |
+| Field         | Rule                                                                                                                                                                                                                                         |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | Required. 80 characters or fewer.                                                                                                                                                                                                            |
+| `title`       | Optional. 120 characters or fewer.                                                                                                                                                                                                           |
 | `description` | Required. The agent's instructions, 2,000 characters or fewer. If they are longer, write the full text to `agents/<key>/files/INSTRUCTIONS.md`, set `files`, and put a summary here that tells the agent to read `imported/INSTRUCTIONS.md`. |
-| `avatar` | Path or `null`. |
-| `skills` | Up to 32 folder paths. Each folder has `SKILL.md` at its root, which starts with YAML frontmatter that has `name` (80 characters or fewer) and `description`. Each skill folder is 10 MB and 200 files or fewer. |
-| `routines` | Up to 64. `name` is 80 characters or fewer. `instruction` is the prompt that runs. `timezone` is an IANA name, such as `America/New_York`. |
-| `memories` | Up to 64 strings, 500 characters or fewer each. |
-| `files` | Folder path or `null`. ZollyBot copies it to `imported/` in the agent's workspace. |
+| `avatar`      | Path or `null`.                                                                                                                                                                                                                              |
+| `skills`      | Up to 32 folder paths. Each folder has `SKILL.md` at its root, which starts with YAML frontmatter that has `name` (80 characters or fewer) and `description`. Each skill folder is 10 MB and 200 files or fewer.                             |
+| `routines`    | Up to 64. `name` is 80 characters or fewer. `instruction` is the prompt that runs. `timezone` is an IANA name, such as `America/New_York`.                                                                                                   |
+| `memories`    | Up to 64 strings, 500 characters or fewer each.                                                                                                                                                                                              |
+| `files`       | Folder path or `null`. ZollyBot copies it to `imported/` in the agent's workspace.                                                                                                                                                           |
 
 Channel field rules:
 
-| Field | Rule |
-| --- | --- |
-| `key` | Required. The same rules as an agent key, and unique among the channels. |
-| `name` | Required. 80 characters or fewer. |
-| `title` | Optional. 120 characters or fewer. |
-| `instructions` | Optional. The group chat's shared instructions, 2,000 characters or fewer. |
-| `members` | Required. The `key` of each agent in the group chat. Use only agents in this export, at least one. Count every agent in the group chat, including the agent it is named after. Never the agent that runs this skill. |
-| `lead` | Optional. The `key` of one member, or `null`. |
-| `routines` | Up to 64, in the same shape as agent routines. |
-| `memories` | Up to 32 strings, 500 characters or fewer each. |
+| Field          | Rule                                                                                                                                                                                                                 |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key`          | Required. The same rules as an agent key, and unique among the channels.                                                                                                                                             |
+| `name`         | Required. 80 characters or fewer.                                                                                                                                                                                    |
+| `title`        | Optional. 120 characters or fewer.                                                                                                                                                                                   |
+| `instructions` | Optional. The group chat's shared instructions, 2,000 characters or fewer.                                                                                                                                           |
+| `members`      | Required. The `key` of each agent in the group chat. Use only agents in this export, at least one. Count every agent in the group chat, including the agent it is named after. Never the agent that runs this skill. |
+| `lead`         | Optional. The `key` of one member, or `null`.                                                                                                                                                                        |
+| `routines`     | Up to 64, in the same shape as agent routines.                                                                                                                                                                       |
+| `memories`     | Up to 32 strings, 500 characters or fewer each.                                                                                                                                                                      |
 
 A channel has no folder in the archive. Up to 100 channels.
 
@@ -162,15 +163,15 @@ The whole archive must be 500 MB and 5,000 files or fewer.
 Use one of these shapes. Times are 24-hour `HH:MM` in the routine's time zone. Days of the week are
 0 (Sunday) to 6 (Saturday). A schedule cannot run more often than every 3 minutes.
 
-| Schedule | JSON |
-| --- | --- |
-| Every hour at minute 15 | `{ "kind": "hourly", "minute": 15 }` |
-| Every day | `{ "kind": "daily", "time": "09:00" }` |
-| Monday to Friday | `{ "kind": "weekdays", "time": "09:00" }` |
-| Every week | `{ "kind": "weekly", "weekday": 1, "time": "09:00" }` |
-| Every month | `{ "kind": "monthly", "day": 1, "time": "09:00" }` |
+| Schedule                        | JSON                                                      |
+| ------------------------------- | --------------------------------------------------------- |
+| Every hour at minute 15         | `{ "kind": "hourly", "minute": 15 }`                      |
+| Every day                       | `{ "kind": "daily", "time": "09:00" }`                    |
+| Monday to Friday                | `{ "kind": "weekdays", "time": "09:00" }`                 |
+| Every week                      | `{ "kind": "weekly", "weekday": 1, "time": "09:00" }`     |
+| Every month                     | `{ "kind": "monthly", "day": 1, "time": "09:00" }`        |
 | Every N minutes, hours, or days | `{ "kind": "interval", "amount": 30, "unit": "minutes" }` |
-| Cron expression | `{ "kind": "custom", "expression": "0 9 * * 1-5" }` |
+| Cron expression                 | `{ "kind": "custom", "expression": "0 9 * * 1-5" }`       |
 
 When a schedule does not fit a shape, use `custom` with a cron expression. ZollyBot skips a routine
 with an invalid schedule and tells the user; the rest of the agent still imports.

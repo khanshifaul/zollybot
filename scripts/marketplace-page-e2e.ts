@@ -59,7 +59,7 @@ try {
     .getByRole("button", { name: "Apps", exact: true });
   // Apps is the first kind in the side panel, and the page opens on it.
   const kinds = marketplace.getByRole("navigation", { name: "Marketplace content types" }).getByRole("button");
-  assert.equal((await kinds.first().innerText()).trim(), "Apps");
+  assert.equal(((await kinds.first().textContent()) ?? "").trim(), "Apps");
   assert.equal(await kinds.first().getAttribute("aria-current"), "page");
   steps.push("page opens on Apps");
   await marketplace.locator(".marketplace-app-row-hit").first().click();

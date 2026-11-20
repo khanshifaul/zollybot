@@ -39,15 +39,15 @@ embed links, attach files, read message history and add reactions. Signal asks f
 
 ## Secrets
 
-| Where | Name | Value |
-| --- | --- | --- |
-| Worker | `DISCORD_CLIENT_ID` | The application ID. |
-| Worker | `DISCORD_CLIENT_SECRET` | **OAuth2 → Client Secret**. |
-| Worker | `DISCORD_STATE_SECRET` | A random value of at least 32 bytes. It signs the install `state`. |
+| Where  | Name                                                | Value                                                                                     |
+| ------ | --------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Worker | `DISCORD_CLIENT_ID`                                 | The application ID.                                                                       |
+| Worker | `DISCORD_CLIENT_SECRET`                             | **OAuth2 → Client Secret**.                                                               |
+| Worker | `DISCORD_STATE_SECRET`                              | A random value of at least 32 bytes. It signs the install `state`.                        |
 | Worker | `DISCORD_ROUTE_PRIVATE_JWK`, `DISCORD_ROUTE_KEY_ID` | An ES256 key that signs route tickets. Put its public key in `REMOTE_TICKET_PUBLIC_JWKS`. |
-| Signal | `DISCORD_BOT_TOKEN` | The bot token. |
-| Signal | `DISCORD_APPLICATION_ID` | The application ID. |
-| Signal | `DISCORD_MESSAGE_CONTENT` | Optional. `false` stops Signal asking for the Message Content intent. Not a secret. |
+| Signal | `DISCORD_BOT_TOKEN`                                 | The bot token.                                                                            |
+| Signal | `DISCORD_APPLICATION_ID`                            | The application ID.                                                                       |
+| Signal | `DISCORD_MESSAGE_CONTENT`                           | Optional. `false` stops Signal asking for the Message Content intent. Not a secret.       |
 
 `scripts/deploy-account service.ts` (`bun run --cwd account service deploy`) sets the Worker secrets when they are in the environment. Without them, the
 Discord routes answer 503 `discord_not_configured`. Without the Signal values, Signal keeps no Gateway

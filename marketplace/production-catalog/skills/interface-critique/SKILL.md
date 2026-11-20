@@ -1,4 +1,5 @@
 ---
+
 name: "Interface Critique"
 description: "Review a screen and return ranked, concrete fixes across hierarchy, layout, type, color and contrast, copy, states and accessibility. Works from a screenshot, a page in the browser, or a Figma frame. Never edits files."
 ---

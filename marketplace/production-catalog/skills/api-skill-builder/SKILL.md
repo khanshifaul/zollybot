@@ -1,4 +1,5 @@
 ---
+
 name: "API Skill Builder"
 description: "Turn an API or a repeated workflow into a tested local ZollyBot skill. Read the docs, sample one real response first, keep keys out of files, write the smallest SKILL.md and a script only when needed, test it, then register it. Use when the user repeats the same request against a service."
 ---

@@ -1,4 +1,5 @@
 ---
+
 name: "Recurring Charges"
 description: "Find recurring charges, price changes, trials that convert, duplicate charges and statement credits that expire, from pasted or downloaded card and bank statements. Shows the statement lines as evidence and lists renewals due soon. Never cancels or contacts merchants."
 ---

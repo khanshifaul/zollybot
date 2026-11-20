@@ -1,4 +1,5 @@
 ---
+
 name: "Project Plan"
 description: "Write a dated scope document: problem, what is in, what is out, how completion is measured, the first deliverable, risks, decisions needed and owners. It stays a draft until the user approves it, and no build work starts before that."
 ---

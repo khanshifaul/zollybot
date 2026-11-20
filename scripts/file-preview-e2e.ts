@@ -42,7 +42,7 @@ try {
   const address = await frameElement.getAttribute("src");
   assert.ok(address?.startsWith("zollybot-visual://preview/"));
   const frame = frameElement.contentFrame();
-  await frame.getByText(renderedText, { exact: true }).waitFor();
+  await frame.getByText(renderedText ?? "", { exact: true }).waitFor();
   const isolation = await frame.locator("body").evaluate(() => ({
     origin: globalThis.origin,
     bridge: typeof window.zollybot,
@@ -52,16 +52,14 @@ try {
   results.push("Local HTML opens with an opaque origin and no app or Node bridge.");
   await panel.getByRole("button", { name: "Show HTML source", exact: true }).click();
   await frameElement.waitFor({ state: "detached" });
-  assert.ok((await panel.innerText()).includes("<script>"));
+  assert.ok(((await panel.textContent()) ?? "").includes("<script>"));
   await panel.getByRole("button", { name: "Show HTML source", exact: true }).click();
   await frameElement.waitFor();
   assert.equal(await frameElement.getAttribute("src"), address);
   await frameElement.contentFrame().locator("body").waitFor();
   results.push("Source toggles preserve the live page address.");
-  const agentName = await page
-    .getByRole("main", { name: "Conversation" })
-    .getByRole("heading", { level: 1 })
-    .innerText();
+  const agentName =
+    (await page.getByRole("main", { name: "Conversation" }).getByRole("heading", { level: 1 }).textContent()) ?? "";
   const chats = page.getByRole("navigation", { name: "Chat list" });
   await chats.getByRole("button").filter({ hasNotText: agentName }).first().click();
   await panel.waitFor({ state: "detached" });
@@ -75,7 +73,10 @@ try {
   await frameElement.waitFor();
   const reopenedAddress = await frameElement.getAttribute("src");
   assert.notEqual(reopenedAddress, address);
-  await frameElement.contentFrame().getByText(renderedText, { exact: true }).waitFor();
+  await frameElement
+    .contentFrame()
+    .getByText(renderedText ?? "", { exact: true })
+    .waitFor();
   results.push("Switching conversations clears preview state and reopening renders a fresh page.");
   await panel.getByRole("button", { name: "Close file preview", exact: true }).click();
   await panel.waitFor({ state: "detached" });

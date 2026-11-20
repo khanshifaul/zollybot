@@ -327,7 +327,7 @@ async function signIn(page: Page): Promise<void> {
     await page.screenshot({ path: resolve(OUT, "web-failure.png") }).catch(() => undefined);
     throw new Error("The account service showed no development code.", { cause: error });
   });
-  const code = (await notice.innerText()).slice(prefix.length).replaceAll("-", "").trim();
+  const code = ((await notice.textContent()) ?? "").slice(prefix.length).replaceAll("-", "").trim();
   assert.ok(code.length > 0, "The account service showed no development code.");
   // The code field takes the focus when it shows.
   await page.keyboard.type(code);

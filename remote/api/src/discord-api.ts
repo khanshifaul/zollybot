@@ -518,7 +518,7 @@ function channelPermissions(
   return permissions;
 }
 
-function compareSnowflakes(left: string, right: string): number {
+function compareSnowflakes(left: string, right: string): -1 | 0 | 1 {
   const difference = BigInt(left) - BigInt(right);
   return difference < 0n ? -1 : difference > 0n ? 1 : 0;
 }

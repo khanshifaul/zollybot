@@ -619,13 +619,13 @@
 
 /* Less motion: one still frame with three runs and their notes. */
 .routine-planner-empty[data-still]
-:is(
-  .routine-planner-empty-run,
-  .routine-planner-empty-check,
-  .routine-planner-empty-line,
-  .routine-planner-empty-underline path,
-  .routine-planner-empty-done
-) {
+  :is(
+    .routine-planner-empty-run,
+    .routine-planner-empty-check,
+    .routine-planner-empty-line,
+    .routine-planner-empty-underline path,
+    .routine-planner-empty-done
+  ) {
   animation: none;
   clip-path: none;
   stroke-dashoffset: 0;

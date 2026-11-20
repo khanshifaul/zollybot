@@ -2217,7 +2217,7 @@ All notable changes to ZollyBot will be documented here. The project follows
   correct length. Before, the cut could split an emoji into half a character, and an emoji counted
   as two characters, so the text stopped too early.
 - The Live Activity updates that ZollyBot sends to your iPhone show a reply that starts with inline
-  code in three backticks, such as ```` ```npm install``` first ````. Before, the update read that
+  code in three backticks, such as ` ```npm install``` first `. Before, the update read that
   line as the start of a code block: the line disappeared and the next lines showed as code.
 - Gemini usage now follows the limit of the model that an agent uses. Google can give a model, such
   as Gemini 4 Argon, a weekly limit of its own. Before, ZollyBot put all Gemini limits together, so a

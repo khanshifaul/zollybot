@@ -1,4 +1,5 @@
 ---
+
 name: "Support Reply"
 description: "Draft a customer reply that states what is known and the next step, plus a separate internal note and, when needed, an escalation package with repro steps, account facts and impact. No refunds, exceptions or dates without a policy that allows them. Sends only on an explicit request."
 ---

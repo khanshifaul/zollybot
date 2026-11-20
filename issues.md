@@ -5,6 +5,7 @@
 **Root cause**: In commit 757c4c9 ("feat: 2-row top bar, rail/page wiring, GitHub-only release flow"), the `api` service was removed from `DevelopmentService` type and `servicesForTarget`, but `allocateDevelopmentPorts` in `scripts/dev-services.ts` still only configured the remote service (Signal) inside the `if (services.includes("api"))` block.
 
 Since `api` was no longer in the services list (`["remote", "app"]` instead of `["api", "remote", "app"]`), this block never executed, leaving the remote service without required environment variables:
+
 - `REMOTE_HEALTH_PORT`
 - `REMOTE_SIGNAL_PORT`
 - `REMOTE_CONTROL_PLANE_URL`
@@ -17,6 +18,7 @@ Since `api` was no longer in the services list (`["remote", "app"]` instead of `
 This caused the remote service to fail with "REMOTE_TLS_CERT_PATH is required" and "REMOTE_CONTROL_PLANE_URL is required" errors, which then caused the desktop app to hang.
 
 **Fix applied**:
+
 1. Added `DEFAULT_API_PORT = 3_100` constant back to `scripts/dev-services.ts`
 2. Restructured `allocateDevelopmentPorts` to configure remote service settings regardless of whether local API is running
 3. Added remote service configuration variables to `SIGNAL_SETTINGS` in `scripts/development-environment.ts` so they get passed to the remote service process
@@ -24,6 +26,7 @@ This caused the remote service to fail with "REMOTE_TLS_CERT_PATH is required" a
 5. Added back `TEST_ACCOUNT_API_URL` constant
 
 **Files modified**:
+
 - `scripts/dev-services.ts` - Fixed `allocateDevelopmentPorts`, added `DEFAULT_API_PORT`, restored `TEST_ACCOUNT_API_URL`
 - `scripts/development-environment.ts` - Added remote service config variables to `SIGNAL_SETTINGS`
 
@@ -38,6 +41,7 @@ This caused the remote service to fail with "REMOTE_TLS_CERT_PATH is required" a
 ## Issue 3: Reactivity warnings in desktop app (pre-existing)
 
 **Observation**: Multiple SolidJS reactivity warnings appear in the console:
+
 - `[STRICT_READ_UNTRACKED]` - Reactive values read directly in components
 - `[EFFECT_WRITES_OWN_SOURCE]` - Effect writes to its own source
 - `[REACTIVE_WRITE_IN_OWNED_SCOPE]` - Writing to reactive state inside owned scope
@@ -64,6 +68,7 @@ This caused the remote service to fail with "REMOTE_TLS_CERT_PATH is required" a
 **Files modified**: None (operational fix only).
 
 **Verification**:
+
 - ✅ Port 5173 listening, serving `<!doctype html><title>ZollyBot</title>...`
 - ✅ CDP page list: page "ZollyBot" at `http://localhost:5173/`
 - ✅ Remote API (Signal) on ports 3101/3102
@@ -103,9 +108,11 @@ When `fullWindowLoading()` was true (server connecting/loading), `onStartupReady
 The loading screen still shows its animation while exiting (3000ms limit), so there's no visual stutter — content mounts behind the fading screen.
 
 **Files modified**:
+
 - `src/renderer/src/WorkspaceShell.tsx` — removed `fullWindowLoading()` gate on `onStartupReady`
 
 **Verification**:
+
 - ✅ CDP screenshot shows real content (mean pixel 123, std 92 — not blank)
 - ✅ Window brought to front and focused successfully
 
@@ -114,11 +121,13 @@ The loading screen still shows its animation while exiting (3000ms limit), so th
 **Symptom**: Running `zollybot-cli` or `zollybot-cli agents` without the desktop app running shows "The ZollyBot app is not running." The TUI does not start the server automatically.
 
 **Root cause**: The `ensure_local_server()` function existed but had issues:
+
 1. Binary path resolution fell back to `"zollybot"` which may not be in PATH
 2. No tracking of whether a server start was already attempted (could spawn multiple processes on retry)
 3. The `agents` one-shot subcommand (`agents_text()`) didn't call `ensure_local_server()` at all
 
 **Fix**:
+
 1. Extracted server-starting logic into standalone `try_start_local_server()` function
 2. Improved binary path resolution: checks `ZOLLYBOT_BIN` env, then `~/.local/bin/zollybot`, `~/.local/share/zollybot/zollybot`, `~/.zollybot/zollybot`, then falls back to `"zollybot"` (PATH)
 3. Added `server_started` flag to `App` struct to prevent spawning multiple server processes
@@ -126,30 +135,32 @@ The loading screen still shows its animation while exiting (3000ms limit), so th
 5. Increased wait time from 15s to 30s for server startup
 
 **Files modified**:
+
 - `apps/desktop/tui/src/main.rs` — `try_start_local_server()`, `ensure_local_server()`, `agents_text()`, `App` struct (`server_started` field)
 
 **Verification**:
+
 - ✅ `zollybot-cli agents` with no desktop app running: auto-starts server, connects, lists agents
 - ✅ Control socket created at `/run/user/1000/control.sock`
 - ✅ ZollyBot runs as `--server` background process
 
 ## Summary of all fixes applied
 
-| Issue | File | Fix |
-|-------|------|-----|
-| Dev server dies → blank screen | `scripts/dev-services.ts` | Auto-restart electron-vite when it exits |
-| Background disabled on Linux | `src/main/app-behavior-service.ts` | Default `#keepRunningInBackground` to `true` |
-| Blank screen (circular dependency) | `src/renderer/src/WorkspaceShell.tsx` | Remove `fullWindowLoading()` gate on `onStartupReady` |
-| TUI doesn't auto-start server | `apps/desktop/tui/src/main.rs` | `try_start_local_server()`, `server_started` flag, `agents_text()` calls it |
-| Production build | `dist/zollybot-gui-0.63.0-x86_64.AppImage` | Rebuilt with all fixes, installed to `~/.local/bin/zollybot` |
+| Issue                              | File                                       | Fix                                                                         |
+| ---------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------- |
+| Dev server dies → blank screen     | `scripts/dev-services.ts`                  | Auto-restart electron-vite when it exits                                    |
+| Background disabled on Linux       | `src/main/app-behavior-service.ts`         | Default `#keepRunningInBackground` to `true`                                |
+| Blank screen (circular dependency) | `src/renderer/src/WorkspaceShell.tsx`      | Remove `fullWindowLoading()` gate on `onStartupReady`                       |
+| TUI doesn't auto-start server      | `apps/desktop/tui/src/main.rs`             | `try_start_local_server()`, `server_started` flag, `agents_text()` calls it |
+| Production build                   | `dist/zollybot-gui-0.63.0-x86_64.AppImage` | Rebuilt with all fixes, installed to `~/.local/bin/zollybot`                |
 
 ## Starting logic cases
 
-| Scenario | Behavior |
-|----------|----------|
-| First launch, no server | Desktop app starts standalone, shows setup/onboarding → lobby/office |
-| Desktop app already running | Single-instance lock brings existing window to front |
-| `bun run dev` with existing stack | `conflictingDevStacks()` detects existing stack, prompts to reuse/stop/--force |
-| TUI with desktop app running | Connects via control socket at `$XDG_RUNTIME_DIR/control.sock` |
-| TUI with no server running | **Fixed**: Auto-starts `zollybot --server`, waits up to 30s for control socket, then connects |
-| `zollybot-cli agents` (one-shot) | **Fixed**: Same auto-start behavior, then lists agents |
+| Scenario                          | Behavior                                                                                      |
+| --------------------------------- | --------------------------------------------------------------------------------------------- |
+| First launch, no server           | Desktop app starts standalone, shows setup/onboarding → lobby/office                          |
+| Desktop app already running       | Single-instance lock brings existing window to front                                          |
+| `bun run dev` with existing stack | `conflictingDevStacks()` detects existing stack, prompts to reuse/stop/--force                |
+| TUI with desktop app running      | Connects via control socket at `$XDG_RUNTIME_DIR/control.sock`                                |
+| TUI with no server running        | **Fixed**: Auto-starts `zollybot --server`, waits up to 30s for control socket, then connects |
+| `zollybot-cli agents` (one-shot)  | **Fixed**: Same auto-start behavior, then lists agents                                        |

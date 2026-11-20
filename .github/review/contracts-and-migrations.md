@@ -1,9 +1,12 @@
 ---
+
 include:
-  - "apps/desktop/src/backend/zollybot-database-schema.ts"
-  - "apps/desktop/src/backend/zollybot-database.ts"
-  - "apps/desktop/src/backend/database/**"
-  - "packages/contracts/**"
+
+- "apps/desktop/src/backend/zollybot-database-schema.ts"
+- "apps/desktop/src/backend/zollybot-database.ts"
+- "apps/desktop/src/backend/database/**"
+- "packages/contracts/**"
+
 ---
 
 ## Contracts and migrations review

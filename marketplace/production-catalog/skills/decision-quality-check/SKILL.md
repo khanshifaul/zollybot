@@ -1,4 +1,5 @@
 ---
+
 name: decision-quality-check
 description: Add a brief, concrete self-check to consequential recommendations, estimates, plans, or interpretations when unverified assumptions could change what the user does.
 ---

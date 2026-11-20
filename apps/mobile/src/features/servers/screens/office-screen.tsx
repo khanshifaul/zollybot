@@ -1,11 +1,15 @@
 import { Typography } from "heroui-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 export function OfficeScreen() {
   return (
     <View>
-      <Typography>Offices</Typography>
-      <Typography>Office management is coming to mobile.</Typography>
+      <Typography>
+        <Text>Offices</Text>
+      </Typography>
+      <Typography>
+        <Text>Office management is coming to mobile.</Text>
+      </Typography>
     </View>
   );
 }

@@ -53,14 +53,14 @@ Do not set a webhook by hand. Signal sets it when it starts.
 
 ## Secrets
 
-| Where | Name | Value |
-| --- | --- | --- |
-| Worker | `TELEGRAM_BOT_ID` | The part of the token before `:`. Never the token. |
-| Worker | `TELEGRAM_BOT_USERNAME` | The username, without `@`. |
-| Worker | `SLACK_ROUTE_PRIVATE_JWK`, `SLACK_ROUTE_KEY_ID` | The Slack route key. It signs the Telegram route tickets too. |
-| Signal | `TELEGRAM_BOT_TOKENS` | The bot token, `<bot ID>:<secret>`. Comma-separated for more than one bot. |
-| Signal | `TELEGRAM_WEBHOOK_SECRET` | A random value of at least 32 bytes. Signal derives the webhook secret of each bot from it. |
-| Signal | `TELEGRAM_WEBHOOK_ORIGIN` | `https://signal-zollybot.shifaul.dev`. Signal sets each bot's webhook to `<origin>/v1/telegram/updates/<bot ID>`. |
+| Where  | Name                                            | Value                                                                                                             |
+| ------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Worker | `TELEGRAM_BOT_ID`                               | The part of the token before `:`. Never the token.                                                                |
+| Worker | `TELEGRAM_BOT_USERNAME`                         | The username, without `@`.                                                                                        |
+| Worker | `SLACK_ROUTE_PRIVATE_JWK`, `SLACK_ROUTE_KEY_ID` | The Slack route key. It signs the Telegram route tickets too.                                                     |
+| Signal | `TELEGRAM_BOT_TOKENS`                           | The bot token, `<bot ID>:<secret>`. Comma-separated for more than one bot.                                        |
+| Signal | `TELEGRAM_WEBHOOK_SECRET`                       | A random value of at least 32 bytes. Signal derives the webhook secret of each bot from it.                       |
+| Signal | `TELEGRAM_WEBHOOK_ORIGIN`                       | `https://signal-zollybot.shifaul.dev`. Signal sets each bot's webhook to `<origin>/v1/telegram/updates/<bot ID>`. |
 
 The Worker values are in the encrypted `production environment configuration` and `.env.dev`, and the Signal
 values in the encrypted `remote/.env.production`. `scripts/deploy-account service.ts` (`bun run api:deploy`)

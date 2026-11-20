@@ -19,7 +19,7 @@ import type { AvatarMood } from "@zollybot/brand/bloub-avatar-motion";
  * with Skia (`plush-draw.ts`). Check them against the package when its version changes.
  */
 
-const clamp01 = (value: number) => (value < 0 ? 0 : value > 1 ? 1 : value);
+const clamp01 = (value: number) => (value < 0 ? 0 : Math.min(value, 1));
 const lerp = (from: number, to: number, t: number) => from + (to - from) * t;
 const easeOutQuint = (t: number) => 1 - (1 - t) ** 5;
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;

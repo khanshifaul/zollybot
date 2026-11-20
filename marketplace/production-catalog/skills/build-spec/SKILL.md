@@ -1,4 +1,5 @@
 ---
+
 name: "Build Spec"
 description: "Turn a design frame into a spec a developer can build from: components, layout and spacing, tokens and where values drift from the design system, states, motion, content rules and open questions. Works from an installed Figma plugin, a signed-in Figma tab, or a screenshot."
 ---

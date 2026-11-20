@@ -245,7 +245,7 @@
 
   /* The pill has one hover, on the dismiss icon. Its body is a wide target and needs no mark. */
   .scroll-to-latest:is([data-new-messages], [data-reply-return])
-  .scroll-to-latest-button:hover:not(:disabled):not([data-disabled]) {
+    .scroll-to-latest-button:hover:not(:disabled):not([data-disabled]) {
     background: none;
   }
 

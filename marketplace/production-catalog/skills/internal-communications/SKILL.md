@@ -1,4 +1,5 @@
 ---
+
 name: internal-communications
 description: Draft status reports, leadership updates, project announcements, FAQs, newsletters, and incident communications for an internal audience.
 ---

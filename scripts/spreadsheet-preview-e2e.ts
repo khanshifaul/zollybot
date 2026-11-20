@@ -171,7 +171,7 @@ try {
     for (const result of report.cases.filter((entry) => entry.filename === filename)) {
       try {
         const row = table.getByRole("row").filter({ has: page.getByRole("cell", { name: result.id, exact: true }) });
-        result.observed = await row.getByRole("cell").nth(1).innerText();
+        result.observed = await row.getByRole("cell").nth(1).textContent();
         result.passed = result.observed === result.expected;
       } catch {
         result.error = "Could not read the expected case row.";

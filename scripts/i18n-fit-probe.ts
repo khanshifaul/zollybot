@@ -98,7 +98,7 @@ export function measureFit(scopeSelector: string): FitProblem[] {
   for (const scope of Array.from(document.querySelectorAll(scopeSelector))) {
     for (const element of Array.from(scope.querySelectorAll(CONTROLS))) {
       if (!(element instanceof HTMLElement) || !visible(element)) continue;
-      const text = element.innerText.replace(/\s+/g, " ").trim();
+      const text = element.textContent.replace(/\s+/g, " ").trim();
       if (!text) continue;
       const path = pathOf(element);
       const box = element.getBoundingClientRect();

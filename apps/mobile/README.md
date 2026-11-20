@@ -66,9 +66,9 @@ bun run mobile:android
 
 Choose an iOS command:
 
-| Repository root | `apps/mobile` | Integration |
-| --- | --- | --- |
-| `bun mobile:ios` | `bun ios` | No RocketSim installation required |
+| Repository root            | `apps/mobile`       | Integration                        |
+| -------------------------- | ------------------- | ---------------------------------- |
+| `bun mobile:ios`           | `bun ios`           | No RocketSim installation required |
 | `bun mobile:ios:rocketsim` | `bun ios:rocketsim` | Start RocketSim and enable Connect |
 
 Both commands apply the iOS config plugins without clearing the native directory,
@@ -390,7 +390,6 @@ Workflow: **Build Android release artifact** (`.github/workflows/release-android
 
 Secrets depend on your signing/EAS setup (e.g. `EXPO_TOKEN` if needed).
 
-
 ## OpenPanel product analytics
 
 The app uses the official [`@openpanel/react-native` SDK](https://openpanel.dev/docs/sdks/react-native)
@@ -406,11 +405,11 @@ The endpoint is fixed to `https://analytics-zollybot.shifaul.dev/api`. No analyt
 2. In the Expo dashboard, open the **zollybot** project → **Environment variables**, select the
    **production** environment, and add:
 
-   | Variable | Value |
-   | --- | --- |
-   | `EXPO_PUBLIC_OPENPANEL_CLIENT_ID` | The mobile client's Client ID |
+   | Variable                              | Value                                        |
+   | ------------------------------------- | -------------------------------------------- |
+   | `EXPO_PUBLIC_OPENPANEL_CLIENT_ID`     | The mobile client's Client ID                |
    | `EXPO_PUBLIC_OPENPANEL_CLIENT_SECRET` | The mobile client's write-only Client Secret |
-   | `EXPO_PUBLIC_APP_ENV` | `production` |
+   | `EXPO_PUBLIC_APP_ENV`                 | `production`                                 |
 
    The production build profile also sets `EXPO_PUBLIC_APP_ENV=production`. Development and preview
    profiles set their own environment and never send events. Set the variable in the EAS environment
@@ -447,34 +446,34 @@ Every event has `surface=mobile`, `platform=ios|android`, `environment=productio
 `event_schema_version=3`, `app_version` and `build_number`. Operation outcomes use `result` and,
 where available, `duration_ms`. Failure codes are fixed categories, never raw error text.
 
-| Event | Meaning |
-| --- | --- |
-| `mobile_app_opened` | Cold start or return from background, with `signed_in`; iOS inactive overlays do not count as a new visit |
-| `mobile_pairing_action` | Sign-in scanner opened, camera permission result, QR redemption result, scanner cancelled; `entry_point` is `qr` or `link` (a pairing link) |
-| `mobile_connection_action` | Initial connection attempt, reconnection attempt, or connection lost; result, duration and bounded loading stage |
-| `conversation_opened` | One visible-visit outcome and time to readable conversation, including cached/offline reads; failures when no readable conversation is available |
-| `message_send` | Host receipt or failure, attachment count, reply flag, provider/model/reasoning metadata when known |
-| `agent_input_action` | Submission of a structured prompt answer or an approval decision (`accept` or `decline`); no answer contents, command or path |
-| `attachment_action` | Local file selection, upload, removal; result, count and coarse size bucket when known |
-| `agent_action` | Create, update, duplicate or delete |
-| `routine_action` | Create, update or delete, including enabling/disabling through update |
-| `memory_action` | Create, update or delete |
-| `search_action` | One summary when a search screen closes after using a query/filter; final result count, no query |
-| `team_action` | Select, join or leave a server |
-| `conversation_action` | Pin/unpin or hide/unhide, including preference-save failures |
-| `usage_viewed` | Open the agent Usage section or the server Usage page; `scope` is `agent` or `server` |
-| `account_sign_out` | Sign-out result under the initiating account |
-| `account_sign_in_started` | Email sign-in code request (also a resend); `method=email`, `result` is `code_sent` or `failed`, duration |
-| `account_sign_in_completed` | Email sign-in code check; `method=email`, result, duration |
-| `hosted_server_plans_action` | Hosted server plans sheet `viewed` and `closed`, or a server in setup opened (`setup_opened`); `entry_point` is `drawer` or `onboarding` when known. The mobile sheet has no purchase |
-| `onboarding_step` | First-run `step` (`hello`, `server`, `agent`, `look`, `name`, `role`, `task`, `ready`) with `action` `viewed`, `next`, `back` or `skipped` |
-| `onboarding_completed` | First run ended; `skipped` is true when the user skipped it |
-| `notification_settings_action` | Notifications turned on or off, preview or Live Activities switched (`enabled`), or the phone's permission prompt answered (`permission` is `granted`, `denied` or `undetermined`) |
-| `live_activity_action` | The app started or ended a Live Activity; updates are not counted |
-| `voice_conversation_action` | Voice mode `start`, or `end` with its duration and `turn_count`; `server_kind=remote` |
-| `voice_turn` | One dictation session: result, listening time in `audio_duration_seconds`, time from stop to final text in `duration_ms`, and `transcription` (`local` or `cloud`) when known; no words |
-| `agent_template_action` | Agent template install from a link; `action=installed`, `entry_point=deep_link`, result, duration |
-| `analytics_preference_changed` | `enabled=false`, sent once before collection stops when the user turns analytics off; the app waits at most 2 seconds for it |
+| Event                          | Meaning                                                                                                                                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mobile_app_opened`            | Cold start or return from background, with `signed_in`; iOS inactive overlays do not count as a new visit                                                                               |
+| `mobile_pairing_action`        | Sign-in scanner opened, camera permission result, QR redemption result, scanner cancelled; `entry_point` is `qr` or `link` (a pairing link)                                             |
+| `mobile_connection_action`     | Initial connection attempt, reconnection attempt, or connection lost; result, duration and bounded loading stage                                                                        |
+| `conversation_opened`          | One visible-visit outcome and time to readable conversation, including cached/offline reads; failures when no readable conversation is available                                        |
+| `message_send`                 | Host receipt or failure, attachment count, reply flag, provider/model/reasoning metadata when known                                                                                     |
+| `agent_input_action`           | Submission of a structured prompt answer or an approval decision (`accept` or `decline`); no answer contents, command or path                                                           |
+| `attachment_action`            | Local file selection, upload, removal; result, count and coarse size bucket when known                                                                                                  |
+| `agent_action`                 | Create, update, duplicate or delete                                                                                                                                                     |
+| `routine_action`               | Create, update or delete, including enabling/disabling through update                                                                                                                   |
+| `memory_action`                | Create, update or delete                                                                                                                                                                |
+| `search_action`                | One summary when a search screen closes after using a query/filter; final result count, no query                                                                                        |
+| `team_action`                  | Select, join or leave a server                                                                                                                                                          |
+| `conversation_action`          | Pin/unpin or hide/unhide, including preference-save failures                                                                                                                            |
+| `usage_viewed`                 | Open the agent Usage section or the server Usage page; `scope` is `agent` or `server`                                                                                                   |
+| `account_sign_out`             | Sign-out result under the initiating account                                                                                                                                            |
+| `account_sign_in_started`      | Email sign-in code request (also a resend); `method=email`, `result` is `code_sent` or `failed`, duration                                                                               |
+| `account_sign_in_completed`    | Email sign-in code check; `method=email`, result, duration                                                                                                                              |
+| `hosted_server_plans_action`   | Hosted server plans sheet `viewed` and `closed`, or a server in setup opened (`setup_opened`); `entry_point` is `drawer` or `onboarding` when known. The mobile sheet has no purchase   |
+| `onboarding_step`              | First-run `step` (`hello`, `server`, `agent`, `look`, `name`, `role`, `task`, `ready`) with `action` `viewed`, `next`, `back` or `skipped`                                              |
+| `onboarding_completed`         | First run ended; `skipped` is true when the user skipped it                                                                                                                             |
+| `notification_settings_action` | Notifications turned on or off, preview or Live Activities switched (`enabled`), or the phone's permission prompt answered (`permission` is `granted`, `denied` or `undetermined`)      |
+| `live_activity_action`         | The app started or ended a Live Activity; updates are not counted                                                                                                                       |
+| `voice_conversation_action`    | Voice mode `start`, or `end` with its duration and `turn_count`; `server_kind=remote`                                                                                                   |
+| `voice_turn`                   | One dictation session: result, listening time in `audio_duration_seconds`, time from stop to final text in `duration_ms`, and `transcription` (`local` or `cloud`) when known; no words |
+| `agent_template_action`        | Agent template install from a link; `action=installed`, `entry_point=deep_link`, result, duration                                                                                       |
+| `analytics_preference_changed` | `enabled=false`, sent once before collection stops when the user turns analytics off; the app waits at most 2 seconds for it                                                            |
 
 Use a mobile activation funnel from open → successful QR redemption → successful connection →
 conversation load or message send. Measure signed-in D1/D7 retention by ZollyBot account ID. Eligible

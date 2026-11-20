@@ -84,7 +84,7 @@ async function chooseLanguage(page: Page, shown: TranslatedLocale, next: AppLang
 
 /** Visible text that is a catalog key, or that still has a `{placeholder}`. */
 async function leftovers(page: Page) {
-  const text = await page.locator("body").innerText();
+  const text = (await page.locator("body").textContent()) ?? "";
   const words = text.split(/[\s"'()[\],:;!?]+/).filter((word) => word.length > 0);
   return {
     keys: [...new Set(words.map((word) => word.replace(/\.$/, "")).filter((word) => KEYS.has(word)))],

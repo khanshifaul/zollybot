@@ -1,4 +1,5 @@
 ---
+
 name: secure-code-guidance
 description: Review or write Python, JavaScript, TypeScript, or Go code using secure defaults. Use only for explicit security guidance, security reviews, or secure implementation requests, not ordinary code review.
 ---

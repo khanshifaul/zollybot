@@ -1,4 +1,5 @@
 ---
+
 name: "Meeting Actions"
 description: "Turn meeting notes or a transcript into decisions, commitments with owner, due date and quoted evidence, open questions and conflicts. Use after a meeting, before a follow-up, or when someone asks who agreed to what."
 ---

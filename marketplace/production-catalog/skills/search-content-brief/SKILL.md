@@ -1,4 +1,5 @@
 ---
+
 name: "Search Content Brief"
 description: "Turn a keyword list or Search Console data into keyword groups by intent, chosen targets, and writer-ready briefs for search results and AI answers. Each brief has the question, angle, outline, sourced facts, internal links and an answer-first summary. No invented search volumes."
 ---

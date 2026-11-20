@@ -85,7 +85,7 @@ async function insertAfterSecondItem(editor: Locator, value: string): Promise<Ca
     prefix.setEnd(selection.focusNode, selection.focusOffset);
     return prefix.toString().length;
   });
-  return { before: value, after: await editor.innerText(), caret };
+  return { before: value, after: (await editor.textContent()) ?? "", caret };
 }
 
 mkdirSync(OUT, { recursive: true });
@@ -102,10 +102,10 @@ try {
   assert.equal(report.sequential.after, "1. one\n2. two\n3. \n4. three\n5. four");
   assert.equal(report.sequential.caret, "1. one\n2. two\n3. ".length);
   await editor.press("ControlOrMeta+z");
-  report.sequential.undo = await editor.innerText();
+  report.sequential.undo = (await editor.textContent()) ?? "";
   assert.equal(report.sequential.undo, report.sequential.before, "One Undo must revert the complete list edit.");
   await editor.press("ControlOrMeta+Shift+z");
-  report.sequential.redo = await editor.innerText();
+  report.sequential.redo = (await editor.textContent()) ?? "";
   assert.equal(report.sequential.redo, report.sequential.after, "One Redo must restore the complete list edit.");
 
   report.deliberateGap = await insertAfterSecondItem(editor, "1. one\n2. two\n7. seven");
@@ -118,10 +118,10 @@ try {
     element.prepend(element.ownerDocument.createTextNode("1. one\n2. two\n3. "));
     element.append(element.ownerDocument.createTextNode("\n4. four"));
   });
-  const referenceBefore = await referenceEditor.innerText();
+  const referenceBefore = (await referenceEditor.textContent()) ?? "";
   await placeCaret(referenceEditor, "1. one\n2. two".length);
   await referenceEditor.press("Shift+Enter");
-  const referenceAfter = await referenceEditor.innerText();
+  const referenceAfter = (await referenceEditor.textContent()) ?? "";
   assert.equal(await visibleEditorText(referenceEditor), "1. one\n2. two\n3. \n4. \uFFFC \uFFFC\n5. four");
   assert.deepEqual(
     await referenceEditor

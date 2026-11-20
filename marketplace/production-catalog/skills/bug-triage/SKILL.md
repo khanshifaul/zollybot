@@ -1,4 +1,5 @@
 ---
+
 name: "Bug Triage"
 description: "Turn a bug report, logs or a failing test into a reproduction, ranked causes, one diagnostic step that separates them, the smallest fix, and a verified result. Use when something fails and the cause is not yet known."
 ---

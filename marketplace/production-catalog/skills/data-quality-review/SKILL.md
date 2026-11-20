@@ -1,4 +1,5 @@
 ---
+
 name: "Data Quality Review"
 description: "Check a dataset before analysis: row counts, duplicates, missing values, units and currency, date ranges and time zones, joins, and outliers. Returns a pass, warn or fail table and names which analysis each problem blocks. Use before a report, a model, or a decision that rests on the data."
 ---
@@ -32,15 +33,15 @@ description: "Check a dataset before analysis: row counts, duplicates, missing v
 
 ## Checks
 
-| Check | Pass | Warn | Fail |
-| --- | --- | --- | --- |
-| Row count | matches source or expected count | differs by under 1% | differs by 1% or more, or unknown with no total |
-| Duplicates | no repeated key | repeats outside the fields summed | repeated key in rows that are summed |
-| Missing values | none in needed fields | under 5% in a needed field | 5% or more, or any in the key |
-| Units and currency | one unit and one currency per field | unit not stated but consistent | mixed units or currencies in one field |
-| Dates and time zones | range covers the period, one stated time zone | time zone not stated | gaps in the period, or mixed time zones |
-| Joins | 99% or more of keys match, no fan-out | 95% to 99% match | under 95% match, or one row becomes many |
-| Outliers | none past 3 times the interquartile range | present and explained | present, unexplained, and they move the result |
+| Check                | Pass                                          | Warn                              | Fail                                            |
+| -------------------- | --------------------------------------------- | --------------------------------- | ----------------------------------------------- |
+| Row count            | matches source or expected count              | differs by under 1%               | differs by 1% or more, or unknown with no total |
+| Duplicates           | no repeated key                               | repeats outside the fields summed | repeated key in rows that are summed            |
+| Missing values       | none in needed fields                         | under 5% in a needed field        | 5% or more, or any in the key                   |
+| Units and currency   | one unit and one currency per field           | unit not stated but consistent    | mixed units or currencies in one field          |
+| Dates and time zones | range covers the period, one stated time zone | time zone not stated              | gaps in the period, or mixed time zones         |
+| Joins                | 99% or more of keys match, no fan-out         | 95% to 99% match                  | under 95% match, or one row becomes many        |
+| Outliers             | none past 3 times the interquartile range     | present and explained             | present, unexplained, and they move the result  |
 
 - An empty value and a zero are different. Count them apart.
 - The user can set other thresholds. Use theirs and say so.

@@ -1,4 +1,5 @@
 ---
+
 name: "Campaign Analysis"
 description: "Explain what drove a change in campaign results and propose 1 to 3 measurable experiments. Reads an installed analytics plugin such as PostHog, a signed-in analytics tab, or an export. Checks units, dates and attribution first, and keeps observations apart from causal hypotheses. Never changes campaigns or spend."
 ---

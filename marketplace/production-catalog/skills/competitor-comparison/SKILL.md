@@ -1,4 +1,5 @@
 ---
+
 name: "Competitor Comparison"
 description: "Compare products or vendors against criteria chosen from the decision. Every table cell has a source, prices carry the date they were checked, and a fact that was not found is marked unknown. Use to choose a tool, to position a product, or to check a claim about a competitor."
 ---

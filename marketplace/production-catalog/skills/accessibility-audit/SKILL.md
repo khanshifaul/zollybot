@@ -1,4 +1,5 @@
 ---
+
 name: "Accessibility Audit"
 description: "Audit a page in the browser for keyboard path, focus, names and roles, contrast, headings, forms and errors, images and motion. Each finding has a severity (blocker, serious, minor), a WCAG 2.2 success criterion number and evidence. Use before a release or when a user reports a barrier."
 ---

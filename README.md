@@ -93,6 +93,7 @@ bun run mobile:android:build:apk:local  # signed .apk -> out/mobile/android/zoll
 ```
 
 Notes:
+
 - Linux x64 package/dist scripts prepare/verify required runtimes and build the host CLI as part of packaging.
 - Local EAS mobile builds place work/temp dirs outside the repo by default (`${XDG_CACHE_HOME:-$HOME/.cache}/zollybot/eas-mobile`) to avoid `eas-cli --local` copy issues. Override with `EAS_LOCAL_BUILD_WORKDIR_BASE` and `EAS_LOCAL_BUILD_ARTIFACT`.
 - See [`apps/mobile/README.md`](apps/mobile/README.md) for mobile release, Play upload, and analytics configuration.

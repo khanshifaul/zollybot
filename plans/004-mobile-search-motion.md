@@ -33,11 +33,11 @@ The search has no motion setting, so the Animations settings cannot turn the cha
 
 Three motion modes, from settings:
 
-| Mode | When | Swap in | Swap out | Rows and sections |
-| --- | --- | --- | --- | --- |
-| `blur` | `searchTransitions` on, motion not reduced | opacity 0→1, translateY 3→0, blur veil 1→0, 240ms | opacity 1→0, blur veil 0→1, 180ms | in: opacity 0→1, translateY 6→0, scale 0.98→1, 220ms; out: opacity 1→0, scale 1→0.98, 160ms; move: `LinearTransition` 240ms; a section that comes in also has the blur veil 1→0, 240ms |
-| `fade` | `searchTransitions` on, motion reduced (system or the Animations switch) | opacity 0→1, 160ms | opacity 1→0, 120ms | in: opacity 0→1, 160ms; out: opacity 1→0, 120ms; no move |
-| `none` | `searchTransitions` off | instant | instant | none |
+| Mode   | When                                                                     | Swap in                                           | Swap out                          | Rows and sections                                                                                                                                                                      |
+| ------ | ------------------------------------------------------------------------ | ------------------------------------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `blur` | `searchTransitions` on, motion not reduced                               | opacity 0→1, translateY 3→0, blur veil 1→0, 240ms | opacity 1→0, blur veil 0→1, 180ms | in: opacity 0→1, translateY 6→0, scale 0.98→1, 220ms; out: opacity 1→0, scale 1→0.98, 160ms; move: `LinearTransition` 240ms; a section that comes in also has the blur veil 1→0, 240ms |
+| `fade` | `searchTransitions` on, motion reduced (system or the Animations switch) | opacity 0→1, 160ms                                | opacity 1→0, 120ms                | in: opacity 0→1, 160ms; out: opacity 1→0, 120ms; no move                                                                                                                               |
+| `none` | `searchTransitions` off                                                  | instant                                           | instant                           | none                                                                                                                                                                                   |
 
 Decision (2026-10-12, developer, after a device check): rows and sections get enter, exit and move
 motion. This replaces the first version of this plan, which gave them only a 160ms fade in because

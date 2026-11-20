@@ -1,4 +1,5 @@
 ---
+
 name: "Voice Edit"
 description: "Edit a draft so that it sounds human and sounds like the user. Learns the voice from 1 to 3 samples of the user's own writing, removes filler and stock phrases, keeps every fact, number and claim, and adds no new facts. Returns the edited text and a change log with the reason for each change."
 ---

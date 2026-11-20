@@ -37,6 +37,7 @@ rule, adapted to its cursor pagination.
 - `src/renderer/src/features/web-client/web-client-context.tsx` (1702 lines) — the
   web workspace store.
   - Lines 61-69:
+
     ```ts
     interface WebConversation {
       page: ConversationPage | null;
@@ -53,6 +54,7 @@ rule, adapted to its cursor pagination.
     then `await load(id)`. It does nothing to the conversation that was open before.
   - Lines 1016-1060, `load(id, older = false)`: reads `runtime.conversation(id, before)`
     and merges:
+
     ```ts
     item.page = {
       ...page,
@@ -62,6 +64,7 @@ rule, adapted to its cursor pagination.
       revision: older && old ? old.revision : page.revision,
     };
     ```
+
     Note `pageInfo: !older && old ? old.pageInfo : page.pageInfo`: a latest read
     keeps the old `olderCursor`. `load(id, true)` returns early when
     `pageInfo.olderCursor` is null (line 1019-1020).
@@ -74,6 +77,7 @@ rule, adapted to its cursor pagination.
     592, 637, 750, 856).
 - `src/renderer/src/features/conversation/conversation-context.tsx:54-77` — the desktop
   rule to copy:
+
   ```ts
   const LATEST_PAGE_SIZE = 50;
   function trimToLatestPage(conversation: ConversationState): void {
@@ -92,6 +96,7 @@ rule, adapted to its cursor pagination.
     conversation.page = { hasOlder: true, olderCursor: null };
   }
   ```
+
   The desktop can set `olderCursor: null` because it reloads differently. The web
   client cannot: a null cursor stops `load(id, true)`. That is why Step 2 uses a
   `trimmed` flag.
@@ -113,26 +118,28 @@ rule, adapted to its cursor pagination.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---------|---------|---------------------|
-| Install (fresh worktree only) | `bun install --frozen-lockfile` | exit 0 |
-| Storybook (leave running) | `bun run storybook` | prints the local URL |
-| New E2E | `bun scripts/web-client-conversation-trim-e2e.ts --storybook=<url>` | exit 0, report `"passed": true` |
-| Related tests | `bun run test:related -- src/renderer/src/features/web-client/web-client-context.tsx` | exit 0 |
-| Typecheck | `bun run typecheck:renderer` | exit 0 |
-| Lint changed files | `biome check --write --max-diagnostics=none <changed paths>` | exit 0 |
+| Purpose                       | Command                                                                               | Expected on success             |
+| ----------------------------- | ------------------------------------------------------------------------------------- | ------------------------------- |
+| Install (fresh worktree only) | `bun install --frozen-lockfile`                                                       | exit 0                          |
+| Storybook (leave running)     | `bun run storybook`                                                                   | prints the local URL            |
+| New E2E                       | `bun scripts/web-client-conversation-trim-e2e.ts --storybook=<url>`                   | exit 0, report `"passed": true` |
+| Related tests                 | `bun run test:related -- src/renderer/src/features/web-client/web-client-context.tsx` | exit 0                          |
+| Typecheck                     | `bun run typecheck:renderer`                                                          | exit 0                          |
+| Lint changed files            | `biome check --write --max-diagnostics=none <changed paths>`                          | exit 0                          |
 
 Do not run `bun run typecheck`, `check:ui` in full, builds or full suites.
 
 ## Scope
 
 **In scope**:
+
 - `src/renderer/src/features/web-client/web-client-context.tsx`
 - `src/renderer/src/preview/bench-web-runtime.ts` (count older-page reads, expose agent names)
 - `scripts/web-client-conversation-trim-e2e.ts` (create)
 - `changelog.d/<branch>.md` (create)
 
 **Out of scope**:
+
 - The desktop `conversation-context.tsx`. Do not move `trimToLatestPage` into a
   shared module in this plan; the two state shapes differ.
 - `packages/ui` and the conversation view components. No visual change.
@@ -172,7 +179,7 @@ Do not run `bun run typecheck`, `check:ui` in full, builds or full suites.
      scroll (a middle page loads).
    - Write `.zollybot-build/web-client-conversation-trim-e2e/report.json` with
      `{ passed, checks }` and exit non-zero on a failure.
-   Wait for state (`idle()`, `waitFor` on text), never for a fixed time.
+     Wait for state (`idle()`, `waitFor` on text), never for a fixed time.
 
 **Verify**: start `bun run storybook`, then
 `bun scripts/web-client-conversation-trim-e2e.ts --storybook=<url>` → exits 1 and
@@ -206,6 +213,7 @@ In `web-client-context.tsx`:
 ### Step 3: Run neighbors and write the release note
 
 **Verify**:
+
 - `bun run test:related -- src/renderer/src/features/web-client/web-client-context.tsx` → exit 0.
 - `bun run perf:web -- --phases=runtime --runs=1 --storybook=<url>` → exit 0 (the
   existing runtime phase still works).
