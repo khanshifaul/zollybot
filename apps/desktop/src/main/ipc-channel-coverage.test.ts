@@ -82,15 +82,15 @@ const mainSources = sourceFilesUnder("src/main");
 
 // The hidden WebRTC window has a preload of its own. It takes one MessagePort that main hands over
 // with webContents.postMessage, which is not an IPC endpoint, so the scan leaves it out.
-const WEBRTC_PRELOAD_MODULE = "apps/desktop/src/preload/team-webrtc.ts";
+const WEBRTC_PRELOAD_MODULE = "src/preload/team-webrtc.ts";
 const preloadSources = sourceFilesUnder("src/preload").filter((file) => file !== WEBRTC_PRELOAD_MODULE);
 
 // The one module allowed to touch ipcMain, because it is the sender check.
-const TRUSTED_IPC_MODULE = "apps/desktop/src/main/trusted-ipc.ts";
+const TRUSTED_IPC_MODULE = "src/main/trusted-ipc.ts";
 
 // The one module allowed to name the wrappers, because it is the only one that reads a channel out
 // of the manifest to hand them.
-const BINDER_MODULE = "apps/desktop/src/main/ipc/define-ipc-group.ts";
+const BINDER_MODULE = "src/main/ipc/define-ipc-group.ts";
 
 // The wrappers by name. The scan reads names rather than the import path because readSource strips
 // string literals, and a name has to appear to be imported, called, or aliased at all.
@@ -128,10 +128,10 @@ function decodeWrittenFromMain(value: unknown): Written | null {
 // carry the IPC_ENDPOINTS reference and are what the scan checks, which is why
 // the helpers are listed as callees above.
 const FORWARDED_CHANNEL_ARGUMENTS: readonly string[] = [
-  "apps/desktop/src/preload/index.ts: ipcRenderer.invoke(endpoint.channel)",
-  "apps/desktop/src/preload/index.ts: ipcRenderer.on(endpoint.channel)",
-  "apps/desktop/src/preload/index.ts: ipcRenderer.removeListener(endpoint.channel)",
-  "apps/desktop/src/preload/index.ts: listen(endpoint)",
+  "src/preload/index.ts: ipcRenderer.invoke(endpoint.channel)",
+  "src/preload/index.ts: ipcRenderer.on(endpoint.channel)",
+  "src/preload/index.ts: ipcRenderer.removeListener(endpoint.channel)",
+  "src/preload/index.ts: listen(endpoint)",
 ];
 
 const mainCalls = collectCalls(mainSources, PRELOAD_ONLY_CALLEES);

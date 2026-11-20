@@ -60,16 +60,16 @@ describe("instance transfer result decoding", () => {
   });
 
   it("keeps a local sign-in list closed", () => {
-    expect(() => decodeInstanceTransferResult({ ...TRANSFER_RESULT, agents: [], signIn: ["omp"] })).toThrow(
-      "Invalid transfer result.",
-    );
+    expect(() =>
+      decodeInstanceTransferResult({ ...TRANSFER_RESULT, agents: [], signIn: ["unknown-provider"] }),
+    ).toThrow("Invalid transfer result.");
   });
 
   it("keeps only the remote sign-ins that this build can start", () => {
     const result = decodeRemoteInstanceTransferResult({
       ...TRANSFER_RESULT,
       agents: [{ agentId: "agent-2", name: "Ada" }],
-      signIn: ["claude", "omp"],
+      signIn: ["claude", "unknown-provider"],
     });
     expect(result.signIn).toEqual(["claude"]);
   });

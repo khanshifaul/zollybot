@@ -784,9 +784,8 @@ export function decodeBitwardenConnectorStatus(value: unknown): BitwardenConnect
 
 import type { OfficeTask } from "@zollybot/contracts/ipc-office-tasks";
 
-function isOfficeTask(value: unknown): value is OfficeTask {
-  return typeof value === "object" && value !== null && "id" in value;
-}
+const isOfficeTask = (value: unknown): value is OfficeTask =>
+  typeof value === "object" && value !== null && "id" in value;
 
 export const decodeOfficeTask = (value: unknown): OfficeTask | null => (isOfficeTask(value) ? value : null);
 export const decodeOfficeTasks = (value: unknown): OfficeTask[] =>

@@ -119,7 +119,7 @@ function withAddedColumns(before: Record<string, TableRow[]>): Record<string, Ta
               ...row,
               missed_policy: "skip",
               // Migration 57 gives each agent routine the chat as the place where it runs.
-              ...(table === "projection_agent_routines" ? { run_in: "chat" } : {}),
+              ...(table === "projection_agent_routines" ? { run_in: "chat", office_id: null } : {}),
             }
           : table.endsWith("_runs")
             ? { missed_count: null, missed_until: null, ...row, run_source: null }
