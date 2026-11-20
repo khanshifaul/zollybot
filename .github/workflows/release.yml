@@ -458,7 +458,7 @@ jobs:
 
       - name: Tune Gradle memory
         shell: bash
-          mkdir -p ~/.gradle
+        run: |
           printf '%s\n' 'org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8' >> ~/.gradle/gradle.properties
           printf '%s\n' 'org.gradle.workers.max=2' >> ~/.gradle/gradle.properties
           printf '%s\n' 'org.gradle.daemon=false' >> ~/.gradle/gradle.properties
