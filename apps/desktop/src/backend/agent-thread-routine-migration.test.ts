@@ -73,6 +73,7 @@ function expectRowsKept(before: Contents, after: Contents): void {
         branch_through_message_id: null,
         ...row,
         routine_id: null,
+        office_id: null,
       })),
     );
   }
@@ -122,7 +123,7 @@ describe("agent thread routine migration", () => {
       const before = contents(db);
       migrateZollyBotDatabase(db);
       expectRowsKept(before, contents(db));
-      expect(threadColumns(db).slice(-4)).toEqual([...BRANCH_COLUMNS, "routine_id"]);
+      expect(threadColumns(db).slice(-5)).toEqual([...BRANCH_COLUMNS, "routine_id", "office_id"]);
       expect(routineIndex(db)).toContain("WHERE routine_id IS NOT NULL");
       expectHealthy(db);
     });

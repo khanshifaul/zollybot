@@ -135,7 +135,12 @@ export function syncEmployments(
       continue;
     }
     const existing = byId.get(agent.id);
-    if (existing) continue;
+    if (existing) {
+      if (existing.scope === "office" && existing.officeId === UNASSIGNED_OFFICE_ID && primary !== null) {
+        upsertEmployment(db, { ...existing, officeId: primary });
+      }
+      continue;
+    }
     const scope: RoleScope = "office";
     const employment: EmploymentRecord = {
       agentId: agent.id,

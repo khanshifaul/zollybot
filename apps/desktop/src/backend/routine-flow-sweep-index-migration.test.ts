@@ -69,7 +69,9 @@ function contents(db: DatabaseSync) {
 /** Migration 57 gives each agent routine the chat as the place where it runs. */
 function withChatRunPlace(rows: ReturnType<typeof contents>): ReturnType<typeof contents> {
   const routines = rows.projection_agent_routines;
-  return routines ? { ...rows, projection_agent_routines: routines.map((row) => ({ ...row, run_in: "chat" })) } : rows;
+  return routines
+    ? { ...rows, projection_agent_routines: routines.map((row) => ({ ...row, run_in: "chat", office_id: null })) }
+    : rows;
 }
 
 function indexColumns(db: DatabaseSync) {

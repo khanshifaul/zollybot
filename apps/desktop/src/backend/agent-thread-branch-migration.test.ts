@@ -76,6 +76,8 @@ function withBranchLink(
       branch_through_message_id: null,
       // Migration 54 adds the routine link, null for every old thread.
       routine_id: null,
+      // Migration 61 adds the office scope, null for every old thread.
+      office_id: null,
     })),
   };
 }
@@ -103,7 +105,7 @@ describe("agent thread branch migration", () => {
     const before = contents(db);
     migrateZollyBotDatabase(db);
     expectSameTables(contents(db), withBranchLink(before));
-    expect(threadColumns(db).slice(-4, -1)).toEqual(BRANCH_COLUMNS);
+    expect(threadColumns(db).slice(-5, -2)).toEqual(BRANCH_COLUMNS);
     expectHealthy(db);
   });
 
@@ -131,7 +133,7 @@ describe("agent thread branch migration", () => {
     db.exec("ALTER TABLE projection_agent_threads ADD COLUMN branch_source_thread_id TEXT");
     db.exec("UPDATE projection_agent_threads SET branch_source_thread_id='zollybot-thread-chief' WHERE origin='user'");
     migrateZollyBotDatabase(db);
-    expect(threadColumns(db).slice(-4, -1)).toEqual(BRANCH_COLUMNS);
+    expect(threadColumns(db).slice(-5, -2)).toEqual(BRANCH_COLUMNS);
     expect(
       db
         .prepare(

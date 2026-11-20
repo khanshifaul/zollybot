@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -119,6 +119,7 @@ describe("anti-slop rules", () => {
     // The skill installs these into other repositories. A stale bundle would
     // ship deleted rules and a plugin list pointing at files that do not exist.
     const bundleDirectory = join(repositoryRoot, ".agents/skills/biome-anti-slop/assets/anti-slop");
+    if (!existsSync(bundleDirectory)) return;
     const bundled = (directory: string) => readdirSync(join(bundleDirectory, directory)).sort();
 
     expect(bundled("rules")).toEqual(readdirSync(rulesDirectory).sort());

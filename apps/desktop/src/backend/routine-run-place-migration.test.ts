@@ -78,7 +78,11 @@ const LATER_TABLES = { agent_usage_skill_loads: [] };
 function withChatRunPlace(before: Contents): Contents {
   return {
     ...before,
-    projection_agent_routines: (before.projection_agent_routines ?? []).map((row) => ({ ...row, run_in: "chat" })),
+    projection_agent_routines: (before.projection_agent_routines ?? []).map((row) => ({
+      ...row,
+      run_in: "chat",
+      office_id: null,
+    })),
   };
 }
 
