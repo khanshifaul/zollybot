@@ -5,6 +5,7 @@ import { createEffect, createMemo, createSignal, For, onCleanup, Show } from "so
 import { appPort } from "../../app-port";
 import { useAgents } from "../agents/agents-context";
 import { useServerScope } from "../servers/server-scope";
+
 const ACTIVE_OFFICE_KEY = "zollybot.office-strip.active";
 
 interface OfficeTab {
@@ -240,15 +241,17 @@ export function TopBar(props: TopBarProps = {}) {
                 )}
               </For>
               <Show when={props.allowCreateOffice !== false}>
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   type="button"
                   class="top-bar-tab top-bar-tab-add"
                   title={t("app.offices.create")}
                   aria-label={t("app.offices.create")}
                   onClick={openCreateDialog}
                 >
-                  <Plus size={16} aria-hidden="true" style={{ display: "block", "flex-shrink": "0" }} />
-                </button>
+                  <Plus size={16} aria-hidden="true" />
+                </Button>
               </Show>
             </Tabs.List>
           </Tabs.Root>

@@ -5,6 +5,7 @@ import {
   ServerPanelLoadNotice,
   serverWorkspacePhase,
 } from "@zollybot/ui/features/servers/ServerConnectionNotice";
+import { ServerMenu } from "@zollybot/ui/features/servers/ServerMenu";
 import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, Show } from "solid-js";
 import { useAccountUsagePolling } from "./features/account/account-usage-polling";
@@ -20,14 +21,13 @@ import { WorkspaceConversation } from "./features/conversation/WorkspaceConversa
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
 import { TopBar } from "./features/offices/OfficeTabStrip";
-import { useServerActions } from "./features/servers/server-actions";
-import { ServerMenu } from "@zollybot/ui/features/servers/ServerMenu";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
 import { WorkspaceRoutineFlows } from "./features/routine-flows/WorkspaceRoutineFlows";
 import { createRoutineTimezonePrompt, desktopRoutineZoneTargets } from "./features/schedule/routine-timezone-prompt";
 import { createHostedUpsellOffline } from "./features/servers/hosted-server-upsell-controller";
 import { createRemoteSyncMarks } from "./features/servers/remote-sync-marks";
+import { useServerActions } from "./features/servers/server-actions";
 import { createServerConnectionToast } from "./features/servers/server-connection-toast";
 import { useServerScope } from "./features/servers/server-scope";
 import { followsServerUpdate, ServerUpdateDialogHost } from "./features/servers/server-update-flow";

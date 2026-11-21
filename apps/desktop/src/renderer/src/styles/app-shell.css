@@ -1336,12 +1336,6 @@ textarea {
   stroke-linejoin: round;
 }
 
-.sidebar-marketplace-button > svg {
-  width: 18px;
-  height: 18px;
-  stroke-width: var(--zollybot-icon-stroke-lg);
-}
-
 .sidebar-history-button > svg {
   width: var(--zollybot-icon-md);
   height: var(--zollybot-icon-md);
