@@ -1046,7 +1046,6 @@ textarea {
   flex: 0 1 auto;
   justify-content: flex-start;
   gap: var(--zollybot-space-1-5);
-  margin-inline-end: auto;
   border-radius: var(--zollybot-radius-pill);
   padding-block: 0;
   padding-inline: var(--zollybot-space-1) var(--zollybot-space-2);
