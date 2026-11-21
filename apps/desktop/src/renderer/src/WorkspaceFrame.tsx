@@ -28,11 +28,8 @@ type WorkspaceFrameProps = ParentProps<
     initialLoading?: boolean;
     /** Dialogs and overlays after the panes. */
     after?: JSX.Element;
-    /** The two-row top bar (logo+floors / agent+settings) when the caller has offices. */
-    topBar?: JSX.Element;
   } & Omit<JSX.HTMLAttributes<HTMLDivElement>, "children">
 >;
-
 /**
  * The application frame that the desktop shell and the web client share: the grid classes, the left
  * column width and its resizer, the compatibility screen, and the slot of the rail page. The panes come
@@ -76,14 +73,12 @@ export function WorkspaceFrame(props: WorkspaceFrameProps) {
           "app-frame-with-server-rail": layout.serverRailVisible(),
           "app-frame-page-open": pageOpen(),
           "app-frame-sidebar-hidden": props.sidebarHidden === true,
-          "app-frame-with-topbar": props.topBar !== undefined,
           "app-frame-platform-darwin": platform.appInfo()?.platform === "darwin",
         },
       ]}
       aria-hidden={props.hidden ? "true" : undefined}
       style={`--left-panel-width: ${props.compact ? LEFT_PANEL_COMPACT : layout.leftPanelWidth()}px`}
     >
-      {props.topBar}
       {props.left}
       <WorkspaceLeftPanelResizer />
       <div

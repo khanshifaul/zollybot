@@ -9,7 +9,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: calc(var(--left-header-height, 38px) + var(--zollybot-space-1)) 0 var(--zollybot-space-3);
+  padding: var(--zollybot-space-2) 0 var(--zollybot-space-3);
   -webkit-app-region: drag;
 }
 

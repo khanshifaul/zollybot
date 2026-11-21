@@ -566,7 +566,7 @@
   min-width: var(--server-rail-width);
   flex-direction: column;
   justify-content: space-between;
-  padding: 42px var(--server-rail-inline-padding) calc(9px + 52px);
+  padding: 0 var(--server-rail-inline-padding) calc(9px + 52px);
   background: var(--zollybot-bg-sidebar);
   -webkit-app-region: drag;
 }
@@ -861,10 +861,14 @@ html.panel-resizing {
   height: auto;
 }
 
+.top-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 .app-frame > * {
   min-height: 0;
 }
-
 .panel-edge {
   border-inline-end: clamp(0.5px, 0.05123cqw, 1px) solid var(--zollybot-border);
 }
@@ -1369,20 +1373,44 @@ textarea {
   padding: 8px 12px 6px;
 }
 
-/* The field opens the global search, so it is a button drawn as the search field. */
 .sidebar-search-trigger {
+  display: flex;
   width: 100%;
+  height: 32px;
+  align-items: center;
   justify-content: flex-start;
+  gap: 8px;
+  border: 0.5px solid var(--zollybot-border);
+  border-radius: var(--zollybot-radius-sm);
+  background: var(--zollybot-hover);
+  padding: 0 9px;
+  color: var(--zollybot-text-dim);
   font-size: var(--zollybot-text-md);
   font-weight: var(--zollybot-weight-regular);
   line-height: 18px;
   cursor: pointer;
+  transition:
+    border-color var(--zollybot-duration-hover) ease,
+    background-color var(--zollybot-duration-hover) ease,
+    color var(--zollybot-duration-hover) ease;
 }
 
 .sidebar-search-trigger:hover:not(:disabled) {
   border-color: var(--zollybot-text-dim);
   background: var(--zollybot-bg-surface);
-  color: var(--zollybot-text-dim);
+  color: var(--zollybot-text-primary);
+}
+
+.sidebar-search-trigger:focus-visible {
+  outline: 0;
+  box-shadow: var(--zollybot-focus-ring);
+}
+
+.sidebar-search-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  stroke-width: var(--zollybot-icon-stroke);
 }
 
 .sidebar-search-placeholder {
@@ -1423,20 +1451,6 @@ textarea {
   display: flex;
   height: 32px;
   align-items: center;
-  gap: 8px;
-  border: 0.5px solid var(--zollybot-border);
-  border-radius: var(--zollybot-radius-sm);
-  background: var(--zollybot-hover);
-  padding: 0 9px;
-  color: var(--zollybot-text-dim);
-  opacity: 1;
-  transform: translateX(0);
-  transition:
-    border-color var(--zollybot-duration-hover) ease,
-    background-color var(--zollybot-duration-hover) ease,
-    box-shadow var(--zollybot-duration-hover) ease,
-    opacity var(--zollybot-duration-fast) ease,
-    transform var(--zollybot-duration-slow) cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .search-field:focus-within {

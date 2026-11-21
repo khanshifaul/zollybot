@@ -1,5 +1,5 @@
 /**
- * The server name, Back and Forward, its update, the marketplace or expand toggle, and new agent - plus
+ * The server name, Back and Forward, its update, the expand toggle, and new agent - plus
  * the window drag region.
  */
 
@@ -13,7 +13,6 @@ import {
   FolderPlus,
   Hash,
   IconButton,
-  Puzzle,
 } from "@zollybot/ui";
 import { Show } from "solid-js";
 import { useText } from "../../text";
@@ -112,25 +111,19 @@ export function SidebarTopbar() {
             );
           }}
         </Show>
-        {/* The menu view needs the room for the server name. The page rail also opens the marketplace. */}
-        <Show when={props.compact || (props.marketplaceSupported !== false && props.serverMenu?.view !== "menu")}>
+        <Show when={props.compact}>
           <Button
             variant="ghost"
             type="button"
-            class={[
-              "sidebar-icon-button no-drag",
-              props.compact ? "sidebar-toggle-button" : "sidebar-marketplace-button",
-            ]}
-            onClick={() => (props.compact ? props.onExpand() : props.onOpenMarketplace())}
-            data-cuelume-tap={props.compact ? "open" : "navigate"}
-            aria-label={props.compact ? t("sidebar.topbar.expand") : t("sidebar.topbar.openMarketplace")}
-            aria-controls={props.compact ? "agent-sidebar" : undefined}
-            aria-expanded={props.compact ? "false" : undefined}
-            title={props.compact ? t("sidebar.topbar.expand") : t("sidebar.topbar.marketplace")}
+            class="sidebar-icon-button sidebar-toggle-button no-drag"
+            onClick={() => props.onExpand()}
+            data-cuelume-tap="open"
+            aria-label={t("sidebar.topbar.expand")}
+            aria-controls="agent-sidebar"
+            aria-expanded="false"
+            title={t("sidebar.topbar.expand")}
           >
-            <Show when={props.compact} fallback={<Puzzle aria-hidden="true" />}>
-              <SidebarToggleIcon />
-            </Show>
+            <SidebarToggleIcon />
           </Button>
         </Show>
         <Show when={props.createSupported !== false || props.onCreateChannel || layoutMutable()}>

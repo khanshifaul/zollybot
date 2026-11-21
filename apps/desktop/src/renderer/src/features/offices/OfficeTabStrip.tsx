@@ -1,11 +1,10 @@
 import type { JSX } from "@solidjs/web";
-import { Button, Dialog, Field, Input, Tabs } from "@zollybot/ui";
+import { Alert, AlertDescription, Button, Dialog, Field, IconButton, Input, Plus, Tabs, X } from "@zollybot/ui";
 import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from "solid-js";
 import { appPort } from "../../app-port";
 import { useAgents } from "../agents/agents-context";
 import { useServerScope } from "../servers/server-scope";
-
 const ACTIVE_OFFICE_KEY = "zollybot.office-strip.active";
 
 interface OfficeTab {
@@ -44,7 +43,6 @@ export function TopBar(props: TopBarProps = {}) {
   const agents = useAgents();
   const scope = useServerScope();
   const { t } = useText();
-
   const initialOffice = localStorage.getItem(ACTIVE_OFFICE_KEY) ?? "building";
   if (agents.activeOfficeId() === null) agents.setActiveOfficeId(initialOffice);
 
@@ -242,17 +240,15 @@ export function TopBar(props: TopBarProps = {}) {
                 )}
               </For>
               <Show when={props.allowCreateOffice !== false}>
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
-                  size="sm"
                   class="top-bar-tab top-bar-tab-add"
                   title={t("app.offices.create")}
                   aria-label={t("app.offices.create")}
                   onClick={openCreateDialog}
                 >
-                  +
-                </Button>
+                  <Plus size={16} aria-hidden="true" style={{ display: "block", "flex-shrink": "0" }} />
+                </button>
               </Show>
             </Tabs.List>
           </Tabs.Root>
@@ -262,44 +258,58 @@ export function TopBar(props: TopBarProps = {}) {
 
       <Dialog.Root open={createOpen()} onOpenChange={setCreateOpen}>
         <Dialog.Portal>
-          <Dialog.Overlay />
-          <Dialog.Content class="ui-dialog-content settings-mobile-dialog" style={{ "max-width": "520px" }}>
-            <div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
-              <Dialog.Title>{t("app.offices.create")}</Dialog.Title>
-              <Dialog.Description>{t("app.offices.createDescription")}</Dialog.Description>
-              <Field label={t("app.offices.path")}>
-                <div style={{ display: "flex", gap: "8px", "align-items": "center" }}>
+          <Dialog.Overlay class="channel-dialog-backdrop">
+            <Dialog.Content class="channel-create-dialog">
+              <header class="channel-dialog-header">
+                <Dialog.Title>{t("app.offices.create")}</Dialog.Title>
+                <IconButton label={t("common.close")} variant="ghost" onClick={() => setCreateOpen(false)}>
+                  <X />
+                </IconButton>
+              </header>
+              <form
+                class="channel-create-form"
+                style={{ gap: "var(--zollybot-space-4)", "padding-bottom": "var(--zollybot-space-4)" }}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void submitCreate();
+                }}
+              >
+                <Show when={createError()}>
+                  {(error) => (
+                    <Alert tone="danger" role="alert">
+                      <AlertDescription>{error()}</AlertDescription>
+                    </Alert>
+                  )}
+                </Show>
+                <Field label={t("app.offices.path")}>
+                  <div style={{ display: "flex", gap: "8px", "align-items": "center" }}>
+                    <Input
+                      autofocus
+                      value={createPath()}
+                      placeholder={t("app.offices.pathPlaceholder")}
+                      onInput={(event) => setCreatePath(event.currentTarget.value)}
+                      style={{ flex: "1" }}
+                    />
+                    <Button type="button" variant="secondary" onClick={() => void choosePath()}>
+                      {t("app.offices.chooseFolder")}
+                    </Button>
+                  </div>
+                </Field>
+                <Field label={t("app.offices.createPromptName")}>
                   <Input
-                    value={createPath()}
-                    placeholder={t("app.offices.pathPlaceholder")}
-                    onInput={(event) => setCreatePath(event.currentTarget.value)}
-                    style={{ flex: "1" }}
+                    value={createName()}
+                    placeholder={t("app.offices.namePlaceholder")}
+                    onInput={(event) => setCreateName(event.currentTarget.value)}
                   />
-                  <Button type="button" variant="secondary" onClick={() => void choosePath()}>
-                    {t("app.offices.chooseFolder")}
+                </Field>
+                <footer class="channel-editor-footer">
+                  <Button type="submit" disabled={creating() || !createPath().trim()}>
+                    {creating() ? t("common.saving") : t("common.create")}
                   </Button>
-                </div>
-              </Field>
-              <Field label={t("app.offices.createPromptName")}>
-                <Input
-                  value={createName()}
-                  placeholder={t("app.offices.namePlaceholder")}
-                  onInput={(event) => setCreateName(event.currentTarget.value)}
-                />
-              </Field>
-              <Show when={createError()}>
-                {(error) => <p class="settings-status settings-status-error">{error()}</p>}
-              </Show>
-              <div style={{ display: "flex", gap: "8px", "justify-content": "flex-end" }}>
-                <Button type="button" variant="secondary" onClick={() => setCreateOpen(false)} disabled={creating()}>
-                  {t("common.cancel")}
-                </Button>
-                <Button type="button" onClick={() => void submitCreate()} disabled={creating() || !createPath().trim()}>
-                  {creating() ? t("common.saving") : t("common.create")}
-                </Button>
-              </div>
-            </div>
-          </Dialog.Content>
+                </footer>
+              </form>
+            </Dialog.Content>
+          </Dialog.Overlay>
         </Dialog.Portal>
       </Dialog.Root>
     </>

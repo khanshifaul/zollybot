@@ -1281,11 +1281,6 @@
   border-radius: var(--wfn-card-inner-radius);
 }
 
-/* The workflow page does not need the Marketplace button that the sidebar keeps in the top row. */
-.wfn-app .sidebar-marketplace-button {
-  display: none;
-}
-
 /* The server menu keeps the start of the top row, so the bar starts after it. */
 .wfn-canvas[data-frame="window"] .wfn-hud-top {
   top: 0;

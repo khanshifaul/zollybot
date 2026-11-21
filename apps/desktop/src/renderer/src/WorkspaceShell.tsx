@@ -20,6 +20,8 @@ import { WorkspaceConversation } from "./features/conversation/WorkspaceConversa
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
 import { TopBar } from "./features/offices/OfficeTabStrip";
+import { useServerActions } from "./features/servers/server-actions";
+import { ServerMenu } from "@zollybot/ui/features/servers/ServerMenu";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
 import { WorkspaceRoutineFlows } from "./features/routine-flows/WorkspaceRoutineFlows";
@@ -78,6 +80,7 @@ export function WorkspaceShell(props: {
   useAccountUsagePolling();
   useCustomAgentUsagePolling();
   const layout = useLayout();
+  const serverActions = useServerActions();
   const {
     activeServer,
     activeServerSupportsCapability,
@@ -297,10 +300,28 @@ export function WorkspaceShell(props: {
     // The overlays and the chat cards show the same connectors.
     <ConnectorsProvider>
       {/* The page rail sits at the left of the frame. The frame is the card of the page that the rail selects. */}
+      {/* Top bar spans the full window width above the frame grid. */}
+      <TopBar
+        leading={
+          chatWindow ? undefined : (
+            <ServerMenu
+              servers={serverActions.orderedServers()}
+              serverName={activeServer()?.name ?? t("sidebar.topbar.localServer")}
+              view={layout.serverView()}
+              onViewChange={layout.setServerView}
+              onSelect={serverActions.select}
+              onAdd={serverActions.add}
+              addCreatesServer={serverActions.addCreatesServer()}
+              onCreateLocal={serverActions.addMenuCreateLocal()}
+              hiddenLocal={serverActions.hiddenLocal()}
+              {...serverActions.callbacks}
+            />
+          )
+        }
+      />
       <div class="app-window">
         <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
         <WorkspaceFrame
-          topBar={chatWindow ? undefined : <TopBar />}
           class={chatWindow ? "app-frame-chat-window" : undefined}
           compact={layout.leftPanelCompact()}
           initialLoading={!serversLoaded() || !scope.connection.synced}

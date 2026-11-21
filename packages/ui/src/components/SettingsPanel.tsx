@@ -53,7 +53,13 @@ export function SettingsPanel(props: SettingsPanelProps): JSX.Element {
 /** Header glyphs stay here to stop agent/channel drift. */
 export function SettingsBackIcon(): JSX.Element {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 settings-back-icon fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 settings-back-icon"
+    >
       <path d="m12.5 4-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   );
@@ -64,7 +70,9 @@ export function SettingsForwardIcon(): JSX.Element {
     <svg
       aria-hidden="true"
       viewBox="0 0 20 20"
-      class="ui-glyph-20 settings-forward-icon fill-none stroke-current ui-rtl-mirror"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 settings-forward-icon ui-rtl-mirror"
     >
       <path d="m5.5 4 6 6-6 6m5-12 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>

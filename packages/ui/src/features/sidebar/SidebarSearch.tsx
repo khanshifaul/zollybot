@@ -1,8 +1,7 @@
 /** The search field, and the compact-mode button in its place. Both open the global search. */
 
-import { Button } from "@zollybot/ui";
+import { Button, Search } from "@zollybot/ui";
 import { useText } from "../../text";
-import { SearchIcon } from "./SidebarIcons";
 import { useSidebarScope } from "./sidebar-scope";
 
 export function SidebarSearch() {
@@ -12,6 +11,7 @@ export function SidebarSearch() {
     <div class="sidebar-search-wrap">
       <Button
         variant="ghost"
+        size="sm"
         type="button"
         class="search-field sidebar-search-trigger"
         aria-label={t("conversation.globalSearch.title")}
@@ -20,11 +20,12 @@ export function SidebarSearch() {
         tabindex={props.compact ? -1 : 0}
         onClick={props.onOpenSearch}
       >
-        <SearchIcon />
+        <Search class="sidebar-search-icon" aria-hidden="true" />
         <span class="sidebar-search-placeholder">{t("common.search")}</span>
       </Button>
       <Button
         variant="ghost"
+        size="icon-sm"
         type="button"
         class="sidebar-compact-search"
         aria-label={t("conversation.globalSearch.title")}
@@ -33,7 +34,7 @@ export function SidebarSearch() {
         tabindex={props.compact ? 0 : -1}
         onClick={props.onOpenSearch}
       >
-        <SearchIcon />
+        <Search class="sidebar-search-icon" aria-hidden="true" />
       </Button>
     </div>
   );

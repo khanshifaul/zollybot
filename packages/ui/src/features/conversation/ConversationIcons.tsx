@@ -1,6 +1,14 @@
 export function CloseIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 size-[14px] fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20"
+    >
       <path d="m5 5 10 10M15 5 5 15" stroke-linecap="round" />
     </svg>
   );
@@ -11,7 +19,9 @@ export function DownloadIcon() {
     <svg
       aria-hidden="true"
       viewBox="0 0 20 20"
-      class="ui-glyph-20 image-generation-download-icon fill-none stroke-current"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 image-generation-download-icon"
     >
       <path
         d="M10 3.5v8m0 0 3.25-3.25M10 11.5 6.75 8.25M4 14.5v1.75h12V14.5"
@@ -24,7 +34,7 @@ export function DownloadIcon() {
 
 export function StopIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 size-[14px] fill-current">
+    <svg aria-hidden="true" viewBox="0 0 20 20" width="14" height="14" fill="currentColor" class="ui-glyph-20">
       <rect x="6" y="6" width="8" height="8" rx="1.5" />
     </svg>
   );
@@ -32,7 +42,15 @@ export function StopIcon() {
 
 export function PlusIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 size-[14px] fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20"
+    >
       <path d="M10 4v12M4 10h12" stroke-linecap="round" />
     </svg>
   );
@@ -71,7 +89,7 @@ export function ReplyIcon() {
 /** A new thread that goes out from a message. */
 export function BranchIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 fill-none stroke-current">
+    <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" class="ui-glyph-20">
       <path
         d="M13.33 2.5h4.17v4.17M6.67 2.5H2.5v4.17M10 17.5v-6.08a3.33 3.33 0 0 0-.98-2.36L2.5 2.5m10 5 5-5"
         stroke-linecap="round"
@@ -135,7 +153,15 @@ export function CheckIcon() {
 
 export function ComputerIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 size-[14px] fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20"
+    >
       <rect x="2.5" y="3" width="15" height="10" rx="1.5" />
       <path d="M7 17h6M10 13v4" stroke-linecap="round" />
     </svg>
@@ -144,7 +170,15 @@ export function ComputerIcon() {
 
 export function RemoteDesktopIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 size-[14px] fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20"
+    >
       <rect x="2.5" y="3" width="15" height="10" rx="1.5" />
       <path d="M7 17h6M10 13v4" stroke-linecap="round" />
       <path d="M13.8 6.2c.9.45 1.45 1.15 1.65 2.05M13.65 8.3h.01" stroke-linecap="round" />
@@ -166,7 +200,9 @@ export function BrowserBackIcon() {
     <svg
       aria-hidden="true"
       viewBox="0 0 20 20"
-      class="ui-glyph-20 browser-toolbar-icon fill-none stroke-current ui-rtl-mirror"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 browser-toolbar-icon ui-rtl-mirror"
     >
       <path d="m12 4-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
@@ -178,7 +214,9 @@ export function BrowserForwardIcon() {
     <svg
       aria-hidden="true"
       viewBox="0 0 20 20"
-      class="ui-glyph-20 browser-toolbar-icon fill-none stroke-current ui-rtl-mirror"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 browser-toolbar-icon ui-rtl-mirror"
     >
       <path d="m8 4 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
@@ -187,7 +225,13 @@ export function BrowserForwardIcon() {
 
 export function BrowserStopIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 browser-toolbar-icon fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 browser-toolbar-icon"
+    >
       <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke-linecap="round" />
     </svg>
   );
@@ -195,7 +239,13 @@ export function BrowserStopIcon() {
 
 export function BrowserReloadIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" class="ui-glyph-20 browser-toolbar-icon fill-none stroke-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      class="ui-glyph-20 browser-toolbar-icon"
+    >
       <path d="M15.5 7.5A6 6 0 1 0 16 11" stroke-linecap="round" />
       <path d="M15.5 4.5v3h-3" stroke-linecap="round" stroke-linejoin="round" />
     </svg>

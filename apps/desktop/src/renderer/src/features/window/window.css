@@ -922,19 +922,13 @@
   }
 }
 
-/* Compact top bar: office/lobby strip and active agent context, aligned with the frame header row. */
-.app-frame-with-topbar {
-  grid-template-rows: var(--left-header-height) minmax(0, 1fr);
-}
-
 .top-bar {
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: var(--zollybot-space-2);
   min-width: 0;
   height: var(--left-header-height);
-  padding-block: 2px 0;
-  padding-inline: 10px 8px;
+  padding-block: 2px;
   background: var(--window-frame);
   color: var(--zollybot-text-primary);
   -webkit-app-region: drag;
@@ -1032,19 +1026,6 @@
   gap: 4px;
   flex: 0 0 auto;
   -webkit-app-region: no-drag;
-}
-
-.app-frame-with-topbar > .top-bar {
-  grid-row: 1;
-  grid-column: 1 / -1;
-}
-
-.app-frame-with-topbar > :not(.top-bar) {
-  grid-row: 2;
-}
-
-.app-frame-with-topbar.app-frame-platform-darwin .top-bar {
-  padding-inline-start: 78px;
 }
 
 .office-tasks {
