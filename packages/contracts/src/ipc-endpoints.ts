@@ -805,6 +805,8 @@ export const IPC_ENDPOINTS = {
     writePty: request<{ ptyId: string; data: string }, void>()("app:write-pty"),
     resizePty: request<{ ptyId: string; cols: number; rows: number }, void>()("app:resize-pty"),
     stopPty: request<{ ptyId: string }, void>()("app:stop-pty"),
+    /** Ends a start that still waits for a running turn, and releases the chat lane. */
+    cancelPtyStart: request<{ agentId: string }, void>()("app:cancel-pty-start"),
     ptyData: event<PtyDataEvent>()("app:pty-data"),
     ptyExit: event<PtyExitEvent>()("app:pty-exit"),
   },

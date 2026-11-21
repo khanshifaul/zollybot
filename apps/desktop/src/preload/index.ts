@@ -770,6 +770,7 @@ const zollybotApi: ZollyBotDesktopApi = {
     writePty: decodeVoid,
     resizePty: decodeVoid,
     stopPty: decodeVoid,
+    cancelPtyStart: decodeVoid,
     ptyData: decodePtyDataEvent,
     ptyExit: decodePtyExitEvent,
   }),

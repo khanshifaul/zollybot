@@ -613,6 +613,8 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   readonly #credentials: ProviderClientContext;
   /** Agents whose chat session a terminal owns; the drain starts no turn on them until it closes. */
   readonly #terminalHeld = new Set<string>();
+  /** Starts the pane asked to abandon while they waited for a turn. */
+  readonly #terminalCancelled = new Set<string>();
   readonly #providerUseChanges = Semaphore.makeUnsafe(1);
   readonly #saveProviderTransport: AgentServiceOptions["saveProviderTransport"];
   readonly #endpoints: CustomEndpoints;
@@ -4915,11 +4917,14 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     this: AgentService,
     agentId: string,
   ) {
+    this.#terminalCancelled.delete(agentId);
     this.#terminalHeld.add(agentId);
     const release = () => this.#terminalHeld.delete(agentId);
     return yield* Effect.gen({ self: this }, function* () {
       const deadline = Date.now() + TERMINAL_TURN_WAIT_MS;
-      while (this.#drain.hasActiveChat(agentId) && Date.now() < deadline) yield* Effect.sleep(250);
+      while (this.#drain.hasActiveChat(agentId) && Date.now() < deadline && !this.#terminalCancelled.has(agentId))
+        yield* Effect.sleep(250);
+      if (this.#terminalCancelled.has(agentId)) throw new Error("The terminal start was cancelled.");
       const agent = this.#store.list().find((entry) => entry.id === agentId);
       if (!agent) throw new Error(sourceText("error.harness.noAgentProcess", { harness: agentId }));
       if (!this.#store.activeProviderSession(agentId)) {
@@ -4939,6 +4944,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
             Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
           );
       }
+      if (this.#terminalCancelled.has(agentId)) throw new Error("The terminal start was cancelled.");
       const target = yield* this.ptyTarget(agentId);
       if (!target) throw new Error("This agent has no terminal view.");
       logger.info("A terminal holds the chat session.", {
@@ -4950,8 +4956,18 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     }).pipe(Effect.onExit((exit) => (Exit.isFailure(exit) ? Effect.sync(release) : Effect.void)));
   }).bind(this);
 
+  /** The pane closed while its start still waited; the agent's own chat may drain again. */
+  cancelTerminalStart(agentId: string): void {
+    this.#terminalCancelled.add(agentId);
+    if (this.#terminalHeld.delete(agentId)) {
+      logger.info("A terminal start was cancelled.", { agent: agentId });
+      this.#drain.scheduleDrain(agentId);
+    }
+  }
+
   /** The terminal closed: the agent's own chat may drain again. */
   releaseTerminalHold(agentId: string): void {
+    this.#terminalCancelled.delete(agentId);
     if (!this.#terminalHeld.delete(agentId)) return;
     logger.info("The terminal released the chat session.", { agent: agentId });
     this.#drain.scheduleDrain(agentId);

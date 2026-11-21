@@ -1366,6 +1366,7 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
     writePty: async () => {},
     resizePty: async () => {},
     stopPty: async () => {},
+    cancelPtyStart: async () => {},
     onPtyData: () => () => {},
     onPtyExit: () => () => {},
     restartProvider: async () => clone(agentStatus),

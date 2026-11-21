@@ -3,7 +3,7 @@ import { DEFAULT_AGENT_ACCESS } from "@zollybot/contracts/ipc";
 import { AgentFolderDropOverlay, createAgentFolders } from "@zollybot/ui/features/conversation/AgentFolders";
 import { MessageSelectionActions } from "@zollybot/ui/features/conversation/SelectionActions";
 import { useText } from "@zollybot/ui/text";
-import { createEffect, Show } from "solid-js";
+import { createEffect, createMemo, Show } from "solid-js";
 import { deviceQuoteShortcut } from "../../send-shortcut-preference";
 import { agentFolderCalls } from "./agent-folders-port";
 import { ConversationComposer } from "./ConversationComposer";
@@ -58,6 +58,14 @@ export function ConversationView(props: ConversationProps) {
       return agent;
     return (agent.access ?? DEFAULT_AGENT_ACCESS) === "workspace" ? agent : undefined;
   }
+  /**
+   * The terminal remounts when the agent's model changes: the PTY is started for one model, and a
+   * resumed CLI could keep the old one. A remount restarts it against the current model.
+   */
+  const terminalKey = createMemo(() => {
+    const agent = props.agent;
+    return terminalOpen() && agent ? `${agent.id}\u0000${agent.model}` : undefined;
+  });
   const chatFolders = createAgentFolders(() => {
     const agent = folderDropAgent();
     return agent ? { agentId: agent.id, agentName: agent.name, calls: folderCalls } : undefined;
@@ -139,7 +147,9 @@ export function ConversationView(props: ConversationProps) {
             back keeps their rows and scroll position and does not build the chat again. */}
         <ConversationTimeline />
         <ConversationComposer />
-        <Show when={terminalOpen() && props.agent}>{(agent) => <TerminalPane agentId={agent().id} />}</Show>
+        <Show when={terminalKey()} keyed>
+          {(key) => <TerminalPane agentId={key.split("\u0000")[0] ?? ""} />}
+        </Show>
         <Show when={sideThreadOpen()}>
           <ConversationThread />
         </Show>

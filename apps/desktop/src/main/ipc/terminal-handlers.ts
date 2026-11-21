@@ -33,6 +33,11 @@ function parseResize(value: unknown): { ptyId: string; cols: number; rows: numbe
   };
 }
 
+function parseCancelStart(value: unknown): { agentId: string } {
+  if (!isDynamicRecord(value)) throw new Error("Invalid terminal input.");
+  return { agentId: requireString(value.agentId, "agentId") };
+}
+
 function parseStop(value: unknown): { ptyId: string } {
   if (!isDynamicRecord(value)) throw new Error("Invalid terminal input.");
   return { ptyId: requireString(value.ptyId, "ptyId") };
@@ -41,8 +46,10 @@ function parseStop(value: unknown): { ptyId: string } {
 /** The terminal pane's PTY: one provider process per pane, bytes relayed with main. */
 export function terminalIpcHandlers({
   terminal,
+  cancelStart,
 }: {
   terminal: PtyTerminalService;
+  cancelStart: (agentId: string) => void;
 }): Pick<IpcGroupHandlers, "terminal"> {
   return {
     terminal: {
@@ -55,6 +62,9 @@ export function terminalIpcHandlers({
       }),
       stopPty: payloadHandler(parseStop, ({ ptyId }) => {
         terminal.stop(ptyId);
+      }),
+      cancelPtyStart: payloadHandler(parseCancelStart, ({ agentId }) => {
+        cancelStart(agentId);
       }),
     },
   };

@@ -147,6 +147,8 @@ export function TerminalPane(props: { agentId: string }) {
       offData?.();
       offExit?.();
       if (ptyId) void window.zollybot.stopPty({ ptyId });
+      // The start may still wait for the chat's turn; cancel it so the lane is not held.
+      else void window.zollybot.cancelPtyStart({ agentId: props.agentId });
       terminal.dispose();
     };
   });

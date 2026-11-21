@@ -819,7 +819,10 @@ function registerIpcHandlers({
     ...macAutomationIpcHandlers({ platform: process.platform }),
     ...backgroundProcessIpcHandlers({ platform: process.platform, agents: () => service.listAgents() }),
     ...providerIpcHandlers({ service, providerRuntimes, credentials: providerCredentials, openLink }),
-    ...terminalIpcHandlers({ terminal: ptyTerminal }),
+    ...terminalIpcHandlers({
+      terminal: ptyTerminal,
+      cancelStart: (agentId) => service.cancelTerminalStart(agentId),
+    }),
     ...voiceIpcHandlers({ voice, speech, server: voiceServer, service }),
     ...skillIpcHandlers({ skills, getMainWindow: getDialogParent, translate: language.translate }),
     ...agentFolderIpcHandlers({
