@@ -241,7 +241,25 @@ import { toChannelOperationError } from "./channel-effects";
 import { type ChannelImageFile, ChannelImages } from "./channel-images";
 import { ChannelRoutineScheduler } from "./channel-routine-scheduler";
 import { ChannelService } from "./channel-service";
-import type { BundledProviderExecutables } from "./cli";
+import {
+  type BundledProviderExecutables,
+  resolveAntigravityCli,
+  resolveClaudeCli,
+  resolveCodexCli,
+  resolveCommandCodeCli,
+  resolveCopilotCli,
+  resolveCursorCli,
+  resolveDevinCli,
+  resolveGrokCli,
+  resolveHermesCli,
+  resolveKiloCli,
+  resolveKimiCli,
+  resolveMuseCli,
+  resolveOmpCli,
+  resolveOpencodeCli,
+  resolvePiCli,
+  resolveQwenCli,
+} from "./cli";
 import type { ConversationMarkerExclusions } from "./conversation-read-store";
 import type { ProviderSession } from "./database/provider-sessions";
 import { reportOriginalFailure } from "./effect-boundary";
@@ -305,6 +323,32 @@ const errorLogger = createZollyBotLogger("agent-error");
  * application, and an unset entry keeps that copy in the search.
  */
 const DEFAULT_BUNDLED_EXECUTABLES: BundledProviderExecutables = { claude: null, grok: null };
+
+/**
+ * The CLIs whose terminal continues the provider session ZollyBot stores, and the flag each one
+ * resumes it with. The session already carries its model, so no model flag is repeated here.
+ */
+const TERMINAL_RESUME: Partial<
+  Record<
+    AgentProvider,
+    { resolve: () => Effect.Effect<{ executable: string }, unknown>; args: (sessionId: string) => string[] }
+  >
+> = {
+  codex: { resolve: resolveCodexCli, args: (id) => ["resume", id] },
+  claude: { resolve: resolveClaudeCli, args: (id) => ["--resume", id] },
+  grok: { resolve: resolveGrokCli, args: (id) => ["--resume", id] },
+  cursor: { resolve: resolveCursorCli, args: (id) => ["--resume", id] },
+  devin: { resolve: resolveDevinCli, args: (id) => ["--resume", id] },
+  copilot: { resolve: resolveCopilotCli, args: (id) => ["--resume", id] },
+  commandcode: { resolve: resolveCommandCodeCli, args: (id) => ["--resume", id] },
+  qwen: { resolve: resolveQwenCli, args: (id) => ["--resume", id] },
+  muse: { resolve: resolveMuseCli, args: (id) => ["resume", id] },
+  antigravity: { resolve: resolveAntigravityCli, args: (id) => ["--conversation", id] },
+  hermes: { resolve: resolveHermesCli, args: (id) => ["--resume", id] },
+  // Kimi refuses `-r <id>` even from the session's own cwd (its workdir check); `-c` opens the
+  // latest session for the workspace, which is the chat's after it has a turn.
+  kimi: { resolve: resolveKimiCli, args: () => ["-c"] },
+};
 
 /** How long a terminal waits for the chat's running turn before it opens anyway. */
 const TERMINAL_TURN_WAIT_MS = 2 * 60_000;
@@ -4758,35 +4802,110 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
    * What the terminal pane runs for an agent: its provider CLI, workspace and the session its chat
    * already uses. Null for a provider whose CLI has no terminal view.
    */
-  ptyTarget(agentId: string): {
-    provider: AgentProvider;
-    sessionId: string | null;
-    cwd: string;
-    model: string;
-    env: Record<string, string>;
-  } | null {
+  ptyTarget = Effect.fn("AgentService.ptyTarget")(function* (this: AgentService, agentId: string) {
     const agent = this.#store.list().find((entry) => entry.id === agentId);
-    if (agent?.provider !== "opencode") return null;
+    if (!agent) return null;
     // The store keeps the provider session across restarts; the live index knows one bound this run.
     const sessionId =
       this.#store.activeProviderSession(agentId)?.externalSessionId ?? this.#conversation.providerThreadFor(agentId);
-    const env = openCodeConfigEnv(
-      OPENCODE_AGENT_CONFIG,
-      openCodeEndpoints(this.#credentials),
-      this.#credentials.apiKey("opencode"),
-    );
-    if (agent.model && env.OPENCODE_CONFIG_CONTENT) {
-      try {
-        const parsed = JSON.parse(env.OPENCODE_CONFIG_CONTENT);
-        const config = isRecord(parsed) ? { ...parsed } : {};
-        config.model = agent.model;
-        env.OPENCODE_CONFIG_CONTENT = JSON.stringify(config);
-      } catch {
-        // A malformed layer stays as the driver built it; the TUI then keeps its own model.
+    const sessionArgs = sessionId?.startsWith("ses") ? ["--session", sessionId] : [];
+    if (agent.provider === "opencode") {
+      const cli = yield* resolveOpencodeCli().pipe(
+        Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
+      );
+      const env = openCodeConfigEnv(
+        OPENCODE_AGENT_CONFIG,
+        openCodeEndpoints(this.#credentials),
+        this.#credentials.apiKey("opencode"),
+      );
+      if (agent.model && env.OPENCODE_CONFIG_CONTENT) {
+        try {
+          const parsed = JSON.parse(env.OPENCODE_CONFIG_CONTENT);
+          const config = isRecord(parsed) ? { ...parsed } : {};
+          config.model = agent.model;
+          env.OPENCODE_CONFIG_CONTENT = JSON.stringify(config);
+        } catch {
+          // A malformed layer stays as the driver built it; the TUI then keeps its own model.
+        }
       }
+      return {
+        provider: agent.provider,
+        sessionId,
+        cwd: agent.workspacePath,
+        model: agent.model,
+        command: cli.executable,
+        args: sessionArgs,
+        env,
+      };
     }
-    return { provider: agent.provider, sessionId, cwd: agent.workspacePath, model: agent.model, env };
-  }
+    if (agent.provider === "kilo") {
+      const cli = yield* resolveKiloCli().pipe(
+        Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
+      );
+      const args = [...sessionArgs];
+      if (agent.model) args.push("--model", agent.model);
+      return {
+        provider: agent.provider,
+        sessionId,
+        cwd: agent.workspacePath,
+        model: agent.model,
+        command: cli.executable,
+        args,
+        env: {},
+      };
+    }
+    if (agent.provider === "pi") {
+      const cli = yield* resolvePiCli().pipe(
+        Effect.mapError((cause) => new AgentLifecycleFailed({ operation: "openTerminal", cause })),
+      );
+      // Pi's session id is its session file path; `--session` takes a path or an id.
+      const args = sessionId ? ["--session", sessionId] : [];
+      if (agent.model) args.push("--model", agent.model);
+      return {
+        provider: agent.provider,
+        sessionId,
+        cwd: agent.workspacePath,
+        model: agent.model,
+        command: cli.executable,
+        args,
+        env: {},
+      };
+    }
+    if (agent.provider === "omp") {
+      const cli = yield* resolveOmpCli().pipe(
+        Effect.mapError((cause) => new AgentLifecycleFailed({ operation: "openTerminal", cause })),
+      );
+      // OMP resumes by session id prefix, path, or picker; the id is the stored ACP session.
+      const args = sessionId ? [`--resume=${sessionId}`] : [];
+      if (agent.model) args.push(`--model=${agent.model}`);
+      return {
+        provider: agent.provider,
+        sessionId,
+        cwd: agent.workspacePath,
+        model: agent.model,
+        command: cli.executable,
+        args,
+        env: {},
+      };
+    }
+    const resume = TERMINAL_RESUME[agent.provider];
+    if (resume) {
+      const cli = yield* resume
+        .resolve()
+        .pipe(Effect.mapError((cause) => new AgentLifecycleFailed({ operation: "openTerminal", cause })));
+      const args = sessionId ? resume.args(sessionId) : [];
+      return {
+        provider: agent.provider,
+        sessionId,
+        cwd: agent.workspacePath,
+        model: agent.model,
+        command: cli.executable,
+        args,
+        env: {},
+      };
+    }
+    return null;
+  }).bind(this);
 
   /**
    * Opens the chat's terminal: holds its lane, waits for a running turn to end, and makes sure the
@@ -4810,14 +4929,17 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
           .pipe(
             Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
           );
-        const client = this.#providers.requireReadyClientForAgent(agent);
+        // Not `requireReadyClientForAgent`: that also demands the whole provider set be ready, and
+        // another provider still starting at launch has nothing to do with this agent's session.
+        const client = this.#providers.clientForAgent(agent) ?? this.#providers.clientFor(agent.provider);
+        if (!client) throw new Error(`The ${agent.provider} CLI is not ready.`);
         yield* this.#threads
           .ensureThread(agent, client)
           .pipe(
             Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
           );
       }
-      const target = this.ptyTarget(agentId);
+      const target = yield* this.ptyTarget(agentId);
       if (!target) throw new Error("This agent has no terminal view.");
       logger.info("A terminal holds the chat session.", {
         agent: agentId,

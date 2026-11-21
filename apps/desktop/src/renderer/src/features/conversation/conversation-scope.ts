@@ -1,4 +1,8 @@
-import { isKnownAgentProvider, providerDisplayName } from "@zollybot/contracts/agent-providers";
+import {
+  agentProviderDescriptor,
+  isKnownAgentProvider,
+  providerDisplayName,
+} from "@zollybot/contracts/agent-providers";
 import {
   type FileQuoteTarget,
   fileQuoteId,
@@ -101,7 +105,15 @@ export function createConversationViewScope(props: ConversationProps) {
   /** A side thread covers the agent's own chat, which stays mounted under it. */
   const sideThreadOpen = () => props.threads?.open !== undefined;
   /** The chat's terminal surface: a PTY that continues the same provider session. */
-  const terminalAvailable = () => props.server?.kind === "local" && props.agent?.provider === "opencode";
+  const terminalAvailable = () => {
+    const provider = props.agent?.provider;
+    return (
+      props.server?.kind === "local" &&
+      provider !== undefined &&
+      isKnownAgentProvider(provider) &&
+      agentProviderDescriptor(provider).transportChoice === true
+    );
+  };
   const [terminalOpen, setTerminalOpen] = createSignal(false);
   const toggleTerminal = () => setTerminalOpen((open) => !open);
   createEffect(sideThreadOpen, (open) => {

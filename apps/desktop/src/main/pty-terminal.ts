@@ -14,7 +14,11 @@ export interface PtyTarget {
   readonly sessionId: string | null;
   readonly cwd: string;
   readonly model: string;
-  /** The provider config layer the TUI needs, including the chat's model. */
+  /** The provider CLI binary the pane runs. */
+  readonly command: string;
+  /** Its arguments: the session to continue, and where the CLI takes a model flag. */
+  readonly args: readonly string[];
+  /** The provider config layer the TUI needs, when it reads one from the environment. */
   readonly env?: Readonly<Record<string, string>> | undefined;
 }
 
@@ -62,10 +66,8 @@ export class PtyTerminalService {
       throw new Error("This agent has no terminal view.");
     }
     const ptyId = randomUUID();
-    // OpenCode interactive continues a session by its id; a thread without one starts fresh.
-    const sessionId = target.sessionId?.startsWith("ses") ? target.sessionId : null;
-    const args = ["pty-host", "--", "opencode"];
-    if (sessionId) args.push("--session", sessionId);
+    const sessionId = target.sessionId;
+    const args = ["pty-host", "--", target.command, ...target.args];
     const key = this.#options.apiKey(target.provider);
     let child: ChildProcess;
     try {
@@ -95,6 +97,7 @@ export class PtyTerminalService {
       provider: target.provider,
       session: sessionId,
       model: target.model,
+      command: target.command,
       cwd: target.cwd,
     });
     return { ptyId, sessionId };
