@@ -31,6 +31,7 @@ export const messages = {
   "mobile.app.route.workflow": "سير العمل",
   "mobile.app.route.workflowRun": "تشغيل",
   "mobile.app.route.routine": "مهمة دورية",
+  "mobile.app.route.offices": "المكاتب",
   "mobile.app.route.threads": "السلاسل",
   "mobile.app.route.usage": "الاستخدام",
   "mobile.app.route.marketplace": "المتجر",

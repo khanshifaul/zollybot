@@ -257,6 +257,12 @@ export interface MobileAgent {
   avatarColor: AvatarColor | null;
   /** The Marketplace listing the agent was added from, and the listing version it has. */
   marketplaceSource?: { listingId: string; version: number } | undefined;
+  /** The office employment of this agent, when the host serves `office-agents-v1`. */
+  officeId?: string | null;
+  officeName?: string;
+  /** The catalog role key, such as `office-manager`. */
+  officeRole?: string;
+  officeScope?: "office" | "building";
 }
 
 /** The `connectors-v1` routes that answer the host's GitHub connection status. */

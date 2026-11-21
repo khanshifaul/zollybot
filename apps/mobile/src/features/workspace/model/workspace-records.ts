@@ -27,7 +27,17 @@ export type RemoteAgent = Pick<
   Partial<
     Pick<
       AgentSummary,
-      "provider" | "model" | "reasoningEffort" | "avatarUrl" | "notifications" | "workspacePath" | "marketplaceSource"
+      | "provider"
+      | "model"
+      | "reasoningEffort"
+      | "avatarUrl"
+      | "notifications"
+      | "workspacePath"
+      | "marketplaceSource"
+      | "officeId"
+      | "officeName"
+      | "role"
+      | "scope"
     >
   > & { foreignProvider?: ForeignProviderId | undefined };
 
@@ -57,6 +67,10 @@ export function projectAgent(serverId: string, agent: RemoteAgent, avatarColor: 
     marketplaceSource: agent.marketplaceSource
       ? { listingId: agent.marketplaceSource.listingId, version: agent.marketplaceSource.version }
       : undefined,
+    officeId: agent.officeId ?? null,
+    officeName: agent.officeName,
+    officeRole: agent.role,
+    officeScope: agent.scope,
   };
 }
 
@@ -101,6 +115,10 @@ export function decodeAgent(value: unknown): RemoteAgent {
     avatarHue: value.avatarHue,
     // An older host sends no listing; a malformed one is left out rather than failing the agent list.
     marketplaceSource: isAgentMarketplaceSource(value.marketplaceSource) ? value.marketplaceSource : undefined,
+    officeId: isString(value.officeId) && value.officeId ? value.officeId : null,
+    officeName: isString(value.officeName) && value.officeName ? value.officeName : undefined,
+    role: isString(value.role) && value.role ? value.role : undefined,
+    scope: value.scope === "office" || value.scope === "building" ? value.scope : undefined,
   };
 }
 

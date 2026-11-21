@@ -851,12 +851,24 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
         );
         const next = [
           ...current.filter((agent) => agent.serverId !== serverId),
-          ...summaries.map((agent) =>
-            replaceEqualDeep(
-              previous.get(agent.id),
-              projectAgent(serverId, agent, hostColors.current[serverId]?.[agent.id] ?? null),
-            ),
-          ),
+          ...summaries.map((agent) => {
+            const prior = previous.get(agent.id);
+            // `agents-changed` does not carry the office fields; keep the assignment the last list had.
+            const merged =
+              prior && agent.officeId === undefined
+                ? {
+                    ...agent,
+                    officeId: prior.officeId,
+                    officeName: prior.officeName,
+                    role: prior.officeRole,
+                    scope: prior.officeScope,
+                  }
+                : agent;
+            return replaceEqualDeep(
+              prior,
+              projectAgent(serverId, merged, hostColors.current[serverId]?.[agent.id] ?? null),
+            );
+          }),
         ];
         return next.length === current.length && next.every((agent, index) => agent === current[index])
           ? current

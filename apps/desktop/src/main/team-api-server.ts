@@ -152,6 +152,7 @@ import {
   MACHINE_RESOURCES_CAPABILITY,
   type MachineAlertEvent,
 } from "@zollybot/contracts/team-protocol/machine-resources-v1";
+import { OFFICE_AGENTS_CAPABILITY, withOfficeAgents } from "@zollybot/contracts/team-protocol/office-agents-v1";
 import { type OptionalTeamEvent, optionalTeamEvent } from "@zollybot/contracts/team-protocol/optional-events";
 import { PROVIDERS_V8_CAPABILITY } from "@zollybot/contracts/team-protocol/providers-v8";
 import {
@@ -2282,8 +2283,17 @@ export class TeamApiServer {
     const body = route.capabilities.has(TEAM_UI_BLOCK_VAULT_CAPABILITY)
       ? withUiBlockVaultRequests(answered, effortValue)
       : answered;
+    // The frozen agent codec drops the employment fields. A peer that reads them gets them on the
+    // outgoing body, so released adapters and older clients keep exactly their old bytes.
+    const withOffice =
+      status < 400 &&
+      route.method === "GET" &&
+      route.path === TEAM_API_ROUTES.agents.all &&
+      route.capabilities.has(OFFICE_AGENTS_CAPABILITY)
+        ? withOfficeAgents(body, effortValue)
+        : body;
     response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
-    response.end(`${body}\n`);
+    response.end(`${withOffice}\n`);
     return "handled";
   }
 

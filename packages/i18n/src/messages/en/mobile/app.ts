@@ -30,6 +30,7 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.route.workflow": "Workflow",
   "mobile.app.route.workflowRun": "Run",
   "mobile.app.route.routine": "Routine",
+  "mobile.app.route.offices": "Offices",
   "mobile.app.route.threads": "Threads",
   "mobile.app.route.usage": "Usage",
   "mobile.app.route.marketplace": "Marketplace",

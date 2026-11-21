@@ -2,6 +2,7 @@ import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import type { Href } from "expo-router";
 import { Typography } from "heroui-native";
 import type { LucideIcon } from "lucide-react-native";
+import Building2 from "lucide-react-native/icons/building-2";
 import Calendar from "lucide-react-native/icons/calendar";
 import ChartColumn from "lucide-react-native/icons/chart-column";
 import Check from "lucide-react-native/icons/check";
@@ -531,7 +532,7 @@ export const ServerDrawerContent = memo(function ServerDrawerContent({
   );
 });
 
-type DrawerRoute = "tasks" | "routines" | "workflows" | "marketplace" | "usage" | "members" | "settings";
+type DrawerRoute = "tasks" | "routines" | "workflows" | "marketplace" | "usage" | "members" | "offices" | "settings";
 
 /**
  * The tools of the open server with their values. Each answer from the host renders only this part
@@ -558,6 +559,7 @@ function DrawerServerTools({
       marketplace: { pathname: "/server-marketplace", params: { serverId } },
       usage: { pathname: "/server-usage", params: { serverId } },
       members: { pathname: "/server-settings/members", params: { serverId } },
+      offices: "/offices",
       settings: { pathname: "/server-settings", params: { serverId } },
     }),
     [serverId],
@@ -600,6 +602,7 @@ function DrawerServerTools({
         href={routes.marketplace}
         onNavigate={onNavigate}
       />
+      <DrawerRow icon={Building2} label={t("mobile.app.route.offices")} href={routes.offices} onNavigate={onNavigate} />
       <DrawerRow
         icon={ChartColumn}
         label={t("mobile.app.route.usage")}

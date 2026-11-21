@@ -81,6 +81,7 @@ import { MEMORY_REVIEW_CAPABILITY } from "./memory-review-v1";
 import { TEAM_MESSAGE_CLIENT_ID_CAPABILITY } from "./message-client-id-v1";
 import { MESSAGE_DELETE_CAPABILITY } from "./message-delete-v1";
 import { MODEL_VISIBILITY_CAPABILITY } from "./model-visibility-v1";
+import { OFFICE_AGENTS_CAPABILITY } from "./office-agents-v1";
 import { ONEPASSWORD_CONNECTOR_CAPABILITY } from "./onepassword-connector-v1";
 import { PASSWORD_MANAGERS_CAPABILITY } from "./password-managers-v1";
 import { PROMPT_CACHE_TTL_CAPABILITY } from "./prompt-cache-ttl-v1";
@@ -307,6 +308,7 @@ export const TEAM_CURRENT_CAPABILITIES = [
   ...TEAM_PROTOCOL_V9_CAPABILITIES,
   "remote-desktop-setup",
   TEAM_QUEUE_EDIT_CAPABILITY,
+  OFFICE_AGENTS_CAPABILITY,
   TEAM_BROWSER_NAVIGATION_CAPABILITY,
   TEAM_BROWSER_VIEW_CAPABILITY,
   TEAM_BROWSER_VIEW_FRAME_POINT_CAPABILITY,
