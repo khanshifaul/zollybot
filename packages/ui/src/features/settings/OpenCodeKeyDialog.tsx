@@ -65,24 +65,6 @@ const KEY_TEXT = {
     description: "harness.codexKey.description",
     label: "harness.codexKey.label",
   },
-  inception: {
-    name: "Inception",
-    title: "harness.inceptionKey.title",
-    description: "harness.inceptionKey.description",
-    label: "harness.inceptionKey.label",
-  },
-  deepseek: {
-    name: "DeepSeek",
-    title: "harness.deepseekKey.title",
-    description: "harness.deepseekKey.description",
-    label: "harness.deepseekKey.label",
-  },
-  openrouter: {
-    name: "OpenRouter",
-    title: "harness.openrouterKey.title",
-    description: "harness.openrouterKey.description",
-    label: "harness.openrouterKey.label",
-  },
 } as const satisfies Record<string, { name: string; title: AppTextKey; description: AppTextKey; label: AppTextKey }>;
 
 /** A provider whose API key this dialog saves. */

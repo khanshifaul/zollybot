@@ -255,6 +255,13 @@ export function ProviderModelPicker(props: ProviderModelPickerProps) {
     return props.modelOptions.filter((option) => option.provider === rail && !isCustomModel(option, customIds()));
   }
 
+  const selectedPickerModel = createMemo(() => {
+    const p = activeProvider();
+    return pickerModels(railModelOptions(p)).find(
+      (model) => model.id === props.value || model.variants.some((variant) => variant.id === props.value),
+    );
+  });
+
   /**
    * The agents list is this computer's. A joined server's host sends no list, so the count comes from
    * the agents its `acp` models name. A host on a protocol before 5 reports no `acp` row, so its
@@ -536,6 +543,24 @@ export function ProviderModelPicker(props: ProviderModelPickerProps) {
     props.modelOptions.find((model) => model.provider === props.foreignProvider && model.id === props.value)?.name;
   const triggerModelName = () =>
     displayModelName(props.foreignProvider === undefined ? selectedModel()?.name : foreignModelName(), props.value);
+  const triggerProviderName = () =>
+    props.foreignProvider !== undefined ? (foreignProviderName() ?? "") : railName(activeProvider(), t);
+  const serviceLabel = (service: string): string => {
+    const separator = service.lastIndexOf("/");
+    const raw = separator < 0 ? service : service.slice(separator + 1);
+    return (
+      raw
+        .replace(/[-_\s]+(.)?/g, (_match, letter: string) => (letter ? ` ${letter.toUpperCase()}` : ""))
+        .replace(/^./, (letter) => letter.toUpperCase()) || service
+    );
+  };
+  const triggerLabel = () => {
+    const provider = triggerProviderName();
+    const name = triggerModelName();
+    const service = selectedPickerModel()?.service;
+    if (service) return `${serviceLabel(service)} · ${name}`;
+    return provider ? `${provider} · ${name}` : name;
+  };
   const field = () => props.variant === "field";
   const showsReasoningEffort = () => props.reasoningEffort !== undefined && props.onReasoningEffortChange !== undefined;
   /** An OpenCode model with variants: the chosen variant is its effort, and its name says so. */
@@ -623,7 +648,7 @@ export function ProviderModelPicker(props: ProviderModelPickerProps) {
                 );
               }}
             </For>
-            <SwapLabel class="provider-model-trigger-name" text={triggerModelName()} motion={TRIGGER_SWAP} />
+            <SwapLabel class="provider-model-trigger-name" text={triggerLabel()} motion={TRIGGER_SWAP} />
             <Show when={triggerEffort()}>
               {(effort) => (
                 <span class="provider-model-trigger-effort">

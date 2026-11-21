@@ -1293,7 +1293,7 @@ try {
           startKeyProviderCli: (provider) =>
             Effect.sync(() => {
               record("startKeyProviderCli", provider);
-              return provider === "inception";
+              return provider === "pi";
             }),
         },
         customProviders: {
@@ -4343,7 +4343,7 @@ try {
     );
     const hiddenSet = await call("POST", PROVIDER_DEFAULT_ROUTES.update, {
       token: adaToken,
-      json: { provider: "deepseek", model: null },
+      json: { provider: "pi", model: null },
       capabilities,
     });
     check(
@@ -4353,7 +4353,7 @@ try {
     );
     const adminSet = await call("POST", PROVIDER_DEFAULT_ROUTES.update, {
       token: adaToken,
-      json: { provider: "deepseek", model: null },
+      json: { provider: "pi", model: null },
       capabilities,
       protocol: 8,
     });
@@ -4367,12 +4367,10 @@ try {
     check(
       "a protocol 8 admin sets DeepSeek as the default and reads it back; protocol 7 reads no default",
       adminSet.status === 200 &&
-        isDeepStrictEqual(adminSet.body, { provider: "deepseek", model: null }) &&
-        isDeepStrictEqual(readBack.body, { provider: "deepseek", model: null }) &&
+        isDeepStrictEqual(adminSet.body, { provider: "pi", model: null }) &&
+        isDeepStrictEqual(readBack.body, { provider: "pi", model: null }) &&
         isDeepStrictEqual(oldRead.body, { provider: null, model: null }) &&
-        isDeepStrictEqual(callsOf("setDefaultProvider").at(-1), [
-          { preferredProvider: "deepseek", preferredModel: null },
-        ]),
+        isDeepStrictEqual(callsOf("setDefaultProvider").at(-1), [{ preferredProvider: "pi", preferredModel: null }]),
       [summary(adminSet), summary(readBack), summary(oldRead)],
     );
   }
@@ -4705,40 +4703,40 @@ try {
   // ---- Keys of the key-only providers (providers-v8) ----
   {
     const v8 = { token: adaToken, protocol: 8, capabilities: [PROVIDERS_V8_CAPABILITY] };
-    const key = ["sk", "e2e", "deepseek", "fake0000"].join("-");
-    const before = await call("POST", PROVIDERS_V8_ROUTES.apiKeyState, { ...v8, json: { provider: "deepseek" } });
-    const set = await call("POST", PROVIDERS_V8_ROUTES.apiKeySet, { ...v8, json: { provider: "deepseek", key } });
-    const after = await call("POST", PROVIDERS_V8_ROUTES.apiKeyState, { ...v8, json: { provider: "deepseek" } });
+    const key = ["sk", "e2e", "pi", "fake0000"].join("-");
+    const before = await call("POST", PROVIDERS_V8_ROUTES.apiKeyState, { ...v8, json: { provider: "pi" } });
+    const set = await call("POST", PROVIDERS_V8_ROUTES.apiKeySet, { ...v8, json: { provider: "pi", key } });
+    const after = await call("POST", PROVIDERS_V8_ROUTES.apiKeyState, { ...v8, json: { provider: "pi" } });
     check(
       "an admin on providers-v8 saves a DeepSeek key on the host, and the host starts the Pi CLI for it",
       before.status === 200 &&
         field(before.body, "status") === "missing" &&
         set.status === 200 &&
-        isDeepStrictEqual(callsOf("setProviderKey"), [["deepseek", key]]) &&
-        isDeepStrictEqual(callsOf("startKeyProviderCli"), [["deepseek"]]) &&
-        isDeepStrictEqual(callsOf("changeProviderCredential"), [["deepseek"]]) &&
+        isDeepStrictEqual(callsOf("setProviderKey"), [["pi", key]]) &&
+        isDeepStrictEqual(callsOf("startKeyProviderCli"), [["pi"]]) &&
+        isDeepStrictEqual(callsOf("changeProviderCredential"), [["pi"]]) &&
         after.status === 200 &&
         field(after.body, "status") === "saved",
       [summary(before), summary(set), summary(after)],
     );
-    const cleared = await call("POST", PROVIDERS_V8_ROUTES.apiKeyClear, { ...v8, json: { provider: "deepseek" } });
-    const afterClear = await call("POST", PROVIDERS_V8_ROUTES.apiKeyState, { ...v8, json: { provider: "deepseek" } });
+    const cleared = await call("POST", PROVIDERS_V8_ROUTES.apiKeyClear, { ...v8, json: { provider: "pi" } });
+    const afterClear = await call("POST", PROVIDERS_V8_ROUTES.apiKeyState, { ...v8, json: { provider: "pi" } });
     check(
       "an admin on providers-v8 clears the DeepSeek key",
       cleared.status === 200 &&
-        isDeepStrictEqual(callsOf("clearProviderKey"), [["deepseek"]]) &&
+        isDeepStrictEqual(callsOf("clearProviderKey"), [["pi"]]) &&
         field(afterClear.body, "status") === "missing",
       [summary(cleared), summary(afterClear)],
     );
     const v5 = await call("POST", PROVIDERS_V5_ROUTES.apiKeySet, {
       token: adaToken,
       capabilities: [PROVIDERS_V5_CAPABILITY],
-      json: { provider: "openrouter", key },
+      json: { provider: "pi", key },
     });
     const member = await call("POST", PROVIDERS_V8_ROUTES.apiKeySet, {
       ...v8,
       token: bobToken,
-      json: { provider: "openrouter", key },
+      json: { provider: "pi", key },
     });
     check(
       "providers-v5 refuses a key-only provider's key, a member gets 403, and neither saves a key",
@@ -4746,12 +4744,12 @@ try {
       [summary(v5), summary(member)],
     );
     // No Pi process runs while Pi downloads, so a restart of the provider would fail on the missing CLI.
-    const pending = await call("POST", PROVIDERS_V8_ROUTES.apiKeySet, { ...v8, json: { provider: "inception", key } });
+    const pending = await call("POST", PROVIDERS_V8_ROUTES.apiKeySet, { ...v8, json: { provider: "pi", key } });
     check(
       "while the host downloads Pi, a key-only provider's key is saved without a provider restart",
       pending.status === 200 &&
-        isDeepStrictEqual(callsOf("setProviderKey").at(-1), ["inception", key]) &&
-        isDeepStrictEqual(callsOf("changeProviderCredential"), [["deepseek"]]),
+        isDeepStrictEqual(callsOf("setProviderKey").at(-1), ["pi", key]) &&
+        isDeepStrictEqual(callsOf("changeProviderCredential"), [["pi"]]),
       summary(pending),
     );
   }

@@ -158,18 +158,6 @@ export const messages = {
   "harness.claudeKey.description":
     "호스트에 Anthropic API 키를 저장하세요. Anthropic이 각 요청을 키로 청구해요. 에이전트에서 사용하려면 에이전트의 모델 메뉴에서 'API 키' 계정을 선택하세요. Claude에 로그인하지 않은 경우 모든 에이전트가 키를 사용해요.",
   "harness.claudeKey.label": "Anthropic API 키",
-  "harness.inceptionKey.title": "Inception API 키",
-  "harness.inceptionKey.description":
-    "Mercury 모델을 사용하려면 이 컴퓨터에 Inception API 키를 저장하세요. ZollyBot은 다운로드한 Pi CLI에서 모델을 실행해요.",
-  "harness.inceptionKey.label": "Inception API 키",
-  "harness.deepseekKey.title": "DeepSeek API 키",
-  "harness.deepseekKey.description":
-    "DeepSeek 모델을 사용하려면 이 컴퓨터에 DeepSeek API 키를 저장하세요. ZollyBot은 다운로드한 Pi CLI에서 모델을 실행해요.",
-  "harness.deepseekKey.label": "DeepSeek API 키",
-  "harness.openrouterKey.title": "OpenRouter API 키",
-  "harness.openrouterKey.description":
-    "OpenRouter 모델을 사용하려면 이 컴퓨터에 OpenRouter API 키를 저장하세요. ZollyBot은 다운로드한 Pi CLI에서 모델을 실행해요.",
-  "harness.openrouterKey.label": "OpenRouter API 키",
   "harness.openCodeKey.title": "OpenCode Go에 로그인",
   "harness.openCodeKey.description": "무료 모델은 계정이 필요 없어요. 키가 있으면 유료 Go 모델을 사용할 수 있어요.",
   "harness.openCodeKey.unreadable": "저장된 키를 읽을 수 없어요. 다시 붙여넣거나 제거하세요.",

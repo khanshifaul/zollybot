@@ -18,7 +18,6 @@ export const STORY_DETECTED_PROVIDERS: readonly DetectedProvider[] = [
       { id: "qwen3-coder:30b", name: "Qwen3 Coder 30B" },
       { id: "gpt-oss:20b", name: "gpt-oss 20B" },
       { id: "llama3.2:3b", name: "Llama 3.2 3B" },
-      { id: "deepseek-r1:14b", name: "DeepSeek R1 14B" },
     ],
   },
   {

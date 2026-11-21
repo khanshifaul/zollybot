@@ -55,7 +55,6 @@ export interface PickerModelGroup {
  */
 const KNOWN_PROVIDER_LABELS: Record<string, string> = {
   chatgpt: "ChatGPT",
-  deepseek: "DeepSeek",
   devin: "Devin",
   gemini: "Gemini",
   github: "GitHub",
@@ -80,25 +79,6 @@ function groupLabel(service: string): string {
   return `${service.slice(0, separator)} · ${providerLabel(service.slice(separator + 1))}`;
 }
 
-/**
- * The lab of an OpenRouter model: its id starts `<lab>/`. Most names start `<Lab>: `, which gives the
- * heading for the lab's other models too.
- */
-function openRouterLab(id: string): string {
-  return id.split("/", 1)[0] ?? "";
-}
-
-function openRouterLabNames(options: readonly ClientAgentModelOption[]): Map<string, string> {
-  const names = new Map<string, string>();
-  for (const model of options) {
-    if (model.provider !== "openrouter") continue;
-    const separator = model.name.indexOf(": ");
-    const lab = openRouterLab(model.id);
-    if (separator > 0 && !names.has(lab)) names.set(lab, model.name.slice(0, separator));
-  }
-  return names;
-}
-
 /** Free tier first; id says nothing about locality. */
 function modelTier(model: PickerModel): 0 | 1 {
   return model.free ? 0 : 1;
@@ -121,7 +101,6 @@ export function pickerModels(options: ClientAgentModelOption[]): PickerModel[] {
     variants.set(base.id, [...(variants.get(base.id) ?? []), { id: model.id, name }]);
     variantIds.add(model.id);
   }
-  const labNames = openRouterLabNames(options);
   // A model of a provider that this build does not know has no tab here; the picker shows it alone.
   return options
     .filter((model) => !variantIds.has(model.id))
@@ -142,8 +121,13 @@ export function pickerModels(options: ClientAgentModelOption[]): PickerModel[] {
           variants: [],
         };
       }
-      // OpenCode and custom agent models are named `<service>/<model>`; the service is the group.
-      const separator = model.provider === "opencode" || model.provider === "acp" ? model.name.indexOf("/") : -1;
+      // OpenCode, custom agent, and multi-provider harnesses name models as `<service>/<model>`.
+      const slashProvider =
+        model.provider === "opencode" ||
+        model.provider === "acp" ||
+        model.provider === "pi" ||
+        model.provider === "omp";
+      const separator = slashProvider ? model.name.indexOf("/") : -1;
       let service = separator < 0 ? "" : model.name.slice(0, separator);
       let name = separator < 0 ? model.name : model.name.slice(separator + 1);
       // A custom agent can serve several providers. Its id holds them as `<agent>/<provider>/<model>`
@@ -157,18 +141,29 @@ export function pickerModels(options: ClientAgentModelOption[]): PickerModel[] {
         const inner = name.indexOf("/");
         if (inner >= 0 && (!provider || name.slice(0, inner) === provider)) name = name.slice(inner + 1);
       }
-      // OpenRouter serves hundreds of models, so its tab has one group per lab.
-      if (model.provider === "openrouter") {
-        const lab = openRouterLab(model.id);
-        service = labNames.get(lab) ?? providerLabel(lab);
-        if (name.startsWith(`${service}: `)) name = name.slice(service.length + 2);
-      }
-      // Hermes lists the models of each provider it is signed in to, as `<provider> · <model>`.
-      if (model.provider === "hermes") {
-        const provider = name.indexOf(" · ");
-        if (provider > 0) {
-          service = name.slice(0, provider);
-          name = name.slice(provider + 3);
+
+      // Hermes, Pi, and Oh My Pi can list models from multiple providers as `<provider> · <model>`.
+      if (model.provider === "hermes" || model.provider === "pi" || model.provider === "omp") {
+        const dot = name.indexOf(" · ");
+        if (dot > 0) {
+          service = name.slice(0, dot);
+          name = name.slice(dot + 3);
+        } else {
+          // OMP/Pi IDs often encode upstream provider as `provider/model[/...]`.
+          const idSep = model.id.indexOf("/");
+          if (idSep > 0) {
+            const idService = model.id.slice(0, idSep);
+            const idRest = model.id.slice(idSep + 1);
+            if (!service) {
+              service = idService;
+              if (name === model.id || name === idRest) name = idRest;
+              else if (name.startsWith(`${idService}/`)) name = name.slice(idService.length + 1);
+            } else if (service !== idService) {
+              // Wrong slash split (e.g. name "kilo-auto/free" from id "kilo/kilo-auto/free").
+              service = idService;
+              name = idRest;
+            }
+          }
         }
       }
       name = name.replace(/^[\s:–—-]+/, "") || model.id;
@@ -178,9 +173,7 @@ export function pickerModels(options: ClientAgentModelOption[]): PickerModel[] {
         name,
         service,
         // Free-tier label only; shared with catalog order so badge and default agree.
-        free:
-          (model.provider === "opencode" && isFreeOpencodeModel(model.id, name)) ||
-          (model.provider === "openrouter" && model.id.endsWith(":free")),
+        free: (model.provider === "opencode" && isFreeOpencodeModel(model.id, name)) || false,
         variants: variants.has(model.id)
           ? [{ id: model.id, name: t("app.modelVariant.default") }, ...(variants.get(model.id) ?? [])]
           : [],
@@ -196,7 +189,13 @@ export function groupPickerModels(models: PickerModel[], search: string): Picker
   const tiers = new Map<string, number>();
   for (const model of models) {
     if (!`${model.service} ${model.name}`.toLowerCase().includes(query)) continue;
-    const name = model.provider === "acp" ? groupLabel(model.service) : model.service;
+    const rawName = model.provider === "acp" ? groupLabel(model.service) : model.service;
+    const name =
+      rawName && !rawName.includes(" ") && !rawName.includes("·")
+        ? model.provider === "acp"
+          ? rawName
+          : providerLabel(model.service)
+        : rawName;
     const group = groups.get(model.service) ?? { name, models: [] };
     group.models.push(model);
     groups.set(model.service, group);

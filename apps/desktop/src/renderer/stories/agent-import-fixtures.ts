@@ -102,7 +102,7 @@ export const HERMES_IMPORT_PREVIEW: HermesImportPreview = {
       key: "default",
       name: "Hermes",
       path: "~/.hermes",
-      model: "openrouter · nousresearch/hermes-4-405b",
+      model: "hermes · nousresearch/hermes-4-405b",
       agent: null,
       items: [
         { id: "instructions", kind: "instructions", status: "ready", names: [], count: 1840, reason: null },

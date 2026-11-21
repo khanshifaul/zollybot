@@ -31,7 +31,7 @@ export const DEVELOPMENT_CLAUDE_DEFAULT: DevelopmentDefault = {
 };
 export const DEVELOPMENT_FREE_DEFAULT: DevelopmentDefault = {
   provider: "opencode",
-  model: "opencode/deepseek-v4.1-flash-free",
+  model: "opencode/gpt-5-nano",
   reasoningEffort: "medium",
 };
 export const DEVELOPMENT_DEFAULTS: readonly DevelopmentDefault[] = [

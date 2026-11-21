@@ -157,18 +157,6 @@ export const messages = {
   "harness.claudeKey.description":
     'Ana bilgisayara bir Anthropic API anahtarı kaydedin. Anthropic her isteği anahtara faturalar. Bir ajan için kullanmak üzere ajanın model menüsünde "API anahtarı" hesabını seçin. Claude\'da oturum açık değilse tüm ajanlar anahtarı kullanır.',
   "harness.claudeKey.label": "Anthropic API anahtarı",
-  "harness.inceptionKey.title": "Inception API anahtarı",
-  "harness.inceptionKey.description":
-    "Mercury modellerini kullanmak için bu bilgisayara bir Inception API anahtarı kaydedin. ZollyBot bunları indirdiği Pi CLI'da çalıştırır.",
-  "harness.inceptionKey.label": "Inception API anahtarı",
-  "harness.deepseekKey.title": "DeepSeek API anahtarı",
-  "harness.deepseekKey.description":
-    "DeepSeek modellerini kullanmak için bu bilgisayara bir DeepSeek API anahtarı kaydedin. ZollyBot bunları indirdiği Pi CLI'da çalıştırır.",
-  "harness.deepseekKey.label": "DeepSeek API anahtarı",
-  "harness.openrouterKey.title": "OpenRouter API anahtarı",
-  "harness.openrouterKey.description":
-    "OpenRouter modellerini kullanmak için bu bilgisayara bir OpenRouter API anahtarı kaydedin. ZollyBot bunları indirdiği Pi CLI'da çalıştırır.",
-  "harness.openrouterKey.label": "OpenRouter API anahtarı",
   "harness.openCodeKey.title": "OpenCode Go'da oturum açın",
   "harness.openCodeKey.description":
     "Ücretsiz modeller hesap gerektirmez. Bir anahtar, ücretli Go modellerinin kilidini açar.",

@@ -1035,7 +1035,7 @@ try {
     const local = await hostWorkflow("Local model", {
       nodes: [
         promptNode,
-        { id: "llm", kind: "llm", at: at(300), fields: { provider: "inception", model: "mercury", text: "Sum up." } },
+        { id: "llm", kind: "llm", at: at(300), fields: { provider: "pi", model: "pi-default", text: "Sum up." } },
       ],
       edges: [{ id: "edge", from: "prompt", to: "llm", type: "text" }],
       strokes: [],
@@ -1054,7 +1054,7 @@ try {
       "error.workflow.missing",
     );
     const llm = (await runCauseEffect(current().workflows.get(local.id))).graph.nodes.find((node) => node.id === "llm");
-    assert.equal(llm?.fields.provider, "inception", "The host lost the model step settings.");
+    assert.equal(llm?.fields.provider, "pi", "The host lost the model step settings.");
     return { member: status, remoteOwner, host: "settings kept" };
   });
 

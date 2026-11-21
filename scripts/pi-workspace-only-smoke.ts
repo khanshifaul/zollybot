@@ -1,7 +1,7 @@
-// Runs the real `deepseek` provider driver over the real Pi CLI with Workspace only access on macOS,
+// Runs the real `pi` provider driver over the real Pi CLI with Workspace only access on macOS,
 // to check that Pi can read its credential store in the sandbox (#3336). Pi 1.4.0 makes a lock
 // folder beside `auth.json` for each read, and writes an empty `auth.json` when there is none. Before
-// the fix the sandbox denied both: each turn stopped with "Credential store read failed for deepseek:
+// the fix the sandbox denied both: each turn stopped with "Credential store read failed for pi:
 // EPERM ... auth.json.lock", and with no `auth.json` Pi exited at the start. The key is not valid, so
 // the turn must stop with DeepSeek's answer, not with the sandbox. The last part runs commands in the
 // same sandbox to check that only the lock folders became writable.
@@ -67,7 +67,7 @@ async function runPi(turn: TurnCase): Promise<void> {
   if (turn.authJson !== null) await writeFile(join(agentDirectory, "auth.json"), turn.authJson);
   const cli = await runCauseEffect(resolvePiCli({ bundledExecutable: process.env.PI_CLI }));
   report.piVersion = cli.version;
-  const client = requireProviderDriver("deepseek").createClient(
+  const client = requireProviderDriver("pi").createClient(
     cli,
     60_000,
     { apiKey: () => "sk-zollybot-smoke-not-valid", customProviders: () => [], mcpServers: () => [] },
@@ -82,7 +82,7 @@ async function runPi(turn: TurnCase): Promise<void> {
   const listed = await runCauseEffect(client.request("model/list", {}, (value) => value));
   turn.models = getArray(listed, "data").flatMap((model) => getString(model, "model") ?? []);
   const model = turn.models[0];
-  assert.ok(model, "The deepseek row lists no models.");
+  assert.ok(model, "The pi row lists no models.");
   const thread = await startThread(client, { cwd: workspace, model });
   const result = await runTurn(client, thread, { text: "Say OK.", timeoutMs: 120_000 });
   turn.status = result.status;

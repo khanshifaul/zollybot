@@ -192,8 +192,6 @@ export function providerRows(
   const runtimes = runtimeProviders(capabilities);
   const hiddenUiProviders: Partial<Record<AgentProviderId, true>> = {
     antigravity: true,
-    inception: true,
-    openrouter: true,
   };
   return AGENT_PROVIDERS.filter(
     (provider) =>

@@ -183,18 +183,6 @@ export const messages = {
   "harness.codexKey.description":
     "يحفظ Codex المفتاح على هذا الحاسوب. تحتسب OpenAI كل طلب على المفتاح، لا على خطة ChatGPT. لاستخدام الخطة مرة أخرى، افصل الحساب ووصّل ChatGPT.",
   "harness.codexKey.label": "مفتاح OpenAI API",
-  "harness.inceptionKey.title": "مفتاح Inception API",
-  "harness.inceptionKey.description":
-    "احفظ مفتاح Inception API على هذا الحاسوب لاستخدام نماذج Mercury. يشغّلها ZollyBot في Pi CLI الذي ينزّله.",
-  "harness.inceptionKey.label": "مفتاح Inception API",
-  "harness.deepseekKey.title": "مفتاح DeepSeek API",
-  "harness.deepseekKey.description":
-    "احفظ مفتاح DeepSeek API على هذا الحاسوب لاستخدام نماذج DeepSeek. يشغّلها ZollyBot في Pi CLI الذي ينزّله.",
-  "harness.deepseekKey.label": "مفتاح DeepSeek API",
-  "harness.openrouterKey.title": "مفتاح OpenRouter API",
-  "harness.openrouterKey.description":
-    "احفظ مفتاح OpenRouter API على هذا الحاسوب لاستخدام النماذج التي يقدمها OpenRouter. يشغّلها ZollyBot في Pi CLI الذي ينزّله.",
-  "harness.openrouterKey.label": "مفتاح OpenRouter API",
   "harness.openCodeKey.title": "تسجيل الدخول إلى OpenCode Go",
   "harness.openCodeKey.description": "لا تحتاج النماذج المجانية إلى حساب. يفتح المفتاح نماذج Go المدفوعة.",
   "harness.openCodeKey.unreadable": "المفتاح المحفوظ غير قابل للقراءة. الصقه مرة أخرى، أو أزله.",

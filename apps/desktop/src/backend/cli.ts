@@ -81,6 +81,22 @@ export interface OmpCliInfo extends ResolvedCli {
   source?: "system" | "managed";
 }
 
+export interface CommandCodeCliInfo extends ResolvedCli {
+  source?: "system" | "managed";
+}
+
+export interface KiloCliInfo extends ResolvedCli {
+  source?: "system" | "managed";
+}
+
+export interface AmpCliInfo extends ResolvedCli {
+  source?: "system" | "managed";
+}
+
+export interface QwenCliInfo extends ResolvedCli {
+  source?: "system" | "managed";
+}
+
 export type AgentCliInfo =
   | CodexCliInfo
   | ClaudeCliInfo
@@ -91,7 +107,11 @@ export type AgentCliInfo =
   | ClineCliInfo
   | KimiCliInfo
   | HermesCliInfo
-  | OmpCliInfo;
+  | OmpCliInfo
+  | CommandCodeCliInfo
+  | KiloCliInfo
+  | AmpCliInfo
+  | QwenCliInfo;
 
 export class CodexCliError extends Error {
   constructor(
@@ -523,6 +543,78 @@ export const resolveOmpCli: (input?: {
   Effect.catchDefect((cause) => Effect.fail(providerFailure(cause))),
 );
 
+function makeSimpleResolver<T extends ResolvedCli>(
+  label: string,
+  binary: AgentProviderId,
+  unreadableKey: Parameters<typeof sourceText>[0],
+  missingKey: Parameters<typeof sourceText>[0],
+  notStartedKey: Parameters<typeof sourceText>[0],
+) {
+  return Effect.fn(`Cli.resolve${label}`)(
+    function* (input: { systemCandidates?: string[] } = {}): Effect.fn.Return<T, ProviderClientOperationError> {
+      const candidates = yield* cliCandidates(binary, input.systemCandidates, null);
+      let found = false;
+      for (const candidate of candidates) {
+        if (!(yield* isExecutable(candidate.executable))) continue;
+        found = true;
+        const attempt = yield* Effect.result(
+          Effect.gen(function* () {
+            const { stdout, launch } = yield* readCliVersion(candidate, binary);
+            const result = {
+              executable: candidate.executable,
+              version: parseSimpleSemver(stdout, binary, unreadableKey),
+              source: "system" as const,
+              ...launch,
+            };
+            // biome-ignore lint/nursery/noUnsafeTypeAssertion: generic cli resolver returns the caller's resolved cli shape
+            return result as unknown as T;
+          }).pipe(Effect.catchDefect((cause) => Effect.fail(providerFailure(cause)))),
+        );
+        if (Result.isSuccess(attempt)) return attempt.success;
+        if (isCliTimeout(attempt.failure.cause)) throw attempt.failure;
+      }
+      throw new CodexCliError(
+        found
+          ? // biome-ignore lint/nursery/noUnsafeTypeAssertion: known no-param harness error key
+            sourceText(notStartedKey as "error.harness.codexNotStarted")
+          : // biome-ignore lint/nursery/noUnsafeTypeAssertion: known no-param harness error key
+            sourceText(missingKey as "error.harness.codexMissing"),
+        found ? "invalid" : "missing",
+      );
+    },
+    Effect.catchDefect((cause) => Effect.fail(providerFailure(cause))),
+  );
+}
+
+export const resolveCommandCodeCli = makeSimpleResolver<CommandCodeCliInfo>(
+  "CommandCode",
+  "commandcode",
+  "error.harness.commandcodeVersionUnreadable",
+  "error.harness.commandcodeMissing",
+  "error.harness.commandcodeNotStarted",
+);
+export const resolveKiloCli = makeSimpleResolver<KiloCliInfo>(
+  "Kilo",
+  "kilo",
+  "error.harness.kiloVersionUnreadable",
+  "error.harness.kiloMissing",
+  "error.harness.kiloNotStarted",
+);
+export const resolveAmpCli = makeSimpleResolver<AmpCliInfo>(
+  "Amp",
+  "amp",
+  "error.harness.ampVersionUnreadable",
+  "error.harness.ampMissing",
+  "error.harness.ampNotStarted",
+);
+export const resolveQwenCli = makeSimpleResolver<QwenCliInfo>(
+  "Qwen",
+  "qwen",
+  "error.harness.qwenVersionUnreadable",
+  "error.harness.qwenMissing",
+  "error.harness.qwenNotStarted",
+);
+
 /**
  * Hermes prints its release and its build on the first line, such as
  * `Hermes Agent v0.21.5+5805.g54bc5e5 (2026.9.24) · upstream 54bc5e50`. A line about an update can follow.
@@ -537,6 +629,13 @@ function parseHermesVersion(output: string): string {
 function parseOmpVersion(output: string): string {
   const version = output.match(/^omp\/(\d+\.\d+\.\d+)\b/mu)?.[1];
   if (!version) throw new CodexCliError(sourceText("error.harness.ompVersionUnreadable"), "invalid");
+  return version;
+}
+
+function parseSimpleSemver(output: string, _name: string, unreadableKey: Parameters<typeof sourceText>[0]): string {
+  const version = output.match(/(\d+\.\d+\.\d+)/u)?.[1];
+  // biome-ignore lint/nursery/noUnsafeTypeAssertion: known no-param harness error key
+  if (!version) throw new CodexCliError(sourceText(unreadableKey as "error.harness.codexVersionUnreadable"), "invalid");
   return version;
 }
 

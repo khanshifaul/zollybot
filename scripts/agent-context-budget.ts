@@ -60,7 +60,7 @@ function syntheticModels(): AgentModelOption[] {
     supportedReasoningEfforts: ["low", "medium", "high"],
   });
   return [
-    ...Array.from({ length: 180 }, (_, index) => model("openrouter", index)),
+    ...Array.from({ length: 180 }, (_, index) => model("opencode", index)),
     ...Array.from({ length: 20 }, (_, index) => model("opencode", index)),
   ];
 }

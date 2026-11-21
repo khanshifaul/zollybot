@@ -3171,15 +3171,9 @@ export class ProviderRuntime implements ProviderPort {
         ? sourceText("error.harness.piSignIn")
         : provider === "muse"
           ? sourceText("error.harness.museSignIn")
-          : provider === "inception"
-            ? sourceText("error.harness.inceptionSignIn")
-            : provider === "deepseek"
-              ? sourceText("error.harness.deepseekSignIn")
-              : provider === "openrouter"
-                ? sourceText("error.harness.openrouterSignIn")
-                : provider === "hermes"
-                  ? sourceText("error.harness.hermesSignIn")
-                  : agentProviderDescriptor(provider).signInMessage)
+          : provider === "hermes"
+            ? sourceText("error.harness.hermesSignIn")
+            : agentProviderDescriptor(provider).signInMessage)
     );
   }
 

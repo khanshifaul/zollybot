@@ -44,7 +44,7 @@ describe("Hermes import reader", () => {
       join(root, "config.yaml"),
       [
         "model:",
-        "  provider: openrouter",
+        "  provider: hermes",
         "  default: nousresearch/hermes-4-405b",
         "mcp_servers:",
         "  tracker:",

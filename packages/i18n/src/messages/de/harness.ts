@@ -156,18 +156,6 @@ export const messages = {
   "harness.claudeKey.description":
     "Speichere einen Anthropic-API-Schlüssel auf dem Host. Anthropic berechnet jede Anfrage über den Schlüssel. Um ihn für einen Agenten zu verwenden, wähle das Konto „API-Schlüssel“ im Modellmenü des Agenten. Wenn Claude nicht angemeldet ist, verwenden alle Agenten den Schlüssel.",
   "harness.claudeKey.label": "Anthropic-API-Schlüssel",
-  "harness.inceptionKey.title": "Inception-API-Schlüssel",
-  "harness.inceptionKey.description":
-    "Speichere einen Inception-API-Schlüssel auf diesem Computer, um die Mercury-Modelle zu verwenden. ZollyBot führt sie in der Pi-CLI aus, die es herunterlädt.",
-  "harness.inceptionKey.label": "Inception-API-Schlüssel",
-  "harness.deepseekKey.title": "DeepSeek-API-Schlüssel",
-  "harness.deepseekKey.description":
-    "Speichere einen DeepSeek-API-Schlüssel auf diesem Computer, um die DeepSeek-Modelle zu verwenden. ZollyBot führt sie in der Pi-CLI aus, die es herunterlädt.",
-  "harness.deepseekKey.label": "DeepSeek-API-Schlüssel",
-  "harness.openrouterKey.title": "OpenRouter-API-Schlüssel",
-  "harness.openrouterKey.description":
-    "Speichere einen OpenRouter-API-Schlüssel auf diesem Computer, um die Modelle von OpenRouter zu verwenden. ZollyBot führt sie in der Pi-CLI aus, die es herunterlädt.",
-  "harness.openrouterKey.label": "OpenRouter-API-Schlüssel",
   "harness.openCodeKey.title": "Bei OpenCode Go anmelden",
   "harness.openCodeKey.description":
     "Kostenlose Modelle benötigen kein Konto. Ein Schlüssel schaltet die kostenpflichtigen Go-Modelle frei.",

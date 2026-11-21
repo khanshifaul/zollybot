@@ -279,6 +279,23 @@ export const messages = {
   "error.harness.ompNotStarted": "Oh My Pi를 시작하지 못했습니다. 터미널에서 `omp --version`을 실행하세요.",
   "error.harness.ompVersionUnreadable": "Oh My Pi 버전을 읽을 수 없습니다.",
   "error.harness.ompSignIn": "호스트 컴퓨터에서 `omp`로 로그인한 후 다시 시도하세요.",
+
+  "error.harness.commandcodeMissing": "Command Code is not installed. Install it, then try again.",
+  "error.harness.commandcodeNotStarted": "Command Code could not start. Run `commandcode --version` in a terminal.",
+  "error.harness.commandcodeVersionUnreadable": "Unable to read the Command Code version.",
+  "error.harness.commandcodeSignIn": "Sign in with Command Code on the host computer, then try again.",
+  "error.harness.kiloMissing": "Kilo is not installed. Install it, then try again.",
+  "error.harness.kiloNotStarted": "Kilo could not start. Run `kilo --version` in a terminal.",
+  "error.harness.kiloVersionUnreadable": "Unable to read the Kilo version.",
+  "error.harness.kiloSignIn": "Sign in with Kilo on the host computer, then try again.",
+  "error.harness.ampMissing": "Amp is not installed. Install it, then try again.",
+  "error.harness.ampNotStarted": "Amp could not start. Run `amp --version` in a terminal.",
+  "error.harness.ampVersionUnreadable": "Unable to read the Amp version.",
+  "error.harness.ampSignIn": "Sign in with Amp on the host computer, then try again.",
+  "error.harness.qwenMissing": "Qwen Code is not installed. Install it, then try again.",
+  "error.harness.qwenNotStarted": "Qwen Code could not start. Run `qwen --version` in a terminal.",
+  "error.harness.qwenVersionUnreadable": "Unable to read the Qwen Code version.",
+  "error.harness.qwenSignIn": "Sign in with Qwen Code on the host computer, then try again.",
   "error.harness.usageLimitReached": "계정이 사용 한도에 도달했어요.",
   "error.harness.foreignReasoning":
     "다른 계정이나 API 키가 받은 추론이라서 {harness}이(가) 이 채팅의 이전 추론을 수락하지 않았어요. ZollyBot이 채팅 기록으로 새 {harness} 세션을 시작했어요. 다시 시도해 주세요.",
@@ -408,9 +425,6 @@ export const messages = {
   "error.harness.museAuthUnverified":
     "Muse 인증이 확인되지 않았어요. 호스트 컴퓨터에서 연결하거나 Meta API 키를 설정하세요.",
   "error.harness.museSignIn": "계속하려면 호스트 컴퓨터에서 Muse에 로그인하세요.",
-  "error.harness.inceptionSignIn": "계속하려면 Inception API 키를 추가하세요.",
-  "error.harness.deepseekSignIn": "계속하려면 DeepSeek API 키를 추가하세요.",
-  "error.harness.openrouterSignIn": "계속하려면 OpenRouter API 키를 추가하세요.",
   "error.harness.terminalLoginFailed":
     "로그인 터미널을 열 수 없었어요. 이 호스트에서 제공자 CLI를 열어 로그인한 후 제공자를 새로 고치세요.",
   "error.harness.nativeArchiveInvalid": "제공자 다운로드에 올바른 설치 파일이 없어요.",

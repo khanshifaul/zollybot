@@ -288,6 +288,23 @@ export const messages = {
   "error.harness.ompNotStarted": "Oh My Pi başlatılamadı. Bir terminalde `omp --version` çalıştırın.",
   "error.harness.ompVersionUnreadable": "Oh My Pi sürümü okunamadı.",
   "error.harness.ompSignIn": "Ana bilgisayarda `omp` ile oturum açın ve tekrar deneyin.",
+
+  "error.harness.commandcodeMissing": "Command Code is not installed. Install it, then try again.",
+  "error.harness.commandcodeNotStarted": "Command Code could not start. Run `commandcode --version` in a terminal.",
+  "error.harness.commandcodeVersionUnreadable": "Unable to read the Command Code version.",
+  "error.harness.commandcodeSignIn": "Sign in with Command Code on the host computer, then try again.",
+  "error.harness.kiloMissing": "Kilo is not installed. Install it, then try again.",
+  "error.harness.kiloNotStarted": "Kilo could not start. Run `kilo --version` in a terminal.",
+  "error.harness.kiloVersionUnreadable": "Unable to read the Kilo version.",
+  "error.harness.kiloSignIn": "Sign in with Kilo on the host computer, then try again.",
+  "error.harness.ampMissing": "Amp is not installed. Install it, then try again.",
+  "error.harness.ampNotStarted": "Amp could not start. Run `amp --version` in a terminal.",
+  "error.harness.ampVersionUnreadable": "Unable to read the Amp version.",
+  "error.harness.ampSignIn": "Sign in with Amp on the host computer, then try again.",
+  "error.harness.qwenMissing": "Qwen Code is not installed. Install it, then try again.",
+  "error.harness.qwenNotStarted": "Qwen Code could not start. Run `qwen --version` in a terminal.",
+  "error.harness.qwenVersionUnreadable": "Unable to read the Qwen Code version.",
+  "error.harness.qwenSignIn": "Sign in with Qwen Code on the host computer, then try again.",
   "error.harness.usageLimitReached": "Hesap kullanım sınırına ulaştı.",
   "error.harness.foreignReasoning":
     "Farklı bir hesap veya API anahtarı aldığı için {harness} bu sohbetteki önceki akıl yürütmeyi kabul etmedi. ZollyBot sohbet geçmişiyle yeni bir {harness} oturumu başlattı. Tekrar deneyin.",
@@ -419,9 +436,6 @@ export const messages = {
   "error.harness.museAuthUnverified":
     "Muse kimlik doğrulaması doğrulanmadı. Ana makinede bağlanın veya bir Meta API anahtarı ayarlayın.",
   "error.harness.museSignIn": "Devam etmek için ana makinede Muse'da oturum açın.",
-  "error.harness.inceptionSignIn": "Devam etmek için bir Inception API anahtarı ekleyin.",
-  "error.harness.deepseekSignIn": "Devam etmek için bir DeepSeek API anahtarı ekleyin.",
-  "error.harness.openrouterSignIn": "Devam etmek için bir OpenRouter API anahtarı ekleyin.",
   "error.harness.terminalLoginFailed":
     "Oturum açma terminali açılamadı. Bu ana makinede sağlayıcı CLI'sini açıp orada oturum açın, ardından sağlayıcıları yenileyin.",
   "error.harness.nativeArchiveInvalid": "Sağlayıcı indirmesi geçerli bir kurulum içermiyor.",

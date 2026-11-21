@@ -1,4 +1,4 @@
-// Runs the real `openrouter` provider driver over the real Pi CLI, in a new Pi folder, to check that
+// Runs the real `pi` provider driver over the real Pi CLI, in a new Pi folder, to check that
 // the model list shows OpenRouter's current catalog and not the one that Pi bundled at its release
 // (#4926). Pi refreshes the catalog in the background of an RPC process, which ZollyBot stopped before
 // the refresh ended, so models that OpenRouter added after the Pi release, such as the stealth model
@@ -55,7 +55,7 @@ async function listModels(access: ListCase["access"]): Promise<void> {
   report.piVersion = cli.version;
   const confinement: ProcessConfinement | undefined =
     access === "workspace" ? { writableRoots: [workspace] } : undefined;
-  const client = requireProviderDriver("openrouter").createClient(
+  const client = requireProviderDriver("pi").createClient(
     cli,
     60_000,
     { apiKey: () => "sk-or-v1-zollybot-smoke-not-valid", customProviders: () => [], mcpServers: () => [] },
@@ -76,11 +76,9 @@ async function listModels(access: ListCase["access"]): Promise<void> {
 
   const storePath = join(agentDirectory, "models-store.json");
   assert.ok(existsSync(storePath), "Pi must save the refreshed catalog.");
-  const store: { openrouter?: { models?: { id: string; type?: string }[] } } = JSON.parse(
-    await readFile(storePath, "utf8"),
-  );
+  const store: { pi?: { models?: { id: string; type?: string }[] } } = JSON.parse(await readFile(storePath, "utf8"));
   // Pi lists only chat models. The catalog also has image and classifier models.
-  const saved = (store.openrouter?.models ?? []).filter((model) => model.type === "chat").map((model) => model.id);
+  const saved = (store.pi?.models ?? []).filter((model) => model.type === "chat").map((model) => model.id);
   const result: ListCase = {
     access,
     listed: ids.size,

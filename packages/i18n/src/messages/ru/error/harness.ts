@@ -280,6 +280,23 @@ export const messages = {
   "error.harness.ompNotStarted": "Не удалось запустить Oh My Pi. Выполните `omp --version` в терминале.",
   "error.harness.ompVersionUnreadable": "Не удалось прочитать версию Oh My Pi.",
   "error.harness.ompSignIn": "Войдите с помощью `omp` на хост-компьютере и повторите попытку.",
+
+  "error.harness.commandcodeMissing": "Command Code is not installed. Install it, then try again.",
+  "error.harness.commandcodeNotStarted": "Command Code could not start. Run `commandcode --version` in a terminal.",
+  "error.harness.commandcodeVersionUnreadable": "Unable to read the Command Code version.",
+  "error.harness.commandcodeSignIn": "Sign in with Command Code on the host computer, then try again.",
+  "error.harness.kiloMissing": "Kilo is not installed. Install it, then try again.",
+  "error.harness.kiloNotStarted": "Kilo could not start. Run `kilo --version` in a terminal.",
+  "error.harness.kiloVersionUnreadable": "Unable to read the Kilo version.",
+  "error.harness.kiloSignIn": "Sign in with Kilo on the host computer, then try again.",
+  "error.harness.ampMissing": "Amp is not installed. Install it, then try again.",
+  "error.harness.ampNotStarted": "Amp could not start. Run `amp --version` in a terminal.",
+  "error.harness.ampVersionUnreadable": "Unable to read the Amp version.",
+  "error.harness.ampSignIn": "Sign in with Amp on the host computer, then try again.",
+  "error.harness.qwenMissing": "Qwen Code is not installed. Install it, then try again.",
+  "error.harness.qwenNotStarted": "Qwen Code could not start. Run `qwen --version` in a terminal.",
+  "error.harness.qwenVersionUnreadable": "Unable to read the Qwen Code version.",
+  "error.harness.qwenSignIn": "Sign in with Qwen Code on the host computer, then try again.",
   "error.harness.usageLimitReached": "Аккаунт достиг лимита использования.",
   "error.harness.foreignReasoning":
     "{harness} не принял предыдущие рассуждения в этом чате, потому что их получил другой аккаунт или API-ключ. ZollyBot начал новую сессию {harness} с историей чата. Повторите попытку.",
@@ -414,9 +431,6 @@ export const messages = {
   "error.harness.museAuthUnverified":
     "Аутентификация Muse не подтверждена. Подключитесь на компьютере-хосте или задайте ключ API Meta.",
   "error.harness.museSignIn": "Чтобы продолжить, войдите в Muse на компьютере-хосте.",
-  "error.harness.inceptionSignIn": "Чтобы продолжить, добавьте ключ API Inception.",
-  "error.harness.deepseekSignIn": "Добавьте ключ API DeepSeek, чтобы продолжить.",
-  "error.harness.openrouterSignIn": "Добавьте ключ API OpenRouter, чтобы продолжить.",
   "error.harness.terminalLoginFailed":
     "Не удалось открыть терминал для входа. Откройте CLI провайдера на этом хосте, войдите там, затем обновите список провайдеров.",
   "error.harness.nativeArchiveInvalid": "Загруженный файл провайдера не содержит корректной установки.",

@@ -155,18 +155,6 @@ export const messages = {
   "harness.claudeKey.description":
     "Sla een Anthropic-API-sleutel op de host op. Anthropic brengt elk verzoek in rekening op de sleutel. Om hem voor een agent te gebruiken, kies je het API-sleutelaccount in het modelmenu van de agent. Als Claude niet is ingelogd, gebruiken alle agents de sleutel.",
   "harness.claudeKey.label": "Anthropic-API-sleutel",
-  "harness.inceptionKey.title": "Inception-API-sleutel",
-  "harness.inceptionKey.description":
-    "Sla een Inception-API-sleutel op deze computer op om de Mercury-modellen te gebruiken. ZollyBot draait ze in de Pi CLI die het downloadt.",
-  "harness.inceptionKey.label": "Inception-API-sleutel",
-  "harness.deepseekKey.title": "DeepSeek-API-sleutel",
-  "harness.deepseekKey.description":
-    "Sla een DeepSeek-API-sleutel op deze computer op om de DeepSeek-modellen te gebruiken. ZollyBot draait ze in de Pi CLI die het downloadt.",
-  "harness.deepseekKey.label": "DeepSeek-API-sleutel",
-  "harness.openrouterKey.title": "OpenRouter-API-sleutel",
-  "harness.openrouterKey.description":
-    "Sla een OpenRouter-API-sleutel op deze computer op om de modellen van OpenRouter te gebruiken. ZollyBot draait ze in de Pi CLI die het downloadt.",
-  "harness.openrouterKey.label": "OpenRouter-API-sleutel",
   "harness.openCodeKey.title": "Inloggen bij OpenCode Go",
   "harness.openCodeKey.description":
     "Gratis modellen hebben geen account nodig. Een sleutel ontgrendelt de betaalde Go-modellen.",

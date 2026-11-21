@@ -8,7 +8,7 @@ const ENCODED_MODEL = "b64:";
  *
  * The contract charset is released: the model list decoders of older clients and the Team API fail
  * closed on the whole array. A value that the charset refuses, such as DeepSeek Harness's
- * `["deepseek-official","deepseek-v4-flash"]` or Pi's `@cf/moonshotai/kimi-k2.6`, goes in base64url
+ * `["vendor-official","model-id"]` or Pi's `@cf/moonshotai/kimi-k2.6`, goes in base64url
  * after `ENCODED_MODEL`, and `providerModelValue` gives the provider its own value back. A value that
  * starts with the marker is encoded too, so no value is read as another. The result can still be
  * refused, as one too long; that id is then dropped alone, by the caller or by the model catalog.

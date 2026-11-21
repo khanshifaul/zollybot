@@ -4,8 +4,6 @@ import type { ProviderPickerOption } from "@zollybot/ui/components/ProviderPicke
 /** Providers hidden from onboarding surfaces by request; runtime/contracts remain for compatibility. */
 const HIDDEN_PROVIDERS: Partial<Record<AgentProviderId, true>> = {
   antigravity: true,
-  inception: true,
-  openrouter: true,
 };
 /**
  * The plan providers that most users have. They come first among the providers that the user has,

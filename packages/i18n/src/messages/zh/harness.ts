@@ -162,18 +162,6 @@ export const messages = {
   "harness.geminiKey.description":
     "在这台电脑上保存 Gemini API 密钥。保存后会替代 Google 账号登录。若要用 Google 登录，请先移除密钥，再在 Gemini 行上选择“连接”。",
   "harness.geminiKey.label": "Gemini API 密钥",
-  "harness.inceptionKey.title": "Inception API 密钥",
-  "harness.inceptionKey.description":
-    "在这台电脑上保存 Inception API 密钥，即可使用 Mercury 模型。ZollyBot 会在它下载的 Pi CLI 中运行这些模型。",
-  "harness.inceptionKey.label": "Inception API 密钥",
-  "harness.deepseekKey.title": "DeepSeek API 密钥",
-  "harness.deepseekKey.description":
-    "在这台电脑上保存 DeepSeek API 密钥，即可使用 DeepSeek 模型。ZollyBot 会在它下载的 Pi CLI 中运行这些模型。",
-  "harness.deepseekKey.label": "DeepSeek API 密钥",
-  "harness.openrouterKey.title": "OpenRouter API 密钥",
-  "harness.openrouterKey.description":
-    "在这台电脑上保存 OpenRouter API 密钥，即可使用 OpenRouter 提供的模型。ZollyBot 会在它下载的 Pi CLI 中运行这些模型。",
-  "harness.openrouterKey.label": "OpenRouter API 密钥",
   // The optional OpenCode Go key dialog.
   "harness.openCodeKey.title": "登录 OpenCode Go",
   "harness.openCodeKey.description": "免费模型无需账号，填写密钥可解锁付费的 Go 模型。",

@@ -59,22 +59,7 @@ const geminiSignedInAgentStatus: AgentStatus = {
 const everyProviderSignedInAgentStatus: AgentStatus = {
   ...noProvidersConnectedAgentStatus,
   providers: (
-    [
-      "codex",
-      "claude",
-      "grok",
-      "antigravity",
-      "cursor",
-      "cline",
-      "kimi",
-      "pi",
-      "muse",
-      "inception",
-      "deepseek",
-      "openrouter",
-      "hermes",
-      "opencode",
-    ] as const
+    ["codex", "claude", "grok", "antigravity", "cursor", "cline", "kimi", "pi", "muse", "hermes", "opencode"] as const
   ).map((id) => ({ id, state: "available" as const, version: "1.0.0", email: "ada@example.com", message: null })),
 };
 

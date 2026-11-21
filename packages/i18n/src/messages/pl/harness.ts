@@ -174,18 +174,6 @@ export const messages = {
   "harness.claudeKey.description":
     "Zapisz klucz API Anthropic na hoście. Anthropic nalicza każde zapytanie na klucz. Aby użyć go dla agenta, wybierz konto „Klucz API” w menu modeli agenta. Gdy Claude nie jest zalogowany, wszyscy agenci używają klucza.",
   "harness.claudeKey.label": "Klucz API Anthropic",
-  "harness.inceptionKey.title": "Klucz API Inception",
-  "harness.inceptionKey.description":
-    "Zapisz klucz API Inception na tym komputerze, aby używać modeli Mercury. ZollyBot uruchamia je w pobranym Pi CLI.",
-  "harness.inceptionKey.label": "Klucz API Inception",
-  "harness.deepseekKey.title": "Klucz API DeepSeek",
-  "harness.deepseekKey.description":
-    "Zapisz klucz API DeepSeek na tym komputerze, aby używać modeli DeepSeek. ZollyBot uruchamia je w pobranym Pi CLI.",
-  "harness.deepseekKey.label": "Klucz API DeepSeek",
-  "harness.openrouterKey.title": "Klucz API OpenRouter",
-  "harness.openrouterKey.description":
-    "Zapisz klucz API OpenRouter na tym komputerze, aby używać modeli z OpenRouter. ZollyBot uruchamia je w pobranym Pi CLI.",
-  "harness.openrouterKey.label": "Klucz API OpenRouter",
   "harness.openCodeKey.title": "Zaloguj się do OpenCode Go",
   "harness.openCodeKey.description": "Darmowe modele nie wymagają konta. Klucz odblokowuje płatne modele Go.",
   "harness.openCodeKey.unreadable": "Zapisanego klucza nie można odczytać. Wklej go ponownie lub usuń.",

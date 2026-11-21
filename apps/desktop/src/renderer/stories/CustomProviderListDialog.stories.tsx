@@ -26,9 +26,9 @@ const LM_STUDIO: CustomProviderSummary = {
 };
 
 const OPENROUTER: CustomProviderSummary = {
-  id: "openrouter",
-  name: "OpenRouter",
-  baseUrl: "https://openrouter.ai/api/v1",
+  id: "custom",
+  name: "Custom",
+  baseUrl: "https://example.com/v1",
   hasApiKey: true,
   models: [],
 };

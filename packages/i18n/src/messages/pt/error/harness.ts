@@ -287,6 +287,23 @@ export const messages = {
   "error.harness.ompNotStarted": "O Oh My Pi não conseguiu iniciar. Execute `omp --version` num terminal.",
   "error.harness.ompVersionUnreadable": "Não foi possível ler a versão do Oh My Pi.",
   "error.harness.ompSignIn": "Inicie sessão com `omp` no computador anfitrião e tente novamente.",
+
+  "error.harness.commandcodeMissing": "Command Code is not installed. Install it, then try again.",
+  "error.harness.commandcodeNotStarted": "Command Code could not start. Run `commandcode --version` in a terminal.",
+  "error.harness.commandcodeVersionUnreadable": "Unable to read the Command Code version.",
+  "error.harness.commandcodeSignIn": "Sign in with Command Code on the host computer, then try again.",
+  "error.harness.kiloMissing": "Kilo is not installed. Install it, then try again.",
+  "error.harness.kiloNotStarted": "Kilo could not start. Run `kilo --version` in a terminal.",
+  "error.harness.kiloVersionUnreadable": "Unable to read the Kilo version.",
+  "error.harness.kiloSignIn": "Sign in with Kilo on the host computer, then try again.",
+  "error.harness.ampMissing": "Amp is not installed. Install it, then try again.",
+  "error.harness.ampNotStarted": "Amp could not start. Run `amp --version` in a terminal.",
+  "error.harness.ampVersionUnreadable": "Unable to read the Amp version.",
+  "error.harness.ampSignIn": "Sign in with Amp on the host computer, then try again.",
+  "error.harness.qwenMissing": "Qwen Code is not installed. Install it, then try again.",
+  "error.harness.qwenNotStarted": "Qwen Code could not start. Run `qwen --version` in a terminal.",
+  "error.harness.qwenVersionUnreadable": "Unable to read the Qwen Code version.",
+  "error.harness.qwenSignIn": "Sign in with Qwen Code on the host computer, then try again.",
   "error.harness.usageLimitReached": "A conta atingiu seu limite de uso.",
   "error.harness.foreignReasoning":
     "{harness} não aceitou o raciocínio anterior neste chat porque ele foi recebido por outra conta ou chave de API. O ZollyBot iniciou uma nova sessão de {harness} com o histórico do chat. Tente novamente.",
@@ -419,9 +436,6 @@ export const messages = {
   "error.harness.museAuthUnverified":
     "A autenticação do Muse não está verificada. Conecte-se no computador anfitrião ou defina uma chave de API da Meta.",
   "error.harness.museSignIn": "Entre no Muse no computador anfitrião para continuar.",
-  "error.harness.inceptionSignIn": "Adicione uma chave de API da Inception para continuar.",
-  "error.harness.deepseekSignIn": "Adicione uma chave de API da DeepSeek para continuar.",
-  "error.harness.openrouterSignIn": "Adicione uma chave de API do OpenRouter para continuar.",
   "error.harness.terminalLoginFailed":
     "O terminal de login não pôde abrir. Abra a CLI do provedor neste computador anfitrião e entre por lá, depois atualize os provedores.",
   "error.harness.nativeArchiveInvalid": "O download do provedor não contém uma instalação válida.",

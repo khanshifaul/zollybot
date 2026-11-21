@@ -166,18 +166,6 @@ export const messages = {
   "harness.claudeKey.description":
     "Enregistrez une clé API Anthropic sur l'hôte. Anthropic facture chaque requête à la clé. Pour l'utiliser pour un agent, sélectionnez le compte « Clé API » dans le menu des modèles de l'agent. Si Claude n'est pas connecté, tous les agents utilisent la clé.",
   "harness.claudeKey.label": "Clé d’API Anthropic",
-  "harness.inceptionKey.title": "Clé d’API Inception",
-  "harness.inceptionKey.description":
-    "Enregistrez une clé d’API Inception sur cet ordinateur pour utiliser les modèles Mercury. ZollyBot les exécute dans la CLI Pi qu’il télécharge.",
-  "harness.inceptionKey.label": "Clé d’API Inception",
-  "harness.deepseekKey.title": "Clé d’API DeepSeek",
-  "harness.deepseekKey.description":
-    "Enregistrez une clé d’API DeepSeek sur cet ordinateur pour utiliser les modèles DeepSeek. ZollyBot les exécute dans la CLI Pi qu’il télécharge.",
-  "harness.deepseekKey.label": "Clé d’API DeepSeek",
-  "harness.openrouterKey.title": "Clé d’API OpenRouter",
-  "harness.openrouterKey.description":
-    "Enregistrez une clé d’API OpenRouter sur cet ordinateur pour utiliser les modèles d’OpenRouter. ZollyBot les exécute dans la CLI Pi qu’il télécharge.",
-  "harness.openrouterKey.label": "Clé d’API OpenRouter",
   "harness.openCodeKey.title": "Se connecter à OpenCode Go",
   "harness.openCodeKey.description":
     "Les modèles gratuits ne demandent pas de compte. Une clé donne accès aux modèles Go payants.",

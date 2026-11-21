@@ -14,8 +14,6 @@ import { useI18n } from "../../../i18n-context";
 
 const HIDDEN_UI_PROVIDERS: Partial<Record<AgentProviderId, true>> = {
   antigravity: true,
-  inception: true,
-  openrouter: true,
 };
 interface GeneralStoreProps {
   agentStatus?: AgentStatus;

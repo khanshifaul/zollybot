@@ -173,18 +173,6 @@ export const messages = defineMessages("harness", {
   "harness.codexKey.description":
     "Codex saves the key on this computer. OpenAI bills each request to the key, not to your ChatGPT plan. To use the plan again, disconnect the account and connect ChatGPT.",
   "harness.codexKey.label": "OpenAI API key",
-  "harness.inceptionKey.title": "Inception API key",
-  "harness.inceptionKey.description":
-    "Save an Inception API key on this computer to use the Mercury models. ZollyBot runs them in the Pi CLI that it downloads.",
-  "harness.inceptionKey.label": "Inception API key",
-  "harness.deepseekKey.title": "DeepSeek API key",
-  "harness.deepseekKey.description":
-    "Save a DeepSeek API key on this computer to use the DeepSeek models. ZollyBot runs them in the Pi CLI that it downloads.",
-  "harness.deepseekKey.label": "DeepSeek API key",
-  "harness.openrouterKey.title": "OpenRouter API key",
-  "harness.openrouterKey.description":
-    "Save an OpenRouter API key on this computer to use the models that OpenRouter serves. ZollyBot runs them in the Pi CLI that it downloads.",
-  "harness.openrouterKey.label": "OpenRouter API key",
   // The optional OpenCode Go key dialog.
   "harness.openCodeKey.title": "Sign in to OpenCode Go",
   "harness.openCodeKey.description": "Free models need no account. A key unlocks the paid Go models.",

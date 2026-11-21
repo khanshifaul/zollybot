@@ -21,6 +21,22 @@
  * order is load-bearing.
  */
 
+/* Root shell: top bar above the app window, filling the viewport. */
+.workspace-shell-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.app-window {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+}
+
 .app-frame {
   --left-header-height: 38px;
   --server-rail-width: 64px;
@@ -861,11 +877,6 @@ html.panel-resizing {
   height: auto;
 }
 
-.top-bar {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
 .app-frame > * {
   min-height: 0;
 }

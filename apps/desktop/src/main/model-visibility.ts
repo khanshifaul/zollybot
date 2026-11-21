@@ -20,7 +20,7 @@ import { type PreferenceFileFailure, readPreferenceFile, writePreferenceFile } f
 const SHORT_LIST = 12;
 /**
  * How many of the newest model families a long list shows until an admin changes the list. Each
- * service, such as `anthropic` or `openrouter`, gets an equal part and at least
+ * service, such as `anthropic`, gets an equal part and at least
  * `NEWEST_FAMILIES_PER_SERVICE`, so a service with hundreds of models does not push out the others.
  */
 const NEWEST_FAMILIES = 12;
@@ -138,6 +138,7 @@ function parseReleases(value: unknown): Releases {
         name,
         known
           ? {
+              // biome-ignore lint/complexity/useMathMinMax: dates are YYYY-MM-DD strings
               date: known.date < release.date ? known.date : release.date,
               family: known.family || release.family,
               agentReady: known.agentReady || release.agentReady,

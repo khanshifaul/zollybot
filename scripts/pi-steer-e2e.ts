@@ -1,4 +1,4 @@
-// Runs the real `deepseek` provider driver, which is the Pi client, over a fake Pi
+// Runs the real `pi` provider driver, over a fake Pi
 // (`provider-fakes/agents/pi-steer.ts`) to check that a steer goes into the running turn through
 // Pi's `steer` command (#3206). Cases: a steer, a steer that Pi refuses, a steer for a turn that is
 // not the running one, and a steer after the turn ended. A refused steer must fail alone: the running
@@ -45,7 +45,7 @@ async function open(): Promise<{ client: AgentClient; log: string }> {
   const executable = join(root, "bin", "pi");
   const log = join(root, "agent.jsonl");
   await installFakeAgent(executable, "pi-steer", { FAKE_LOG: log, FAKE_DIR: root });
-  const client = requireProviderDriver("deepseek").createClient(
+  const client = requireProviderDriver("pi").createClient(
     { executable, version: "1.4.0", source: "managed" },
     // Short, so that the steer that Pi does not answer times out soon. The fake answers the rest at once.
     2_000,

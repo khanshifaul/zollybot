@@ -299,104 +299,109 @@ export function WorkspaceShell(props: {
   return (
     // The overlays and the chat cards show the same connectors.
     <ConnectorsProvider>
-      {/* The page rail sits at the left of the frame. The frame is the card of the page that the rail selects. */}
-      {/* Top bar spans the full window width above the frame grid. */}
-      <TopBar
-        leading={
-          chatWindow ? undefined : (
-            <ServerMenu
-              servers={serverActions.orderedServers()}
-              serverName={activeServer()?.name ?? t("sidebar.topbar.localServer")}
-              view={layout.serverView()}
-              onViewChange={layout.setServerView}
-              onSelect={serverActions.select}
-              onAdd={serverActions.add}
-              addCreatesServer={serverActions.addCreatesServer()}
-              onCreateLocal={serverActions.addMenuCreateLocal()}
-              hiddenLocal={serverActions.hiddenLocal()}
-              {...serverActions.callbacks}
-            />
-          )
-        }
-      />
-      <div class="app-window">
-        <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
-        <WorkspaceFrame
-          class={chatWindow ? "app-frame-chat-window" : undefined}
-          compact={layout.leftPanelCompact()}
-          initialLoading={!serversLoaded() || !scope.connection.synced}
-          connection={
-            <>
-              <Show when={connectionShown() && !fullWindowLoading()}>{connectionNotice()}</Show>
-              <Show when={scope.loaded() && agentChatOpen() && !serverOnboardingOpen()}>
-                <ConversationLoadNotice
-                  name={activeAgent()?.name ?? ""}
-                  loading={!activeConversation()?.loaded && activeConversation()?.loading === true}
-                  error={activeConversation()?.loadError ?? null}
-                  onRetry={retryConversation}
-                />
-              </Show>
-              <Show when={scope.loaded() && scope.connection.panelsFailed}>
-                <ServerPanelLoadNotice busy={scope.connection.panelsLoading} onRetry={() => void scope.retryPanels()} />
-              </Show>
-            </>
-          }
-          hidden={remoteDesktopWorkspaceVisible()}
-          blockedServer={blockedRemoteServer()}
-          onRetryServer={retryServerConnection}
-          windowPage={windowPage.page()}
-          sidebarHidden={tasksAgentsHidden()}
-          left={
-            <Show when={!chatWindow}>
-              <WorkspaceServerRail />
-              <WorkspaceSidebar peopleEnabled={activePeopleEnabled()} />
-            </Show>
-          }
-          page={<WindowPageView />}
-          after={
-            <>
-              <WorkspaceOverlays account={props.account} />
-              <Show when={!chatWindow}>
-                <ServerUpdateDialogHost hosts={remoteHosts()} />
-              </Show>
-            </>
-          }
-        >
-          <Show when={middlePane() === "tasks" && tasksSupported() ? usage.state.serverId : null}>
-            {(serverId) => (
-              <TasksPanel
-                serverId={serverId()}
-                hostName={servers().find((server) => server.id === serverId())?.name ?? t("app.page.serverFallback")}
-                onBack={usage.closeUsage}
-                agentsOpen={!tasksAgentsHidden()}
-                onToggleAgents={() => windowPage.setTasksAgentsOpen(tasksAgentsHidden())}
+      <div class="workspace-shell-root">
+        {/* The page rail sits at the left of the frame. The frame is the card of the page that the rail selects. */}
+        {/* Top bar spans the full window width above the frame grid. */}
+        <TopBar
+          leading={
+            chatWindow ? undefined : (
+              <ServerMenu
+                servers={serverActions.orderedServers()}
+                serverName={activeServer()?.name ?? t("sidebar.topbar.localServer")}
+                view={layout.serverView()}
+                onViewChange={layout.setServerView}
+                onSelect={serverActions.select}
+                onAdd={serverActions.add}
+                addCreatesServer={serverActions.addCreatesServer()}
+                onCreateLocal={serverActions.addMenuCreateLocal()}
+                hiddenLocal={serverActions.hiddenLocal()}
+                {...serverActions.callbacks}
               />
-            )}
+            )
+          }
+        />
+        <div class="app-window">
+          <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
+          <WorkspaceFrame
+            class={chatWindow ? "app-frame-chat-window" : undefined}
+            compact={layout.leftPanelCompact()}
+            initialLoading={!serversLoaded() || !scope.connection.synced}
+            connection={
+              <>
+                <Show when={connectionShown() && !fullWindowLoading()}>{connectionNotice()}</Show>
+                <Show when={scope.loaded() && agentChatOpen() && !serverOnboardingOpen()}>
+                  <ConversationLoadNotice
+                    name={activeAgent()?.name ?? ""}
+                    loading={!activeConversation()?.loaded && activeConversation()?.loading === true}
+                    error={activeConversation()?.loadError ?? null}
+                    onRetry={retryConversation}
+                  />
+                </Show>
+                <Show when={scope.loaded() && scope.connection.panelsFailed}>
+                  <ServerPanelLoadNotice
+                    busy={scope.connection.panelsLoading}
+                    onRetry={() => void scope.retryPanels()}
+                  />
+                </Show>
+              </>
+            }
+            hidden={remoteDesktopWorkspaceVisible()}
+            blockedServer={blockedRemoteServer()}
+            onRetryServer={retryServerConnection}
+            windowPage={windowPage.page()}
+            sidebarHidden={tasksAgentsHidden()}
+            left={
+              <Show when={!chatWindow}>
+                <WorkspaceServerRail />
+                <WorkspaceSidebar peopleEnabled={activePeopleEnabled()} />
+              </Show>
+            }
+            page={<WindowPageView />}
+            after={
+              <>
+                <WorkspaceOverlays account={props.account} />
+                <Show when={!chatWindow}>
+                  <ServerUpdateDialogHost hosts={remoteHosts()} />
+                </Show>
+              </>
+            }
+          >
+            <Show when={middlePane() === "tasks" && tasksSupported() ? usage.state.serverId : null}>
+              {(serverId) => (
+                <TasksPanel
+                  serverId={serverId()}
+                  hostName={servers().find((server) => server.id === serverId())?.name ?? t("app.page.serverFallback")}
+                  onBack={usage.closeUsage}
+                  agentsOpen={!tasksAgentsHidden()}
+                  onToggleAgents={() => windowPage.setTasksAgentsOpen(tasksAgentsHidden())}
+                />
+              )}
+            </Show>
+            <Show when={serverOnboardingOpen() && middlePane() !== "tasks"}>
+              <WorkspaceServerOnboarding />
+            </Show>
+            <Show when={middlePane() === "agent-setup" && !serverOnboardingOpen()}>
+              <WorkspaceAgentSetup />
+            </Show>
+            {/* Keyed by id: each presence snapshot is a new member object, and remounting would clear the draft. */}
+            <Show when={activePeopleEnabled() && middlePane() === "direct" && activeDirectMember()?.id} keyed>
+              <Show when={activeDirectMember()}>{(member) => <WorkspaceDirectConversation member={member()} />}</Show>
+            </Show>
+            <Show when={agentChatOpen() && !chatHeld()}>
+              <WorkspaceConversation account={props.account} />
+            </Show>
+            <Show when={middlePane() === "routines"}>
+              <WorkspaceRoutineFlows />
+            </Show>
+            <Show when={middlePane() === "channel"}>
+              <WorkspaceChannelConversation account={props.account} />
+            </Show>
+          </WorkspaceFrame>
+          <Show when={loadingCover()}>{connectionNotice(true)}</Show>
+          <Show when={fullWindowLoading() && !loadingCover() && props.behindSplash?.()}>
+            {connectionNotice(true, false)}
           </Show>
-          <Show when={serverOnboardingOpen() && middlePane() !== "tasks"}>
-            <WorkspaceServerOnboarding />
-          </Show>
-          <Show when={middlePane() === "agent-setup" && !serverOnboardingOpen()}>
-            <WorkspaceAgentSetup />
-          </Show>
-          {/* Keyed by id: each presence snapshot is a new member object, and remounting would clear the draft. */}
-          <Show when={activePeopleEnabled() && middlePane() === "direct" && activeDirectMember()?.id} keyed>
-            <Show when={activeDirectMember()}>{(member) => <WorkspaceDirectConversation member={member()} />}</Show>
-          </Show>
-          <Show when={agentChatOpen() && !chatHeld()}>
-            <WorkspaceConversation account={props.account} />
-          </Show>
-          <Show when={middlePane() === "routines"}>
-            <WorkspaceRoutineFlows />
-          </Show>
-          <Show when={middlePane() === "channel"}>
-            <WorkspaceChannelConversation account={props.account} />
-          </Show>
-        </WorkspaceFrame>
-        <Show when={loadingCover()}>{connectionNotice(true)}</Show>
-        <Show when={fullWindowLoading() && !loadingCover() && props.behindSplash?.()}>
-          {connectionNotice(true, false)}
-        </Show>
+        </div>
       </div>
     </ConnectorsProvider>
   );
