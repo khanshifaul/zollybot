@@ -135,6 +135,8 @@ interface HostServiceOptions {
   serverAudit?: Pick<ServerAuditStore, "read" | "record">;
   /** Local-only private-network Mobile Connect service. */
   mobileConnect?: import("./mobile-connect/local-mobile-connect-service").LocalMobileConnectService;
+  /** The local Signal relay and directory sessions a paired phone uses (local-only mode). */
+  localSignal?: import("./mobile-connect/local-signal-service").LocalSignalService;
   /** Listen on all interfaces so phones on LAN/Tailscale can reach the host API. */
   mobileConnectPublic?: boolean;
   agentTasks?: ForwardedApiOptions["agentTasks"];
@@ -449,6 +451,7 @@ export class HostService extends EventEmitter<HostEvents> {
       store: options.store,
       agents: options.agents,
       ...(options.mobileConnect === undefined ? {} : { mobileConnect: options.mobileConnect }),
+      ...(options.localSignal === undefined ? {} : { localSignal: options.localSignal }),
       mobileConnectPublic: options.mobileConnectPublic ?? true,
       mobileConnectPreferredPort: 17420,
       agentsReady: options.agentsReady,
@@ -997,11 +1000,16 @@ export class HostService extends EventEmitter<HostEvents> {
 
     const attempt1 = yield* Effect.gen({ self: this }, function* () {
       const apiPort = yield* HostApiRuntime.use((api) => api.start());
+      this.#options.mobileConnect?.setPort(apiPort);
       if (yield* this.#cancelSupersededStartEffect(generation)) return this.getStatus();
       const identity = this.#options.store.getIdentity();
       if (!identity)
         return yield* new RemoteWorkflowError({ cause: new Error(sourceText("error.host.nameBeforePublish")) });
-      if (!gateway || !optionalRegisterRemoteHost || !optionalIssueRemoteHostTicket) {
+      const localSignal = this.#options.localSignal;
+      // The host peer is a local renderer window, so it reaches the relay on loopback. The phone's
+      // ticket names the private-network origin instead.
+      const localSignalUrl = localSignal ? `ws://127.0.0.1:${apiPort}/v1/signal` : null;
+      if (!gateway || (!localSignalUrl && (!optionalRegisterRemoteHost || !optionalIssueRemoteHostTicket))) {
         // Remote WebRTC/Signal publishing unavailable (e.g. local-only mode). Keep Team API running
         // for local/private-network Mobile Connect and loopback clients.
         this.#setStatus({
@@ -1014,26 +1022,38 @@ export class HostService extends EventEmitter<HostEvents> {
         yield* this.#options.store.setEnabledOnLaunch(identity.serverId, true);
         return this.getStatus();
       }
-      yield* this.#registerRemoteHost(
-        optionalRegisterRemoteHost,
-        yield* remoteDecode(() => this.#requiredOwnerMemberId()),
-      );
-      if (yield* this.#cancelSupersededStartEffect(generation)) return this.getStatus();
-      if (this.#usesAccountDirectory() && optionalListRemoteMembers) {
-        yield* this.#memberWrites.withPermit(
-          Effect.flatMap(optionalListRemoteMembers(identity.serverId), (members) =>
-            this.#syncRemoteDirectory(identity.serverId, members),
-          ),
+      // A local-only host publishes to its own LAN/Tailscale Signal relay, not the account service.
+      if (!localSignalUrl) {
+        if (!optionalRegisterRemoteHost)
+          return yield* new RemoteWorkflowError({ cause: new Error(sourceText("error.host.webRtcNotConfigured")) });
+        yield* this.#registerRemoteHost(
+          optionalRegisterRemoteHost,
+          yield* remoteDecode(() => this.#requiredOwnerMemberId()),
         );
         if (yield* this.#cancelSupersededStartEffect(generation)) return this.getStatus();
+        if (this.#usesAccountDirectory() && optionalListRemoteMembers) {
+          yield* this.#memberWrites.withPermit(
+            Effect.flatMap(optionalListRemoteMembers(identity.serverId), (members) =>
+              this.#syncRemoteDirectory(identity.serverId, members),
+            ),
+          );
+          if (yield* this.#cancelSupersededStartEffect(generation)) return this.getStatus();
+        }
       }
       // The host peer meets its devices on its home Signal machine. Chat apps and webhooks stay on
       // the entry Signal through their own tickets.
       const failedSignalUrl = this.#unreachedSignalUrl;
-      const bootstrap = yield* optionalIssueRemoteHostTicket(
-        identity.serverId,
-        failedSignalUrl === null ? {} : { failedSignalUrl },
-      );
+      const bootstrap = localSignalUrl
+        ? localSignal
+          ? {
+              ticket: localSignal.hostTicket(),
+              signalUrl: localSignalUrl,
+              expiresAt: Date.now() + 24 * 60 * 60 * 1_000,
+            }
+          : yield* new RemoteWorkflowError({ cause: new Error(sourceText("error.host.webRtcNotConfigured")) })
+        : optionalIssueRemoteHostTicket
+          ? yield* optionalIssueRemoteHostTicket(identity.serverId, failedSignalUrl === null ? {} : { failedSignalUrl })
+          : yield* new RemoteWorkflowError({ cause: new Error(sourceText("error.host.webRtcNotConfigured")) });
       if (yield* this.#cancelSupersededStartEffect(generation)) return this.getStatus();
       yield* gateway
         .start({

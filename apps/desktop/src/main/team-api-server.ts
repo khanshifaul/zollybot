@@ -225,6 +225,7 @@ import {
   JSON_LIMIT,
   pathIdentifier,
   readJson,
+  readLocalJson,
   requestCapabilities,
   requestProtocol,
   stringField,
@@ -464,6 +465,10 @@ export class TeamApiServer {
     this.#server = server;
     server.on("upgrade", (request, socket, head) => {
       const url = new URL(request.url ?? "/", "http://127.0.0.1");
+      if (this.#options.localSignal && url.pathname === "/v1/signal") {
+        this.#options.localSignal.handleUpgrade(request, socket, head);
+        return;
+      }
       if (this.#options.remoteScreen?.handlesUpgrade(url)) {
         this.#options.remoteScreen.handleUpgrade(request, socket, head, url);
         return;
@@ -885,7 +890,7 @@ export class TeamApiServer {
 
       // Local-only private-network Mobile Connect: unauthenticated redeem, session-authenticated device/session routes.
       // Exempt from Team API protocol negotiation: phone clients do not send protocol/version headers.
-      if (url.pathname.startsWith("/v1/mobile-auth/")) {
+      if (url.pathname.startsWith("/v1/mobile-auth/") || url.pathname.startsWith("/v2/remote/")) {
         const mobile = this.#options.mobileConnect;
         if (!mobile) return this.#json(response, 404, { error: "Mobile Connect is not available." });
         if (method === "GET" && url.pathname === "/v1/mobile-auth/discover") {
@@ -893,7 +898,7 @@ export class TeamApiServer {
           return this.#json(response, 200, { ok: Boolean(host), host });
         }
         if (method === "POST" && url.pathname === "/v1/mobile-auth/redeem") {
-          const body = await readJson(request);
+          const body = await readLocalJson(request);
           const ticket = stringField(body, "ticket", false, INPUT_LIMITS.identifier);
           this.#checkRate(request, ticket);
           try {
@@ -920,12 +925,21 @@ export class TeamApiServer {
           }
         }
         if (method === "POST" && url.pathname === "/v1/mobile-auth/request") {
-          const body = await readJson(request);
+          const body = await readLocalJson(request);
           const deviceName = typeof body.deviceName === "string" ? body.deviceName : "Phone";
           const platform = body.platform === "ios" ? "ios" : body.platform === "android" ? "android" : "unknown";
+          const text = (field: string, max: number) =>
+            typeof body[field] === "string" ? body[field].slice(0, max) : null;
           this.#checkRate(request, "mobile-connect-request");
           try {
-            const created = mobile.createApprovalRequest(deviceName, platform);
+            const created = mobile.createApprovalRequest({
+              deviceName,
+              platform,
+              requesterAddress: request.socket.remoteAddress ?? null,
+              deviceModel: text("deviceModel", 80),
+              osVersion: text("osVersion", 40),
+              appVersion: text("appVersion", 40),
+            });
             return this.#json(response, 201, created);
           } catch (error) {
             return this.#json(response, 400, {
@@ -975,6 +989,58 @@ export class TeamApiServer {
         if (method === "DELETE" && revoke) {
           mobile.revokeDevice(decodeURIComponent(revoke[1] ?? ""));
           return this.#json(response, 204, null);
+        }
+        if (url.pathname.startsWith("/v2/remote/")) {
+          const localSignal = this.#options.localSignal;
+          const identity = this.#options.store.getIdentity();
+          const membershipId = this.#options.store.getOwnerMemberId();
+          const origin = mobile.getOrigin();
+          if (!localSignal || !identity || !membershipId || !origin)
+            return this.#json(response, 404, { error: "Local remote sessions are not available." });
+          if (method === "GET" && url.pathname === "/v2/remote/hosts/") {
+            return this.#json(response, 200, {
+              hosts: [
+                {
+                  hostId: identity.serverId,
+                  name: identity.serverName,
+                  logoKey: null,
+                  devicePublicKey: identity.publicKey,
+                  membershipId,
+                  role: "owner",
+                },
+              ],
+            });
+          }
+          if (method === "POST" && url.pathname === "/v2/remote/sessions/") {
+            const body = await readLocalJson(request);
+            const hostId = stringField(body, "hostId", false, INPUT_LIMITS.identifier);
+            if (hostId !== identity.serverId) return this.#json(response, 404, { error: "Unknown server." });
+            const created = localSignal.createSession({
+              hostId: identity.serverId,
+              userId: identity.serverId,
+              membershipId,
+              role: "owner",
+            });
+            return this.#json(response, 200, created);
+          }
+          const ticket = url.pathname.match(/^\/v2\/remote\/sessions\/([^/]+)\/ticket$/u);
+          if (method === "POST" && ticket) {
+            const sessionId = decodeURIComponent(ticket[1] ?? "");
+            if (!localSignal.session(sessionId)) return this.#json(response, 404, { error: "Unknown session." });
+            const body = await readLocalJson(request);
+            const clientPublicKey = stringField(body, "clientPublicKey", false, INPUT_LIMITS.identifier);
+            const issued = localSignal.issueTicket(sessionId, clientPublicKey);
+            return this.#json(response, 200, {
+              ...issued,
+              signalUrl: `${origin.replace(/^http/u, "ws")}/v1/signal`,
+            });
+          }
+          const end = url.pathname.match(/^\/v2\/remote\/sessions\/([^/]+)\/end$/u);
+          if (method === "POST" && end) {
+            localSignal.endSession(decodeURIComponent(end[1] ?? ""));
+            return this.#json(response, 200, {});
+          }
+          return this.#json(response, 404, { error: "Not found." });
         }
         return this.#json(response, 404, { error: "Not found." });
       }
@@ -2180,7 +2246,7 @@ export class TeamApiServer {
     };
     // Local private-network Mobile Connect endpoints are exempt from Team API protocol negotiation
     // and have their own JSON shapes; protocol encoding/validation does not apply.
-    if (route.path.startsWith("/v1/mobile-auth/")) {
+    if (route.path.startsWith("/v1/mobile-auth/") || route.path.startsWith("/v2/remote/")) {
       const body = value === null ? "" : `${JSON.stringify(value)}\n`;
       response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
       response.end(body);

@@ -271,6 +271,22 @@ export async function readJson(request: IncomingMessage): Promise<DynamicRecord>
   }
 }
 
+/**
+ * A local-only route's body: plain JSON. Mobile Connect and other app-to-desktop routes are not
+ * Team API requests, so they carry no envelope and must not pass through the Team API codec.
+ */
+export async function readLocalJson(request: IncomingMessage): Promise<DynamicRecord> {
+  const body = await readBodyWithin(request, JSON_LIMIT);
+  if (body === null) throw new HttpError(413, sourceText("error.team.requestTooLarge"));
+  try {
+    const value = JSON.parse(body.toString("utf8"));
+    if (!isDynamicRecord(value)) throw new Error("not an object");
+    return value;
+  } catch {
+    throw new HttpError(400, "A valid JSON object is required.");
+  }
+}
+
 export function requestProtocol(request: IncomingMessage): number {
   const raw = firstHeaderValue(request.headers[TEAM_PROTOCOL_VERSION_HEADER.toLowerCase()]);
   const protocol = raw ? Number(raw) : TEAM_PROTOCOL_V1;

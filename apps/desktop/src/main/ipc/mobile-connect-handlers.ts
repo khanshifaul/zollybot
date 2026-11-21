@@ -49,8 +49,8 @@ async function ensureHostStarted(host: HostService): Promise<void> {
     }
     const status = host.getStatus();
     if (status.phase !== "online" || !status.apiOnline || !host.getLocalApiPort()) {
-      // Local private-network Mobile Connect needs API only; avoid full remote/WebRTC publish requirements.
-      await runCauseEffect(host.startLoopbackOnly());
+      // A local-only host meets phones on its own Signal relay, which a full start brings up.
+      await runCauseEffect(host.start());
     }
   } catch (error) {
     throw new Error(errorMessage(error));

@@ -3662,3 +3662,45 @@ textarea {
   font-size: var(--zollybot-text-sm);
   line-height: var(--zollybot-leading-sm);
 }
+
+/* The Mobile Connect approval dialog's request details. */
+.mobile-connect-approval-details {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface-raised);
+}
+
+.mobile-connect-approval-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+.mobile-connect-approval-row dt {
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-sm);
+}
+
+.mobile-connect-approval-row dd {
+  margin: 0;
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+  overflow-wrap: anywhere;
+}
+
+.mobile-connect-approval-access,
+.mobile-connect-approval-security {
+  margin: 0 0 8px;
+  color: var(--zollybot-text-secondary);
+  font-size: var(--zollybot-text-sm);
+  line-height: var(--zollybot-leading-sm);
+}
+
+.mobile-connect-approval-security {
+  color: var(--zollybot-text-muted);
+}

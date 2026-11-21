@@ -55,6 +55,7 @@ import { LocalSkillLibrary } from "./local-skill-library";
 import { localSkillTools } from "./local-skill-tools";
 import { MAC_PERMISSION_URLS } from "./mac-permission-urls";
 import { LocalMobileConnectService } from "./mobile-connect/local-mobile-connect-service";
+import { LocalSignalService } from "./mobile-connect/local-signal-service";
 import { PushNotificationStore } from "./push-notification-store";
 import { DESKTOP_USE_MS } from "./push-notifications";
 import { RemoteWorkflowError, toRemoteWorkflowError } from "./remote-service-effects";
@@ -2628,8 +2629,10 @@ export async function createApplicationServices({
   // A server on this computer has no account session: the desktop app reads its directory for it.
   const localServerMembers = new LocalServerMembers(() => process.stdout.write(formatLocalServerMembersRequest()));
   const mobileConnect = new LocalMobileConnectService(join(app.getPath("userData"), "mobile-connect.json"));
+  const localSignal = new LocalSignalService();
   const host = new HostService({
     mobileConnect,
+    localSignal,
     mobileConnectPublic: true,
     appVersion: app.getVersion(),
     store: teamStore,
@@ -2844,7 +2847,11 @@ export async function createApplicationServices({
         agentNotificationLevels.levels(OWNER_NOTIFICATION_KEY),
       );
     },
-    verifyRemoteSessionTicket: (ticket) => centralAuth.verifyRemoteSessionTicket(ticket).pipe(toRemoteWorkflowError),
+    verifyRemoteSessionTicket: (ticket) =>
+      Effect.try({
+        try: () => localSignal.verifyRemoteSessionTicket(ticket),
+        catch: (cause) => new RemoteWorkflowError({ cause }),
+      }),
     endRemoteSession: (sessionId) => centralAuth.endRemoteSession(sessionId).pipe(toRemoteWorkflowError),
     remoteControlPlaneUrl: centralAuth.resolveApiUrl("/"),
     createRemoteInvite: (hostId, input) => centralAuth.createRemoteInvite(hostId, input).pipe(toRemoteWorkflowError),

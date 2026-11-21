@@ -80,6 +80,8 @@ export interface MobileConnectPayload {
 export type MobileConnectApprovalStatus = "pending" | "approved" | "rejected" | "expired";
 
 /** A manual host-entry connect request that waits for host approval before pairing. */
+export type MobileConnectNetwork = "tailscale" | "private" | "loopback" | "public" | "unknown";
+
 export interface MobileConnectApprovalRequest {
   requestId: string;
   deviceName: string;
@@ -87,6 +89,13 @@ export interface MobileConnectApprovalRequest {
   requestedAt: number;
   expiresAt: number;
   status: MobileConnectApprovalStatus;
+  /** The address the request reached the desktop from, as the desktop saw it. */
+  requesterAddress?: string | null;
+  network?: MobileConnectNetwork;
+  /** Model, OS release and app version the phone reports; absent for older builds. */
+  deviceModel?: string | null;
+  osVersion?: string | null;
+  appVersion?: string | null;
 }
 
 export interface MobileConnectApprovalRequestStatus {

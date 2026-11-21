@@ -78,6 +78,7 @@ import type { McpToolRuntimePreparation } from "../ipc/mcp-server-handlers";
 import type { LiveActivityPushService } from "../live-activity-push";
 import type { McpHostSignIns } from "../mcp-host-sign-ins";
 import type { LocalMobileConnectService } from "../mobile-connect/local-mobile-connect-service";
+import type { LocalSignalService } from "../mobile-connect/local-signal-service";
 import type { OnePasswordConnectorService } from "../onepassword-connector-service";
 import type { PasswordManagersService } from "../password-managers/password-managers-service";
 import type { ProviderAccountsHost } from "../provider-accounts-host";
@@ -634,6 +635,8 @@ export interface TeamApiOptions {
   agentTasks?: TeamApiAgentTasks;
   /** Local-only private-network Mobile Connect (QR/link redeem and device sessions). */
   mobileConnect?: LocalMobileConnectService;
+  /** Serves the local account directory and Signal relay that a paired phone uses. */
+  localSignal?: LocalSignalService;
   /** Listens on 0.0.0.0 so phones on LAN/Tailscale can reach local Mobile Connect. */
   mobileConnectPublic?: boolean;
   mobileConnectPreferredPort?: number;

@@ -8,6 +8,7 @@ import type {
   MobileConnectedDevice,
   MobileConnectHostBinding,
   MobileConnectLink,
+  MobileConnectNetwork,
   MobileConnectTicket,
 } from "@zollybot/contracts/mobile-connect";
 
@@ -135,6 +136,20 @@ function isSessionRecord(value: unknown): value is MobileConnectSessionRecord {
   return true;
 }
 
+function approvalNetwork(address: string | null): MobileConnectNetwork {
+  if (!address) return "unknown";
+  if (address === "127.0.0.1" || address === "::1") return "loopback";
+  if (/^100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./u.test(address)) return "tailscale";
+  if (isPrivateIpv4(address)) return "private";
+  return "public";
+}
+
+function cleanLabel(value: string | null | undefined, max: number): string | null {
+  if (typeof value !== "string") return null;
+  const text = value.normalize("NFC").replace(/\p{C}/gu, "").replace(/\s+/gu, " ").trim();
+  return text ? text.slice(0, max) : null;
+}
+
 interface ApprovalRequestRecord {
   requestId: string;
   host: MobileConnectHostBinding;
@@ -144,6 +159,11 @@ interface ApprovalRequestRecord {
   expiresAt: number;
   status: "pending" | "approved" | "rejected" | "expired";
   ticket?: string;
+  requesterAddress: string | null;
+  network: MobileConnectNetwork;
+  deviceModel: string | null;
+  osVersion: string | null;
+  appVersion: string | null;
 }
 
 export class LocalMobileConnectService {
@@ -365,20 +385,30 @@ export class LocalMobileConnectService {
         requestedAt: req.requestedAt,
         expiresAt: req.expiresAt,
         status: req.status,
+        requesterAddress: req.requesterAddress,
+        network: req.network,
+        deviceModel: req.deviceModel,
+        osVersion: req.osVersion,
+        appVersion: req.appVersion,
       }));
   }
 
-  createApprovalRequest(
-    deviceName: string,
-    platform: MobileConnectedDevice["platform"],
-  ): MobileConnectApprovalRequestStatus {
+  createApprovalRequest(input: {
+    deviceName: string;
+    platform: MobileConnectedDevice["platform"];
+    requesterAddress?: string | null;
+    deviceModel?: string | null;
+    osVersion?: string | null;
+    appVersion?: string | null;
+  }): MobileConnectApprovalRequestStatus {
     const { host } = this.#requireReady();
     this.#pruneApprovalRequests();
     const now = Date.now();
-    const name =
-      (deviceName || "Phone").normalize("NFC").replace(/\p{C}/gu, "").replace(/\s+/gu, " ").slice(0, 80).trim() ||
-      "Phone";
-    const p: MobileConnectedDevice["platform"] = platform === "ios" || platform === "android" ? platform : "unknown";
+    const name = cleanLabel(input.deviceName, 80) ?? "Phone";
+    const p: MobileConnectedDevice["platform"] =
+      input.platform === "ios" || input.platform === "android" ? input.platform : "unknown";
+    const rawAddress = input.requesterAddress?.trim() || null;
+    const address = rawAddress?.startsWith("::ffff:") ? rawAddress.slice(7) : rawAddress;
     const req: ApprovalRequestRecord = {
       requestId: randomUUID(),
       host,
@@ -387,6 +417,11 @@ export class LocalMobileConnectService {
       requestedAt: now,
       expiresAt: now + APPROVAL_REQUEST_TTL_MS,
       status: "pending",
+      requesterAddress: address,
+      network: approvalNetwork(address),
+      deviceModel: cleanLabel(input.deviceModel, 80),
+      osVersion: cleanLabel(input.osVersion, 40),
+      appVersion: cleanLabel(input.appVersion, 40),
     };
     this.#approvalRequests.set(req.requestId, req);
     return { requestId: req.requestId, status: req.status, expiresAt: req.expiresAt };

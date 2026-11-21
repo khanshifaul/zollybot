@@ -331,9 +331,21 @@ export function decodeMobileConnectedDevices(value: unknown): MobileConnectedDev
 
 export function decodeMobileConnectApprovalRequests(value: unknown): MobileConnectApprovalRequest[] {
   return decodeList(value, "mobile connect approval requests", (req) => {
-    const { platform, status } = req;
+    const { platform, status, network } = req;
     if (!isOneOf(["ios", "android", "unknown"] as const, platform)) throw new Error("Invalid platform.");
     if (!isOneOf(["pending", "approved", "rejected", "expired"] as const, status)) throw new Error("Invalid status.");
+    if (
+      network !== undefined &&
+      !isOneOf(["tailscale", "private", "loopback", "public", "unknown"] as const, network)
+    ) {
+      throw new Error("Invalid network.");
+    }
+    const optionalText = (field: string): string | null => {
+      const item = req[field];
+      if (item === undefined || item === null) return null;
+      if (!isString(item)) throw new Error(`Invalid ${field}.`);
+      return item;
+    };
     return {
       requestId: requiredString(req, "requestId"),
       deviceName: requiredString(req, "deviceName"),
@@ -341,6 +353,11 @@ export function decodeMobileConnectApprovalRequests(value: unknown): MobileConne
       requestedAt: requiredNumber(req, "requestedAt"),
       expiresAt: requiredNumber(req, "expiresAt"),
       status,
+      requesterAddress: optionalText("requesterAddress"),
+      ...(network === undefined ? {} : { network }),
+      deviceModel: optionalText("deviceModel"),
+      osVersion: optionalText("osVersion"),
+      appVersion: optionalText("appVersion"),
     };
   });
 }

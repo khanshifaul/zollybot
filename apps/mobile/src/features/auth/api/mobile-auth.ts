@@ -11,6 +11,8 @@ import {
 } from "@zollybot/contracts/mobile-connect";
 import { type DynamicRecord, isBoolean, isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { validateProfileName } from "@zollybot/contracts/validation";
+import * as Application from "expo-application";
+import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import * as Device from "expo-device";
 import * as SecureStore from "expo-secure-store";
@@ -161,7 +163,14 @@ export async function requestManualMobileConnectApproval(apiUrl: string): Promis
       const request = await fetch(new URL("/v1/mobile-auth/request", apiUrl).toString(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deviceId: device.id, deviceName: device.name, platform: device.platform }),
+        body: JSON.stringify({
+          deviceId: device.id,
+          deviceName: device.name,
+          platform: device.platform,
+          deviceModel: Device.modelName ?? Device.brand ?? null,
+          osVersion: Device.osVersion ?? null,
+          appVersion: Application.nativeApplicationVersion ?? Constants.expoConfig?.version ?? null,
+        }),
         signal,
       });
       return { response: request, body: await readResponseBody(request, signal) };
