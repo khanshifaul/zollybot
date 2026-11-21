@@ -174,6 +174,7 @@ export const messages = defineMessages("error.harness", {
   "error.harness.cliActivateFailed": "ZollyBot could not activate the managed CLI.",
   "error.harness.noMainlandChinaSignIn": "{harness} has no sign-in for mainland China.",
   "error.harness.cliNewVersionNotStarted": "The new version did not start.",
+  "error.harness.transportUnsupported": "This harness does not support the {transport} transport.",
   "error.harness.cliBusyReconnect": "The {harness} CLI is working on a turn. Wait for it to finish, then reconnect.",
   "error.harness.cliBusySignOut": "The {harness} CLI is working on a turn. Wait for it to finish, then disconnect.",
   "error.harness.opencodeCredentialsRejected":

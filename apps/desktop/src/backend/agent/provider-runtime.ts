@@ -254,6 +254,7 @@ export type AgentClientFactory = (
   cli: AgentCliInfo,
   confinement?: ProcessConfinement,
   accountEnvironment?: Readonly<Record<string, string>>,
+  transport?: ProviderTransport,
 ) => AgentClient;
 
 /**
@@ -511,9 +512,20 @@ export class ProviderRuntime implements ProviderPort {
   readonly #modelCatalog: ModelCatalog;
   readonly #off: Set<AgentProvider>;
   readonly #saveProviderUse: (provider: AgentProvider, on: boolean) => Effect.Effect<void, ProviderOperationFailed>;
+  readonly #onTransportChanged:
+    | ((
+        provider: AgentProvider,
+        from: ProviderTransport,
+        to: ProviderTransport,
+      ) => Effect.Effect<void, ProviderOperationFailed>)
+    | undefined;
   /** Null without a store, as in tests: each provider then holds its own sign-in only. */
   readonly #providerAccounts: ProviderAccounts | null;
   readonly #transports = new Map<AgentProvider, ProviderTransport>();
+  /** The transport the running client was created with. Absent before the first start. */
+  readonly #appliedTransports = new Map<AgentProvider, ProviderTransport>();
+  /** Transports that wait for the provider's turns to end, with the transport they replace. */
+  readonly #pendingTransports = new Map<AgentProvider, { from: ProviderTransport; to: ProviderTransport }>();
 
   constructor(options: {
     offProviders?: readonly AgentProvider[];
@@ -533,9 +545,16 @@ export class ProviderRuntime implements ProviderPort {
     redactMcp: (text: string) => string;
     accounts?: ProviderAccountStore;
     providerTransports?: Partial<Record<AgentProvider, ProviderTransport>>;
+    /** Runs after a transport swap is chosen and the provider is idle, before the new client starts. */
+    onTransportChanged?: (
+      provider: AgentProvider,
+      from: ProviderTransport,
+      to: ProviderTransport,
+    ) => Effect.Effect<void, ProviderOperationFailed>;
   }) {
     this.#off = new Set(options.offProviders);
     this.#saveProviderUse = options.saveProviderUse ?? (() => Effect.void);
+    this.#onTransportChanged = options.onTransportChanged;
     this.#conversation = options.conversation;
     this.#hooks = options.hooks;
     this.#emit = options.emit;
@@ -709,7 +728,14 @@ export class ProviderRuntime implements ProviderPort {
                 ?.map((account) => this.#extraModels(row.id, account))
             : undefined;
         const withAccounts = accounts ? { ...withSource, accounts } : withSource;
-        return this.#restartsWhenIdle.has(row.id) ? { ...withAccounts, restartPending: true } : withAccounts;
+        const withTransports = {
+          ...withAccounts,
+          transports: this.supportedTransports(row.id),
+          ...(this.#pendingTransports.get(row.id)?.to
+            ? { pendingTransport: this.#pendingTransports.get(row.id)?.to }
+            : {}),
+        };
+        return this.#restartsWhenIdle.has(row.id) ? { ...withTransports, restartPending: true } : withTransports;
       }),
     };
   }
@@ -969,9 +995,13 @@ export class ProviderRuntime implements ProviderPort {
     return supported?.[0];
   }
 
+  /** The transports this provider really runs on. A driver with one implementation is ACP-only. */
+  supportedTransports(provider: AgentProvider): readonly ProviderTransport[] {
+    return requireProviderDriver(provider).supportedTransports ?? ["acp"];
+  }
+
   providerTransport(provider: AgentProvider): ProviderTransport | undefined {
-    const driver = requireProviderDriver(provider);
-    return this.#resolveTransport(provider, driver.supportedTransports);
+    return this.#resolveTransport(provider, this.supportedTransports(provider));
   }
 
   readonly setProviderTransport = Effect.fn("ProviderRuntime.setProviderTransport")(function* (
@@ -979,17 +1009,46 @@ export class ProviderRuntime implements ProviderPort {
     provider: AgentProvider,
     transport: ProviderTransport,
   ) {
-    const driver = requireProviderDriver(provider);
-    const supported = driver.supportedTransports;
-    if (supported && !supported.includes(transport)) return this.status();
-    const current = this.#resolveTransport(provider, supported);
-    if (current === transport) return this.status();
+    const supported = this.supportedTransports(provider);
+    if (!supported.includes(transport))
+      return yield* new ProviderOperationFailed({
+        cause: new Error(sourceText("error.harness.transportUnsupported", { transport: transport.toUpperCase() })),
+      });
+    const applied =
+      this.#appliedTransports.get(provider) ??
+      (this.#clients.has(provider) ? this.#resolveTransport(provider, supported) : supported[0]);
+    if (applied === transport) {
+      this.#pendingTransports.delete(provider);
+      this.#transports.set(provider, transport);
+      // Choosing the applied transport again cancels a swap that still waits for the turns to end.
+      this.cancelProviderRestart(provider);
+      return this.status();
+    }
     this.#transports.set(provider, transport);
+    this.#pendingTransports.set(provider, { from: applied ?? "acp", to: transport });
     if (this.#clients.has(provider) || this.#released.has(provider)) {
       yield* this.restartProviderWhenIdle(provider);
+    } else {
+      // No process holds the sessions, but their ids are still in the database. Retire them now, so
+      // the first turn on the new transport starts with a handoff instead of resuming a foreign id.
+      const changed = yield* Effect.result(this.#applyTransportChange(provider));
+      if (Result.isFailure(changed)) {
+        this.#pendingTransports.delete(provider);
+        this.#transports.set(provider, applied ?? "acp");
+        return yield* changed.failure;
+      }
+      this.#pendingTransports.delete(provider);
     }
     return this.status();
   }).bind(this);
+
+  /** Retires the old transport's sessions before a new client starts. */
+  #applyTransportChange(provider: AgentProvider): Effect.Effect<void, ProviderOperationFailed> {
+    const pending = this.#pendingTransports.get(provider);
+    const change = this.#onTransportChanged;
+    if (!pending || !change) return Effect.void;
+    return change(provider, pending.from, pending.to);
+  }
 
   preferredProvider(): AgentProvider {
     return this.#preferredProvider;
@@ -2654,12 +2713,30 @@ export class ProviderRuntime implements ProviderPort {
     }
     this.#restartsWhenIdle.set(provider, null);
     const disposals = this.#disposals;
+    const swap = this.#pendingTransports.get(provider);
+    if (swap) {
+      const changed = yield* Effect.result(this.#applyTransportChange(provider));
+      if (Result.isFailure(changed)) {
+        this.#pendingTransports.delete(provider);
+        this.#transports.set(provider, swap.from);
+        this.#endRestartWhenIdle(provider);
+        return;
+      }
+    }
     yield* this.#runProviderConnectionCommand(provider, () =>
       this.#clients.has(provider) ? this.#reprobeProvider(provider).pipe(Effect.asVoid) : Effect.void,
     ).pipe(
-      Effect.match({ onSuccess: () => true, onFailure: () => !this.#hooks.isProviderBusy(provider) }),
+      Effect.match({
+        onSuccess: () => true,
+        onFailure: () => !this.#hooks.isProviderBusy(provider),
+      }),
       Effect.flatMap((done) => {
         if (disposals !== this.#disposals || !this.#restartsWhenIdle.has(provider)) return Effect.void;
+        if (done && swap) {
+          this.#pendingTransports.delete(provider);
+          // A target that never started leaves the old client (or no client) on the old transport.
+          if (this.#appliedTransports.get(provider) !== swap.to) this.#transports.set(provider, swap.from);
+        }
         if (done) return Effect.sync(() => this.#endRestartWhenIdle(provider));
         return this.#checkRestartWhenIdle(provider);
       }),
@@ -2997,19 +3074,22 @@ export class ProviderRuntime implements ProviderPort {
       } = {},
     ) {
       const driver = requireProviderDriver(provider);
+      const transport = this.#resolveTransport(provider, this.supportedTransports(provider)) ?? "acp";
       let transferred = false;
       return yield* Effect.acquireUseRelease(
-        providerStep(() =>
-          this.#clientFactory
-            ? this.#clientFactory(provider, cli, confinement, accountEnvironment)
+        providerStep(() => {
+          const client = this.#clientFactory
+            ? this.#clientFactory(provider, cli, confinement, accountEnvironment, transport)
             : driver.createClient(
                 cli,
                 this.#requestTimeoutMs,
                 accountEnvironment ? { ...this.#credentials, accountEnvironment } : this.#credentials,
                 confinement,
-                this.#resolveTransport(provider, driver.supportedTransports),
-              ),
-        ),
+                transport,
+              );
+          this.#appliedTransports.set(provider, transport);
+          return client;
+        }),
         (client) =>
           Effect.gen({ self: this }, function* () {
             yield* providerStep(() => {
@@ -3512,17 +3592,14 @@ export class ProviderRuntime implements ProviderPort {
           });
           stage = "initialize";
           stageStartedAt = performance.now();
-          const candidate = yield* providerStep(() =>
-            this.#clientFactory
-              ? this.#clientFactory(provider, resolvedCli)
-              : driver.createClient(
-                  resolvedCli,
-                  this.#requestTimeoutMs,
-                  this.#credentials,
-                  undefined,
-                  this.#resolveTransport(provider, driver.supportedTransports),
-                ),
-          );
+          const transport = this.#resolveTransport(provider, this.supportedTransports(provider)) ?? "acp";
+          const candidate = yield* providerStep(() => {
+            const client = this.#clientFactory
+              ? this.#clientFactory(provider, resolvedCli, undefined, undefined, transport)
+              : driver.createClient(resolvedCli, this.#requestTimeoutMs, this.#credentials, undefined, transport);
+            this.#appliedTransports.set(provider, transport);
+            return client;
+          });
           client = candidate;
           yield* providerStep(() => {
             this.#bindClient(candidate);

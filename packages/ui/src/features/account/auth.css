@@ -1160,3 +1160,9 @@ body,
 }
 
 /* Change email goes back, so its arrow follows the reading direction. */
+
+.provider-transport-note {
+  color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-xs);
+  white-space: nowrap;
+}

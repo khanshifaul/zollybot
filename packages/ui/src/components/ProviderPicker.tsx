@@ -93,6 +93,10 @@ export interface ProviderPickerOption {
   checkError?: string | null | undefined;
   /** A restart the user asked for waits for the provider's tasks to stop. */
   restartPending?: boolean | undefined;
+  /** The transports this provider really supports. One entry means no switch. */
+  transports?: readonly ProviderTransport[] | undefined;
+  /** A transport switch that waits for the provider's current turn to end. */
+  pendingTransport?: ProviderTransport | undefined;
   runtimeStatus?: ProviderRuntimeStatus | undefined;
   /** The CLI that the provider ran last: the one the user installed, or the one ZollyBot downloaded. */
   cliSource?: AgentProviderStatus["cliSource"];
@@ -237,14 +241,25 @@ export function ProviderPicker(props: ProviderPickerProps) {
   const endpointCount = () => props.customProviders?.length ?? 0;
   const endpointCountLabel = () => t("harness.endpointCount", { count: endpointCount() });
   /**
-   * The transport switch belongs to the provider the picker is choosing. It appears only for a
-   * provider whose descriptor offers both transports, and only where the host exposes the calls.
+   * The transport switch belongs to the provider the picker is choosing. It appears only when the
+   * host reports more than one transport for it, so a driver with one implementation shows none.
    */
   const transportProvider = () => {
     const provider = props.value;
-    return provider && agentProviderDescriptor(provider).transportChoice && props.onGetProviderTransport
-      ? provider
-      : null;
+    if (!provider || !props.onGetProviderTransport) return null;
+    const option =
+      props.options.find((candidate) => candidate.id === provider) ??
+      props.moreProviders?.find((candidate) => candidate.id === provider);
+    return (option?.transports?.length ?? 0) > 1 ? provider : null;
+  };
+  const pendingTransport = () => {
+    const provider = transportProvider();
+    return provider
+      ? (
+          props.options.find((candidate) => candidate.id === provider) ??
+          props.moreProviders?.find((candidate) => candidate.id === provider)
+        )?.pendingTransport
+      : undefined;
   };
   const [transport, setTransport] = createSignal<ProviderTransport | null>(null);
   const [savingTransport, setSavingTransport] = createSignal(false);
@@ -498,6 +513,15 @@ export function ProviderPicker(props: ProviderPickerProps) {
                       </Button>
                     )}
                   </For>
+                  <Show when={pendingTransport()}>
+                    {(pending) => (
+                      <span class="provider-transport-note">
+                        {t("harness.transport.pending", {
+                          transport: t(pending() === "acp" ? "harness.transport.acp" : "harness.transport.cli"),
+                        })}
+                      </span>
+                    )}
+                  </Show>
                 </fieldset>
               )}
             </Show>

@@ -272,6 +272,7 @@ export const messages = {
   "harness.settings.endpoints": "엔드포인트",
   "harness.settings.noEndpoints": "엔드포인트가 없어요.",
   "harness.settings.endpointModels": { other: "{url} · 모델 {count}개" },
+  "harness.transport.pending": "현재 턴이 끝나면 {transport}(으)로 전환됩니다.",
   "harness.transport.title": "Transport",
   "harness.transport.acp": "ACP",
   "harness.transport.cli": "CLI",

@@ -185,6 +185,7 @@ export const messages = {
   "error.harness.cliActivateFailed": "ZollyBot non è riuscito ad attivare la CLI gestita.",
   "error.harness.noMainlandChinaSignIn": "{harness} non ha un accesso per la Cina continentale.",
   "error.harness.cliNewVersionNotStarted": "La nuova versione non si è avviata.",
+  "error.harness.transportUnsupported": "Questo harness non supporta il trasporto {transport}.",
   "error.harness.cliBusyReconnect":
     "La CLI di {harness} sta lavorando a un turno. Attendi che finisca, poi riconnetti.",
   "error.harness.cliBusySignOut": "La CLI {harness} sta elaborando un turno. Attendi che finisca, poi disconnetti.",

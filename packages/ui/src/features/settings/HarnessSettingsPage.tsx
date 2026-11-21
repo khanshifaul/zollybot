@@ -6,11 +6,7 @@
 
 import type { JSX } from "@solidjs/web";
 import { ProviderLogo } from "@zollybot/brand";
-import {
-  agentProviderDescriptor,
-  isManagedRuntimeProvider,
-  type ProviderTransport,
-} from "@zollybot/contracts/agent-providers";
+import { isManagedRuntimeProvider, type ProviderTransport } from "@zollybot/contracts/agent-providers";
 import {
   type AgentModelId,
   type AgentProviderId,
@@ -551,12 +547,13 @@ function TransportControl(props: PageProps) {
       setSaving(false);
     }
   }
+  const supported = () => props.option.transports ?? [];
   return (
     <div class="provider-transport-control">
       <span class="provider-transport-label">{t("harness.transport.title")}</span>
       <fieldset class="provider-picker-transport">
         <legend class="provider-picker-transport-legend">{t("harness.transport.title")}</legend>
-        <For each={["acp", "cli"] as const}>
+        <For each={supported()}>
           {(choice) => (
             <Button
               type="button"
@@ -571,6 +568,15 @@ function TransportControl(props: PageProps) {
           )}
         </For>
       </fieldset>
+      <Show when={props.option.pendingTransport}>
+        {(pending) => (
+          <span class="provider-transport-note">
+            {t("harness.transport.pending", {
+              transport: t(pending() === "acp" ? "harness.transport.acp" : "harness.transport.cli"),
+            })}
+          </span>
+        )}
+      </Show>
     </div>
   );
 }
@@ -623,7 +629,7 @@ function ProviderPage(props: PageProps) {
         statusLabel={header().label}
         subtitle={subtitle()}
         actions={
-          agentProviderDescriptor(props.option.id).transportChoice && props.onSetProviderTransport ? (
+          (props.option.transports?.length ?? 0) > 1 && props.onSetProviderTransport ? (
             <TransportControl {...props} />
           ) : undefined
         }

@@ -110,6 +110,8 @@ export function createSettingsGeneralStore(props: GeneralStoreProps) {
         connectionState: agent?.connectionState,
         signInPending: agent?.signInPending,
         restartPending: agent?.restartPending,
+        transports: agent?.transports,
+        pendingTransport: agent?.pendingTransport,
         checkError: agent?.checkError,
         lastError: agent?.lastError,
         diagnostics: agent ? providerDiagnosticsText(agent) : undefined,

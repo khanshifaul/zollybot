@@ -231,6 +231,7 @@ export const messages = {
   "harness.settings.deleteOff":
     "ZollyBot'un {name} için indirdiği CLI silinir ({size}). Hesaplar, oturumlar ve ajanlar kalır.",
   "harness.settings.removeDownloadFailed": "İndirme kaldırılamadı.",
+  "harness.transport.pending": "Geçerli turdan sonra {transport} taşımasına geçer.",
   "harness.transport.title": "Transport",
   "harness.transport.acp": "ACP",
   "harness.transport.cli": "CLI",

@@ -229,6 +229,7 @@ export const messages = {
   "harness.settings.deleteOff":
     "Elimina la CLI que ZollyBot descargó para {name} ({size}). Las cuentas, los inicios de sesión y los agentes se mantienen.",
   "harness.settings.removeDownloadFailed": "No se pudo quitar la descarga.",
+  "harness.transport.pending": "Cambia a {transport} después del turno actual.",
   "harness.transport.title": "Transport",
   "harness.transport.acp": "ACP",
   "harness.transport.cli": "CLI",

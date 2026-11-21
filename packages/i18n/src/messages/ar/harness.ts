@@ -347,6 +347,7 @@ export const messages = {
     many: "{url} · {count} نموذجًا",
     other: "{url} · {count} نموذج",
   },
+  "harness.transport.pending": "سيتم التبديل إلى {transport} بعد الدور الحالي.",
   "harness.transport.title": "Transport",
   "harness.transport.acp": "ACP",
   "harness.transport.cli": "CLI",

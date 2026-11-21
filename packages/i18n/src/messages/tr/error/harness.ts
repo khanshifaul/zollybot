@@ -182,6 +182,7 @@ export const messages = {
   "error.harness.cliActivateFailed": "ZollyBot yönetilen CLI'yi etkinleştiremedi.",
   "error.harness.noMainlandChinaSignIn": "{harness} için Çin anakarası oturum açma yok.",
   "error.harness.cliNewVersionNotStarted": "Yeni sürüm başlamadı.",
+  "error.harness.transportUnsupported": "Bu harness {transport} taşımasını desteklemiyor.",
   "error.harness.cliBusyReconnect":
     "{harness} CLI bir tur üzerinde çalışıyor. Bitmesini bekleyin, ardından tekrar bağlanın.",
   "error.harness.cliBusySignOut":

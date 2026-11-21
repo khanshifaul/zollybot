@@ -179,6 +179,7 @@ export const messages = {
   "error.harness.cliActivateFailed": "ZollyBot이 관리형 CLI를 활성화할 수 없었어요.",
   "error.harness.noMainlandChinaSignIn": "{harness}에는 중국 본토용 로그인이 없습니다.",
   "error.harness.cliNewVersionNotStarted": "새 버전이 시작되지 않았어요.",
+  "error.harness.transportUnsupported": "이 하네스는 {transport} 전송을 지원하지 않습니다.",
   "error.harness.cliBusyReconnect": "{harness} CLI가 턴을 처리하는 중이에요. 끝날 때까지 기다린 후 다시 연결하세요.",
   "error.harness.cliBusySignOut": "{harness} CLI가 턴을 처리하고 있습니다. 끝날 때까지 기다린 다음 연결을 해제하세요.",
   "error.harness.opencodeCredentialsRejected":

@@ -1411,6 +1411,19 @@ export class ThreadLifecycle {
     return yield* this.startProviderThread(agent, client, publicThreadId);
   }, Effect.uninterruptible).bind(this);
 
+  /**
+   * Retires every active session of a provider, for a transport change. The next turn of each thread
+   * starts a new provider session and gives it the existing conversation as a handoff, so a session
+   * id minted by the old transport is never resumed on the new one.
+   */
+  readonly retireProviderSessions = Effect.fn("ThreadLifecycle.retireProviderSessions")(function* (
+    this: ThreadLifecycle,
+    provider: AgentProvider,
+  ) {
+    const threads = this.#store.database.activeProviderSessionThreadsForProvider(provider);
+    for (const threadId of threads) yield* this.#refreshThreadRuntime(threadId);
+  }, Effect.uninterruptible).bind(this);
+
   retireProviderSession(agent: AgentSummary, externalThreadId: string): void {
     const publicThreadId = this.#conversation.publicThreadId(agent.id, externalThreadId);
     const session = this.#store.database.activeProviderSession(publicThreadId, agent.provider);

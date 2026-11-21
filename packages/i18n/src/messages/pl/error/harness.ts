@@ -178,6 +178,7 @@ export const messages = {
   "error.harness.cliActivateFailed": "Nie udało się aktywować zarządzanego CLI.",
   "error.harness.noMainlandChinaSignIn": "{harness} nie ma logowania dla Chin kontynentalnych.",
   "error.harness.cliNewVersionNotStarted": "Nowa wersja się nie uruchomiła.",
+  "error.harness.transportUnsupported": "Ten harness nie obsługuje transportu {transport}.",
   "error.harness.cliBusyReconnect": "{harness} CLI pracuje nad turą. Zaczekaj, aż skończy, a potem połącz ponownie.",
   "error.harness.cliBusySignOut": "CLI {harness} przetwarza turę. Poczekaj, aż skończy, a potem odłącz.",
   "error.harness.opencodeCredentialsRejected":

@@ -65,6 +65,19 @@ export class ProviderSessions {
     return row ? toProviderSession(row) : null;
   }
 
+  /** The threads of one provider that still hold an active provider session. */
+  activeProviderSessionThreadsForProvider(provider: AgentProviderId): string[] {
+    return databaseRows(
+      this.#core.connection
+        .prepare(
+          `SELECT DISTINCT thread_id
+           FROM projection_provider_sessions
+           WHERE provider = ? AND state = 'active'`,
+        )
+        .all(provider),
+    ).map((row) => requiredStringColumn(row, "thread_id"));
+  }
+
   listProviderSessions(threadId: string): ProviderSession[] {
     return databaseRows(
       this.#core.connection

@@ -168,6 +168,7 @@ export const messages = {
   "error.harness.cliActivateFailed": "تعذّر على ZollyBot تفعيل واجهة CLI المُدارة.",
   "error.harness.noMainlandChinaSignIn": "لا يوفر {harness} تسجيل دخول للصين القارية.",
   "error.harness.cliNewVersionNotStarted": "لم يبدأ تشغيل الإصدار الجديد.",
+  "error.harness.transportUnsupported": "لا يدعم هذا الـ harness نقل {transport}.",
   "error.harness.cliBusyReconnect": "تعمل واجهة {harness} CLI على دور. انتظر حتى ينتهي، ثم أعد الاتصال.",
   "error.harness.cliBusySignOut": "تعمل واجهة {harness} CLI على دور. انتظر حتى ينتهي، ثم افصل الاتصال.",
   "error.harness.opencodeCredentialsRejected":

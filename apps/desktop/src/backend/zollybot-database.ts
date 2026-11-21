@@ -480,6 +480,10 @@ export class ZollyBotDatabase {
     return this.#sessions.activeProviderSessionThreads(agentId);
   }
 
+  activeProviderSessionThreadsForProvider(provider: AgentProviderId): string[] {
+    return this.#sessions.activeProviderSessionThreadsForProvider(provider);
+  }
+
   bindProviderSession(input: {
     threadId: string;
     provider: AgentProviderId;

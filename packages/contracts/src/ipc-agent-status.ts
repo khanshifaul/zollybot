@@ -1,4 +1,4 @@
-import { type AgentProviderId, isAgentProvider } from "./agent-providers";
+import { type AgentProviderId, isAgentProvider, type ProviderTransport } from "./agent-providers";
 import { INPUT_LIMITS } from "./input-limits";
 import { type AgentModelOption, isAgentModelOption } from "./ipc-agent-identity";
 import { isBoundedString, isFiniteNumber, isNullableBoundedString } from "./ipc-bounded-values";
@@ -63,6 +63,10 @@ export interface AgentProviderStatus {
   cliSource?: "system" | "managed";
   /** A restart the user asked for waits for the provider's turns to end. New turns wait for it. */
   restartPending?: boolean;
+  /** The transports this provider can run on. Omitted by a host that does not offer transport choice. */
+  transports?: readonly ProviderTransport[];
+  /** A transport switch that waits for the provider's turns to end. */
+  pendingTransport?: ProviderTransport;
   /**
    * A saved API key serves the provider's turns in place of the plan sign-in, so the plan's usage
    * does not apply. Gemini: its saved key comes before the Google account. Codex: its own login is
@@ -147,6 +151,11 @@ function isAgentProviderStatus(value: unknown): value is AgentProviderStatus {
     (value.cliSource === undefined || isBoundedString(value.cliSource, INPUT_LIMITS.identifier)) &&
     (value.off === undefined || typeof value.off === "boolean") &&
     (value.restartPending === undefined || typeof value.restartPending === "boolean") &&
+    (value.transports === undefined ||
+      (Array.isArray(value.transports) &&
+        value.transports.length > 0 &&
+        value.transports.every((transport) => transport === "acp" || transport === "cli"))) &&
+    (value.pendingTransport === undefined || value.pendingTransport === "acp" || value.pendingTransport === "cli") &&
     (value.apiKeyInUse === undefined || typeof value.apiKeyInUse === "boolean") &&
     (value.lastError === undefined || isNullableBoundedString(value.lastError, INPUT_LIMITS.messageText)) &&
     (value.lastErrorAt === undefined || isFiniteNumber(value.lastErrorAt)) &&

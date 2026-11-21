@@ -200,7 +200,12 @@ import {
 import { ProfileSave, standingProfileChanged, toProfileSaveFailed } from "./agent/profile-save";
 import type { ProviderAccountStore } from "./agent/provider-account-store";
 import { isPlanLimitDiagnostic } from "./agent/provider-diagnostics";
-import { type AgentClientFactory, ProviderRuntime, toProviderOperationFailed } from "./agent/provider-runtime";
+import {
+  type AgentClientFactory,
+  ProviderOperationFailed,
+  ProviderRuntime,
+  toProviderOperationFailed,
+} from "./agent/provider-runtime";
 import { QueueControls } from "./agent/queue-controls";
 import { quietRoutineRun } from "./agent/routine-quiet-runs";
 import { type RoutineMutationOptions, RoutineScheduler, toRoutineOperationFailed } from "./agent/routine-scheduler";
@@ -894,6 +899,10 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       ...(options.providerAccounts ? { accounts: options.providerAccounts } : {}),
       saveProviderUse: (provider, on) =>
         (options.saveProviderUse?.(provider, on) ?? Effect.void).pipe(toProviderOperationFailed),
+      onTransportChanged: (provider) =>
+        this.#threads
+          .retireProviderSessions(provider)
+          .pipe(Effect.mapError((cause) => new ProviderOperationFailed({ cause }))),
       conversation: this.#conversation,
       hooks: {
         bindClient: (client) => {
@@ -4235,8 +4244,8 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   ): Effect.Effect<AgentStatus, AgentLifecycleFailed> {
     const apply = this.#providers.setProviderTransport(provider, transport);
     const saved = this.#saveProviderTransport?.(provider, transport) ?? Effect.void;
-    return saved.pipe(
-      Effect.andThen(apply),
+    return apply.pipe(
+      Effect.tap(() => saved),
       Effect.mapError(
         (failure) => new AgentLifecycleFailed({ operation: "setProviderTransport", cause: failure.cause }),
       ),
