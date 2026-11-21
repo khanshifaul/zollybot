@@ -231,4 +231,7 @@ export const messages = {
   "harness.settings.deleteOff":
     "Elimina la CLI che ZollyBot ha scaricato per {name} ({size}). Account, accessi e agenti restano.",
   "harness.settings.removeDownloadFailed": "Impossibile rimuovere il download.",
+  "harness.transport.title": "Transport",
+  "harness.transport.acp": "ACP",
+  "harness.transport.cli": "CLI",
 } as const satisfies PartialTranslation<typeof source>;

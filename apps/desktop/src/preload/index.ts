@@ -113,6 +113,7 @@ import {
   decodeOptionalMemorySelection,
   decodeProviderApiKeyState,
   decodeProviderCodeLoginStart,
+  decodeProviderTransportFromMain,
   decodeProviderUsageResetOutcomeFromMain,
   decodeProviderUsageResetsFromMain,
   decodeRoutine,
@@ -323,6 +324,7 @@ import {
   decodeTeamPresenceSnapshot,
   decodeTeamSessions,
 } from "./team-decoding";
+import { decodePtyDataEvent, decodePtyExitEvent, decodePtyStartResult } from "./terminal-decoding";
 import { decodeVaultImportResult, decodeVaultSecret, decodeVaultState } from "./vault-decoding";
 import {
   decodeWorkflowDetail,
@@ -763,12 +765,22 @@ const zollybotApi: ZollyBotDesktopApi = {
     chatWindows: decodeChatWindowTargets,
     quitShortcutHint: decodeQuitShortcutHint,
   }),
+  ...bridgeGroup(IPC_ENDPOINTS.terminal, {
+    startPty: decodePtyStartResult,
+    writePty: decodeVoid,
+    resizePty: decodeVoid,
+    stopPty: decodeVoid,
+    ptyData: decodePtyDataEvent,
+    ptyExit: decodePtyExitEvent,
+  }),
   ...bridgeGroup(IPC_ENDPOINTS.providers, {
     connectProvider: decodeAgentStatusFromMain,
     connectProviderInMainlandChina: decodeAgentStatusFromMain,
     cancelProviderSignIn: decodeAgentStatusFromMain,
     refreshAgentProviders: decodeAgentStatusFromMain,
     setProviderOn: decodeAgentStatusFromMain,
+    getProviderTransport: decodeProviderTransportFromMain,
+    setProviderTransport: decodeAgentStatusFromMain,
     restartProvider: decodeAgentStatusFromMain,
     cancelProviderRestart: decodeAgentStatusFromMain,
     updateProviderCli: decodeAgentStatusFromMain,

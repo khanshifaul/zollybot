@@ -309,3 +309,51 @@
 .app-frame-with-server-rail .conversation-panel {
   grid-column: 4;
 }
+
+/* The chat's terminal surface replaces the message list and composer while it is open. */
+.conversation-panel.conversation-terminal-open .conversation-scroll,
+.conversation-panel.conversation-terminal-open .composer-wrap {
+  display: none;
+}
+
+.conversation-terminal {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--zollybot-bg-sidebar);
+}
+
+.conversation-terminal-surface {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.conversation-terminal .xterm {
+  height: 100%;
+  padding: 6px 8px;
+}
+
+.conversation-terminal-search {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--zollybot-border-strong);
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-bg-surface-raised);
+  box-shadow: var(--zollybot-shadow-raised);
+}
+
+.conversation-terminal-search input {
+  width: 220px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--zollybot-text-primary);
+  font-size: var(--zollybot-text-sm);
+}

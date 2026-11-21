@@ -14,6 +14,7 @@ import {
   type ProviderApiKeyStatus,
   type ProviderRuntimeDownload,
   type ProviderRuntimeStatus,
+  type ProviderTransport,
   type SaveCustomProviderInput,
   type UpdateCustomProviderInput,
 } from "@zollybot/contracts/ipc";
@@ -82,6 +83,12 @@ interface HarnessSettingsSectionProps {
   onRestartProvider?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
   onCancelProviderRestart?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
   onSetProviderOn?: ((provider: AgentProviderId, on: boolean) => void | Promise<void>) | undefined;
+  onGetProviderTransport?:
+    | ((provider: AgentProviderId) => ProviderTransport | null | Promise<ProviderTransport | null>)
+    | undefined;
+  onSetProviderTransport?:
+    | ((provider: AgentProviderId, transport: ProviderTransport) => void | Promise<void>)
+    | undefined;
   onMeasureProviderDownload?: ((provider: AgentProviderId) => Promise<ProviderRuntimeDownload>) | undefined;
   onRemoveProviderDownload?: ((provider: AgentProviderId) => Promise<void>) | undefined;
   onInstallProvider?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
@@ -276,6 +283,8 @@ function HarnessSettingsSection(props: HarnessSettingsSectionProps) {
         onRestartProvider={props.onRestartProvider}
         onCancelProviderRestart={props.onCancelProviderRestart}
         onSetProviderOn={props.onSetProviderOn}
+        onGetProviderTransport={props.onGetProviderTransport}
+        onSetProviderTransport={props.onSetProviderTransport}
         onMeasureProviderDownload={props.onMeasureProviderDownload}
         onRemoveProviderDownload={props.onRemoveProviderDownload}
         connection={props.connection}
@@ -501,6 +510,12 @@ export interface HostHarnessSettings {
   /** Adds, names and removes provider accounts on the computer that runs the providers. */
   accountActions?: ProviderAccountActions | undefined;
   onSetProviderOn?: ((provider: AgentProviderId, on: boolean) => void | Promise<void>) | undefined;
+  onGetProviderTransport?:
+    | ((provider: AgentProviderId) => ProviderTransport | null | Promise<ProviderTransport | null>)
+    | undefined;
+  onSetProviderTransport?:
+    | ((provider: AgentProviderId, transport: ProviderTransport) => void | Promise<void>)
+    | undefined;
   onMeasureProviderDownload?: ((provider: AgentProviderId) => Promise<ProviderRuntimeDownload>) | undefined;
   onRemoveProviderDownload?: ((provider: AgentProviderId) => Promise<void>) | undefined;
   customProviders?: readonly CustomProviderSummary[] | undefined;
@@ -598,6 +613,8 @@ export function HostHarnessSettingsPanel(
         onRestartProvider={props.onRestartProvider}
         onCancelProviderRestart={props.onCancelProviderRestart}
         onSetProviderOn={props.onSetProviderOn}
+        onGetProviderTransport={props.onGetProviderTransport}
+        onSetProviderTransport={props.onSetProviderTransport}
         onMeasureProviderDownload={props.onMeasureProviderDownload}
         onRemoveProviderDownload={props.onRemoveProviderDownload}
         connection={props.connection}

@@ -1,3 +1,4 @@
+import type { ProviderTransport } from "@zollybot/contracts/agent-providers";
 import {
   type AgentProviderId,
   type AgentStatus,
@@ -276,6 +277,20 @@ const Providers = createSimpleContext({
       if (activeServer()?.id === server.id) flush(() => applyAgentStatus(status));
     }
 
+    /** The transport a dual-transport provider runs on, of this computer. */
+    async function getProviderTransport(provider: AgentProviderId): Promise<ProviderTransport | null> {
+      const server = activeServer();
+      if (server?.kind !== "local") return null;
+      return await providersPort().getProviderTransport(provider);
+    }
+
+    async function setProviderTransport(provider: AgentProviderId, transport: ProviderTransport): Promise<void> {
+      const server = activeServer();
+      if (server?.kind !== "local") return;
+      const status = await providersPort().setProviderTransport({ provider, transport });
+      if (activeServer()?.id === server.id) flush(() => applyAgentStatus(status));
+    }
+
     /**
      * The downloaded CLI of a provider of this computer that is off. A joined host has no such call,
      * so its providers offer no removal.
@@ -521,6 +536,8 @@ const Providers = createSimpleContext({
       openProviderInstallGuide,
       refreshAgentProviders,
       setProviderOn,
+      getProviderTransport,
+      setProviderTransport,
       measureProviderDownload,
       removeProviderDownload,
       providerAccounts,

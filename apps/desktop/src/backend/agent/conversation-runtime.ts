@@ -779,6 +779,19 @@ export class ConversationRuntime {
     return this.#threadToAgent.get(externalThreadId);
   }
 
+  /**
+   * The provider session behind an agent's own chat, for a second frontend that continues it (the
+   * terminal pane). Task and routine sessions are elsewhere; the last bound thread is the current one.
+   */
+  providerThreadFor(agentId: string): string | null {
+    let found: string | null = null;
+    for (const [externalThreadId, owner] of this.#threadToAgent) {
+      if (owner !== agentId || this.#taskThreads.has(externalThreadId)) continue;
+      found = externalThreadId;
+    }
+    return found;
+  }
+
   /** Model retrieval must never fall back to the agent's personal conversation. */
   historyScope(externalThreadId: string, client: AgentClient) {
     const agentId = this.#threadToAgent.get(externalThreadId);

@@ -1360,6 +1360,14 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
       emitAgentEvent({ type: "status", status: clone(agentStatus) });
       return clone(agentStatus);
     },
+    getProviderTransport: async () => null,
+    setProviderTransport: async () => clone(agentStatus),
+    startPty: async () => ({ ptyId: "preview-pty", sessionId: null }),
+    writePty: async () => {},
+    resizePty: async () => {},
+    stopPty: async () => {},
+    onPtyData: () => () => {},
+    onPtyExit: () => () => {},
     restartProvider: async () => clone(agentStatus),
     cancelProviderRestart: async () => clone(agentStatus),
     // A code that never completes: the preview has no provider to finish the sign-in, so this shows

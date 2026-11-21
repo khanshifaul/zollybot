@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { uptime } from "node:os";
 import { join, resolve } from "node:path";
 import { parseInviteUrl, selfHostedApiOrigin } from "@zollybot/contracts/invite-links";
@@ -106,6 +107,7 @@ import { sharedTableIpcHandlers } from "./ipc/shared-table-handlers";
 import { skillIpcHandlers } from "./ipc/skill-handlers";
 import { storageIpcHandlers } from "./ipc/storage-handlers";
 import { teamIpcHandlers } from "./ipc/team-handlers";
+import { terminalIpcHandlers } from "./ipc/terminal-handlers";
 import { updateIpcHandlers } from "./ipc/update-handlers";
 import { vaultIpcHandlers } from "./ipc/vault-handlers";
 import { voiceIpcHandlers } from "./ipc/voice-handlers";
@@ -130,6 +132,7 @@ import { ensureMacApplicationPresence, secondLaunchResponse } from "./main-windo
 import { MessageLinkRelay, openHttpLink } from "./message-link-relay";
 import { recoverFromNewerDatabase } from "./newer-database-recovery";
 import { startMainLog } from "./provider-log";
+import { PtyTerminalService } from "./pty-terminal";
 import { watchRemoteHostDirectory } from "./remote-server-host-directory";
 import { createRendererForwarders } from "./renderer-forwarders";
 import { sendToRenderer } from "./renderer-ipc";
@@ -745,6 +748,27 @@ function registerIpcHandlers({
   // Every handler below reads this only as the parent of a native dialog. A dialog opens on the
   // window that the user works in: when a chat window has focus, the main window can be hidden.
   const getDialogParent = () => windows.getChatWindows().find((window) => window.isFocused()) ?? windowHolder.current;
+  const ptyTerminal = new PtyTerminalService({
+    helper: () => {
+      const bin = process.platform === "win32" ? "zollybot-cli.exe" : "zollybot-cli";
+      const packaged = join(process.resourcesPath, "bin", bin);
+      if (existsSync(packaged)) return packaged;
+      const arch = process.arch === "arm64" ? "arm64" : "x64";
+      const dev = resolve(app.getAppPath(), "out", "cli", `${process.platform}-${arch}`, bin);
+      return existsSync(dev) ? dev : null;
+    },
+    // The pane owns the chat's session while it is open: hold the lane, wait for a running turn,
+    // and start the provider session when the chat has none yet.
+    prepare: (agentId) => runCauseEffect(service.openTerminalSession(agentId)),
+    release: (agentId) => service.releaseTerminalHold(agentId),
+    apiKey: (provider) => providerCredentials.get(provider),
+    emitData: (event) => {
+      for (const window of BrowserWindow.getAllWindows()) sendToRenderer(window, IPC_ENDPOINTS.terminal.ptyData, event);
+    },
+    emitExit: (event) => {
+      for (const window of BrowserWindow.getAllWindows()) sendToRenderer(window, IPC_ENDPOINTS.terminal.ptyExit, event);
+    },
+  });
 
   registerIpcGroups({
     ...appIpcHandlers({
@@ -795,6 +819,7 @@ function registerIpcHandlers({
     ...macAutomationIpcHandlers({ platform: process.platform }),
     ...backgroundProcessIpcHandlers({ platform: process.platform, agents: () => service.listAgents() }),
     ...providerIpcHandlers({ service, providerRuntimes, credentials: providerCredentials, openLink }),
+    ...terminalIpcHandlers({ terminal: ptyTerminal }),
     ...voiceIpcHandlers({ voice, speech, server: voiceServer, service }),
     ...skillIpcHandlers({ skills, getMainWindow: getDialogParent, translate: language.translate }),
     ...agentFolderIpcHandlers({

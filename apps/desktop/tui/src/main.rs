@@ -172,6 +172,130 @@ enum Command {
         #[arg(long)]
         office: Option<String>,
     },
+    /// Hosts one provider CLI in a pseudo-terminal for the desktop app. Not a user command.
+    #[command(hide = true)]
+    PtyHost {
+        #[arg(last = true, required = true, num_args = 1.., allow_hyphen_values = true)]
+        command: Vec<String>,
+    },
+}
+
+/// Runs `command` under a new pseudo-terminal and proxies its bytes.
+///
+/// stdout carries the terminal output, stdin the keys. A fourth pipe (descriptor 3, Unix) carries
+/// `resize <cols> <rows>` lines, so the terminal follows the desktop pane. Killing this process
+/// closes the master, and the provider gets SIGHUP with it.
+fn run_pty_host(argv: &[String]) -> i32 {
+    use std::io::{Read, Write};
+
+    // Capture the resize pipe before `openpty`: a closed descriptor 3 would otherwise be reused
+    // by the pty and this reader would steal the terminal's output.
+    #[cfg(unix)]
+    let control = {
+        use std::os::fd::FromRawFd;
+        if unsafe { libc::fcntl(3, libc::F_GETFD) } < 0 {
+            None
+        } else {
+            Some(unsafe { std::fs::File::from_raw_fd(3) })
+        }
+    };
+    let cols = std::env::var("ZOLLYBOT_PTY_COLS").ok().and_then(|v| v.parse::<u16>().ok()).unwrap_or(120);
+    let rows = std::env::var("ZOLLYBOT_PTY_ROWS").ok().and_then(|v| v.parse::<u16>().ok()).unwrap_or(40);
+    let size = PtySize { rows: rows.max(1), cols: cols.max(1), pixel_width: 0, pixel_height: 0 };
+    let pty = match portable_pty::native_pty_system().openpty(size) {
+        Ok(pty) => pty,
+        Err(error) => {
+            eprintln!("zollybot-cli: pty: {error}");
+            return 1;
+        }
+    };
+    let mut cmd = CommandBuilder::new(&argv[0]);
+    for arg in &argv[1..] {
+        cmd.arg(arg);
+    }
+    cmd.env("TERM", "xterm-256color");
+    cmd.env("COLORTERM", "truecolor");
+    cmd.env("TERM_PROGRAM", "zollybot-desktop");
+    let mut child = match pty.slave.spawn_command(cmd) {
+        Ok(child) => child,
+        Err(error) => {
+            eprintln!("zollybot-cli: spawn: {error}");
+            return 1;
+        }
+    };
+    drop(pty.slave);
+    let mut reader = match pty.master.try_clone_reader() {
+        Ok(reader) => reader,
+        Err(error) => {
+            eprintln!("zollybot-cli: pty reader: {error}");
+            return 1;
+        }
+    };
+    let mut writer = match pty.master.take_writer() {
+        Ok(writer) => writer,
+        Err(error) => {
+            eprintln!("zollybot-cli: pty writer: {error}");
+            return 1;
+        }
+    };
+    let master = pty.master;
+
+    std::thread::spawn(move || {
+        let mut buffer = [0u8; 8192];
+        loop {
+            match reader.read(&mut buffer) {
+                Ok(0) | Err(_) => break,
+                Ok(count) => {
+                    let mut out = std::io::stdout().lock();
+                    if out.write_all(&buffer[..count]).is_err() || out.flush().is_err() {
+                        break;
+                    }
+                }
+            }
+        }
+    });
+
+    #[cfg(unix)]
+    if let Some(control) = control {
+        std::thread::spawn(move || {
+        use std::io::BufRead;
+        for line in std::io::BufReader::new(control).lines().map_while(Result::ok) {
+            let parts: Vec<&str> = line.split_whitespace().collect();
+            if parts.len() == 3 && parts[0] == "resize" {
+                if let (Ok(cols), Ok(rows)) = (parts[1].parse::<u16>(), parts[2].parse::<u16>()) {
+                    let _ = master.resize(PtySize {
+                        rows: rows.max(1),
+                        cols: cols.max(1),
+                        pixel_width: 0,
+                        pixel_height: 0,
+                    });
+                }
+            }
+        }
+        });
+    }
+    #[cfg(not(unix))]
+    drop(master);
+
+    std::thread::spawn(move || {
+        let mut buffer = [0u8; 8192];
+        loop {
+            match std::io::stdin().read(&mut buffer) {
+                Ok(0) | Err(_) => break,
+                Ok(count) => {
+                    if writer.write_all(&buffer[..count]).is_err() || writer.flush().is_err() {
+                        break;
+                    }
+                }
+            }
+        }
+    });
+
+    match child.wait() {
+        Ok(status) if status.success() => 0,
+        Ok(_) => 1,
+        Err(_) => 1,
+    }
 }
 
 /// The account service, for the case where no app runs on this machine.
@@ -2571,6 +2695,7 @@ fn main() {
             print!("{}", brief_text(office.as_deref()));
             0
         }
+        Some(Command::PtyHost { command }) => run_pty_host(&command),
         None => match run_tui() {
             Ok(code) => code,
             Err(error) => {

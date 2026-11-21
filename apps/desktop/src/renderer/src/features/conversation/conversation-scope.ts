@@ -100,6 +100,13 @@ export function createConversationViewScope(props: ConversationProps) {
   const agentReady = () => props.agentStatus.phase === "ready";
   /** A side thread covers the agent's own chat, which stays mounted under it. */
   const sideThreadOpen = () => props.threads?.open !== undefined;
+  /** The chat's terminal surface: a PTY that continues the same provider session. */
+  const terminalAvailable = () => props.server?.kind === "local" && props.agent?.provider === "opencode";
+  const [terminalOpen, setTerminalOpen] = createSignal(false);
+  const toggleTerminal = () => setTerminalOpen((open) => !open);
+  createEffect(sideThreadOpen, (open) => {
+    if (open) setTerminalOpen(false);
+  });
   const providerUpdateRequired = () =>
     props.agentStatus.providers?.find(
       (provider) => provider.id === props.agent?.provider && provider.state === "outdated",
@@ -2121,6 +2128,9 @@ export function createConversationViewScope(props: ConversationProps) {
 
   return {
     sideThreadOpen,
+    terminalAvailable,
+    terminalOpen,
+    toggleTerminal,
     threadSearch,
     threadSearchOpen,
     threadSearchQuery,

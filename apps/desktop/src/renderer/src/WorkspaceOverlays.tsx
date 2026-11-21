@@ -376,6 +376,8 @@ function ServerSettings() {
     refreshAgentProviders,
     refreshingProviders,
     setProviderOn,
+    getProviderTransport,
+    setProviderTransport,
     measureProviderDownload,
     removeProviderDownload,
     providerAccounts,
@@ -576,6 +578,8 @@ function ServerSettings() {
         return local && providerRuntimeDownloadsAvailable() ? openProviderInstallGuide : undefined;
       },
       onSetProviderOn: local ? setProviderOn : undefined,
+      onGetProviderTransport: local ? getProviderTransport : undefined,
+      onSetProviderTransport: local ? setProviderTransport : undefined,
       onMeasureProviderDownload: local ? measureProviderDownload : undefined,
       onRemoveProviderDownload: local ? removeProviderDownload : undefined,
       get providerUsers() {

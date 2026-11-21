@@ -71,6 +71,7 @@ import {
   antigravityTemp,
   BUILT_IN_PROVIDER_DRIVERS,
   type ProviderClientContext,
+  type ProviderTransport,
   requireProviderDriver,
   savedCustomAgents,
 } from "./../provider-drivers";
@@ -512,6 +513,7 @@ export class ProviderRuntime implements ProviderPort {
   readonly #saveProviderUse: (provider: AgentProvider, on: boolean) => Effect.Effect<void, ProviderOperationFailed>;
   /** Null without a store, as in tests: each provider then holds its own sign-in only. */
   readonly #providerAccounts: ProviderAccounts | null;
+  readonly #transports = new Map<AgentProvider, ProviderTransport>();
 
   constructor(options: {
     offProviders?: readonly AgentProvider[];
@@ -530,6 +532,7 @@ export class ProviderRuntime implements ProviderPort {
     mcpHandoff?: McpHandoffLog;
     redactMcp: (text: string) => string;
     accounts?: ProviderAccountStore;
+    providerTransports?: Partial<Record<AgentProvider, ProviderTransport>>;
   }) {
     this.#off = new Set(options.offProviders);
     this.#saveProviderUse = options.saveProviderUse ?? (() => Effect.void);
@@ -546,6 +549,10 @@ export class ProviderRuntime implements ProviderPort {
     this.#credentials = options.credentials;
     this.#mcpHandoff = options.mcpHandoff ?? new McpHandoffLog();
     this.#redactMcp = options.redactMcp;
+    for (const [provider, transport] of Object.entries(options.providerTransports ?? {})) {
+      if ((transport === "acp" || transport === "cli") && isAgentProvider(provider))
+        this.#transports.set(provider, transport);
+    }
     this.#codexLogin = new CodexLoginFlow({
       bundledExecutable: () => this.#bundledExecutables.codex,
       createClient: (cli) => {
@@ -951,9 +958,38 @@ export class ProviderRuntime implements ProviderPort {
     if (this.#clientFactory) return this.#clientFactory(provider, cli, undefined, accountEnvironment);
     const context = accountEnvironment ? { ...this.#credentials, accountEnvironment } : this.#credentials;
     const driver = requireProviderDriver(provider);
-    if (driver.createProfileClient) return driver.createProfileClient(cli, this.#requestTimeoutMs, context);
-    return driver.createClient(cli, this.#requestTimeoutMs, context);
+    const transport = this.#resolveTransport(provider, driver.supportedTransports);
+    if (driver.createProfileClient) return driver.createProfileClient(cli, this.#requestTimeoutMs, context, transport);
+    return driver.createClient(cli, this.#requestTimeoutMs, context, undefined, transport);
   }
+
+  #resolveTransport(provider: AgentProvider, supported?: readonly ProviderTransport[]): ProviderTransport | undefined {
+    const preferred = this.#transports.get(provider);
+    if (preferred && (!supported || supported.includes(preferred))) return preferred;
+    return supported?.[0];
+  }
+
+  providerTransport(provider: AgentProvider): ProviderTransport | undefined {
+    const driver = requireProviderDriver(provider);
+    return this.#resolveTransport(provider, driver.supportedTransports);
+  }
+
+  readonly setProviderTransport = Effect.fn("ProviderRuntime.setProviderTransport")(function* (
+    this: ProviderRuntime,
+    provider: AgentProvider,
+    transport: ProviderTransport,
+  ) {
+    const driver = requireProviderDriver(provider);
+    const supported = driver.supportedTransports;
+    if (supported && !supported.includes(transport)) return this.status();
+    const current = this.#resolveTransport(provider, supported);
+    if (current === transport) return this.status();
+    this.#transports.set(provider, transport);
+    if (this.#clients.has(provider) || this.#released.has(provider)) {
+      yield* this.restartProviderWhenIdle(provider);
+    }
+    return this.status();
+  }).bind(this);
 
   preferredProvider(): AgentProvider {
     return this.#preferredProvider;
@@ -2971,6 +3007,7 @@ export class ProviderRuntime implements ProviderPort {
                 this.#requestTimeoutMs,
                 accountEnvironment ? { ...this.#credentials, accountEnvironment } : this.#credentials,
                 confinement,
+                this.#resolveTransport(provider, driver.supportedTransports),
               ),
         ),
         (client) =>
@@ -3478,7 +3515,13 @@ export class ProviderRuntime implements ProviderPort {
           const candidate = yield* providerStep(() =>
             this.#clientFactory
               ? this.#clientFactory(provider, resolvedCli)
-              : driver.createClient(resolvedCli, this.#requestTimeoutMs, this.#credentials),
+              : driver.createClient(
+                  resolvedCli,
+                  this.#requestTimeoutMs,
+                  this.#credentials,
+                  undefined,
+                  this.#resolveTransport(provider, driver.supportedTransports),
+                ),
           );
           client = candidate;
           yield* providerStep(() => {

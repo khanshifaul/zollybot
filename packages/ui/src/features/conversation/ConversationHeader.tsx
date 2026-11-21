@@ -1,5 +1,5 @@
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { Badge, Button, Clock3, Lock } from "@zollybot/ui";
+import { Badge, Button, Clock3, Lock, SquareTerminal } from "@zollybot/ui";
 import { ProviderModelPicker } from "@zollybot/ui/components/ProviderModelPicker";
 import type { AgentProfile } from "@zollybot/ui/data";
 import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
@@ -21,6 +21,7 @@ export interface ConversationHeaderProps {
   /** Set while a side thread is open: the agent's name then opens the agent's own chat, not its settings. */
   onOpenChat?: (() => void) | undefined;
   remoteControl?: ConversationHeaderRemoteControl | undefined;
+  terminal?: ConversationHeaderTerminal | undefined;
   /** Missing when the chat has no side panel, such as a deleted channel. */
   sidePanel?: SidePanelToggleProps | undefined;
   /** The thread tabs of the agent, after its name. */
@@ -37,6 +38,14 @@ export interface ConversationHeaderPendingModel {
   running: string;
   /** The same for the next turn. */
   next: string;
+}
+
+/** The chat's second surface: a PTY terminal that continues the provider session. */
+export interface ConversationHeaderTerminal {
+  open: boolean;
+  /** False for an agent whose provider has no terminal view, and for a remote host. */
+  available: boolean;
+  onToggle: () => void;
 }
 
 export interface ConversationHeaderRemoteControl {
@@ -96,6 +105,20 @@ export function ConversationHeader(props: ConversationHeaderProps) {
         </Show>
         <Show when={props.agent}>
           <ProviderModelPicker {...props.modelPicker} />
+        </Show>
+        <Show when={props.terminal?.available ? props.terminal : undefined}>
+          {(terminal) => (
+            <Button
+              variant="ghost"
+              type="button"
+              class="header-panel-toggle conversation-terminal-toggle"
+              aria-label={t(terminal().open ? "conversation.header.showChat" : "conversation.header.showTerminal")}
+              aria-pressed={terminal().open ? "true" : "false"}
+              onClick={() => terminal().onToggle()}
+            >
+              <SquareTerminal aria-hidden="true" />
+            </Button>
+          )}
         </Show>
         <Show when={props.remoteControl}>
           {(control) => (

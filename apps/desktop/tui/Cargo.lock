@@ -2902,6 +2902,7 @@ dependencies = [
  "clap",
  "crossterm 0.28.1",
  "image",
+ "libc",
  "portable-pty",
  "qrcode",
  "ratatui 0.29.0",

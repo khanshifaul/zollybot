@@ -14,6 +14,7 @@ import { ConversationTimeline } from "./ConversationTimeline";
 import { ConversationViewScopeContext, createConversationViewScope } from "./conversation-scope";
 import type { ConversationProps } from "./conversation-types";
 import { conversationOwnerId } from "./stores/composer-store";
+import { TerminalPane } from "./TerminalPane";
 
 /** @internal Keeps file-drag state active while the pointer moves between conversation descendants. */
 function isDragLeavingConversation(currentTarget: HTMLElement, relatedTarget: EventTarget | null): boolean {
@@ -41,6 +42,7 @@ export function ConversationView(props: ConversationProps) {
     settingsPanelWidth,
     submitting,
     sideThreadOpen,
+    terminalOpen,
   } = scope;
   const { t } = useText();
   const folderCalls = agentFolderCalls();
@@ -89,6 +91,7 @@ export function ConversationView(props: ConversationProps) {
               activeRightPanel() === "subagent" ||
               activeRightPanel() === "thread" ||
               activeRightPanel() === "side-panel",
+            "conversation-terminal-open": terminalOpen(),
             "side-panel-docked": sidePanelOpen(),
             "side-panel-maximized": sidePanelOpen() && sidePanel().maximized,
           },
@@ -136,6 +139,7 @@ export function ConversationView(props: ConversationProps) {
             back keeps their rows and scroll position and does not build the chat again. */}
         <ConversationTimeline />
         <ConversationComposer />
+        <Show when={terminalOpen() && props.agent}>{(agent) => <TerminalPane agentId={agent().id} />}</Show>
         <Show when={sideThreadOpen()}>
           <ConversationThread />
         </Show>

@@ -280,4 +280,7 @@ export const messages = {
   "harness.settings.endpoints": "端点",
   "harness.settings.noEndpoints": "没有端点。",
   "harness.settings.endpointModels": { other: "{url} · {count} 个模型" },
+  "harness.transport.title": "Transport",
+  "harness.transport.acp": "ACP",
+  "harness.transport.cli": "CLI",
 } as const satisfies PartialTranslation<typeof source>;

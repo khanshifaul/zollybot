@@ -10,6 +10,7 @@ name = "zollybot-cli"
 path = "src/main.rs"
 
 [dependencies]
+libc = "0.2"
 ratatui = "0.29"
 qrcode = "0.14"
 crossterm = "0.28"

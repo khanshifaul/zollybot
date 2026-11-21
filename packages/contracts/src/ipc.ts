@@ -88,6 +88,7 @@ export * from "./ipc-sidebar-pins";
 export * from "./ipc-skills";
 export * from "./ipc-storage";
 export * from "./ipc-team-host";
+export * from "./ipc-terminal";
 export * from "./ipc-vault";
 export * from "./ipc-voice";
 export * from "./ipc-workflow-discord";

@@ -49,6 +49,9 @@ export function ConversationHeader() {
     sideThreadOpen,
     toggleSidePanel,
     moveThreadToPanel,
+    terminalAvailable,
+    terminalOpen,
+    toggleTerminal,
   } = useConversationViewScope();
   const runningThreads = () => props.threads?.running ?? 0;
   /** While a side thread is open, the agent's name goes back to the agent's own chat. */
@@ -108,6 +111,11 @@ export function ConversationHeader() {
       onOpenChat={openMainChat()}
       titleSelected={titleSelected()}
       pendingModel={pendingModel()}
+      terminal={{
+        open: terminalOpen(),
+        available: terminalAvailable(),
+        onToggle: toggleTerminal,
+      }}
       modelPicker={{
         provider: settingsProvider(),
         foreignProvider: props.agent ? foreignProvider(props.agent.provider) : undefined,

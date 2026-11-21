@@ -27,7 +27,7 @@ import type { ServerAuditLog } from "./ipc-server-audit";
 // change on one side is a type error on the other. The types are phantom members: they exist only
 // for the checker, and the runtime value is still `{ kind, channel }`.
 
-import type { AgentProviderRef, DownloadableProviderId, ManagedProviderId } from "./agent-providers";
+import type { AgentProviderRef, DownloadableProviderId, ManagedProviderId, ProviderTransport } from "./agent-providers";
 import type { AppAppearancePreference, SetAppAppearancePreferenceInput } from "./app-appearance";
 import type { AppInterfaceSizePreference, SetAppInterfaceSizePreferenceInput } from "./app-interface-size";
 import type { AppLanguagePreference, SetAppLanguagePreferenceInput } from "./app-language";
@@ -541,6 +541,7 @@ import type {
   UpdateHostIdentityInput,
   UpdateTeamMemberInput,
 } from "./ipc-team-host";
+import type { PtyDataEvent, PtyExitEvent, PtyStartInput, PtyStartResult } from "./ipc-terminal";
 import type { VaultImportResult, VaultSaveInput, VaultSecretRequest, VaultState } from "./ipc-vault";
 import type {
   SpeechAudio,
@@ -798,8 +799,22 @@ export const IPC_ENDPOINTS = {
     exportData: request<undefined, ExportResult>()("maintenance:export-data"),
     exportDiagnostics: request<undefined, ExportResult>()("maintenance:export-diagnostics"),
   },
+  terminal: {
+    /** Runs the agent's provider CLI in a PTY for the conversation's terminal view. */
+    startPty: request<PtyStartInput, PtyStartResult>()("app:start-pty"),
+    writePty: request<{ ptyId: string; data: string }, void>()("app:write-pty"),
+    resizePty: request<{ ptyId: string; cols: number; rows: number }, void>()("app:resize-pty"),
+    stopPty: request<{ ptyId: string }, void>()("app:stop-pty"),
+    ptyData: event<PtyDataEvent>()("app:pty-data"),
+    ptyExit: event<PtyExitEvent>()("app:pty-exit"),
+  },
   providers: {
     setProviderOn: request<{ provider: AgentProviderId; on: boolean }, AgentStatus>()("app:set-provider-on"),
+    /** The transport a provider runs on when its driver supports more than one; null for a single one. */
+    getProviderTransport: request<AgentProviderId, ProviderTransport | null>()("app:get-provider-transport"),
+    setProviderTransport: request<{ provider: AgentProviderId; transport: ProviderTransport }, AgentStatus>()(
+      "app:set-provider-transport",
+    ),
     connectProvider: request<AgentProviderId, AgentStatus>()("app:connect-provider"),
     /**
      * Connects a provider whose descriptor has `mainlandChinaSignInSite`, with an account of that
@@ -2196,6 +2211,7 @@ export const IPC_GROUP_PATHS = {
   remoteDesktop: "remoteDesktop",
   officeTasks: "officeTasks",
   mobileConnect: "mobileConnect",
+  terminal: "",
 } as const satisfies { readonly [Group in keyof IpcEndpoints]: string | null };
 
 export type IpcGroupName = keyof IpcEndpoints;

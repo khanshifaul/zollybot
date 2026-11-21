@@ -54,6 +54,11 @@ export interface DrainHooks {
   /** Whether this agent is being deleted. Its queued messages are deleted with it and never start. */
   isDeleting(agentId: string): boolean;
   /**
+   * Whether the chat's terminal holds this agent's provider session. A second frontend owns the
+   * session then, so no new ACP turn may start on the agent's own chat until it closes.
+   */
+  terminalHeld(agentId: string): boolean;
+  /**
    * Whether the catalogue still serves this model. A removed endpoint's models stay in the running
    * OpenCode process until it restarts, and the restart waits for a busy agent, so this is what
    * keeps a delivery off an endpoint the user has taken out.
@@ -264,6 +269,11 @@ export class DrainScheduler {
     return this.#heldBy(mainLane(agentId)) === null;
   }
 
+  /** Whether the agent's own chat still runs a turn, for a terminal that must wait for it. */
+  hasActiveChat(agentId: string): boolean {
+    return this.#laneTurnActive(mainLane(agentId));
+  }
+
   /** The agent's own chat and its open tasks. */
   #lanesOf(agentId: string): Lane[] {
     return [mainLane(agentId), ...this.#tasks.openTaskIds(agentId).map((taskId) => ({ agentId, taskId }))];
@@ -308,6 +318,7 @@ export class DrainScheduler {
     const { agentId, taskId } = lane;
     if (this.#hooks.isDeleting(agentId)) return "deleting";
     if (this.#settingsHolds.has(agentId)) return "session-settings";
+    if (taskId === null && this.#hooks.terminalHeld(agentId)) return "terminal";
     if (this.#laneTurnActive(lane)) return "active-turn";
     // The provider has one turn of the agent at a time, so each lane waits for the turn of any other.
     if (

@@ -250,4 +250,7 @@ export const messages = {
   "harness.settings.deleteOff":
     "Usuwa CLI pobrane przez ZollyBot dla {name} ({size}). Konta, logowania i agenci zostają.",
   "harness.settings.removeDownloadFailed": "Nie udało się usunąć pobranych plików.",
+  "harness.transport.title": "Transport",
+  "harness.transport.acp": "ACP",
+  "harness.transport.cli": "CLI",
 } as const satisfies PartialTranslation<typeof source>;

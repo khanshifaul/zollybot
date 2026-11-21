@@ -306,4 +306,7 @@ export const messages = defineMessages("harness", {
   "harness.settings.endpoints": "Endpoints",
   "harness.settings.noEndpoints": "No endpoints.",
   "harness.settings.endpointModels": { one: "{url} · 1 model", other: "{url} · {count} models" },
+  "harness.transport.title": "Transport",
+  "harness.transport.acp": "ACP",
+  "harness.transport.cli": "CLI",
 });

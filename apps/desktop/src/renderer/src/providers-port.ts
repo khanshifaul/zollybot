@@ -11,6 +11,8 @@ export interface ProvidersPort {
   cancelProviderSignIn: ZollyBotDesktopApi["cancelProviderSignIn"];
   refreshAgentProviders: ZollyBotDesktopApi["refreshAgentProviders"];
   setProviderOn: ZollyBotDesktopApi["setProviderOn"];
+  getProviderTransport: ZollyBotDesktopApi["getProviderTransport"];
+  setProviderTransport: ZollyBotDesktopApi["setProviderTransport"];
   restartProvider: ZollyBotDesktopApi["restartProvider"];
   cancelProviderRestart: ZollyBotDesktopApi["cancelProviderRestart"];
   startProviderCodeLogin: ZollyBotDesktopApi["startProviderCodeLogin"];

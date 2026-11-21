@@ -1,6 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { ProviderLogo } from "@zollybot/brand";
-import { agentProviderDescriptor } from "@zollybot/contracts/agent-providers";
+import { agentProviderDescriptor, type ProviderTransport } from "@zollybot/contracts/agent-providers";
 import type {
   AgentProviderId,
   AgentProviderState,
@@ -166,6 +166,14 @@ export interface ProviderPickerProps {
    * `usedBy` names an agent stays on, and a toast tells why, so no agent loses its provider silently.
    */
   onSetProviderOn?: ((provider: AgentProviderId, on: boolean) => void | Promise<void>) | undefined;
+  /** Reads the transport a provider runs on. Null or absent hides the switch. */
+  onGetProviderTransport?:
+    | ((provider: AgentProviderId) => ProviderTransport | null | Promise<ProviderTransport | null>)
+    | undefined;
+  /** Switches a provider between its ACP server and its own CLI. */
+  onSetProviderTransport?:
+    | ((provider: AgentProviderId, transport: ProviderTransport) => void | Promise<void>)
+    | undefined;
   onInstallProvider?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
   onSignInProvider?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
   /** Adds, signs in, names and removes the accounts of a row. Settings has it; onboarding does not. */
@@ -228,6 +236,45 @@ export function ProviderPicker(props: ProviderPickerProps) {
   const customReady = () => servesCustomProvider(openCode());
   const endpointCount = () => props.customProviders?.length ?? 0;
   const endpointCountLabel = () => t("harness.endpointCount", { count: endpointCount() });
+  /**
+   * The transport switch belongs to the provider the picker is choosing. It appears only for a
+   * provider whose descriptor offers both transports, and only where the host exposes the calls.
+   */
+  const transportProvider = () => {
+    const provider = props.value;
+    return provider && agentProviderDescriptor(provider).transportChoice && props.onGetProviderTransport
+      ? provider
+      : null;
+  };
+  const [transport, setTransport] = createSignal<ProviderTransport | null>(null);
+  const [savingTransport, setSavingTransport] = createSignal(false);
+  createEffect(transportProvider, (provider) => {
+    if (!provider) {
+      setTransport(null);
+      return;
+    }
+    let current = true;
+    void Promise.resolve(props.onGetProviderTransport?.(provider))
+      .then((value) => {
+        if (current) setTransport(value ?? null);
+      })
+      .catch(() => {
+        if (current) setTransport(null);
+      });
+    return () => {
+      current = false;
+    };
+  });
+  async function chooseTransport(provider: AgentProviderId, next: ProviderTransport) {
+    if (savingTransport() || transport() === next) return;
+    setSavingTransport(true);
+    try {
+      await props.onSetProviderTransport?.(provider, next);
+      setTransport(next);
+    } finally {
+      setSavingTransport(false);
+    }
+  }
   /** The count answers a click only where the list can be opened. Elsewhere it stays a badge. */
   const countManageable = () => endpointCount() > 0 && Boolean(props.onManageCustomProviders);
   /** The row is a choice once it has something to run and someone to tell about the choice. */
@@ -429,25 +476,48 @@ export function ProviderPicker(props: ProviderPickerProps) {
         },
       ]}
     >
-      <Show when={props.label || props.onRefreshProviders}>
+      <Show when={props.label || props.onRefreshProviders || transportProvider()}>
         <div class="provider-picker-heading">
           <Show when={props.label}>{(label) => <div class="provider-picker-label">{label()}</div>}</Show>
-          <Show when={props.onRefreshProviders}>
-            <Button
-              type="button"
-              variant="ghost"
-              size="xs"
-              class="provider-picker-refresh"
-              aria-label={props.refreshingProviders ? t("harness.refreshingLabel") : t("harness.refreshLabel")}
-              loading={props.refreshingProviders}
-              loadingLabel={t("harness.refreshing")}
-              disabled={props.disabled}
-              onClick={() => void props.onRefreshProviders?.()}
-            >
-              <RefreshCw size={13} aria-hidden="true" />
-              {t("harness.refresh")}
-            </Button>
-          </Show>
+          <div class="provider-picker-heading-actions">
+            <Show when={transportProvider()}>
+              {(provider) => (
+                <fieldset class="provider-picker-transport">
+                  <legend class="provider-picker-transport-legend">{t("harness.transport.title")}</legend>
+                  <For each={["acp", "cli"] as const}>
+                    {(choice) => (
+                      <Button
+                        type="button"
+                        size="xs"
+                        variant="ghost"
+                        aria-pressed={transport() === choice ? "true" : "false"}
+                        disabled={Boolean(props.disabled || savingTransport())}
+                        onClick={() => void chooseTransport(provider(), choice)}
+                      >
+                        {t(choice === "acp" ? "harness.transport.acp" : "harness.transport.cli")}
+                      </Button>
+                    )}
+                  </For>
+                </fieldset>
+              )}
+            </Show>
+            <Show when={props.onRefreshProviders}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="xs"
+                class="provider-picker-refresh"
+                aria-label={props.refreshingProviders ? t("harness.refreshingLabel") : t("harness.refreshLabel")}
+                loading={props.refreshingProviders}
+                loadingLabel={t("harness.refreshing")}
+                disabled={props.disabled}
+                onClick={() => void props.onRefreshProviders?.()}
+              >
+                <RefreshCw size={13} aria-hidden="true" />
+                {t("harness.refresh")}
+              </Button>
+            </Show>
+          </div>
         </div>
       </Show>
       <div class="provider-picker-list">

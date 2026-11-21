@@ -265,10 +265,16 @@ import {
   upsertEmployment,
 } from "./offices/office-store";
 import { roleByKey, roleForAgentName } from "./offices/role-catalog";
+import { OPENCODE_AGENT_CONFIG, openCodeConfigEnv } from "./opencode-config";
 import type { PasswordVault } from "./password-vault";
 import { canConfineProcesses } from "./process-confinement";
-import { decodeRecordResponse, getString } from "./protocol";
-import { NO_PROVIDER_CREDENTIALS, type ProviderClientContext } from "./provider-drivers";
+import { decodeRecordResponse, getString, isRecord } from "./protocol";
+import {
+  NO_PROVIDER_CREDENTIALS,
+  openCodeEndpoints,
+  type ProviderClientContext,
+  type ProviderTransport,
+} from "./provider-drivers";
 import { providerHistoryPersistence } from "./provider-history-persistence";
 import { recordAgentRestartActivity } from "./restart-activity";
 import type { RoutineFlowTools } from "./routine-flows/routine-flow-tools";
@@ -299,6 +305,9 @@ const errorLogger = createZollyBotLogger("agent-error");
  * application, and an unset entry keeps that copy in the search.
  */
 const DEFAULT_BUNDLED_EXECUTABLES: BundledProviderExecutables = { claude: null, grok: null };
+
+/** How long a terminal waits for the chat's running turn before it opens anyway. */
+const TERMINAL_TURN_WAIT_MS = 2 * 60_000;
 
 export type { TestMcpServerOptions } from "./agent/mcp-gateway";
 export type { RoutineMutationOptions } from "./agent/routine-scheduler";
@@ -357,6 +366,12 @@ export interface AgentServiceOptions {
   /** The provider accounts after the first. Omitted, each provider holds its own sign-in only. */
   providerAccounts?: ProviderAccountStore;
   saveProviderUse?: (provider: AgentProvider, on: boolean) => Effect.Effect<void, AgentLifecycleFailed>;
+  /** The transport each provider was last set to run on. Omitted, each driver's own default. */
+  providerTransports?: Partial<Record<AgentProvider, ProviderTransport>>;
+  saveProviderTransport?: (
+    provider: AgentProvider,
+    transport: ProviderTransport,
+  ) => Effect.Effect<void, AgentLifecycleFailed>;
   localSkillTools?: (() => LocalSkillTools) | undefined;
   /** Built after the service, so read when a tool call needs it. */
   routineFlowTools?: () => RoutineFlowTools;
@@ -551,7 +566,11 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   readonly routineRecords: RoutineRecords;
   readonly #mcp: McpGateway;
   readonly #providers: ProviderRuntime;
+  readonly #credentials: ProviderClientContext;
+  /** Agents whose chat session a terminal owns; the drain starts no turn on them until it closes. */
+  readonly #terminalHeld = new Set<string>();
   readonly #providerUseChanges = Semaphore.makeUnsafe(1);
+  readonly #saveProviderTransport: AgentServiceOptions["saveProviderTransport"];
   readonly #endpoints: CustomEndpoints;
   readonly #prepareAgentWorkspace: (agent: AgentSummary) => Effect.Effect<void, AgentLifecycleFailed>;
   readonly #hostedSites: HostedSiteCoordinator;
@@ -615,6 +634,8 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       hostMemory = null,
       busyMessageMode = () => DEFAULT_BUSY_MESSAGE_MODE,
     } = options;
+    this.#saveProviderTransport = options.saveProviderTransport;
+    this.#credentials = credentials;
     this.#developmentDefaults = developmentDefaults;
     this.#busyMessageMode = busyMessageMode;
     this.#localSkillTools = localSkillTools;
@@ -823,6 +844,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     });
     this.#providers = new ProviderRuntime({
       offProviders: options.offProviders ?? [],
+      ...(options.providerTransports ? { providerTransports: options.providerTransports } : {}),
       ...(options.providerAccounts ? { accounts: options.providerAccounts } : {}),
       saveProviderUse: (provider, on) =>
         (options.saveProviderUse?.(provider, on) ?? Effect.void).pipe(toProviderOperationFailed),
@@ -1488,6 +1510,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
         tagReferences: (agentId, threadId) => this.#tagReferences(agentId, threadId),
         isStopping: () => this.#stopping,
         isDeleting: (agentId) => this.#removal.deleting().has(agentId),
+        terminalHeld: (agentId) => this.#terminalHeld.has(agentId),
         servesModel: (model, provider) => this.#endpoints.serves(model, provider),
         requeueChannelDelivery: (deliveryId, continueWork) => this.#requeueChannelDelivery(deliveryId, continueWork),
         mayContinueOnBackup: (agentId) => this.#usageLimitBackup(agentId, true) !== undefined,
@@ -4159,6 +4182,25 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       );
   }
 
+  /** Switches a provider between the transports its driver supports, when it supports more than one. */
+  setProviderTransport(
+    provider: AgentProvider,
+    transport: ProviderTransport,
+  ): Effect.Effect<AgentStatus, AgentLifecycleFailed> {
+    const apply = this.#providers.setProviderTransport(provider, transport);
+    const saved = this.#saveProviderTransport?.(provider, transport) ?? Effect.void;
+    return saved.pipe(
+      Effect.andThen(apply),
+      Effect.mapError(
+        (failure) => new AgentLifecycleFailed({ operation: "setProviderTransport", cause: failure.cause }),
+      ),
+    );
+  }
+
+  providerTransport(provider: AgentProvider): ProviderTransport | undefined {
+    return this.#providers.providerTransport(provider);
+  }
+
   setProviderOn(provider: AgentProvider, on: boolean): Effect.Effect<AgentStatus, AgentLifecycleFailed> {
     // Turning on can activate models, which takes this same lock. Only off holds it.
     const change = () => this.#providers.setProviderOn(provider, on);
@@ -4711,6 +4753,87 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     this.#scope = Scope.makeUnsafe();
     this.#providers.markStopped();
   }).bind(this);
+
+  /**
+   * What the terminal pane runs for an agent: its provider CLI, workspace and the session its chat
+   * already uses. Null for a provider whose CLI has no terminal view.
+   */
+  ptyTarget(agentId: string): {
+    provider: AgentProvider;
+    sessionId: string | null;
+    cwd: string;
+    model: string;
+    env: Record<string, string>;
+  } | null {
+    const agent = this.#store.list().find((entry) => entry.id === agentId);
+    if (agent?.provider !== "opencode") return null;
+    // The store keeps the provider session across restarts; the live index knows one bound this run.
+    const sessionId =
+      this.#store.activeProviderSession(agentId)?.externalSessionId ?? this.#conversation.providerThreadFor(agentId);
+    const env = openCodeConfigEnv(
+      OPENCODE_AGENT_CONFIG,
+      openCodeEndpoints(this.#credentials),
+      this.#credentials.apiKey("opencode"),
+    );
+    if (agent.model && env.OPENCODE_CONFIG_CONTENT) {
+      try {
+        const parsed = JSON.parse(env.OPENCODE_CONFIG_CONTENT);
+        const config = isRecord(parsed) ? { ...parsed } : {};
+        config.model = agent.model;
+        env.OPENCODE_CONFIG_CONTENT = JSON.stringify(config);
+      } catch {
+        // A malformed layer stays as the driver built it; the TUI then keeps its own model.
+      }
+    }
+    return { provider: agent.provider, sessionId, cwd: agent.workspacePath, model: agent.model, env };
+  }
+
+  /**
+   * Opens the chat's terminal: holds its lane, waits for a running turn to end, and makes sure the
+   * provider session exists. A held lane starts no new ACP turn until `releaseTerminalHold`.
+   */
+  readonly openTerminalSession = Effect.fn("AgentService.openTerminalSession")(function* (
+    this: AgentService,
+    agentId: string,
+  ) {
+    this.#terminalHeld.add(agentId);
+    const release = () => this.#terminalHeld.delete(agentId);
+    return yield* Effect.gen({ self: this }, function* () {
+      const deadline = Date.now() + TERMINAL_TURN_WAIT_MS;
+      while (this.#drain.hasActiveChat(agentId) && Date.now() < deadline) yield* Effect.sleep(250);
+      const agent = this.#store.list().find((entry) => entry.id === agentId);
+      if (!agent) throw new Error(sourceText("error.harness.noAgentProcess", { harness: agentId }));
+      if (!this.#store.activeProviderSession(agentId)) {
+        // The provider may still be starting at launch; wait for it instead of failing the pane.
+        yield* this.#providers
+          .ensureProvider(agent.provider)
+          .pipe(
+            Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
+          );
+        const client = this.#providers.requireReadyClientForAgent(agent);
+        yield* this.#threads
+          .ensureThread(agent, client)
+          .pipe(
+            Effect.mapError((failure) => new AgentLifecycleFailed({ operation: "openTerminal", cause: failure.cause })),
+          );
+      }
+      const target = this.ptyTarget(agentId);
+      if (!target) throw new Error("This agent has no terminal view.");
+      logger.info("A terminal holds the chat session.", {
+        agent: agentId,
+        session: target.sessionId,
+        model: target.model,
+      });
+      return target;
+    }).pipe(Effect.onExit((exit) => (Exit.isFailure(exit) ? Effect.sync(release) : Effect.void)));
+  }).bind(this);
+
+  /** The terminal closed: the agent's own chat may drain again. */
+  releaseTerminalHold(agentId: string): void {
+    if (!this.#terminalHeld.delete(agentId)) return;
+    logger.info("The terminal released the chat session.", { agent: agentId });
+    this.#drain.scheduleDrain(agentId);
+  }
 
   readConversation(agentId: string): Effect.Effect<ConversationSnapshot, AgentLifecycleFailed> {
     return this.#reader

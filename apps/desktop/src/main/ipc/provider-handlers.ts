@@ -9,6 +9,7 @@ import {
   isDownloadableProvider,
   isManagedRuntimeProvider,
   type ManagedProviderId,
+  type ProviderTransport,
 } from "@zollybot/contracts/agent-providers";
 import {
   type AgentProviderId,
@@ -68,6 +69,10 @@ export function providerIpcHandlers({
     providers: {
       setProviderOn: payloadHandler(parseProviderUseInput, ({ provider, on }) =>
         runCauseEffect(service.setProviderOn(provider, on)),
+      ),
+      getProviderTransport: payloadHandler(parseProviderId, (provider) => service.providerTransport(provider) ?? null),
+      setProviderTransport: payloadHandler(parseProviderTransportInput, ({ provider, transport }) =>
+        runCauseEffect(service.setProviderTransport(provider, transport)),
       ),
       connectProvider: payloadHandler(parseProviderId, (provider) => connect(provider, "global")),
       connectProviderInMainlandChina: payloadHandler(parseProviderId, (provider) => {
@@ -223,6 +228,12 @@ function parseProviderUseInput(value: unknown): { provider: AgentProviderId; on:
   const provider = parseProviderId(value.provider);
   if (provider === "acp") throw new Error("Custom agents do not have a built-in provider switch.");
   return { provider, on: value.on };
+}
+
+function parseProviderTransportInput(value: unknown): { provider: AgentProviderId; transport: ProviderTransport } {
+  if (!isDynamicRecord(value) || (value.transport !== "acp" && value.transport !== "cli"))
+    throw new Error("Invalid provider transport.");
+  return { provider: parseProviderId(value.provider), transport: value.transport };
 }
 
 export function parseConnectProviderAccountInput(value: unknown): ConnectProviderAccountInput {

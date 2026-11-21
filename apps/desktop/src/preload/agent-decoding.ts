@@ -1,3 +1,4 @@
+import type { ProviderTransport } from "@zollybot/contracts/agent-providers";
 import {
   type AgentNotificationLevelsSnapshot,
   type AgentSessionSettings,
@@ -109,6 +110,11 @@ export function decodeProviderCodeLoginStart(value: unknown): ProviderCodeLoginS
     ...(value.verificationUrlComplete === undefined ? {} : { verificationUrlComplete: value.verificationUrlComplete }),
     expiresAt: value.expiresAt,
   };
+}
+
+export function decodeProviderTransportFromMain(value: unknown): ProviderTransport | null {
+  if (value === null || value === "acp" || value === "cli") return value;
+  throw new Error("Invalid provider transport response.");
 }
 
 export function decodeAgentStatusFromMain(value: unknown): AgentStatus {

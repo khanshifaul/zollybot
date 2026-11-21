@@ -301,6 +301,7 @@ import { ProviderHostSignIns } from "./provider-host-sign-ins";
 import { startAccountLog, startAgentLog, startProviderLog } from "./provider-log";
 import { toProviderRuntimeFailure } from "./provider-runtime-effects";
 import { ProviderRuntimeManager, providerRuntimeRoot, runtimeTarget } from "./provider-runtime-manager";
+import { ProviderTransportSettingsStore } from "./provider-transport-settings-store";
 import { ProviderUseSettingsStore } from "./provider-use-settings-store";
 import { RelayedMessagingInstalls } from "./relayed-messaging-installs";
 import { decodeQueuedMessageReceipt } from "./remote-agent-decoding";
@@ -1352,6 +1353,10 @@ export async function createApplicationServices({
    */
   const providerUse = new ProviderUseSettingsStore(join(app.getPath("userData"), "zollybot-provider-use-v1.json"));
   await runCauseEffect(providerUse.load());
+  const providerTransports = new ProviderTransportSettingsStore(
+    join(app.getPath("userData"), "zollybot-provider-transports-v1.json"),
+  );
+  await runCauseEffect(providerTransports.load());
   const providerAccounts = new ProviderAccountStore(
     join(app.getPath("userData"), "zollybot-provider-accounts-v1.json"),
     join(app.getPath("userData"), "provider-accounts"),
@@ -1837,6 +1842,15 @@ export async function createApplicationServices({
     hostMemory,
     requestTimeoutMs: 30_000,
     offProviders: providerUse.off(),
+    providerTransports: providerTransports.transports(),
+    saveProviderTransport: (provider, transport) =>
+      providerTransports
+        .set(provider, transport)
+        .pipe(
+          Effect.mapError(
+            (error) => new AgentLifecycleFailed({ operation: "saveProviderTransport", cause: error.cause }),
+          ),
+        ),
     providerAccounts,
     saveProviderUse: (provider, on) =>
       providerUse.set(provider, on).pipe(

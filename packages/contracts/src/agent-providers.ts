@@ -47,6 +47,9 @@ export function isAgentProvider(value: unknown): value is AgentProviderId {
   return isOneOf(AGENT_PROVIDERS, value);
 }
 
+/** How a provider process talks to ZollyBot: its Agent Client Protocol server, or its own CLI. */
+export type ProviderTransport = "acp" | "cli";
+
 /** The form of every provider id, including one that a newer host adds. */
 export const PROVIDER_ID_PATTERN = /^[a-z][a-z0-9-]{0,63}$/u;
 
@@ -121,6 +124,11 @@ export interface AgentProviderDescriptor {
    * renderer guesses at is a button that fails when it is pressed.
    */
   readonly localCodeSignIn: "device" | "paste" | null;
+  /**
+   * True when the provider's driver has more than one transport (its ACP server and its own CLI).
+   * The picker then offers the switch; the backend still validates the choice.
+   */
+  readonly transportChoice?: true;
   /**
    * Where the provider's sign-in page ends. `callback`: the page sends the browser to an address on
    * the computer that started it, so a browser tab elsewhere must paste that address back. `page`:
@@ -288,6 +296,7 @@ const AGENT_PROVIDER_DESCRIPTOR_TABLE = {
     legacyModelPrefix: null,
     authKind: "opencode",
     pickerOrder: 3,
+    transportChoice: true,
     localCodeSignIn: null,
     signInPageEnd: "callback",
     skillFolders: [".opencode/skills", ".agents/skills", ".claude/skills"],

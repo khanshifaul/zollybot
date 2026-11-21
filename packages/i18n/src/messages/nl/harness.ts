@@ -284,4 +284,7 @@ export const messages = {
   "harness.settings.endpoints": "Endpoints",
   "harness.settings.noEndpoints": "Geen endpoints.",
   "harness.settings.endpointModels": { one: "{url} · 1 model", other: "{url} · {count} modellen" },
+  "harness.transport.title": "Transport",
+  "harness.transport.acp": "ACP",
+  "harness.transport.cli": "CLI",
 } as const satisfies PartialTranslation<typeof source>;

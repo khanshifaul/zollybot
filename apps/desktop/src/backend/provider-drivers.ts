@@ -2,6 +2,7 @@ import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 import { type ClientSideConnection, type InitializeResponse, RequestError } from "@agentclientprotocol/sdk";
+import type { ProviderTransport } from "@zollybot/contracts/agent-providers";
 import {
   type AgentAuthState,
   type AgentModelOption,
@@ -71,6 +72,7 @@ import type { McpOAuthAuthority } from "./mcp-oauth-provider";
 import type { McpOAuthProxySettingsStore } from "./mcp-oauth-proxy";
 import type { McpDropReporter, McpEndpointSource, McpServerSource, McpToolRuntimeSource } from "./mcp-provider-shapes";
 import { MuseAgentClient } from "./muse-client";
+import { OpencodeCliClient } from "./opencode-cli-client";
 import {
   type CustomProviderSource,
   customProvidersOn,
@@ -605,8 +607,12 @@ interface ProviderModelCatalog {
  * live in the provider registry in `@zollybot/contracts/agent-providers`; a driver holds only the
  * behaviour, so a new provider is one registry row plus one driver.
  */
+export type { ProviderTransport } from "@zollybot/contracts/agent-providers";
+
 export interface BuiltInProviderDriver {
   id: AgentProviderId;
+  /** Transports this provider can run on. Omitted = inferred from client implementation. */
+  supportedTransports?: readonly ProviderTransport[];
   signIn: ProviderSignIn;
   /**
    * The files the provider's CLI writes when the user signs in with it. The host checks the account
@@ -635,13 +641,19 @@ export interface BuiltInProviderDriver {
     requestTimeoutMs: number,
     context: ProviderClientContext,
     confinement?: ProcessConfinement,
+    transport?: ProviderTransport,
   ): AgentClient;
   /**
    * The client that writes an agent profile, when the provider needs a different one. Profile
    * generation asks the model one question and must not let it act, so a provider that can be
    * started without tools starts that way here. Without this hook the normal client is used.
    */
-  createProfileClient?(cli: AgentCliInfo, requestTimeoutMs: number, context: ProviderClientContext): AgentClient;
+  createProfileClient?(
+    cli: AgentCliInfo,
+    requestTimeoutMs: number,
+    context: ProviderClientContext,
+    transport?: ProviderTransport,
+  ): AgentClient;
   authState(account: AccountReadResult["account"]): AgentAuthState;
   validateAccount(account: NonNullable<AccountReadResult["account"]>): void;
 }
@@ -691,7 +703,7 @@ function piKeyProvider(provider: "pi" | KeyOnlyProviderId, context: ProviderClie
 }
 
 /** The custom endpoints that OpenCode runs. The others run on Pi. */
-function openCodeEndpoints(context: ProviderClientContext): CustomProviderSource {
+export function openCodeEndpoints(context: ProviderClientContext): CustomProviderSource {
   return customProvidersOn(context.customProviders, "opencode");
 }
 
@@ -900,11 +912,27 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
       fallback: modelsAfterOpenCodeDiscoveryFailure,
     },
     resolveCli: resolveOpencodeCli,
+    // The ACP server is the structured transport; `opencode run --format json` is the CLI one, and
+    // either can be selected for the provider without changing its account or model.
+    supportedTransports: ["acp", "cli"],
     // Both clients read the key and the custom providers at spawn, and the profile client merges the
     // endpoints *into* the profile permission layer rather than beside it: the two share one
     // environment variable, so the layer would be lost if a custom provider config replaced it.
-    createClient: (cli, timeout, context, confinement) =>
-      new AcpAgentClient(cli, timeout, {
+    createClient: (cli, timeout, context, confinement, transport) => {
+      if (transport === "cli")
+        return new OpencodeCliClient(cli, {
+          requestTimeoutMs: timeout,
+          extraEnv: () => ({
+            ...context.agentEnvironment?.(),
+            ...opencodeEnv(cli, context),
+            ...openCodeConfigEnv(OPENCODE_AGENT_CONFIG, openCodeEndpoints(context), context.apiKey("opencode")),
+            ...(confinement ? OPENCODE_CONFINED_ENV : {}),
+          }),
+          ...(confinement
+            ? { confine: (target) => confineSpawnTarget(target, confinement, openCodeStatePaths()) }
+            : {}),
+        });
+      return new AcpAgentClient(cli, timeout, {
         provider: "opencode",
         flavor: OPENCODE_ACP_FLAVOR,
         argv: ["acp"],
@@ -935,7 +963,8 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
             Effect.mapError((failure) => providerFailure(failure.cause)),
           ),
         history: context.history?.("opencode"),
-      }),
+      });
+    },
     createProfileClient: (cli, timeout, context) =>
       new AcpAgentClient(cli, timeout, {
         provider: "opencode",
@@ -1372,6 +1401,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "commandcode",
+    supportedTransports: ["acp"],
     signIn: { kind: "external" },
     resolveCli: () => resolveCommandCodeCli(),
     createClient: (cli, timeout, context, _confinement) =>
@@ -1404,6 +1434,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "kilo",
+    supportedTransports: ["acp"],
     signIn: { kind: "external" },
     resolveCli: () => resolveKiloCli(),
     createClient: (cli, timeout, context, _confinement) =>
@@ -1436,6 +1467,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "amp",
+    supportedTransports: ["acp"],
     signIn: { kind: "external" },
     resolveCli: () => resolveAmpCli(),
     createClient: (cli, timeout, context, _confinement) =>
@@ -1468,6 +1500,7 @@ export const BUILT_IN_PROVIDER_DRIVERS: readonly BuiltInProviderDriver[] = [
   },
   {
     id: "qwen",
+    supportedTransports: ["acp"],
     signIn: { kind: "external" },
     resolveCli: () => resolveQwenCli(),
     createClient: (cli, timeout, context, _confinement) =>

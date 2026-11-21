@@ -6,7 +6,11 @@
 
 import type { JSX } from "@solidjs/web";
 import { ProviderLogo } from "@zollybot/brand";
-import { isManagedRuntimeProvider } from "@zollybot/contracts/agent-providers";
+import {
+  agentProviderDescriptor,
+  isManagedRuntimeProvider,
+  type ProviderTransport,
+} from "@zollybot/contracts/agent-providers";
 import {
   type AgentModelId,
   type AgentProviderId,
@@ -136,6 +140,13 @@ export interface HarnessSettingsPageProps extends ProviderRowHost {
   onCancelProviderRestart?: ((provider: AgentProviderId) => void | Promise<void>) | undefined;
   /** Turns a provider on or off. A provider that an agent uses stays on and names its agents. */
   onSetProviderOn?: ((provider: AgentProviderId, on: boolean) => void | Promise<void>) | undefined;
+  /** Reads the transport a provider runs on; only a provider with `transportChoice` offers the switch. */
+  onGetProviderTransport?:
+    | ((provider: AgentProviderId) => ProviderTransport | null | Promise<ProviderTransport | null>)
+    | undefined;
+  onSetProviderTransport?:
+    | ((provider: AgentProviderId, transport: ProviderTransport) => void | Promise<void>)
+    | undefined;
   /** What `onRemoveProviderDownload` frees now: nothing while the provider is on. */
   onMeasureProviderDownload?: ((provider: AgentProviderId) => Promise<ProviderRuntimeDownload>) | undefined;
   /** Removes the downloaded CLI of a provider that is off. This computer only. */
@@ -509,6 +520,61 @@ function ChoiceLabel(props: { choice: DefaultChoice }) {
 
 type PageProps = HarnessSettingsPageProps & { option: ProviderPickerOption };
 
+/** The ACP/CLI switch of a provider whose driver has both, in the page header where it is visible. */
+function TransportControl(props: PageProps) {
+  const { t } = useText();
+  const [transport, setTransport] = createSignal<ProviderTransport | null>(null);
+  const [saving, setSaving] = createSignal(false);
+  createEffect(
+    () => props.option.id,
+    (provider) => {
+      let current = true;
+      void Promise.resolve(props.onGetProviderTransport?.(provider))
+        .then((value) => {
+          if (current) setTransport(value ?? null);
+        })
+        .catch(() => {
+          if (current) setTransport(null);
+        });
+      return () => {
+        current = false;
+      };
+    },
+  );
+  async function choose(next: ProviderTransport) {
+    if (saving() || transport() === next) return;
+    setSaving(true);
+    try {
+      await props.onSetProviderTransport?.(props.option.id, next);
+      setTransport(next);
+    } finally {
+      setSaving(false);
+    }
+  }
+  return (
+    <div class="provider-transport-control">
+      <span class="provider-transport-label">{t("harness.transport.title")}</span>
+      <fieldset class="provider-picker-transport">
+        <legend class="provider-picker-transport-legend">{t("harness.transport.title")}</legend>
+        <For each={["acp", "cli"] as const}>
+          {(choice) => (
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              aria-pressed={transport() === choice ? "true" : "false"}
+              disabled={Boolean(props.disabled || saving())}
+              onClick={() => void choose(choice)}
+            >
+              {t(choice === "acp" ? "harness.transport.acp" : "harness.transport.cli")}
+            </Button>
+          )}
+        </For>
+      </fieldset>
+    </div>
+  );
+}
+
 function ProviderPage(props: PageProps) {
   const { t, format } = useText();
   const row = createProviderRow(() => props.option, props);
@@ -556,6 +622,11 @@ function ProviderPage(props: PageProps) {
         status={header().status}
         statusLabel={header().label}
         subtitle={subtitle()}
+        actions={
+          agentProviderDescriptor(props.option.id).transportChoice && props.onSetProviderTransport ? (
+            <TransportControl {...props} />
+          ) : undefined
+        }
       />
       <Show when={!row.off()}>
         <Show when={accountsShown()} fallback={<SignInSection {...props} row={row} keyShown={keyShown()} />}>
