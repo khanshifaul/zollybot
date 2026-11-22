@@ -38,10 +38,12 @@ import { useQuestionPrompt } from "./use-question-prompt";
 export function MobileChatView({
   agent,
   focusMessageId,
+  autoStartVoice = false,
   onLeave,
 }: {
   agent: MobileAgent;
   focusMessageId?: string;
+  autoStartVoice?: boolean;
   onLeave: () => void;
 }) {
   const { t } = useText();

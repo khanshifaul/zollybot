@@ -18,11 +18,16 @@ export function AgentChatScreen() {
   const { t } = useText();
   const leaveChat = useLeaveChat();
 
-  const { agentId, messageId } = useLocalSearchParams<{ agentId: string; messageId?: string }>();
+  const { agentId, messageId, voice } = useLocalSearchParams<{
+    agentId: string;
+    messageId?: string;
+    voice?: string;
+  }>();
   const foreground = useThemeColor("foreground");
   const insets = useSafeAreaInsets();
   const resolvedAgentId = Array.isArray(agentId) ? agentId[0] : agentId;
   const resolvedMessageId = Array.isArray(messageId) ? messageId[0] : messageId;
+  const startVoice = (Array.isArray(voice) ? voice[0] : voice) === "1";
   // Only this agent: a change elsewhere in the workspace does not render the whole chat again.
   const agent = useMobileWorkspaceSelector((current) =>
     current.agents.find((candidate) => candidate.id === resolvedAgentId),
@@ -42,6 +47,7 @@ export function AgentChatScreen() {
         key={`${agent.serverId}:${agent.id}:${resolvedMessageId ?? ""}`}
         agent={agent}
         focusMessageId={resolvedMessageId || undefined}
+        autoStartVoice={startVoice}
         onLeave={leaveChat}
       />
     );

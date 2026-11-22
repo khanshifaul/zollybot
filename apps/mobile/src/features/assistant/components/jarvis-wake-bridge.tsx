@@ -17,10 +17,12 @@ import {
   stopJarvisBackgroundService,
 } from "@/features/assistant/native/background-service";
 import { useJarvisWakeWord } from "@/features/assistant/native/wake-word";
+import { useMobileWorkspace } from "@/features/workspace/context/mobile-workspace-context";
 import { JARVIS_ENABLED } from "@/shared/lib/jarvis-feature";
 
 /** Owns the foreground wake word for the signed-in app and opens Jarvis on detection. */
 export function JarvisWakeBridge() {
+  const { agents } = useMobileWorkspace();
   const wakeWord = useJarvisSettings((state) => state.wakeWord);
   const voiceMatch = useJarvisSettings((state) => state.voiceMatch);
   const lockScreen = useJarvisSettings((state) => state.lockScreen);
@@ -60,6 +62,11 @@ export function JarvisWakeBridge() {
         }
         await resetJarvisNotification();
         wake();
+        const butler = agents.find((agent) => agent.name.toLowerCase() === "butler") ?? agents[0];
+        if (butler) {
+          router.push({ pathname: "/chat/[agentId]", params: { agentId: butler.id, voice: "1" } });
+          return;
+        }
         router.push("/connected");
       })();
     },

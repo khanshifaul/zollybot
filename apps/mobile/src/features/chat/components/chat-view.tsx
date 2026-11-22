@@ -22,6 +22,7 @@ import { scheduleOnRN } from "react-native-worklets";
 import { MobileConversationAnalytics } from "@/features/analytics/conversation";
 import { reportMobileNotification } from "@/features/analytics/failure-reports";
 import { mobileAnalytics } from "@/features/analytics/mobile-analytics";
+import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import { useBrowserFeature } from "@/features/browser/components/use-browser-feature";
 import { channelRecipient } from "@/features/channels/model/channel-draft";
 import type { ApprovalDecision } from "@/features/chat/components/chat-approval-card";
@@ -170,6 +171,8 @@ export interface ChatViewProps {
   loadOlder: () => void;
   /** A message from search that the chat opens at, once its page is loaded. */
   focusMessageId?: string | null;
+  /** Start the hands-free conversation when this chat opens, such as after a wake word. */
+  autoStartVoice?: boolean;
   /** True while the chat opens at a message from search, also before its page loads. */
   holdOpening?: boolean;
   /** True while the chat shows the messages that the phone kept and reads its latest page. */
@@ -273,6 +276,7 @@ export function ChatView({
   olderError,
   loadOlder,
   focusMessageId = null,
+  autoStartVoice = false,
   holdOpening = false,
   catchingUp = false,
   onFocusPlaced,
@@ -653,6 +657,13 @@ export function ChatView({
     outboxMessages,
     send: (text) => (writable ? deliver(text, null, []) : null),
   });
+  const autoVoiceStarted = useRef(false);
+  useEffect(() => {
+    if (!autoStartVoice || autoVoiceStarted.current || !live.available || live.open) return;
+    if (!replyVoiceReady()) return;
+    autoVoiceStarted.current = true;
+    live.start();
+  }, [autoStartVoice, live.available, live.open, live.start]);
   // The agent who speaks in a voice conversation: the agent of the chat, or the channel's leader, who
   // gives out the channel's tasks.
   const voiceAgent =
@@ -676,6 +687,11 @@ export function ChatView({
   // A live conversation keeps the chat in view and turns the composer into a call bar.
   const voiceOpen = live.open;
   const dictating = dictation.active;
+  const setJarvisCapturing = useJarvisWakeState((state) => state.setCapturing);
+  useEffect(() => {
+    setJarvisCapturing(voiceOpen || dictating);
+    return () => setJarvisCapturing(false);
+  }, [dictating, setJarvisCapturing, voiceOpen]);
   // A password or a code is typed where the composer is, so the screen has one field. The voice
   // mode, dictation and the attachment card keep the composer until they close: replacing it would
   // end them. Other secret requests wait.
