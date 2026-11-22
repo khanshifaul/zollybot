@@ -248,9 +248,9 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                   : t("mobile.app.jarvis.listeningHint")
                 : t("mobile.app.jarvis.idleHint")}
             </Text>
-            {lock ? (
+            {lock && (lockSent || !listening) ? (
               <Text style={{ color: accent, fontSize: 12, textAlign: "center", maxWidth: 280 }}>
-                {lockSent ? t("mobile.app.jarvis.lockScreenSent") : t("mobile.app.jarvis.lockScreenHint")}
+                {lockSent ? t("mobile.app.jarvis.lockScreenSent") : t("mobile.app.jarvis.lockScreenActive")}
               </Text>
             ) : null}
           </View>

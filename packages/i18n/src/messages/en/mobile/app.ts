@@ -67,6 +67,7 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.handsFreeTest": "Tap to open the wake word test",
   "mobile.app.jarvis.lockScreen": "Jarvis on lock screen",
   "mobile.app.jarvis.lockScreenAppLock": "Turn off the app lock to show Jarvis over the phone lock screen.",
+  "mobile.app.jarvis.lockScreenActive": "Locked. Tap the orb to talk.",
   "mobile.app.jarvis.lockScreenSent": "Message sent. Unlock your phone to see the reply.",
   "mobile.app.jarvis.lockScreenHint": "Show Jarvis over the phone lock screen after the wake word",
   "mobile.app.jarvis.screenContext": "Screen Context",
