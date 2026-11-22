@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: release-desktop-windows-${{ github.event.release.tag_name || github.event.inputs.tag || github.ref_name }}
@@ -21,8 +22,20 @@ env:
   RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag || github.ref_name }}
 
 jobs:
+  ci-gate:
+    name: Require green CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Require a successful CI run
+        uses: ./.github/actions/require-green-ci
+
   meta:
     name: Resolve release metadata
+    needs: ci-gate
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:

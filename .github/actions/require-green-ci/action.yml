@@ -1,0 +1,30 @@
+name: Require green CI
+description: Fail unless the CI workflow passed for the release commit.
+
+runs:
+  using: composite
+  steps:
+    - name: Wait for a successful CI run
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        COMMIT: ${{ github.sha }}
+      run: |
+        set -euo pipefail
+        for attempt in $(seq 1 30); do
+          json="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$COMMIT" \
+            --limit 10 --json conclusion,status,databaseId)"
+          if jq -e 'any(.[]; .conclusion == "success")' <<<"$json" >/dev/null; then
+            echo "CI passed for $COMMIT."
+            exit 0
+          fi
+          if jq -e 'any(.[]; .conclusion == "failure" or .conclusion == "cancelled" or .conclusion == "timed_out")' \
+            <<<"$json" >/dev/null; then
+            echo "::error::CI failed for $COMMIT; refusing to build a release."
+            exit 1
+          fi
+          echo "CI has not finished for $COMMIT (attempt $attempt/30); waiting 20s."
+          sleep 20
+        done
+        echo "::error::CI did not succeed for $COMMIT."
+        exit 1

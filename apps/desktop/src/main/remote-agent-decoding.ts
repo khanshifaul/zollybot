@@ -1,3 +1,4 @@
+import type { ProviderTransport } from "@zollybot/contracts/agent-providers";
 import {
   type AgentSessionSettings,
   decodeAgentAnalytics,
@@ -214,6 +215,12 @@ export function decodeHostDefaultProviderFromHost(value: unknown): HostDefaultPr
   if (!isAgentProvider(provider)) return { preferredProvider: null, preferredModel: null };
   if (model !== null && !isAgentModel(model)) throw new Error("Invalid default model.");
   return { preferredProvider: provider, preferredModel: model };
+}
+
+/** The ACP/CLI transport of a provider, as a remote host reports it. */
+export function decodeProviderTransportFromHost(value: unknown): ProviderTransport | null {
+  if (value === null || value === "acp" || value === "cli") return value;
+  throw new Error("Invalid provider transport response.");
 }
 
 /** The `provider-usage-reset-v1` list: an unknown provider is left out. */
