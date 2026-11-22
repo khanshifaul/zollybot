@@ -18,6 +18,7 @@ export function JarvisWakeBridge() {
   const voiceMatch = useJarvisSettings((state) => state.voiceMatch);
   const [template, setTemplate] = useState<number[] | null>(null);
   const testing = useJarvisWakeState((state) => state.testing);
+  const capturing = useJarvisWakeState((state) => state.capturing);
   const wake = useJarvisWakeState((state) => state.wake);
   useEffect(() => {
     void loadJarvisSettings();
@@ -30,7 +31,7 @@ export function JarvisWakeBridge() {
     void loadVoiceTemplate().then(setTemplate);
   }, [voiceMatch]);
   useJarvisWakeWord({
-    enabled: JARVIS_ENABLED && wakeWord && !testing,
+    enabled: JARVIS_ENABLED && wakeWord && !testing && !capturing,
     onWake: () => {
       wake();
       router.push("/connected");

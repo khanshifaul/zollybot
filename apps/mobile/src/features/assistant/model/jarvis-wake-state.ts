@@ -4,11 +4,15 @@ import { create } from "zustand";
 export const useJarvisWakeState = create<{
   nonce: number;
   testing: boolean;
+  capturing: boolean;
   wake: () => void;
   setTesting: (testing: boolean) => void;
+  setCapturing: (capturing: boolean) => void;
 }>((set) => ({
   nonce: 0,
   testing: false,
+  capturing: false,
   wake: () => set((state) => ({ nonce: state.nonce + 1 })),
   setTesting: (testing) => set({ testing }),
+  setCapturing: (capturing) => set({ capturing }),
 }));

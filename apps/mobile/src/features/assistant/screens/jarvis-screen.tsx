@@ -10,7 +10,7 @@ import PanelLeft from "lucide-react-native/icons/panel-left";
 import Plus from "lucide-react-native/icons/plus";
 import Settings2 from "lucide-react-native/icons/settings-2";
 import X from "lucide-react-native/icons/x";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -30,6 +30,7 @@ import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch"
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import { AttachmentThumbnail } from "@/features/chat/components/attachment-preview";
 import { useChatAttachments } from "@/features/chat/components/use-chat-attachments";
+import { useVoiceDictation } from "@/features/chat/components/use-voice-dictation";
 import { useHomeOnboarding } from "@/features/onboarding/context/home-onboarding-context";
 import { useAppDrawer } from "@/features/servers/components/app-drawer-shell";
 import { useMobileWorkspace, useMobileWorkspaceActions } from "@/features/workspace/context/mobile-workspace-context";
@@ -57,10 +58,49 @@ export default function JarvisScreen() {
   const [error, setError] = useState<string | null>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
   const wakeNonce = useJarvisWakeState((state) => state.nonce);
+  const setCapturing = useJarvisWakeState((state) => state.setCapturing);
   const attachments = useChatAttachments();
+  const capture = useVoiceDictation({ enabled: true, onDraft: setDraft });
+  const listeningRef = useRef(false);
+  listeningRef.current = listening;
+
+  const startListening = () => {
+    if (listeningRef.current) return;
+    if (!capture.available) {
+      setListening(true);
+      return;
+    }
+    if (capture.start(draft)) {
+      setListening(true);
+      setCapturing(true);
+    }
+  };
+
+  const stopListening = () => {
+    if (!listeningRef.current) return;
+    if (!capture.available) {
+      setListening(false);
+      return;
+    }
+    void capture.finish().finally(() => {
+      setListening(false);
+      setCapturing(false);
+    });
+  };
+
+  const startListeningRef = useRef(startListening);
+  startListeningRef.current = startListening;
   useEffect(() => {
-    if (wakeNonce > 0) setListening(true);
+    if (wakeNonce > 0) startListeningRef.current();
   }, [wakeNonce]);
+
+  useEffect(
+    () => () => {
+      setCapturing(false);
+      void capture.finish();
+    },
+    [capture.finish, setCapturing],
+  );
   const butler = useMemo(() => agents.find((agent) => agent.name.toLowerCase() === "butler") ?? agents[0], [agents]);
 
   if (onboarding.active) return <ConnectedScreen />;
@@ -153,14 +193,19 @@ export default function JarvisScreen() {
               accessibilityLabel={t("mobile.app.jarvis.title")}
               onPress={() => {
                 void haptics.selection();
-                setListening((current) => !current);
+                if (listeningRef.current) stopListening();
+                else startListening();
               }}
             >
               <JarvisOrb active={listening} size={168} />
             </Pressable>
             <Text style={{ color: foreground, fontSize: 20, fontWeight: "700" }}>{t("mobile.app.jarvis.title")}</Text>
             <Text style={{ color: muted, fontSize: 12, textAlign: "center", maxWidth: 280 }}>
-              {listening ? t("mobile.app.jarvis.listeningHint") : t("mobile.app.jarvis.idleHint")}
+              {listening
+                ? capture.available
+                  ? t("mobile.app.jarvis.listeningLive")
+                  : t("mobile.app.jarvis.listeningHint")
+                : t("mobile.app.jarvis.idleHint")}
             </Text>
           </View>
 
@@ -242,7 +287,7 @@ export default function JarvisScreen() {
               />
               <Pressable
                 accessibilityRole="button"
-                disabled={sending || (!draft.trim() && attachments.items.length === 0)}
+                disabled={sending || listening || (!draft.trim() && attachments.items.length === 0)}
                 onPress={() => void send()}
                 style={({ pressed }) => ({
                   width: 38,
