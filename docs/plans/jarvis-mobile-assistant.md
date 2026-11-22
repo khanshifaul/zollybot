@@ -9,7 +9,8 @@ Related wireframes: [`jarvis-wireframes.svg`](./jarvis-wireframes.svg).
 
 - **Phase 2c — Voice match implemented (Android).** Sherpa-onnx Titanet Small speaker embeddings, three-sample enrollment, SecureStore template, wake-audio verification, and the enrollment screen. iOS speaker extraction is still pending. openWakeWord with the bundled `hey_jarvis` TFLite model; no access key or `.ppn` asset is needed. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background listening uses an Android microphone foreground service. Locked phones show a tappable “Jarvis heard you” notification that opens the Jarvis screen over the keyguard; Android blocks silent activity launches from the background, so the tap is required.
 - **Phase 1 — implemented in the working tree.** Jarvis is the main screen; office-wise agents live at `/agents`; **a Jarvis/Agents page switch swaps the two main screens**; Jarvis settings live in the drawer at `/jarvis-settings`; orb, listening preview, Butler text bridge, attachments (camera/photos/files), screen-share entry, settings persistence, model catalog, and model selection.
-- Phase 2+ remains planned.
+- **Phase 2 voice loop — implemented.** A wake word opens the Butler chat with `voice=1`; the existing hands-free controller listens, sends at the pause, reads the reply through Supertonic/ElevenLabs, and listens again. Wake capture pauses while chat voice owns the microphone.
+- QVAC, Screen Context, AutoX actions, and iOS parity remain planned.
 
 Phase 1 files:
 
