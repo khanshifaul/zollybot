@@ -7,7 +7,7 @@ Related wireframes: [`jarvis-wireframes.svg`](./jarvis-wireframes.svg).
 
 ## 0. Implementation status
 
-- **Phase 2c — Voice match implemented (Android).** Sherpa-onnx Titanet Small speaker embeddings, three-sample enrollment, SecureStore template, wake-audio verification, and the enrollment screen. iOS speaker extraction is still pending. Porcupine built-in `Jarvis` keyword responds to both **“Hey Jarvis”** and **“Hello Jarvis”**; no `.ppn` asset or custom model is needed. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background foreground-service wake word is still pending.
+- **Phase 2c — Voice match implemented (Android).** Sherpa-onnx Titanet Small speaker embeddings, three-sample enrollment, SecureStore template, wake-audio verification, and the enrollment screen. iOS speaker extraction is still pending. Porcupine built-in `Jarvis` keyword responds to both **“Hey Jarvis”** and **“Hello Jarvis”**; no `.ppn` asset or custom model is needed. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background listening uses an Android microphone foreground service. Locked phones show a tappable “Jarvis heard you” notification that opens the Jarvis screen over the keyguard; Android blocks silent activity launches from the background, so the tap is required.
 - **Phase 1 — implemented in the working tree.** Jarvis is the main screen; office-wise agents live at `/agents`; **a Jarvis/Agents page switch swaps the two main screens**; Jarvis settings live in the drawer at `/jarvis-settings`; orb, listening preview, Butler text bridge, attachments (camera/photos/files), screen-share entry, settings persistence, model catalog, and model selection.
 - Phase 2+ remains planned.
 
@@ -286,7 +286,7 @@ Screens:
 
 | Capability                                       | Offline/local                  | Android              | iOS             | Host fallback        |
 | ------------------------------------------------ | ------------------------------ | -------------------- | --------------- | -------------------- |
-| “Hey Jarvis” wake word                           | ✓ Porcupine                    | foreground service   | foreground only | —                    |
+| “Hey Jarvis” wake word                           | ✓ Porcupine                    | ✓ foreground service | foreground only | —                    |
 | Natural voice conversation                       | ✓ Parakeet + QVAC + Supertonic | ✓                    | ✓               | Gemini Live optional |
 | Timers, alarms, notes, memory                    | ✓                              | ✓                    | ✓               | —                    |
 | Calendar read/create                             | local cache                    | ✓                    | ✓               | host connectors      |

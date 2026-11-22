@@ -5,6 +5,9 @@ import ChevronRight from "lucide-react-native/icons/chevron-right";
 import { useCallback, useEffect, useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAppLock } from "@/features/app-lock/model/app-lock";
+import { showOverLockScreen } from "@/features/app-lock/model/app-lock-native";
+import { appLockEnabled } from "@/features/app-lock/model/app-lock-storage";
 
 import { JARVIS_MODELS, jarvisModel } from "@/features/assistant/model/jarvis-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
@@ -78,6 +81,7 @@ export default function JarvisSettingsScreen() {
   const { t } = useText();
   const insets = useSafeAreaInsets();
   const settings = useJarvisSettings();
+  const appLockOn = useAppLock((state) => appLockEnabled(state.config));
   const [background, foreground, muted, border, accent] = useThemeColor([
     "background",
     "foreground",
@@ -88,6 +92,11 @@ export default function JarvisSettingsScreen() {
   const selectedModel = jarvisModel(settings.modelId);
   const selectedVision = jarvisModel(settings.visionModelId);
   const [voiceEnrolled, setVoiceEnrolled] = useState(false);
+
+  const previewLockScreen = async () => {
+    await showOverLockScreen();
+    router.push("/jarvis-lock");
+  };
 
   useEffect(() => {
     void loadJarvisSettings();
@@ -161,9 +170,16 @@ export default function JarvisSettingsScreen() {
           </View>
           <Row
             title={t("mobile.app.jarvis.lockScreen")}
-            detail={t("mobile.app.jarvis.lockScreenHint")}
-            disabled
-            right={<Switch value={settings.lockScreen} disabled />}
+            detail={appLockOn ? t("mobile.app.jarvis.lockScreenAppLock") : t("mobile.app.jarvis.lockScreenHint")}
+            disabled={appLockOn}
+            onPress={() => void previewLockScreen()}
+            right={
+              <Switch
+                value={settings.lockScreen}
+                disabled={appLockOn}
+                onValueChange={(value) => void saveJarvisSettings({ lockScreen: value })}
+              />
+            }
           />
           <Row
             title={t("mobile.app.jarvis.screenContext")}

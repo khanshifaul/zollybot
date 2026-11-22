@@ -7,7 +7,7 @@ const TASK: BackgroundTaskOptions = {
   taskDesc: "Say “Hey Jarvis” or “Hello Jarvis”",
   taskIcon: { name: "ic_launcher", type: "mipmap" },
   color: "#2DD4BF",
-  linkingURI: "zollybot://connected",
+  linkingURI: "zollybot:///connected",
   foregroundServiceType: ["microphone"],
 };
 
@@ -33,6 +33,26 @@ export async function startJarvisBackgroundService(): Promise<void> {
   } finally {
     starting = false;
   }
+}
+
+/** Points the listening notification at the locked Jarvis screen after a wake detection. */
+export async function showLockedJarvisNotification(): Promise<void> {
+  if (Platform.OS !== "android" || !BackgroundService.isRunning()) return;
+  await BackgroundService.updateNotification({
+    taskTitle: "Jarvis heard you",
+    taskDesc: "Tap to talk",
+    linkingURI: "zollybot:///jarvis-lock",
+  });
+}
+
+/** Returns the notification to the listening copy after the locked screen closes. */
+export async function resetJarvisNotification(): Promise<void> {
+  if (Platform.OS !== "android" || !BackgroundService.isRunning()) return;
+  await BackgroundService.updateNotification({
+    taskTitle: "Jarvis is listening",
+    taskDesc: "Say “Hey Jarvis” or “Hello Jarvis”",
+    linkingURI: "zollybot:///connected",
+  });
 }
 
 export async function stopJarvisBackgroundService(): Promise<void> {

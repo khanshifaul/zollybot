@@ -12,6 +12,9 @@ declare class AppLockModule extends NativeModule {
   configure(enabled: boolean, watchPhoneLock: boolean): Promise<void>;
   takeAway(): Promise<AwayState>;
   derivePin(pin: string, saltHex: string, iterations: number): Promise<string>;
+  isDeviceLocked(): Promise<boolean>;
+  showOverLockScreen(): Promise<void>;
+  hideOverLockScreen(): Promise<void>;
 }
 
 /** `modules/app-lock`. A build without it, such as Expo Go, measures with the phone's clock and cannot see a phone lock. */
@@ -22,6 +25,21 @@ if (!native) {
   AppState.addEventListener("change", (state) => {
     if (state !== "active") fallbackAwaySince ??= Date.now();
   });
+}
+
+/** True while the phone's own lock screen is showing. False in a build without the native module. */
+export function isDeviceLocked(): Promise<boolean> {
+  return native ? native.isDeviceLocked() : Promise.resolve(false);
+}
+
+/** Shows the app over the phone lock screen, without unlocking the phone. */
+export function showOverLockScreen(): Promise<void> {
+  return native ? native.showOverLockScreen() : Promise.resolve();
+}
+
+/** Returns the app to the lock screen after the locked Jarvis screen closes. */
+export function hideOverLockScreen(): Promise<void> {
+  return native ? native.hideOverLockScreen() : Promise.resolve();
 }
 
 export function configureAppLockSignals(enabled: boolean, watchPhoneLock: boolean): Promise<void> {

@@ -5,6 +5,7 @@ import ArrowUp from "lucide-react-native/icons/arrow-up";
 import Camera from "lucide-react-native/icons/camera";
 import FileText from "lucide-react-native/icons/file-text";
 import ImageIcon from "lucide-react-native/icons/image";
+import Lock from "lucide-react-native/icons/lock";
 import MonitorUp from "lucide-react-native/icons/monitor-up";
 import PanelLeft from "lucide-react-native/icons/panel-left";
 import Plus from "lucide-react-native/icons/plus";
@@ -25,9 +26,11 @@ import {
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ConnectedScreen } from "@/features/agents/screens/connected-screen";
+import { hideOverLockScreen } from "@/features/app-lock/model/app-lock-native";
 import { JarvisOrb } from "@/features/assistant/components/jarvis-orb";
 import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
+import { resetJarvisNotification } from "@/features/assistant/native/background-service";
 import { AttachmentThumbnail } from "@/features/chat/components/attachment-preview";
 import { useChatAttachments } from "@/features/chat/components/use-chat-attachments";
 import { useVoiceDictation } from "@/features/chat/components/use-voice-dictation";
@@ -38,7 +41,7 @@ import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
 
 /** The app's main screen: Jarvis. The office-wise agent list lives at `/agents`. */
-export default function JarvisScreen() {
+export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const { t } = useText();
   const insets = useSafeAreaInsets();
   const { agents } = useMobileWorkspace();
@@ -57,6 +60,7 @@ export default function JarvisScreen() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [lockSent, setLockSent] = useState(false);
   const wakeNonce = useJarvisWakeState((state) => state.nonce);
   const setCapturing = useJarvisWakeState((state) => state.setCapturing);
   const attachments = useChatAttachments();
@@ -98,12 +102,29 @@ export default function JarvisScreen() {
     () => () => {
       setCapturing(false);
       void capture.finish();
+      if (lock) {
+        void hideOverLockScreen();
+        void resetJarvisNotification();
+      }
     },
-    [capture.finish, setCapturing],
+    [capture.finish, setCapturing, lock],
   );
+
+  useEffect(() => {
+    if (!lock) return;
+    const timer = setTimeout(() => startListeningRef.current(), 400);
+    return () => clearTimeout(timer);
+  }, [lock]);
+
+  const dismissLockScreen = () => {
+    void hideOverLockScreen();
+    void resetJarvisNotification();
+    if (router.canGoBack()) router.back();
+    else router.replace("/connected");
+  };
   const butler = useMemo(() => agents.find((agent) => agent.name.toLowerCase() === "butler") ?? agents[0], [agents]);
 
-  if (onboarding.active) return <ConnectedScreen />;
+  if (onboarding.active && !lock) return <ConnectedScreen />;
 
   const send = async () => {
     const text = draft.trim();
@@ -129,7 +150,8 @@ export default function JarvisScreen() {
       await workspace.sendMessage(butler.id, text, attachmentIds, null, butler.serverId);
       setDraft("");
       attachments.clear();
-      router.push({ pathname: "/chat/[agentId]", params: { agentId: butler.id } });
+      if (lock) setLockSent(true);
+      else router.push({ pathname: "/chat/[agentId]", params: { agentId: butler.id } });
     } catch {
       setError(t("mobile.app.jarvis.sendFailed"));
     } finally {
@@ -149,36 +171,55 @@ export default function JarvisScreen() {
           minHeight: 56,
         }}
       >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t("mobile.agent.home.openServers")}
-          onPress={openDrawer}
-          style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}
-        >
-          <PanelLeft color={foreground} size={22} strokeWidth={2} />
-        </Pressable>
-        <View
-          pointerEvents="box-none"
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <JarvisAgentsSwitch active="jarvis" />
-        </View>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t("mobile.app.jarvis.settingsRoute")}
-          onPress={() => router.push("/jarvis-settings")}
-          style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}
-        >
-          <Settings2 color={foreground} size={21} strokeWidth={2} />
-        </Pressable>
+        {lock ? (
+          <>
+            <View style={{ width: 40, alignItems: "center" }}>
+              <Lock color={muted} size={18} />
+            </View>
+            <Text style={{ color: foreground, fontSize: 15, fontWeight: "700" }}>{t("mobile.app.jarvis.title")}</Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t("common.close")}
+              onPress={dismissLockScreen}
+              style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}
+            >
+              <X color={foreground} size={21} strokeWidth={2} />
+            </Pressable>
+          </>
+        ) : (
+          <>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t("mobile.agent.home.openServers")}
+              onPress={openDrawer}
+              style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}
+            >
+              <PanelLeft color={foreground} size={22} strokeWidth={2} />
+            </Pressable>
+            <View
+              pointerEvents="box-none"
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <JarvisAgentsSwitch active="jarvis" />
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t("mobile.app.jarvis.settingsRoute")}
+              onPress={() => router.push("/jarvis-settings")}
+              style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}
+            >
+              <Settings2 color={foreground} size={21} strokeWidth={2} />
+            </Pressable>
+          </>
+        )}
       </View>
 
       <KeyboardAvoidingView
@@ -207,6 +248,11 @@ export default function JarvisScreen() {
                   : t("mobile.app.jarvis.listeningHint")
                 : t("mobile.app.jarvis.idleHint")}
             </Text>
+            {lock ? (
+              <Text style={{ color: accent, fontSize: 12, textAlign: "center", maxWidth: 280 }}>
+                {lockSent ? t("mobile.app.jarvis.lockScreenSent") : t("mobile.app.jarvis.lockScreenHint")}
+              </Text>
+            ) : null}
           </View>
 
           <View

@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 
+import { isDeviceLocked, showOverLockScreen } from "@/features/app-lock/model/app-lock-native";
 import { loadJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import {
@@ -10,6 +11,8 @@ import {
   VOICE_MATCH_THRESHOLD,
 } from "@/features/assistant/model/voice-match";
 import {
+  resetJarvisNotification,
+  showLockedJarvisNotification,
   startJarvisBackgroundService,
   stopJarvisBackgroundService,
 } from "@/features/assistant/native/background-service";
@@ -20,6 +23,7 @@ import { JARVIS_ENABLED } from "@/shared/lib/jarvis-feature";
 export function JarvisWakeBridge() {
   const wakeWord = useJarvisSettings((state) => state.wakeWord);
   const voiceMatch = useJarvisSettings((state) => state.voiceMatch);
+  const lockScreen = useJarvisSettings((state) => state.lockScreen);
   const [template, setTemplate] = useState<number[] | null>(null);
   const testing = useJarvisWakeState((state) => state.testing);
   const capturing = useJarvisWakeState((state) => state.capturing);
@@ -47,8 +51,17 @@ export function JarvisWakeBridge() {
   useJarvisWakeWord({
     enabled: JARVIS_ENABLED && wakeWord && !testing && !capturing,
     onWake: () => {
-      wake();
-      router.push("/connected");
+      void (async () => {
+        if (lockScreen && (await isDeviceLocked())) {
+          await showOverLockScreen();
+          await showLockedJarvisNotification();
+          router.push("/jarvis-lock");
+          return;
+        }
+        await resetJarvisNotification();
+        wake();
+        router.push("/connected");
+      })();
     },
     verify:
       voiceMatch && template

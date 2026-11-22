@@ -2,6 +2,7 @@ package run.zollybot.applock
 
 import android.app.Activity
 import android.app.Application
+import android.app.KeyguardManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -56,6 +57,29 @@ class AppLockModule : Module() {
       awaySince = null
       phoneLocked = false
       state
+    }.runOnQueue(Queues.MAIN)
+
+    /** True while the phone shows its own lock screen. */
+    AsyncFunction("isDeviceLocked") {
+      val context = appContext.reactContext?.applicationContext ?: return@AsyncFunction false
+      val keyguard = context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager
+      keyguard?.isKeyguardLocked == true
+    }.runOnQueue(Queues.MAIN)
+
+    /** Lets the current activity show over the phone lock screen, without unlocking the phone. */
+    AsyncFunction("showOverLockScreen") {
+      appContext.currentActivity?.let { activity ->
+        activity.setShowWhenLocked(true)
+        activity.setTurnScreenOn(true)
+      }
+    }.runOnQueue(Queues.MAIN)
+
+    /** Returns the activity to the lock screen after the locked Jarvis screen closes. */
+    AsyncFunction("hideOverLockScreen") {
+      appContext.currentActivity?.let { activity ->
+        activity.setShowWhenLocked(false)
+        activity.setTurnScreenOn(false)
+      }
     }.runOnQueue(Queues.MAIN)
 
     /** Runs on a background thread, so the hash does not stop the interface. */
