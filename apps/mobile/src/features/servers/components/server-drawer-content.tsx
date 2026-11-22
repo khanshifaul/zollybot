@@ -10,6 +10,7 @@ import Plus from "lucide-react-native/icons/plus";
 import Settings from "lucide-react-native/icons/settings";
 import Settings2 from "lucide-react-native/icons/settings-2";
 import ShoppingBag from "lucide-react-native/icons/shopping-bag";
+import Sparkles from "lucide-react-native/icons/sparkles";
 import SquareCheck from "lucide-react-native/icons/square-check";
 import UsersRound from "lucide-react-native/icons/users-round";
 import WorkflowIcon from "lucide-react-native/icons/workflow";
@@ -42,6 +43,7 @@ import { type MenuAction, type MenuComponentRef, MenuView } from "@/shared/compo
 import { ProfileAvatar } from "@/shared/components/profile-avatar";
 import { devFeatureOverride } from "@/shared/lib/dev-feature-overrides";
 import { haptics } from "@/shared/lib/haptics";
+import { JARVIS_ENABLED } from "@/shared/lib/jarvis-feature";
 import { refreshMobileFeatures, useMobileFeature } from "@/shared/lib/mobile-features";
 import { useReducedMotion } from "@/shared/lib/motion";
 import { isAndroid, longPressDelay } from "@/shared/lib/platform";
@@ -564,6 +566,12 @@ function DrawerServerTools({
   );
   return (
     <View className="pt-1.5">
+      {JARVIS_ENABLED ? (
+        <>
+          <DrawerRow icon={Sparkles} label={t("mobile.app.route.jarvis")} href="/connected" onNavigate={onNavigate} />
+          <DrawerRow icon={UsersRound} label={t("mobile.app.route.agents")} href="/agents" onNavigate={onNavigate} />
+        </>
+      ) : null}
       {values.tasks ? (
         <DrawerRow
           icon={SquareCheck}
@@ -615,6 +623,14 @@ function DrawerServerTools({
         onNavigate={onNavigate}
       />
       <DrawerDivider />
+      {JARVIS_ENABLED ? (
+        <DrawerRow
+          icon={Settings2}
+          label={t("mobile.app.jarvis.settingsRoute")}
+          href="/jarvis-settings"
+          onNavigate={onNavigate}
+        />
+      ) : null}
       <DrawerRow
         icon={Settings2}
         label={t("mobile.server.drawer.serverSettings")}

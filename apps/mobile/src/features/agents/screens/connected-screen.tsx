@@ -1,7 +1,7 @@
 import type { ChannelSummary, SidebarLayoutSnapshot } from "@zollybot/contracts/ipc";
 import { BlurTargetView } from "expo-blur";
 import { GlassView } from "expo-glass-effect";
-import { type Href, router, Stack } from "expo-router";
+import { type Href, router, Stack, usePathname } from "expo-router";
 import { Button, Typography } from "heroui-native";
 import { useThemeColor } from "heroui-native/hooks";
 import Ellipsis from "lucide-react-native/icons/ellipsis";
@@ -61,6 +61,7 @@ import {
   useAppUpdateHeader,
 } from "@/features/app-update/components/app-update-header";
 import { useAppUpdate } from "@/features/app-update/model/app-update";
+import { JarvisAgentsHeader, JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
 import { ChannelListRow } from "@/features/channels/components/channel-list";
 import { useChannels } from "@/features/channels/components/use-channels";
 import { OnboardingFlow } from "@/features/onboarding/components/onboarding-flow";
@@ -74,8 +75,6 @@ import {
 } from "@/features/search/components/home-search";
 import { setHomeSearchUnavailable } from "@/features/search/model/home-search-request";
 import { useAppDrawer } from "@/features/servers/components/app-drawer-shell";
-import { PlanLimitsHeaderButton } from "@/features/servers/components/plan-limits-header-button";
-import { usePlanLimits } from "@/features/servers/model/plan-limits";
 import { ConnectionHeaderStatus } from "@/features/workspace/components/connection-header-status";
 import { useWaitingAgentIds } from "@/features/workspace/components/use-agent-activity";
 import { useHomeThreadState } from "@/features/workspace/components/use-home-thread-state";
@@ -97,10 +96,11 @@ import {
 import { SplitPaneLayers, useSplitLayout } from "@/shared/components/adaptive-split";
 import { useAppLoadingOverlay, useScreenLoadingLabel } from "@/shared/components/app-loading-overlay";
 import { ChromeGlassSheen } from "@/shared/components/chrome-glass-sheen";
-import { LargeTitle, LargeTitleBar, useLargeTitleScroll } from "@/shared/components/large-title";
+import { LargeTitleBar, useLargeTitleScroll } from "@/shared/components/large-title";
 import { type MenuAction, MenuView } from "@/shared/components/menu-view";
 import { useChromeGlass } from "@/shared/lib/chrome-glass";
 import { haptics } from "@/shared/lib/haptics";
+import { JARVIS_ENABLED } from "@/shared/lib/jarvis-feature";
 import { BAR_BUTTON_SIZE, NATIVE_BAR_HEIGHT, useBarTop } from "@/shared/lib/native-bar";
 import { isAndroid, isIOS } from "@/shared/lib/platform";
 import { currentText, useText } from "@/shared/lib/text";
@@ -373,6 +373,7 @@ function openFromMenu(href: Href): void {
  * bar, since the native bar belongs to the screens of the stack.
  */
 export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "pane" }) {
+  const pathname = usePathname();
   const pane = variant === "pane";
   const { t, sourceText } = useText();
   const { isLoaderPresent } = useAppLoadingOverlay();
@@ -404,8 +405,6 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
   const iconColor = String(foreground);
   const mutedColor = String(muted);
   const hasSelectedServer = servers.some((server) => server.id === activeServer.id);
-  const planLimits = usePlanLimits(activeServer.id);
-  const showsPlanLimits = hasSelectedServer && planLimits.rows.length > 0;
   // A server that the phone shows from its cache has its list at once, while it connects.
   const showLoader =
     (serverDirectoryState === "loading" && servers.length === 0) ||
@@ -428,7 +427,7 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
   // Connecting to a server continues while the user reads a chat, so the label only
   // belongs to this screen while it is the route on top.
   useScreenLoadingLabel(
-    "/connected",
+    pathname === "/agents" ? "/agents" : "/connected",
     showLoader && !onboarding.active
       ? t(hasSelectedServer ? "mobile.agent.home.connecting" : "mobile.agent.home.loadingServers")
       : null,
@@ -790,27 +789,6 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
   );
   const headerTrailing = (
     <View className="shrink-0 flex-row items-center gap-1">
-      {showsPlanLimits ? (
-        isAndroid ? (
-          <PlanLimitsHeaderButton
-            serverId={activeServer.id}
-            rows={planLimits.rows}
-            accounts={planLimits.accounts}
-            disabled={!planLimits.online}
-            androidGlass={buttonGlass}
-          />
-        ) : (
-          <HeaderGlass glass={buttonGlass} capsule>
-            <PlanLimitsHeaderButton
-              serverId={activeServer.id}
-              rows={planLimits.rows}
-              accounts={planLimits.accounts}
-              disabled={!planLimits.online}
-              androidGlass={buttonGlass}
-            />
-          </HeaderGlass>
-        )
-      ) : null}
       <MenuView
         actions={optionsActions}
         onPressAction={(event) => onPressOption(event.nativeEvent.event)}
@@ -910,15 +888,7 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
                 windowSize={dragging ? LIST_WINDOW_SIZE * 3 : LIST_WINDOW_SIZE}
                 ListHeaderComponent={
                   <AgentListRowReveal index={0} reveal={listReveal}>
-                    {hasSelectedServer ? (
-                      <LargeTitle
-                        scroll={scroll}
-                        title={activeServer.name}
-                        above={<AppUpdateSpacer header={updateHeader} headerHeight={headerHeight} />}
-                        accessibilityLabel={t("mobile.agent.home.serverTitle", { name: activeServer.name })}
-                        onPress={openDrawer}
-                      />
-                    ) : null}
+                    {hasSelectedServer ? <AppUpdateSpacer header={updateHeader} headerHeight={headerHeight} /> : null}
                     {sidebar?.error ? (
                       <View className="gap-2 px-4">
                         <Typography.Paragraph className="text-danger-text">
@@ -1029,7 +999,7 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
       {onboarding.active ? null : (
         <LargeTitleBar
           scroll={scroll}
-          title={activeServer.name}
+          title=""
           // The connection state takes the place of the title in the bar.
           hidden={!searchShows || statusShows || search.open}
         >
@@ -1065,6 +1035,11 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
             }}
           >
             {headerLeading}
+            {JARVIS_ENABLED ? (
+              <View pointerEvents="box-none" style={{ position: "absolute", left: 0, right: 0, alignItems: "center" }}>
+                <JarvisAgentsSwitch active="agents" />
+              </View>
+            ) : null}
             {headerTrailing}
           </View>
         ) : null
@@ -1080,6 +1055,8 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
             headerTintColor: foreground,
             headerTransparent: true,
             scrollEdgeEffects: { top: "hidden" },
+            headerTitle: "",
+            headerBackground: JARVIS_ENABLED ? () => <JarvisAgentsHeader /> : undefined,
             title: "",
           }}
         />
@@ -1095,15 +1072,6 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
             </Stack.Toolbar.View>
           </Stack.Toolbar>
           <Stack.Toolbar placement="right">
-            <Stack.Toolbar.View hidden={search.open || !showsPlanLimits}>
-              <PlanLimitsHeaderButton
-                serverId={activeServer.id}
-                rows={planLimits.rows}
-                accounts={planLimits.accounts}
-                disabled={!planLimits.online}
-                androidGlass={buttonGlass}
-              />
-            </Stack.Toolbar.View>
             <Stack.Toolbar.Menu
               icon="ellipsis"
               accessibilityLabel={t("mobile.agent.home.chatOptions")}

@@ -160,7 +160,7 @@ export function AppDrawerShell({ children }: PropsWithChildren) {
   const openingEnabled = useSharedValue(false);
   const [openingBlocked, setOpeningBlocked] = useState(false);
   useEffect(() => {
-    openingEnabled.set(!openingBlocked && pathname === "/connected");
+    openingEnabled.set(!openingBlocked && (pathname === "/connected" || pathname === "/agents"));
   }, [openingBlocked, openingEnabled, pathname]);
   const openingConfig = useMemo<PanGestureConfig>(
     () => ({

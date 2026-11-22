@@ -92,12 +92,10 @@ export const messages = defineMessages("mobile.auth", {
   "mobile.auth.error.profileSaveFailed": "Could not save your profile. Check your connection and try again.",
   "mobile.auth.error.signOutUnconfirmed": "Could not confirm sign-out. Check your connection and try again.",
   "mobile.auth.connect.title": "Connect to ZollyBot",
-  "mobile.auth.connect.subtitle":
-    "Connect over your private network or Tailscale. Use the host Tailscale IP (100.x.y.z) or MagicDNS name (*.ts.net) with the correct port.",
-  "mobile.auth.connect.urlPlaceholder": "Host IP, MagicDNS name, or full Mobile Connect link",
+  "mobile.auth.connect.subtitle": "Use your host's Tailscale IP, MagicDNS name, or full connect link.",
+  "mobile.auth.connect.urlPlaceholder": "Host IP, MagicDNS, or connect link",
   "mobile.auth.connect.tokenPlaceholder": "Session token (optional for local/private setup)",
-  "mobile.auth.connect.invalidUrl":
-    "Enter a valid host URL. Examples: http://100.101.102.103:3100, http://host.tailnet.ts.net:3100, or https://host",
+  "mobile.auth.connect.invalidUrl": "Enter a host IP, MagicDNS name, or full connect link.",
   "mobile.auth.connect.action": "Connect",
   "mobile.auth.connect.failed": "Could not connect.",
   "mobile.auth.connect.connecting": "Connecting…",
@@ -106,12 +104,11 @@ export const messages = defineMessages("mobile.auth", {
   "mobile.auth.connect.approved": "Approved. Connecting…",
   "mobile.auth.connect.rejected": "Connection request was rejected on the desktop.",
   "mobile.auth.connect.expired": "Connection request expired. Try again.",
-  "mobile.auth.connect.hostUnreachable":
-    "Could not reach ZollyBot host. Check Tailscale/private network, that desktop app is running, and that Mobile Connect is available.",
+  "mobile.auth.connect.hostUnreachable": "Could not reach the host. Check Tailscale and that ZollyBot is running.",
   "mobile.auth.connect.needPairingLink":
-    "Host found at {host}, but secure pairing needs a ticket. On desktop open Settings > Mobile Connect > Add phone (or permanent link), copy the full link, and paste it here.",
+    "Host found at {host}. Paste the full Mobile Connect link from desktop Settings.",
   "mobile.auth.connect.scanQr": "Scan QR code",
-  "mobile.auth.connect.or": "Or enter host or paste link",
+  "mobile.auth.connect.or": "or",
   "mobile.auth.connect.help":
     "If the app stays on \u201cLoading account\u201d: confirm Tailscale is connected on both devices, the ZollyBot host is running and reachable at that URL/port, and try reopening the app. If a saved session is stale, sign out from app settings/storage and connect again.",
 });

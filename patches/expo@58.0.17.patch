@@ -1,8 +1,18 @@
-diff --git a/build/dom/webview-wrapper.js b/build/dom/webview-wrapper.js
-index 02f713b..918c262 100644
---- a/build/dom/webview-wrapper.js
-+++ b/build/dom/webview-wrapper.js
-@@ -49,7 +49,9 @@ const RawWebView = /*#__PURE__*/ React.forwardRef((props, ref)=>{
+--- a/build/dom/webview-wrapper.js	2026-11-22 16:17:14.343034746 +0600
++++ b/build/dom/webview-wrapper.js	2026-11-22 16:17:14.343870305 +0600
+@@ -27,7 +27,10 @@
+                 if (domImperativeHandlePropsRef.current?.includes(propName)) {
+                     return function(...args) {
+                         const serializedArgs = args.map((arg)=>JSON.stringify(arg)).join(',');
+-                        webviewRef.current?.injectJavaScript(`window._domRefProxy.${propName}(${serializedArgs})`);
++                        // A removed or not-yet-mounted native view rejects; the DOM side re-asks when ready.
++                        Promise.resolve(
++                          webviewRef.current?.injectJavaScript(`window._domRefProxy.${propName}(${serializedArgs})`)
++                        ).catch(() => {});
+                     };
+                 }
+                 if (typeof webviewRef.current?.[propName] === 'function') {
+@@ -49,7 +52,9 @@
      const [containerStyle, setContainerStyle] = React.useState(null);
      const { debugZeroHeightStyle, debugOnLayout } = useDebugZeroHeight(dom);
      const emit = React.useCallback((detail)=>{
@@ -13,11 +23,25 @@ index 02f713b..918c262 100644
      }, [
          webviewRef
      ]);
-diff --git a/src/dom/webview-wrapper.tsx b/src/dom/webview-wrapper.tsx
-index c9d79a4..8762b3b 100644
---- a/src/dom/webview-wrapper.tsx
-+++ b/src/dom/webview-wrapper.tsx
-@@ -81,7 +81,11 @@ const RawWebView = React.forwardRef<object, Props>((props, ref) => {
+--- a/src/dom/webview-wrapper.tsx	2026-11-22 16:17:14.343519693 +0600
++++ b/src/dom/webview-wrapper.tsx	2026-11-22 16:17:14.344257278 +0600
+@@ -54,9 +54,12 @@
+           if (domImperativeHandlePropsRef.current?.includes(propName)) {
+             return function (...args: any[]) {
+               const serializedArgs = args.map((arg) => JSON.stringify(arg)).join(',');
+-              webviewRef.current?.injectJavaScript(
+-                `window._domRefProxy.${propName}(${serializedArgs})`
+-              );
++              // A removed or not-yet-mounted native view rejects; the DOM side re-asks when ready.
++              Promise.resolve(
++                webviewRef.current?.injectJavaScript(
++                  `window._domRefProxy.${propName}(${serializedArgs})`
++                )
++              ).catch(() => {});
+             };
+           }
+           if (typeof webviewRef.current?.[propName] === 'function') {
+@@ -81,7 +84,11 @@
  
    const emit = React.useCallback(
      (detail: BridgeMessage<any>) => {

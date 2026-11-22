@@ -1,0 +1,132 @@
+<svg viewBox="0 0 1000 650" width="1000" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>Jarvis wireframes</title>
+  <rect width="1000" height="650" fill="#f4f7f7"/>
+
+  <!-- Panel 1: Home / idle -->
+  <g transform="translate(20 20)">
+    <rect width="300" height="610" rx="28" fill="#ffffff" stroke="#d6dde0" stroke-width="1.5"/>
+    <rect x="112" y="10" width="76" height="6" rx="3" fill="#d6dde0"/>
+    <text x="20" y="48" font-size="12" fill="#6b7c82">9:41</text>
+    <text x="20" y="82" font-size="18" font-weight="700" fill="#0f1b1e">Lobby</text>
+    <text x="20" y="101" font-size="11" fill="#6b7c82">Butler · online</text>
+    <circle cx="255" cy="78" r="15" fill="none" stroke="#d6dde0"/>
+    <text x="249" y="83" font-size="13" fill="#6b7c82">+</text>
+
+    <circle cx="150" cy="245" r="74" fill="none" stroke="#d6dde0" stroke-dasharray="3 5"/>
+    <circle cx="150" cy="245" r="52" fill="#0d9488" opacity="0.14"/>
+    <circle cx="150" cy="245" r="34" fill="#0d9488" opacity="0.25"/>
+    <circle cx="150" cy="245" r="12" fill="#0d9488"/>
+    <text x="150" y="352" text-anchor="middle" font-size="17" font-weight="700" fill="#0f1b1e">Hey Jarvis</text>
+    <text x="150" y="372" text-anchor="middle" font-size="11" fill="#6b7c82">Say it or tap to talk</text>
+
+    <g font-size="10" fill="#0f1b1e">
+      <rect x="28" y="410" width="74" height="30" rx="15" fill="#ffffff" stroke="#d6dde0"/>
+      <text x="65" y="429" text-anchor="middle">Ask</text>
+      <rect x="113" y="410" width="74" height="30" rx="15" fill="#ffffff" stroke="#d6dde0"/>
+      <text x="150" y="429" text-anchor="middle">Do</text>
+      <rect x="198" y="410" width="74" height="30" rx="15" fill="#ffffff" stroke="#d6dde0"/>
+      <text x="235" y="429" text-anchor="middle">Brief</text>
+    </g>
+
+    <rect x="20" y="470" width="260" height="76" rx="18" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="496" font-size="10" fill="#6b7c82">Recent</text>
+    <text x="34" y="518" font-size="12" fill="#0f1b1e">Standup moved to 4:00 PM</text>
+    <text x="34" y="534" font-size="10" fill="#6b7c82">Calendar · just now</text>
+
+    <circle cx="150" cy="580" r="20" fill="#0d9488"/>
+    <path d="M150 571v12m-4-4a4 4 0 0 0 8 0" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="20" y="584" font-size="10" fill="#6b7c82">Wake word on</text>
+  </g>
+
+  <!-- Panel 2: Conversation -->
+  <g transform="translate(350 20)">
+    <rect width="300" height="610" rx="28" fill="#ffffff" stroke="#d6dde0" stroke-width="1.5"/>
+    <rect x="112" y="10" width="76" height="6" rx="3" fill="#d6dde0"/>
+    <text x="20" y="48" font-size="12" fill="#6b7c82">9:42</text>
+    <text x="20" y="82" font-size="18" font-weight="700" fill="#0f1b1e">Jarvis</text>
+    <circle cx="255" cy="78" r="6" fill="#16a34a"/>
+    <text x="218" y="82" font-size="10" fill="#6b7c82">listening</text>
+
+    <rect x="20" y="108" width="260" height="110" rx="18" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="134" font-size="10" fill="#6b7c82">You</text>
+    <text x="34" y="154" font-size="13" fill="#0f1b1e">Move standup to 4pm and</text>
+    <text x="34" y="172" font-size="13" fill="#0f1b1e">tell the team.</text>
+    <g fill="#0d9488">
+      <rect x="34" y="190" width="3" height="10" rx="1.5"/>
+      <rect x="41" y="185" width="3" height="20" rx="1.5"/>
+      <rect x="48" y="188" width="3" height="14" rx="1.5"/>
+      <rect x="55" y="182" width="3" height="26" rx="1.5"/>
+      <rect x="62" y="187" width="3" height="16" rx="1.5"/>
+      <rect x="69" y="184" width="3" height="22" rx="1.5"/>
+    </g>
+
+    <rect x="20" y="236" width="260" height="88" rx="18" fill="#0d9488" opacity="0.10" stroke="#0d9488" stroke-width="1"/>
+    <text x="34" y="262" font-size="10" fill="#0d9488">Jarvis</text>
+    <text x="34" y="284" font-size="13" fill="#0f1b1e">Done. Standup is at 4:00 PM.</text>
+    <text x="34" y="304" font-size="10" fill="#6b7c82">The team was notified.</text>
+
+    <rect x="20" y="342" width="260" height="86" rx="16" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="366" font-size="10" fill="#6b7c82">Action</text>
+    <text x="34" y="388" font-size="12" font-weight="600" fill="#0f1b1e">Calendar · Standup</text>
+    <text x="34" y="407" font-size="11" fill="#6b7c82">Today · 4:00–4:15 PM</text>
+    <text x="220" y="407" font-size="11" fill="#0d9488">Undo</text>
+
+    <g fill="#d6dde0">
+      <rect x="28" y="462" width="5" height="24" rx="2.5"/>
+      <rect x="39" y="452" width="5" height="44" rx="2.5"/>
+      <rect x="50" y="458" width="5" height="32" rx="2.5"/>
+      <rect x="61" y="447" width="5" height="54" rx="2.5"/>
+      <rect x="72" y="455" width="5" height="38" rx="2.5"/>
+      <rect x="83" y="451" width="5" height="46" rx="2.5"/>
+      <rect x="94" y="460" width="5" height="28" rx="2.5"/>
+    </g>
+    <text x="150" y="520" text-anchor="middle" font-size="11" fill="#6b7c82">Tap orb to interrupt</text>
+    <rect x="72" y="545" width="156" height="40" rx="20" fill="#0d9488"/>
+    <text x="150" y="570" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">End conversation</text>
+  </g>
+
+  <!-- Panel 3: Settings -->
+  <g transform="translate(680 20)">
+    <rect width="300" height="610" rx="28" fill="#ffffff" stroke="#d6dde0" stroke-width="1.5"/>
+    <rect x="112" y="10" width="76" height="6" rx="3" fill="#d6dde0"/>
+    <text x="20" y="48" font-size="12" fill="#6b7c82">9:43</text>
+    <text x="20" y="82" font-size="18" font-weight="700" fill="#0f1b1e">Jarvis</text>
+    <text x="20" y="101" font-size="11" fill="#6b7c82">Voice &amp; capabilities</text>
+
+    <rect x="20" y="122" width="260" height="54" rx="14" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="145" font-size="12" font-weight="600" fill="#0f1b1e">Wake word</text>
+    <text x="34" y="162" font-size="10" fill="#6b7c82">“Hey Jarvis” · always listening</text>
+    <rect x="230" y="138" width="34" height="20" rx="10" fill="#0d9488"/>
+    <circle cx="254" cy="148" r="7" fill="#ffffff"/>
+
+    <rect x="20" y="186" width="260" height="54" rx="14" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="209" font-size="12" font-weight="600" fill="#0f1b1e">Local model</text>
+    <text x="34" y="226" font-size="10" fill="#6b7c82">Qwen3 1.7B · Q4 · 1.4 GB</text>
+    <text x="226" y="211" font-size="12" fill="#0d9488">›</text>
+
+    <rect x="20" y="250" width="260" height="54" rx="14" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="273" font-size="12" font-weight="600" fill="#0f1b1e">Voice</text>
+    <text x="34" y="290" font-size="10" fill="#6b7c82">Parakeet ASR · Supertonic TTS</text>
+    <text x="226" y="275" font-size="12" fill="#0d9488">›</text>
+
+    <rect x="20" y="314" width="260" height="54" rx="14" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="337" font-size="12" font-weight="600" fill="#0f1b1e">Device actions</text>
+    <text x="34" y="354" font-size="10" fill="#6b7c82">AutoX.js · Android accessibility</text>
+    <text x="226" y="339" font-size="11" fill="#6b7c82">Android</text>
+
+    <rect x="20" y="378" width="260" height="54" rx="14" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="401" font-size="12" font-weight="600" fill="#0f1b1e">Cloud fallback</text>
+    <text x="34" y="418" font-size="10" fill="#6b7c82">Gemini Live via LiveKit · optional</text>
+    <rect x="230" y="394" width="34" height="20" rx="10" fill="#d6dde0"/>
+    <circle cx="238" cy="404" r="7" fill="#ffffff"/>
+
+    <rect x="20" y="452" width="260" height="62" rx="14" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="34" y="474" font-size="10" fill="#6b7c82">Microphone</text>
+    <text x="34" y="493" font-size="12" fill="#0f1b1e">Foreground service active</text>
+    <circle cx="250" cy="489" r="5" fill="#16a34a"/>
+
+    <text x="20" y="546" font-size="10" fill="#6b7c82">Models on device · 2.1 GB</text>
+    <rect x="20" y="558" width="260" height="34" rx="10" fill="#ffffff" stroke="#d6dde0"/>
+    <text x="150" y="580" text-anchor="middle" font-size="11" fill="#0f1b1e">Manage models</text>
+  </g>
+</svg>

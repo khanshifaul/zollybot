@@ -166,7 +166,22 @@ function AuthenticatedStack() {
         ...(isAndroid && { sheetCornerRadius: 28 }),
       })}
     >
-      <Stack.Screen name="connected" options={{ animation: "fade", gestureEnabled: false, title: "" }} />
+      <Stack.Screen
+        name="connected"
+        options={{ animation: "fade", gestureEnabled: false, headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="agents"
+        options={{ animation: "fade", gestureEnabled: false, headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="jarvis-settings"
+        options={{
+          animation: pushAnimation,
+          headerShown: false,
+          contentStyle: { backgroundColor: sheetBackground },
+        }}
+      />
       <Stack.Screen
         name="chat/[agentId]"
         options={{
@@ -466,6 +481,14 @@ function AuthenticatedStack() {
           headerBlurEffect: "none",
           scrollEdgeEffects: { top: "hidden", bottom: "soft" },
           title: t("mobile.app.route.routine"),
+        }}
+      />
+      <Stack.Screen
+        name="jarvis"
+        options={{
+          animation: pushAnimation,
+          headerShown: false,
+          contentStyle: { backgroundColor: sheetBackground },
         }}
       />
       <Stack.Screen name="server-tasks" options={largeTitlePage} />
