@@ -7,6 +7,7 @@ Related wireframes: [`jarvis-wireframes.svg`](./jarvis-wireframes.svg).
 
 ## 0. Implementation status
 
+- **Phase 2a — foreground wake word implemented.** Porcupine built-in `Jarvis` keyword responds to both **“Hey Jarvis”** and **“Hello Jarvis”**, with optional custom `.ppn` models for exact phrases. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background foreground-service wake word is still pending.
 - **Phase 1 — implemented in the working tree.** Jarvis is the main screen; office-wise agents live at `/agents`; **a Jarvis/Agents page switch swaps the two main screens**; Jarvis settings live in the drawer at `/jarvis-settings`; orb, listening preview, Butler text bridge, attachments (camera/photos/files), screen-share entry, settings persistence, model catalog, and model selection.
 - Phase 2+ remains planned.
 

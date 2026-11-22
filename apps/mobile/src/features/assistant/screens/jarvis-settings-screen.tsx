@@ -8,6 +8,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { JARVIS_MODELS, jarvisModel } from "@/features/assistant/model/jarvis-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
+import { WAKE_WORD_CONFIGURED } from "@/features/assistant/native/wake-word";
 import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
 
@@ -113,9 +114,14 @@ export default function JarvisSettingsScreen() {
         <View style={{ borderColor: border, borderWidth: 1, borderRadius: 16, paddingHorizontal: 14 }}>
           <Row
             title={t("mobile.app.jarvis.wake")}
-            detail={t("mobile.app.jarvis.wakeHint")}
-            disabled
-            right={<Switch value={false} disabled />}
+            detail={WAKE_WORD_CONFIGURED ? t("mobile.app.jarvis.wakeHint") : t("mobile.app.jarvis.wakeKeyMissing")}
+            right={
+              <Switch
+                value={settings.wakeWord}
+                disabled={!WAKE_WORD_CONFIGURED}
+                onValueChange={(value) => void saveJarvisSettings({ wakeWord: value })}
+              />
+            }
           />
           <Row
             title={t("mobile.app.jarvis.localModel")}

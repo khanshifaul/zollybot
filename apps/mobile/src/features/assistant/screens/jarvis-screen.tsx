@@ -10,7 +10,7 @@ import PanelLeft from "lucide-react-native/icons/panel-left";
 import Plus from "lucide-react-native/icons/plus";
 import Settings2 from "lucide-react-native/icons/settings-2";
 import X from "lucide-react-native/icons/x";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -27,6 +27,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { ConnectedScreen } from "@/features/agents/screens/connected-screen";
 import { JarvisOrb } from "@/features/assistant/components/jarvis-orb";
 import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
+import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import { AttachmentThumbnail } from "@/features/chat/components/attachment-preview";
 import { useChatAttachments } from "@/features/chat/components/use-chat-attachments";
 import { useHomeOnboarding } from "@/features/onboarding/context/home-onboarding-context";
@@ -55,7 +56,11 @@ export default function JarvisScreen() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const wakeNonce = useJarvisWakeState((state) => state.nonce);
   const attachments = useChatAttachments();
+  useEffect(() => {
+    if (wakeNonce > 0) setListening(true);
+  }, [wakeNonce]);
   const butler = useMemo(() => agents.find((agent) => agent.name.toLowerCase() === "butler") ?? agents[0], [agents]);
 
   if (onboarding.active) return <ConnectedScreen />;
