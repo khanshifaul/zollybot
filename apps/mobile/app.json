@@ -39,6 +39,7 @@
       ]
     },
     "plugins": [
+      "./plugins/with-background-actions",
       "./plugins/with-rocketsim",
       "./plugins/with-workspace-bundle-inputs",
       "expo-router",

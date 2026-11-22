@@ -9,6 +9,10 @@ import {
   speakerEmbedding,
   VOICE_MATCH_THRESHOLD,
 } from "@/features/assistant/model/voice-match";
+import {
+  startJarvisBackgroundService,
+  stopJarvisBackgroundService,
+} from "@/features/assistant/native/background-service";
 import { useJarvisWakeWord } from "@/features/assistant/native/wake-word";
 import { JARVIS_ENABLED } from "@/shared/lib/jarvis-feature";
 
@@ -23,6 +27,16 @@ export function JarvisWakeBridge() {
   useEffect(() => {
     void loadJarvisSettings();
   }, []);
+  useEffect(() => {
+    if (!JARVIS_ENABLED || !wakeWord) return;
+    void startJarvisBackgroundService();
+  }, [wakeWord]);
+  useEffect(
+    () => () => {
+      void stopJarvisBackgroundService();
+    },
+    [],
+  );
   useEffect(() => {
     if (!voiceMatch) {
       setTemplate(null);
