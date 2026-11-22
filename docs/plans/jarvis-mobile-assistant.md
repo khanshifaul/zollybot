@@ -7,7 +7,7 @@ Related wireframes: [`jarvis-wireframes.svg`](./jarvis-wireframes.svg).
 
 ## 0. Implementation status
 
-- **Phase 2a — foreground wake word implemented.** Porcupine built-in `Jarvis` keyword responds to both **“Hey Jarvis”** and **“Hello Jarvis”**, with optional custom `.ppn` models for exact phrases. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background foreground-service wake word is still pending.
+- **Phase 2c — Voice match implemented (Android).** Sherpa-onnx Titanet Small speaker embeddings, three-sample enrollment, SecureStore template, wake-audio verification, and the enrollment screen. iOS speaker extraction is still pending. Porcupine built-in `Jarvis` keyword responds to both **“Hey Jarvis”** and **“Hello Jarvis”**; no `.ppn` asset or custom model is needed. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background foreground-service wake word is still pending.
 - **Phase 1 — implemented in the working tree.** Jarvis is the main screen; office-wise agents live at `/agents`; **a Jarvis/Agents page switch swaps the two main screens**; Jarvis settings live in the drawer at `/jarvis-settings`; orb, listening preview, Butler text bridge, attachments (camera/photos/files), screen-share entry, settings persistence, model catalog, and model selection.
 - Phase 2+ remains planned.
 
@@ -15,6 +15,8 @@ Phase 1 files:
 
 - `apps/mobile/src/features/assistant/screens/jarvis-screen.tsx`
 - `apps/mobile/src/features/assistant/screens/jarvis-settings-screen.tsx`
+- `apps/mobile/src/features/assistant/screens/jarvis-wake-test-screen.tsx`
+- `apps/mobile/src/features/assistant/native/wake-word.ts`
 - `apps/mobile/src/features/assistant/components/jarvis-orb.tsx`
 - `apps/mobile/src/features/assistant/model/jarvis-models.ts`
 - `apps/mobile/src/features/assistant/model/jarvis-settings.ts`
@@ -222,6 +224,20 @@ Address grammar examples:
 - Switching office updates Jarvis’s scope; switching back to Lobby returns it to Butler.
 - Jarvis can propose: “I’ll ask the Design office manager” and show a tap-to-open thread.
 - Agent replies show as normal ZollyBot messages; voice is an additional output, not a separate thread.
+
+#### Voice match
+
+Hands-free wake should only answer the enrolled owner. Planned design:
+
+- Enrollment: three spoken samples, stored as a local speaker embedding (not raw audio).
+- Verification: run after the wake keyword on the same utterance or the next short window; proceed only above a calibrated similarity threshold.
+- Engines to evaluate:
+  - Picovoice **Eagle** through a small native module (best accuracy; commercial licence).
+  - **sherpa-onnx speaker embedding** (ECAPA/3D-Speaker) inside the existing `ZollyBotSpeech` module (free, on-device, larger integration).
+- Reject silently with a short haptic; do not open Jarvis and do not start ASR.
+- Voice match is convenience, **not authentication**: gates, payments, messages, and deletions still need the normal UI confirmation or device unlock.
+- Store only the embedding in SecureStore; delete it when Voice match is turned off.
+- Acceptance: owner accepted at a high rate across quiet/noisy rooms; another speaker rejected, with a published false-accept test set.
 
 #### Authority boundaries
 

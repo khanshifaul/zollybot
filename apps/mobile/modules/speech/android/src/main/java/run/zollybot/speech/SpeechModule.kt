@@ -12,10 +12,13 @@ import com.k2fsa.sherpa.onnx.OfflineTts
 import com.k2fsa.sherpa.onnx.OfflineTtsConfig
 import com.k2fsa.sherpa.onnx.OfflineTtsModelConfig
 import com.k2fsa.sherpa.onnx.OfflineTtsSupertonicModelConfig
+import com.k2fsa.sherpa.onnx.SpeakerEmbeddingExtractor
+import com.k2fsa.sherpa.onnx.SpeakerEmbeddingExtractorConfig
 import expo.modules.kotlin.Promise
 import expo.modules.kotlin.exception.CodedException
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.kotlin.typedarray.Float32Array as ExpoFloat32Array
 import expo.modules.kotlin.typedarray.Uint8Array
 import java.io.File
 import java.nio.ByteBuffer
@@ -54,7 +57,10 @@ class SpeechModule : Module() {
   private var playback: Thread? = null
   /** Only the recognition executor reads and writes it. */
   private var recognizer: ParakeetRecognizer? = null
+  private var speakerExtractor: SpeakerEmbeddingExtractor? = null
+  private var speakerDirectory: String? = null
   private val recognition = Executors.newSingleThreadExecutor()
+  private val speaker = Executors.newSingleThreadExecutor()
   private val captureExecutor = Executors.newSingleThreadExecutor()
   private val capture = SpeechCapture(
     executor = captureExecutor,
@@ -151,6 +157,71 @@ class SpeechModule : Module() {
       }
     }
 
+    /** Loads the speaker-embedding model used by Voice match. */
+    AsyncFunction("loadSpeakerModel") { location: String, threads: Int, promise: Promise ->
+      speaker.execute {
+        val path = pathOf(location)
+        if (speakerDirectory == path && speakerExtractor != null) {
+          promise.resolve(null)
+          return@execute
+        }
+        try {
+          speakerExtractor?.release()
+          speakerExtractor = null
+          speakerDirectory = null
+          speakerExtractor = SpeakerEmbeddingExtractor(
+            null,
+            SpeakerEmbeddingExtractorConfig(
+              model = File(path, "nemo_en_titanet_small.onnx").absolutePath,
+              numThreads = threads,
+              debug = false,
+              provider = "cpu",
+            ),
+          )
+          speakerDirectory = path
+          promise.resolve(null)
+        } catch (error: Throwable) {
+          speakerExtractor = null
+          speakerDirectory = null
+          promise.reject(SpeechModelException())
+        }
+      }
+    }
+
+    /** Computes one speaker embedding from 16 kHz mono samples. */
+    AsyncFunction("speakerEmbedding") { samples: ExpoFloat32Array, promise: Promise ->
+      speaker.execute {
+        val extractor = speakerExtractor
+        if (extractor == null) {
+          promise.reject(SpeechModelException())
+          return@execute
+        }
+        try {
+          val values = FloatArray(samples.length) { samples.readFloat(it * 4) }
+          val stream = extractor.createStream()
+          try {
+            stream.acceptWaveform(values, 16_000)
+            stream.inputFinished()
+            val embedding = extractor.compute(stream)
+            promise.resolve(embedding.map { it.toDouble() })
+          } finally {
+            stream.release()
+          }
+        } catch (error: Throwable) {
+          promise.reject(SpeechModelException())
+        }
+      }
+    }
+
+    AsyncFunction("unloadSpeakerModel") { promise: Promise ->
+      speaker.execute {
+        speakerExtractor?.release()
+        speakerExtractor = null
+        speakerDirectory = null
+        promise.resolve(null)
+      }
+    }
+
     /** Opens the microphone: `transcribe` recognizes speech with Parakeet, `stream` sends the audio. */
     AsyncFunction("startCapture") { mode: String, promise: Promise ->
       val context = appContext.reactContext
@@ -181,6 +252,10 @@ class SpeechModule : Module() {
 
     /** Frees the model, such as before its files are deleted. */
     AsyncFunction("unload") { promise: Promise ->
+      speaker.execute {
+        speakerExtractor?.release()
+        speakerExtractor = null
+      }
       synthesis.execute {
         tts?.release()
         tts = null

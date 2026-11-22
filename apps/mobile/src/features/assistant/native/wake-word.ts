@@ -9,74 +9,97 @@ import { speechRecognition } from "@/shared/lib/speech-recognition";
 export const PICOVOICE_ACCESS_KEY = (process.env.EXPO_PUBLIC_PICOVOICE_ACCESS_KEY ?? "").trim();
 export const WAKE_WORD_CONFIGURED = PICOVOICE_ACCESS_KEY.length > 0;
 
-/**
- * Optional custom `.ppn` files, comma-separated and relative to Android assets or iOS bundle:
- * `hey_jarvis_android.ppn,hello_jarvis_android.ppn`. The built-in `JARVIS` keyword responds to both
- * "Hey Jarvis" and "Hello Jarvis" because Porcupine detects the "Jarvis" word. Custom models make
- * the exact phrases exclusive when they are available.
- */
-const CUSTOM_KEYWORD_PATHS = (process.env.EXPO_PUBLIC_JARVIS_WAKE_MODELS ?? "")
-  .split(",")
-  .map((path) => path.trim())
-  .filter(Boolean);
-
-type Manager = {
+export type JarvisWakeManager = {
   start: () => Promise<void>;
   stop: () => Promise<void>;
   delete: () => void;
 };
 
+/** Creates and starts a Porcupine manager with the built-in Jarvis keyword, or custom models. */
+export async function createJarvisWakeManager(onDetect: () => void): Promise<JarvisWakeManager> {
+  const permission = await speechRecognition?.requestPermissionsAsync();
+  if (permission && !permission.granted) throw new Error("Microphone permission is required for the wake word.");
+  const { BuiltInKeywords, PorcupineManager } = await import("@picovoice/porcupine-react-native");
+  // Built-in: no .ppn asset or model download. The JARVIS keyword hears both "Hey Jarvis" and
+  // "Hello Jarvis", because Porcupine detects the "Jarvis" word.
+  const manager = await PorcupineManager.fromBuiltInKeywords(
+    PICOVOICE_ACCESS_KEY,
+    [BuiltInKeywords.JARVIS],
+    onDetect,
+    undefined,
+    undefined,
+    "cpu",
+    [0.65],
+  );
+  await manager.start();
+  return manager;
+}
+
 /**
  * Foreground wake word. The Android foreground service that keeps it alive with the screen off
  * comes next; this hook owns the mic only while the app is active.
  */
-export function useJarvisWakeWord({ enabled, onWake }: { enabled: boolean; onWake: () => void }) {
+export function useJarvisWakeWord({
+  enabled,
+  onWake,
+  verify,
+}: {
+  enabled: boolean;
+  onWake: () => void;
+  /** Voice match: resolves false when the buffered wake audio belongs to another speaker. */
+  verify?: (samples: Float32Array) => Promise<boolean>;
+}) {
   const onWakeRef = useRef(onWake);
   onWakeRef.current = onWake;
+  const verifyRef = useRef(verify);
+  verifyRef.current = verify;
 
   useEffect(() => {
     if (!enabled || !WAKE_WORD_CONFIGURED) return;
     let cancelled = false;
-    let manager: Manager | null = null;
+    let manager: JarvisWakeManager | null = null;
     let running = false;
+    let verifying = false;
     let restart: ReturnType<typeof setTimeout> | null = null;
+    let processor: import("@picovoice/react-native-voice-processor").VoiceProcessor | null = null;
+    let frameListener: ((frame: number[]) => void) | null = null;
+    const frames: number[] = [];
 
     const start = async () => {
       if (cancelled || running) return;
       try {
-        const permission = await speechRecognition?.requestPermissionsAsync();
-        if (permission && !permission.granted) throw new Error("Microphone permission is required for the wake word.");
-        const { BuiltInKeywords, PorcupineManager } = await import("@picovoice/porcupine-react-native");
-        if (cancelled) return;
-        const onDetected = () => {
-          onWakeRef.current();
-        };
-        manager =
-          CUSTOM_KEYWORD_PATHS.length > 0
-            ? await PorcupineManager.fromKeywordPaths(
-                PICOVOICE_ACCESS_KEY,
-                CUSTOM_KEYWORD_PATHS,
-                onDetected,
-                undefined,
-                undefined,
-                "cpu",
-                [0.65, 0.65],
-              )
-            : await PorcupineManager.fromBuiltInKeywords(
-                PICOVOICE_ACCESS_KEY,
-                [BuiltInKeywords.JARVIS],
-                onDetected,
-                undefined,
-                undefined,
-                "cpu",
-                [0.65],
-              );
+        if (!processor) {
+          const voice = await import("@picovoice/react-native-voice-processor");
+          processor = voice.VoiceProcessor.instance;
+          frameListener = (frame) => {
+            frames.push(...frame);
+            if (frames.length > 32_000) frames.splice(0, frames.length - 32_000);
+          };
+          processor.addFrameListener(frameListener);
+        }
+        const created = await createJarvisWakeManager(() => {
+          if (verifying) return;
+          const check = verifyRef.current;
+          if (!check || frames.length < 8_000) {
+            onWakeRef.current();
+            return;
+          }
+          verifying = true;
+          const samples = Float32Array.from(frames);
+          void check(samples)
+            .then((matches) => {
+              if (matches) onWakeRef.current();
+            })
+            .finally(() => {
+              verifying = false;
+              frames.length = 0;
+            });
+        });
         if (cancelled) {
-          manager.delete();
-          manager = null;
+          created.delete();
           return;
         }
-        await manager.start();
+        manager = created;
         running = true;
       } catch {
         // A missing native module, denied microphone permission, or invalid key leaves Jarvis
@@ -92,11 +115,15 @@ export function useJarvisWakeWord({ enabled, onWake }: { enabled: boolean; onWak
       const current = manager;
       manager = null;
       running = false;
-      if (!current) return;
-      try {
-        await current.stop();
-      } catch {}
-      current.delete();
+      if (current) {
+        try {
+          await current.stop();
+        } catch {}
+        current.delete();
+      }
+      if (processor && frameListener) processor.removeFrameListener(frameListener);
+      frameListener = null;
+      frames.length = 0;
     };
 
     void start();

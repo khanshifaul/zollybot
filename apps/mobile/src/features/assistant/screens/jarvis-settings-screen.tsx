@@ -1,13 +1,14 @@
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import ChevronLeft from "lucide-react-native/icons/chevron-left";
 import ChevronRight from "lucide-react-native/icons/chevron-right";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { JARVIS_MODELS, jarvisModel } from "@/features/assistant/model/jarvis-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
+import { loadVoiceTemplate, voiceMatchSupported } from "@/features/assistant/model/voice-match";
 import { WAKE_WORD_CONFIGURED } from "@/features/assistant/native/wake-word";
 import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
@@ -86,10 +87,17 @@ export default function JarvisSettingsScreen() {
   ]).map(String);
   const selectedModel = jarvisModel(settings.modelId);
   const selectedVision = jarvisModel(settings.visionModelId);
+  const [voiceEnrolled, setVoiceEnrolled] = useState(false);
 
   useEffect(() => {
     void loadJarvisSettings();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      void loadVoiceTemplate().then((template) => setVoiceEnrolled(Boolean(template)));
+    }, []),
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: background }} edges={["top", "left", "right"]}>
@@ -111,10 +119,18 @@ export default function JarvisSettingsScreen() {
       </View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: insets.bottom + 32 }}>
+        <Text style={{ color: foreground, fontSize: 16, fontWeight: "700", paddingBottom: 8 }}>
+          {t("mobile.app.jarvis.deviceControls")}
+        </Text>
         <View style={{ borderColor: border, borderWidth: 1, borderRadius: 16, paddingHorizontal: 14 }}>
           <Row
-            title={t("mobile.app.jarvis.wake")}
-            detail={WAKE_WORD_CONFIGURED ? t("mobile.app.jarvis.wakeHint") : t("mobile.app.jarvis.wakeKeyMissing")}
+            title={t("mobile.app.jarvis.handsFree")}
+            detail={
+              WAKE_WORD_CONFIGURED
+                ? `${t("mobile.app.jarvis.handsFreeHint")}\n${t("mobile.app.jarvis.handsFreeTest")}`
+                : t("mobile.app.jarvis.handsFreeKeyMissing")
+            }
+            onPress={WAKE_WORD_CONFIGURED ? () => router.push("/jarvis-wake-test") : undefined}
             right={
               <Switch
                 value={settings.wakeWord}
@@ -123,6 +139,50 @@ export default function JarvisSettingsScreen() {
               />
             }
           />
+          <View style={{ marginLeft: 14, borderLeftWidth: 2, borderLeftColor: border, paddingLeft: 10 }}>
+            <Row
+              title={t("mobile.app.jarvis.voiceMatch")}
+              detail={
+                !voiceMatchSupported()
+                  ? t("mobile.app.jarvis.voiceMatch.androidOnly")
+                  : voiceEnrolled
+                    ? t("mobile.app.jarvis.voiceMatch.onlyYours")
+                    : t("mobile.app.jarvis.voiceMatch.enrollAction")
+              }
+              right={
+                <Switch
+                  value={settings.voiceMatch}
+                  disabled={!voiceMatchSupported() || !voiceEnrolled}
+                  onValueChange={(value) => void saveJarvisSettings({ voiceMatch: value })}
+                />
+              }
+              onPress={() => router.push("/jarvis-voice-match")}
+            />
+          </View>
+          <Row
+            title={t("mobile.app.jarvis.lockScreen")}
+            detail={t("mobile.app.jarvis.lockScreenHint")}
+            disabled
+            right={<Switch value={settings.lockScreen} disabled />}
+          />
+          <Row
+            title={t("mobile.app.jarvis.screenContext")}
+            detail={t("mobile.app.jarvis.screenContextHint")}
+            disabled
+            right={<Switch value={settings.screenContext} disabled />}
+          />
+          <Row
+            title={t("mobile.app.jarvis.automate")}
+            detail={t("mobile.app.jarvis.automateHint")}
+            disabled
+            right={<Switch value={settings.deviceActions} disabled />}
+          />
+        </View>
+
+        <Text style={{ color: foreground, fontSize: 16, fontWeight: "700", paddingTop: 22, paddingBottom: 8 }}>
+          {t("mobile.app.jarvis.assistantSection")}
+        </Text>
+        <View style={{ borderColor: border, borderWidth: 1, borderRadius: 16, paddingHorizontal: 14 }}>
           <Row
             title={t("mobile.app.jarvis.localModel")}
             detail={`${selectedModel.name} · ${selectedModel.parameters}`}
@@ -136,12 +196,6 @@ export default function JarvisSettingsScreen() {
             detail={t("mobile.app.jarvis.voiceValue")}
             right={<ChevronRight color={muted} size={18} />}
             onPress={() => router.push("/settings/voice")}
-          />
-          <Row
-            title={t("mobile.app.jarvis.deviceActions")}
-            detail={t("mobile.app.jarvis.deviceHint")}
-            disabled
-            right={<Switch value={false} disabled />}
           />
           <Row
             title={t("mobile.app.jarvis.cloud")}

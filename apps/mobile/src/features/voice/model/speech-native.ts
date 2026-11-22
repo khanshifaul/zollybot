@@ -43,6 +43,11 @@ declare class SpeechModule extends NativeModule<SpeechEvents> {
    */
   loadRecognizer?(directory: string, threads: number): Promise<void>;
   unloadRecognizer?(): Promise<void>;
+  /** Loads the speaker-embedding model used by Voice match. */
+  loadSpeakerModel?(directory: string, threads: number): Promise<void>;
+  /** One speaker embedding from 16 kHz mono samples. */
+  speakerEmbedding?(samples: Float32Array): Promise<number[]>;
+  unloadSpeakerModel?(): Promise<void>;
   /** Opens the microphone. The microphone permission must be granted first. */
   startCapture?(mode: CaptureMode): Promise<void>;
   /** Closes the microphone and sends the text of the speech so far, then `onCaptureEnd`. */

@@ -5,6 +5,9 @@ import { DEFAULT_JARVIS_MODEL, DEFAULT_JARVIS_VISION_MODEL, isJarvisModelId } fr
 
 interface JarvisSettings {
   wakeWord: boolean;
+  voiceMatch: boolean;
+  lockScreen: boolean;
+  screenContext: boolean;
   modelId: string;
   visionModelId: string;
   deviceActions: boolean;
@@ -16,6 +19,9 @@ const STORAGE_KEY = "zollybot.mobile.jarvis-settings.v1";
 
 const DEFAULT_SETTINGS = {
   wakeWord: false,
+  voiceMatch: false,
+  lockScreen: false,
+  screenContext: false,
   modelId: DEFAULT_JARVIS_MODEL,
   visionModelId: DEFAULT_JARVIS_VISION_MODEL,
   deviceActions: false,
@@ -33,6 +39,9 @@ function decode(raw: string | null) {
     const record = value;
     return {
       wakeWord: record.wakeWord === true,
+      voiceMatch: record.voiceMatch === true,
+      lockScreen: record.lockScreen === true,
+      screenContext: record.screenContext === true,
       modelId: isJarvisModelId(record.modelId) ? record.modelId : DEFAULT_JARVIS_MODEL,
       visionModelId: isJarvisModelId(record.visionModelId) ? record.visionModelId : DEFAULT_JARVIS_VISION_MODEL,
       deviceActions: record.deviceActions === true,
@@ -59,6 +68,9 @@ export async function saveJarvisSettings(change: Partial<Omit<JarvisSettings, "r
   const next = { ...useJarvisSettings.getState(), ...change };
   const settings = {
     wakeWord: next.wakeWord,
+    voiceMatch: next.voiceMatch,
+    lockScreen: next.lockScreen,
+    screenContext: next.screenContext,
     modelId: next.modelId,
     visionModelId: next.visionModelId,
     deviceActions: next.deviceActions,

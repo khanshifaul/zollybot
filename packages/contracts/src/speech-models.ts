@@ -113,3 +113,21 @@ export const SUPERTONIC_MODEL_FILES: readonly SpeechModelFile[] = [
 
 /** More denoising steps sound cleaner and take longer. Desktop and the phone use the same value. */
 export const SUPERTONIC_DENOISING_STEPS = 8;
+
+const SPEAKER_MODEL_BASE_URL = "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models";
+
+/** The directory name of the speaker-verification model on the phone. */
+export const SPEAKER_MODEL_DIRECTORY = "speaker-en-titanet-small";
+
+/**
+ * NeMo Titanet Small (Apache-2.0), a 40 MB English speaker-embedding model for sherpa-onnx.
+ * Voice match stores one averaged embedding, never the enrollment audio.
+ */
+export const SPEAKER_MODEL_FILES: readonly SpeechModelFile[] = [
+  {
+    name: "nemo_en_titanet_small.onnx",
+    url: `${SPEAKER_MODEL_BASE_URL}/nemo_en_titanet_small.onnx`,
+    bytes: 40_257_283,
+    sha256: "ad4a1802485d8b34c722d2a9d04249662f2ece5d28a7a039063ca22f515a789e",
+  },
+];

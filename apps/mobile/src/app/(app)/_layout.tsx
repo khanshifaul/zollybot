@@ -178,6 +178,22 @@ function AuthenticatedStack() {
           options={{ animation: "fade", gestureEnabled: false, headerShown: false, title: "" }}
         />
         <Stack.Screen
+          name="jarvis-voice-match"
+          options={{
+            animation: pushAnimation,
+            headerShown: false,
+            contentStyle: { backgroundColor: sheetBackground },
+          }}
+        />
+        <Stack.Screen
+          name="jarvis-wake-test"
+          options={{
+            animation: pushAnimation,
+            headerShown: false,
+            contentStyle: { backgroundColor: sheetBackground },
+          }}
+        />
+        <Stack.Screen
           name="jarvis-settings"
           options={{
             animation: pushAnimation,
