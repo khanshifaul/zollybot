@@ -626,6 +626,15 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
         <AgentListRowReveal index={index + rowOffset} reveal={listReveal}>
           <AgentWaitingGroupHeader count={item.count} />
         </AgentListRowReveal>
+      ) : item.kind === "office" ? (
+        <AgentListRowReveal index={index + rowOffset} reveal={listReveal}>
+          <View className="flex-row items-center gap-1.5 px-5 pt-3 pb-1.5">
+            <Typography.Paragraph accessibilityRole="header" className="font-medium text-muted text-sm">
+              {item.name}
+            </Typography.Paragraph>
+            <Typography.Paragraph className="text-muted text-xs opacity-60">{item.count}</Typography.Paragraph>
+          </View>
+        </AgentListRowReveal>
       ) : item.kind === "section" ? (
         <CollapsingRow collapsed={collapsedRowIds.has(item.id)}>
           <AgentListRowReveal index={index + rowOffset} reveal={listReveal}>

@@ -31,7 +31,7 @@ export function AgentTasksRow({ agent }: { agent: MobileAgent }) {
         sheetStack.dispatch(StackActions.replace(TASKS_ROUTE, { serverId: agent.serverId, agentId: agent.id }));
       }}
     >
-      <Typography.Paragraph>{t("mobile.app.route.threads")}</Typography.Paragraph>
+      <Typography.Paragraph>{t("mobile.app.route.tasks")}</Typography.Paragraph>
     </SettingsRow>
   );
 }

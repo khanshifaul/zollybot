@@ -1,14 +1,11 @@
-import { ProviderLogo, type ProviderLogoVariant } from "@zollybot/brand";
+import { AppLogo, type AppLogoVariant, ProviderLogo, type ProviderLogoVariant } from "@zollybot/brand";
 import { Button, ChevronRight, Spinner } from "@zollybot/ui";
-import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
 import { useText } from "@zollybot/ui/text";
 import { createUniqueId, For, Show } from "solid-js";
 import { AnalyticsConsentRow, ConsentNotice } from "./AnalyticsConsent";
-import type { OnboardingAvatarVariant } from "./onboarding-avatars";
 
 export interface FirstRunChoiceProps {
-  /** The agents over the title. The splash shows the same ones. */
-  team: readonly OnboardingAvatarVariant[];
+  logoVariant: AppLogoVariant;
   disabled: boolean;
   /** The user started free and setup ends when the free provider is ready. */
   loading: boolean;
@@ -28,6 +25,7 @@ export interface FirstRunChoiceProps {
 }
 
 const PLAN_LOGOS: readonly ProviderLogoVariant[] = ["codex", "claude", "grok"];
+const FREE_LOGOS: readonly ProviderLogoVariant[] = ["opencode", "kilo"];
 
 /**
  * The first question of first run: use free models now, or connect an AI subscription the user already has.
@@ -41,20 +39,7 @@ export function FirstRunChoice(props: FirstRunChoiceProps) {
   const freeDescribedBy = () => (props.reason ? `${freeDetailId} ${reasonId}` : freeDetailId);
   return (
     <section class="first-run-choice" aria-labelledby="onboarding-title">
-      <div class="first-run-choice-team" aria-hidden="true">
-        <For each={props.team}>
-          {(member) => (
-            <AgentAvatar
-              seed={member.seed}
-              hue={member.hue}
-              motion="idle"
-              animationOffset={member.animationOffset}
-              followPointer
-              class="first-run-choice-avatar"
-            />
-          )}
-        </For>
-      </div>
+      <AppLogo variant={props.logoVariant} animation="blink" class="first-run-choice-mark" />
       <h1 id="onboarding-title" class="first-run-choice-title">
         {t("onboarding.choice.title")}
       </h1>
@@ -74,6 +59,11 @@ export function FirstRunChoice(props: FirstRunChoiceProps) {
           <span class="first-run-choice-row-text">
             <strong>{t("onboarding.choice.startFree")}</strong>
             <span id={freeDetailId}>{t("onboarding.choice.freeDetail")}</span>
+          </span>
+          <span class="first-run-choice-logos" aria-hidden="true">
+            <For each={FREE_LOGOS}>
+              {(provider) => <ProviderLogo provider={provider} class="first-run-choice-logo" />}
+            </For>
           </span>
           <Show
             when={props.loading}
@@ -105,7 +95,6 @@ export function FirstRunChoice(props: FirstRunChoiceProps) {
         <AnalyticsConsentRow
           checked={props.analytics}
           disabled={props.disabled}
-          agents={props.team.slice(2, 5)}
           onChange={(enabled) => props.onAnalyticsChange(enabled)}
         />
       </div>

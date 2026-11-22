@@ -18,7 +18,7 @@ import { scheduleOnRN } from "react-native-worklets";
 import { showFailureAlert } from "@/features/analytics/failure-reports";
 import { AppUpdateNotes } from "@/features/app-update/components/app-update-notes";
 import { type AppUpdate, dismissAppUpdate, installAppUpdate } from "@/features/app-update/model/app-update";
-import { BloubEyes, EYES_HEIGHT, EYES_WIDTH } from "@/shared/components/bloub-stage/bloub-eyes";
+import { AppLogo } from "@/features/auth/components/app-logo";
 import { BLOUB_MOVE, BLOUB_RADIUS, bloubGradient, useBloubColors } from "@/shared/components/bloub-stage/bloub-look";
 import type { BloubMood } from "@/shared/components/bloub-stage/bloub-stage-store";
 import type { LargeTitleScroll } from "@/shared/components/large-title";
@@ -28,9 +28,10 @@ import { useBarTop } from "@/shared/lib/native-bar";
 import { SPLASH_EASE_OUT } from "@/shared/lib/splash-motion";
 import { currentText, useText } from "@/shared/lib/text";
 
-// The eyes sit under the status bar, between the bar buttons, and the text sits under them.
-const EYES_SCALE = 0.55;
-const EYES_TOP = 6;
+// The logo sits under the status bar, between the bar buttons, and the text sits under it.
+const LOGO_SIZE = 170;
+const LOGO_SCALE = 0.55;
+const LOGO_TOP = 6;
 const CAPTION_GAP = 10;
 const BOTTOM_PADDING = 26;
 /** The space between the edge of the block and the big title under it. */
@@ -78,7 +79,7 @@ export function useAppUpdateHeader(update: AppUpdate | null): AppUpdateHeader {
   latest.current = update;
   const updateId = update?.id ?? null;
   const rest =
-    captionHeight > 0 ? barTop + EYES_TOP + EYES_HEIGHT * EYES_SCALE + CAPTION_GAP + captionHeight + BOTTOM_PADDING : 0;
+    captionHeight > 0 ? barTop + LOGO_TOP + LOGO_SIZE * LOGO_SCALE + CAPTION_GAP + captionHeight + BOTTOM_PADDING : 0;
 
   useEffect(() => {
     if (updateId) setShown(latest.current);
@@ -166,7 +167,6 @@ export function AppUpdateBlock({
   const [size, setSize] = useState({ width: window.width, height: window.height });
   const reduced = useReducedMotion();
   const colors = useBloubColors();
-  const gazeX = useSharedValue(0);
   const gazeY = useSharedValue(0);
   const [mood, setMood] = useState<BloubMood>("idle");
   const [underStatusBar, setUnderStatusBar] = useState(false);
@@ -255,8 +255,8 @@ export function AppUpdateBlock({
     setMood("down");
     void dismissAppUpdate(update).catch(() => undefined);
   };
-  const eyesTop = barTop + EYES_TOP + (EYES_HEIGHT * EYES_SCALE - EYES_HEIGHT) / 2;
-  const captionTop = barTop + EYES_TOP + EYES_HEIGHT * EYES_SCALE + CAPTION_GAP;
+  const logoTop = barTop + LOGO_TOP + (LOGO_SIZE * LOGO_SCALE - LOGO_SIZE) / 2;
+  const captionTop = barTop + LOGO_TOP + LOGO_SIZE * LOGO_SCALE + CAPTION_GAP;
   const toggleNotes = () => {
     void haptics.impact("soft");
     setExpanded(!expanded);
@@ -307,13 +307,13 @@ export function AppUpdateBlock({
           style={[
             styles.eyes,
             {
-              top: eyesTop,
-              left: (size.width - EYES_WIDTH) / 2,
-              transform: [{ scale: EYES_SCALE }],
+              top: logoTop,
+              left: (size.width - LOGO_SIZE) / 2,
+              transform: [{ scale: LOGO_SCALE }],
             },
           ]}
         >
-          <BloubEyes mood={mood} active={!hidden} reduced={reduced} gazeX={gazeX} gazeY={gazeY} eyeColor={colors.eye} />
+          <AppLogo animation="blink" size={LOGO_SIZE} />
         </View>
         <View
           pointerEvents="box-none"
@@ -390,6 +390,6 @@ const styles = StyleSheet.create({
     borderCurve: "continuous",
   },
   glow: { position: "absolute", left: 0, right: 0, top: 0 },
-  eyes: { position: "absolute", width: EYES_WIDTH, height: EYES_HEIGHT },
+  eyes: { position: "absolute", width: LOGO_SIZE, height: LOGO_SIZE },
   action: { height: 40, borderRadius: 999, paddingHorizontal: 18 },
 });

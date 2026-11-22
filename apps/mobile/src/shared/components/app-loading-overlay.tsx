@@ -23,7 +23,7 @@ interface AppLoadingOverlayContextValue {
 const AppLoadingOverlayContext = createContext<AppLoadingOverlayContextValue | null>(null);
 
 /**
- * The app loader: the stage block covers the screen, the eyes think, and the label shows at the
+ * The app loader: the stage block covers the screen, the logo blinks, and the label shows at the
  * bottom. When the label clears, the block rolls up and the screen below comes in under it.
  */
 export function AppLoadingOverlayProvider({ children }: PropsWithChildren) {

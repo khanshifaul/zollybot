@@ -27,7 +27,37 @@ export type MobileSidebarItem =
       empty: boolean;
     }
   | { kind: "agent"; id: string; agent: MobileAgent }
-  | { kind: "channel"; id: string; channel: ChannelSummary };
+  | { kind: "channel"; id: string; channel: ChannelSummary }
+  /** A heading that groups the chats of the default section by the office that employs them. */
+  | { kind: "office"; id: string; name: string; count: number };
+
+const BUILDING_OFFICE = "__building__";
+
+/** The agents of the default section, grouped by office with the building roles last. */
+function officeSections(items: readonly MobileSidebarItem[], t: MobileTranslate): MobileSidebarItem[] {
+  const channels = items.filter((item) => item.kind === "channel");
+  const groups = new Map<string, { name: string; agents: MobileAgent[] }>();
+  for (const item of items) {
+    if (item.kind !== "agent") continue;
+    const id = item.agent.officeId ?? BUILDING_OFFICE;
+    const group = groups.get(id) ?? {
+      name: item.agent.officeName ?? (id === BUILDING_OFFICE ? t("mobile.offices.building") : id),
+      agents: [],
+    };
+    group.agents.push(item.agent);
+    groups.set(id, group);
+  }
+  const ordered = [...groups.entries()].sort(([leftId, left], [rightId, right]) =>
+    leftId === BUILDING_OFFICE ? 1 : rightId === BUILDING_OFFICE ? -1 : left.name.localeCompare(right.name),
+  );
+  return [
+    ...channels,
+    ...ordered.flatMap(([id, group]) => [
+      { kind: "office" as const, id: `office:${id}`, name: group.name, count: group.agents.length },
+      ...group.agents.map((agent) => ({ kind: "agent" as const, id: agent.id, agent })),
+    ]),
+  ];
+}
 
 export function mobileSidebarItems(
   layout: SidebarLayoutSnapshot | null,
@@ -40,7 +70,7 @@ export function mobileSidebarItems(
     ...channels.map((channel) => ({ kind: "channel" as const, id: channel.id, channel })),
     ...agents.map((agent) => ({ kind: "agent" as const, id: agent.id, agent })),
   ];
-  if (!layout) return chats;
+  if (!layout) return officeSections(chats, t);
   const positions = new Map(layout.agentOrder.map((id, index) => [id, index]));
   chats.sort((a, b) => (positions.get(a.id) ?? positions.size) - (positions.get(b.id) ?? positions.size));
   const names = new Map(layout.sections.map((section) => [section.id, section.name]));
@@ -67,6 +97,8 @@ export function mobileSidebarItems(
         : undefined;
     if (title === undefined || (id === SIDEBAR_UNASSIGNED_SECTION_ID && group.length === 0)) return [];
     const parentId = parents.get(id);
+    // The default "Agents" section reads as one heading per office. A user folder keeps its own.
+    if (id === SIDEBAR_UNASSIGNED_SECTION_ID) return officeSections(group, t);
     return [
       {
         kind: "section" as const,

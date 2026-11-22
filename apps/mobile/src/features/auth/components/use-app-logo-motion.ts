@@ -1,3 +1,4 @@
+import { APP_LOGO_VIEWBOX } from "@zollybot/brand/app-logo-shape";
 import { useCallback, useEffect, useRef } from "react";
 import {
   cancelAnimation,
@@ -6,6 +7,7 @@ import {
   useAnimatedStyle,
   useSharedValue,
   withDelay,
+  withRepeat,
   withSequence,
   withTiming,
 } from "react-native-reanimated";
@@ -14,10 +16,14 @@ import { useReducedMotion } from "@/shared/lib/motion";
 
 export type AppLogoAnimation = "none" | "blink";
 
-const VIEWBOX_SIZE = 240;
-const BLINK_INTERVAL_MS = 4_800;
-const BLINK_START_DELAY_MS = 2_112;
-const BLINK_HALF_DURATION_MS = 96;
+/** How far the eyes move at the end of their idle glance, in logo units. */
+const GAZE_RANGE = 7;
+/** The antenna leans with the same gaze, in degrees. */
+const ANTENNA_TILT = 5;
+const BLINK_MIN_DELAY_MS = 2_600;
+const BLINK_MAX_DELAY_MS = 6_800;
+const BLINK_START_DELAY_MS = 1_900;
+const BLINK_HALF_DURATION_MS = 90;
 const EASE_IN_OUT = Easing.bezier(0.77, 0, 0.175, 1);
 const EASE_OUT = Easing.bezier(0.23, 1, 0.32, 1);
 const WINK_DURATION_MS = 360;
@@ -27,10 +33,7 @@ const WINK_OPEN_DURATION_MS = WINK_DURATION_MS - WINK_CLOSE_DURATION_MS - WINK_H
 const WINK_RIGHT_REACTION_DURATION_MS = 173;
 const WINK_RIGHT_RECOVERY_DURATION_MS = WINK_DURATION_MS - WINK_RIGHT_REACTION_DURATION_MS;
 
-/**
- * One blink. A timer starts each one, so the display does not draw frames in the long open time
- * between blinks, as a repeated animation with a delay does.
- */
+/** One blink. A timer starts each one, so the display does not draw frames between blinks. */
 function createBlinkAnimation(): number {
   return withSequence(
     ReduceMotion.Never,
@@ -39,30 +42,50 @@ function createBlinkAnimation(): number {
   );
 }
 
+/** A slow left-right glance with pauses at each end, so the eyes read as looking around. */
+function createGazeAnimation(): number {
+  return withRepeat(
+    withSequence(
+      withTiming(0, { duration: 1_100, easing: EASE_IN_OUT }),
+      withTiming(-1, { duration: 850, easing: EASE_IN_OUT }),
+      withTiming(-1, { duration: 900, easing: EASE_IN_OUT }),
+      withTiming(0, { duration: 850, easing: EASE_IN_OUT }),
+      withTiming(1, { duration: 850, easing: EASE_IN_OUT }),
+      withTiming(1, { duration: 900, easing: EASE_IN_OUT }),
+      withTiming(0, { duration: 1_100, easing: EASE_IN_OUT }),
+    ),
+    -1,
+    false,
+  );
+}
+
 export function useAppLogoMotion({ animation, size }: { animation: AppLogoAnimation; size: number }) {
   const reduceMotion = useReducedMotion();
   const leftEyeScaleY = useSharedValue(1);
   const rightEyeScaleX = useSharedValue(1);
   const rightEyeScaleY = useSharedValue(1);
-  const rightEyeTranslateY = useSharedValue(0);
+  const gaze = useSharedValue(0);
   const resumeBlinkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const blinkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const doubleBlinkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const stopEyeAnimations = useCallback(() => {
     if (blinkTimer.current) clearTimeout(blinkTimer.current);
+    if (doubleBlinkTimer.current) clearTimeout(doubleBlinkTimer.current);
     blinkTimer.current = null;
+    doubleBlinkTimer.current = null;
     cancelAnimation(leftEyeScaleY);
     cancelAnimation(rightEyeScaleX);
     cancelAnimation(rightEyeScaleY);
-    cancelAnimation(rightEyeTranslateY);
-  }, [leftEyeScaleY, rightEyeScaleX, rightEyeScaleY, rightEyeTranslateY]);
+    cancelAnimation(gaze);
+  }, [gaze, leftEyeScaleY, rightEyeScaleX, rightEyeScaleY]);
 
   const resetEyes = useCallback(() => {
     leftEyeScaleY.set(1);
     rightEyeScaleX.set(1);
     rightEyeScaleY.set(1);
-    rightEyeTranslateY.set(0);
-  }, [leftEyeScaleY, rightEyeScaleX, rightEyeScaleY, rightEyeTranslateY]);
+    gaze.set(0);
+  }, [gaze, leftEyeScaleY, rightEyeScaleX, rightEyeScaleY]);
 
   const startIdleBlink = useCallback(() => {
     stopEyeAnimations();
@@ -70,13 +93,27 @@ export function useAppLogoMotion({ animation, size }: { animation: AppLogoAnimat
 
     if (animation !== "blink" || reduceMotion) return;
 
+    gaze.set(createGazeAnimation());
+
     const blink = () => {
       leftEyeScaleY.set(createBlinkAnimation());
       rightEyeScaleY.set(createBlinkAnimation());
-      blinkTimer.current = setTimeout(blink, BLINK_INTERVAL_MS);
+      if (Math.random() < 0.18) {
+        blinkTimer.current = setTimeout(
+          () => {
+            leftEyeScaleY.set(createBlinkAnimation());
+            rightEyeScaleY.set(createBlinkAnimation());
+          },
+          BLINK_HALF_DURATION_MS * 2 + 120,
+        );
+      }
+      blinkTimer.current = setTimeout(
+        blink,
+        BLINK_MIN_DELAY_MS + Math.random() * (BLINK_MAX_DELAY_MS - BLINK_MIN_DELAY_MS),
+      );
     };
     blinkTimer.current = setTimeout(blink, BLINK_START_DELAY_MS);
-  }, [animation, leftEyeScaleY, reduceMotion, resetEyes, rightEyeScaleY, stopEyeAnimations]);
+  }, [animation, gaze, leftEyeScaleY, reduceMotion, resetEyes, rightEyeScaleY, stopEyeAnimations]);
 
   useEffect(() => {
     startIdleBlink();
@@ -117,36 +154,24 @@ export function useAppLogoMotion({ animation, size }: { animation: AppLogoAnimat
           withTiming(1, { duration: WINK_RIGHT_RECOVERY_DURATION_MS, easing: EASE_OUT }),
         ),
       );
-      rightEyeTranslateY.set(
-        withSequence(
-          ReduceMotion.Never,
-          withTiming(-2.4, { duration: WINK_RIGHT_REACTION_DURATION_MS, easing: EASE_OUT }),
-          withTiming(0, { duration: WINK_RIGHT_RECOVERY_DURATION_MS, easing: EASE_OUT }),
-        ),
-      );
     }
 
     resumeBlinkTimer.current = setTimeout(startIdleBlink, WINK_DURATION_MS);
-  }, [
-    leftEyeScaleY,
-    reduceMotion,
-    resetEyes,
-    rightEyeScaleX,
-    rightEyeScaleY,
-    rightEyeTranslateY,
-    startIdleBlink,
-    stopEyeAnimations,
-  ]);
+  }, [leftEyeScaleY, reduceMotion, resetEyes, rightEyeScaleX, rightEyeScaleY, startIdleBlink, stopEyeAnimations]);
 
+  const gazePixels = (size * GAZE_RANGE) / APP_LOGO_VIEWBOX.size;
   const leftEyeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scaleY: leftEyeScaleY.get() }],
+    transform: [{ translateX: gaze.get() * gazePixels }, { scaleY: leftEyeScaleY.get() }],
   }));
   const rightEyeAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
-      { translateY: (rightEyeTranslateY.get() * size) / VIEWBOX_SIZE },
+      { translateX: gaze.get() * gazePixels },
       { scaleX: rightEyeScaleX.get() },
       { scaleY: rightEyeScaleY.get() },
     ],
   }));
-  return { handlePressIn, leftEyeAnimatedStyle, rightEyeAnimatedStyle };
+  const antennaAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${gaze.get() * ANTENNA_TILT}deg` }],
+  }));
+  return { handlePressIn, antennaAnimatedStyle, leftEyeAnimatedStyle, rightEyeAnimatedStyle };
 }

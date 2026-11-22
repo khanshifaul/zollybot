@@ -1079,7 +1079,7 @@ function HomeSearchIdle({ onLeave, canUseTasks }: { onLeave: () => void; canUseT
         ? [
             {
               id: "tasks",
-              label: t("mobile.app.route.threads"),
+              label: t("mobile.app.route.tasks"),
               icon: SquareCheck,
               href: { pathname: "/server-tasks", params: { serverId } } as const,
             },
@@ -1089,7 +1089,7 @@ function HomeSearchIdle({ onLeave, canUseTasks }: { onLeave: () => void; canUseT
         ? [
             {
               id: "routines",
-              label: t("mobile.app.route.routines"),
+              label: t("mobile.app.route.schedule"),
               icon: CalendarClock,
               href: { pathname: "/server-routines", params: { serverId } } as const,
             },

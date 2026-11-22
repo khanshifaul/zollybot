@@ -251,7 +251,11 @@ export function classifyFailure(error: unknown): CauseCode {
   if (
     /\b(?:usage limit|hit your (?:weekly |session )?limit|quota (?:exceeded|reached|exhausted)|free[ _-]usage[ _-]exhausted|key limit exceeded)\b/iu.test(
       message,
-    )
+    ) ||
+    // Command Code's daily free-model quota: "You've used all 1000 free Glyph Cluster requests for
+    // today. Your quota resets at …". It names a number and a reset, never "quota exceeded".
+    /\b(?:used all|exhausted)\b[^.\n]{0,100}\b(?:free\s+)?(?:requests?|quota|credits?)\b/iu.test(message) ||
+    /\bquota\b[^.\n]{0,60}\b(?:resets?|renews?)\b/iu.test(message)
   )
     return "usage_limit";
   if (/\b(?:timed? out|ETIMEDOUT|gateway time-?out|deadline exceeded|DEADLINE_EXCEEDED)\b/iu.test(message))

@@ -1,15 +1,11 @@
 import { Button, Checkbox, toast } from "@zollybot/ui";
-import { AgentAvatar } from "@zollybot/ui/features/agents/AgentAvatar";
 import { useText } from "@zollybot/ui/text";
-import { createSignal, createUniqueId, For, Match, onCleanup, Show, Switch } from "solid-js";
-import type { OnboardingAvatarVariant } from "./onboarding-avatars";
+import { createSignal, createUniqueId, For, Match, onCleanup, Switch } from "solid-js";
 
 export interface AnalyticsConsentRowProps {
   /** Starts ticked only in a region that allows analytics by default. A tick by the user thanks them. */
   checked: boolean;
   disabled?: boolean;
-  /** The agents that pop out of the row after a tick. Three fit beside the title. */
-  agents: readonly OnboardingAvatarVariant[];
   onChange: (enabled: boolean) => void;
   class?: string;
 }
@@ -69,15 +65,6 @@ export function AnalyticsConsentRow(props: AnalyticsConsentRowProps) {
         </strong>
         <span id={detailId}>{t("onboarding.consent.analyticsDetail")}</span>
       </span>
-      <Show when={thanks().showing && thanks().round} keyed>
-        <span class="first-run-choice-improve-pop" aria-hidden="true">
-          <For each={props.agents}>
-            {(member) => (
-              <AgentAvatar seed={member.seed} hue={member.hue} motion="always" class="first-run-choice-improve-agent" />
-            )}
-          </For>
-        </span>
-      </Show>
     </label>
   );
 }

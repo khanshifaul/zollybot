@@ -382,7 +382,7 @@ export function FirstRunFlow(props: FirstRunFlowProps) {
             <Switch>
               <Match when={state.step === "choose"}>
                 <FirstRunChoice
-                  team={team}
+                  logoVariant={logoVariant()}
                   disabled={busy()}
                   loading={busy()}
                   reason={blockedReason()}

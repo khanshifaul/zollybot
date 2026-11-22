@@ -1,6 +1,14 @@
+import {
+  APP_LOGO_VIEWBOX,
+  ROBOT_ANTENNA,
+  ROBOT_EARS,
+  ROBOT_EYES,
+  ROBOT_HEAD,
+  ROBOT_SMILE,
+} from "@zollybot/brand/app-logo-shape";
 import { Pressable, View } from "react-native";
 import Animated from "react-native-reanimated";
-import Svg, { Polyline, Rect } from "react-native-svg";
+import Svg, { Circle, Path, Rect } from "react-native-svg";
 import { useCSSVariable } from "uniwind";
 
 import { type AppLogoAnimation, useAppLogoMotion } from "@/features/auth/components/use-app-logo-motion";
@@ -12,31 +20,38 @@ export interface AppLogoProps {
   size?: number;
 }
 
-const VIEWBOX_SIZE = 240;
-const LEFT_EYE_CENTER_X = 68.88;
-const RIGHT_EYE_CENTER_X = 170.88;
-const EYE_CENTER_Y = 117;
-const LEFT_EYE_POINTS =
-  "43.55 93.61 64.69 81.41 36.48 108.04 79.67 83.11 35.93 122.88 91.58 90.74 38.9 132.69 97.66 98.76 42.44 138.88 100.43 105.4 46.9 143.83 101.97 112.04 55.08 149.51 101.83 122.52 73.01 152.43 94.14 140.23";
-const RIGHT_EYE_POINTS =
-  "145.65 93.61 166.79 81.41 140.83 101.52 175.58 81.46 138.3 109.53 183.18 83.63 137.55 117.43 189.67 87.33 139.67 129.39 197.88 95.78 142.92 136.32 201.52 102.48 149.03 143.86 204.07 112.08 159.14 150.37 203.51 124.75 169.28 152.61 199.82 134.98";
+const EYE_LEFT_X = ROBOT_EYES.leftCx;
+const EYE_RIGHT_X = ROBOT_EYES.rightCx;
+const EYE_Y = ROBOT_EYES.cy;
+const ANTENNA_BASE_X = 120;
+const ANTENNA_BASE_Y = 61;
 
 function resolveColor(value: string | number | undefined, fallback: string): string {
   return String(value ?? fallback);
 }
 
-export function AppLogo({ animation = "none", interactive = false, size = VIEWBOX_SIZE }: AppLogoProps) {
+export function AppLogo({ animation = "none", interactive = false, size = 240 }: AppLogoProps) {
   const { t } = useText();
-  const backgroundColor = resolveColor(useCSSVariable("--zollybot-logo-production"), "#2dd4bf");
+  const viewBox = `${APP_LOGO_VIEWBOX.x} ${APP_LOGO_VIEWBOX.y} ${APP_LOGO_VIEWBOX.size} ${APP_LOGO_VIEWBOX.size}`;
+  const layerPoint = (x: number, y: number): [number, number, number] => [
+    ((x - APP_LOGO_VIEWBOX.x) * size) / APP_LOGO_VIEWBOX.size,
+    ((y - APP_LOGO_VIEWBOX.y) * size) / APP_LOGO_VIEWBOX.size,
+    0,
+  ];
+  const logoColor = resolveColor(useCSSVariable("--zollybot-logo-production"), "#2dd4bf");
   const eyeColor = resolveColor(useCSSVariable("--zollybot-logo-eye"), "#042f2e");
-  const { handlePressIn, leftEyeAnimatedStyle, rightEyeAnimatedStyle } = useAppLogoMotion({ animation, size });
-  const eyeLayerStyle = {
+  const { handlePressIn, antennaAnimatedStyle, leftEyeAnimatedStyle, rightEyeAnimatedStyle } = useAppLogoMotion({
+    animation,
+    size,
+  });
+  const layerStyle = {
     height: size,
     left: 0,
     position: "absolute" as const,
     top: 0,
     width: size,
   };
+  const eyeOrigin = (x: number): [number, number, number] => layerPoint(x, EYE_Y);
 
   const logo = (
     <View
@@ -44,47 +59,77 @@ export function AppLogo({ animation = "none", interactive = false, size = VIEWBO
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <Svg width={size} height={size} viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}>
-        <Rect width={VIEWBOX_SIZE} height={VIEWBOX_SIZE} rx={50} ry={50} fill={backgroundColor} />
+      <Svg width={size} height={size} viewBox={viewBox}>
+        <Rect
+          x={ROBOT_EARS.leftX}
+          y={ROBOT_EARS.y - ROBOT_EARS.height / 2}
+          width={ROBOT_EARS.width}
+          height={ROBOT_EARS.height}
+          rx={ROBOT_EARS.rx}
+          fill={logoColor}
+        />
+        <Rect
+          x={ROBOT_EARS.rightX}
+          y={ROBOT_EARS.y - ROBOT_EARS.height / 2}
+          width={ROBOT_EARS.width}
+          height={ROBOT_EARS.height}
+          rx={ROBOT_EARS.rx}
+          fill={logoColor}
+        />
+        <Rect
+          x={ROBOT_HEAD.cx - ROBOT_HEAD.width / 2}
+          y={ROBOT_HEAD.cy - ROBOT_HEAD.height / 2}
+          width={ROBOT_HEAD.width}
+          height={ROBOT_HEAD.height}
+          rx={ROBOT_HEAD.rx}
+          fill={logoColor}
+        />
+        <Path
+          d={`M ${ROBOT_SMILE.x1} ${ROBOT_SMILE.y} Q ${ROBOT_HEAD.cx} ${ROBOT_SMILE.y + ROBOT_SMILE.depth} ${ROBOT_SMILE.x2} ${ROBOT_SMILE.y}`}
+          fill="none"
+          stroke={eyeColor}
+          strokeLinecap="round"
+          strokeWidth={ROBOT_SMILE.strokeWidth}
+        />
       </Svg>
 
       <Animated.View
         pointerEvents="none"
         style={[
-          eyeLayerStyle,
-          { transformOrigin: [(LEFT_EYE_CENTER_X * size) / VIEWBOX_SIZE, (EYE_CENTER_Y * size) / VIEWBOX_SIZE, 0] },
-          leftEyeAnimatedStyle,
+          layerStyle,
+          {
+            transformOrigin: layerPoint(ANTENNA_BASE_X, ANTENNA_BASE_Y),
+          },
+          antennaAnimatedStyle,
         ]}
       >
-        <Svg width={size} height={size} viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}>
-          <Polyline
-            points={LEFT_EYE_POINTS}
+        <Svg width={size} height={size} viewBox={viewBox}>
+          <Path
+            d={ROBOT_ANTENNA.stemPath}
             fill="none"
-            stroke={eyeColor}
+            stroke={logoColor}
             strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={9.5}
+            strokeWidth={ROBOT_ANTENNA.stemWidth}
           />
+          <Circle cx={ROBOT_ANTENNA.tipCx} cy={ROBOT_ANTENNA.tipCy} r={ROBOT_ANTENNA.tipR} fill={logoColor} />
         </Svg>
       </Animated.View>
 
       <Animated.View
         pointerEvents="none"
-        style={[
-          eyeLayerStyle,
-          { transformOrigin: [(RIGHT_EYE_CENTER_X * size) / VIEWBOX_SIZE, (EYE_CENTER_Y * size) / VIEWBOX_SIZE, 0] },
-          rightEyeAnimatedStyle,
-        ]}
+        style={[layerStyle, { transformOrigin: eyeOrigin(EYE_LEFT_X) }, leftEyeAnimatedStyle]}
       >
-        <Svg width={size} height={size} viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}>
-          <Polyline
-            points={RIGHT_EYE_POINTS}
-            fill="none"
-            stroke={eyeColor}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={9.5}
-          />
+        <Svg width={size} height={size} viewBox={viewBox}>
+          <Circle cx={EYE_LEFT_X} cy={EYE_Y} r={ROBOT_EYES.r} fill={eyeColor} />
+        </Svg>
+      </Animated.View>
+
+      <Animated.View
+        pointerEvents="none"
+        style={[layerStyle, { transformOrigin: eyeOrigin(EYE_RIGHT_X) }, rightEyeAnimatedStyle]}
+      >
+        <Svg width={size} height={size} viewBox={viewBox}>
+          <Circle cx={EYE_RIGHT_X} cy={EYE_Y} r={ROBOT_EYES.r} fill={eyeColor} />
         </Svg>
       </Animated.View>
     </View>

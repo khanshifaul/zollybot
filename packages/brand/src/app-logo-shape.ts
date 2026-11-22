@@ -3,6 +3,12 @@
 /** The mark is a square of this side, in its own units. */
 export const APP_LOGO_SIZE = 240;
 
+/**
+ * The visible square of the mark. The new brand has no background plate, so the source padding
+ * around the robot reads as a smaller logo; this crop keeps the mark the same optical size.
+ */
+export const APP_LOGO_VIEWBOX = { x: 12, y: 10, size: 216 } as const;
+
 /** Robot head. */
 export const ROBOT_HEAD = {
   cx: 120,

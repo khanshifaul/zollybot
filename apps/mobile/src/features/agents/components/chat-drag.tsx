@@ -185,6 +185,7 @@ export function ChatDragProvider({ screen, children }: PropsWithChildren<{ scree
         if (rect) list.push({ kind: "section", id: item.id, rect, open: !collapsedSectionIds?.has(item.id) });
         continue;
       }
+      if (item.kind === "office") continue;
       const chat: SidebarPin = { kind: item.kind, id: item.id };
       const rect = measure(views.current.get(chatDragKey("row", chat)));
       if (rect) list.push({ kind: "chat", chat, sectionId, rect });

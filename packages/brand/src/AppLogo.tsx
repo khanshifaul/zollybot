@@ -1,7 +1,7 @@
 import { createEffect, createSignal, flush, onCleanup } from "solid-js";
-import { APP_LOGO_SIZE, ROBOT_ANTENNA, ROBOT_EARS, ROBOT_EYES, ROBOT_HEAD, ROBOT_SMILE } from "./app-logo-shape";
+import { APP_LOGO_VIEWBOX, ROBOT_ANTENNA, ROBOT_EARS, ROBOT_EYES, ROBOT_HEAD, ROBOT_SMILE } from "./app-logo-shape";
 
-export type AppLogoAnimation = "none" | "blink" | "look-around" | "surprised";
+export type AppLogoAnimation = "none" | "blink";
 export type AppLogoVariant = "production" | "dev" | "preview";
 
 export interface AppLogoProps {
@@ -17,16 +17,15 @@ export interface AppLogoProps {
   class?: string;
 }
 
-/** How far the eyes move, as a share of the logo, when the pointer is at the edge of the area. */
-const EYE_RANGE = { x: 2.4, y: 1.8 };
+/** How far the eyes move, in logo units, when the pointer is at the edge of the logo. */
+const EYE_RANGE = 7;
 /** A larger area gives the eyes more room: the pointer can be far from the logo. */
-const AREA_EYE_RANGE = { x: 9, y: 7 };
-/** The eyes close and open in 192 ms, once every 4.8 s. The first blink comes 44% into the first period. */
-const BLINK_PERIOD = 4_800;
-const BLINK_DURATION = 192;
-const FIRST_BLINK_DELAY = 2_112;
-
-const STROKE = "#042f2e";
+const AREA_EYE_RANGE = 11;
+/** A blink closes and opens in about 180 ms. The next one comes after a human-looking pause. */
+const BLINK_DURATION = 180;
+const BLINK_MIN_DELAY = 2_600;
+const BLINK_MAX_DELAY = 6_800;
+const FIRST_BLINK_DELAY = 1_900;
 
 export function AppLogo(props: AppLogoProps) {
   const [clickReaction, setClickReaction] = createSignal(false);
@@ -43,14 +42,16 @@ export function AppLogo(props: AppLogoProps) {
     return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   }
 
-  function setEyePosition(x: number, y: number): void {
+  function setEyePosition(x: number): void {
     const range = props.pointerArea ? AREA_EYE_RANGE : EYE_RANGE;
-    logoElement?.style.setProperty("--app-logo-eye-x", `${x * range.x}%`);
-    logoElement?.style.setProperty("--app-logo-eye-y", `${y * range.y}%`);
+    // Logo units: the eyes move by a few units, not by a share of their own small box. The
+    // antenna follows the same horizontal value, so it leans with the gaze.
+    logoElement?.style.setProperty("--app-logo-eye-x", `${(x * range).toFixed(2)}px`);
+    logoElement?.style.setProperty("--app-logo-antenna-tilt", `${(x * 5).toFixed(2)}deg`);
   }
 
   function resetEyePosition(): void {
-    setEyePosition(0, 0);
+    setEyePosition(0);
   }
 
   /** The eyes look at the pointer. Its distance is measured against the logo, or against the area. */
@@ -61,13 +62,11 @@ export function AppLogo(props: AppLogoProps) {
     if (!logo) return;
     const bounds = area.getBoundingClientRect();
     const centerX = logo.left + logo.width / 2;
-    const centerY = logo.top + logo.height / 2;
-    // From the centre of the logo to the far edge of the area is the full range.
+    // From the centre of the logo to the far edge of the area is the full range. Only the
+    // horizontal position moves the eyes and the antenna; the pointer's height does not.
     const reachX = Math.max(centerX - bounds.left, bounds.right - centerX);
-    const reachY = Math.max(centerY - bounds.top, bounds.bottom - centerY);
     const x = Math.max(-1, Math.min(1, (event.clientX - centerX) / reachX));
-    const y = Math.max(-1, Math.min(1, (event.clientY - centerY) / reachY));
-    setEyePosition(x, y);
+    setEyePosition(x);
   }
 
   function handlePointerMove(event: PointerEvent): void {
@@ -133,26 +132,42 @@ export function AppLogo(props: AppLogoProps) {
     },
   );
 
-  // A timer starts each blink, so the page draws frames only while the eyes move.
+  // A timer starts each blink, so the page draws frames only while the eyes move. The pause is
+  // randomized, and now and then the second blink follows at once, as an idle person's does.
   createEffect(
     () => animation() === "blink",
     (blinks) => {
       if (!blinks) return;
       let blinkEndTimer: number | undefined;
-      let blinkInterval: number | undefined;
+      let nextBlinkTimer: number | undefined;
+      let doubleBlinkTimer: number | undefined;
+      let stopped = false;
       const blink = () => {
         // The reduced-motion setting can change while the logo shows.
-        if (shouldReduceMotion()) return;
+        if (stopped || shouldReduceMotion()) return;
         setBlinking(true);
-        blinkEndTimer = window.setTimeout(() => setBlinking(false), BLINK_DURATION);
+        window.clearTimeout(blinkEndTimer);
+        blinkEndTimer = window.setTimeout(() => {
+          setBlinking(false);
+          blinkEndTimer = undefined;
+        }, BLINK_DURATION);
       };
-      const firstBlinkTimer = window.setTimeout(() => {
-        blink();
-        blinkInterval = window.setInterval(blink, BLINK_PERIOD);
-      }, FIRST_BLINK_DELAY);
+      const schedule = (delay: number) => {
+        window.clearTimeout(nextBlinkTimer);
+        nextBlinkTimer = window.setTimeout(() => {
+          blink();
+          if (Math.random() < 0.18) {
+            window.clearTimeout(doubleBlinkTimer);
+            doubleBlinkTimer = window.setTimeout(blink, BLINK_DURATION + 120);
+          }
+          schedule(BLINK_MIN_DELAY + Math.random() * (BLINK_MAX_DELAY - BLINK_MIN_DELAY));
+        }, delay);
+      };
+      schedule(FIRST_BLINK_DELAY);
       return () => {
-        window.clearTimeout(firstBlinkTimer);
-        window.clearInterval(blinkInterval);
+        stopped = true;
+        window.clearTimeout(nextBlinkTimer);
+        window.clearTimeout(doubleBlinkTimer);
         window.clearTimeout(blinkEndTimer);
         setBlinking(false);
       };
@@ -178,7 +193,7 @@ export function AppLogo(props: AppLogoProps) {
       data-easter-egg={easterEgg() ? "party" : undefined}
       data-interactive={props.interactive ? "true" : undefined}
       data-variant={props.variant}
-      viewBox={`0 0 ${APP_LOGO_SIZE} ${APP_LOGO_SIZE}`}
+      viewBox={`${APP_LOGO_VIEWBOX.x} ${APP_LOGO_VIEWBOX.y} ${APP_LOGO_VIEWBOX.size} ${APP_LOGO_VIEWBOX.size}`}
       aria-hidden={props.interactive ? undefined : "true"}
       aria-label={props.interactive ? "Animate ZollyBot logo" : undefined}
       role={props.interactive ? "button" : undefined}
@@ -188,25 +203,24 @@ export function AppLogo(props: AppLogoProps) {
       onPointerLeave={handlePointerLeave}
       onPointerMove={handlePointerMove}
     >
-      {/* Background color (variant-driven) */}
-      <rect class="app-logo-background" width={APP_LOGO_SIZE} height={APP_LOGO_SIZE} fill="currentColor" />
-
-      {/* Antenna (single bent line with ball) */}
-      <path
-        d={ROBOT_ANTENNA.stemPath}
-        fill="none"
-        stroke={STROKE}
-        stroke-width={ROBOT_ANTENNA.stemWidth}
-        stroke-linecap="round"
-      />
-      <circle cx={ROBOT_ANTENNA.tipCx} cy={ROBOT_ANTENNA.tipCy} r={ROBOT_ANTENNA.tipR} fill={STROKE} />
+      {/* Antenna (single bent line with ball), swaying from its base */}
+      <g class="app-logo-antenna">
+        <path
+          d={ROBOT_ANTENNA.stemPath}
+          fill="none"
+          stroke="currentColor"
+          stroke-width={ROBOT_ANTENNA.stemWidth}
+          stroke-linecap="round"
+        />
+        <circle cx={ROBOT_ANTENNA.tipCx} cy={ROBOT_ANTENNA.tipCy} r={ROBOT_ANTENNA.tipR} fill="currentColor" />
+      </g>
       <rect
         x={ROBOT_EARS.leftX}
         y={ROBOT_EARS.y - ROBOT_EARS.height / 2}
         width={ROBOT_EARS.width}
         height={ROBOT_EARS.height}
         rx={ROBOT_EARS.rx}
-        fill={STROKE}
+        fill="currentColor"
       />
       <rect
         x={ROBOT_EARS.rightX}
@@ -214,7 +228,7 @@ export function AppLogo(props: AppLogoProps) {
         width={ROBOT_EARS.width}
         height={ROBOT_EARS.height}
         rx={ROBOT_EARS.rx}
-        fill={STROKE}
+        fill="currentColor"
       />
 
       {/* Head (solid, no white) */}
@@ -224,7 +238,7 @@ export function AppLogo(props: AppLogoProps) {
         width={ROBOT_HEAD.width}
         height={ROBOT_HEAD.height}
         rx={ROBOT_HEAD.rx}
-        fill={STROKE}
+        fill="currentColor"
       />
 
       {/* Eyes - bg-colored cutouts on dark head; animatable */}

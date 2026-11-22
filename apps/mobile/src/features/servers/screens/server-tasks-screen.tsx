@@ -45,7 +45,7 @@ export function ServerTasksScreen() {
   const threadReads = useServerThreadReads(serverId, tasks).reads;
   const agent = agentId ? agents.find((item) => item.id === agentId) : undefined;
   const agentOf = (id: string) => agents.find((item) => item.id === id);
-  const title = agent ? t("mobile.server.threads.agentTitle", { name: agent.name }) : t("mobile.app.route.threads");
+  const title = agent ? t("mobile.server.threads.agentTitle", { name: agent.name }) : t("mobile.app.route.tasks");
   const canStart = Boolean(server) && online && supported && agents.length > 0;
 
   // One agent's page starts a thread with that agent, as its thread menu does: its first message

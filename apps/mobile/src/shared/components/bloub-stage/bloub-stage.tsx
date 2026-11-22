@@ -12,10 +12,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { type EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { AppLogo } from "@/features/auth/components/app-logo";
 import { useReducedMotion } from "@/shared/lib/motion";
 import { isAndroid } from "@/shared/lib/platform";
 import { SPLASH_EASE_OUT } from "@/shared/lib/splash-motion";
-import { BloubEyes, EYES_HEIGHT, EYES_WIDTH } from "./bloub-eyes";
 import { BLOUB_MOVE, BLOUB_MOVE_MS, BLOUB_RADIUS, bloubEyesFrame, bloubGradient, useBloubColors } from "./bloub-look";
 import { useBloubStage } from "./bloub-stage-context";
 import type { BloubMood, BloubStageRequest } from "./bloub-stage-store";
@@ -29,8 +29,10 @@ const STATUS_GAP = 32;
 // size the tip of the left eye is 117.5 pt from the middle, so the Android splash draws the eyes at
 // this scale. Keep the Android `imageWidth` in app.json equal to 240 times this value.
 const ANDROID_SPLASH_EYES_SCALE = 0.78;
+/** The logo image is the same size as the native splash image, so the handover does not jump. */
+const LOGO_SIZE = 240;
 
-/** The text on a covering block: a title under the eyes, or a status line at the bottom. */
+/** The text on a covering block: a title under the logo, or a status line at the bottom. */
 function StageCaption({
   request,
   height,
@@ -148,7 +150,7 @@ export function BloubStage({
   nativeSplashHidden: boolean;
   onLayout?: () => void;
 }) {
-  const { store, lift, gazeX, gazeY, look } = useBloubStage();
+  const { store, lift, look } = useBloubStage();
   const active = useSyncExternalStore(store.subscribe, store.active);
   const request = active?.request ?? null;
   const window = useWindowDimensions();
@@ -175,6 +177,9 @@ export function BloubStage({
       : height + BLOUB_RADIUS;
   const clear = shape?.kind === "clear";
   const mood: BloubMood = request?.mood ?? "idle";
+  // A full-screen loader sits on dark teal, so its text and back button use a light brand tone.
+  const logoOnDark = request?.loader === true && shape?.kind === "cover";
+  const stageTextColor = logoOnDark ? "#5EEAD4" : eyeColor;
   const titled = shape?.kind === "cover" && Boolean(request?.caption?.title);
   // The loader tone stays while the block rolls up, so the color does not change as it leaves. The
   // app starts with the splash, which is a loader.
@@ -189,7 +194,6 @@ export function BloubStage({
   const veil = useSharedValue(1);
   const glow = useSharedValue(0);
   const raise = useSharedValue(0);
-  const moodScale = useSharedValue(1);
   // The Android splash draws the eyes smaller (see ANDROID_SPLASH_EYES_SCALE). The eyes start at
   // that size and grow to full size once the native splash is gone, so the handover does not jump.
   const splashScale = useSharedValue(isAndroid ? ANDROID_SPLASH_EYES_SCALE : 1);
@@ -214,11 +218,10 @@ export function BloubStage({
     glow.set(withTiming(1, { duration: 600, easing: SPLASH_EASE_OUT }));
   }, [glow]);
   useEffect(() => {
-    // A title sits under the eyes, so they move up; the scanner frame sits a little above the middle.
+    // A title sits under the logo, so it moves up; the scanner fills a little above the middle.
     const offset = titled ? -0.08 * height : mood === "frame" || mood === "found" ? -0.026 * height : 0;
     raise.set(reduced ? offset : withTiming(offset, BLOUB_MOVE));
-    moodScale.set(reduced ? 1 : withTiming(mood === "found" ? 0.9 : 1, { duration: 300, easing: SPLASH_EASE_OUT }));
-  }, [height, mood, moodScale, raise, reduced, titled]);
+  }, [height, mood, raise, reduced, titled]);
   // Another owner starts with eyes that look ahead.
   const activeId = active?.id;
   useEffect(() => {
@@ -247,13 +250,13 @@ export function BloubStage({
     transform: [{ translateY: span - (edge.get() - lift.get()) }],
   }));
   const dimStyle = useAnimatedStyle(() => ({ opacity: dim.get() }));
-  const eyesStyle = useAnimatedStyle(() => {
+  const logoStyle = useAnimatedStyle(() => {
     const frame = bloubEyesFrame(edge.get() - lift.get(), height, top);
     return {
       opacity: frame.opacity,
       transform: [
-        { translateY: frame.center + raise.get() - EYES_HEIGHT / 2 },
-        { scale: frame.scale * moodScale.get() * splashScale.get() },
+        { translateY: frame.center + raise.get() - LOGO_SIZE / 2 },
+        { scale: frame.scale * splashScale.get() },
       ],
     };
   });
@@ -291,6 +294,7 @@ export function BloubStage({
                 glowStyle,
               ]}
             />
+            {logoOnDark ? <View style={[StyleSheet.absoluteFill, styles.logoBlock]} /> : null}
             {dark ? (
               <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: colors.dimBody }, dimStyle]}>
                 <Animated.View
@@ -307,15 +311,8 @@ export function BloubStage({
             ) : null}
           </View>
         </Animated.View>
-        <Animated.View pointerEvents="none" style={[styles.eyes, { left: (size.width - EYES_WIDTH) / 2 }, eyesStyle]}>
-          <BloubEyes
-            mood={mood}
-            active={request !== null}
-            reduced={reduced}
-            gazeX={gazeX}
-            gazeY={gazeY}
-            eyeColor={eyeColor}
-          />
+        <Animated.View pointerEvents="none" style={[styles.logo, { left: (size.width - LOGO_SIZE) / 2 }, logoStyle]}>
+          <AppLogo animation="blink" size={LOGO_SIZE} />
         </Animated.View>
       </View>
       {request ? (
@@ -324,12 +321,12 @@ export function BloubStage({
           height={height}
           insets={insets}
           // The text has the color of the eyes. The dim dark block needs it at more strength.
-          textColor={eyeColor}
+          textColor={stageTextColor}
           textOpacity={dimmed ? 0.85 : 0.62}
           reduced={reduced}
         />
       ) : null}
-      {request ? <StageBack request={request} top={top + 6} left={insets.left + 16} eyeColor={eyeColor} /> : null}
+      {request ? <StageBack request={request} top={top + 6} left={insets.left + 16} eyeColor={stageTextColor} /> : null}
     </View>
   );
 }
@@ -344,5 +341,6 @@ const styles = StyleSheet.create({
     borderCurve: "continuous",
   },
   glow: { position: "absolute", left: 0, right: 0, top: 0 },
-  eyes: { position: "absolute", top: 0, width: EYES_WIDTH, height: EYES_HEIGHT },
+  logo: { position: "absolute", top: 0, width: LOGO_SIZE, height: LOGO_SIZE },
+  logoBlock: { backgroundColor: "#042F2E" },
 });

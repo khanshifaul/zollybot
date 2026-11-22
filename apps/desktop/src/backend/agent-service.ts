@@ -524,14 +524,22 @@ export type AgentUpdate = UpdateAgentInput & {
   excludedFolders?: string[];
 };
 
+const BUTLER_DESCRIPTION =
+  "Building concierge. Lists, creates, and opens offices, and staffs each with a full roster. Learns your preferences. Never reads office chats or approves gates.";
+/** The seeded text this build replaces. A Butler the user edited keeps its description. */
+const LEGACY_BUTLER_DESCRIPTIONS = new Set([
+  BUTLER_DESCRIPTION,
+  "The building's concierge. Knows which offices exist, opens and creates them, and staffs each office with Office Manager (or Manager), Team Leader (Foreman), PR Reviewer, and specialized Worker agents (Research, Build, Test, and others needed). Reads no office chats and approves no gate.",
+  "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices, and staffs each office with a full roster: Office Manager (or Manager), Team Leader (Foreman), PR Reviewer, and specialized Worker agents (Research, Build, Test, and others needed). Butler never reads office chats and never approves gates.",
+]);
+
 /** The agents a fresh ZollyBot install starts with. Upstream ships none. */
 const OFFICE_AGENTS = [
   {
     name: "Butler",
     title: "Concierge",
     seed: "butler",
-    description:
-      "The building's concierge. Knows which offices exist, opens and creates them, and staffs each office with Office Manager (or Manager), Team Leader (Foreman), PR Reviewer, and specialized Worker agents (Research, Build, Test, and others needed). Reads no office chats and approves no gate.",
+    description: BUTLER_DESCRIPTION,
   },
   {
     name: "Zolly",
@@ -4099,13 +4107,16 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     this: AgentService,
   ): Effect.fn.Return<void, AgentLifecycleFailed> {
     const database = this.#store.database.connection;
-    if (listEmployments(database).some((employment) => employment.scope === "building")) return;
-    if (this.#store.list().some((agent) => roleForAgentName(agent.name)?.scope === "building")) return;
-    const description =
-      "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices, and staffs each office with a full roster: Office Manager (or Manager), Team Leader (Foreman), PR Reviewer, and specialized Worker agents (Research, Build, Test, and others needed). Butler never reads office chats and never approves gates.";
+    const description = BUTLER_DESCRIPTION;
     const existing = this.#store
       .list()
       .find((agent) => agent.name.toLowerCase() === "butler" || roleForAgentName(agent.name)?.key === "butler");
+    // Replace only the seeded wording, so a description the user wrote stays.
+    if (existing && LEGACY_BUTLER_DESCRIPTIONS.has(existing.description)) {
+      yield* Effect.ignore(this.#store.updateAgent({ agentId: existing.id, title: "Concierge", description }));
+    }
+    if (listEmployments(database).some((employment) => employment.scope === "building")) return;
+    if (this.#store.list().some((agent) => roleForAgentName(agent.name)?.scope === "building")) return;
     if (existing) {
       upsertEmployment(database, { agentId: existing.id, officeId: null, roleKey: "butler", scope: "building" });
       yield* Effect.ignore(
