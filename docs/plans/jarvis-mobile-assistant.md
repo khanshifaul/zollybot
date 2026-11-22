@@ -7,7 +7,7 @@ Related wireframes: [`jarvis-wireframes.svg`](./jarvis-wireframes.svg).
 
 ## 0. Implementation status
 
-- **Phase 2c — Voice match implemented (Android).** Sherpa-onnx Titanet Small speaker embeddings, three-sample enrollment, SecureStore template, wake-audio verification, and the enrollment screen. iOS speaker extraction is still pending. Porcupine built-in `Jarvis` keyword responds to both **“Hey Jarvis”** and **“Hello Jarvis”**; no `.ppn` asset or custom model is needed. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background listening uses an Android microphone foreground service. Locked phones show a tappable “Jarvis heard you” notification that opens the Jarvis screen over the keyguard; Android blocks silent activity launches from the background, so the tap is required.
+- **Phase 2c — Voice match implemented (Android).** Sherpa-onnx Titanet Small speaker embeddings, three-sample enrollment, SecureStore template, wake-audio verification, and the enrollment screen. iOS speaker extraction is still pending. openWakeWord with the bundled `hey_jarvis` TFLite model; no access key or `.ppn` asset is needed. Global bridge, persisted toggle, microphone permission, and wake-to-Jarvis navigation. Background listening uses an Android microphone foreground service. Locked phones show a tappable “Jarvis heard you” notification that opens the Jarvis screen over the keyguard; Android blocks silent activity launches from the background, so the tap is required.
 - **Phase 1 — implemented in the working tree.** Jarvis is the main screen; office-wise agents live at `/agents`; **a Jarvis/Agents page switch swaps the two main screens**; Jarvis settings live in the drawer at `/jarvis-settings`; orb, listening preview, Butler text bridge, attachments (camera/photos/files), screen-share entry, settings persistence, model catalog, and model selection.
 - Phase 2+ remains planned.
 
@@ -109,7 +109,7 @@ Fixes planned in Phase 0:
 | -> LLM -> TTS -> IDLE      |
 +-----------------------------+
        |
-       +--> Porcupine "Hey Jarvis" (.ppn)
+       +--> openWakeWord "Hey Jarvis" (.tflite)
        |
        +--> Silero VAD
        |
@@ -152,7 +152,7 @@ IDLE
 Rules:
 
 - Only one component owns the microphone.
-- Stop and delete Porcupine before opening ASR or LiveKit.
+- Stop openWakeWord capture before opening ASR or LiveKit.
 - Release the mic before restarting wake word.
 - A 3–10 s timeout, “goodbye”, or explicit End returns to wake word.
 - Every transition has a visible UI state.
@@ -161,10 +161,10 @@ Rules:
 ### 3.3 Audio handoff
 
 1. Foreground service starts, notification: “Jarvis is listening”.
-2. Porcupine listens with a low-power keyword engine.
-3. On “Hey Jarvis”: stop/delete Porcupine, play chime, haptic.
+2. openWakeWord listens with a low-power keyword engine.
+3. On “Hey Jarvis”: stop openWakeWord capture, play chime, haptic.
 4. Open Parakeet capture (or LiveKit when cloud mode is on).
-5. On end: close capture, speak result, disconnect, restart Porcupine.
+5. On end: close capture, speak result, disconnect, restart openWakeWord.
 6. Use platform/WebRTC AEC, or half-duplex v1: mute mic while TTS plays.
 
 ### 3.4 Jarvis ↔ Butler ↔ Office Manager bridge
@@ -286,7 +286,7 @@ Screens:
 
 | Capability                                       | Offline/local                  | Android              | iOS             | Host fallback        |
 | ------------------------------------------------ | ------------------------------ | -------------------- | --------------- | -------------------- |
-| “Hey Jarvis” wake word                           | ✓ Porcupine                    | ✓ foreground service | foreground only | —                    |
+| “Hey Jarvis” wake word                           | ✓ openWakeWord                 | ✓ foreground service | foreground only | —                    |
 | Natural voice conversation                       | ✓ Parakeet + QVAC + Supertonic | ✓                    | ✓               | Gemini Live optional |
 | Timers, alarms, notes, memory                    | ✓                              | ✓                    | ✓               | —                    |
 | Calendar read/create                             | local cache                    | ✓                    | ✓               | host connectors      |
@@ -378,11 +378,11 @@ Defaults:
 
 ### 7.1 Engine choice
 
-- **Phase 1: Porcupine** via `@picovoice/porcupine-react-native`.
-  - Custom “Hey Jarvis” `.ppn` from Picovoice Console.
+- **Phase 1: openWakeWord** via `react-native-openwakeword`.
+  - Bundled `hey_jarvis_v0.1.tflite` and the shared mel/embedding models; no key.
   - Access key required.
   - Asset at `apps/mobile/assets/wakewords/hey_jarvis_android.ppn`.
-- Interface `WakeWordEngine` allows replacing Porcupine with **openWakeWord** later to avoid license/access-key lock-in.
+- The wake engine is a small interface, so it can move to microWakeWord later without touching the rest of Jarvis.
 
 ### 7.2 Expo config plugin
 
@@ -421,7 +421,7 @@ Use only when enabled:
 - Cloud path handles barge-in, camera, web grounding, and natural speech-to-speech.
 - Tools exposed by the backend: calendar, smart home, personal APIs, ZollyBot host agent.
 - Never ship Gemini/LiveKit secrets in the app.
-- Cloud fallback must not own the mic while Porcupine is active.
+- Cloud fallback must not own the mic while openWakeWord is active.
 
 ## 9. Implementation phases
 
@@ -441,12 +441,12 @@ Use only when enabled:
 
 ### Phase 2 — Native wake word
 
-- Config plugin, Porcupine, foreground service, mic arbitration state machine.
+- Config plugin, openWakeWord, foreground service, mic arbitration state machine.
 - Acceptance: “Hey Jarvis” opens listening on a physical Android device; clean mic handoff.
 
 ### Phase 3 — Local voice loop
 
-- Porcupine → Parakeet → QVAC → Supertonic.
+- openWakeWord → Parakeet → QVAC → Supertonic.
 - Local tools: time, timers, notes, app launch, memory.
 - Acceptance: offline “what time is it / set a timer / open app” works.
 
@@ -510,7 +510,7 @@ Use only when enabled:
 | Phone RAM limits                     | RAM gating; small models; unload aggressively                  |
 | Android OEM kills foreground service | Foreground service + battery guidance; test OEMs               |
 | iOS background restrictions          | Foreground-only; document limitation                           |
-| Porcupine licensing/access key       | Keep wake engine interface; openWakeWord alternative           |
+| openWakeWord model accuracy          | Tune threshold and confirm frames on real devices              |
 | AutoX.js accessibility policy        | Explicit opt-in, confirmations, no hidden actions              |
 | Wake word false positives            | Sensitivity tuning, local-only audio, visible indicator        |
 | Echo during TTS                      | AEC or half-duplex v1                                          |
@@ -520,7 +520,7 @@ Use only when enabled:
 Open decisions:
 
 1. QVAC vs a fallback engine if RN support is not production-ready.
-2. Porcupine vs openWakeWord for the first shipped wake word.
+2. Wake-word threshold and confirmation cadence for openWakeWord.
 3. Exact local model defaults per RAM tier.
 4. Whether Gemini Live is a first-class mode or a fallback.
 5. Whether the floating orb ships in v1 or after core voice reliability.
@@ -535,7 +535,7 @@ Open decisions:
 2. Dictation engine health/fallback fixes.
 3. HF model manifest and downloader scaffold, reusing PocketPal’s catalog shape.
 4. Connect-screen theme/keyboard fix.
-5. No Porcupine, AutoX, or QVAC runtime in the first PR; those land behind interfaces.
+5. No AutoX or QVAC runtime in the first PR; those land behind interfaces.
 
 ## 13. Definition of done
 

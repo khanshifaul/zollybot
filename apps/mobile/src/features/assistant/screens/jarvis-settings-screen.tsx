@@ -12,7 +12,7 @@ import { appLockEnabled } from "@/features/app-lock/model/app-lock-storage";
 import { JARVIS_MODELS, jarvisModel } from "@/features/assistant/model/jarvis-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { loadVoiceTemplate, voiceMatchSupported } from "@/features/assistant/model/voice-match";
-import { WAKE_WORD_CONFIGURED } from "@/features/assistant/native/wake-word";
+import { WAKE_WORD_AVAILABLE } from "@/features/assistant/native/wake-word";
 import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
 
@@ -135,15 +135,15 @@ export default function JarvisSettingsScreen() {
           <Row
             title={t("mobile.app.jarvis.handsFree")}
             detail={
-              WAKE_WORD_CONFIGURED
+              WAKE_WORD_AVAILABLE
                 ? `${t("mobile.app.jarvis.handsFreeHint")}\n${t("mobile.app.jarvis.handsFreeTest")}`
                 : t("mobile.app.jarvis.handsFreeKeyMissing")
             }
-            onPress={WAKE_WORD_CONFIGURED ? () => router.push("/jarvis-wake-test") : undefined}
+            onPress={WAKE_WORD_AVAILABLE ? () => router.push("/jarvis-wake-test") : undefined}
             right={
               <Switch
                 value={settings.wakeWord}
-                disabled={!WAKE_WORD_CONFIGURED}
+                disabled={!WAKE_WORD_AVAILABLE}
                 onValueChange={(value) => void saveJarvisSettings({ wakeWord: value })}
               />
             }

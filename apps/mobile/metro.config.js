@@ -10,6 +10,8 @@ const { withUniwindConfig } = require("uniwind/metro");
 process.env.EXPO_METRO_CACHE_OUTPUT_DIR ??= path.join(__dirname, ".expo/metro-cache");
 
 const config = getDefaultConfig(__dirname);
+// openWakeWord ships three TensorFlow Lite models as app assets.
+if (!config.resolver.assetExts.includes("tflite")) config.resolver.assetExts.push("tflite");
 config.fileMapCacheDirectory = path.join(__dirname, ".expo/metro-file-map");
 // Metro writes the file map cache but does not create its directory.
 fs.mkdirSync(config.fileMapCacheDirectory, { recursive: true });

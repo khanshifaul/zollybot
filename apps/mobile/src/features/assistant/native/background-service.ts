@@ -4,7 +4,7 @@ import BackgroundService, { type BackgroundTaskOptions } from "react-native-back
 const TASK: BackgroundTaskOptions = {
   taskName: "JarvisWakeWord",
   taskTitle: "Jarvis is listening",
-  taskDesc: "Say “Hey Jarvis” or “Hello Jarvis”",
+  taskDesc: "Say “Hey Jarvis”",
   taskIcon: { name: "ic_launcher", type: "mipmap" },
   color: "#2DD4BF",
   linkingURI: "zollybot:///connected",
@@ -50,7 +50,7 @@ export async function resetJarvisNotification(): Promise<void> {
   if (Platform.OS !== "android" || !BackgroundService.isRunning()) return;
   await BackgroundService.updateNotification({
     taskTitle: "Jarvis is listening",
-    taskDesc: "Say “Hey Jarvis” or “Hello Jarvis”",
+    taskDesc: "Say “Hey Jarvis”",
     linkingURI: "zollybot:///connected",
   });
 }

@@ -11,7 +11,7 @@ import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state
 import {
   createJarvisWakeManager,
   type JarvisWakeManager,
-  WAKE_WORD_CONFIGURED,
+  WAKE_WORD_AVAILABLE,
 } from "@/features/assistant/native/wake-word";
 import { useMobileWorkspace, useMobileWorkspaceActions } from "@/features/workspace/context/mobile-workspace-context";
 import { haptics } from "@/shared/lib/haptics";
@@ -51,7 +51,7 @@ export default function JarvisWakeTestScreen() {
   };
 
   const start = async () => {
-    if (!WAKE_WORD_CONFIGURED || phase === "starting" || phase === "listening") return;
+    if (!WAKE_WORD_AVAILABLE || phase === "starting" || phase === "listening") return;
     setPhase("starting");
     try {
       const created = await createJarvisWakeManager(() => {
@@ -111,7 +111,7 @@ export default function JarvisWakeTestScreen() {
       </View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: insets.bottom + 28 }}>
-        {!WAKE_WORD_CONFIGURED ? (
+        {!WAKE_WORD_AVAILABLE ? (
           <View style={{ borderColor: border, borderWidth: 1, borderRadius: 16, padding: 14, gap: 6 }}>
             <Text style={{ color: foreground, fontSize: 14, fontWeight: "600" }}>
               {t("mobile.app.jarvis.wakeTest.keyMissingTitle")}
