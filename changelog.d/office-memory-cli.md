@@ -1,1 +1,0 @@
-- Office memory: ThreadLifecycle reads `office_memory` for employed agents; control socket serves `GET /v1/offices/:id/memory`; `zollybot-cli brief --office <id>` reads it (no `.md` fallback). Registration imports `.agents/memory/*.md` once (idempotent, archived).

@@ -6,6 +6,141 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.64.4] - 2026-11-22
+
+### Added
+
+- Branch a conversation from a message: start a new thread from any message in a conversation, on desktop and mobile.
+- Office memory: ThreadLifecycle reads `office_memory` for employed agents; control socket serves `GET /v1/offices/:id/memory`; `zollybot-cli brief --office <id>` reads it (no `.md` fallback). Registration imports `.agents/memory/*.md` once (idempotent, archived).
+- Add Oh My Pi (`omp`) as an agent provider. It runs `omp acp`, finds the user's own `omp` on
+  `PATH`, and reads its model list from the ACP session's model config option. The provider is
+  local-only, like the other ACP providers.
+- Connect Higgsfield from the Apps marketplace with browser sign-in to generate images, videos and audio, and check credits and assets. Each generation uses Higgsfield credits.
+- You can now change how many messages and routine runs local scripts can send each agent in one hour. Go to Settings › Agents › Local scripts, and set "Requests an hour": 30, 60, 120, 300 or 1,000. The limit applies to all agents on this computer. The default is still 30. Before, a voice agent or another script that sends many messages stopped at 30 requests an hour.
+- You can now choose when the plan card starts a long task by itself. Go to Settings › Agents › Show the plan before long tasks, and set "Start the work": after 10 s, 30 s, 1 min or 5 min, after a time that you enter, or only when you press Start. When the plan waits for you, you get a notification. The time applies to all agents on this computer. The default is still 10 s.
+- When a plan card waits a minute or more, its Start button counts down in minutes, such as "Start · 4:59".
+- You can choose the provider account when you create an agent. When a provider, such as Claude, has more than one account connected, the model picker of the new-agent form shows each account. Before, a new agent always started on the provider's own sign-in, and you had to change the account after creation.
+- The Usage page has a Skill tab in its Breakdown. It shows how many times your agents loaded each skill, the estimated tokens and cost of the skill text, its share of the tokens of all skill loads, and how many agents used it. ZollyBot counts skill loads from this version on.
+- TUI: onboarding starts with language selector, then sign-in (desktop flow). Lands in Lobby with predefined Butler (no new-agent creation step); Butler can help create offices/agents/chores.
+- Office tasks: control-socket routes for office memory confirm/create/delete and office-tasks list/create/actions (skeleton dispatcher wired in server mode). Step-5 dispatcher/store/gates scaffolded.
+- Add Tasks and Schedule pages to mobile, with server-wide task sections and the routine calendar.
+- Group mobile home agents by office, with Butler's building roles under Lobby.
+
+### Changed
+
+- Desktop app now runs in local-only mode: no account sign-in, no Cloudflare account session, and no
+  account-backed remote host, billing, license, or mobile-connect features on the desktop. The host
+  keeps its own identity and teams. Web client and mobile are unaffected in this change beyond the
+  shared auth state narrowing.
+- Update Butler role guidance for office creation and staffing.
+- Update repository documentation to match the current checked-in codebase and clarify deployment-specific/historical docs where account-service workspace files are not present in this checkout.
+- The Mobile tab of the changelog shows "Skipped" for a store that will not ship a version, because a
+  newer version replaced it. Before, that store showed "In review" with no end.
+- The chat color picker has 11 new preset colors. They have the same lightness, so each bubble tint has the same weight. A color that you saved before stays as it is.
+- In the dark theme, a bubble with a chat color shows more of the color. Before, the tint was dull.
+- Show a short line of context under an agent question. The `ask_user` tool can now send it, and a
+  plugin form that asks for a value shows its request message under the first field.
+- ZollyBot now measures how long a hosted server takes to start and how long the app takes to connect to a remote server, so slow starts and slow connection steps can be found and fixed. Only times, fixed step names and counts are sent, never a server ID, address or key. The Privacy page lists the new values.
+- The ChatGPT code sign-in now tells you to turn on device code sign-in for Codex in the ChatGPT
+  security settings first. For a work account, the workspace admin turns it on. Before, the sign-in
+  waited with no hint when this setting was off.
+- The web client reads the latest messages of the 3 agents that you opened last, after the open agent loads. The first switch to one of them after a page load shows its messages at once.
+- When you mark a chat read or unread on a team server, the web clients, phones and joined desktops of other members no longer load the chat again. Only your own devices do.
+- When you ask in a channel for a new channel or a change to another channel, the agent now makes it there. Before, you had to ask again in the agent's own chat. Requests from routines, agents and team members on other computers still cannot do this.
+- Shorten Butler's profile description and migrate the seeded text on existing profiles.
+- Run the CI build only after lint/typecheck and desktop tests pass; release workflows wait for a green CI run for the tagged commit.
+
+### Removed
+
+- Remove the Node `zollybot-cli` script from the app bundle and its E2E job. `zollybot-cli` is now
+  only the Rust terminal front end in `apps/desktop/tui`. The Local scripts API still serves the
+  same routes over HTTP.
+
+### Fixed
+
+- Run local EAS mobile builds from work/temp directories outside the repo by default to avoid `eas-cli --local` copy failures, and write artifacts under `out/mobile/{ios,android}` (with `EAS_LOCAL_BUILD_WORKDIR_BASE`/`EAS_LOCAL_BUILD_ARTIFACT` overrides).
+- Add `mobile:android:build:apk:local` (`production-apk`) for local Android APK builds.
+- Include host CLI build in Linux x64 package/dist scripts and harden remote-desktop runtime source bootstrap (miniupnpc layout/link discovery, glad Python venv with `GLAD_SKIP_PIP_INSTALL`, and build-environment propagation to Sunshine build/test steps).
+- Resolve desktop/node typecheck issues in office-task, routine, schema migration, auth credential, server-mode, and contracts export wiring.
+- Claude agents use less of the Claude 5-hour usage window. ZollyBot now names itself to Claude, so its requests are no longer counted as Agent SDK requests, which the 5-hour window counts about twice as heavily.
+- Put predefined office agents in the first registered office. Before, they stayed in Unassigned
+  even after an office existed. A newly registered office now moves the agents that still hold the
+  provisional Unassigned desk.
+- Keep lobby as Butler-only and scope each office workspace sidebar to that office's agents.
+- Refresh office tabs so Butler-created and registered offices appear in the top bar, and add a New office dialog.
+- Show all page rail options in the lobby.
+- Correct office agent assignment and lobby/office counts in the UI and employment sync.
+- Improve mobile connect host discovery and pairing over Tailscale, MagicDNS, LAN, and bare IP addresses, with clearer redeem and connection errors.
+- On Linux with Wayland, the phone now gets agent notifications when you are away from the computer. Before, ZollyBot could not see that the computer had no input, so it kept the phone quiet all the time.
+- In a bubble with a chat color, code blocks, inline code, tables, file chips and cards now take the color of the bubble. Before, they stayed grey on the color.
+- Claude stays signed in after ZollyBot restarts or updates. Before, the Claude sign-in check at start
+  could use up the sign-in, and you had to connect your Claude subscription again.
+- When you close the last tab of the browser in a conversation, the Browser pane now closes too, also from the full view. The next pane of the side panel shows, or the list of panes when no pane is open. Before, the side panel stayed open and showed "No browser tabs".
+- In the sidebar, chats that scroll under a folder name now fade out, so you no longer see a chat cut in half below the folder name.
+- A hosted server whose stop the cloud provider cancelled starts ZollyBot again. Before, the server ran with ZollyBot stopped, and apps waited on "Starting" until the next stop.
+- The Usage Breakdown no longer leaves empty space under a short table.
+- Stop asking for automatic compactions of a ChatGPT (Codex), Muse, Pi or Antigravity chat after 2
+  compactions in a row fail or time out. Before, each failed compaction let the next turn ask for
+  another one. One chat compacted every 19 seconds for 7 hours overnight and used up the plan limit.
+  ZollyBot now shows a notice and stops. "Compact now" and "New chat" stay available. A compaction
+  that completes, or a chat that falls below 80% of its window, starts the count again.
+- A message sent after ZollyBot stopped a compaction that Codex did not stop no longer asks for a new
+  compaction at once. It waits for the running compaction to end.
+- Find `npx` and other MCP server commands on your `PATH` when your shell profile is slow, exits
+  with an error, or has an alias of the same name. Before, the Apple apps server and other MCP
+  servers showed "Command not found: npx" until you typed the full path.
+- Stop the console warnings that each shared button wrote when it appeared, for example the Back
+  button in an agent question.
+- In a long agent chat, older messages that you scrolled up to load now stay loaded. Before, a provider status update, such as a sign-in check or a provider that stopped when idle, reloaded the latest messages, and the chat jumped back. Older pages then loaded again, so the chat moved in a loop (#5259).
+- A message that you steer into a running side thread now shows in that thread at once. Before, it showed only after a restart of the app.
+- Usage no longer shows a cost of US$ 0.00 for OpenCode Go models. From OpenCode 2.2.0, OpenCode reports what the Go subscription charged, which is $0 for each turn. These turns now show "Unavailable" and count as unpriced. Turns recorded before this change keep their $0 cost.
+- A file chip that joins a file name to a folder in the same message now opens the file as the agent wrote it, from the agent workspace, when the folder does not have it. Before, `test/p1.txt` after a Shared folder failed with "Nothing exists at …".
+- A file chip with only a file name now finds a file that a Pi agent read, wrote or edited in the same thread, also outside its workspace, as it does for Claude and ACP agents.
+- An agent chat no longer shows an old reply at the bottom, below newer routine runs. Before, when
+  routine runs pushed the latest reply out of the loaded page, a routine run moved that reply to the
+  end of the open chat until you opened the chat again.
+- A teammate's question or answer now comes back to the side thread that asked, also when the
+  teammate sends it without the id of the request. Before, it went to the agent's own chat, and the
+  side thread waited without an answer.
+- GPT voice now works with every agent on this computer, also when the agent uses a Codex model. The
+  voice gives each request to the agent's own provider and speaks the answer. A switch of the agent's
+  model no longer stops the voice, and a start failure shows an error.
+- A hosted or self-hosted server in an LXC container, for example on Proxmox, installs updates again. The update no longer stops when the container cannot load the AppArmor profile of ZollyBot.
+- When an agent tries to remove an API key that is in the Vault, it now tells you to delete the key in Server settings > Vault. Before, it said that the key was not found, and the key stayed.
+- "Mark all read" in the sidebar now also reads the side threads of an agent, such as the thread of a routine. Before, the unread count of the agent stayed after "Mark all read" and after the agent's chat opened.
+- A routine run that ran in the routine's own thread now opens in that thread from the routine history. Before, the chat showed "This message is no longer available."
+- An error that only the app shows in a chat no longer has a Delete action. Before, Delete failed with "This message is not in the chat."
+- GitHub Copilot with no signed-in account shows Sign in. Before, it showed "ACP CLI did not advertise any ACP models".
+- On Linux, show how to fix a real-time CPU limit of 0 when the system stops a provider because of it:
+  install and start rtkit, then restart xdg-desktop-portal and ZollyBot. Before, the provider showed
+  only "stopped before it answered (signal SIGKILL)", and each Retry removed the downloaded provider
+  and downloaded it again. While the limit stays at 0, a provider update also does not download a new
+  copy that the system would stop in the same way.
+- A saved login or card now fills again after an agent runs a script on a site, as soon as the agent
+  reloads the page, or closes it and opens the site in a new tab. Before, the fill stayed blocked
+  until ZollyBot restarted, and the message did not say how to restore it.
+- A file name in an agent answer, such as `screenshot.png`, now opens the file with that name that
+  the agent attached in the same turn when the workspace has no file at that path. Before, the chip
+  showed "Nothing exists at …", although the attached file was in the chat.
+- On Windows and Linux, ZollyBot now refuses Workspace only for a provider that it can only confine on macOS, such as a custom ACP agent, with the message to choose Full access. It also refuses a move of a Workspace only agent to such a provider. Before, the change was saved, and then each message to the agent failed until the user changed the access back.
+- The browser can now fill saved logins from Proton Pass. Before, `list_logins` always failed with
+  "The shared password vault could not be read", because ZollyBot listed the logins without naming
+  a vault. ZollyBot now lists the logins of each vault that the access key can read.
+- Agents no longer read a "medium" effort for a model that has no effort setting, such as Cursor
+  Composer. The model list that agents read now shows no effort for these models.
+- A Gemini agent on a second Google account can use the models of that account's plan. Before, the
+  model menu showed the models of the first account for every account, so a Pro account had only
+  the models of a free first account.
+- A thread that fails on a spent credit balance or quota now shows the provider's reason, for example "Credit balance is too low". Before, it showed "The provider gave no reason".
+- An agent that moved to a backup model because a credit balance was spent no longer goes back to that model after a restart or after 10 minutes. Before, its next turn failed again on the same balance.
+- A thread turn that fails on a provider error before it does work now moves an agent set to switch automatically to its backup model, as a failed chat turn does.
+- A chat with many answered agent questions opens faster. Before, each question card laid out the whole window again when the chat opened.
+- When an agent showed "The agent could not continue. Try again.", the reason was not saved anywhere, so it could not be found later. The provider log (`logs/providers/providers.log`) now keeps the reason, the provider, the model and the turn of each agent error, with secrets removed.
+- Text that you select in a side thread now gets Quote, Explain and the other selection actions of that thread. Before, a quote went to the agent's main chat box, and a sent instruction went to the main chat as a reply to a message that the main chat does not have.
+- Use the animated ZollyBot logo on mobile splash, loading, app-lock, update, and sign-in surfaces instead of the old eyes.
+- Classify Command Code's daily free-model quota as a usage limit, so backup models are tried.
+- Add the missing `decodeProviderTransportFromHost` twin so desktop IPC coverage passes.
+
 ## [0.64.3] - 2026-11-17
 
 ### Fixed
