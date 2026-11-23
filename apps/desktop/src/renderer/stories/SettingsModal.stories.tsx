@@ -32,7 +32,7 @@ const storyAppInfo = { name: "ZollyBot", version: "0.2.1", platform: "darwin", v
 const storyAccount: CentralAuthUser = {
   id: "user-1",
   email: "person@example.com",
-  name: "Norbert",
+  name: "Shifaul",
   avatarUrl: null,
 };
 const storyUpdateStatus: UpdateStatus = {
@@ -92,7 +92,7 @@ function SettingsModalStory(props: {
   const [mobileDevices, setMobileDevices] = createSignal<MobileConnectedDevice[]>([
     {
       sessionId: "11111111-1111-4111-8111-111111111111",
-      name: "Norbert’s iPhone",
+      name: "Shifaul’s iPhone",
       platform: "ios",
       connectedAt: Date.now() - 86_400_000,
       lastActiveAt: Date.now() - 45_000,

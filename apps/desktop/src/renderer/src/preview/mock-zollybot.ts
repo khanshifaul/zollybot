@@ -3454,7 +3454,7 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
           agent: (id: string) => agents.find((agent) => agent.id === id)?.name ?? id,
         };
         const at = new Date().toISOString();
-        const actor = { id: "member-self", name: "Norbert" };
+        const actor = { id: "member-self", name: "Shifaul" };
         serverAudit = [
           ...agentAccessAuditChanges(agentAccess, change, names)
             .reverse()

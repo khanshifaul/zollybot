@@ -84,8 +84,8 @@ const EXTERNAL_DESTINATIONS: Record<ExternalDestination, string | ((translate: A
   "opencode-auth": "https://opencode.ai/auth",
   "claude-install": "https://code.claude.com/docs",
   "hermes-install": "https://hermes-agent.nousresearch.com/docs/getting-started/installation",
-  feedback: "https://x.com/intent/post?text=Feedback%20for%20ZollyBot%20%40norbertbodziony%3A%20",
-  message: "https://x.com/norbertbodziony",
+  feedback: "https://x.com/intent/post?text=Feedback%20for%20ZollyBot%20%40khanshifaul%3A%20",
+  message: "https://x.com/khanshifaul",
   changelog: "https://zollybot.shifaul.dev/changelog",
   guides: "https://zollybot.shifaul.dev/guides",
   // A Redirect Rule in the zollybot.shifaul.dev Cloudflare zone sends this to the current Discord invite.

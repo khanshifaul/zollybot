@@ -14,7 +14,7 @@ next release. No older release line is guaranteed to receive backports.
 
 Do not open a public issue. Use GitHub's **Security → Report a vulnerability** flow to submit a private
 security advisory. If private vulnerability reporting is unavailable, contact the maintainer through
-[their GitHub profile](https://github.com/NorbertBodziony) without publishing technical details.
+[their GitHub profile](https://github.com/khanshifaul) without publishing technical details.
 
 Include:
 

@@ -29,7 +29,7 @@ function agent(
 
 const LOCAL: NotificationMatrixServer = {
   id: "local",
-  name: "Norbert’s MacBook Pro",
+  name: "Shifaul’s MacBook Pro",
   logoUrl: null,
   level: "all",
   muted: false,

@@ -488,7 +488,7 @@ const STORY_TEAM_CONVERSATION_MESSAGES: ConversationMessage[] = [
     text: "Can you check the sources for the launch notes?",
     createdAt: "2026-08-19T10:00:00.000Z",
     status: "completed",
-    senderMember: { id: "member-self", name: "Norbert" },
+    senderMember: { id: "member-self", name: "Shifaul" },
   },
   {
     id: "team-message-alice",
@@ -543,9 +543,9 @@ export const STORY_PRESENCE: TeamPresenceSnapshot = {
   members: [
     {
       id: "member-self",
-      username: "norbert",
+      username: "shifaul",
       email: "person@example.com",
-      name: "Norbert",
+      name: "Shifaul",
       role: "owner",
       createdAt: "2026-01-10T08:00:00.000Z",
       disabled: false,
@@ -747,7 +747,7 @@ export const STORY_TEAM_MEMBERS: TeamMemberSummary[] = STORY_PRESENCE.members.ma
 }));
 
 const ALICE = { id: "member-alice", name: "Alice Chen" };
-const NORBERT = { id: "member-self", name: "Norbert" };
+const SHIFAUL = { id: "member-self", name: "Shifaul" };
 const JON = { id: "member-jon", name: "Jon Bell" };
 const MAYA = { id: "member-maya", name: "Maya Singh" };
 const LEGAL = { id: "role-legal", name: "Legal team" };
@@ -763,7 +763,7 @@ export const STORY_SERVER_AUDIT_ENTRIES: ServerAuditEntry[] = [
   {
     id: "audit-14",
     at: "2026-11-02T14:05:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "role-renamed", roleId: LEGAL.id, from: "Legal team", to: "Legal" },
   },
   {
@@ -781,19 +781,19 @@ export const STORY_SERVER_AUDIT_ENTRIES: ServerAuditEntry[] = [
   {
     id: "audit-11",
     at: "2026-11-02T10:02:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "member-role", member: ALICE, from: "member", to: "admin" },
   },
   {
     id: "audit-10",
     at: "2026-10-31T16:40:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "role-deleted", role: { id: "role-contractors", name: "Contractors" } },
   },
   {
     id: "audit-09",
     at: "2026-10-31T16:20:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "member-removed", member: { id: "member-sam", name: "Sam Ortiz" } },
   },
   {
@@ -823,19 +823,19 @@ export const STORY_SERVER_AUDIT_ENTRIES: ServerAuditEntry[] = [
   {
     id: "audit-04",
     at: "2026-10-30T09:42:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "role-member", role: LEGAL, member: JON, added: true },
   },
   {
     id: "audit-03",
     at: "2026-10-30T09:41:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "agent-level", role: LEGAL, agent: RESEARCH, from: "none", to: "chat" },
   },
   {
     id: "audit-02",
     at: "2026-10-30T09:40:00.000Z",
-    actor: NORBERT,
+    actor: SHIFAUL,
     change: { kind: "role-created", role: LEGAL },
   },
   {

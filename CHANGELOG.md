@@ -6764,7 +6764,7 @@ contains all changes of 0.21.1.
 
 - Signed GitHub Releases update pipeline with in-app availability, download progress, and restart-to-install controls.
 - Public repository documentation, community health files, CI, and draft release automation.
-- Apache-2.0 licensing and an attribution notice for Norbert Bodziony.
+- Apache-2.0 licensing and an attribution notice for the upstream author.
 - Local Codex App Server lifecycle and ChatGPT subscription authentication.
 - Per-agent context-budget monitoring and proactive App Server thread compaction.
 - Persistent agents with independent threads, workspaces, profiles, models, and reasoning settings.

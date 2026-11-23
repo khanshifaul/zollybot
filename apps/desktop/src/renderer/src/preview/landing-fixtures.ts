@@ -37,7 +37,7 @@ import type { MockZollyBotOptions } from "./mock-zollybot";
  * together. Every time is an offset from the moment the page opens, so the demo always shows today.
  */
 
-const LANDING_PREVIEW_EMAIL = "norbertbodziony@gmail.com";
+const LANDING_PREVIEW_EMAIL = "shifaul@example.com";
 const MINUTE_MS = 60_000;
 
 export const LANDING_LEAD_AGENT_ID = "atlas";
@@ -615,7 +615,7 @@ type LandingChannelLine = [author: "member-self" | "atlas" | "pulse" | "scout", 
 /** The launch channel: you and the agents plan Friday together. */
 function landingChannels(at: (minutesAgo: number) => string): MockChannelSeed[] {
   const authors = {
-    "member-self": { kind: "member", id: "member-self", name: "Norbert" },
+    "member-self": { kind: "member", id: "member-self", name: "Shifaul" },
     atlas: { kind: "agent", id: "atlas", name: "Atlas" },
     pulse: { kind: "agent", id: "pulse", name: "Pulse" },
     scout: { kind: "agent", id: "scout", name: "Scout" },

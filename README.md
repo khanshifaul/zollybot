@@ -142,6 +142,10 @@ Agents may run with powerful local execution modes depending on provider/configu
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), and [`CLA.md`](CLA.md). Keep changes verified and follow repository conventions (Biome, TypeScript checks, focused tests where appropriate).
 
+## Credits
+
+See [`CREDITS.md`](CREDITS.md) for the maintainer, the upstream author, and prior art.
+
 ## License
 
 [Apache License 2.0](LICENSE). See [`NOTICE`](NOTICE) for attribution and notices.
