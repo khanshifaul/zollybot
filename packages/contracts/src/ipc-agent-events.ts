@@ -65,6 +65,7 @@ export interface AgentTurnCompletedEvent {
 
 export type AgentEvent =
   | { type: "channels-changed"; channelId: string; revision: number }
+  | { type: "office-tasks-changed"; officeId: string; taskId: string }
   | { type: "status"; status: AgentStatus }
   | { type: "usage-changed"; usage: AccountUsage }
   | { type: "agents-changed"; agents: ClientAgentSummary[] }
@@ -218,6 +219,8 @@ export function isAgentEvent(value: unknown): value is AgentEvent {
         Number.isSafeInteger(value.revision) &&
         value.revision >= 0
       );
+    case "office-tasks-changed":
+      return isIdentifier(value.officeId) && isIdentifier(value.taskId);
     case "status":
       return isDynamicRecord(value.status);
     case "usage-changed":

@@ -19,6 +19,7 @@ export const MANAGED_SKILL_SLUGS: ReadonlySet<string> = new Set([
   SKILL_CREATOR_SKILL_SLUG,
   DATA_SKILL_SLUG,
   "zollybot-offices",
+  "zollybot-office-setup",
   "zollybot-hiring",
   "zollybot-profile",
   "zollybot-memory",

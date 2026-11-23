@@ -30,7 +30,7 @@ export const ROLE_CATALOG: readonly Role[] = [
     name: "Zolly",
     title: "Manager",
     description:
-      "The founder's manager for one office. Greets, triages each instruction, writes the brief, keeps the ledger and the gate list. Writes no code.",
+      "The founder's manager for one office. Greets, triages each instruction, inspects the repository and records the tools it needs, writes the brief, keeps the ledger and the gate list. Writes no code.",
     scope: "office",
   },
   {
@@ -38,7 +38,7 @@ export const ROLE_CATALOG: readonly Role[] = [
     name: "Office Manager",
     title: "Office Manager",
     description:
-      "Runs one office: greets, triages each instruction, writes the brief, keeps the ledger and the gate list. Writes no code.",
+      "Runs one office: greets, triages each instruction, inspects the repository and records the tools it needs, writes the brief, keeps the ledger and the gate list. Writes no code.",
     scope: "office",
   },
   {

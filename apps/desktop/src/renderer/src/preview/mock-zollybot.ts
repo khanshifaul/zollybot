@@ -3570,7 +3570,14 @@ export function createMockZollyBot(options: MockZollyBotOptions = {}): MockZolly
     remoteDesktop: mockTeam.remoteDesktop,
     officeTasks: {
       list: async () => [],
+      create: async () => {
+        throw new Error("Office tasks are not available in preview.");
+      },
       get: async () => null,
+      events: async () => [],
+      requestReview: async () => undefined,
+      rejectReview: async () => undefined,
+      closeTask: async () => undefined,
       setReviewPass: async () => undefined,
       merge: async () => ({ ok: true }),
       isPrReviewer: async () => false,

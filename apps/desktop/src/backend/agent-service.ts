@@ -29,6 +29,7 @@ import type {
   BranchAgentTaskInput,
   CancelMcpSignInInput,
   CapabilityState,
+  ChannelDraft,
   ChannelMemory,
   ChannelRoutine,
   ChannelRoutineRun,
@@ -277,6 +278,8 @@ import type { McpSignInOpener } from "./mcp-oauth-provider";
 import { McpServerStore } from "./mcp-server-store";
 import type { MessageDeleteAccess, MessageDeleteRefused } from "./message-delete";
 import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging/messaging-threads";
+import type { OfficeTaskStore } from "./office-tasks/office-task-store";
+import { createTaskWorktree } from "./office-tasks/worktree";
 import { OfficeMemories } from "./offices/office-memory-store";
 import {
   isRoleEmployed,
@@ -405,6 +408,8 @@ export interface AgentServiceOptions {
   /** The saved server that a Marketplace app installs, for an agent that suggests the app. */
   marketplaceAppServer?: (appId: string) => MarketplaceAppServer | null;
   sidebarLayout?: AgentSidebar | null;
+  /** The office ledger. The service mirrors manager briefs and worker results into it. */
+  officeTasks?: OfficeTaskStore | null;
   /**
    * What a spawned CLI is given beyond its own binary: the stored keys, and the user's own model
    * endpoints. The main process owns both, because they carry secrets that must not reach the
@@ -546,7 +551,7 @@ const OFFICE_AGENTS = [
     title: "Manager",
     seed: "zolly",
     description:
-      "The founder's manager. Greets, triages each instruction, writes the brief, keeps the ledger and the gate list, and hands work to the foreman. Does not write code.",
+      "The founder's manager. Greets, triages each instruction, inspects the repository and records the tools it needs, writes the brief, keeps the ledger and the gate list, and hands work to the foreman. Does not write code.",
   },
   {
     name: "Foreman",
@@ -606,6 +611,9 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   /** User sends still before their mailbox write, by idempotency key: a retry joins the first call. */
   readonly #pendingUserSends = new Map<string, Deferred.Deferred<QueuedMessageReceipt, AgentLifecycleFailed>>();
   readonly #store: AgentStore;
+  readonly #officeTasks: OfficeTaskStore | null;
+  /** Turn ids whose brief/result was already mirrored into the ledger and channel. */
+  readonly #postedOfficeBriefs = new Set<string>();
   readonly #mailbox: MailboxStore;
   readonly #browser: AgentBrowserHost;
   readonly #reader: ConversationReader;
@@ -683,6 +691,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       prepareAgentWorkspace = () => Effect.void,
       hostedSites = null,
       sidebarLayout = null,
+      officeTasks = null,
       credentials = NO_PROVIDER_CREDENTIALS,
       localSkillTools,
       routineFlowTools,
@@ -701,6 +710,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     this.#routineFlowTools = routineFlowTools;
     this.#workflowTools = workflowTools;
     this.#store = store;
+    this.#officeTasks = officeTasks;
     // First of the sub-objects, because `#emitError` reads it to redact and every one of them is
     // given that callback.
     this.#mcp = new McpGateway({
@@ -1805,7 +1815,16 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       routines: this.#routines,
       memories: this.#memories,
       officeMemories: new OfficeMemories(store.database),
-      officeTools: officeToolsFromDatabase(store.database, () => this.syncEmploymentAssignments()),
+      officeTools: officeToolsFromDatabase(
+        store.database,
+        () => this.syncEmploymentAssignments(),
+        (officeId) => Effect.runFork(this.staffOffice(officeId).pipe(Effect.catch(() => Effect.void))),
+        this.#officeTasks,
+        {
+          listAgents: (agentId) => this.listOfficeAgents(agentId),
+          assign: (taskId, input, actorAgentId) => this.assignOfficeTask(taskId, input, actorAgentId),
+        },
+      ),
       officeIdForAgent: (agentId: string) => {
         try {
           const row = store.database.connection
@@ -2578,6 +2597,11 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
    */
   notifyModelsChanged(): void {
     this.#emit({ type: "status", status: this.getStatus() });
+  }
+
+  /** A ledger task moved, so the office ledger reads it again. */
+  notifyOfficeTasksChanged(officeId: string, taskId: string): void {
+    this.#emit({ type: "office-tasks-changed", officeId, taskId });
   }
 
   readonly generateProfile = Effect.fn("AgentService.generateProfile")(
@@ -4086,7 +4110,172 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
       );
     upsertEmployment(database, { agentId: created.id, officeId, roleKey: role.key, scope: role.scope });
     this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
+    if (officeId) yield* this.#addToOfficeChannel(officeId, created.id).pipe(Effect.catch(() => Effect.void));
     return this.#store.list().find((agent) => agent.id === created.id) ?? created;
+  });
+
+  /** One channel per office; it holds the roster and the office's shared work. */
+  #ensureOfficeChannel = Effect.fn("AgentService.ensureOfficeChannel")(function* (
+    this: AgentService,
+    officeId: string,
+    actorAgentId: string,
+  ) {
+    const office = listOffices(this.#store.database.connection).find((entry) => entry.id === officeId);
+    if (!office) return;
+    const members = this.listAgentsWithEmployment().filter((agent) => agent.officeId === officeId);
+    if (members.length === 0) return;
+    const lead = members.find((agent) => agent.role === "office-manager" || agent.role === "zolly") ?? members[0];
+    if (!lead) return;
+    const memberIds = members.map((agent) => agent.id);
+    const channelId = `office-channel-${officeId}`;
+    const draft: ChannelDraft = {
+      name: office.name,
+      title: office.name,
+      instructions:
+        "Office channel. The Office Manager owns the brief, the ledger and the gate list; the Foreman assigns work; the PR Reviewer merges. Report status and evidence here.",
+      members: memberIds.map((agentId) => ({ agentId })),
+      leadAgentId: lead.id,
+      isolated: false,
+    };
+    const exists = this.channels.store.exists(channelId);
+    const operationId = exists
+      ? `office-channel-members:${officeId}:${memberIds.length}`
+      : `office-channel:${officeId}`;
+    yield* this.channels
+      .agentSave({ channelId, operationId, agentId: actorAgentId || lead.id, create: !exists }, (stored) => {
+        if (!stored) return draft;
+        const ids = new Set(stored.members.map((member) => member.agentId));
+        for (const agentId of memberIds) ids.add(agentId);
+        return {
+          ...stored,
+          members: [...ids].map((agentId) => ({ agentId })),
+          leadAgentId: stored.leadAgentId ?? draft.leadAgentId,
+        };
+      })
+      .pipe(Effect.catch(() => Effect.void));
+  });
+
+  /** A worker hired later joins the office channel that already exists. */
+  #addToOfficeChannel = Effect.fn("AgentService.addToOfficeChannel")(function* (
+    this: AgentService,
+    officeId: string,
+    agentId: string,
+  ) {
+    const channelId = `office-channel-${officeId}`;
+    if (!this.channels.store.exists(channelId)) return;
+    const stored = this.channels.store.get(channelId);
+    if (stored.members.some((member) => member.agentId === agentId)) return;
+    yield* this.channels
+      .agentSave(
+        { channelId, operationId: `office-channel-add:${officeId}:${agentId}`, agentId, create: false },
+        (current) =>
+          current
+            ? { ...current, members: [...current.members, { agentId }] }
+            : {
+                name: "",
+                title: "",
+                instructions: "",
+                members: [{ agentId }],
+                leadAgentId: agentId,
+                isolated: false,
+              },
+      )
+      .pipe(Effect.catch(() => Effect.void));
+  });
+
+  /** The agents a Foreman can assign office work to. */
+  readonly listOfficeAgents = (agentId: string): Array<{ id: string; name: string; title: string; role?: string }> => {
+    const self = this.listAgentsWithEmployment().find((agent) => agent.id === agentId);
+    return this.listAgentsWithEmployment()
+      .filter((agent) => agent.officeId === (self?.officeId ?? null) && agent.id !== agentId)
+      .map((agent) => ({ id: agent.id, name: agent.name, title: agent.title, role: agent.role }));
+  };
+
+  /** Assigns a ledger task to a specialist worker and starts the worker thread. */
+  readonly assignOfficeTask = (
+    taskId: string,
+    input: { agentId?: string; roleKey?: string; brief?: string },
+    actorAgentId: string,
+  ): { ok: boolean; error?: string; agentId?: string } => {
+    const ledger = this.#officeTasks;
+    if (!ledger) return { ok: false, error: "The office ledger is not available." };
+    const task = ledger.get(taskId);
+    if (!task) return { ok: false, error: "Office task not found." };
+    const agents = this.listAgentsWithEmployment().filter((agent) => agent.officeId === task.officeId);
+    const worker = input.agentId
+      ? agents.find((agent) => agent.id === input.agentId)
+      : input.roleKey
+        ? agents.find((agent) => agent.role === input.roleKey)
+        : undefined;
+    if (!worker) return { ok: false, error: "No matching agent is employed in this office." };
+    const office = listOffices(this.#store.database.connection).find((entry) => entry.id === task.officeId);
+    if (!office) return { ok: false, error: "Office not found." };
+    const worktreePath = task.worktreePath ?? createTaskWorktree(office.repoPath, task.id);
+    const brief = input.brief?.trim() || task.brief;
+    void Effect.runFork(
+      this.startTask(
+        {
+          agentId: worker.id,
+          text: [brief, "", `Worktree: ${worktreePath ?? office.repoPath}`].join("\n"),
+        },
+        undefined,
+        undefined,
+        { internal: true },
+      ).pipe(
+        Effect.tap((started) =>
+          Effect.sync(() =>
+            ledger.assign(task.id, {
+              agentId: worker.id,
+              roleKey: worker.role ?? null,
+              threadId: started.threadId,
+              worktreePath,
+              actor: actorAgentId,
+            }),
+          ),
+        ),
+        Effect.catch(() => Effect.void),
+      ),
+    );
+    return { ok: true, agentId: worker.id };
+  };
+
+  /**
+   * Opens an office: employs its mandatory roster, then lets the Office Manager
+   * inspect the repository and record the tools it needs. Safe to call again.
+   */
+  readonly staffOffice = Effect.fn("AgentService.staffOffice")(function* (
+    this: AgentService,
+    officeId: string,
+    options: { setup?: boolean } = {},
+  ) {
+    for (const roleKey of ["office-manager", "foreman", "pr-reviewer"] as const) {
+      yield* this.employ({ roleKey, officeId }).pipe(Effect.catch(() => Effect.void));
+    }
+    const office = listOffices(this.#store.database.connection).find((entry) => entry.id === officeId);
+    if (!office) return;
+    const manager = this.listAgentsWithEmployment().find(
+      (agent) => agent.officeId === officeId && (agent.role === "office-manager" || agent.role === "zolly"),
+    );
+    if (manager) {
+      yield* this.#ensureOfficeChannel(officeId, manager.id).pipe(Effect.catch(() => Effect.void));
+    }
+    if (options.setup === false) return;
+    if (!manager) return;
+    yield* this.startTask(
+      {
+        agentId: manager.id,
+        text: [
+          `Office setup: ${office.name}`,
+          `Repository: ${office.repoPath}`,
+          "",
+          "Inspect this repository before any product work: read its manifests (package.json, pyproject.toml, Cargo.toml, go.mod, Makefile), detect the toolchain and required commands, install/verify dependencies when safe, and record the setup facts and verification commands in office memory.",
+          "Then write the office brief and the gate list. Do not write product code.",
+        ].join("\n"),
+      },
+      undefined,
+      undefined,
+      { internal: true },
+    ).pipe(Effect.catch(() => Effect.void));
   });
 
   /** Ends one employment. The chats follow the existing removal path; the role stays. */
@@ -5237,11 +5426,17 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     input: StartAgentTaskInput,
     sender?: ConversationMessageSender,
     timezone?: string,
+    options: { internal?: boolean } = {},
   ): Effect.fn.Return<AgentTask, AgentLifecycleFailed> {
     const task = yield* lifecycleStep("start task", () => {
-      if (!this.listAgents().some((agent) => agent.id === input.agentId))
-        throw new Error(sourceText("error.agent.unknown", { id: input.agentId }));
+      const agent = this.listAgentsWithEmployment().find((entry) => entry.id === input.agentId);
+      if (!agent) throw new Error(sourceText("error.agent.unknown", { id: input.agentId }));
       this.#requireNotHidden(input.agentId);
+      // A person starts work with Butler or an Office Manager. The office dispatcher
+      // hands work to a Foreman or a worker and marks the dispatch internal.
+      if (!options.internal && agent.role !== "butler" && agent.role !== "office-manager" && agent.role !== "zolly") {
+        throw new Error("Tasks can only be started with Butler or an Office Manager agent.");
+      }
       // A start with files and no text takes its title from the first file.
       const firstDraft = input.attachmentDraftIds?.[0];
       const titleText = input.text.trim() || (firstDraft ? (this.#mailbox.draftName(firstDraft) ?? "") : "");
@@ -6124,8 +6319,135 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   #emit(event: AgentEvent, memberId?: string): void {
     recordAgentRestartActivity(event);
     this.#liveVoice?.observe(event);
+    this.#postOfficeBrief(event);
+    this.#postWorkerResult(event);
     if (this.channels?.event(event) || this.messaging?.event(event, this.#scope) || this.#tasks?.event(event)) return;
     this.emit("event", event, memberId);
+  }
+
+  #turnAnswer(agentId: string, turnId: string): string | null {
+    const text = this.#store.database
+      .readTurnAssistantMessages(agentId, turnId)
+      .filter((message) => message.author === "assistant" && message.text.trim())
+      .at(-1)
+      ?.text.trim();
+    return text || null;
+  }
+
+  /**
+   * A completed task turn of an Office Manager is the brief. It becomes a ledger
+   * task, and the office channel shows it without starting a second channel task.
+   */
+  #postOfficeBrief(event: AgentEvent): void {
+    if (event.type !== "turn-completed" || event.status !== "completed") return;
+    if (event.origin !== "user") return;
+    if ("quiet" in event && event.quiet) return;
+    if ("continues" in event && event.continues) return;
+    const agent = this.listAgentsWithEmployment().find((entry) => entry.id === event.agentId);
+    if (!agent || (agent.role !== "office-manager" && agent.role !== "zolly") || !agent.officeId) return;
+    // The manager's own chat is conversation; a task is a side thread.
+    if (event.threadId === agent.threadId) return;
+    // Channel turns already belong to the room; do not post them again.
+    if (this.channels.store.channelForThread(event.threadId)) return;
+    const key = `brief:${event.turnId}`;
+    if (this.#postedOfficeBriefs.has(key)) return;
+    this.#postedOfficeBriefs.add(key);
+    const answer = this.#turnAnswer(event.agentId, event.turnId);
+    if (!answer) return;
+    const officeId = agent.officeId;
+    const channelId = `office-channel-${officeId}`;
+    const foreman = this.listAgentsWithEmployment().find(
+      (entry) => entry.officeId === officeId && entry.role === "foreman",
+    );
+    const ledger = this.#officeTasks;
+    let ledgerTaskId: string | null = null;
+    if (ledger) {
+      try {
+        const firstLine =
+          answer
+            .split("\n")
+            .map((line) => line.trim())
+            .find(Boolean) ?? "Office brief";
+        const created = ledger.create({
+          officeId,
+          title: firstLine.replace(/^#+\s*/u, "").slice(0, 120),
+          brief: answer,
+          priority: 0,
+          assignedAgentId: foreman?.id ?? null,
+          assignedRoleKey: "foreman",
+          threadId: event.threadId,
+          createdBy: agent.id,
+          source: "manager-brief",
+        });
+        ledgerTaskId = created.id;
+      } catch {
+        ledgerTaskId = null;
+      }
+    }
+    void Effect.runFork(
+      Effect.gen({ self: this }, function* () {
+        if (!this.channels.store.exists(channelId)) {
+          yield* this.#ensureOfficeChannel(officeId, agent.id);
+        }
+        if (ledgerTaskId) {
+          yield* this.channels.postBrief({
+            operationId: `office-brief:${event.turnId}:message`,
+            channelId,
+            senderAgentId: agent.id,
+            text: `Office brief (ledger task ${ledgerTaskId}) from ${agent.name}:\n\n${answer}`,
+          });
+        } else {
+          // No ledger row: keep the channel task as the execution fallback.
+          yield* this.channels.handoff({
+            operationId: `office-brief:${event.turnId}`,
+            channelId,
+            senderAgentId: agent.id,
+            text: `Office brief from ${agent.name}:\n\n${answer}`,
+            recipientAgentIds: foreman ? [foreman.id] : [],
+            sourcePaths: [],
+          });
+        }
+      }).pipe(Effect.catch(() => Effect.void)),
+    );
+  }
+
+  /**
+   * A worker's completed turn for a dispatched ledger task is its result. The
+   * ledger moves to review, a PR URL is captured, and the channel sees the result.
+   */
+  #postWorkerResult(event: AgentEvent): void {
+    if (event.type !== "turn-completed" || event.status !== "completed") return;
+    if ("quiet" in event && event.quiet) return;
+    if ("continues" in event && event.continues) return;
+    const ledger = this.#officeTasks;
+    if (!ledger) return;
+    const key = `result:${event.turnId}`;
+    if (this.#postedOfficeBriefs.has(key)) return;
+    const task = ledger.list().find((entry) => entry.threadId === event.threadId && entry.status === "dispatched");
+    if (!task) return;
+    this.#postedOfficeBriefs.add(key);
+    const answer = this.#turnAnswer(event.agentId, event.turnId);
+    if (!answer) return;
+    try {
+      const pr = answer.match(/https?:\/\/\S+\/pull\/\d+/iu)?.[0] ?? answer.match(/\bpull\/\d+\b/iu)?.[0];
+      if (pr) ledger.setPr(task.id, pr, event.agentId);
+      ledger.requestReview(task.id, event.agentId);
+    } catch {
+      return;
+    }
+    const channelId = `office-channel-${task.officeId}`;
+    if (!this.channels.store.exists(channelId)) return;
+    const agent = this.listAgentsWithEmployment().find((entry) => entry.id === event.agentId);
+    void Effect.runFork(
+      this.channels
+        .postBrief({
+          operationId: `office-result:${event.turnId}`,
+          channelId,
+          senderAgentId: event.agentId,
+          text: `Worker result from ${agent?.name ?? "worker"} (ledger task ${task.id}):\n\n${answer}`,
+        })
+        .pipe(Effect.catch(() => Effect.void)),
+    );
   }
 
   /** Removes live provider state for an execution thread before its durable rows are deleted. */

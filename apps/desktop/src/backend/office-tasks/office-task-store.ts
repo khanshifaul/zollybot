@@ -25,6 +25,13 @@ export interface OfficeTask {
   leaseOwner: string | null;
   leaseExpiresAt: string | null;
   attempts: number;
+  assignedAgentId: string | null;
+  assignedRoleKey: string | null;
+  threadId: string | null;
+  worktreePath: string | null;
+  prUrl: string | null;
+  createdBy: string | null;
+  source: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -71,6 +78,13 @@ function rowToTask(row: DynamicRecord): OfficeTask {
     leaseOwner: optionalStringColumn(row, "lease_owner"),
     leaseExpiresAt: optionalStringColumn(row, "lease_expires_at"),
     attempts: Number(requiredNumberColumn(row, "attempts") ?? 0),
+    assignedAgentId: optionalStringColumn(row, "assigned_agent_id"),
+    assignedRoleKey: optionalStringColumn(row, "assigned_role_key"),
+    threadId: optionalStringColumn(row, "thread_id"),
+    worktreePath: optionalStringColumn(row, "worktree_path"),
+    prUrl: optionalStringColumn(row, "pr_url"),
+    createdBy: optionalStringColumn(row, "created_by"),
+    source: optionalStringColumn(row, "source"),
     createdAt: requiredStringColumn(row, "created_at"),
     updatedAt: requiredStringColumn(row, "updated_at"),
   };
@@ -82,8 +96,15 @@ function parseTaskId(row: DynamicRecord): string {
 
 export class OfficeTaskStore {
   readonly #db: DatabaseSync;
-  constructor(readonly database: ZollyBotDatabase) {
+  readonly #onMerged: ((task: OfficeTask) => void) | undefined;
+  readonly #onChanged: ((officeId: string, taskId: string) => void) | undefined;
+  constructor(
+    readonly database: ZollyBotDatabase,
+    options: { onMerged?: (task: OfficeTask) => void; onChanged?: (officeId: string, taskId: string) => void } = {},
+  ) {
     this.#db = database.connection;
+    this.#onMerged = options.onMerged;
+    this.#onChanged = options.onChanged;
   }
 
   list(input: { officeId?: string; status?: OfficeTaskStatus | string } = {}): OfficeTask[] {
@@ -110,7 +131,19 @@ export class OfficeTaskStore {
     return row ? rowToTask(row) : null;
   }
 
-  create(input: { officeId: string; title: string; brief: string; priority?: number }): OfficeTask {
+  create(input: {
+    officeId: string;
+    title: string;
+    brief: string;
+    priority?: number;
+    assignedAgentId?: string | null;
+    assignedRoleKey?: string | null;
+    threadId?: string | null;
+    worktreePath?: string | null;
+    prUrl?: string | null;
+    createdBy?: string | null;
+    source?: string | null;
+  }): OfficeTask {
     const now = new Date().toISOString();
     const id = randomUUID();
     this.database.dispatch(
@@ -120,17 +153,36 @@ export class OfficeTaskStore {
           aggregateType: "office-task",
           aggregateId: id,
           eventType: "office.task-created",
-          payload: { id, officeId: input.officeId, title: input.title },
+          payload: {
+            id,
+            officeId: input.officeId,
+            title: input.title,
+            assignedAgentId: input.assignedAgentId ?? null,
+            assignedRoleKey: input.assignedRoleKey ?? null,
+            threadId: input.threadId ?? null,
+          },
         },
       ],
       (db) => {
-        db.prepare(`INSERT INTO office_tasks (id, office_id, title, brief, status, priority, attempts, created_at, updated_at)
-        VALUES (?, ?, ?, ?, 'queued', ?, 0, ?, ?)`).run(
+        db.prepare(
+          `INSERT INTO office_tasks (
+            id, office_id, title, brief, status, priority, attempts,
+            assigned_agent_id, assigned_role_key, thread_id, worktree_path, pr_url, created_by, source,
+            created_at, updated_at
+          ) VALUES (?, ?, ?, ?, 'queued', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ).run(
           id,
           input.officeId,
           input.title,
           input.brief,
           input.priority ?? 0,
+          input.assignedAgentId ?? null,
+          input.assignedRoleKey ?? null,
+          input.threadId ?? null,
+          input.worktreePath ?? null,
+          input.prUrl ?? null,
+          input.createdBy ?? null,
+          input.source ?? null,
           now,
           now,
         );
@@ -139,6 +191,7 @@ export class OfficeTaskStore {
     );
     const created = this.get(id);
     if (!created) throw new Error(`Office task ${id} was not created.`);
+    this.#onChanged?.(created.officeId, created.id);
     return created;
   }
 
@@ -163,6 +216,8 @@ export class OfficeTaskStore {
         return null;
       },
     );
+    const task = this.get(id);
+    if (task) this.#onChanged?.(task.officeId, task.id);
   }
 
   pause(id: string): void {
@@ -237,6 +292,130 @@ export class OfficeTaskStore {
       );
       return null;
     });
+  }
+
+  #requireStatus(id: string, allowed: readonly OfficeTaskStatus[]): OfficeTask {
+    const task = this.get(id);
+    if (!task) throw new Error(`Office task ${id} does not exist.`);
+    if (!allowed.includes(task.status)) {
+      throw new Error(`Office task ${id} cannot move from ${task.status}.`);
+    }
+    return task;
+  }
+
+  /**
+   * Appends one ledger row. The event table is append-only; queue state stays in
+   * `office_tasks`, and this row records who moved it and why.
+   */
+  recordEvent(id: string, kind: string, actor: string | null = null, detail?: unknown): void {
+    const now = new Date().toISOString();
+    this.#db
+      .prepare(
+        "INSERT INTO office_task_events (id, task_id, kind, actor, detail_json, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+      )
+      .run(randomUUID(), id, kind, actor, detail === undefined ? null : JSON.stringify(detail), now);
+    const task = this.get(id);
+    if (task) this.#onChanged?.(task.officeId, task.id);
+  }
+
+  listEvents(id: string): Array<{
+    id: string;
+    taskId: string;
+    kind: string;
+    actor: string | null;
+    detail: string | null;
+    createdAt: string;
+  }> {
+    return databaseRows(
+      this.#db
+        .prepare(
+          "SELECT id, task_id, kind, actor, detail_json, created_at FROM office_task_events WHERE task_id = ? ORDER BY created_at, id",
+        )
+        .all(id),
+    ).map((row) => ({
+      id: requiredStringColumn(row, "id"),
+      taskId: requiredStringColumn(row, "task_id"),
+      kind: requiredStringColumn(row, "kind"),
+      actor: optionalStringColumn(row, "actor"),
+      detail: optionalStringColumn(row, "detail_json"),
+      createdAt: requiredStringColumn(row, "created_at"),
+    }));
+  }
+
+  /** Assigns a seat and an optional agent thread/worktree, then marks the task dispatched. */
+  assign(
+    id: string,
+    input: {
+      agentId?: string | null;
+      roleKey?: string | null;
+      threadId?: string | null;
+      worktreePath?: string | null;
+      actor?: string | null;
+    },
+  ): void {
+    this.#requireStatus(id, ["queued", "blocked", "escalated", "dispatched"]);
+    const now = new Date().toISOString();
+    this.#db
+      .prepare(
+        `UPDATE office_tasks SET
+          assigned_agent_id = COALESCE(?, assigned_agent_id),
+          assigned_role_key = COALESCE(?, assigned_role_key),
+          thread_id = COALESCE(?, thread_id),
+          worktree_path = COALESCE(?, worktree_path),
+          status = 'dispatched',
+          gate = NULL,
+          updated_at = ?
+        WHERE id = ?`,
+      )
+      .run(input.agentId ?? null, input.roleKey ?? null, input.threadId ?? null, input.worktreePath ?? null, now, id);
+    this.recordEvent(id, "assigned", input.actor ?? null, {
+      agentId: input.agentId ?? null,
+      roleKey: input.roleKey ?? null,
+      threadId: input.threadId ?? null,
+      worktreePath: input.worktreePath ?? null,
+    });
+  }
+
+  linkThread(id: string, threadId: string, actor: string | null = null): void {
+    this.#db
+      .prepare("UPDATE office_tasks SET thread_id = ?, updated_at = ? WHERE id = ?")
+      .run(threadId, new Date().toISOString(), id);
+    this.recordEvent(id, "thread-linked", actor, { threadId });
+  }
+
+  setWorktree(id: string, worktreePath: string | null, actor: string | null = null): void {
+    this.#db
+      .prepare("UPDATE office_tasks SET worktree_path = ?, updated_at = ? WHERE id = ?")
+      .run(worktreePath, new Date().toISOString(), id);
+    this.recordEvent(id, "worktree-set", actor, { worktreePath });
+  }
+
+  setPr(id: string, prUrl: string | null, actor: string | null = null): void {
+    this.#db
+      .prepare("UPDATE office_tasks SET pr_url = ?, updated_at = ? WHERE id = ?")
+      .run(prUrl, new Date().toISOString(), id);
+    this.recordEvent(id, "pr-linked", actor, { prUrl });
+  }
+
+  /** Worker finished: the task is a merge candidate behind the review gate. */
+  requestReview(id: string, actor: string | null = null): void {
+    this.#requireStatus(id, ["dispatched", "blocked"]);
+    this.setStatus(id, "done", "review");
+    this.recordEvent(id, "review-requested", actor);
+  }
+
+  /** Reviewer objected: send the same task back through dispatch for its worker. */
+  rejectReview(id: string, actor: string | null = null, reason?: unknown): void {
+    this.#requireStatus(id, ["done"]);
+    this.setStatus(id, "queued", null);
+    this.recordEvent(id, "review-rejected", actor, reason);
+  }
+
+  /** Foreman closes a merged task. */
+  close(id: string, actor: string | null = null): void {
+    this.#requireStatus(id, ["done"]);
+    this.setStatus(id, "done", null);
+    this.recordEvent(id, "closed", actor);
   }
 
   recoverExpiredLeases(maxAttempts = 3): OfficeTask[] {
@@ -324,6 +503,9 @@ export class OfficeTaskStore {
       ],
       () => null,
     );
+    this.recordEvent(id, "merged", actor, { prUrl: task.prUrl });
+    // The merged task no longer needs its isolated worktree; collect it now.
+    this.#onMerged?.(task);
     return { ok: true };
   }
 

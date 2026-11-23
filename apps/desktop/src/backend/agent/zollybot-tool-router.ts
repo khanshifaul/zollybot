@@ -1307,7 +1307,7 @@ export class ZollyBotToolRouter {
       );
     }
 
-    const officeToolResult = handleOfficeTool(params, this.#officeTools);
+    const officeToolResult = handleOfficeTool(params, this.#officeTools, senderAgentId);
     if (officeToolResult) return officeToolResult;
     const officeMemoryResult = handleOfficeMemoryTool(
       params,

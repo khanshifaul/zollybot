@@ -799,11 +799,16 @@ export function decodeBitwardenConnectorStatus(value: unknown): BitwardenConnect
   return { connected: value.connected, connecting: value.connecting, serverUrl: value.serverUrl, error: value.error };
 }
 
-import type { OfficeTask } from "@zollybot/contracts/ipc-office-tasks";
+import type { OfficeTask, OfficeTaskEvent } from "@zollybot/contracts/ipc-office-tasks";
 
 const isOfficeTask = (value: unknown): value is OfficeTask =>
   typeof value === "object" && value !== null && "id" in value;
 
+const isOfficeTaskEvent = (value: unknown): value is OfficeTaskEvent =>
+  typeof value === "object" && value !== null && "id" in value && "taskId" in value && "kind" in value;
+
 export const decodeOfficeTask = (value: unknown): OfficeTask | null => (isOfficeTask(value) ? value : null);
 export const decodeOfficeTasks = (value: unknown): OfficeTask[] =>
   Array.isArray(value) ? value.filter(isOfficeTask) : [];
+export const decodeOfficeTaskEvents = (value: unknown): OfficeTaskEvent[] =>
+  Array.isArray(value) ? value.filter(isOfficeTaskEvent) : [];

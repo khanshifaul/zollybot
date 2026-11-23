@@ -89,4 +89,41 @@ describe("office task store", () => {
     expect(s.claimNext("o1", "w", 60_000)).toBeNull();
     d.close();
   });
+
+  it("records the ledger, notifies changes, and closes after merge", async () => {
+    const d = await db();
+    const changed: string[] = [];
+    const merged: string[] = [];
+    const s = new OfficeTaskStore(d, {
+      onChanged: (_officeId, taskId) => changed.push(taskId),
+      onMerged: (task) => merged.push(task.id),
+    });
+    const t = s.create({ officeId: "o1", title: "T", brief: "B" });
+    expect(changed).toContain(t.id);
+
+    s.assign(t.id, { agentId: "a1", roleKey: "worker-build", threadId: "th-1", actor: "foreman" });
+    expect(s.get(t.id)?.status).toBe("dispatched");
+
+    s.requestReview(t.id, "a1");
+    expect(s.get(t.id)?.status).toBe("done");
+    expect(s.get(t.id)?.gate).toBe("review");
+
+    s.rejectReview(t.id, "pr-reviewer", "fix it");
+    expect(s.get(t.id)?.status).toBe("queued");
+
+    expect(s.claimNext("o1", "w", 60_000)?.id).toBe(t.id);
+    s.requestReview(t.id, "a1");
+    s.setReviewPass(t.id, "pr-reviewer");
+    expect(s.merge(t.id, "pr-reviewer").ok).toBe(true);
+    expect(merged).toContain(t.id);
+    s.close(t.id, "foreman");
+
+    const kinds = s.listEvents(t.id).map((event) => event.kind);
+    expect(kinds).toContain("assigned");
+    expect(kinds).toContain("review-requested");
+    expect(kinds).toContain("review-rejected");
+    expect(kinds).toContain("merged");
+    expect(kinds).toContain("closed");
+    d.close();
+  });
 });

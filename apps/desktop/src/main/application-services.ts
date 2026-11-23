@@ -13,8 +13,14 @@ import { AgentTables } from "../backend/agent-data/agent-tables";
 import { AgentRoutineStore } from "../backend/agent-routine-store";
 import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messaging/discord/discord-connect";
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
+import { runOfficeHook } from "../backend/office-tasks/office-hooks";
 import { OfficeTaskDispatcher } from "../backend/office-tasks/office-task-dispatcher";
 import { OfficeTaskStore } from "../backend/office-tasks/office-task-store";
+import {
+  collectMergedTaskWorktree,
+  createTaskWorktree,
+  sweepMergedTaskWorktrees,
+} from "../backend/office-tasks/worktree";
 import { discoverOffices, officeFromPath } from "../backend/offices/office-catalog";
 import { importOfficeMemoryMarkdown } from "../backend/offices/office-memory-import";
 import { OfficeMemories } from "../backend/offices/office-memory-store";
@@ -1086,12 +1092,36 @@ export async function createApplicationServices({
   // Closing copies the write-ahead log into the database file and removes it. A step that passed its
   // limit, such as a slow agent stop, still writes, so the close waits a short time for it.
   teardown.push(TEARDOWN_ORDER.database, "the database", () => store.database.close(), { afterAbandonedSteps: true });
-  const officeTasks = new OfficeTaskStore(store.database);
+  let notifyOfficeTasks: ((officeId: string, taskId: string) => void) | null = null;
+  const officeTasks = new OfficeTaskStore(store.database, {
+    onChanged: (officeId, taskId) => notifyOfficeTasks?.(officeId, taskId),
+    onMerged: (task) => {
+      const worktreePath = task.worktreePath;
+      collectMergedTaskWorktree(store.database.connection, task);
+      // Merge is the Foreman's close signal in the ledger.
+      try {
+        officeTasks.close(task.id, "merge");
+      } catch {
+        // The task may already be closed by a person.
+      }
+      const repoPath = listOffices(store.database.connection).find((office) => office.id === task.officeId)?.repoPath;
+      if (!repoPath) return;
+      const hook = runOfficeHook(repoPath, "post-task", {
+        ZOLLYBOT_TASK_ID: task.id,
+        ZOLLYBOT_OFFICE_ID: task.officeId,
+        ZOLLYBOT_WORKTREE_PATH: worktreePath ?? "",
+      });
+      officeTasks.recordEvent(task.id, hook.ok ? "post-hook-ok" : "post-hook-failed", "office-hook", {
+        output: hook.output,
+      });
+    },
+  });
   const officeTaskDispatcher = new OfficeTaskDispatcher({
     store: officeTasks,
     officeIds: () => listOffices(store.database.connection).map((o) => o.id),
   });
-  officeTaskDispatcher.start();
+  // Garbage collector: drop worktrees of tasks merged before a restart.
+  sweepMergedTaskWorktrees(store.database.connection);
   Reflect.set(globalThis, "__zollyOfficeTaskDispatcher", officeTaskDispatcher);
   teardown.push(TEARDOWN_ORDER.updater, "office task dispatcher", () => officeTaskDispatcher.stop());
   const managedSkillSlugs = [...MANAGED_SKILL_SLUGS];
@@ -1871,6 +1901,7 @@ export async function createApplicationServices({
       delete: (siteId) => hostedSites.delete(siteId).pipe(toHostedSiteOperationFailed),
     },
     sidebarLayout,
+    officeTasks,
     preferredModel: setupState.preferredModel,
     // Only a dev build leads with the OpenCode development model; a packaged app keeps the
     // built-in default.
@@ -1956,6 +1987,59 @@ export async function createApplicationServices({
     tables,
   });
   teardown.push(TEARDOWN_ORDER.service, "the agent service", () => runCauseEffect(service.stop()));
+  notifyOfficeTasks = (officeId, taskId) => service.notifyOfficeTasksChanged(officeId, taskId);
+  officeTaskDispatcher.setDispatch(async (taskId, officeId) => {
+    const task = officeTasks.get(taskId);
+    if (!task) return false;
+    const office = listOffices(store.database.connection).find((entry) => entry.id === officeId);
+    if (!office) return false;
+    const preHook = runOfficeHook(office.repoPath, "pre-task", {
+      ZOLLYBOT_TASK_ID: taskId,
+      ZOLLYBOT_OFFICE_ID: officeId,
+    });
+    if (!preHook.ok) {
+      officeTasks.recordEvent(taskId, "pre-hook-failed", "office-hook", { output: preHook.output });
+      return false;
+    }
+    if (preHook.output) officeTasks.recordEvent(taskId, "pre-hook-ok", "office-hook", { output: preHook.output });
+    const employments = service.listAgentsWithEmployment().filter((agent) => agent.officeId === officeId);
+    const worker =
+      (task.assignedAgentId ? employments.find((agent) => agent.id === task.assignedAgentId) : undefined) ??
+      employments.find((agent) => agent.role === "foreman") ??
+      employments.find((agent) => agent.role === "office-manager") ??
+      employments.find((agent) => agent.role === "zolly");
+    if (!worker) {
+      officeTasks.recordEvent(taskId, "dispatch-blocked", "dispatcher", { reason: "no-assignee" });
+      return false;
+    }
+    const worktreePath = task.worktreePath ?? createTaskWorktree(office.repoPath, task.id);
+    const started = await runCauseEffect(
+      service.startTask(
+        {
+          agentId: worker.id,
+          text: [
+            `Office task: ${task.title}`,
+            "",
+            task.brief,
+            "",
+            `Worktree: ${worktreePath ?? office.repoPath}`,
+            "When the change is ready, create a PR and ask the office PR Reviewer to review and merge it.",
+          ].join("\n"),
+        },
+        undefined,
+        undefined,
+        { internal: true },
+      ),
+    );
+    officeTasks.assign(task.id, {
+      agentId: worker.id,
+      roleKey: worker.role ?? null,
+      threadId: started.threadId,
+      worktreePath,
+      actor: "dispatcher",
+    });
+    return true;
+  });
   const agentMemoryLimitSetting = reloadingAgentMemoryLimit(agentMemoryLimit, service);
   // The models that the model picker shows. Agents, tools and automations keep `service.listModels()`.
   const modelVisibility = new ModelVisibility({
@@ -3491,6 +3575,8 @@ export async function createApplicationServices({
       yield* service.initialize({ heldRoutines: takeRoutineHold(routineHoldFile, (message) => logger.warn(message)) });
       // A client's agent list waits only until here. The steps below do not change the roster.
       yield* rosterLoaded;
+      // The office dispatcher needs the seeded roster and the bound dispatch callback.
+      yield* Effect.sync(() => officeTaskDispatcher.start());
       yield* eventsRuntime.start();
       yield* automation.sync();
       // Picks up the flows a restart stopped between one agent's answer and the next agent's message.
@@ -3727,11 +3813,10 @@ export async function createApplicationServices({
             baseBranch: "main",
           });
           service.syncEmploymentAssignments();
-          // Every office opens with the mandatory roster before any worker:
-          // Office Manager, Team Leader, PR Reviewer. Idempotent per office.
-          for (const roleKey of ["office-manager", "foreman", "pr-reviewer"]) {
-            void runCauseEffect(service.employ({ roleKey, officeId: found.id }).pipe(Effect.catch(() => Effect.void)));
-          }
+          // Every office opens with the mandatory roster before any worker: Office
+          // Manager, Foreman (team leader), PR Reviewer. The manager then inspects
+          // the repository and records the tools the office needs.
+          void runCauseEffect(service.staffOffice(found.id).pipe(Effect.catch(() => Effect.void)));
           Effect.runFork(
             importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)),
           );
@@ -4003,6 +4088,10 @@ export async function createApplicationServices({
         baseBranch: "main",
       });
       service.syncEmploymentAssignments();
+      // Every office opens with the mandatory roster before any worker: Office
+      // Manager, Foreman (team leader), PR Reviewer. The manager then inspects
+      // the repository and records the tools the office needs.
+      void runCauseEffect(service.staffOffice(found.id).pipe(Effect.catch(() => Effect.void)));
       Effect.runFork(
         importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)),
       );

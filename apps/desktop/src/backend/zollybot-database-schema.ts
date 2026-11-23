@@ -29,7 +29,7 @@ import {
 } from "./messaging/messaging-schema";
 import { OFFICE_MEMORY_SCHEMA_SQL } from "./offices/office-memory-schema";
 import { OFFICE_SCHEMA_SQL } from "./offices/office-schema";
-import { OFFICE_TASK_SCHEMA_SQL } from "./offices/office-task-schema";
+import { OFFICE_TASK_SCHEMA_SQL, V60_OFFICE_TASK_SCHEMA_SQL } from "./offices/office-task-schema";
 import { ROUTINE_FLOW_SCHEMA_SQL } from "./routine-flows/routine-flow-schema";
 import { ROUTINE_RESULT_SCHEMA_SQL } from "./routine-results/routine-result-schema";
 import { addDiscordWorkflows } from "./workflows/workflow-discord-schema";
@@ -1004,7 +1004,7 @@ const MIGRATIONS: readonly ZollyBotMigration[] = [
     // office registration, not here.
     up: (db) => {
       db.exec(OFFICE_MEMORY_SCHEMA_SQL);
-      db.exec(OFFICE_TASK_SCHEMA_SQL);
+      db.exec(V60_OFFICE_TASK_SCHEMA_SQL);
     },
   },
   {
@@ -1023,6 +1023,44 @@ const MIGRATIONS: readonly ZollyBotMigration[] = [
       }
       db.exec("CREATE INDEX IF NOT EXISTS agent_threads_office ON projection_agent_threads(office_id)");
       db.exec("CREATE INDEX IF NOT EXISTS agent_routines_office ON projection_agent_routines(office_id)");
+    },
+  },
+  {
+    version: 62,
+    // Adds ledger/workflow columns to office_tasks. Nullable TEXT columns, no rebuild, no vacuum.
+    up: (db) => {
+      const cols = db
+        .prepare("PRAGMA table_info(office_tasks)")
+        .all()
+        .map((r) => (r && typeof r === "object" && "name" in r ? String(r.name) : ""));
+      for (const col of [
+        "assigned_agent_id",
+        "assigned_role_key",
+        "thread_id",
+        "worktree_path",
+        "pr_url",
+        "created_by",
+        "source",
+      ] as const) {
+        if (!cols.includes(col)) db.exec(`ALTER TABLE office_tasks ADD COLUMN ${col} TEXT`);
+      }
+    },
+  },
+  {
+    version: 63,
+    // Append-only workflow ledger for office tasks. Only creates a table and index.
+    up: (db) => {
+      db.exec(`
+        CREATE TABLE IF NOT EXISTS office_task_events (
+          id TEXT PRIMARY KEY,
+          task_id TEXT NOT NULL REFERENCES office_tasks(id) ON DELETE CASCADE,
+          kind TEXT NOT NULL,
+          actor TEXT,
+          detail_json TEXT CHECK (detail_json IS NULL OR json_valid(detail_json)),
+          created_at TEXT NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS office_task_events_task ON office_task_events(task_id, created_at);
+      `);
     },
   },
 ];

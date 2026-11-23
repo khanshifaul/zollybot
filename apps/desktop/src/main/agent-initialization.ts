@@ -5,6 +5,8 @@ export class AgentInitializationGate<E> {
   #pending: Deferred.Deferred<void, E> | null = null;
   #roster: Deferred.Deferred<void> | null = null;
   #settled = false;
+  /** Resolves when `start` is first called, so an early list read waits for seeding. */
+  readonly #started = Deferred.makeUnsafe<void>();
 
   /**
    * `initialize` runs `rosterLoaded` when the agents are loaded. The steps after it, such as the
@@ -25,6 +27,7 @@ export class AgentInitializationGate<E> {
   }
 
   readonly start = Effect.fn("AgentInitializationGate.start")(function* (this: AgentInitializationGate<E>) {
+    yield* Deferred.succeed(this.#started, undefined);
     if (this.#pending) return yield* Deferred.await(this.#pending);
     const completion = Deferred.makeUnsafe<void, E>();
     const roster = Deferred.makeUnsafe<void>();
@@ -52,6 +55,8 @@ export class AgentInitializationGate<E> {
    * After a failed initialization it waits for nothing, as `awaitSettled` does.
    */
   readonly awaitRoster = Effect.fn("AgentInitializationGate.awaitRoster")(function* (this: AgentInitializationGate<E>) {
+    // An early list read must not mistake "seeding has not started" for "the roster is empty".
+    yield* Deferred.await(this.#started);
     if (this.#pending && this.#roster) yield* Deferred.await(this.#roster);
   }).bind(this);
 }

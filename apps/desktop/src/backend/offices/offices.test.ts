@@ -1,10 +1,14 @@
 // @vitest-environment node
 
+import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, it } from "vitest";
+import { officeToolsFromDatabase } from "../agent/office-tools";
+import { runCauseEffect } from "../effect-boundary";
+import { ZollyBotDatabase } from "../zollybot-database";
 import { discoverOffices, officeFromPath } from "./office-catalog";
 import { OFFICE_SCHEMA_SQL } from "./office-schema";
 import { isRoleEmployed, listEmployments, syncEmployments, upsertEmployment, upsertOffice } from "./office-store";
@@ -177,6 +181,31 @@ describe("employment backfill", () => {
 
     expect(listEmployments(db)).toEqual([]);
     db.close();
+  });
+});
+
+describe("office registration through the butler tool", () => {
+  it("asks the service to staff the office and writes its marker", async () => {
+    const root = await workspace();
+    const repo = join(root, "alpha");
+    await mkdir(repo, { recursive: true });
+    const database = new ZollyBotDatabase(join(root, "profile"));
+    await runCauseEffect(database.initialize());
+    const registered: string[] = [];
+    const tools = officeToolsFromDatabase(
+      database,
+      () => undefined,
+      (officeId) => registered.push(officeId),
+    );
+
+    const result = tools.register(repo, "Alpha");
+
+    expect(result.ok).toBe(true);
+    expect(registered).toHaveLength(1);
+    expect(existsSync(join(repo, ".agents", "zolly", "config.toml"))).toBe(true);
+    expect(existsSync(join(repo, ".agents", "zolly", "hooks", "pre-task.sh"))).toBe(true);
+    expect(existsSync(join(repo, ".agents", "zolly", "hooks", "post-task.sh"))).toBe(true);
+    database.close();
   });
 });
 

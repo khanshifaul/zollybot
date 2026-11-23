@@ -176,6 +176,7 @@ import {
   decodeNotificationPreference,
   decodeNullablePath,
   decodeOfficeTask,
+  decodeOfficeTaskEvents,
   decodeOfficeTasks,
   decodeOnePasswordConnectorStatus,
   decodePendingAgentTemplate,
@@ -1535,7 +1536,16 @@ const zollybotApi: ZollyBotDesktopApi = {
   }),
   officeTasks: bridgeGroup(IPC_ENDPOINTS.officeTasks, {
     list: decodeOfficeTasks,
+    create: (value: unknown) => {
+      const task = decodeOfficeTask(value);
+      if (!task) throw new Error("Invalid office task response.");
+      return task;
+    },
     get: decodeOfficeTask,
+    events: decodeOfficeTaskEvents,
+    requestReview: decodeVoid,
+    rejectReview: decodeVoid,
+    closeTask: decodeVoid,
     setReviewPass: decodeVoid,
     merge: (value: unknown): { ok: boolean; error?: string } => {
       if (typeof value !== "object" || value === null) return { ok: false, error: "invalid_response" };

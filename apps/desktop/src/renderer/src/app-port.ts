@@ -28,12 +28,18 @@ export interface AppPort {
   setAppLogoColorPreference: ZollyBotDesktopApi["setAppLogoColorPreference"];
   agent: Pick<
     ZollyBotDesktopApi["agent"],
-    "readConversationPage" | "searchConversationMessages" | "searchConversationFiles" | "listRoutines" | "listAgents"
+    | "readConversationPage"
+    | "searchConversationMessages"
+    | "searchConversationFiles"
+    | "listRoutines"
+    | "listAgents"
+    | "onEvent"
   >;
   agentTemplates: Pick<ZollyBotDesktopApi["agentTemplates"], "onOpenLink" | "takePendingLink">;
   acpRegistry: ZollyBotDesktopApi["acpRegistry"];
   hostedSites: ZollyBotDesktopApi["hostedSites"];
   offices: ZollyBotDesktopApi["offices"];
+  officeTasks: ZollyBotDesktopApi["officeTasks"];
   hostedServers: ZollyBotDesktopApi["hostedServers"];
   routineFeed: ZollyBotDesktopApi["routineFeed"];
   events: ZollyBotDesktopApi["events"];

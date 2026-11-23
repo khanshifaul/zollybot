@@ -409,7 +409,15 @@ import type {
 } from "./ipc-messaging";
 import type { ProviderModelVisibility, ProviderModelVisibilityChange } from "./ipc-model-visibility";
 import type { NotificationOpenedEvent, NotificationPreference } from "./ipc-notifications";
-import type { MergeTaskInput, OfficeTask, SetReviewPassInput } from "./ipc-office-tasks";
+import type {
+  CreateOfficeTaskInput,
+  MergeTaskInput,
+  OfficeTask,
+  OfficeTaskActorInput,
+  OfficeTaskEvent,
+  RejectOfficeTaskInput,
+  SetReviewPassInput,
+} from "./ipc-office-tasks";
 import type {
   OnePasswordConnectInput,
   OnePasswordConnectorStatus,
@@ -2111,7 +2119,12 @@ export const IPC_ENDPOINTS = {
   },
   officeTasks: {
     list: request<{ officeId?: string; status?: string }, OfficeTask[]>()("office-tasks:list"),
+    create: request<CreateOfficeTaskInput, OfficeTask>()("office-tasks:create"),
     get: request<string, OfficeTask | null>()("office-tasks:get"),
+    events: request<string, OfficeTaskEvent[]>()("office-tasks:events"),
+    requestReview: request<OfficeTaskActorInput, void>()("office-tasks:request-review"),
+    rejectReview: request<RejectOfficeTaskInput, void>()("office-tasks:reject-review"),
+    closeTask: request<OfficeTaskActorInput, void>()("office-tasks:close"),
     setReviewPass: request<SetReviewPassInput, void>()("office-tasks:set-review-pass"),
     merge: request<MergeTaskInput, { ok: boolean; error?: string }>()("office-tasks:merge"),
     isPrReviewer: request<{ agentId: string; officeId: string }, boolean>()("office-tasks:is-pr-reviewer"),

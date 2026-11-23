@@ -75,7 +75,10 @@ interface TasksPageProps {
   agentsOpen?: boolean | undefined;
   /** Shows or hides the agent list. Without it, the header has no button for the list. */
   onToggleAgents?: (() => void) | undefined;
+  /** All agents known to this view, used for task/lookup display. */
   agents: AgentProfile[];
+  /** Agents the user may start a task for. Defaults to `agents`. */
+  selectableAgents?: AgentProfile[] | undefined;
   /** The tasks of all agents, also a start that waits. */
   tasks: readonly AgentTask[];
   /** Whether the task lists of all agents loaded. Only then does a page with no task show how tasks work. */
@@ -134,7 +137,10 @@ const AGENT_SWAP: SwapMotion = {
  * the chosen agent, as the routine trigger menu does.
  */
 function TaskAgentSelect(props: {
+  /** Lookup pool for avatars/names. */
   agents: AgentProfile[];
+  /** Selectable options; defaults to `agents`. */
+  options?: AgentProfile[] | undefined;
   agentId: string;
   /** The task title, when the select changes the agent of a task that is already sent. */
   title?: string;
@@ -171,7 +177,7 @@ function TaskAgentSelect(props: {
       <DropdownMenu.Portal>
         <DropdownMenu.Content class="tasks-page-agent-menu">
           <DropdownMenu.RadioGroup value={props.agentId} onChange={(value) => props.onChange(value)}>
-            <For each={props.agents} keyed={(option) => option.id}>
+            <For each={props.options ?? props.agents} keyed={(option) => option.id}>
               {(option) => (
                 <DropdownMenu.RadioItem value={option().id} closeOnSelect class="tasks-page-agent-option">
                   <AgentAvatar agent={option()} class="tasks-page-avatar" />
@@ -261,7 +267,12 @@ function TasksComposer(props: TasksPageProps) {
         </div>
         <div class="composer-toolbar">
           <div class="tasks-page-composer-agent">
-            <TaskAgentSelect agents={props.agents} agentId={props.agentId} onChange={props.onAgentChange} />
+            <TaskAgentSelect
+              agents={props.agents}
+              options={props.selectableAgents ?? props.agents}
+              agentId={props.agentId}
+              onChange={props.onAgentChange}
+            />
           </div>
           <div class="composer-primary-actions">
             <Show when={props.voice} fallback={send()}>
@@ -320,6 +331,7 @@ function TaskTookLine(props: TasksPageProps & { took: TasksTook }) {
       >
         <TaskAgentSelect
           agents={props.agents}
+          options={props.selectableAgents ?? props.agents}
           agentId={props.took.task.agentId}
           title={props.took.task.title}
           onChange={props.onTookAgentChange}

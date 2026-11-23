@@ -242,6 +242,8 @@ export interface AgentIpcDependencies {
   openExternal: (url: string) => Promise<void>;
   /** The models that the model picker shows. Only the local list is filtered here; a host filters its own. */
   modelVisibility: Pick<ModelVisibility, "picker">;
+  /** Resolves after the local service has seeded and loaded its roster. */
+  awaitRoster: () => Promise<void>;
 }
 
 export function agentIpcHandlers({
@@ -254,6 +256,7 @@ export function agentIpcHandlers({
   messageLinks,
   openExternal,
   modelVisibility,
+  awaitRoster,
 }: AgentIpcDependencies): Pick<IpcGroupHandlers, "agent"> {
   const remoteTaskRequest = <T>(serverId: string, path: string, decoder: ResponseDecoder<T>, body: RemoteTaskBody) => {
     if (!remoteServers.supportsCapability(serverId, AGENT_TASKS_CAPABILITY)) taskRemoteUnsupported();
@@ -466,7 +469,11 @@ export function agentIpcHandlers({
         remote: (input, serverId) => runCauseEffect(remoteServers.setAgentNotificationLevel(serverId, input)),
       }),
       listAgents: scopedQueryHandler({
-        local: () => service.listAgentsWithEmployment(),
+        local: async () => {
+          // The first read can arrive before seeding finishes; do not let it look like an empty roster.
+          await awaitRoster();
+          return service.listAgentsWithEmployment();
+        },
         // The released agent list has no exact colour and no chat colour, so `agent-colors-v1` and
         // `chat-colors-v1` give them on their own routes.
         remote: (serverId) =>

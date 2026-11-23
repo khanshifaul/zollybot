@@ -277,9 +277,18 @@ export function TasksView(props: TasksViewProps) {
 
   // The agent chosen last on this server stays the default, so the user does not choose it again on each visit.
   const savedAgentId = createMemo(() => readAgentSelection(TASK_AGENT_STORAGE_KEY)[props.serverId] ?? "");
-  const isListed = (id: string) => props.agents.some((agent) => agent.id === id);
-  const agentId = () =>
-    isListed(state.agentId) ? state.agentId : isListed(savedAgentId()) ? savedAgentId() : (props.agents[0]?.id ?? "");
+  const intakeAgents = createMemo(() =>
+    props.agents.filter(
+      (agent) => agent.role === "butler" || agent.role === "office-manager" || agent.role === "zolly",
+    ),
+  );
+  const agentId = () => {
+    const intake = intakeAgents();
+    if (intake.some((agent) => agent.id === state.agentId)) return state.agentId;
+    const saved = savedAgentId();
+    if (intake.some((agent) => agent.id === saved)) return saved;
+    return intake[0]?.id ?? props.agents[0]?.id ?? "";
+  };
   const agentOf = (id: string) => props.agents.find((agent) => agent.id === id);
 
   const tasks = createMemo<AgentTask[]>(() => {
@@ -804,6 +813,7 @@ export function TasksView(props: TasksViewProps) {
       agentsOpen={props.agentsOpen}
       onToggleAgents={props.onToggleAgents}
       agents={props.agents}
+      selectableAgents={intakeAgents()}
       tasks={tasks()}
       // A list that did not load keeps its agent out, so a failed load does not show the empty page.
       // With no agents yet, the agent list did not load.

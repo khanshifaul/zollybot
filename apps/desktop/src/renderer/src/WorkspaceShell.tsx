@@ -1,4 +1,5 @@
 import { AGENT_TASKS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-tasks-v1";
+import { Button } from "@zollybot/ui";
 import {
   ConversationLoadNotice,
   ServerConnectionNotice,
@@ -20,6 +21,7 @@ import { useDirectMessages } from "./features/conversation/direct-messages-conte
 import { WorkspaceConversation } from "./features/conversation/WorkspaceConversation";
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
+import { OfficeLedgerDialog } from "./features/office-tasks/OfficeLedgerDialog";
 import { TopBar } from "./features/offices/OfficeTabStrip";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
@@ -109,6 +111,15 @@ export function WorkspaceShell(props: {
     return layout.sidebarView() === "routines" ? "routines" : "agent";
   });
   const agentChatOpen = () => middlePane() === "agent";
+  const ledgerOfficeId = () => {
+    const id = agents.activeOfficeId();
+    return id && id !== "building" ? id : null;
+  };
+  const ledgerOfficeName = () => {
+    const id = ledgerOfficeId();
+    if (!id) return t("app.offices.lobby");
+    return agents.agentList().find((agent) => agent.officeId === id)?.officeName ?? id;
+  };
   if (chatWindow) {
     // The title names the chat. The window closes when its agent is gone, so it never shows another.
     createEffect(
@@ -228,6 +239,7 @@ export function WorkspaceShell(props: {
   // first load after its exit mounts a new screen.
   const [loadingCover, setLoadingCover] = createSignal(false);
   const [coverOpen, setCoverOpen] = createSignal(false);
+  const [ledgerOpen, setLedgerOpen] = createSignal(false);
   // The chat is the heaviest view to mount. It waits while a loading screen moves its crew, so they do
   // not stutter, and mounts while the screen fades.
   const chatHeld = () => !!props.behindSplash?.() || (loadingCover() && !coverOpen());
@@ -319,6 +331,11 @@ export function WorkspaceShell(props: {
               />
             )
           }
+          actions={
+            <Button type="button" variant="ghost" size="sm" onClick={() => setLedgerOpen(true)}>
+              {t("conversation.tasks.ledger.open")}
+            </Button>
+          }
         />
         <div class="app-window">
           <WorkspacePageRail hidden={chatWindow || remoteDesktopWorkspaceVisible()} />
@@ -402,6 +419,14 @@ export function WorkspaceShell(props: {
             {connectionNotice(true, false)}
           </Show>
         </div>
+        <OfficeLedgerDialog
+          open={ledgerOpen()}
+          officeId={ledgerOfficeId()}
+          officeName={ledgerOfficeName()}
+          actorAgentId={agents.activeAgentId() ?? ""}
+          actorRole={agents.agentList().find((agent) => agent.id === agents.activeAgentId())?.role ?? null}
+          onOpenChange={setLedgerOpen}
+        />
       </div>
     </ConnectorsProvider>
   );

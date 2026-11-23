@@ -22,7 +22,7 @@ async function database(): Promise<ZollyBotDatabase> {
   return database;
 }
 
-const OFFICE_TABLES = ["office_memory", "office_tasks", "office_task_runs", "office_approvals"];
+const OFFICE_TABLES = ["office_memory", "office_tasks", "office_task_runs", "office_approvals", "office_task_events"];
 
 function tableNames(database: ZollyBotDatabase): string[] {
   const rows = database.connection.prepare("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name").all();

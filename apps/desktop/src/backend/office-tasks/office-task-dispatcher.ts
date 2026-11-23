@@ -19,6 +19,10 @@ export class OfficeTaskDispatcher {
   constructor(opts: OfficeTaskDispatcherOptions) {
     this.#opts = opts;
   }
+  /** Binds the real dispatch after the agent service exists. */
+  setDispatch(dispatch: (taskId: string, officeId: string) => Promise<boolean> | boolean): void {
+    this.#opts.dispatch = dispatch;
+  }
   start(): void {
     if (this.#timer) return;
     this.recover();

@@ -990,6 +990,7 @@ function registerIpcHandlers({
       }),
       openExternal: openLink,
       modelVisibility,
+      awaitRoster: () => runCauseEffect(agentInitialization.awaitRoster()),
     }),
     ...browserIpcHandlers({ browserPictureInPicture, browser, remoteServers, browserView, localSignIn }),
   });

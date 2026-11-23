@@ -431,6 +431,35 @@ export class ChannelService {
       ),
   );
 
+  /**
+   * Posts a message-only brief to a channel without starting a channel task. The
+   * office ledger owns execution; the channel shows the brief and its history.
+   */
+  readonly postBrief = Effect.fn("ChannelService.postBrief")(function* (
+    this: ChannelService,
+    input: { operationId: string; channelId: string; senderAgentId: string; text: string },
+  ) {
+    const actor = this.agentActor(input.senderAgentId);
+    return yield* this.#serialize(
+      input.channelId,
+      Effect.gen({ self: this }, function* () {
+        const channel = yield* channelSync(() => this.store.get(input.channelId));
+        if (channel.archived) return yield* channelFailure(new Error(sourceText("error.backend.channelArchived")));
+        const id = randomUUID();
+        const task = {
+          ...this.newTask(channel.id, id, input.text, input.senderAgentId),
+          state: "completed" as const,
+        };
+        const message = this.message(channel.id, task.id, { kind: "member", ...actor }, input.text, id);
+        const result = yield* channelSync(() =>
+          this.store.update(channel, { messages: [message], tasks: [task] }, input.operationId),
+        );
+        this.publish(channel.id);
+        return result;
+      }),
+    );
+  });
+
   /** The actor of a command that an agent sends from its own chat, as `send_to_channel` writes it. */
   agentActor(agentId: string): { id: string; name: string } {
     return { id: channelHandoffAuthorId(agentId), name: this.memberName(agentId) };
