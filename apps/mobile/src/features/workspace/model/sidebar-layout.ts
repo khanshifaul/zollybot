@@ -39,7 +39,8 @@ function officeSections(items: readonly MobileSidebarItem[], t: MobileTranslate)
   const groups = new Map<string, { name: string; agents: MobileAgent[] }>();
   for (const item of items) {
     if (item.kind !== "agent") continue;
-    const id = item.agent.officeId ?? BUILDING_OFFICE;
+    // A host that sends the office name without its id still groups by office.
+    const id = item.agent.officeId ?? item.agent.officeName ?? BUILDING_OFFICE;
     const group = groups.get(id) ?? {
       name: item.agent.officeName ?? (id === BUILDING_OFFICE ? t("mobile.offices.building") : id),
       agents: [],
