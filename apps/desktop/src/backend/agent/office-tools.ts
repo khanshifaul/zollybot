@@ -1,8 +1,9 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { Effect } from "effect";
 import { z } from "zod";
+import { ensureOfficeMarker } from "../office-state/office-marker";
+import { writeOfficeStateSnapshot } from "../office-state/office-state-export";
 import type { OfficeTaskStore } from "../office-tasks/office-task-store";
 import { discoverOffices, officeFromPath } from "../offices/office-catalog";
 import { importOfficeMemoryMarkdown } from "../offices/office-memory-import";
@@ -13,31 +14,6 @@ import { type ZollyBotToolResponse, zollyBotToolFailure, zollyBotToolResult } fr
 
 /** The seats every office opens with before any worker is hired. */
 export const MANDATORY_OFFICE_ROLES = ["office-manager", "foreman", "pr-reviewer"] as const;
-
-const OFFICE_MARKER = join(".agents", "zolly", "config.toml");
-
-/**
- * An office is discoverable only with its marker. Registering an existing folder
- * that has none gives it the minimal config, so the next discovery sees it.
- */
-function ensureOfficeMarker(repoPath: string): void {
-  const configPath = join(repoPath, OFFICE_MARKER);
-  if (!existsSync(configPath)) {
-    mkdirSync(join(repoPath, ".agents", "zolly"), { recursive: true });
-    writeFileSync(configPath, 'frequency = "never"\nbase_branch = "main"\n', { mode: 0o644 });
-  }
-  const hooksDir = join(repoPath, ".agents", "zolly", "hooks");
-  mkdirSync(hooksDir, { recursive: true });
-  for (const name of ["pre-task", "post-task"] as const) {
-    const path = join(hooksDir, `${name}.sh`);
-    if (existsSync(path)) continue;
-    writeFileSync(
-      path,
-      `#!/usr/bin/env bash\nset -euo pipefail\n# ZollyBot ${name} hook. Task: $ZOLLYBOT_TASK_ID. Edit me.\n`,
-      { mode: 0o755 },
-    );
-  }
-}
 
 const registerOfficeSchema = z.strictObject({
   path: z.string().trim().min(1),
@@ -200,6 +176,13 @@ export function officeToolsFromDatabase(
       });
       syncEmploymentAssignments();
       ensureOfficeMarker(found.path);
+      void writeOfficeStateSnapshot(db, {
+        id: found.id,
+        repoPath: found.path,
+        name: officeName,
+        remote: null,
+        baseBranch: "main",
+      }).catch(() => undefined);
       // Every office opens with its mandatory roster before any worker is hired.
       onRegistered?.(found.id);
       Effect.runFork(importOfficeMemoryMarkdown(database, found.id, found.path).pipe(Effect.catch(() => Effect.void)));
@@ -209,6 +192,10 @@ export function officeToolsFromDatabase(
       const office = listOffices(db).find((candidate) => candidate.id === id);
       if (!office) return null;
       upsertOffice(db, { ...office, lastOpenedAt: Date.now() });
+      if (office.repoPath) {
+        ensureOfficeMarker(office.repoPath);
+        void writeOfficeStateSnapshot(db, office).catch(() => undefined);
+      }
       const agents = listEmployments(db).filter((employment) => employment.officeId === id).length;
       return { id: office.id, name: office.name, path: office.repoPath, hasAgents: true, agents };
     },

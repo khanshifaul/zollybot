@@ -13,6 +13,8 @@ import { AgentTables } from "../backend/agent-data/agent-tables";
 import { AgentRoutineStore } from "../backend/agent-routine-store";
 import { DiscordConnectFailed, toDiscordConnectFailed } from "../backend/messaging/discord/discord-connect";
 import { SlackConnectFailed, toSlackConnectFailed } from "../backend/messaging/slack/slack-connect";
+import { ensureOfficeMarker } from "../backend/office-state/office-marker";
+import { writeOfficeStateSnapshot } from "../backend/office-state/office-state-export";
 import { runOfficeHook } from "../backend/office-tasks/office-hooks";
 import { OfficeTaskDispatcher } from "../backend/office-tasks/office-task-dispatcher";
 import { OfficeTaskStore } from "../backend/office-tasks/office-task-store";
@@ -3812,6 +3814,18 @@ export async function createApplicationServices({
             name: officeName,
             baseBranch: "main",
           });
+          try {
+            ensureOfficeMarker(found.path);
+          } catch {
+            // A read-only repository still registers; the next writable open adds its marker.
+          }
+          void writeOfficeStateSnapshot(store.database.connection, {
+            id: found.id,
+            repoPath: found.path,
+            name: officeName,
+            remote: null,
+            baseBranch: "main",
+          }).catch(() => undefined);
           service.syncEmploymentAssignments();
           // Every office opens with the mandatory roster before any worker: Office
           // Manager, Foreman (team leader), PR Reviewer. The manager then inspects
@@ -3827,6 +3841,14 @@ export async function createApplicationServices({
           const office = listOffices(database).find((candidate) => candidate.id === id);
           if (!office) return null;
           upsertOffice(database, { ...office, lastOpenedAt: Date.now() });
+          if (office.repoPath) {
+            try {
+              ensureOfficeMarker(office.repoPath);
+            } catch {
+              // A read-only repository still opens; the next writable open adds its marker.
+            }
+            void writeOfficeStateSnapshot(database, office).catch(() => undefined);
+          }
           const agents = listEmployments(database).filter((employment) => employment.officeId === id).length;
           return { id: office.id, name: office.name, path: office.repoPath, hasAgents: true, agents };
         },
@@ -4087,6 +4109,18 @@ export async function createApplicationServices({
         name: officeName,
         baseBranch: "main",
       });
+      try {
+        ensureOfficeMarker(found.path);
+      } catch {
+        // A read-only repository still registers; the next writable open adds its marker.
+      }
+      void writeOfficeStateSnapshot(store.database.connection, {
+        id: found.id,
+        repoPath: found.path,
+        name: officeName,
+        remote: null,
+        baseBranch: "main",
+      }).catch(() => undefined);
       service.syncEmploymentAssignments();
       // Every office opens with the mandatory roster before any worker: Office
       // Manager, Foreman (team leader), PR Reviewer. The manager then inspects

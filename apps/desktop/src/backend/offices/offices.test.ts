@@ -5,7 +5,7 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { officeToolsFromDatabase } from "../agent/office-tools";
 import { runCauseEffect } from "../effect-boundary";
 import { ZollyBotDatabase } from "../zollybot-database";
@@ -23,8 +23,8 @@ async function workspace(): Promise<string> {
 }
 
 async function office(directory: string): Promise<void> {
-  await mkdir(join(directory, ".agents", "zolly"), { recursive: true });
-  await writeFile(join(directory, ".agents", "zolly", "config.toml"), 'frequency = "test"\n');
+  await mkdir(join(directory, ".agents", "zollybot"), { recursive: true });
+  await writeFile(join(directory, ".agents", "zollybot", "config.toml"), 'frequency = "test"\n');
 }
 
 afterEach(async () => {
@@ -202,9 +202,10 @@ describe("office registration through the butler tool", () => {
 
     expect(result.ok).toBe(true);
     expect(registered).toHaveLength(1);
-    expect(existsSync(join(repo, ".agents", "zolly", "config.toml"))).toBe(true);
-    expect(existsSync(join(repo, ".agents", "zolly", "hooks", "pre-task.sh"))).toBe(true);
-    expect(existsSync(join(repo, ".agents", "zolly", "hooks", "post-task.sh"))).toBe(true);
+    expect(existsSync(join(repo, ".agents", "zollybot", "config.toml"))).toBe(true);
+    expect(existsSync(join(repo, ".agents", "zollybot", "hooks", "pre-task.sh"))).toBe(true);
+    expect(existsSync(join(repo, ".agents", "zollybot", "hooks", "post-task.sh"))).toBe(true);
+    await vi.waitFor(() => expect(existsSync(join(repo, ".agents", "zollybot", "agents.json"))).toBe(true));
     database.close();
   });
 });

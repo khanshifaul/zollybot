@@ -19,9 +19,11 @@ On Linux the app keeps everything in `~/.config/ZollyBot/zollybot.db`:
 | Agent/profile/workspace files                                   | `~/ZollyBot/Agents`, agent workspace paths                      |
 | Avatars and channel images                                      | `~/.config/ZollyBot/avatars`                                    |
 
-The office repository only carries a marker, `.agents/zolly/config.toml`, plus optional skills,
-hooks, and rules. `.agents/memory/*.md` is imported into `office_memory` and then moved to
-`archive/`. It is not written back.
+Today the office repository carries a marker from the separate `zolly` application,
+`.agents/zolly/config.toml`, plus optional skills, hooks, and rules. ZollyBot is moving its own marker
+and state to `.agents/zollybot/`; the two applications must not share a state folder.
+`.agents/memory/*.md` is imported into `office_memory` and then moved to `archive/`. It is not written
+back.
 
 Confirmed on this machine: `offices=6`, `agent_employments=16`, `projection_agents=16`,
 `projection_channels=5`, `projection_channel_messages=12`, `office_memory=1368`.
@@ -44,7 +46,7 @@ keeps the config directory, but that is not a backup.
 ### Repository layout
 
 ```
-.agents/zolly/
+.agents/zollybot/
   office.json                  # id, name, remote, base branch, schema version
   agents.json                  # roster snapshot: employments + public profile fields
   channels/
@@ -67,11 +69,11 @@ keeps the config directory, but that is not a backup.
 
 Large or private data is opt-in:
 
-| Mode      | Behavior                                                                                                                                               |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `tracked` | Metadata, agents, channels, messages, memory, and ledger files are written under `.agents/zolly/` and may be committed.                                |
-| `local`   | Same files, but `.agents/zolly/state/` is added to `.gitignore`. Survives app uninstall because the repo survives; does not survive deleting the repo. |
-| `off`     | Current behavior: SQLite only.                                                                                                                         |
+| Mode      | Behavior                                                                                                                                                   |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tracked` | Metadata, agents, channels, messages, memory, and ledger files are written under `.agents/zollybot/` and may be committed.                                 |
+| `local`   | Same files, but `.agents/zollybot/events/` is added to `.gitignore`. Survives app uninstall because the repo survives; does not survive deleting the repo. |
+| `off`     | Current behavior: SQLite only.                                                                                                                             |
 
 Default is `local`, not `tracked`, because channel transcripts may contain private code, customer
 data, or secrets. The office settings page must say where the state is written and whether git sees
@@ -84,7 +86,7 @@ Use an outbox/journal, not direct database-file copying:
 1. A command dispatches to SQLite as it does now.
 2. The same operation appends an event with `operationId`, `aggregateType`, `aggregateId`,
    `eventType`, `payload`, `occurredAt`, `writerId`, and `sequence` to
-   `.agents/zolly/events/<writerId>.jsonl`.
+   `.agents/zollybot/events/<writerId>.jsonl`.
 3. A failed repository append leaves the event in a local retry queue and surfaces an error. The
    database remains usable; the next open retries the append.
 4. The runtime reads SQLite, not the JSONL files. Repository reads happen on open/restore and on a
@@ -98,8 +100,8 @@ snapshots and truncates event files only after the snapshot is durable.
 
 When an office opens:
 
-1. Validate the repository and read `.agents/zolly/state.json`.
-2. Acquire `.agents/zolly/state.lock` (stale PID detection, timeout).
+1. Validate the repository and read `.agents/zollybot/state.json`.
+2. Acquire `.agents/zollybot/state.lock` (stale PID detection, timeout).
 3. Import missing `office.json`, roster, channels, messages, tasks, memory, and ledger entries into
    SQLite using the existing dispatch commands with deterministic operation ids.
 4. Reconcile by id and revision; never overwrite a newer local revision with an older event.
@@ -127,7 +129,7 @@ backup of `zollybot.db` and a dry-run count before writing.
 3. Add import-on-open when the office has state but SQLite has no matching office.
 4. Wire channel, agent, employment, memory, and ledger writes through the outbox. Keep SQLite as the
    read model.
-5. Add per-office `state` mode (`tracked`, `local`, `off`) to `.agents/zolly/config.toml` and the
+5. Add per-office `state` mode (`tracked`, `local`, `off`) to `.agents/zollybot/config.toml` and the
    office settings UI, including a clear privacy warning.
 6. Add building/Butler export and a restore action for a user-chosen folder.
 7. Add conflict reporting and compaction, then documentation and changelog.
@@ -141,7 +143,7 @@ backup of `zollybot.db` and a dry-run count before writing.
   conflict is reported.
 - Privacy: provider tokens never appear in any exported file.
 - Symlink/path traversal: state files cannot escape the repository.
-- Fresh clone: `.agents/zolly` with state opens an office with no prior local DB.
+- Fresh clone: `.agents/zollybot` with state opens an office with no prior local DB.
 
 ## Risks
 

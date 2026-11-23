@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { officeHooksDir } from "../office-state/office-marker";
 
 export type OfficeHookName = "pre-task" | "post-task";
 
@@ -9,9 +10,9 @@ export interface OfficeHookResult {
   output: string;
 }
 
-/** The optional hook scripts an office may keep: `.agents/zolly/hooks/<name>.sh`. */
+/** The optional hook scripts an office keeps under `.agents/zollybot/hooks/`. */
 export function officeHookPath(repoPath: string, name: OfficeHookName): string {
-  return join(repoPath, ".agents", "zolly", "hooks", `${name}.sh`);
+  return join(officeHooksDir(repoPath), `${name}.sh`);
 }
 
 /**

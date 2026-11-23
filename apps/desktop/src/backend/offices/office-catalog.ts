@@ -2,8 +2,9 @@ import { createHash } from "node:crypto";
 import type { Dirent } from "node:fs";
 import { existsSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
+import { OFFICE_MARKER } from "../office-state/office-marker";
 
-/** One repo that carries an office (`.agents/zolly/config.toml`). */
+/** One repo that carries a ZollyBot office (`.agents/zollybot/config.toml`). */
 export interface OfficeInfo {
   /** Stable for a real path: two discoveries of the same repo share it. */
   id: string;
@@ -12,7 +13,6 @@ export interface OfficeInfo {
   hasAgents: boolean;
 }
 
-const OFFICE_MARKER = join(".agents", "zolly", "config.toml");
 const SKIPPED: Record<string, true> = {
   node_modules: true,
   ".git": true,
