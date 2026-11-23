@@ -20,7 +20,9 @@ import {
   Smartphone,
   Terminal,
 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,7 +48,6 @@ const REPO = RELEASE_REPOSITORY_URL;
 const RELEASES = `${REPO}/releases`;
 const RELEASES_LATEST = LATEST_RELEASE_URL;
 const INSTALL_CMD = "curl -fsSL https://raw.githubusercontent.com/khanshifaul/zollybot/main/site/install.sh | sh";
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const PLATFORMS: { id: Platform; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: "linux", label: "Linux", icon: Terminal },
@@ -220,19 +221,6 @@ export default function Page() {
     };
 
     async function loadVersion() {
-      const localPath = `${BASE_PATH}/latest`;
-      try {
-        const res = await fetch(localPath, { cache: "no-store" });
-        if (res.ok) {
-          const value = normalizeVersion(await res.text());
-          if (value) {
-            setSafe(value);
-            return;
-          }
-        }
-      } catch {
-        // ignore and fall back
-      }
       try {
         const res = await fetch("https://api.github.com/repos/khanshifaul/zollybot/releases/latest", {
           headers: { Accept: "application/vnd.github+json" },
@@ -279,10 +267,23 @@ export default function Page() {
 
       <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <Container size="lg" className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
-          <a href={BASE_PATH || "/"} className="flex items-center gap-2 font-semibold tracking-tight">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm text-primary-foreground shadow-sm">
-              Z
-            </span>
+          <a href="/" className="flex items-center gap-2 font-semibold tracking-tight">
+            <Image
+              src="/brand/zollybot-logo.png"
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 dark:hidden"
+              priority
+            />
+            <Image
+              src="/brand/zollybot-logo-dark.png"
+              alt=""
+              width={32}
+              height={32}
+              className="hidden h-8 w-8 dark:block"
+              priority
+            />
             <span>ZollyBot</span>
           </a>
           <nav className="flex items-center gap-1 sm:gap-2">
@@ -295,6 +296,7 @@ export default function Page() {
             <a className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2.5 sm:px-3")} href="#download">
               Download
             </a>
+            <ThemeToggle />
             <a className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2 px-2.5 sm:px-3")} href={REPO}>
               <Github className="h-4 w-4" />
               <span className="hidden sm:inline">GitHub</span>
