@@ -1,1 +1,1 @@
-export { default } from "@/features/assistant/screens/jarvis-local-model-screen";
+export { default } from "@/features/assistant/screens/jarvis-huggingface-models-screen";

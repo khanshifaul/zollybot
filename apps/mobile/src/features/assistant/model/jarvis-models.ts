@@ -5,68 +5,44 @@ export interface JarvisModel {
   parameters: string;
   context: string;
   kind: "text" | "vision";
+  /** The QVAC registry name, for cache checks. */
+  qvacName: string;
+  /** The registry source the SDK downloads and loads. */
+  src: string;
+  /** The downloaded size in bytes, from the QVAC registry. */
+  sizeBytes: number;
   /** What the model is for, in one line. */
   use: string;
 }
 
 /**
- * The Phase 1 catalog from the Jarvis plan. It lists the models the model manager will download
- * and run through QVAC in Phase 4; none of them is downloaded yet.
+ * The models Jarvis can download and run through QVAC on the phone. These are the registry sources
+ * that the installed SDK actually ships; a model that the SDK does not have cannot be downloaded.
  */
 export const JARVIS_MODELS: readonly JarvisModel[] = [
   {
-    id: "lfm2.5-350m",
-    name: "LFM2.5-350M",
-    family: "Liquid AI",
-    parameters: "350M",
+    id: "qwen3-0.6b",
+    name: "Qwen3 0.6B",
+    family: "Qwen",
+    parameters: "0.6B",
     context: "32K",
     kind: "text",
-    use: "Wake replies and intent routing",
+    qvacName: "QWEN3_600M_INST_Q4",
+    src: "registry://hf/unsloth/Qwen3-0.6B-GGUF/blob/50968a4468ef4233ed78cd7c3de230dd1d61a56b/Qwen3-0.6B-Q4_0.gguf",
+    sizeBytes: 382_156_480,
+    use: "Fast wake replies and intent routing",
   },
   {
-    id: "lfm2.5-vl-450m",
-    name: "LFM2.5-VL-450M",
-    family: "Liquid AI",
-    parameters: "450M",
-    context: "32K",
-    kind: "vision",
-    use: "Low-end camera, OCR, detection",
-  },
-  {
-    id: "lfm2.5-vl-1.6b",
-    name: "LFM2.5-VL-1.6B",
-    family: "Liquid AI",
-    parameters: "1.6B",
-    context: "32K",
-    kind: "vision",
-    use: "Screen, documents, multilingual visual Q&A",
-  },
-  {
-    id: "lfm3-1.7b",
-    name: "LFM3-1.7B",
-    family: "Liquid AI",
+    id: "qwen3-1.7b",
+    name: "Qwen3 1.7B",
+    family: "Qwen",
     parameters: "1.7B",
-    context: "256K",
-    kind: "text",
-    use: "Local text agent and tools",
-  },
-  {
-    id: "lfm3-vl-2b",
-    name: "LFM3-VL-2B",
-    family: "Liquid AI",
-    parameters: "2B",
-    context: "128K",
-    kind: "vision",
-    use: "Screen and camera reasoning, video",
-  },
-  {
-    id: "lfm2.5-vl-3b",
-    name: "LFM2.5-VL-3B",
-    family: "Liquid AI",
-    parameters: "3B",
     context: "32K",
-    kind: "vision",
-    use: "Grounding and screen understanding",
+    kind: "text",
+    qvacName: "QWEN3_1_7B_INST_Q4",
+    src: "registry://hf/unsloth/Qwen3-1.7B-GGUF/resolve/d7f544eead698dbd1f15126ef60b45a1e1933222/Qwen3-1.7B-Q4_0.gguf",
+    sizeBytes: 1_056_782_912,
+    use: "Balanced local assistant and tools",
   },
   {
     id: "qwen3.5-2b",
@@ -75,6 +51,9 @@ export const JARVIS_MODELS: readonly JarvisModel[] = [
     parameters: "2B",
     context: "32K",
     kind: "text",
+    qvacName: "QWEN3_5_2B_MULTIMODAL_Q4_K_M",
+    src: "registry://hf/unsloth/Qwen3.5-2B-GGUF/resolve/f6d5376be1edb4d416d56da11e5397a961aca8ae/Qwen3.5-2B-Q4_K_M.gguf",
+    sizeBytes: 1_280_835_840,
     use: "Local assistant alternative",
   },
   {
@@ -84,12 +63,15 @@ export const JARVIS_MODELS: readonly JarvisModel[] = [
     parameters: "2B effective",
     context: "128K",
     kind: "vision",
-    use: "Audio, image, and video experimentation",
+    qvacName: "GEMMA4_2B_MULTIMODAL_Q4_K_M",
+    src: "registry://hf/bartowski/google_gemma-4-E2B-it-GGUF/resolve/b5e99bd964eaacc27ba484bb2eb3e9f6160b9143/google_gemma-4-E2B-it-Q4_K_M.gguf",
+    sizeBytes: 3_462_678_272,
+    use: "Screen, image, and video experimentation",
   },
 ];
 
-export const DEFAULT_JARVIS_MODEL = "lfm3-1.7b";
-export const DEFAULT_JARVIS_VISION_MODEL = "lfm3-vl-2b";
+export const DEFAULT_JARVIS_MODEL = "qwen3-1.7b";
+export const DEFAULT_JARVIS_VISION_MODEL = "gemma4-e2b";
 
 export function jarvisModel(id: string): JarvisModel {
   const match = JARVIS_MODELS.find((model) => model.id === id);

@@ -5,7 +5,12 @@ export interface LocalLlmProgress {
 }
 
 let loaded: string | null = null;
+let loadedModelId: string | null = null;
 
+/**
+ * The SDK is imported at use, not at module load: Expo Go has no QVAC native module and the rest of
+ * the app must still open there.
+ */
 function sdk() {
   return import("@qvac/sdk");
 }
@@ -14,12 +19,16 @@ export function localModelLoaded(): boolean {
   return loaded !== null;
 }
 
-/** Loads Qwen 3 0.6B Q4 through QVAC. The SDK downloads it once into its model cache. */
-export async function loadLocalModel(onProgress: (progress: LocalLlmProgress) => void): Promise<void> {
-  if (loaded) return;
+async function loadSource(
+  source: string,
+  key: string,
+  onProgress: (progress: LocalLlmProgress) => void,
+): Promise<void> {
+  if (loaded && loadedModelId === key) return;
+  if (loaded) await unloadLocalModel();
   const qvac = await sdk();
   loaded = await qvac.loadModel({
-    modelSrc: qvac.QWEN3_600M_INST_Q4,
+    modelSrc: source,
     modelType: "llamacpp-completion",
     onProgress: (progress) => {
       onProgress({
@@ -29,6 +38,14 @@ export async function loadLocalModel(onProgress: (progress: LocalLlmProgress) =>
       });
     },
   });
+  loadedModelId = key;
+}
+
+/** Loads a GGUF file downloaded from Hugging Face. */
+export function loadLocalModelFile(uri: string, onProgress: (progress: LocalLlmProgress) => void): Promise<void> {
+  // QVAC resolves filesystem paths, not file:// URLs; expo-file-system returns the latter.
+  const path = uri.startsWith("file://") ? decodeURIComponent(uri.slice("file://".length)) : uri;
+  return loadSource(path, uri, onProgress);
 }
 
 /** Streams a local reply. The model stays loaded until `unloadLocalModel`. */
@@ -51,6 +68,7 @@ export async function unloadLocalModel(): Promise<void> {
   if (!loaded) return;
   const id = loaded;
   loaded = null;
+  loadedModelId = null;
   const qvac = await sdk();
   await qvac.unloadModel({ modelId: id });
 }

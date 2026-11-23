@@ -7,9 +7,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.os.SystemClock
+import android.provider.Settings
 import androidx.core.content.ContextCompat
 import expo.modules.kotlin.functions.Queues
 import expo.modules.kotlin.modules.Module
@@ -80,6 +83,37 @@ class AppLockModule : Module() {
         activity.setShowWhenLocked(false)
         activity.setTurnScreenOn(false)
       }
+    }.runOnQueue(Queues.MAIN)
+
+    /** Whether the user allowed ZollyBot to draw over other apps. */
+    AsyncFunction("canDrawOverlays") {
+      val context = appContext.reactContext?.applicationContext ?: return@AsyncFunction false
+      Settings.canDrawOverlays(context)
+    }.runOnQueue(Queues.MAIN)
+
+    AsyncFunction("openOverlaySettings") {
+      val context = appContext.reactContext?.applicationContext ?: return@AsyncFunction null
+      val intent = Intent(
+        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+        Uri.parse("package:${context.packageName}"),
+      )
+      appContext.currentActivity?.startActivity(intent)
+    }.runOnQueue(Queues.MAIN)
+
+    /** Whether Android may keep the wake-word service alive without battery optimisation. */
+    AsyncFunction("isIgnoringBatteryOptimizations") {
+      val context = appContext.reactContext?.applicationContext ?: return@AsyncFunction false
+      val power = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
+      power?.isIgnoringBatteryOptimizations(context.packageName) == true
+    }.runOnQueue(Queues.MAIN)
+
+    AsyncFunction("openBatteryOptimizationSettings") {
+      val context = appContext.reactContext?.applicationContext ?: return@AsyncFunction null
+      val intent = Intent(
+        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+        Uri.parse("package:${context.packageName}"),
+      )
+      appContext.currentActivity?.startActivity(intent)
     }.runOnQueue(Queues.MAIN)
 
     /** Runs on a background thread, so the hash does not stop the interface. */

@@ -3,12 +3,18 @@ import { useThemeColor } from "heroui-native/hooks";
 import ChevronLeft from "lucide-react-native/icons/chevron-left";
 import ChevronRight from "lucide-react-native/icons/chevron-right";
 import { useCallback, useEffect, useState } from "react";
-import { Pressable, ScrollView, Switch, Text, View } from "react-native";
+import { Platform, Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppLock } from "@/features/app-lock/model/app-lock";
-import { showOverLockScreen } from "@/features/app-lock/model/app-lock-native";
+import {
+  canDrawOverlays,
+  isIgnoringBatteryOptimizations,
+  openBatteryOptimizationSettings,
+  openOverlaySettings,
+  showOverLockScreen,
+} from "@/features/app-lock/model/app-lock-native";
 import { appLockEnabled } from "@/features/app-lock/model/app-lock-storage";
-
+import { formatModelSize, useJarvisModels } from "@/features/assistant/model/jarvis-model-manager";
 import { JARVIS_MODELS, jarvisModel } from "@/features/assistant/model/jarvis-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { loadVoiceTemplate, voiceMatchSupported } from "@/features/assistant/model/voice-match";
@@ -81,6 +87,10 @@ export default function JarvisSettingsScreen() {
   const { t } = useText();
   const insets = useSafeAreaInsets();
   const settings = useJarvisSettings();
+  const modelStates = useJarvisModels((state) => state.models);
+  const downloadModel = useJarvisModels((state) => state.download);
+  const removeModel = useJarvisModels((state) => state.remove);
+  const refreshModels = useJarvisModels((state) => state.refresh);
   const appLockOn = useAppLock((state) => appLockEnabled(state.config));
   const [background, foreground, muted, border, accent] = useThemeColor([
     "background",
@@ -92,6 +102,8 @@ export default function JarvisSettingsScreen() {
   const selectedModel = jarvisModel(settings.modelId);
   const selectedVision = jarvisModel(settings.visionModelId);
   const [voiceEnrolled, setVoiceEnrolled] = useState(false);
+  const [overlayAllowed, setOverlayAllowed] = useState(false);
+  const [batteryAllowed, setBatteryAllowed] = useState(false);
 
   const previewLockScreen = async () => {
     await showOverLockScreen();
@@ -100,11 +112,20 @@ export default function JarvisSettingsScreen() {
 
   useEffect(() => {
     void loadJarvisSettings();
-  }, []);
+    void refreshModels();
+    if (Platform.OS === "android") {
+      void canDrawOverlays().then(setOverlayAllowed);
+      void isIgnoringBatteryOptimizations().then(setBatteryAllowed);
+    }
+  }, [refreshModels]);
 
   useFocusEffect(
     useCallback(() => {
       void loadVoiceTemplate().then((template) => setVoiceEnrolled(Boolean(template)));
+      if (Platform.OS === "android") {
+        void canDrawOverlays().then(setOverlayAllowed);
+        void isIgnoringBatteryOptimizations().then(setBatteryAllowed);
+      }
     }, []),
   );
 
@@ -231,6 +252,62 @@ export default function JarvisSettingsScreen() {
           />
         </View>
 
+        {Platform.OS === "android" ? (
+          <>
+            <Text style={{ color: foreground, fontSize: 16, fontWeight: "700", paddingTop: 22, paddingBottom: 8 }}>
+              {t("mobile.app.jarvis.permissionsSection")}
+            </Text>
+            <View style={{ borderColor: border, borderWidth: 1, borderRadius: 16, paddingHorizontal: 14 }}>
+              <Row
+                title={t("mobile.app.jarvis.overlayPermission")}
+                detail={overlayAllowed ? t("mobile.app.jarvis.allowed") : t("mobile.app.jarvis.overlayHint")}
+                right={
+                  overlayAllowed ? undefined : (
+                    <Pressable
+                      accessibilityRole="button"
+                      onPress={() => void openOverlaySettings()}
+                      style={{
+                        borderColor: accent,
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                      }}
+                    >
+                      <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
+                        {t("mobile.app.jarvis.allow")}
+                      </Text>
+                    </Pressable>
+                  )
+                }
+              />
+              <Row
+                title={t("mobile.app.jarvis.batteryPermission")}
+                detail={batteryAllowed ? t("mobile.app.jarvis.allowed") : t("mobile.app.jarvis.batteryHint")}
+                right={
+                  batteryAllowed ? undefined : (
+                    <Pressable
+                      accessibilityRole="button"
+                      onPress={() => void openBatteryOptimizationSettings()}
+                      style={{
+                        borderColor: accent,
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                      }}
+                    >
+                      <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
+                        {t("mobile.app.jarvis.allow")}
+                      </Text>
+                    </Pressable>
+                  )
+                }
+              />
+            </View>
+          </>
+        ) : null}
+
         <Text style={{ color: foreground, fontSize: 16, fontWeight: "700", paddingTop: 22 }}>
           {t("mobile.app.jarvis.models")}
         </Text>
@@ -241,6 +318,8 @@ export default function JarvisSettingsScreen() {
           {JARVIS_MODELS.map((model) => {
             const selected =
               model.kind === "vision" ? settings.visionModelId === model.id : settings.modelId === model.id;
+            const state = modelStates[model.id] ?? { phase: "unknown" as const, progress: 0, failure: null };
+            const downloading = state.phase === "downloading";
             return (
               <Pressable
                 key={model.id}
@@ -268,10 +347,53 @@ export default function JarvisSettingsScreen() {
                   </Text>
                 </View>
                 <Text style={{ color: muted, fontSize: 11 }}>
-                  {model.family} · {model.parameters} · {model.context} ·{" "}
-                  {selected ? t("mobile.app.jarvis.selected") : t("mobile.app.jarvis.notDownloaded")}
+                  {model.family} · {model.parameters} · {model.context} · {formatModelSize(model.sizeBytes)}
                 </Text>
                 <Text style={{ color: muted, fontSize: 11 }}>{model.use}</Text>
+                <View style={{ alignItems: "center", flexDirection: "row", gap: 8, paddingTop: 6 }}>
+                  <Text
+                    style={{ color: downloading || state.phase === "error" ? accent : muted, flex: 1, fontSize: 11 }}
+                  >
+                    {downloading
+                      ? `${t("mobile.app.jarvis.voiceMatch.downloading")} ${Math.round(state.progress * 100)}%`
+                      : state.phase === "ready"
+                        ? selected
+                          ? t("mobile.app.jarvis.selected")
+                          : t("mobile.app.jarvis.downloaded")
+                        : state.phase === "error"
+                          ? (state.failure ?? t("mobile.app.jarvis.notDownloaded"))
+                          : selected
+                            ? t("mobile.app.jarvis.selected")
+                            : t("mobile.app.jarvis.notDownloaded")}
+                  </Text>
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`${state.phase === "ready" ? t("common.delete") : t("common.download")} ${model.name}`}
+                    disabled={downloading}
+                    onPress={() => {
+                      void haptics.selection();
+                      void (state.phase === "ready" ? removeModel(model.id) : downloadModel(model.id));
+                    }}
+                    style={({ pressed }) => ({
+                      borderColor: accent,
+                      borderRadius: 8,
+                      borderWidth: 1,
+                      opacity: downloading ? 0.4 : pressed ? 0.65 : 1,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                    })}
+                  >
+                    <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
+                      {state.phase === "ready"
+                        ? t("common.delete")
+                        : downloading
+                          ? `${Math.round(state.progress * 100)}%`
+                          : state.phase === "error"
+                            ? t("common.retry")
+                            : t("common.download")}
+                    </Text>
+                  </Pressable>
+                </View>
               </Pressable>
             );
           })}

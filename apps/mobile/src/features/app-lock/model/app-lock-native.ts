@@ -15,6 +15,10 @@ declare class AppLockModule extends NativeModule {
   isDeviceLocked(): Promise<boolean>;
   showOverLockScreen(): Promise<void>;
   hideOverLockScreen(): Promise<void>;
+  canDrawOverlays(): Promise<boolean>;
+  openOverlaySettings(): Promise<void>;
+  isIgnoringBatteryOptimizations(): Promise<boolean>;
+  openBatteryOptimizationSettings(): Promise<void>;
 }
 
 /** `modules/app-lock`. A build without it, such as Expo Go, measures with the phone's clock and cannot see a phone lock. */
@@ -40,6 +44,24 @@ export function showOverLockScreen(): Promise<void> {
 /** Returns the app to the lock screen after the locked Jarvis screen closes. */
 export function hideOverLockScreen(): Promise<void> {
   return native ? native.hideOverLockScreen() : Promise.resolve();
+}
+
+/** Whether the user allowed ZollyBot to draw over other apps. */
+export function canDrawOverlays(): Promise<boolean> {
+  return native ? native.canDrawOverlays() : Promise.resolve(false);
+}
+
+export function openOverlaySettings(): Promise<void> {
+  return native ? native.openOverlaySettings() : Promise.resolve();
+}
+
+/** Whether Android may keep the wake-word service alive without battery optimization. */
+export function isIgnoringBatteryOptimizations(): Promise<boolean> {
+  return native ? native.isIgnoringBatteryOptimizations() : Promise.resolve(false);
+}
+
+export function openBatteryOptimizationSettings(): Promise<void> {
+  return native ? native.openBatteryOptimizationSettings() : Promise.resolve();
 }
 
 export function configureAppLockSignals(enabled: boolean, watchPhoneLock: boolean): Promise<void> {
