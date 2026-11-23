@@ -293,6 +293,12 @@ export default function Page() {
             >
               Features
             </a>
+            <a
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}
+              href="/marketplace"
+            >
+              Marketplace
+            </a>
             <a className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "px-2.5 sm:px-3")} href="#download">
               Download
             </a>

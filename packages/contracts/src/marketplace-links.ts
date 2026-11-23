@@ -3,8 +3,8 @@
  * that listing in the app, and the browser client's entry for it.
  *
  * ```
- * https://zollybot.shifaul.dev/marketplace/agents/<id>     the link a person shares and the app copies
- * https://zollybot.shifaul.dev/marketplace/skills/<slug>
+ * https://zollybot.vercel.app/marketplace/agents/<id>     the link a person shares and the app copies
+ * https://zollybot.vercel.app/marketplace/skills/<slug>
  * zollybot://marketplace/agents/<id>               the link the page button opens
  * zollybot://marketplace/skills/<slug>
  * /app?marketplaceAgent=<id>                      the page's link to the browser client
@@ -20,7 +20,7 @@
  * foreign address behind the button that copies its own link.
  */
 
-export const ZOLLYBOT_MARKETPLACE_ORIGIN = "https://zollybot.shifaul.dev";
+export const ZOLLYBOT_MARKETPLACE_ORIGIN = "https://zollybot.vercel.app";
 export const ZOLLYBOT_MARKETPLACE_PATH = "/marketplace";
 export const ZOLLYBOT_MARKETPLACE_HOST = "marketplace";
 export const WEB_APP_MARKETPLACE_AGENT_PARAM = "marketplaceAgent";

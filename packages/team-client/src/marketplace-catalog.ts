@@ -42,7 +42,9 @@ export interface MarketplaceCatalog {
   templates: { get: (templateId: string) => Effect.Effect<AgentTemplateDetail, MarketplaceCatalogError> };
 }
 
-export function createMarketplaceCatalog(request: typeof fetch): MarketplaceCatalog {
+export function createMarketplaceCatalog(
+  request: (path: string, init?: RequestInit) => Promise<Response>,
+): MarketplaceCatalog {
   const read = Effect.fn("MarketplaceCatalog.read")(function* <T>(
     path: string,
     decode: (value: unknown) => T,

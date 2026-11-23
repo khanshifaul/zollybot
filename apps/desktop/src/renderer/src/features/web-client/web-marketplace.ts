@@ -1,4 +1,4 @@
-import { agentTemplateShareOrigin } from "@zollybot/contracts/agent-template-links";
+import { ZOLLYBOT_MARKETPLACE_ORIGIN } from "@zollybot/contracts/marketplace-links";
 import { sourceText } from "@zollybot/i18n";
 import { runTeamEffect } from "@zollybot/team-client";
 import { createMarketplaceCatalog } from "@zollybot/team-client/marketplace-catalog";
@@ -51,7 +51,7 @@ export function createWebMarketplaceCalls(
       get: (id) => runTeamEffect(catalog.agents.get(id)),
       getListing: (id) => runTeamEffect(catalog.agents.getListing(id)),
     },
-    shareOrigin: agentTemplateShareOrigin(window.location.origin),
+    shareOrigin: ZOLLYBOT_MARKETPLACE_ORIGIN,
     agentSkills: (serverId) => ({
       listInstalled: async (agentId) =>
         runTeamEffect(listAgentSkills(request(serverId), agentId).pipe(Effect.mapError((error) => error.cause))),
