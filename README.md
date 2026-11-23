@@ -45,7 +45,7 @@ Download releases from [GitHub Releases](https://github.com/khanshifaul/zollybot
 
 - **macOS**: install the DMG/app for your architecture and open ZollyBot.
 - **Windows**: run the installer.
-- **Linux**: `chmod +x ZollyBot-*.AppImage` and run it (x64/arm64 AppImage builds).
+- **Linux**: AppImage, `.deb`, `.rpm`, `.pacman`, and a portable `.tar.gz` are published for x64 and arm64. On Arch, prefer the `.tar.gz`; it avoids the AppImage FUSE mount.
 
 ### From source
 
@@ -85,7 +85,8 @@ bun run check        # project checks
 # Desktop (Linux x64)
 bun run package:linux
 bun run dist:linux          # AppImage
-bun run dist:linux:pacman   # pacman (Arch); also dist:linux:deb, dist:linux:rpm, dist:linux:all
+bun run dist:linux:all      # AppImage, deb, rpm, pacman, tar.gz
+bun run dist:linux:pacman   # pacman only; also dist:linux:deb, dist:linux:rpm
 
 # Mobile (local EAS builds; Android requires JDK 17 + Android SDK)
 bun run mobile:android:build:local      # signed .aab -> out/mobile/android/zollybot-play.aab
