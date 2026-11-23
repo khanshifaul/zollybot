@@ -37,12 +37,20 @@ class ScreenCaptureService : Service() {
       return START_NOT_STICKY
     }
     createChannel()
-    ServiceCompat.startForeground(
-      this,
-      NOTIFICATION_ID,
-      notification(),
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION else 0,
-    )
+    try {
+      ServiceCompat.startForeground(
+        this,
+        NOTIFICATION_ID,
+        notification(),
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION else 0,
+      )
+    } catch (error: Throwable) {
+      // Android 15+ can refuse this service without the system project-media capability. Fail the
+      // capture without taking the app process down with it.
+      ScreenCaptureBridge.reject(error)
+      stopSelf()
+      return START_NOT_STICKY
+    }
     val code = intent.getIntExtra("resultCode", 0)
     val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
       intent.getParcelableExtra("resultData", Intent::class.java)
@@ -68,6 +76,14 @@ class ScreenCaptureService : Service() {
       return
     }
     projection = created
+    created.registerCallback(
+      object : MediaProjection.Callback() {
+        override fun onStop() {
+          cleanup()
+        }
+      },
+      Handler(Looper.getMainLooper()),
+    )
     val metrics = resources.displayMetrics
     val width = metrics.widthPixels
     val height = metrics.heightPixels
