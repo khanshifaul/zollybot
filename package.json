@@ -70,7 +70,7 @@
       "yaml": "2.9.1",
       "zod": "4.6.7",
       "lucide-solid": "1.33.0",
-      "solid-sonner": "0.3.3",
+      "solid-sonner": "0.3.2",
       "solid-recharts": "1.0.1",
       "qrcode": "^1.5.4",
       "@tanstack/virtual-core": "3.19.11",
