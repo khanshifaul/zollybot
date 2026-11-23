@@ -7,6 +7,18 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.64.5] - In review
+
+### Added
+
+- Jarvis voice assistant: "Hey Jarvis" wake word, hands-free Butler conversation, Voice match, and a Jarvis screen on the Android lock screen.
+- QVAC local model screen for Qwen 3 0.6B on supported arm64 phones.
+- Screen Context attaches a screenshot to Jarvis.
+- Confirmed actions for apps, timers, dialer, messages, and phone settings.
+
+### Fixed
+
+- Group agents by office in the Agents tab.
 ## [0.64.3] - 2026-11-17
 
 ### Fixed

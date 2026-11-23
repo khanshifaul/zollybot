@@ -6,6 +6,20 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.64.5] - 2026-11-23
+
+### Added
+
+- Jarvis mobile assistant: openWakeWord "Hey Jarvis" wake word with bundled models, a hands-free Butler conversation, Voice match, and a Jarvis screen over the Android lock screen.
+- QVAC local model screen for downloading and running Qwen 3 0.6B on supported arm64 phones.
+- Screen Context attaches a MediaProjection screenshot to the Jarvis conversation.
+- Confirmed device actions for opening apps, setting timers, opening the dialer, writing messages, and opening phone settings.
+
+### Fixed
+
+- Mobile agents group by office, including hosts that send only `officeName`.
+- Keep office assignments when an `agents-changed` event carries `null`.
+
 ## [0.64.4] - 2026-11-22
 
 ### Added
