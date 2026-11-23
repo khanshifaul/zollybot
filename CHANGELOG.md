@@ -6,6 +6,23 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.65.1] - 2026-11-23
+
+### Added
+
+- Linux releases now publish `.deb`, `.rpm`, `.pacman`, and portable `.tar.gz` builds alongside the AppImage for x64 and arm64. On Arch, use the `.tar.gz` so the app does not depend on FUSE.
+
+### Fixed
+
+- Desktop updates now check the newest published release instead of the frozen 0.62.10 path, and hosted-server release checks accept the actual `zollybot-gui-*` asset names.
+- The Linux installer reads the release's own update manifest and verifies the published checksum, so it no longer asks for an AppImage name that the release does not publish.
+- The download page links to the assets that the current release publishes, including the arm64 APK, x86_64 AppImage, and arm64 macOS DMG.
+
+### Changed
+
+- Release commands now fail in preflight when a `package.json` script points at a missing file or an unknown `bun run` target.
+- The macOS release workflow publishes the merged `latest-mac.yml` that electron-updater reads for both architectures.
+
 ## [0.65.0] - 2026-11-23
 
 ### Changed
