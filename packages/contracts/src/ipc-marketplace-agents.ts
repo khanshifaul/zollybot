@@ -114,6 +114,8 @@ export interface SubmitMarketplaceAgentInput {
 export interface InstallMarketplaceAgentInput {
   listingId: string;
   agentId?: string;
+  /** The office that receives a newly installed agent. Absent: the next employment sync chooses one. */
+  officeId?: string;
   timezone: string;
   receiptId: string;
 }

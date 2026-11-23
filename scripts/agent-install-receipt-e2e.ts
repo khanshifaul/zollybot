@@ -36,6 +36,8 @@ interface ScenarioOptions {
   update?: boolean;
   /** The saved copy has local changes in a skill of the listing and in a skill the listing dropped. */
   modifiedSkills?: boolean;
+  /** The office that should receive a new agent. */
+  officeId?: string;
   receiptAttempts?: number;
 }
 
@@ -47,6 +49,7 @@ interface ScenarioState {
   skillInstalls: string[];
   skillUninstalls: string[];
   receipts: string[];
+  officeAssignments: Map<string, string>;
 }
 
 interface CaseReport {
@@ -163,6 +166,7 @@ async function scenario(
   const skillInstalls: string[] = [];
   const skillUninstalls: string[] = [];
   const receipts: string[] = [];
+  const officeAssignments = new Map<string, string>();
   let phase = "service setup";
   let receiptAttempts = 0;
   class ReceiptAuth extends CentralAuthManager {
@@ -224,6 +228,10 @@ async function scenario(
       return { id };
     },
     deleteRoutine: ({ routineId }) => Effect.sync(() => void routines.delete(routineId)),
+    assignAgentOffice: (agentId, officeId) => {
+      assert.ok(agents.has(agentId));
+      officeAssignments.set(agentId, officeId);
+    },
     setMarketplaceSource: (agentId, source) => {
       const agent = agents.get(agentId);
       assert.ok(agent);
@@ -266,7 +274,12 @@ async function scenario(
       decrypt: (value) => value.toString("utf8"),
     });
     const service = new AgentMarketplaceService(auth, agentStore, skillStore);
-    const input: InstallMarketplaceAgentInput = { listingId: detail.id, timezone, receiptId: randomUUID() };
+    const input: InstallMarketplaceAgentInput = {
+      listingId: detail.id,
+      ...(options.officeId ? { officeId: options.officeId } : {}),
+      timezone,
+      receiptId: randomUUID(),
+    };
     if (options.update) {
       const oldRoutineId = randomUUID();
       const old = summary("receipt-old-agent", workspace, {
@@ -291,7 +304,16 @@ async function scenario(
     }
     phase = "install";
     const result = await Effect.runPromiseExit(service.install(input));
-    const state: ScenarioState = { service, result, agents, routines, skillInstalls, skillUninstalls, receipts };
+    const state: ScenarioState = {
+      service,
+      result,
+      agents,
+      routines,
+      skillInstalls,
+      skillUninstalls,
+      receipts,
+      officeAssignments,
+    };
     phase = "case checks";
     await check(state, input);
     phase = "receipt attempt count check";
@@ -343,6 +365,10 @@ function keptAfterReceiptError(state: ScenarioState): void {
 
 await scenario("successful receipt", {}, async (state, input) => {
   addedAgent(state, input);
+});
+await scenario("installed into the chosen office", { officeId: "office-active" }, async (state, input) => {
+  const agent = addedAgent(state, input);
+  assert.equal(state.officeAssignments.get(agent.id), "office-active");
 });
 await scenario("failed receipt after commit", { receiptFailure: true }, async (state, input) => {
   const agent = addedAgent(state, input);

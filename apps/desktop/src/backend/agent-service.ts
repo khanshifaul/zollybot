@@ -2535,6 +2535,16 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     this.notifyAgentsChanged();
   }
 
+  /** Puts a newly installed agent in the office the user was looking at. */
+  assignAgentOffice(agentId: string, officeId: string): void {
+    const database = this.#store.database.connection;
+    if (!listOffices(database).some((office) => office.id === officeId)) {
+      throw new Error(`Unknown office: ${officeId}`);
+    }
+    upsertEmployment(database, { agentId, officeId, roleKey: "worker", scope: "office" });
+    this.notifyAgentsChanged();
+  }
+
   /** The installed skills of one agent changed, so every open skills list reads them again. */
   notifySkillsChanged(agentId: string): void {
     this.#emit({ type: "skills-changed", agentId });

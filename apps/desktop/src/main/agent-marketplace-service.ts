@@ -73,6 +73,7 @@ interface AgentMarketplaceAgents {
     options?: { recordConversationEvent?: boolean },
   ): Effect.Effect<void, AgentLifecycleFailed>;
   setMarketplaceSource(agentId: string, source: NonNullable<AgentSummary["marketplaceSource"]>): AgentSummary;
+  assignAgentOffice(agentId: string, officeId: string): void;
   deleteAgent(agentId: string): Effect.Effect<void, AgentLifecycleFailed>;
 }
 
@@ -307,6 +308,10 @@ export class AgentMarketplaceService {
                 routineIds: createdRoutineIds,
               }),
             );
+            const officeId = input.officeId;
+            if (!existing && officeId) {
+              yield* marketplaceSync(() => this.agents.assignAgentOffice(agent.id, officeId));
+            }
             for (const routineId of existing?.marketplaceSource?.routineIds ?? []) {
               yield* this.agents
                 .deleteRoutine({ agentId: agent.id, routineId }, { recordConversationEvent: false })

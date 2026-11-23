@@ -512,6 +512,9 @@ export function parseInstallMarketplaceAgent(input: unknown): InstallMarketplace
     ...(input.agentId === undefined
       ? {}
       : { agentId: requireString(input.agentId, "agentId", INPUT_LIMITS.identifier) }),
+    ...(input.officeId === undefined
+      ? {}
+      : { officeId: requireString(input.officeId, "officeId", INPUT_LIMITS.identifier) }),
     timezone: requireString(input.timezone, "timezone", 255),
     receiptId: requireString(input.receiptId, "receiptId", INPUT_LIMITS.identifier),
   };

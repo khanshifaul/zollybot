@@ -64,6 +64,8 @@ export function MarketplaceOverlay(props: {
   server: ServerSummary | undefined;
   agents: readonly MarketplaceAgentRow[];
   activeAgentId: string;
+  /** The office selected in the top bar, for a marketplace agent installed on this computer. */
+  officeId?: string | null | undefined;
   /** Whether the client could take another line into a composer, before the controller is asked. */
   composerAvailable: boolean;
   /** Opens an agent's conversation before an example is added to its draft. */
@@ -129,6 +131,7 @@ export function MarketplaceOverlay(props: {
           connectors={props.connectors}
           agents={manage() ? props.agents : []}
           activeAgentId={manage() ? props.activeAgentId : ""}
+          officeId={props.officeId}
           hostServerId={remoteAdminServer(props.server, "skills-admin-v1")?.id}
           agentServerId={remoteAdminServer(props.server, "agent-install-v1")?.id}
           agentUpdateServerId={remoteAdminServer(props.server, "agent-update-v1")?.id}

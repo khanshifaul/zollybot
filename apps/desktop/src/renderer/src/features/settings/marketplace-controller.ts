@@ -107,6 +107,8 @@ export interface MarketplaceControllerProps {
   hostServerId?: string | undefined;
   /** The joined server that a marketplace agent is added to. Absent: this computer. */
   agentServerId?: string | undefined;
+  /** The office that a newly installed agent belongs to, on this computer. */
+  officeId?: string | null;
   /** The joined server in `hostServerId` when its host also updates an agent. */
   agentUpdateServerId?: string | undefined;
   onRunPluginPrompt?: ((agentId: string, prompt: MarketplacePluginPrompt) => void) | undefined;
@@ -320,6 +322,7 @@ export function createMarketplaceController(props: MarketplaceControllerProps) {
           {
             listingId: listing.id,
             ...(copy ? { agentId: copy.id } : {}),
+            ...(!serverId && props.officeId ? { officeId: props.officeId } : {}),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
             receiptId: crypto.randomUUID(),
           },
