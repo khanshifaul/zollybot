@@ -3830,7 +3830,17 @@ export async function createApplicationServices({
           // Every office opens with the mandatory roster before any worker: Office
           // Manager, Foreman (team leader), PR Reviewer. The manager then inspects
           // the repository and records the tools the office needs.
-          void runCauseEffect(service.staffOffice(found.id).pipe(Effect.catch(() => Effect.void)));
+          void runCauseEffect(service.staffOffice(found.id).pipe(Effect.catch(() => Effect.void)))
+            .then(() =>
+              writeOfficeStateSnapshot(store.database.connection, {
+                id: found.id,
+                repoPath: found.path,
+                name: officeName,
+                remote: null,
+                baseBranch: "main",
+              }),
+            )
+            .catch(() => undefined);
           Effect.runFork(
             importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)),
           );
@@ -4125,7 +4135,17 @@ export async function createApplicationServices({
       // Every office opens with the mandatory roster before any worker: Office
       // Manager, Foreman (team leader), PR Reviewer. The manager then inspects
       // the repository and records the tools the office needs.
-      void runCauseEffect(service.staffOffice(found.id).pipe(Effect.catch(() => Effect.void)));
+      void runCauseEffect(service.staffOffice(found.id).pipe(Effect.catch(() => Effect.void)))
+        .then(() =>
+          writeOfficeStateSnapshot(store.database.connection, {
+            id: found.id,
+            repoPath: found.path,
+            name: officeName,
+            remote: null,
+            baseBranch: "main",
+          }),
+        )
+        .catch(() => undefined);
       Effect.runFork(
         importOfficeMemoryMarkdown(store.database, found.id, found.path).pipe(Effect.catch(() => Effect.void)),
       );
