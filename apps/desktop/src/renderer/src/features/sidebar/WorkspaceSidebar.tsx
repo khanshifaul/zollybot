@@ -1,4 +1,4 @@
-import { type ChatWindowTarget, canAdministerServer } from "@zollybot/contracts/ipc";
+import { type ChannelSummary, type ChatWindowTarget, canAdministerServer } from "@zollybot/contracts/ipc";
 import { AGENT_HIDDEN_CAPABILITY } from "@zollybot/contracts/team-protocol/current";
 import { computeAgentAvatarMoods } from "@zollybot/ui/features/agents/agent-avatar-mood";
 import { Sidebar } from "@zollybot/ui/features/sidebar/Sidebar";
@@ -81,6 +81,7 @@ export function WorkspaceSidebar(props: { peopleEnabled: boolean }) {
     agentListConnecting,
     agentListSettled,
     activeAgent,
+    activeOfficeId,
     agentSetupDraft,
     duplicatingAgentIds,
     openAgentSetup,
@@ -193,7 +194,24 @@ export function WorkspaceSidebar(props: { peopleEnabled: boolean }) {
       : channelsListed()
         ? channels.state.channels
         : [];
-  const visibleChannels = createMemo(() => sidebarChannels().filter((channel) => !channel.archived));
+  /* A channel belongs to one office, like an agent row. An office channel names its office; any
+   * other channel follows its lead, then its first member that is still in the roster. */
+  const agentById = createMemo(() => new Map(agentList().map((agent) => [agent.id, agent])));
+  const channelOfficeId = (channel: ChannelSummary): string | null => {
+    if (channel.id.startsWith("office-channel-")) return channel.id.slice("office-channel-".length);
+    const lead = channel.leadAgentId ? agentById().get(channel.leadAgentId) : undefined;
+    if (lead) return lead.officeId ?? "building";
+    for (const member of channel.members) {
+      const agent = agentById().get(member.agentId);
+      if (agent) return agent.officeId ?? "building";
+    }
+    return null;
+  };
+  const activeOffice = () => activeOfficeId() ?? "building";
+  const channelInActiveOffice = (channel: ChannelSummary) => channelOfficeId(channel) === activeOffice();
+  const visibleChannels = createMemo(() =>
+    sidebarChannels().filter((channel) => !channel.archived && channelInActiveOffice(channel)),
+  );
   /* A channel can open while the Routines view is on: from search, a notification, or a selection
    * restored at start. Its row must be in the list, so the list goes back to the agents view. */
   createEffect(
@@ -262,7 +280,7 @@ export function WorkspaceSidebar(props: { peopleEnabled: boolean }) {
     <>
       <Sidebar
         channels={visibleChannels()}
-        deletedChannels={sidebarChannels().filter((channel) => channel.archived)}
+        deletedChannels={sidebarChannels().filter((channel) => channel.archived && channelInActiveOffice(channel))}
         activeChannelId={channels.state.selectedId}
         onSelectChannel={(id) => void channels.open(id)}
         onEditChannel={(id) => void channels.editChannel(id)}
