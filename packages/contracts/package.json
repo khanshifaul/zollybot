@@ -53,6 +53,7 @@
     "./marketplace-links": "./src/marketplace-links.ts",
     "./plugin-links": "./src/plugin-links.ts",
     "./runtime-values": "./src/runtime-values.ts",
+    "./release-assets": "./src/release-assets.ts",
     "./ipc-decoding": "./src/ipc-decoding.ts",
     "./ipc-office-tasks": "./src/ipc-office-tasks.ts",
     "./remote-control-plane": "./src/remote-control-plane.ts",

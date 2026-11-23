@@ -368,7 +368,7 @@ function preparedMessage(
   const missing = post.stores.filter((store) => dates === undefined || storeDay(dates, store) === undefined);
   if (missing.length > 0) {
     problems.push(
-      `${MOBILE_CHANGELOG} does not show ${post.version} on ${storeList(missing)}. Run bun run mobile:release first.`,
+      `${MOBILE_CHANGELOG} does not show ${post.version} on ${storeList(missing)}. Run bun run mobile:release:published <ios|android> first.`,
     );
   }
   const announcement = readFileSync(MOBILE_ANNOUNCEMENT_FILE, "utf8");

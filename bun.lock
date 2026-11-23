@@ -205,9 +205,10 @@
     },
     "apps/web": {
       "name": "zollybot-web",
-      "version": "0.62.4",
+      "version": "0.65.0",
       "dependencies": {
         "@srcroot/ui": "1.3.1",
+        "@zollybot/contracts": "workspace:*",
         "class-variance-authority": "catalog:",
         "clsx": "2.1.1",
         "lucide-react": "^0.577.0",

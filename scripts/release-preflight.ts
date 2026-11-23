@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { isString } from "@zollybot/contracts/runtime-values";
 import { createZollyBotLogger } from "@zollybot/logging";
+import { commandProblems } from "./check-commands";
 import { releaseNotesProblems } from "./release-notes";
 
 const logger = createZollyBotLogger("release-preflight");
@@ -14,6 +15,7 @@ const changelog = await readFile("CHANGELOG.md", "utf8");
 const failures: string[] = [];
 
 if (!/^\d+\.\d+\.\d+$/.test(packageJson.version)) failures.push("package version is not semver");
+failures.push(...commandProblems(packageJson));
 failures.push(...releaseNotesProblems(changelog, packageJson.version));
 if (run("git", ["status", "--porcelain"])) failures.push("working tree is not clean");
 if (run("git", ["rev-list", "--left-right", "--count", "origin/main...HEAD"]) !== "0\t0") {

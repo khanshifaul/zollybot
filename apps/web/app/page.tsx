@@ -1,6 +1,13 @@
 "use client";
 
 import {
+  ANDROID_RELEASE_ASSET,
+  DESKTOP_RELEASE_TARGETS,
+  LATEST_RELEASE_URL,
+  RELEASE_REPOSITORY_URL,
+  releaseDownloadUrl,
+} from "@zollybot/contracts/release-assets";
+import {
   ArrowRight,
   Check,
   Copy,
@@ -35,10 +42,10 @@ type DownloadItem = {
   href: (version: string | null) => string;
 };
 
-const REPO = "https://github.com/khanshifaul/zollybot";
+const REPO = RELEASE_REPOSITORY_URL;
 const RELEASES = `${REPO}/releases`;
-const RELEASES_LATEST = `${RELEASES}/latest`;
-const INSTALL_CMD = "curl -fsSL https://zollybot.shifaul.dev/install.sh | sh";
+const RELEASES_LATEST = LATEST_RELEASE_URL;
+const INSTALL_CMD = "curl -fsSL https://raw.githubusercontent.com/khanshifaul/zollybot/main/site/install.sh | sh";
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const PLATFORMS: { id: Platform; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
@@ -56,53 +63,54 @@ function normalizeVersion(raw: string | null | undefined): string | null {
 }
 
 function releaseAsset(version: string | null, asset: string): string {
-  if (!version) return RELEASES_LATEST;
-  return `${RELEASES}/download/v${version}/${asset}`;
+  const parsed = normalizeVersion(version);
+  return parsed ? releaseDownloadUrl(parsed, asset) : RELEASES_LATEST;
 }
 
 const DOWNLOADS: DownloadItem[] = [
   {
-    id: "linux-appimage",
+    id: "linux-appimage-x64",
     platform: "linux",
     arch: "x64",
     format: "AppImage",
     note: "Desktop GUI for most Linux distributions.",
     recommended: true,
-    href: (v) => releaseAsset(normalizeVersion(v), `zollybot-gui-${normalizeVersion(v) ?? "latest"}-x64.AppImage`),
+    href: (v) => releaseAsset(v, DESKTOP_RELEASE_TARGETS["linux-x64"].artifact(normalizeVersion(v) ?? "latest")),
   },
   {
-    id: "linux-tar",
+    id: "linux-appimage-arm64",
     platform: "linux",
-    arch: "x64",
-    format: "tar.gz",
-    note: "Portable Linux archive.",
-    href: (v) => releaseAsset(normalizeVersion(v), `zollybot-linux-x86_64-${normalizeVersion(v) ?? "latest"}.tar.gz`),
+    arch: "arm64",
+    format: "AppImage",
+    note: "Desktop GUI for arm64 Linux distributions.",
+    href: (v) => releaseAsset(v, DESKTOP_RELEASE_TARGETS["linux-arm64"].artifact(normalizeVersion(v) ?? "latest")),
   },
   {
-    id: "linux-cli",
-    platform: "linux",
-    arch: "x64",
-    format: "CLI",
-    note: "Terminal companion and control-socket client.",
-    href: (v) => releaseAsset(normalizeVersion(v), `zollybot-cli-linux-x86_64-${normalizeVersion(v) ?? "latest"}`),
-  },
-  {
-    id: "macos-release",
+    id: "macos-arm64-dmg",
     platform: "macos",
-    arch: "universal",
-    format: "Installer",
-    note: "macOS installer from the latest GitHub release.",
+    arch: "arm64",
+    format: "DMG",
+    note: "Apple silicon installer.",
     recommended: true,
+    href: (v) =>
+      releaseAsset(v, DESKTOP_RELEASE_TARGETS["macos-arm64"].extras?.(normalizeVersion(v) ?? "latest")[0] ?? ""),
+  },
+  {
+    id: "macos-x64-installer",
+    platform: "macos",
+    arch: "x64",
+    format: "Installer",
+    note: "Intel Mac build, when the release publishes it.",
     href: () => RELEASES_LATEST,
   },
   {
-    id: "windows-release",
+    id: "windows-x64",
     platform: "windows",
     arch: "x64",
     format: "Installer",
-    note: "Windows installer from the latest GitHub release.",
+    note: "Windows 10+ installer.",
     recommended: true,
-    href: () => RELEASES_LATEST,
+    href: (v) => releaseAsset(v, DESKTOP_RELEASE_TARGETS["windows-x64"].artifact(normalizeVersion(v) ?? "latest")),
   },
   {
     id: "android-apk",
@@ -111,7 +119,7 @@ const DOWNLOADS: DownloadItem[] = [
     format: "APK",
     note: "Connects to ZollyBot running on your computer.",
     recommended: true,
-    href: (v) => releaseAsset(normalizeVersion(v), `zollybot-android-arm64-${normalizeVersion(v) ?? "latest"}.apk`),
+    href: (v) => releaseAsset(v, ANDROID_RELEASE_ASSET(normalizeVersion(v) ?? "latest")),
   },
   {
     id: "ios-release",
@@ -579,7 +587,7 @@ export default function Page() {
                         Review the script before running:{" "}
                         <a
                           className="text-primary underline underline-offset-4"
-                          href="https://zollybot.shifaul.dev/install.sh"
+                          href="https://raw.githubusercontent.com/khanshifaul/zollybot/main/site/install.sh"
                         >
                           install.sh
                         </a>

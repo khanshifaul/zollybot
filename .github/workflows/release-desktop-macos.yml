@@ -221,3 +221,40 @@ jobs:
           files=(release-assets/*)
           if [ ${#files[@]} -eq 0 ]; then echo "No macOS x64 artifacts found"; exit 1; fi
           gh release upload "${RELEASE_TAG}" "${files[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+  desktop-macos-manifest:
+    name: Desktop macOS update manifest
+    needs: [desktop-macos-arm64, desktop-macos-x64]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: ./.github/actions/setup-bun
+        with:
+          install: none
+
+      - name: Merge macOS update manifests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p manifests
+          gh release download "${RELEASE_TAG}" --repo "$GITHUB_REPOSITORY" \
+            --pattern latest-mac-arm64.yml --pattern latest-mac-x64.yml --dir manifests --clobber
+          bun scripts/merge-mac-update-manifests.ts \
+            manifests/latest-mac-arm64.yml manifests/latest-mac-x64.yml manifests/latest-mac.yml
+
+      - name: Upload merged macOS update manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release upload "${RELEASE_TAG}" manifests/latest-mac.yml --clobber --repo "$GITHUB_REPOSITORY"

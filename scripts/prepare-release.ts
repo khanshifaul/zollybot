@@ -50,7 +50,7 @@ const MOBILE: ReleaseTarget = {
   versionFiles: MOBILE_VERSION_FILES,
   lockWorkspace: "apps/mobile",
   inReview: true,
-  next: "commit the files, merge them to main, then build with bun run mobile:release (step 2). When a store makes the build available, mark it with step 3, and again for the other store.",
+  next: "commit the files, merge them to main, then build with bun run mobile:android:build:release or mobile:ios:build:release. When a store makes the build available, run bun run mobile:release:published <ios|android>, and again for the other store.",
 };
 
 /** The first `"version"` in the file, which is the top-level one in each file that this script changes. */

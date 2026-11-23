@@ -31,6 +31,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Check package commands
+        run: bun run check:commands
+
       - name: Typecheck
         run: bun run typecheck
 

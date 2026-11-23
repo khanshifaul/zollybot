@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { createReadStream, existsSync } from "node:fs";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
+import { DESKTOP_RELEASE_TARGETS, type DesktopReleaseTargetId } from "@zollybot/contracts/release-assets";
 import { isDynamicRecord, isNumber, isString } from "@zollybot/contracts/runtime-values";
 import { createZollyBotLogger } from "@zollybot/logging";
 import { parse } from "yaml";
@@ -17,23 +18,32 @@ if (platform !== "linux" && platform !== "linux-arm64" && platform !== "macos" &
 /**
  * The artifact electron-updater downloads, and the manifest that names it, for each platform.
  * electron-updater on Linux arm64 reads `latest-linux-arm64.yml`, so each Linux architecture has its
- * own manifest and its own unpacked directory.
+ * own manifest and its own unpacked directory. Both Mac architectures share the merged manifest.
  */
-const UPDATE_ARTIFACTS = {
-  linux: { extension: ".AppImage", manifest: "latest-linux.yml" },
-  "linux-arm64": { extension: ".AppImage", manifest: "latest-linux-arm64.yml" },
-  macos: { extension: ".zip", manifest: "latest-mac.yml" },
-  windows: { extension: ".exe", manifest: "latest.yml" },
-} as const;
+const TARGET_BY_PLATFORM: Record<typeof platform, DesktopReleaseTargetId> = {
+  linux: "linux-x64",
+  "linux-arm64": "linux-arm64",
+  macos: process.arch === "arm64" ? "macos-arm64" : "macos-x64",
+  windows: "windows-x64",
+};
 
+const target = DESKTOP_RELEASE_TARGETS[TARGET_BY_PLATFORM[platform]];
 const distRoot = resolve("dist");
-const artifactExtension = UPDATE_ARTIFACTS[platform].extension;
-const manifestPath = join(distRoot, UPDATE_ARTIFACTS[platform].manifest);
+const artifactExtension = target.id.startsWith("windows")
+  ? ".exe"
+  : target.id.startsWith("macos")
+    ? ".zip"
+    : ".AppImage";
+const manifestPath = join(distRoot, target.manifest);
 const [artifact, ...extraArtifacts] = (await readdir(distRoot)).filter((name) => name.endsWith(artifactExtension));
 if (artifact === undefined || extraArtifacts.length > 0)
   throw new Error(`Expected one ${artifactExtension} update artifact.`);
 
 const artifactPath = join(distRoot, artifact);
+const expectedArtifact = target.artifact(await manifestVersion(manifestPath));
+if (artifact !== expectedArtifact) {
+  throw new Error(`The ${target.id} manifest names ${expectedArtifact}, but the build produced ${artifact}.`);
+}
 await verifyMaximumSize(artifactPath, 700 * MIB);
 if (platform === "macos") {
   const [dmg, ...extraDmgs] = (await readdir(distRoot)).filter((name) => name.endsWith(".dmg"));
@@ -80,6 +90,14 @@ if (existsSync(unpackedRoot)) {
   }
 }
 logger.info(`Verified ${platform} update artifact ${basename(artifactPath)}.`);
+
+async function manifestVersion(path: string): Promise<string> {
+  const manifest = parse(await readFile(path, "utf8"));
+  if (!isDynamicRecord(manifest) || !isString(manifest.version)) {
+    throw new Error("The update manifest has no version.");
+  }
+  return manifest.version;
+}
 
 async function verifyMaximumSize(path: string, maximumBytes: number): Promise<void> {
   const size = (await stat(path)).size;

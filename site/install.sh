@@ -1,7 +1,7 @@
 #!/bin/sh
 # ZollyBot installer for Linux.
 #
-#   curl -fsSL https://zollybot.shifaul.dev/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/khanshifaul/zollybot/main/site/install.sh | sh
 #
 # Options:
 #   --prefix <dir>   install root (default: $HOME/.local)
@@ -52,38 +52,55 @@ need sha256sum
 
 arch="$(uname -m)"
 case "$arch" in
-	x86_64|amd64) eb_arch="x64"; asset_arch="x86_64" ;;
-	aarch64|arm64) eb_arch="arm64"; asset_arch="arm64" ;;
+	x86_64|amd64) asset_arch="x86_64"; manifest_name="latest-linux.yml"; checksum_name="SHA256SUMS-linux-x64.txt" ;;
+	aarch64|arm64) asset_arch="arm64"; manifest_name="latest-linux-arm64.yml"; checksum_name="SHA256SUMS-linux-arm64.txt" ;;
 	*) err "unsupported architecture: $arch (expected x86_64 or arm64)"; exit 1 ;;
 esac
 
 log "ZollyBot Linux installer"
-log "  arch: $arch ($eb_arch)"
+log "  arch: $arch"
 log "  prefix: $PREFIX"
 log "  base URL: $BASE_URL"
 
-if [ -z "$VERSION" ]; then
-	log "  version: fetching $BASE_URL/latest"
-	VERSION="$(curl -fsSL "$BASE_URL/latest")" || { err "could not read $BASE_URL/latest"; exit 1; }
-	VERSION="$(printf '%s' "$VERSION" | tr -d '\r\n')"
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT INT TERM
+
+# Read the version and the artifact name from electron-updater's manifest. The manifest is the
+# release's own statement of what it published, so the installer cannot drift from the asset names.
+manifest_url="$GITHUB_RELEASES/latest/download/$manifest_name"
+if [ -n "$DOWNLOAD_BASE" ]; then
+	manifest_url="$DOWNLOAD_BASE/releases/latest/$manifest_name"
 fi
-VERSION="${VERSION#v}"
+if [ -z "$VERSION" ]; then
+	log "  version: fetching $manifest_url"
+	manifest_file="$tmp/$manifest_name"
+	curl -fsSL "$manifest_url" -o "$manifest_file" || { err "could not read $manifest_url"; exit 1; }
+	VERSION="$(sed -n 's/^version: *//p' "$manifest_file" | head -n 1)"
+	appimage_asset="$(sed -n 's/^path: *//p' "$manifest_file" | head -n 1)"
+fi
+VERSION="$(printf '%s' "${VERSION#v}" | tr -d '\r\n')"
+[ -n "$VERSION" ] || { err "the release manifest has no version"; exit 1; }
 log "  version: $VERSION"
 
 if [ -n "$DOWNLOAD_BASE" ]; then
 	release="$DOWNLOAD_BASE/releases/$VERSION"
-	checksums_candidates="SHA256SUMS SHA256SUMS-linux-$asset_arch.txt SHA256SUMS-$eb_arch.txt SHA256SUMS-linux.txt"
+	checksums_candidates="$checksum_name SHA256SUMS SHA256SUMS-linux-$asset_arch.txt"
 else
 	release="$GITHUB_RELEASES/v$VERSION"
-	# try common release checksum names
-	checksums_candidates="SHA256SUMS-linux-$asset_arch.txt SHA256SUMS-linux-${eb_arch}.txt SHA256SUMS-$asset_arch.txt SHA256SUMS-$eb_arch.txt SHA256SUMS"
+	checksums_candidates="$checksum_name SHA256SUMS-linux-$asset_arch.txt SHA256SUMS"
 fi
 
-appimage_asset="zollybot-gui-${VERSION}-${eb_arch}.AppImage"
-legacy_tar_asset="zollybot-linux-${asset_arch}-${VERSION}.tar.gz"
-
-tmp="$(mktemp -d)"
-trap 'rm -rf "$tmp"' EXIT INT TERM
+# A caller can name an older version. Its manifest sits beside its artifacts in the release.
+if [ -z "${appimage_asset:-}" ]; then
+	manifest_file="$tmp/$manifest_name"
+	if curl -fsSL "$release/$manifest_name" -o "$manifest_file" 2>/dev/null; then
+		appimage_asset="$(sed -n 's/^path: *//p' "$manifest_file" | head -n 1)"
+	fi
+fi
+if [ -z "${appimage_asset:-}" ]; then
+	appimage_asset="zollybot-gui-${VERSION}-${asset_arch}.AppImage"
+fi
+tar_asset="zollybot-linux-${asset_arch}-${VERSION}.tar.gz"
 
 fetch_checksums() {
 	for name in $checksums_candidates; do
@@ -131,17 +148,19 @@ download_verified() {
 log "Fetching checksums (best effort)..."
 fetch_checksums || log "  no checksum file found; will install without checksum verification"
 
-asset=""
-mode=""
-if curl -fsI "$release/$appimage_asset" >/dev/null 2>&1; then
-	asset="$appimage_asset"
-	mode="appimage"
-elif curl -fsI "$release/$legacy_tar_asset" >/dev/null 2>&1; then
-	asset="$legacy_tar_asset"
+asset="$appimage_asset"
+mode="appimage"
+arch_linux=0
+if [ -f /etc/arch-release ] || command -v pacman >/dev/null 2>&1; then
+	arch_linux=1
+fi
+if [ "$arch_linux" -eq 1 ] && curl -fsI "$release/$tar_asset" >/dev/null 2>&1; then
+	# Arch has no libfuse2 guarantee; the portable archive avoids the AppImage mount.
+	asset="$tar_asset"
 	mode="tar"
-else
-	err "no supported Linux artifact found at $release"
-	err "tried: $appimage_asset, $legacy_tar_asset"
+elif ! curl -fsI "$release/$asset" >/dev/null 2>&1; then
+	err "no Linux AppImage found at $release/$asset"
+	err "The release manifest's path is the source of truth; run with --version only for a published release."
 	exit 1
 fi
 log "  artifact: $asset"
@@ -159,20 +178,7 @@ if [ "$mode" = "appimage" ]; then
 else
 	need tar
 	tar -xzf "$tmp/$asset" -C "$PREFIX/lib/zollybot"
-	if [ -d "$PREFIX/lib/zollybot/zollybot" ]; then
-		flat="$PREFIX/lib/.zollybot-install"
-		rm -rf "$flat"
-		mv "$PREFIX/lib/zollybot/zollybot" "$flat"
-		rm -rf "$PREFIX/lib/zollybot"
-		mv "$flat" "$PREFIX/lib/zollybot"
-	elif [ -x "$PREFIX/lib/zollybot/linux-unpacked/zollybot" ]; then
-		flat="$PREFIX/lib/.zollybot-install"
-		rm -rf "$flat"
-		mv "$PREFIX/lib/zollybot/linux-unpacked" "$flat"
-		rm -rf "$PREFIX/lib/zollybot"
-		mv "$flat" "$PREFIX/lib/zollybot"
-	fi
-	app="$PREFIX/lib/zollybot/zollybot"
+	app="$PREFIX/lib/zollybot/linux-unpacked/zollybot"
 fi
 
 if [ ! -x "$app" ]; then
@@ -206,35 +212,24 @@ WRAPPER
 chmod 0755 "$PREFIX/bin/zollybot"
 log "Installed launcher: $PREFIX/bin/zollybot"
 
-# CLI: prefer bundled binary inside installed app payload, else standalone release asset in site release dir.
+# The CLI ships inside the desktop payload, so the installer extracts it from the AppImage rather
+# than from a standalone release asset that the release does not publish.
 if [ "$CLI" -eq 1 ]; then
 	cli_src=""
 	if [ "$mode" = "appimage" ]; then
-		# try extracting CLI from AppImage if present
-		if "$app" --appimage-extract zollybot-cli >/dev/null 2>&1 && [ -f squashfs-root/zollybot-cli ]; then
-			cli_src="squashfs-root/zollybot-cli"
-		elif "$app" --appimage-extract resources/bin/zollybot-cli >/dev/null 2>&1 && [ -f squashfs-root/resources/bin/zollybot-cli ]; then
-			cli_src="squashfs-root/resources/bin/zollybot-cli"
+		if (cd "$tmp" && "$app" --appimage-extract resources/bin/zollybot-cli >/dev/null 2>&1) &&
+			[ -f "$tmp/squashfs-root/resources/bin/zollybot-cli" ]; then
+			cli_src="$tmp/squashfs-root/resources/bin/zollybot-cli"
 		fi
-	else
-		for c in "$PREFIX/lib/zollybot/zollybot-cli" "$PREFIX/lib/zollybot/resources/bin/zollybot-cli" "$PREFIX/lib/zollybot/bin/zollybot-cli"; do
-			[ -f "$c" ] && cli_src="$c" && break
-		done
-	fi
-	if [ -z "$cli_src" ]; then
-		cli_asset="zollybot-cli-linux-${eb_arch}"
-		if curl -fsI "$release/$cli_asset" >/dev/null 2>&1; then
-			download_verified "$cli_asset" || true
-			[ -f "$tmp/$cli_asset" ] && cli_src="$tmp/$cli_asset"
-		fi
+	elif [ -f "$PREFIX/lib/zollybot/linux-unpacked/resources/bin/zollybot-cli" ]; then
+		cli_src="$PREFIX/lib/zollybot/linux-unpacked/resources/bin/zollybot-cli"
 	fi
 	if [ -n "$cli_src" ]; then
 		install -m 0755 "$cli_src" "$PREFIX/bin/zollybot-cli"
 		log "Installed CLI: $PREFIX/bin/zollybot-cli"
 	else
-		log "CLI binary not found; skipped (--no-cli to silence)"
+		log "CLI binary not found in the app payload; skipped (--no-cli to silence)"
 	fi
-	rm -rf squashfs-root 2>/dev/null || true
 fi
 
 if [ "$DESKTOP" -eq 1 ]; then
