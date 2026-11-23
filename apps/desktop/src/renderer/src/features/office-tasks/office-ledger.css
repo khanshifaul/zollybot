@@ -8,41 +8,54 @@
   color: var(--zollybot-text-primary);
 }
 
-.office-ledger-header {
+/* The same 38px bar as the agent chat, diagram and workflow pages. The rail selects the page, so
+   there is no Back button here. */
+.office-ledger-titlebar {
   display: flex;
+  height: 38px;
   flex: 0 0 auto;
-  align-items: flex-start;
-  gap: var(--zollybot-space-2);
-  padding: var(--zollybot-space-6) var(--zollybot-space-6) var(--zollybot-space-4);
-  border-bottom: 1px solid var(--border);
+  align-items: center;
+  gap: var(--zollybot-space-1-5);
+  padding: 0 var(--zollybot-space-3);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
-.office-ledger-header .ui-icon-button {
-  margin-inline-start: calc(-1 * var(--zollybot-space-2));
+.office-ledger-title-icon {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  place-items: center;
+  border-radius: var(--zollybot-radius-md);
+  background: var(--zollybot-accent-soft);
+  color: var(--zollybot-accent-text);
 }
 
-.office-ledger-heading {
-  min-width: 0;
-  flex: 1;
+.office-ledger-title-icon svg {
+  width: var(--zollybot-icon-xs);
+  height: var(--zollybot-icon-xs);
 }
 
-.office-ledger-heading h2 {
+.office-ledger-title {
+  max-width: 44ch;
+  overflow: hidden;
   margin: 0;
-  font-size: var(--zollybot-text-xl);
-  font-weight: var(--zollybot-weight-semibold);
+  font-size: var(--zollybot-text-md);
+  font-weight: var(--zollybot-weight-regular);
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.office-ledger-heading p {
-  margin: 2px 0 0;
+.office-ledger-title-office {
   color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-sm);
 }
 
-.office-ledger-header-actions {
+.office-ledger-titlebar-actions {
   display: flex;
   align-items: center;
-  gap: var(--zollybot-space-2);
-  padding-top: 2px;
+  gap: var(--zollybot-space-1);
+  margin-inline-start: auto;
 }
 
 .office-ledger-body {

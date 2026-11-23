@@ -1,10 +1,9 @@
 import type { OfficeTask, OfficeTaskEvent } from "@zollybot/contracts/ipc-office-tasks";
-import { ArrowLeft, BookOpen, Button, IconButton } from "@zollybot/ui";
+import { BookOpen, Button } from "@zollybot/ui";
 import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, createUniqueId, For, Show } from "solid-js";
 import { appPort } from "../../app-port";
 import { useAgents } from "../agents/agents-context";
-import { useWindowPage } from "../window/window-page-context";
 
 const STATUS_FILTERS = ["all", "queued", "dispatched", "done", "failed", "escalated"] as const;
 
@@ -26,7 +25,6 @@ function timeAgo(iso: string): string {
 export function OfficeLedgerPage() {
   const { t } = useText();
   const agents = useAgents();
-  const windowPage = useWindowPage();
   const headingId = createUniqueId();
   const [tasks, setTasks] = createSignal<OfficeTask[]>([]);
   const [events, setEvents] = createSignal<OfficeTaskEvent[]>([]);
@@ -156,17 +154,15 @@ export function OfficeLedgerPage() {
 
   return (
     <section class="office-ledger-page" aria-labelledby={headingId}>
-      <header class="office-ledger-header">
-        <IconButton variant="ghost" label={t("common.back")} onClick={() => windowPage.showAgents()}>
-          <ArrowLeft />
-        </IconButton>
-        <div class="office-ledger-heading">
-          <h2 id={headingId} tabindex={-1}>
-            {t("conversation.tasks.ledger.title")}
-          </h2>
-          <p>{t("conversation.tasks.ledger.subtitle", { office: officeName() })}</p>
-        </div>
-        <div class="office-ledger-header-actions">
+      <header class="window-drag office-ledger-titlebar">
+        <span class="office-ledger-title-icon" aria-hidden="true">
+          <BookOpen />
+        </span>
+        <h1 id={headingId} class="office-ledger-title" tabindex={-1}>
+          {t("conversation.tasks.ledger.title")}
+          <span class="office-ledger-title-office"> / {officeName()}</span>
+        </h1>
+        <div class="office-ledger-titlebar-actions">
           <Button type="button" variant="ghost" size="sm" onClick={() => void refresh()}>
             {t("conversation.tasks.ledger.refresh")}
           </Button>
