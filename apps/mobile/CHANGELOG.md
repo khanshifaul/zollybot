@@ -7,6 +7,12 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.64.6] - In review
+
+### Changed
+
+- Bump the app version to 0.64.6 for local debug and release builds.
+
 ## [0.64.5] - In review
 
 ### Added
