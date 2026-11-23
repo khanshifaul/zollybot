@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@zollybot/contracts", "@zollybot/team-client", "@zollybot/i18n", "@zollybot/user-errors"],
+  transpilePackages: ["@zollybot/contracts"],
 };
 export default nextConfig;

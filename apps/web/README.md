@@ -19,8 +19,9 @@ The app is deployed as a Next.js server, not a static export. That is what serve
 
 The Vercel project is `zollybot` and its production domain is `zollybot.vercel.app`.
 
-The public Marketplace reads the account service server-side. Set `ZOLLYBOT_AUTH_API_URL` in the
-Vercel project to the account API origin; no user credential is sent to the browser.
+The public Marketplace is served by this Next app from the canonical production catalog under
+`apps/web/data/marketplace/`. It has no account API dependency; the API routes are under `/v1` on the
+same deployment.
 
 This workspace is separate from the Electron desktop app and from deployment-specific
 account/browser-client services described elsewhere in repository docs.

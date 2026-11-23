@@ -38,7 +38,8 @@ const LISTING_SEGMENTS: Record<MarketplaceListingKind, string> = { agent: "agent
 const LISTING_KINDS: readonly MarketplaceListingKind[] = ["agent", "skill"];
 
 /** `crypto.randomUUID()` in the Worker: lower-case hex in the 8-4-4-4-12 form. */
-const MARKETPLACE_AGENT_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
+const MARKETPLACE_AGENT_ID_PATTERN =
+  /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|zollybot-curated-agent-[a-z0-9][a-z0-9-]{0,63})$/u;
 
 /**
  * The Worker's `slugify`: lower-case letters, digits and hyphens, at most 64. No dot and no slash, so

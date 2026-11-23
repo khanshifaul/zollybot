@@ -1,27 +1,44 @@
-import { createMarketplaceCatalog } from "@zollybot/team-client/marketplace-catalog";
-import { Effect } from "effect";
-
-/** The public marketplace is served from the account service; no user credential is sent. */
-export const MARKETPLACE_API_ORIGIN =
-  process.env.ZOLLYBOT_AUTH_API_URL ?? process.env.ZOLLYBOT_API_URL ?? "https://api-zollybot.shifaul.dev";
-
-const request = (path: string, init?: RequestInit): Promise<Response> =>
-  fetch(new URL(path, MARKETPLACE_API_ORIGIN), {
-    ...init,
-    headers: { accept: "application/json", ...init?.headers },
-    next: { revalidate: 300 },
-  });
-
-export const catalog = createMarketplaceCatalog(request);
+import { getAgent, getSkill, getSkillBySlug, listAgents, listSkills } from "./marketplace-data";
 
 export type MarketplaceLoad<T> = { data: T; error: null } | { data: null; error: string };
 
-/** Runs one catalog read and turns a missing or failing account service into a page-level message. */
-export async function loadMarketplace<T>(
-  operation: Effect.Effect<T, { readonly message: string }>,
-): Promise<MarketplaceLoad<T>> {
+/**
+ * The public marketplace catalog is built from the canonical production catalog and served by this
+ * Next app. Reads stay local to the deployment; no account credential or external API is needed.
+ */
+export const catalog = {
+  agents: {
+    list: async (query = {}) => listAgents(query),
+    get: async (id: string) => {
+      const agent = getAgent(id);
+      if (!agent) throw new Error("Agent not found.");
+      return agent;
+    },
+    getListing: async (id: string) => {
+      const agent = getAgent(id);
+      if (!agent) throw new Error("Agent not found.");
+      return agent;
+    },
+  },
+  skills: {
+    list: async (query = {}) => listSkills(query),
+    get: async (id: string) => {
+      const skill = getSkill(id);
+      if (!skill) throw new Error("Skill not found.");
+      return skill;
+    },
+    getBySlug: async (slug: string) => {
+      const skill = getSkillBySlug(slug);
+      if (!skill) throw new Error("Skill not found.");
+      return skill;
+    },
+  },
+};
+
+/** Runs one catalog read and turns a missing listing into a page-level message. */
+export async function loadMarketplace<T>(operation: Promise<T>): Promise<MarketplaceLoad<T>> {
   try {
-    return { data: await Effect.runPromise(operation), error: null };
+    return { data: await operation, error: null };
   } catch (cause) {
     return {
       data: null,
@@ -30,14 +47,8 @@ export async function loadMarketplace<T>(
   }
 }
 
-/** The account service stores avatar and card paths relative to its origin. */
 export function marketplaceAssetUrl(value: string | null | undefined): string | null {
-  if (!value) return null;
-  try {
-    return new URL(value, MARKETPLACE_API_ORIGIN).toString();
-  } catch {
-    return null;
-  }
+  return value ?? null;
 }
 
 export function marketplaceSearchParams(input: Record<string, string | string[] | undefined>): URLSearchParams {
