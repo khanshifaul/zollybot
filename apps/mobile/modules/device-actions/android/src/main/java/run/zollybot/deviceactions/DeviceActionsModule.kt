@@ -10,25 +10,22 @@ import expo.modules.kotlin.modules.ModuleDefinition
 
 private class ActionException(message: String) : CodedException("ERR_DEVICE_ACTION", message, null)
 
-/** A launchable app, as the action picker shows it. */
-data class LaunchableApp(val name: String, val packageName: String)
-
 /** Safe Android actions that open a system surface; none of them sends a message or pays without the user. */
 class DeviceActionsModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("ZollyBotDeviceActions")
 
     AsyncFunction("listApps") {
-      val context = appContext.reactContext ?: return@AsyncFunction emptyList<LaunchableApp>()
+      val context = appContext.reactContext ?: return@AsyncFunction emptyList<Map<String, String>>()
       val manager = context.packageManager
       val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
       manager.queryIntentActivities(intent, 0)
         .mapNotNull { info ->
           val packageName = info.activityInfo?.packageName ?: return@mapNotNull null
-          LaunchableApp(info.loadLabel(manager).toString(), packageName)
+          mapOf("name" to info.loadLabel(manager).toString(), "packageName" to packageName)
         }
-        .distinctBy { it.packageName }
-        .sortedBy { it.name.lowercase() }
+        .distinctBy { it["packageName"] }
+        .sortedBy { it["name"]?.lowercase() }
     }
 
     AsyncFunction("openApp") { packageName: String ->

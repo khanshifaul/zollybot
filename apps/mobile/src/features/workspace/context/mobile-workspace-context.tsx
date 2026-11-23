@@ -855,7 +855,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
             const prior = previous.get(agent.id);
             // `agents-changed` does not carry the office fields; keep the assignment the last list had.
             const merged =
-              prior && agent.officeId === undefined
+              prior && agent.officeId == null
                 ? {
                     ...agent,
                     officeId: prior.officeId,

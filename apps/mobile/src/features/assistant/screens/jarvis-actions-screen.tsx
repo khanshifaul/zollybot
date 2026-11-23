@@ -84,7 +84,15 @@ export default function JarvisActionsScreen() {
     if (!deviceActionsAvailable) return;
     void deviceActions
       .listApps()
-      .then((items) => setApps(items.slice(0, 40)))
+      .then((items) => {
+        const list = Array.isArray(items) ? items : [];
+        setApps(
+          list
+            .filter((app): app is LaunchableApp => Boolean(app?.packageName))
+            .map((app) => ({ name: app.name || app.packageName, packageName: app.packageName }))
+            .slice(0, 40),
+        );
+      })
       .catch(() => undefined);
   }, []);
 
