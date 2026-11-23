@@ -158,7 +158,7 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
 }
 
 .marketplace-frame > * {
-  width: min(100%, 880px);
+  width: min(100%, 1040px);
   margin-inline: auto;
 }
 
@@ -419,7 +419,7 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
 
 .marketplace-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--zollybot-space-3);
 }
 
@@ -472,8 +472,8 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
   overflow: hidden;
   color: var(--zollybot-text-secondary);
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .marketplace-card-foot {
@@ -561,8 +561,8 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
 
 .marketplace-app-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  column-gap: var(--zollybot-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  column-gap: var(--zollybot-space-4);
   row-gap: var(--zollybot-space-1);
   margin: 0;
   padding: 0;
@@ -1056,7 +1056,7 @@ label.marketplace-skill-picker-row:hover {
 
 .marketplace-skill-featured-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: var(--zollybot-space-3);
 }
 

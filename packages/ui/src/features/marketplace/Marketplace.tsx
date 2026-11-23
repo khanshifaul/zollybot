@@ -169,10 +169,12 @@ function MarketplaceWindow(props: MarketplaceProps) {
 
   return (
     <>
-      {/* The page rail is the way back from the page, so the top bar has no close button. */}
-      <header class="skills-marketplace-topbar">
-        <MarketplaceHeader scope={scope} />
-      </header>
+      {/* A browse page has its own title. A path appears only when there is a parent to return to. */}
+      <Show when={nav.state.stack.length > 1}>
+        <header class="skills-marketplace-topbar">
+          <MarketplaceHeader scope={scope} />
+        </header>
+      </Show>
       <MarketplaceNav scope={scope} lists={lists} />
       <div
         class={["skills-marketplace-body", fades.classes()]}
