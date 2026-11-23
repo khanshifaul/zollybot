@@ -6,6 +6,17 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.64.6] - 2026-11-23
+
+### Changed
+
+- The Office Ledger is a page in the rail, tied to the office in the top bar, instead of a dialog.
+- The Tasks agent picker names each agent with its office, such as `officemanager@restaurant-saas` or `butler@lobby`, so two Office Managers read apart.
+
+### Fixed
+
+- Keep office agents assigned to their office when an agent profile is updated. Before, a roster write could clear every desk, so an office showed zero agents.
+
 ## [0.64.5] - 2026-11-23
 
 ### Added

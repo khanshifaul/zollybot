@@ -91,3 +91,8 @@ out-dev-app/
 
 # Rust build artifacts
 apps/desktop/tui/target/
+
+# Fetched build runtimes; scripts regenerate them.
+apps/desktop/build-resources/cua-driver/
+apps/desktop/build-resources/remote-desktop-runtime/
+apps/mobile/qvac/
