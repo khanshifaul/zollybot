@@ -6,7 +6,7 @@ const DESCRIPTION =
   "One local-first workspace for Codex, Claude, Grok, and more. Offices map to repos and your data stays on your machine.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://zollybot.shifaul.dev"),
+  metadataBase: new URL("https://zollybot.vercel.app"),
   title: "ZollyBot — local-first multi-agent workspace",
   description: DESCRIPTION,
   applicationName: "ZollyBot",

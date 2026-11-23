@@ -4,7 +4,7 @@
 
 - `apps/desktop/`: Electron app (`src/main|preload|renderer|backend`), `tui/` (Rust CLI/TUI, cross-platform), `resources/` (runtime payloads), `build-resources/` (packaging inputs).
 - `apps/mobile/`: Expo/React Native app.
-- `apps/web/`: Next.js static site.
+- `apps/web/`: Next.js web/marketing site, deployed as a server on Vercel.
 - `integrations/{discord,slack,telegram}/`: external platform manifests and runbooks.
 - `packages/*`: shared workspace libraries (`contracts`, `ui`, `i18n`, `team-client`, `logging`, `telemetry`, `user-errors`, `whatsapp`, `brand`).
 - `marketplace/`: canonical shared catalog/content source.
@@ -16,7 +16,6 @@
   - `out/desktop/compile/`: electron-vite compiled app.
   - `out/desktop/dist/<os-arch>/`: installers/packages/unpacked/updater metadata/checksums/SBOMs.
   - `out/mobile/{android,ios}/`: AAB/APK/IPA.
-  - `out/web/export/`: static web export.
   - `out/cli/<os-arch>/zollybot-cli(.exe)`: TUI/CLI binaries (bundled in desktop packages and released).
   - `out/site/`: assembled install-site bundle.
 

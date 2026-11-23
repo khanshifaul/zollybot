@@ -17,9 +17,8 @@ The app is deployed as a Next.js server, not a static export. That is what serve
 `/install.sh`, `/changelog`, `/docs`, `/cla`, and the compatibility bridge at
 `/releases/0.62.10/*`. Release binaries stay on GitHub; `/releases/*` redirects there.
 
-The custom domain is `zollybot.shifaul.dev`. Add it in Vercel and point the Cloudflare DNS record at
-Vercel; remove the old tunnel origin after the preview passes `/`, `/install.sh`, `/latest`, and an
-old-client updater manifest check.
+The Vercel project is `zollybot` and its production domain is `zollybot.vercel.app`. The older
+`zollybot.shifaul.dev` domain may remain as an alias while the Cloudflare DNS record is migrated.
 
 This workspace is separate from the Electron desktop app and from deployment-specific
 account/browser-client services described elsewhere in repository docs.

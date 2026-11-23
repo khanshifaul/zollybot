@@ -5,7 +5,7 @@
 
 ## Goal
 
-`zollybot.shifaul.dev/marketplace` becomes the shareable catalog for agents and skills. A visitor can
+`zollybot.vercel.app/marketplace` becomes the shareable catalog for agents and skills. A visitor can
 browse, search, and read a listing without an account; **Add** opens that listing in ZollyBot, where the
 existing authenticated install flow runs. The web never downloads a package or installs anything by
 itself.
@@ -134,7 +134,7 @@ Phase 2, after public browsing:
 
 ## Definition of done
 
-- The three marketplace URLs in `marketplace-links.ts` render on `zollybot.shifaul.dev`.
+- The three marketplace URLs in `marketplace-links.ts` render on `zollybot.vercel.app`.
 - Every listing has a canonical URL, share card, and a working `zollybot://` button.
 - Search and filters are reproducible from the URL.
 - No package download or install side effect exists on the web.
