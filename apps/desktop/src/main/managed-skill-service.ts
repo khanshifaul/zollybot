@@ -89,7 +89,8 @@ export class ManagedSkillService {
     return Effect.gen({ self: this }, function* () {
       if (this.#content !== null) return this.#content;
       const content = yield* managedIO(() => readFile(this.sourcePath, "utf8"));
-      if (!content.startsWith(`---\nname: ${this.slug}\n`))
+      const frontmatterName = /^---\s*\r?\n\s*name:\s*(.+?)\s*\r?\n/u.exec(content)?.[1]?.trim();
+      if (frontmatterName !== this.slug)
         return yield* new ManagedSkillFailure({ cause: new Error("The managed site hosting skill is invalid.") });
       this.#content = content;
       return content;
