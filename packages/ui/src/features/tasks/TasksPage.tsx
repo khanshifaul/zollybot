@@ -124,6 +124,16 @@ interface TasksPageProps {
 
 const agentOf = (agents: readonly AgentProfile[], agentId: string) => agents.find((agent) => agent.id === agentId);
 
+/**
+ * The agent as the picker names it: `name@office`, and `name@Lobby` for a building role. Two Office
+ * Managers in different offices then read apart in the menu.
+ */
+function agentPickerLabel(agent: AgentProfile | undefined, fallback: string): string {
+  if (!agent) return fallback;
+  const office = agent.officeName ?? (agent.scope === "building" || agent.role === "butler" ? "Lobby" : agent.officeId);
+  return office ? `${agent.name}@${office}` : agent.name;
+}
+
 /** The trigger motion of the header model switcher: mostly a blur, so the old and new name cross in place. */
 const AGENT_SWAP: SwapMotion = {
   distance: 6,
@@ -148,6 +158,7 @@ function TaskAgentSelect(props: {
 }) {
   const { t } = useText();
   const agent = () => agentOf(props.agents, props.agentId);
+  const label = () => agentPickerLabel(agent(), props.agentId);
   let shownId = untrack(() => props.agentId);
   return (
     <DropdownMenu.Root placement="bottom-start" gutter={4}>
@@ -155,8 +166,8 @@ function TaskAgentSelect(props: {
         class={`${buttonVariants({ variant: "ghost", size: "sm" })} tasks-page-agent`}
         aria-label={
           props.title === undefined
-            ? t("conversation.tasks.page.agent", { name: agent()?.name ?? props.agentId })
-            : t("conversation.tasks.page.reassign", { title: props.title, name: agent()?.name ?? props.agentId })
+            ? t("conversation.tasks.page.agent", { name: label() })
+            : t("conversation.tasks.page.reassign", { title: props.title, name: label() })
         }
       >
         {/* Keyed by agent, so the face of a newly chosen agent springs in, as the model mark does. */}
@@ -171,7 +182,7 @@ function TaskAgentSelect(props: {
             );
           }}
         </For>
-        <SwapLabel text={agent()?.name ?? props.agentId} motion={AGENT_SWAP} />
+        <SwapLabel text={label()} motion={AGENT_SWAP} />
         <ChevronDown class="tasks-page-agent-chevron" aria-hidden="true" />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
@@ -181,7 +192,7 @@ function TaskAgentSelect(props: {
               {(option) => (
                 <DropdownMenu.RadioItem value={option().id} closeOnSelect class="tasks-page-agent-option">
                   <AgentAvatar agent={option()} class="tasks-page-avatar" />
-                  <span>{option().name}</span>
+                  <span>{agentPickerLabel(option(), option().id)}</span>
                   <Show when={props.agentId === option().id}>
                     <Check aria-hidden="true" class="tasks-page-agent-check" />
                   </Show>
@@ -325,7 +336,7 @@ function TaskTookLine(props: TasksPageProps & { took: TasksTook }) {
         fallback={
           <span class="tasks-page-took-agent">
             <AgentAvatar agent={agent()} class="tasks-page-avatar" />
-            <span>{agent()?.name ?? props.took.task.agentId}</span>
+            <span>{agentPickerLabel(agent(), props.took.task.agentId)}</span>
           </span>
         }
       >
@@ -377,7 +388,7 @@ function TaskRow(props: {
       data-selected={props.selected ? "" : undefined}
       aria-label={t("conversation.tasks.page.row", {
         title: props.task.title,
-        agent: props.agent?.name ?? props.task.agentId,
+        agent: agentPickerLabel(props.agent, props.task.agentId),
         status: status(),
       })}
       aria-pressed={props.selected ? "true" : "false"}

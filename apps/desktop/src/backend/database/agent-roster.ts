@@ -2,7 +2,7 @@ import type { DatabaseSync } from "node:sqlite";
 import type { AgentSummary } from "@zollybot/contracts/ipc";
 import { revokeRoutineWebhooks } from "../webhook-route-store";
 import { type DatabaseCore, deleteReceiptsOf } from "./database-core";
-import { databaseRow, databaseRows, requiredStringColumn } from "./database-rows";
+import { databaseRow, databaseRows, optionalStringColumn, requiredStringColumn } from "./database-rows";
 
 type AgentRuntime = Pick<AgentSummary, "provider" | "model" | "reasoningEffort">;
 
@@ -126,6 +126,22 @@ export class AgentRoster {
         },
       ],
       (db, sequences) => {
+        // Employment rows hang off `projection_agents` by a cascade. A roster write replaces the
+        // projection, so snapshot the desks first and put back the ones whose agent remains. The
+        // desks of agents that are gone are meant to cascade away.
+        const hasEmployments = db
+          .prepare("SELECT 1 AS present FROM sqlite_master WHERE type = 'table' AND name = 'agent_employments'")
+          .get();
+        const employments = hasEmployments
+          ? databaseRows(db.prepare("SELECT agent_id, office_id, role_key, scope FROM agent_employments").all()).map(
+              (row) => ({
+                agentId: requiredStringColumn(row, "agent_id"),
+                officeId: optionalStringColumn(row, "office_id"),
+                roleKey: requiredStringColumn(row, "role_key"),
+                scope: requiredStringColumn(row, "scope"),
+              }),
+            )
+          : [];
         db.exec("DELETE FROM projection_agents");
         const insert = db.prepare(`
           INSERT INTO projection_agents
@@ -144,6 +160,18 @@ export class AgentRoster {
           );
           if (agent.threadId) this.ensureThreadProjection(db, agent, sequences[0] ?? 0);
         });
+        if (employments.length > 0) {
+          const kept = new Set(agents.map((agent) => agent.id));
+          const restore = db.prepare(
+            `INSERT OR REPLACE INTO agent_employments (agent_id, office_id, role_key, scope)
+             VALUES (?, ?, ?, ?)`,
+          );
+          for (const employment of employments) {
+            if (kept.has(employment.agentId)) {
+              restore.run(employment.agentId, employment.officeId, employment.roleKey, employment.scope);
+            }
+          }
+        }
         pruneRosterEvents(db, sequences[0] ?? 0);
         return null;
       },

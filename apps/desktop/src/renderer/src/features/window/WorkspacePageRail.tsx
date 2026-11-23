@@ -71,6 +71,7 @@ export function WorkspacePageRail(props: { hidden: boolean }) {
       onWorkflows={() => windowPage.openWorkflows(null)}
       onSchedule={windowPage.openSchedule}
       onTasks={tasksAvailable() ? windowPage.openTasks : undefined}
+      onLedger={windowPage.openLedger}
       onUsage={windowPage.openUsage}
       onMarketplace={() => setSkillsMarketplaceOpen(true)}
       onSettings={(button) => (updateNotice() ? openAppSettings(button, "updates") : windowPage.openSettings(button))}

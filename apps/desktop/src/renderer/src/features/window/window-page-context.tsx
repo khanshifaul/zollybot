@@ -10,6 +10,7 @@ import { useUsage } from "../usage/usage-context";
 export type WindowPage =
   | "agents"
   | "tasks"
+  | "ledger"
   | "schedule"
   | "workflows"
   | "usage"
@@ -26,7 +27,7 @@ export type WindowPageKind = "agents" | "settings" | "titled";
 
 export function windowPageKind(page: WindowPage): WindowPageKind {
   if (page === "settings" || page === "server-settings") return "settings";
-  return page === "agents" || page === "tasks" ? "agents" : "titled";
+  return page === "agents" || page === "tasks" || page === "ledger" ? "agents" : "titled";
 }
 
 /** The settings pages: the settings of the user, or the settings of one server. */
@@ -51,11 +52,14 @@ const context = createSimpleContext({
     const { activeServerId } = useServers();
     /** The elements of the settings page that the settings panel shows in. The page sets them. */
     const [settingsMounts, setSettingsMounts] = createSignal<SettingsPagePlacement | undefined>();
+    /** The Office Ledger page, which belongs to the active office rather than to a server pane. */
+    const [ledgerOpen, setLedgerOpen] = createSignal(false);
 
     const page = createMemo<WindowPage>(() => {
       if (serverSettings.serverSettingsOpen()) return "server-settings";
       if (settings.appSettingsOpen()) return "settings";
       if (settings.skillsMarketplaceOpen()) return "marketplace";
+      if (ledgerOpen()) return "ledger";
       return usage.state.serverId ? usage.state.view : "agents";
     });
 
@@ -69,6 +73,7 @@ const context = createSimpleContext({
     createEffect(settings.appSettingsOpenRequest, (request, previous) => {
       if (previous === undefined || request === previous) return;
       usage.dismissUsage();
+      setLedgerOpen(false);
       if (untrack(settings.skillsMarketplaceOpen)) settings.setSkillsMarketplaceOpen(false);
       if (untrack(serverSettings.serverSettingsOpen)) serverSettings.setServerSettingsOpen(false);
     });
@@ -77,6 +82,7 @@ const context = createSimpleContext({
     createEffect(serverSettings.serverSettingsOpenRequest, (request, previous) => {
       if (previous === undefined || request === previous) return;
       usage.dismissUsage();
+      setLedgerOpen(false);
       if (untrack(settings.skillsMarketplaceOpen)) settings.setSkillsMarketplaceOpen(false);
       if (untrack(settings.appSettingsOpen)) settings.setAppSettingsOpen(false);
     });
@@ -89,6 +95,7 @@ const context = createSimpleContext({
         if (untrack(settings.appSettingsOpen)) settings.setAppSettingsOpen(false);
         if (untrack(serverSettings.serverSettingsOpen)) serverSettings.setServerSettingsOpen(false);
         if (untrack(settings.skillsMarketplaceOpen)) settings.setSkillsMarketplaceOpen(false);
+        setLedgerOpen(false);
       },
     );
 
@@ -96,6 +103,7 @@ const context = createSimpleContext({
     createEffect(settings.skillsMarketplaceOpen, (open) => {
       if (!open) return;
       usage.dismissUsage();
+      setLedgerOpen(false);
       if (untrack(settings.appSettingsOpen)) settings.setAppSettingsOpen(false);
       if (untrack(serverSettings.serverSettingsOpen)) serverSettings.setServerSettingsOpen(false);
     });
@@ -144,22 +152,43 @@ const context = createSimpleContext({
         serverSettings.setServerSettingsOpen(false);
         settings.setSkillsMarketplaceOpen(false);
         usage.dismissUsage();
+        setLedgerOpen(false);
+      },
+      /** Shows the Office Ledger of the office in the top bar. */
+      openLedger() {
+        settings.setAppSettingsOpen(false);
+        serverSettings.setServerSettingsOpen(false);
+        settings.setSkillsMarketplaceOpen(false);
+        usage.dismissUsage();
+        setLedgerOpen(true);
       },
       openTasks(source: HTMLElement | null) {
         const serverId = activeServerId();
-        if (serverId) usage.openTasks(serverId, source);
+        if (serverId) {
+          setLedgerOpen(false);
+          usage.openTasks(serverId, source);
+        }
       },
       openSchedule(source: HTMLElement | null) {
         const serverId = activeServerId();
-        if (serverId) usage.openSchedule(serverId, source);
+        if (serverId) {
+          setLedgerOpen(false);
+          usage.openSchedule(serverId, source);
+        }
       },
       openWorkflows(source: HTMLElement | null) {
         const serverId = activeServerId();
-        if (serverId) usage.openWorkflows(serverId, source);
+        if (serverId) {
+          setLedgerOpen(false);
+          usage.openWorkflows(serverId, source);
+        }
       },
       openUsage(source: HTMLElement | null) {
         const serverId = activeServerId();
-        if (serverId) usage.openUsage(serverId, source);
+        if (serverId) {
+          setLedgerOpen(false);
+          usage.openUsage(serverId, source);
+        }
       },
       openSettings(source: HTMLElement | null) {
         settings.openAppSettings(source);

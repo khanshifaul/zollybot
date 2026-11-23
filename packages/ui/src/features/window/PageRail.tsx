@@ -1,6 +1,7 @@
 import { Dynamic, type JSX } from "@solidjs/web";
 import { AppLogo, type AppLogoVariant, ProviderLogo } from "@zollybot/brand";
 import {
+  BookOpen,
   Bot,
   Button,
   CalendarClock,
@@ -174,6 +175,7 @@ export type PageRailPage =
   | "routines"
   | "workflows"
   | "tasks"
+  | "ledger"
   | "schedule"
   | "usage"
   | "marketplace"
@@ -184,6 +186,7 @@ export const PAGE_RAIL_PINNABLE_PAGES = [
   "routines",
   "workflows",
   "tasks",
+  "ledger",
   "schedule",
   "usage",
 ] as const satisfies readonly PageRailPage[];
@@ -207,6 +210,8 @@ export interface PageRailProps {
   onWorkflows?: (() => void) | undefined;
   /** Absent where the server keeps no tasks. */
   onTasks?: ((button: HTMLElement) => void) | undefined;
+  /** Absent where there is no Office Ledger page. */
+  onLedger?: (() => void) | undefined;
   /** Absent where there is no schedule page. */
   onSchedule?: ((button: HTMLElement) => void) | undefined;
   onUsage: (button: HTMLElement) => void;
@@ -349,7 +354,7 @@ export function PageRail(props: PageRailProps) {
   /** The pages that this server has, in rail order. */
   const pages = createMemo((): RailPage[] => {
     const list: RailPage[] = [];
-    const { onRoutines, onWorkflows, onTasks, onSchedule } = props;
+    const { onRoutines, onWorkflows, onTasks, onLedger, onSchedule } = props;
     if (onRoutines) {
       list.push({
         id: "routines",
@@ -368,6 +373,14 @@ export function PageRail(props: PageRailProps) {
     }
     if (onTasks) {
       list.push({ id: "tasks", label: t("app.rail.tasks"), icon: ListChecks, open: onTasks });
+    }
+    if (onLedger) {
+      list.push({
+        id: "ledger",
+        label: t("app.rail.ledger"),
+        icon: BookOpen,
+        open: () => onLedger(),
+      });
     }
     if (onSchedule) {
       list.push({

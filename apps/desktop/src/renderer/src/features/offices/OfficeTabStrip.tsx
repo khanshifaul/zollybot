@@ -118,11 +118,12 @@ export function TopBar(props: TopBarProps = {}) {
       const existing = byOffice.get(office.id);
       if (existing) {
         existing.name = office.name || existing.name;
+        existing.headcount = office.agents;
       } else {
         byOffice.set(office.id, {
           id: office.id,
           name: office.name,
-          headcount: 0,
+          headcount: office.agents,
           building: false,
         });
       }

@@ -22,6 +22,7 @@ import { ChannelRoutineStore } from "./channel-routine-store";
 import { ChannelStore } from "./channel-store";
 import { ConversationReadStore } from "./conversation-read-store";
 import { runCauseEffect } from "./effect-boundary";
+import { listEmployments, upsertEmployment } from "./offices/office-store";
 import { ZollyBotDatabase } from "./zollybot-database";
 import { LATEST_SCHEMA_VERSION, MIGRATION_VERSIONS } from "./zollybot-database-schema";
 
@@ -138,6 +139,28 @@ describe("ZollyBotDatabase", () => {
     expect(database.connection.prepare("SELECT version FROM schema_migrations ORDER BY version").all()).toEqual([
       ...appliedVersions(8),
     ]);
+    database.close();
+  });
+
+  it("keeps employments when a roster write replaces the agent projection", async () => {
+    const database = await createDatabase();
+    const agent = testAgent();
+    database.replaceAgents("employment-roster-first", [agent], "agents.imported");
+    upsertEmployment(database.connection, {
+      agentId: agent.id,
+      officeId: null,
+      roleKey: "butler",
+      scope: "building",
+    });
+
+    database.replaceAgents("employment-roster-second", [{ ...agent, name: "Chief Again" }], "agents.updated");
+
+    expect(listEmployments(database.connection)).toEqual([
+      { agentId: agent.id, officeId: null, roleKey: "butler", scope: "building" },
+    ]);
+
+    database.replaceAgents("employment-roster-removed", [], "agents.updated");
+    expect(listEmployments(database.connection)).toEqual([]);
     database.close();
   });
 

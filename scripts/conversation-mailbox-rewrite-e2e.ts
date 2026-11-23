@@ -371,7 +371,8 @@ async function runRequestTurnsCase(result: CaseReport): Promise<void> {
       await runCauseEffect(mailbox.markTerminal(deliveryId, "completed"));
       const requestAt = mailbox.conversationMessages(agent.id).find((message) => message.id === deliveryId)?.createdAt;
       assert.ok(requestAt);
-      last = await nextTime(requestAt > last ? requestAt : last);
+      const latest = [requestAt, last].sort().at(-1) ?? last;
+      last = await nextTime(latest);
       answers.push(assistantMessage(turn, last, text));
       last = await nextTime(last);
     }

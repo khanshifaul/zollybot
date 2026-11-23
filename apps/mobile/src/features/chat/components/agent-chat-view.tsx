@@ -38,7 +38,7 @@ import { useQuestionPrompt } from "./use-question-prompt";
 export function MobileChatView({
   agent,
   focusMessageId,
-  autoStartVoice = false,
+  autoStartVoice: _autoStartVoice = false,
   onLeave,
 }: {
   agent: MobileAgent;

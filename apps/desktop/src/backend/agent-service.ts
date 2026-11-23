@@ -4369,6 +4369,9 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     // the founder opens a real one.
     yield* Effect.sync(() => syncEmployments(this.#store.database.connection, this.#store.list(), roleForAgentName));
     yield* Effect.ignore(this.#ensureButler());
+    // The startup backfill changes the employments that the roster and office tabs read. Tell the
+    // clients once, because no other roster write follows it on an install that was already seeded.
+    yield* Effect.sync(() => this.notifyAgentsChanged());
     yield* this.#mailbox
       .initialize()
       .pipe(

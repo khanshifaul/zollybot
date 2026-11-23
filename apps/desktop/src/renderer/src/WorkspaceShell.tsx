@@ -21,7 +21,7 @@ import { useDirectMessages } from "./features/conversation/direct-messages-conte
 import { WorkspaceConversation } from "./features/conversation/WorkspaceConversation";
 import { WorkspaceDirectConversation } from "./features/conversation/WorkspaceDirectConversation";
 import { useCustomAgentUsagePolling } from "./features/custom-agents/custom-agent-usage-polling";
-import { OfficeLedgerDialog } from "./features/office-tasks/OfficeLedgerDialog";
+import { OfficeLedgerPage } from "./features/office-tasks/OfficeLedgerPage";
 import { TopBar } from "./features/offices/OfficeTabStrip";
 import { WorkspaceServerOnboarding } from "./features/onboarding/WorkspaceServerOnboarding";
 import { useRemoteDesktop } from "./features/remote-desktop/remote-desktop-context";
@@ -105,21 +105,13 @@ export function WorkspaceShell(props: {
   const middlePane = createMemo(() => {
     if (chatWindow) return "agent";
     if (windowPage.page() === "tasks") return "tasks";
+    if (windowPage.page() === "ledger") return "ledger";
     if (agentSetupOpen()) return "agent-setup";
     if (channelOpen()) return "channel";
     if (activeDirectMember()) return "direct";
     return layout.sidebarView() === "routines" ? "routines" : "agent";
   });
   const agentChatOpen = () => middlePane() === "agent";
-  const ledgerOfficeId = () => {
-    const id = agents.activeOfficeId();
-    return id && id !== "building" ? id : null;
-  };
-  const ledgerOfficeName = () => {
-    const id = ledgerOfficeId();
-    if (!id) return t("app.offices.lobby");
-    return agents.agentList().find((agent) => agent.officeId === id)?.officeName ?? id;
-  };
   if (chatWindow) {
     // The title names the chat. The window closes when its agent is gone, so it never shows another.
     createEffect(
@@ -239,7 +231,6 @@ export function WorkspaceShell(props: {
   // first load after its exit mounts a new screen.
   const [loadingCover, setLoadingCover] = createSignal(false);
   const [coverOpen, setCoverOpen] = createSignal(false);
-  const [ledgerOpen, setLedgerOpen] = createSignal(false);
   // The chat is the heaviest view to mount. It waits while a loading screen moves its crew, so they do
   // not stutter, and mounts while the screen fades.
   const chatHeld = () => !!props.behindSplash?.() || (loadingCover() && !coverOpen());
@@ -332,7 +323,13 @@ export function WorkspaceShell(props: {
             )
           }
           actions={
-            <Button type="button" variant="ghost" size="sm" onClick={() => setLedgerOpen(true)}>
+            <Button
+              type="button"
+              variant={windowPage.page() === "ledger" ? "secondary" : "ghost"}
+              size="sm"
+              aria-pressed={windowPage.page() === "ledger" ? "true" : "false"}
+              onClick={() => windowPage.openLedger()}
+            >
               {t("conversation.tasks.ledger.open")}
             </Button>
           }
@@ -366,7 +363,7 @@ export function WorkspaceShell(props: {
             blockedServer={blockedRemoteServer()}
             onRetryServer={retryServerConnection}
             windowPage={windowPage.page()}
-            sidebarHidden={tasksAgentsHidden()}
+            sidebarHidden={tasksAgentsHidden() || middlePane() === "ledger"}
             left={
               <Show when={!chatWindow}>
                 <WorkspaceServerRail />
@@ -383,6 +380,9 @@ export function WorkspaceShell(props: {
               </>
             }
           >
+            <Show when={middlePane() === "ledger"}>
+              <OfficeLedgerPage />
+            </Show>
             <Show when={middlePane() === "tasks" && tasksSupported() ? usage.state.serverId : null}>
               {(serverId) => (
                 <TasksPanel
@@ -419,14 +419,6 @@ export function WorkspaceShell(props: {
             {connectionNotice(true, false)}
           </Show>
         </div>
-        <OfficeLedgerDialog
-          open={ledgerOpen()}
-          officeId={ledgerOfficeId()}
-          officeName={ledgerOfficeName()}
-          actorAgentId={agents.activeAgentId() ?? ""}
-          actorRole={agents.agentList().find((agent) => agent.id === agents.activeAgentId())?.role ?? null}
-          onOpenChange={setLedgerOpen}
-        />
       </div>
     </ConnectorsProvider>
   );
