@@ -8,7 +8,7 @@
 // - The source markdown becomes the new agent's workspace AGENTS.md, with `.agents/` paths made
 //   absolute so they still resolve from the agent workspace.
 import { existsSync } from "node:fs";
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { AgentStore } from "../apps/desktop/src/backend/agent-store";
 import { runCauseEffect } from "../apps/desktop/src/backend/effect-boundary";
@@ -40,7 +40,10 @@ function instructions(markdown: string, repoPath: string, officeName: string): s
     .replaceAll("{{PROJECT_NAME}}", officeName)
     .replaceAll("{{BASE_BRANCH}}", "main")
     .replaceAll(".agents/", `${repoPath}/.agents/`);
-  return `# Imported from the legacy zolly worker catalog\n\nOffice: ${officeName}\nRepository: ${repoPath}\n\n${rewritten}`;
+  return `# Imported from the legacy zolly worker catalog\n\nOffice: ${officeName}\nRepository: ${repoPath}\n\n${rewritten.replaceAll(
+    `${repoPath}/.agents/results/`,
+    `${repoPath}/.agents/zollybot/results/`,
+  )}`;
 }
 
 async function main(): Promise<void> {
@@ -60,6 +63,7 @@ async function main(): Promise<void> {
   for (const office of offices) {
     const workerDir = join(office.repoPath, ".agents", "worker");
     if (!existsSync(workerDir)) continue;
+    await mkdir(join(office.repoPath, ".agents", "zollybot", "results"), { recursive: true });
     const files = await readdir(workerDir);
     for (const file of files.sort()) {
       if (!file.endsWith(".md") || file === "generic.md" || file === "critic.md" || file === "SKIPPED.md") continue;
