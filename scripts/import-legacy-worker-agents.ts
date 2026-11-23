@@ -43,7 +43,7 @@ function instructions(markdown: string, repoPath: string, officeName: string): s
   return `# Imported from the legacy zolly worker catalog\n\nOffice: ${officeName}\nRepository: ${repoPath}\n\n${rewritten.replaceAll(
     `${repoPath}/.agents/results/`,
     `${repoPath}/.agents/zollybot/results/`,
-  )}`;
+  )}\n\n## ZollyBot workspace\n\nThe legacy \`.agents\` tree from the separate zolly application has been removed. Use ZollyBot's task tools, and write results under \`<repo>/.agents/zollybot/results/\`. Do not rely on \`.agents/rules\`, \`.agents/worker\`, or \`.agents/inbox\`.\n`;
 }
 
 async function main(): Promise<void> {
