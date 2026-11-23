@@ -6,6 +6,13 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.65.0] - 2026-11-23
+
+### Changed
+
+- Shifaul Islam is now the project maintainer and package author.
+- Added [`CREDITS.md`](CREDITS.md) with the upstream author and indie developer credits.
+
 ## [0.64.6] - 2026-11-23
 
 ### Changed
