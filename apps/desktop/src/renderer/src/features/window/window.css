@@ -951,6 +951,15 @@
   box-shadow: var(--zollybot-focus-ring);
 }
 
+/* The Kobalte root is a flex child between the leading control and the actions. Without its own
+   shrinkable box, the inner scroll area is as wide as its tabs and the top bar overflows instead
+   of scrolling. */
+.top-bar-tabs-root {
+  display: flex;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
 .top-bar-tabs {
   display: flex;
   align-items: center;

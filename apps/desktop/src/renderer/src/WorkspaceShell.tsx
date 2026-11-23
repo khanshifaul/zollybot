@@ -1,5 +1,4 @@
 import { AGENT_TASKS_CAPABILITY } from "@zollybot/contracts/team-protocol/agent-tasks-v1";
-import { Button } from "@zollybot/ui";
 import {
   ConversationLoadNotice,
   ServerConnectionNotice,
@@ -321,17 +320,6 @@ export function WorkspaceShell(props: {
                 {...serverActions.callbacks}
               />
             )
-          }
-          actions={
-            <Button
-              type="button"
-              variant={windowPage.page() === "ledger" ? "secondary" : "ghost"}
-              size="sm"
-              aria-pressed={windowPage.page() === "ledger" ? "true" : "false"}
-              onClick={() => windowPage.openLedger()}
-            >
-              {t("conversation.tasks.ledger.open")}
-            </Button>
           }
         />
         <div class="app-window">

@@ -180,7 +180,6 @@ export const messages = defineMessages("conversation", {
   "conversation.tasks.page.took": "took “{title}”",
   "conversation.tasks.page.undo": "Undo",
   "conversation.tasks.ledger.title": "Office Ledger",
-  "conversation.tasks.ledger.open": "Ledger",
   "conversation.tasks.ledger.all": "All",
   "conversation.tasks.ledger.refresh": "Refresh",
   "conversation.tasks.ledger.column.task": "Task",
