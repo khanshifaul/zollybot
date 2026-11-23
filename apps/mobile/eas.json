@@ -20,7 +20,8 @@
       "channel": "preview",
       "environment": "preview",
       "env": {
-        "EXPO_PUBLIC_APP_ENV": "preview"
+        "EXPO_PUBLIC_APP_ENV": "preview",
+        "EXPO_PUBLIC_JARVIS": "1"
       }
     },
     "production": {
@@ -42,7 +43,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_APP_ENV": "production"
+        "EXPO_PUBLIC_APP_ENV": "production",
+        "EXPO_PUBLIC_JARVIS": "1"
       }
     }
   },
