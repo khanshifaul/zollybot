@@ -22,6 +22,13 @@ updates:
       - dependency-name: "*"
         update-types:
           - version-update:semver-major
+      # Solid 2.0 stable removed the `solid-js/web` export that several of our
+      # dependencies still import, and lucide-solid 1.77 renamed icons and
+      # outgrew our 1.33 patch. Migrate these four together in a dedicated PR.
+      - dependency-name: "solid-js"
+      - dependency-name: "@solidjs/web"
+      - dependency-name: "@solidjs/vite-plugin"
+      - dependency-name: "lucide-solid"
 
   - package-ecosystem: github-actions
     directory: /
