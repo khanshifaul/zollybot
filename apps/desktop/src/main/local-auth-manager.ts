@@ -1,5 +1,6 @@
 import { EventEmitter } from "node:events";
 import type { CentralAuthState, CentralAuthUser } from "@zollybot/contracts/ipc";
+import { ZOLLYBOT_MARKETPLACE_ORIGIN } from "@zollybot/contracts/marketplace-links";
 import { Effect } from "effect";
 import { CentralAuthOperationError } from "./central-auth-effects";
 
@@ -15,6 +16,11 @@ const LOCAL_USER: CentralAuthUser = {
   analyticsEnabled: false,
   chatColor: null,
 };
+
+/** The catalog is public, so local-only mode can read it without an account. */
+function isPublicCatalogPath(path: string): boolean {
+  return path.startsWith("/v1/marketplace/") || path.startsWith("/v1/skills");
+}
 
 const LOCAL_STATE: CentralAuthState = {
   status: "signed_in",
@@ -53,7 +59,7 @@ export class LocalAuthManager extends EventEmitter<LocalAuthEvents> {
   }
 
   resolveApiUrl(path: string): string {
-    return `http://local/${path}`;
+    return new URL(path, ZOLLYBOT_MARKETPLACE_ORIGIN).toString();
   }
 
   get centralAuthApiUrl(): string | undefined {
@@ -133,15 +139,63 @@ export class LocalAuthManager extends EventEmitter<LocalAuthEvents> {
   redeemTeamAuthTicket = (_ticket?: string, _serverId?: string): Effect.Effect<never, CentralAuthOperationError> =>
     Effect.fail(new CentralAuthOperationError({ cause: new Error("Remote hosts not available in local-only mode") }));
   sendTeamInviteEmail = (_input?: unknown): Effect.Effect<void> => Effect.succeed(undefined);
+  /**
+   * The public catalog needs no account. Local-only mode reads it directly, while the methods that
+   * still need a signed-in account keep failing on their own endpoints.
+   */
   requestAuthorized = <T>(
-    _path: string,
-    _init: RequestInit,
-    _decoder: (value: unknown) => T,
-    _timeoutMs?: number,
-  ): Effect.Effect<T, CentralAuthOperationError> =>
-    Effect.fail(new CentralAuthOperationError({ cause: new Error("Remote hosts not available in local-only mode") }));
-  downloadAuthorized = (_path: string): Effect.Effect<Uint8Array, CentralAuthOperationError> =>
-    Effect.fail(new CentralAuthOperationError({ cause: new Error("Remote hosts not available in local-only mode") }));
+    path: string,
+    init: RequestInit,
+    decoder: (value: unknown) => T,
+    timeoutMs = 15_000,
+  ): Effect.Effect<T, CentralAuthOperationError> => {
+    if (!isPublicCatalogPath(path)) {
+      return Effect.fail(
+        new CentralAuthOperationError({ cause: new Error("Remote hosts not available in local-only mode") }),
+      );
+    }
+    return Effect.gen(function* () {
+      const response = yield* Effect.tryPromise({
+        try: () =>
+          fetch(new URL(path, ZOLLYBOT_MARKETPLACE_ORIGIN), {
+            ...init,
+            signal: AbortSignal.timeout(timeoutMs),
+          }),
+        catch: (cause) => new CentralAuthOperationError({ cause }),
+      });
+      if (!response.ok) {
+        return yield* Effect.fail(
+          new CentralAuthOperationError({ cause: new Error(`Marketplace request failed: ${response.status}`) }),
+        );
+      }
+      const value = yield* Effect.tryPromise({
+        try: () => response.json(),
+        catch: (cause) => new CentralAuthOperationError({ cause }),
+      });
+      return yield* Effect.try({
+        try: () => decoder(value),
+        catch: (cause) => new CentralAuthOperationError({ cause }),
+      });
+    });
+  };
+
+  downloadAuthorized = (path: string): Effect.Effect<Uint8Array, CentralAuthOperationError> =>
+    Effect.gen(function* () {
+      const response = yield* Effect.tryPromise({
+        try: () => fetch(new URL(path, ZOLLYBOT_MARKETPLACE_ORIGIN), { signal: AbortSignal.timeout(15_000) }),
+        catch: (cause) => new CentralAuthOperationError({ cause }),
+      });
+      if (!response.ok) {
+        return yield* Effect.fail(
+          new CentralAuthOperationError({ cause: new Error(`Marketplace download failed: ${response.status}`) }),
+        );
+      }
+      const bytes = yield* Effect.tryPromise({
+        try: () => response.arrayBuffer(),
+        catch: (cause) => new CentralAuthOperationError({ cause }),
+      });
+      return new Uint8Array(bytes);
+    });
   issueGitHubRoute = (
     _hostId: string,
     _githubToken: string,

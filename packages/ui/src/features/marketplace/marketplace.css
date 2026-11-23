@@ -4,12 +4,10 @@
 
 /* A page of the window: the window card draws the surface, the line and the corner. */
 .skills-marketplace {
-  /* One inset for the whole window: the top bar title and the body start on it. */
+  /* One inset for the whole window: the tab row and the body start on it. */
   --marketplace-inset: var(--zollybot-space-6);
-  display: grid;
-  /* The side panel has the width of the settings page nav. The top row is above both columns. */
-  grid-template-columns: max(var(--left-panel-width, 280px), 220px) minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -28,78 +26,60 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
 
 .skills-marketplace-topbar {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   gap: var(--zollybot-space-3);
-  grid-column: 1 / -1;
   min-height: 48px;
   padding-block: var(--zollybot-space-2);
   padding-inline: var(--marketplace-inset) var(--zollybot-space-2);
   border-bottom: 1px solid var(--zollybot-border);
 }
 
-/* ---------------------------------------------------------------- side panel */
+/* ---------------------------------------------------------------- tabs */
 
-/* As the settings page nav: the title and the kinds, then the apps that the user connected. */
 .marketplace-nav {
   display: flex;
-  grid-row: 2;
-  grid-column: 1;
-  min-width: 0;
-  min-height: 0;
-  flex-direction: column;
+  flex: 0 0 auto;
+  align-items: center;
   gap: var(--zollybot-space-1);
-  overflow-y: auto;
-  padding: var(--zollybot-space-4) var(--zollybot-space-3) var(--zollybot-space-3);
-  border-inline-end: 1px solid var(--zollybot-border);
+  overflow-x: auto;
+  padding: var(--zollybot-space-2) var(--marketplace-inset);
+  border-bottom: 1px solid var(--zollybot-border);
 }
 
 .marketplace-nav-title {
-  margin: 0 0 var(--zollybot-space-3);
-  padding: 0 var(--zollybot-space-2);
-  color: var(--zollybot-text-primary);
-  font-size: var(--zollybot-text-lg);
-  font-weight: var(--zollybot-weight-semibold);
-  line-height: var(--zollybot-leading-lg);
-}
-
-/* The title takes the focus when the page opens, only so a screen reader reads it. */
-.marketplace-nav-title:focus {
-  outline: none;
-}
-
-.marketplace-nav-list {
   margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
-/* The icon column holds an app logo, which has its own margin, so it is one step bigger than a line icon. The kind
-   icons stay at their size in its center, so all names start at the same place. */
-.marketplace-nav-item {
-  grid-template-columns: var(--zollybot-icon-lg) minmax(0, 1fr) auto;
+.marketplace-tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--zollybot-space-1);
 }
 
-/* A row is a shared Button: it keeps the text of a settings row, not the larger text of a button. */
 .ui-button.marketplace-nav-item {
+  display: inline-flex;
+  gap: var(--zollybot-space-1-5);
+  align-items: center;
+  height: var(--zollybot-control-sm);
+  padding-inline: var(--zollybot-space-2-5);
+  border-radius: var(--zollybot-radius-md);
+  color: var(--zollybot-text-muted);
   font: inherit;
   font-size: var(--zollybot-text-md);
-  white-space: normal;
+  white-space: nowrap;
 }
 
-.ui-button.marketplace-nav-item[aria-current] {
-  font-weight: var(--zollybot-weight-medium);
-}
-
-/* The kind that holds the open page is selected, as the page itself is. */
-.marketplace-nav-item[aria-current="location"] {
+.ui-button.marketplace-nav-item:hover:not(:disabled) {
   background: var(--zollybot-bg-control-hover);
   color: var(--zollybot-text-primary);
-  font-weight: var(--zollybot-weight-medium);
 }
 
-.marketplace-nav-item > svg:first-child {
-  justify-self: center;
+.ui-button.marketplace-nav-item[aria-current="page"] {
+  background: var(--zollybot-bg-control);
+  color: var(--zollybot-text-primary);
+  font-weight: var(--zollybot-weight-medium);
 }
 
 .marketplace-nav-count {
@@ -109,52 +89,17 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
   font-variant-numeric: tabular-nums;
 }
 
-.marketplace-nav-heading {
-  margin: var(--zollybot-space-4) 0 var(--zollybot-space-1);
-  padding: 0 var(--zollybot-space-2);
-  color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-sm);
-  font-weight: var(--zollybot-weight-medium);
-  line-height: var(--zollybot-leading-sm);
-}
-
-.marketplace-nav-mark {
-  display: grid;
-  width: var(--zollybot-icon-lg);
-  height: var(--zollybot-icon-lg);
-  place-items: center;
-  overflow: hidden;
-  border-radius: var(--zollybot-radius-xs);
-}
-
-.marketplace-nav-mark > :is(svg, img) {
-  width: 100%;
-  height: 100%;
-  stroke-width: var(--zollybot-icon-stroke-lg);
-}
-
-.marketplace-nav-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.marketplace-nav-item > .marketplace-nav-warning {
-  color: var(--zollybot-warning-text);
-}
-
 .skills-marketplace-body {
   position: relative;
-  grid-row: 2;
-  grid-column: 2;
+  flex: 1 1 0;
+  min-height: 0;
   overflow: auto;
   scrollbar-gutter: stable;
 }
 
-/* Each list and page has one width, so the content does not move when a page opens. The large list title needs more
-   space below the top bar than the inset gives. */
+/* Each list and page has one width, so the content does not move when a page opens. */
 .marketplace-frame {
-  padding: calc(var(--zollybot-space-8) + var(--zollybot-space-2)) var(--marketplace-inset) var(--zollybot-space-8);
+  padding: var(--zollybot-space-6) var(--marketplace-inset) var(--zollybot-space-8);
 }
 
 .marketplace-frame > * {
@@ -1323,32 +1268,8 @@ html:active-view-transition-type(marketplace-swap)::view-transition-new(marketpl
 }
 
 @media (max-width: 720px) {
-  .skills-marketplace {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto minmax(0, 1fr);
-  }
-
   .marketplace-nav {
-    grid-row: 2;
-    overflow-x: auto;
-    padding: var(--zollybot-space-2) var(--zollybot-space-3);
-    border-inline-end: 0;
-    border-bottom: 1px solid var(--zollybot-border);
-  }
-
-  .marketplace-nav-title,
-  .marketplace-nav-group {
-    display: none;
-  }
-
-  .marketplace-nav-list {
-    grid-auto-columns: max-content;
-    grid-auto-flow: column;
-  }
-
-  .skills-marketplace-body {
-    grid-row: 3;
-    grid-column: 1;
+    padding-inline: var(--marketplace-inset);
   }
 }
 

@@ -169,14 +169,15 @@ function MarketplaceWindow(props: MarketplaceProps) {
 
   return (
     <>
+      <MarketplaceNav scope={scope} lists={lists} />
       {/* A browse page has its own title. A path appears only when there is a parent to return to. */}
       <Show when={nav.state.stack.length > 1}>
         <header class="skills-marketplace-topbar">
           <MarketplaceHeader scope={scope} />
         </header>
       </Show>
-      <MarketplaceNav scope={scope} lists={lists} />
       <div
+        id="marketplace-body"
         class={["skills-marketplace-body", fades.classes()]}
         ref={(element) => {
           body = element;
