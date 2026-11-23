@@ -5,14 +5,15 @@ const { withAndroidManifest } = require("expo/config-plugins");
 /** @type {import('expo/config-plugins').ConfigPlugin} */
 module.exports = (config) =>
   withAndroidManifest(config, (config) => {
-    const manifest = config.modResults.manifest;
-    const libraries = manifest["uses-native-library"] ?? [];
+    const application = config.modResults.manifest.application?.[0];
+    if (!application) return config;
+    const libraries = application["uses-native-library"] ?? [];
     const opencl = libraries.find((library) => library.$?.["android:name"] === "libOpenCL.so");
     if (opencl) opencl.$["android:required"] = "false";
     else
       libraries.push({
         $: { "android:name": "libOpenCL.so", "android:required": "false" },
       });
-    manifest["uses-native-library"] = libraries;
+    application["uses-native-library"] = libraries;
     return config;
   });
