@@ -447,6 +447,7 @@ const fakeAgents: TeamApiAgents = {
     throw new Error(`The status backend failed with ${FAKE_SECRET}.`);
   },
   listAgents: () => agents,
+  listAgentsWithEmployment: () => agents,
   listQueue: (agentId) => {
     record("listQueue", agentId);
     return queueSnapshot(agentId);

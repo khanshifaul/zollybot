@@ -211,7 +211,7 @@ export async function routeAgents(
     );
   }
   if (method === "GET" && url.pathname === TEAM_API_ROUTES.agents.all) {
-    return json(200, agents.listAgents());
+    return json(200, agents.listAgentsWithEmployment());
   }
   if (method === "GET" && url.pathname === TEAM_API_ROUTES.agents.conversationReads) {
     return json(200, agents.listConversationReads(member.id, markerExclusionsForCapabilities(capabilities)));

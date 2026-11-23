@@ -11,6 +11,7 @@ import PanelLeft from "lucide-react-native/icons/panel-left";
 import Plus from "lucide-react-native/icons/plus";
 import Settings2 from "lucide-react-native/icons/settings-2";
 import X from "lucide-react-native/icons/x";
+import Zap from "lucide-react-native/icons/zap";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -29,8 +30,10 @@ import { ConnectedScreen } from "@/features/agents/screens/connected-screen";
 import { hideOverLockScreen } from "@/features/app-lock/model/app-lock-native";
 import { JarvisOrb } from "@/features/assistant/components/jarvis-orb";
 import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
+import { useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import { resetJarvisNotification } from "@/features/assistant/native/background-service";
+import { captureScreen } from "@/features/assistant/native/screen-capture";
 import { AttachmentThumbnail } from "@/features/chat/components/attachment-preview";
 import { useChatAttachments } from "@/features/chat/components/use-chat-attachments";
 import { useVoiceDictation } from "@/features/chat/components/use-voice-dictation";
@@ -65,6 +68,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const setCapturing = useJarvisWakeState((state) => state.setCapturing);
   const attachments = useChatAttachments();
   const capture = useVoiceDictation({ enabled: true, onDraft: setDraft });
+  const screenContext = useJarvisSettings((state) => state.screenContext);
   const listeningRef = useRef(false);
   listeningRef.current = listening;
 
@@ -379,11 +383,28 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                     onPress: attachments.chooseFiles,
                   },
                   {
+                    key: "actions",
+                    label: t("mobile.app.jarvis.actions"),
+                    Icon: Zap,
+                    onPress: () => router.push("/jarvis-actions"),
+                  },
+                  {
                     key: "screen",
                     label: t("mobile.app.jarvis.screenShare"),
                     Icon: MonitorUp,
-                    onPress: () =>
-                      Alert.alert(t("mobile.app.jarvis.screenShare"), t("mobile.app.jarvis.screenShareHint")),
+                    onPress: async () => {
+                      if (!screenContext) {
+                        Alert.alert(t("mobile.app.jarvis.screenShare"), t("mobile.app.jarvis.screenShareHint"));
+                        return;
+                      }
+                      try {
+                        const screenshot = await captureScreen();
+                        await attachments.addPhoto(screenshot);
+                        setToolsOpen(false);
+                      } catch {
+                        Alert.alert(t("mobile.app.jarvis.screenShare"), t("mobile.app.jarvis.screenShareHint"));
+                      }
+                    },
                   },
                 ].map(({ key, label, Icon, onPress }) => (
                   <Pressable

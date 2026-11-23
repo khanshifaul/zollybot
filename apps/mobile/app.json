@@ -245,6 +245,12 @@
           "bundleIdentifier": "run.zollybot.mobile.NotificationService",
           "groupIdentifier": "group.run.zollybot.mobile"
         }
+      ],
+      [
+        "@qvac/sdk/expo-plugin",
+        {
+          "installMissingPrebuilds": true
+        }
       ]
     ],
     "experiments": {

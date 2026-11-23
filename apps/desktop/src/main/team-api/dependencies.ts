@@ -100,6 +100,7 @@ type TeamApiAgentMethods = Pick<
   | "getHostAnalytics"
   | "listModels"
   | "listAgents"
+  | "listAgentsWithEmployment"
   | "sidebarChatIds"
   | "listConversationReads"
   | "generateProfile"

@@ -184,14 +184,23 @@ export default function JarvisSettingsScreen() {
           <Row
             title={t("mobile.app.jarvis.screenContext")}
             detail={t("mobile.app.jarvis.screenContextHint")}
-            disabled
-            right={<Switch value={settings.screenContext} disabled />}
+            right={
+              <Switch
+                value={settings.screenContext}
+                onValueChange={(value) => void saveJarvisSettings({ screenContext: value })}
+              />
+            }
           />
           <Row
             title={t("mobile.app.jarvis.automate")}
             detail={t("mobile.app.jarvis.automateHint")}
-            disabled
-            right={<Switch value={settings.deviceActions} disabled />}
+            onPress={() => router.push("/jarvis-actions")}
+            right={
+              <Switch
+                value={settings.deviceActions}
+                onValueChange={(value) => void saveJarvisSettings({ deviceActions: value })}
+              />
+            }
           />
         </View>
 
@@ -202,6 +211,7 @@ export default function JarvisSettingsScreen() {
           <Row
             title={t("mobile.app.jarvis.localModel")}
             detail={`${selectedModel.name} · ${selectedModel.parameters}`}
+            onPress={() => router.push("/jarvis-local-model")}
           />
           <Row
             title={t("mobile.app.jarvis.visionModel")}

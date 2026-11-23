@@ -203,6 +203,22 @@ function AuthenticatedStack() {
           }}
         />
         <Stack.Screen
+          name="jarvis-actions"
+          options={{
+            animation: pushAnimation,
+            headerShown: false,
+            contentStyle: { backgroundColor: sheetBackground },
+          }}
+        />
+        <Stack.Screen
+          name="jarvis-local-model"
+          options={{
+            animation: pushAnimation,
+            headerShown: false,
+            contentStyle: { backgroundColor: sheetBackground },
+          }}
+        />
+        <Stack.Screen
           name="jarvis-settings"
           options={{
             animation: pushAnimation,
