@@ -6,6 +6,13 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.0] - 2026-11-24
+
+### Added
+
+- Jarvis now runs as a truly local assistant on the phone: it downloads a GGUF model, answers offline through llama.cpp, keeps conversation history in a right sidebar, speaks replies, and supports dictation and confirmed device actions.
+- The mobile ledger now groups agents and channels by office, and the Agents screen opens office chats from the drawer.
+
 ## [0.65.4] - 2026-11-24
 
 ### Added
