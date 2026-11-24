@@ -33,6 +33,7 @@ import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch"
 import { useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import { resetJarvisNotification } from "@/features/assistant/native/background-service";
+import { readScreenText } from "@/features/assistant/native/local-screen-context";
 import { captureScreen } from "@/features/assistant/native/screen-capture";
 import { AttachmentThumbnail } from "@/features/chat/components/attachment-preview";
 import { useChatAttachments } from "@/features/chat/components/use-chat-attachments";
@@ -63,6 +64,8 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [screenText, setScreenText] = useState<string | null>(null);
+  const [screenReading, setScreenReading] = useState(false);
   const [lockSent, setLockSent] = useState(false);
   const wakeNonce = useJarvisWakeState((state) => state.nonce);
   const setCapturing = useJarvisWakeState((state) => state.setCapturing);
@@ -131,7 +134,9 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   if (onboarding.active && !lock) return <ConnectedScreen />;
 
   const send = async () => {
-    const text = draft.trim();
+    const typed = draft.trim();
+    const screen = screenText ? `[${t("mobile.app.jarvis.screenShare")}]\n${screenText}` : "";
+    const text = [screen, typed].filter(Boolean).join("\n\n");
     if ((!text && attachments.items.length === 0) || sending) return;
     if (!butler) {
       setError(t("mobile.app.jarvis.noAgent"));
@@ -153,6 +158,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
       }
       await workspace.sendMessage(butler.id, text, attachmentIds, null, butler.serverId);
       setDraft("");
+      setScreenText(null);
       attachments.clear();
       if (lock) setLockSent(true);
       else router.push({ pathname: "/chat/[agentId]", params: { agentId: butler.id } });
@@ -269,6 +275,32 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
               gap: 8,
             }}
           >
+            {screenText ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 8,
+                  paddingHorizontal: 10,
+                  paddingVertical: 7,
+                  borderRadius: 12,
+                  backgroundColor: `${accent}14`,
+                }}
+              >
+                <MonitorUp color={accent} size={15} />
+                <Text numberOfLines={1} style={{ color: foreground, flex: 1, fontSize: 12 }}>
+                  {t("mobile.app.jarvis.screenShare")} · {t("mobile.app.jarvis.screenContextLocal")}
+                </Text>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t("mobile.app.jarvis.removeAttachment")}
+                  hitSlop={8}
+                  onPress={() => setScreenText(null)}
+                >
+                  <X color={muted} size={14} />
+                </Pressable>
+              </View>
+            ) : null}
             {attachments.items.length > 0 ? (
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
                 {attachments.items.map((item) => (
@@ -337,7 +369,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
               />
               <Pressable
                 accessibilityRole="button"
-                disabled={sending || listening || (!draft.trim() && attachments.items.length === 0)}
+                disabled={sending || listening || (!draft.trim() && !screenText && attachments.items.length === 0)}
                 onPress={() => void send()}
                 style={({ pressed }) => ({
                   width: 38,
@@ -346,7 +378,12 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: accent,
-                  opacity: sending || (!draft.trim() && attachments.items.length === 0) ? 0.45 : pressed ? 0.75 : 1,
+                  opacity:
+                    sending || (!draft.trim() && !screenText && attachments.items.length === 0)
+                      ? 0.45
+                      : pressed
+                        ? 0.75
+                        : 1,
                 })}
               >
                 {sending ? (
@@ -397,12 +434,17 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                         Alert.alert(t("mobile.app.jarvis.screenShare"), t("mobile.app.jarvis.screenShareHint"));
                         return;
                       }
+                      if (screenReading) return;
+                      setScreenReading(true);
                       try {
                         const screenshot = await captureScreen();
-                        await attachments.addPhoto(screenshot);
+                        const text = await readScreenText(screenshot);
+                        setScreenText(text);
                         setToolsOpen(false);
                       } catch {
                         Alert.alert(t("mobile.app.jarvis.screenShare"), t("mobile.app.jarvis.screenShareHint"));
+                      } finally {
+                        setScreenReading(false);
                       }
                     },
                   },

@@ -53,8 +53,10 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.camera": "Camera",
   "mobile.app.jarvis.photos": "Photos",
   "mobile.app.jarvis.files": "Files",
-  "mobile.app.jarvis.screenShare": "Screen share",
-  "mobile.app.jarvis.screenShareHint": "Live screen sharing arrives with the Gemini Live path in Phase 6.",
+  "mobile.app.jarvis.screenShare": "Screen context",
+  "mobile.app.jarvis.screenShareHint":
+    "Captures the screen once and reads its text on this phone. Nothing is uploaded.",
+  "mobile.app.jarvis.screenContextLocal": "Processed on this phone",
   "mobile.app.jarvis.removeAttachment": "Remove attachment",
   "mobile.app.jarvis.askPlaceholder": "Type to Jarvis",
   "mobile.app.jarvis.send": "Send",
