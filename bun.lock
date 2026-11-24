@@ -168,7 +168,6 @@
         "expo-widgets": "~58.0.29",
         "heroui-native": "^1.1.1",
         "katex": "catalog:",
-        "llama.rn": "0.13.0-rc.12",
         "lucide-react-native": "^1.77.0",
         "marked": "catalog:",
         "mermaid": "catalog:",
@@ -2987,8 +2986,6 @@
     "lilconfig": ["lilconfig@3.1.5", "", {}, "sha512-aRAOI9Ia43ygL4o1EOmC/sc/0OFxrm7qcQngiIyWaqVnSnz932ybJ07zyCcgMNGSDP8Yxaf88Xj1zHEXmvQ4SA=="],
 
     "lines-and-columns": ["lines-and-columns@1.2.4", "", {}, "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="],
-
-    "llama.rn": ["llama.rn@0.13.0-rc.12", "", { "peerDependencies": { "react": "*", "react-native": "*" }, "bin": { "llama-rn-download-artifacts": "install/download-native-artifacts.js" } }, "sha512-rNUJA5T2uR1y8yzOhmKvJFsX5mnb166OudRpbR6Rf1Qy7tFDAmBPIsZNxX4LUFPS/pon9y3rZM2f0Wd4qQnVag=="],
 
     "llm-splitter": ["llm-splitter@0.2.0", "", {}, "sha512-Yqi947Vk5Ps2YqhOV8K+RR6bseLhZLIVfovpWJH5cT7GE4Pca8/3iny/3oQ47scD7SfQd3whhxMfc+KgxTgDHA=="],
 

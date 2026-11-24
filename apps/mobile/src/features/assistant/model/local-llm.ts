@@ -1,39 +1,45 @@
-import { initLlama, type LlamaContext } from "llama.rn";
-
 export interface LocalLlmProgress {
   percentage: number;
   downloaded: number;
   total: number;
 }
 
-let context: LlamaContext | null = null;
+let loaded: string | null = null;
 let loadedKey: string | null = null;
 
-/** llama.rn resolves filesystem paths, not `file://` URLs. */
+/**
+ * The SDK is imported at use, not at module load: the rest of the app must still open where the
+ * native addon is absent.
+ */
+function sdk() {
+  return import("@qvac/sdk");
+}
+
+/** QVAC resolves filesystem paths, not `file://` URLs. */
 function pathOf(uri: string): string {
   return uri.startsWith("file://") ? decodeURIComponent(uri.slice("file://".length)) : uri;
 }
 
 export function localModelLoaded(): boolean {
-  return context !== null;
+  return loaded !== null;
 }
 
-/** Loads a GGUF downloaded from Hugging Face through llama.cpp on the phone. */
+/** Loads a GGUF downloaded from Hugging Face through QVAC's llama.cpp addon. */
 export async function loadLocalModelFile(uri: string, onProgress: (progress: LocalLlmProgress) => void): Promise<void> {
-  if (context && loadedKey === uri) return;
-  if (context) await unloadLocalModel();
-  const path = pathOf(uri);
-  context = await initLlama(
-    {
-      model: path,
-      n_ctx: 4096,
-      n_gpu_layers: 0,
-      use_mlock: false,
-      use_mmap: true,
-      vocab_only: false,
+  if (loaded && loadedKey === uri) return;
+  if (loaded) await unloadLocalModel();
+  const qvac = await sdk();
+  loaded = await qvac.loadModel({
+    modelSrc: pathOf(uri),
+    modelType: "llm",
+    onProgress: (progress) => {
+      onProgress({
+        percentage: Number(progress.percentage ?? 0),
+        downloaded: Number(progress.downloaded ?? 0),
+        total: Number(progress.total ?? 0),
+      });
     },
-    (progress) => onProgress({ percentage: progress * 100, downloaded: 0, total: 0 }),
-  );
+  });
   loadedKey = uri;
 }
 
@@ -42,27 +48,22 @@ export async function localReply(
   history: { role: "system" | "user" | "assistant"; content: string }[],
   onToken: (token: string) => void,
 ): Promise<string> {
-  if (!context) throw new Error("Load the local model first.");
-  const result = await context.completion(
-    {
-      messages: history,
-      n_predict: 512,
-      temperature: 0.7,
-      top_k: 40,
-      top_p: 0.95,
-      stop: ["</s>", "<|im_end|>", "<|endoftext|>"],
-    },
-    (data) => {
-      if (data.token) onToken(data.token);
-    },
-  );
-  return result.text;
+  if (!loaded) throw new Error("Load the local model first.");
+  const qvac = await sdk();
+  const result = qvac.completion({ modelId: loaded, history, stream: true });
+  let text = "";
+  for await (const token of result.tokenStream) {
+    text += token;
+    onToken(token);
+  }
+  return text;
 }
 
 export async function unloadLocalModel(): Promise<void> {
-  if (!context) return;
-  const current = context;
-  context = null;
+  if (!loaded) return;
+  const id = loaded;
+  loaded = null;
   loadedKey = null;
-  await current.release();
+  const qvac = await sdk();
+  await qvac.unloadModel({ modelId: id });
 }

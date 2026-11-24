@@ -24,6 +24,7 @@ import {
   BackHandler,
   Keyboard,
   KeyboardAvoidingView,
+  PanResponder,
   Platform,
   Pressable,
   ScrollView,
@@ -193,6 +194,19 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   };
   const butler = useMemo(() => agents.find((agent) => agent.name.toLowerCase() === "butler") ?? agents[0], [agents]);
   const conversationStarted = localHistory.length > 0 || localPhase !== "idle";
+  const rightEdgePan = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_event, gesture) =>
+          !historyOpen && gesture.dx < -10 && Math.abs(gesture.dx) > Math.abs(gesture.dy),
+        onPanResponderRelease: (_event, gesture) => {
+          if (historyOpen || gesture.dx > -48) return;
+          void haptics.selection();
+          setHistoryOpen(true);
+        },
+      }),
+    [historyOpen],
+  );
 
   if (onboarding.active && !lock) return <ConnectedScreen />;
 
@@ -735,6 +749,13 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
           {error ? <Text style={{ color: "#dc2626", fontSize: 12, paddingTop: 8 }}>{error}</Text> : null}
         </View>
       </KeyboardAvoidingView>
+
+      {!historyOpen ? (
+        <View
+          {...rightEdgePan.panHandlers}
+          style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 24, zIndex: 2 }}
+        />
+      ) : null}
 
       {historyOpen ? (
         <View style={StyleSheet.absoluteFill}>
