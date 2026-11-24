@@ -182,6 +182,7 @@ nsis:
 linux:
   category: Development
   icon: apps/desktop/build-resources/icon-production.png
+  maintainer: Shifaul Islam <khanshifaul@gmail.com>
   synopsis: A local-first multi-agent desktop workspace.
   extraResources:
     - from: apps/desktop/build-resources/linux/zollybot.apparmor

@@ -6,6 +6,12 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.65.3] - 2026-11-24
+
+### Fixed
+
+- Linux `.deb`, `.rpm`, and `.pacman` packages now name a maintainer, so the release build can publish the Linux desktop artifacts.
+
 ## [0.65.2] - 2026-11-24
 
 ### Added
