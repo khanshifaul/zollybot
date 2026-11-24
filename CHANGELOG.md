@@ -6,6 +6,30 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.65.2] - 2026-11-24
+
+### Added
+
+- The web app now has light, dark, and system themes, with the ZollyBot app mark, favicon, Apple icon, web manifest, and Open Graph card.
+- The public site is ready for Vercel and keeps `/latest`, `/install.sh`, `/changelog`, `/docs`, `/cla`, plugin share links, and old `/releases/0.62.10` updater URLs working.
+- Jarvis can search Hugging Face for public GGUF models, download one to the phone, verify its published SHA-256, load it through QVAC, and chat on device. Downloaded models can be reused or deleted.
+- Jarvis settings now shows QVAC catalog model download state and Android overlay and background-listening permission prompts.
+- Office registration now writes `.agents/zollybot/office.json` and `agents.json` snapshots, using ZollyBot's own state folder instead of the separate `zolly` application's `.agents/zolly/` marker.
+- Added the atomic office-state writer and per-writer event log that later phases use to restore channels, memory, and the ledger from the office repository.
+- Added a repeatable importer for the worker personas left by the separate `zolly` application. It creates office-scoped ZollyBot agents and writes each persona to the agent's `AGENTS.md`.
+- The public site now has a real Marketplace at `/marketplace`, with agent and skill catalogs, listing pages, search and category filters, and copy/open-in-ZollyBot actions.
+- The canonical production catalog is served by Next.js on `zollybot.vercel.app`, including the public `/v1/marketplace/*` and `/v1/skills/*` routes; no external account API is needed.
+- Marketplace share links now use `zollybot.vercel.app`; shared plugin links land on the Marketplace search.
+
+### Changed
+
+- The Marketplace uses Apps, Agents and Skills tabs instead of the side navigation panel.
+
+### Fixed
+
+- The desktop sidebar now lists a channel only in the office it belongs to: an office channel in its own office, and any other channel in its lead agent's office.
+- The Marketplace now reads the public catalog without an account, so the Agents and Skills tabs list their listings in the desktop app.
+
 ## [0.65.1] - 2026-11-23
 
 ### Added
