@@ -142,7 +142,7 @@ export function SkillsMarketplace() {
     pendingMarketplaceListing,
     setPendingMarketplaceListing,
   } = useSettings();
-  const { activeOfficeId, agentList, activeAgent, agentStatus, agentSetupOpen, creatingAgent } = useAgents();
+  const { activeOfficeId, filteredAgentList, activeAgent, agentStatus, agentSetupOpen, creatingAgent } = useAgents();
   const { selectAgent } = useNavigation();
   const { activeServer } = useServers();
   const { openInstalledMarketplaceAgent } = useServerSelection();
@@ -161,7 +161,7 @@ export function SkillsMarketplace() {
       open={skillsMarketplaceOpen()}
       onOpenChange={setSkillsMarketplaceOpen}
       server={activeServer()}
-      agents={agentList()}
+      agents={filteredAgentList()}
       activeAgentId={activeAgent()?.id ?? ""}
       officeId={activeOfficeId()}
       composerAvailable={agentStatus().phase === "ready" && !(agentSetupOpen() && creatingAgent())}
