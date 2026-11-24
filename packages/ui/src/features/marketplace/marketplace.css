@@ -62,8 +62,8 @@ body:has(.skills-marketplace) :is(.integration-dialog-backdrop, .integration-wiz
   display: inline-flex;
   gap: var(--zollybot-space-1-5);
   align-items: center;
-  height: var(--zollybot-control-sm);
-  padding-inline: var(--zollybot-space-2-5);
+  min-height: var(--zollybot-control-sm);
+  padding: var(--zollybot-space-1-5) var(--zollybot-space-3);
   border-radius: var(--zollybot-radius-md);
   color: var(--zollybot-text-muted);
   font: inherit;

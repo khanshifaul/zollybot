@@ -14,7 +14,7 @@ export function moveView(motion: MarketplaceMotion, update: () => void): void {
     update();
     return;
   }
-  document.startViewTransition({
+  const transition = document.startViewTransition({
     types: [`marketplace-${motion}`],
     update: () => {
       update();
@@ -23,6 +23,10 @@ export function moveView(motion: MarketplaceMotion, update: () => void): void {
       flush();
     },
   });
+  // A new view change skips the previous transition. Its promises reject with that skip, which is
+  // not an error in this window.
+  void transition.ready.catch(() => {});
+  void transition.finished.catch(() => {});
 }
 
 /**
