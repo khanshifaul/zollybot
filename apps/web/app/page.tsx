@@ -16,7 +16,6 @@ import {
   HardDrive,
   Monitor,
   Network,
-  Shield,
   Smartphone,
   Terminal,
 } from "lucide-react";
@@ -131,7 +130,7 @@ const DOWNLOADS: DownloadItem[] = [
     platform: "android",
     arch: "arm64",
     format: "APK",
-    note: "Connects to ZollyBot running on your computer.",
+    note: "Runs Jarvis locally on the phone and connects to your desktop office.",
     recommended: true,
     href: (v) => releaseAsset(v, ANDROID_RELEASE_ASSET(normalizeVersion(v) ?? "latest"), "android"),
   },
@@ -335,17 +334,21 @@ export default function Page() {
               <Badge variant="outline" className="rounded-full px-3 py-1">
                 Offices = repos
               </Badge>
+              <Badge variant="outline" className="rounded-full px-3 py-1">
+                Jarvis on-device
+              </Badge>
             </div>
             <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               A local-first workspace for
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 {" "}
-                AI agent teams
+                AI agent teams and Jarvis
               </span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-pretty text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-lg">
-              Run Codex, Claude, Grok, and more from one desktop workspace. Your conversations, attachments, browser
-              data, and app state stay in a local SQLite database on your machine.
+              Run Codex, Claude, Grok, and more from one workspace. On Android, Jarvis answers with a downloaded GGUF
+              model entirely on the phone — with voice, history, screen context, and confirmed device actions. Desktop
+              state stays in a local SQLite database.
             </p>
             <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
               <a
@@ -402,9 +405,9 @@ export default function Page() {
               </p>
             </div>
             <div className="rounded-2xl border border-border/70 bg-card/70 p-5 shadow-sm backdrop-blur">
-              <p className="text-sm font-medium">Provider flexibility</p>
+              <p className="text-sm font-medium">Jarvis runs on the phone</p>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                Use multiple agent providers in one workspace while preserving context and identity.
+                Download a GGUF model, chat offline, speak replies, and keep conversation history locally.
               </p>
             </div>
           </div>
@@ -417,7 +420,9 @@ export default function Page() {
             <Badge variant="outline" className="mb-3">
               Why ZollyBot
             </Badge>
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Built for local, multi-agent work</h2>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Built for local agents and local Jarvis
+            </h2>
             <p className="mt-3 text-muted-foreground">
               A practical desktop workspace for coordinating agents against real repositories without handing your
               project state to a hosted control plane.
@@ -435,14 +440,14 @@ export default function Page() {
               description="Register an office from a repository path so agents work in the context of actual codebases."
             />
             <Feature
+              icon={Smartphone}
+              title="Jarvis on-device"
+              description="Download a GGUF model and talk to Jarvis offline, with local history, voice, and confirmed device actions."
+            />
+            <Feature
               icon={Network}
               title="Multi-provider workflow"
               description="Switch between providers and agents while keeping workspace, thread, and identity continuity."
-            />
-            <Feature
-              icon={Shield}
-              title="Transparent control"
-              description="Network access is used for providers and visited pages; your core workspace state stays local."
             />
           </div>
         </Container>
@@ -639,7 +644,8 @@ export default function Page() {
                 </p>
                 <p>
                   <strong className="font-medium text-foreground">Local-first data.</strong> Workspaces, conversations,
-                  attachments, browser data, and team data stay on the computer that runs ZollyBot.
+                  attachments, browser data, and team data stay on the computer that runs ZollyBot. Android Jarvis
+                  models and conversations stay on the phone.
                 </p>
               </CardContent>
             </Card>
@@ -651,7 +657,7 @@ export default function Page() {
               <CardContent className="space-y-3 text-sm">
                 {[
                   { name: "Linux x86_64", status: "Supported", variant: "default" as const },
-                  { name: "Android arm64", status: "Supported", variant: "default" as const },
+                  { name: "Android arm64", status: "Supported · local Jarvis", variant: "default" as const },
                   { name: "macOS", status: "Installer / releases", variant: "secondary" as const },
                   { name: "Windows", status: "Installer / releases", variant: "secondary" as const },
                   { name: "iOS", status: "Mobile client", variant: "secondary" as const },
@@ -679,7 +685,7 @@ export default function Page() {
           size="lg"
           className="flex flex-col gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
         >
-          <p>ZollyBot — local-first multi-agent desktop workspace.</p>
+          <p>ZollyBot — local-first agent office and on-device Jarvis for desktop and mobile.</p>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <a className="hover:text-foreground" href={RELEASES}>
               Releases

@@ -3,13 +3,17 @@
 [![CI](https://github.com/khanshifaul/zollybot/actions/workflows/ci.yml/badge.svg)](https://github.com/khanshifaul/zollybot/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
 
-**A governed, memory-driven agent office you can reach from any device.**
+**A governed, memory-driven agent office with a local Jarvis assistant, on every device.**
 
 ZollyBot is a local-first desktop and mobile workspace for persistent AI teammates. It runs agents
 backed by Codex, Claude, OpenCode, Grok, Gemini, Cursor, Cline, Kimi, Devin, GitHub Copilot, Hermes,
 and more through ACP and custom providers, gives every agent its own workspace and conversation,
 and provides queues, file transfers, an embedded browser, routines, offices, tasks, and
 agent-to-agent messaging in one app.
+
+On Android, Jarvis runs a downloaded GGUF model entirely on the phone with llama.cpp: voice chat,
+conversation history, screen context, and confirmed device actions without sending the prompt to a
+server. The same phone can act as a remote control for a desktop office.
 
 > [!WARNING]
 > ZollyBot is a development preview. Agents currently run with `danger-full-access` and
@@ -33,11 +37,16 @@ agent-to-agent messaging in one app.
 - **Embedded browser & Computer Use** — persistent browser control for agents and optional desktop
   control via `cua-driver` where supported.
 - **Terminal frontend** — `zollybot-cli` (TUI/CLI) can attach to a running server.
-- **Local AI on phone** — on-device GGUF inference on Android when supported/enabled.
+- **Jarvis, the local assistant** — on Android, download a GGUF model and chat entirely on-device.
+  Conversations persist in a right sidebar, replies are spoken, screen text becomes context, and
+  Jarvis sets timers, opens apps, dials, or opens settings only after confirmation. Cloud fallback
+  is opt-in.
+- **Resumable model downloads** — pause, resume, or cancel a Hugging Face GGUF download; checksum,
+  size, and GGUF magic are verified before the model can be used.
 
 ## Install
 
-ZollyBot targets macOS 13+, Windows 10+ (x64), and x64/arm64 Linux.
+ZollyBot targets macOS 13+, Windows 10+ (x64), x64/arm64 Linux, and Android arm64.
 
 ### Prebuilt releases
 
@@ -46,6 +55,8 @@ Download releases from [GitHub Releases](https://github.com/khanshifaul/zollybot
 - **macOS**: install the DMG/app for your architecture and open ZollyBot.
 - **Windows**: run the installer.
 - **Linux**: AppImage, `.deb`, `.rpm`, `.pacman`, and a portable `.tar.gz` are published for x64 and arm64. On Arch, prefer the `.tar.gz`; it avoids the AppImage FUSE mount.
+- **Android**: download `zollybot-android-<version>.apk` from the release. It runs Jarvis locally
+  and can pair with a desktop host for office access.
 
 ### From source
 

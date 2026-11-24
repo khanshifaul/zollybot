@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZollyBot — governed agent offices</title>
+<title>ZollyBot — agent offices and on-device Jarvis</title>
 <style>
   :root { --fg:#1b1b1b; --muted:#5b5b5b; --border:#e3e3e3; --surface:#f7f7f7; --accent:#0b5fff; }
   * { box-sizing:border-box; }
@@ -36,7 +36,7 @@
 
 <header>
   <h1>ZollyBot</h1>
-  <p class="lead">Governed agent offices for your repositories. The agents run on your machine; you work them from any device.</p>
+  <p class="lead">Governed agent offices for your repositories, with Jarvis running entirely on your phone. Agents run on your machine; you work them from any device.</p>
 </header>
 
 <h2>Install on Linux</h2>
@@ -48,6 +48,16 @@
 </ul>
 <p>Then add the directory to your <code>PATH</code> if it is not there already, and run:</p>
 <pre><code>zollybot</code></pre>
+
+<h2>Jarvis, on the phone</h2>
+<p>Jarvis is the local assistant in the Android app. Download a GGUF model, then talk to it without
+sending the prompt to a server. The model, conversation history, and voice stay on the phone.</p>
+<ul>
+  <li>Download models from Hugging Face with pause, resume, size, and checksum verification.</li>
+  <li>Chat offline with spoken replies and a persistent conversation sidebar.</li>
+  <li>Use screen text as context, and set timers, open apps, dial, or open settings after confirmation.</li>
+  <li>Cloud fallback is opt-in. Local Jarvis never silently hands your prompt to a cloud agent.</li>
+</ul>
 
 <h2>First run</h2>
 <ol>
@@ -90,7 +100,7 @@ assets</a>.</p>
   <tr><td>Linux</td><td><code>zollybot</code> + <code>zollybot-cli</code></td><td>available — AppImage, with the CLI inside the app payload</td></tr>
   <tr><td>macOS</td><td><code>zollybot</code></td><td>arm64 and x64 builds when the release publishes them</td></tr>
   <tr><td>Windows</td><td><code>zollybot</code></td><td>x64 installer</td></tr>
-  <tr><td>Android</td><td>remote</td><td>arm64 release APK</td></tr>
+  <tr><td>Android</td><td><code>zollybot</code> APK</td><td>arm64 release — local Jarvis and remote office access</td></tr>
   <tr><td>iOS</td><td>remote</td><td>App Store build when available</td></tr>
 </table>
 
@@ -99,12 +109,12 @@ assets</a>.</p>
   <li><strong>An office is a repository, not a machine.</strong> Every device is a view on the
       server that owns the office.</li>
   <li><strong>Local first.</strong> Agents and files stay on the machine that owns the repository;
-      remote devices are controls, not workers.</li>
+      remote devices are controls, not workers. Android Jarvis runs its model on the phone.</li>
   <li><strong>One release source.</strong> The installer, updater, and download page all read the
       same GitHub release manifest.</li>
 </ul>
 
-<footer>ZollyBot · <a href="https://github.com/khanshifaul/zollybot">GitHub</a> ·
+<footer>ZollyBot — local-first agent office and on-device Jarvis · <a href="https://github.com/khanshifaul/zollybot">GitHub</a> ·
 <a href="/install.sh">installer</a> · <a href="https://github.com/khanshifaul/zollybot/releases/latest">latest release</a></footer>
 
 </body>
