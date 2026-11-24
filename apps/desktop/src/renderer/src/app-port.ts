@@ -45,7 +45,7 @@ export interface AppPort {
   events: ZollyBotDesktopApi["events"];
   plugins: Pick<ZollyBotDesktopApi["plugins"], "onOpenListing" | "takePendingListing">;
   marketplace: Pick<ZollyBotDesktopApi["marketplace"], "onOpenListing" | "takePendingListing">;
-  servers: Pick<ZollyBotDesktopApi["servers"], "onInvite" | "takePendingInvite">;
+  servers: Pick<ZollyBotDesktopApi["servers"], "onInvite" | "takePendingInvite" | "join" | "previewInvite">;
 }
 
 /** Read on each call: tests and stories replace `window.zollybot` per case. */

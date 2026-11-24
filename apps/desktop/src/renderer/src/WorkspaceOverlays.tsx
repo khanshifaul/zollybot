@@ -71,6 +71,7 @@ import { useTurns } from "./turns";
 import {
   ChannelCreateOverlay,
   GlobalSearchOverlay,
+  JoinServerOverlay,
   MarketplaceOverlay,
   ServerSettingsOverlay,
   SharedAgentInstallOverlay,
@@ -115,6 +116,7 @@ export function WorkspaceOverlays(props: AccountProps) {
       <MobileConnectApprovalPrompt />
       <SharedAgentInstall />
       <AddServer />
+      <JoinServer account={props.account} />
       <CreateLocalServer />
       <HostedUpsell account={props.account} />
       <LeaveServer />
@@ -218,6 +220,24 @@ function SharedAgentInstall() {
   );
 }
 
+/** A server on another computer, joined from its invitation or Mobile Connect link. */
+function JoinServer(props: AccountProps) {
+  const { joinServerOpen, setJoinServerOpen } = useServers();
+  return (
+    <JoinServerOverlay
+      open={joinServerOpen()}
+      inviteUrl=""
+      accountEmail={props.account().email}
+      onClose={() => setJoinServerOpen(false)}
+      onPreview={(input) => appPort().servers.previewInvite(input)}
+      onJoin={async (input) => {
+        await appPort().servers.join(input);
+        setJoinServerOpen(false);
+      }}
+    />
+  );
+}
+
 /** A new server on this computer, with its own agents, chats and files. */
 function CreateLocalServer() {
   const { servers, createLocalServerOpen, setCreateLocalServerOpen } = useServers();
@@ -239,7 +259,7 @@ function CreateLocalServer() {
 
 /** A hosted server: the plans, the payment, then the setup. */
 function AddServer() {
-  const { servers, addServerOpen, addServerEntryPoint, setAddServerOpen } = useServers();
+  const { servers, addServerOpen, addServerEntryPoint, setAddServerOpen, setJoinServerOpen } = useServers();
   const { select, createLocal } = useServerActions();
   const onCreateLocal =
     createLocal &&
@@ -260,7 +280,10 @@ function AddServer() {
         void select(serverId);
       }}
       onContactUs={() => void appPort().openExternal("hosted-server-contact")}
-      onJoinWithInvite={undefined}
+      onJoinWithInvite={() => {
+        setAddServerOpen(false);
+        setJoinServerOpen(true);
+      }}
       onCreateLocal={onCreateLocal}
     />
   );

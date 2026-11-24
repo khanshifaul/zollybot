@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
+import { hostname } from "node:os";
 import { basename } from "node:path";
 import { isValidAvatarImage } from "@zollybot/contracts/avatar-images";
 import { type InviteLinkOptions, type InviteLinkPayload, parseInviteUrl } from "@zollybot/contracts/invite-links";
@@ -62,7 +63,8 @@ import {
   REMOTE_DESKTOP_SETUP_CAPABILITY,
   type RemoteDesktopTestInput,
 } from "@zollybot/contracts/ipc";
-import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
+import { parseMobileConnectUrl, validateMobileConnectHostBinding } from "@zollybot/contracts/mobile-connect";
+import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import { AGENT_COLORS_CAPABILITY, AGENT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/agent-colors-v1";
 import { AGENT_IMPORT_ROUTES } from "@zollybot/contracts/team-protocol/agent-import-v1";
@@ -1051,6 +1053,42 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
     ): Effect.fn.Return<ServerSummary, RemoteWorkflowError, RemoteRequest> {
       const transport = this.#webrtcTransport;
 
+      const mobile = parseMobileConnectUrl(input.inviteUrl);
+      if (mobile) {
+        const binding = mobile.host;
+        if (!binding) {
+          return yield* new RemoteWorkflowError({ cause: new Error("The Mobile Connect link has no host identity.") });
+        }
+        const verified = yield* this.#client.verifyIdentity(mobile.apiUrl, binding.hostId, binding.fingerprint);
+        const session = yield* requestJson(mobile.apiUrl, "/v1/mobile-auth/redeem", decodeMobileConnectSession, {
+          method: "POST",
+          body: {
+            ticket: mobile.ticket,
+            deviceId: randomUUID(),
+            deviceName: hostname().slice(0, 80),
+            platform: "unknown",
+          },
+          ...this.#client.requestProtocol(verified.compatibility),
+        }).pipe(
+          Effect.mapError(
+            (failure) =>
+              new RemoteWorkflowError({
+                cause: "cause" in failure && failure.cause !== undefined ? failure.cause : failure,
+              }),
+          ),
+        );
+        validateMobileConnectHostBinding(binding, session.host);
+        return yield* this.connectDevelopmentServer({
+          serverId: binding.hostId,
+          serverName: verified.serverName,
+          apiUrl: mobile.apiUrl,
+          fingerprint: binding.fingerprint,
+          publicKey: verified.publicKey,
+          username: session.email || "ZollyBot desktop",
+          sessionToken: session.sessionToken,
+        });
+      }
+
       const invite = yield* remoteDecode(() => this.#parseInvite(input.inviteUrl));
       if (transport && !isLocalDevelopmentApi(invite.apiUrl)) {
         const preview = yield* transport.previewInvite(invite.token);
@@ -1303,6 +1341,19 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
     ): Effect.fn.Return<InvitePreview, RemoteWorkflowError, RemoteRequest> {
       const transport = this.#webrtcTransport;
 
+      const mobile = parseMobileConnectUrl(input.inviteUrl);
+      if (mobile?.host) {
+        const verified = yield* this.#client.verifyIdentity(mobile.apiUrl, mobile.host.hostId, mobile.host.fingerprint);
+        return {
+          serverId: mobile.host.hostId,
+          serverName: verified.serverName,
+          apiHostname: new URL(mobile.apiUrl).hostname,
+          role: "member",
+          expiresAt: new Date("9999-12-31T23:59:59.999Z").toISOString(),
+          emailBound: false,
+          permanent: true,
+        };
+      }
       const invite = yield* remoteDecode(() => this.#parseInvite(input.inviteUrl));
       if (transport && !isLocalDevelopmentApi(invite.apiUrl)) {
         const preview = yield* transport.previewInvite(invite.token);
@@ -2665,4 +2716,22 @@ async function fileResponseBytes(response: Response, maxBytes: number | undefine
   if (maxBytes !== undefined && bytes.byteLength > maxBytes)
     throw new Error(sourceText("error.attachment.previewTooLarge"));
   return bytes;
+}
+
+interface MobileConnectSession {
+  sessionToken: string;
+  email: string;
+  host: unknown;
+}
+
+function decodeMobileConnectSession(value: unknown): MobileConnectSession {
+  if (!isDynamicRecord(value) || !isString(value.sessionToken)) {
+    throw new Error("The host returned an invalid Mobile Connect session.");
+  }
+  const user = isDynamicRecord(value.user) ? value.user : null;
+  return {
+    sessionToken: value.sessionToken,
+    email: user && isString(user.email) ? user.email : "",
+    host: value.host,
+  };
 }
