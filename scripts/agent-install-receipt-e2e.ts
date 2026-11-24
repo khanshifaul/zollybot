@@ -229,8 +229,10 @@ async function scenario(
     },
     deleteRoutine: ({ routineId }) => Effect.sync(() => void routines.delete(routineId)),
     assignAgentOffice: (agentId, officeId) => {
-      assert.ok(agents.has(agentId));
+      const agent = agents.get(agentId);
+      assert.ok(agent);
       officeAssignments.set(agentId, officeId);
+      return agent;
     },
     setMarketplaceSource: (agentId, source) => {
       const agent = agents.get(agentId);

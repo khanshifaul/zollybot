@@ -291,6 +291,18 @@ const Agents = createSimpleContext({
      * Takes the agent off the roster while its delete can still be undone. Returns the function that
      * puts it back at the same place, or null when the roster has no such agent.
      */
+    /** Adds or refreshes one agent from a host answer, without reading the whole roster again. */
+    function upsertAgent(stored: ClientAgentSummary): void {
+      const next = toAgentProfile(withHostAgentAccount(stored, untrack(hostAccounts.host)));
+      setAgentList((current) => {
+        const index = current.findIndex((agent) => agent.id === next.id);
+        if (index === -1) return [...current, createStoredProfile(next)];
+        const existing = current[index];
+        if (existing) updateStored(existing, next);
+        return current;
+      });
+    }
+
     function hideAgent(agentId: string): (() => void) | null {
       const index = agentList().findIndex((agent) => agent.id === agentId);
       const agent = agentList()[index];
@@ -411,6 +423,7 @@ const Agents = createSimpleContext({
       activeOfficeId,
       setActiveOfficeId,
       setAgentList,
+      upsertAgent,
       agentListConnecting,
       agentListSettled,
       setAgentListSettled,

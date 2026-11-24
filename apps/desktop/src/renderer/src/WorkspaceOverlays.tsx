@@ -1,5 +1,6 @@
 import {
   type CentralAuthUser,
+  type ClientAgentSummary,
   LOCAL_SERVER_ID,
   LOCAL_SERVER_LIMIT,
   type RoutineFields,
@@ -25,7 +26,6 @@ import { appPort } from "./app-port";
 import { useAuth } from "./features/account/account-context";
 import { MobileConnectApprovalPrompt } from "./features/account/MobileConnectApprovalPrompt";
 import { useAgents } from "./features/agents/agents-context";
-import { agentsPort } from "./features/agents/agents-port";
 import { desktopBrowserProfileCalls } from "./features/browser/browser-profiles-port";
 import { createBrowserProfilesStore } from "./features/browser/stores/browser-profiles-store";
 import { useConnectors } from "./features/connectors/connectors-context";
@@ -96,6 +96,11 @@ interface AccountProps {
  * The overlays the web client also raises are views in `WorkspaceOverlayViews`, which take props:
  * the components here read the desktop contexts and pass them on.
  */
+/** The local install response carries the whole summary the roster needs; a joined host answers with id and name only. */
+function isStoredAgent(agent: object): agent is ClientAgentSummary {
+  return "provider" in agent && "officeId" in agent && "updatedAt" in agent;
+}
+
 export function WorkspaceOverlays(props: AccountProps) {
   const { skillsMarketplaceOpen } = useSettings();
   const connectors = useConnectors();
@@ -143,15 +148,8 @@ export function SkillsMarketplace() {
     pendingMarketplaceListing,
     setPendingMarketplaceListing,
   } = useSettings();
-  const {
-    activeOfficeId,
-    applyStoredAgents,
-    filteredAgentList,
-    activeAgent,
-    agentStatus,
-    agentSetupOpen,
-    creatingAgent,
-  } = useAgents();
+  const { activeOfficeId, upsertAgent, filteredAgentList, activeAgent, agentStatus, agentSetupOpen, creatingAgent } =
+    useAgents();
   const { selectAgent } = useNavigation();
   const { activeServer } = useServers();
   const { openInstalledMarketplaceAgent } = useServerSelection();
@@ -175,17 +173,13 @@ export function SkillsMarketplace() {
       officeId={activeOfficeId()}
       composerAvailable={agentStatus().phase === "ready" && !(agentSetupOpen() && creatingAgent())}
       onOpenAgent={selectAgent}
-      onAgentInstalled={async (agent, serverId) => {
-        await openInstalledMarketplaceAgent(agent, serverId);
+      onAgentAdded={(agent, serverId) => {
         if (serverId) return;
-        // The install also assigns the office, which the roster event can precede. Read once more so
-        // the new row is in the sidebar without a restart.
-        try {
-          applyStoredAgents(await agentsPort().agent.listAgents(LOCAL_SERVER_ID));
-        } catch {
-          // The next roster event still repairs the list.
-        }
+        // The install response already carries the office employment, so the row is in the sidebar
+        // before the next roster event arrives.
+        if (isStoredAgent(agent)) upsertAgent(agent);
       }}
+      onAgentInstalled={openInstalledMarketplaceAgent}
       pluginSlug={pendingPluginSlug()}
       pluginConnect={pendingPluginConnect()}
       onPluginSlugConsumed={() => {

@@ -70,6 +70,7 @@ export function MarketplaceOverlay(props: {
   composerAvailable: boolean;
   /** Opens an agent's conversation before an example is added to its draft. */
   onOpenAgent: (agentId: string) => void;
+  onAgentAdded?: ((agent: AddedAgent, serverId?: string) => void | Promise<void>) | undefined;
   onAgentInstalled: (agent: AddedAgent, serverId?: string) => void | Promise<void>;
   /** The listing a plugin link named. Closing the marketplace forgets it too. */
   pluginSlug?: string | null | undefined;
@@ -154,6 +155,7 @@ export function MarketplaceOverlay(props: {
               ? (agentId) => appendExample(agentId, (target) => controller.startSkillCreation(target))
               : undefined
           }
+          onAgentAdded={props.onAgentAdded}
           onAgentInstalled={props.onAgentInstalled}
           plugins={MARKETPLACE_PLUGINS}
           initialPluginSlug={props.pluginSlug ?? undefined}

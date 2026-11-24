@@ -92,6 +92,8 @@ export interface MarketplaceControllerProps {
   onTrySkill?: ((agentId: string, skill: MarketplaceSkillDetail) => void) | undefined;
   /** Starts a chat with the agent that makes a new skill. Absent while no composer can take the request. */
   onCreateSkill?: ((agentId: string) => void) | undefined;
+  /** An agent that the Marketplace just added. `serverId` is the joined server, or absent for this computer. */
+  onAgentAdded?: ((agent: AddedAgent, serverId?: string) => void | Promise<void>) | undefined;
   /** Opens an agent that the Marketplace added. `serverId` is the joined server, or absent for this computer. */
   onAgentInstalled?: ((agent: AddedAgent, serverId?: string) => void | Promise<void>) | undefined;
   plugins?: readonly MarketplacePluginDetail[] | undefined;
@@ -355,6 +357,7 @@ export function createMarketplaceController(props: MarketplaceControllerProps) {
       draft[listing.id] = { agent, serverId };
     });
     setNotice(t(copy ? "marketplace.notice.agentUpdated" : "marketplace.notice.agentAdded", { name: agent.name }));
+    if (!copy) void props.onAgentAdded?.(agent, serverId);
     return true;
   }
 

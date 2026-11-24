@@ -2536,13 +2536,16 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
   }
 
   /** Puts a newly installed agent in the office the user was looking at. */
-  assignAgentOffice(agentId: string, officeId: string): void {
+  assignAgentOffice(agentId: string, officeId: string): AgentSummary {
     const database = this.#store.database.connection;
     if (!listOffices(database).some((office) => office.id === officeId)) {
       throw new Error(`Unknown office: ${officeId}`);
     }
     upsertEmployment(database, { agentId, officeId, roleKey: "worker", scope: "office" });
     this.notifyAgentsChanged();
+    const agent = this.listAgentsWithEmployment().find((candidate) => candidate.id === agentId);
+    if (!agent) throw new Error(`Unknown agent: ${agentId}`);
+    return agent;
   }
 
   /** The installed skills of one agent changed, so every open skills list reads them again. */
