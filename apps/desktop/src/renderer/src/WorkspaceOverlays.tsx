@@ -25,6 +25,7 @@ import { appPort } from "./app-port";
 import { useAuth } from "./features/account/account-context";
 import { MobileConnectApprovalPrompt } from "./features/account/MobileConnectApprovalPrompt";
 import { useAgents } from "./features/agents/agents-context";
+import { agentsPort } from "./features/agents/agents-port";
 import { desktopBrowserProfileCalls } from "./features/browser/browser-profiles-port";
 import { createBrowserProfilesStore } from "./features/browser/stores/browser-profiles-store";
 import { useConnectors } from "./features/connectors/connectors-context";
@@ -142,7 +143,15 @@ export function SkillsMarketplace() {
     pendingMarketplaceListing,
     setPendingMarketplaceListing,
   } = useSettings();
-  const { activeOfficeId, filteredAgentList, activeAgent, agentStatus, agentSetupOpen, creatingAgent } = useAgents();
+  const {
+    activeOfficeId,
+    applyStoredAgents,
+    filteredAgentList,
+    activeAgent,
+    agentStatus,
+    agentSetupOpen,
+    creatingAgent,
+  } = useAgents();
   const { selectAgent } = useNavigation();
   const { activeServer } = useServers();
   const { openInstalledMarketplaceAgent } = useServerSelection();
@@ -166,7 +175,17 @@ export function SkillsMarketplace() {
       officeId={activeOfficeId()}
       composerAvailable={agentStatus().phase === "ready" && !(agentSetupOpen() && creatingAgent())}
       onOpenAgent={selectAgent}
-      onAgentInstalled={openInstalledMarketplaceAgent}
+      onAgentInstalled={async (agent, serverId) => {
+        await openInstalledMarketplaceAgent(agent, serverId);
+        if (serverId) return;
+        // The install also assigns the office, which the roster event can precede. Read once more so
+        // the new row is in the sidebar without a restart.
+        try {
+          applyStoredAgents(await agentsPort().agent.listAgents(LOCAL_SERVER_ID));
+        } catch {
+          // The next roster event still repairs the list.
+        }
+      }}
       pluginSlug={pendingPluginSlug()}
       pluginConnect={pendingPluginConnect()}
       onPluginSlugConsumed={() => {
