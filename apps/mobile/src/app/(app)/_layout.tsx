@@ -449,6 +449,14 @@ function AuthenticatedStack() {
           }}
         />
         <Stack.Screen
+          name="pair-host"
+          options={{
+            contentStyle: { backgroundColor: sheetBackground },
+            headerShown: false,
+            presentation: "card",
+          }}
+        />
+        <Stack.Screen
           name="add-server"
           options={{
             contentStyle: { backgroundColor: sheetBackground },

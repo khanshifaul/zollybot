@@ -116,7 +116,7 @@ import { View } from "react-native";
 import { showFailureAlert } from "@/features/analytics/failure-reports";
 import { mobileAnalytics } from "@/features/analytics/mobile-analytics";
 import { trackWorkspaceActions } from "@/features/analytics/workspace-actions";
-import { MobileSessionExpiredError } from "@/features/auth/api/mobile-auth";
+import type { MobileSession } from "@/features/auth/api/mobile-auth";
 import { useMobileSession } from "@/features/auth/context/mobile-session-context";
 import { decodeMobileBrowserTabs } from "@/features/browser/model/browser-tabs";
 import { MobileChannelStore } from "@/features/channels/model/channel-store";
@@ -316,7 +316,7 @@ function withoutKeys<T>(record: Record<string, T>, keys: ReadonlySet<string>): R
 }
 
 export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
-  const { session, sessionScope, handleSessionError } = useMobileSession();
+  const { session, sessionScope, pairedHosts, forgetHost } = useMobileSession();
   const queryClient = useQueryClient();
   useEffect(() => () => queryClient.removeQueries({ queryKey: queryKeys.chatQueue() }), [queryClient]);
   const presenceSignatures = useRef(new Map<string, string>());
@@ -327,8 +327,40 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
     [session.apiUrl, session.user.id, sessionScope],
   );
 
+  const hostSessions = useMemo(() => {
+    const byHost = new Map<string, MobileSession>();
+    for (const paired of pairedHosts) {
+      if (paired.host) byHost.set(paired.host.hostId, paired);
+    }
+    if (session.host) byHost.set(session.host.hostId, session);
+    return [...byHost.values()];
+  }, [pairedHosts, session]);
+  const pairedHostIds = useMemo(
+    () => new Set(hostSessions.flatMap((candidate) => (candidate.host ? [candidate.host.hostId] : []))),
+    [hostSessions],
+  );
+  const directories = useMemo(() => {
+    const byHost = new Map<string, RemoteTeamDirectoryClient>();
+    for (const candidate of hostSessions) {
+      if (!candidate.host) continue;
+      byHost.set(
+        candidate.host.hostId,
+        new RemoteTeamDirectoryClient({
+          apiUrl: candidate.apiUrl,
+          token: candidate.sessionToken,
+          fetch,
+          hostKeys: trustedHostKeys(candidate.apiUrl, candidate.user.id),
+          pairedHost: candidate.host,
+          verifyHostKeySignature: verifyEd25519Base64Url,
+        }),
+      );
+    }
+    return byHost;
+  }, [hostSessions]);
+  const activeHostId = session.host?.hostId ?? session.user.id;
   const directory = useMemo(
     () =>
+      directories.get(activeHostId) ??
       new RemoteTeamDirectoryClient({
         apiUrl: session.apiUrl,
         token: session.sessionToken,
@@ -337,7 +369,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
         pairedHost: session.host,
         verifyHostKeySignature: verifyEd25519Base64Url,
       }),
-    [session.apiUrl, session.sessionToken, session.user.id, session.host],
+    [activeHostId, directories, session.apiUrl, session.sessionToken, session.user.id, session.host],
   );
   const connections = useRef(new Map<string, ServerConnectionHandle>());
   const [connectionWaits] = useState(() => new ConnectionWaits());
@@ -589,7 +621,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
       setServers((current) => {
         const previousServers = new Map(current.map((server) => [server.id, server]));
         return hosts.map((host) =>
-          serverFromHost(host, serverKind(host.hostId, session.host?.hostId), previousServers.get(host.hostId)),
+          serverFromHost(host, serverKind(host.hostId, pairedHostIds), previousServers.get(host.hostId)),
         );
       });
       setActiveServerId((current) =>
@@ -598,7 +630,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
           : (sortByPreference(hosts.map((host) => ({ id: host.hostId })))[0]?.id ?? null),
       );
     },
-    [dropServerState, session.host?.hostId, sortByPreference, workspaceCache, keepHosts],
+    [dropServerState, keepHosts, pairedHostIds, sortByPreference, workspaceCache],
   );
 
   const directoryRefresh = useMemo(
@@ -608,29 +640,37 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
           const generation = ++directoryGeneration.current;
           setServerDirectoryState("loading");
           setServerDirectoryError(null);
-          const hosts = yield* directory.listHosts().pipe(
-            Effect.tapError((error) =>
-              Effect.sync(() => {
-                if (generation !== directoryGeneration.current) return;
-                if (error instanceof RemoteDirectoryError && error.status === 401) {
-                  handleSessionError(new MobileSessionExpiredError(), session);
-                  return;
-                }
-                setServerDirectoryState("error");
-                const text = currentText();
-                setServerDirectoryError(
-                  text.errorMessage(error, text.t("mobile.workspace.error.directoryUnavailable")),
-                );
-              }),
-            ),
+          const results = yield* Effect.forEach(
+            [...directories.values()],
+            (candidate) =>
+              candidate.listHosts().pipe(
+                Effect.match({
+                  onFailure: (error) => {
+                    if (error instanceof RemoteDirectoryError && error.status === 401) {
+                      const host = [...directories.entries()].find(([, value]) => value === candidate)?.[0];
+                      if (host) void forgetHost(host);
+                    }
+                    return [];
+                  },
+                  onSuccess: (hosts) => hosts,
+                }),
+              ),
+            { concurrency: "unbounded" },
           );
+          const hosts = [...new Map(results.flat().map((host) => [host.hostId, host])).values()];
+          if (hosts.length === 0) {
+            if (generation !== directoryGeneration.current) return;
+            setServerDirectoryState("error");
+            setServerDirectoryError(currentText().t("mobile.workspace.error.directoryUnavailable"));
+            return;
+          }
           if (generation !== directoryGeneration.current) return;
           directoryLoaded.current = true;
           installHosts(hosts);
           setServerDirectoryState("ready");
         }),
       ),
-    [directory, handleSessionError, installHosts, session],
+    [directories, forgetHost, installHosts],
   );
   // At a start, the servers that the phone kept connect while the account service answers. The
   // account service still decides: its list drops a server that the account left, and each ticket
@@ -1330,7 +1370,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
   const handleConnectionStatus = useCallback(
     (hostId: string, status: RemoteRecoveryStatus, failure: RemoteConnectionFailure | null, resuming: boolean) => {
       if (failure?.reference?.startsWith("http/401")) {
-        handleSessionError(new MobileSessionExpiredError(), session);
+        void forgetHost(hostId);
         return;
       }
       recoveryCountdowns.publish(hostId, { status, message: remoteRecoveryMessage(status, failure?.message ?? null) });
@@ -1355,7 +1395,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
       wakeAttempts.current.set(hostId, status.attempt);
       wakeSelectedServer(hostId);
     },
-    [connectionWaits, handleSessionError, recoveryCountdowns, session, wakeSelectedServer],
+    [connectionWaits, forgetHost, recoveryCountdowns, wakeSelectedServer],
   );
   // The next retry of an offline server can be 30 seconds away, so a server starts when it is selected.
   useEffect(() => {
@@ -2425,7 +2465,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
               hostId={server.id}
               publicKey={server.publicKey}
               active={foreground && (!othersHeld || server.id === activeServerId)}
-              directory={directory}
+              directory={directories.get(server.id) ?? directory}
               register={registerConnection}
               load={loadServer}
               onStatus={handleConnectionStatus}

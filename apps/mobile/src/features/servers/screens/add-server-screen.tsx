@@ -278,6 +278,18 @@ export function AddServerScreen({
           {/* Another way to get a server: one more on a computer that runs ZollyBot, while no link is typed. */}
           {localServerPathname && !inviteLink.trim() ? <LocalServerOptions pathname={localServerPathname} /> : null}
 
+          {session?.host && !inviteLink.trim() ? (
+            <View className="gap-2 rounded-grouped bg-grouped p-4">
+              <Typography.Paragraph weight="semibold">{t("mobile.server.join.pairHost")}</Typography.Paragraph>
+              <Typography.Paragraph type="body-xs" className="text-text-secondary">
+                {t("mobile.server.join.pairHostHint")}
+              </Typography.Paragraph>
+              <Button variant="ghost" onPress={() => router.push("/pair-host")}>
+                <Button.Label>{t("mobile.server.join.pairHostAction")}</Button.Label>
+              </Button>
+            </View>
+          ) : null}
+
           {underHeader ? null : (
             <Pressable
               accessibilityRole="button"

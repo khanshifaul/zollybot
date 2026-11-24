@@ -18,12 +18,16 @@ import {
   sendAnalyticsChoice,
 } from "@/features/analytics/preference";
 import {
+  clearPairedHostSessions,
   logoutMobileSession,
   type MobileProfileChange,
   type MobileSession,
   MobileSessionExpiredError,
   readMobileSession,
+  readPairedHostSessions,
+  removePairedHostSession,
   retryMobileSessionRevocations,
+  savePairedHostSession,
   updateMobileProfile,
   validateMobileSession,
 } from "@/features/auth/api/mobile-auth";
@@ -43,7 +47,13 @@ interface MobileSessionContextValue {
   sessionScope: number;
   refreshProfile: () => Promise<void>;
   handleSessionError: (error: unknown, initiatingSession: MobileSession) => void;
-  connect: (session: MobileSession) => void;
+  /** The local hosts this phone paired with, each with its own token. */
+  pairedHosts: MobileSession[];
+  connect: (session: MobileSession) => Promise<void>;
+  /** Pairs another local host without replacing the active one. */
+  addHost: (session: MobileSession) => Promise<void>;
+  /** Forgets one local host, switching away when it was active. */
+  forgetHost: (hostId: string) => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: (change: MobileProfileChange) => Promise<MobileSession>;
   /** Sends this phone's unsent analytics choice to the account. */
@@ -54,6 +64,7 @@ const MobileSessionContext = createContext<MobileSessionContextValue | null>(nul
 
 export function MobileSessionProvider({ children }: PropsWithChildren) {
   const [sessionState, setSessionState] = useState<MobileSession | null | undefined>(undefined);
+  const [pairedHosts, setPairedHosts] = useState<MobileSession[]>([]);
   const sessionRef = useRef<MobileSession | null>(null);
   const sessionScope = useRef(0);
   const foreground = useAppForeground();
@@ -101,7 +112,26 @@ export function MobileSessionProvider({ children }: PropsWithChildren) {
       resolved = true;
       setCurrentSession(stored);
     };
-    const read = () => readMobileSession().then(finish);
+    const read = () =>
+      readMobileSession().then((stored) => {
+        if (stored) {
+          void savePairedHostSession(stored)
+            .then((hosts) => {
+              if (active) setPairedHosts(hosts);
+            })
+            .catch(() => undefined);
+        } else {
+          void readPairedHostSessions()
+            .then((hosts) => {
+              if (!active) return;
+              setPairedHosts(hosts);
+              const first = hosts[0];
+              if (first) finish(first);
+            })
+            .catch(() => undefined);
+        }
+        finish(stored);
+      });
     // A start in the background can find the keychain closed. The app reads again when the user
     // opens it, so it does not show sign-in for a session that it still has.
     const attempt = read().catch(() =>
@@ -153,13 +183,43 @@ export function MobileSessionProvider({ children }: PropsWithChildren) {
     if (foreground) void retryMobileSessionRevocations();
   }, [foreground]);
 
+  const connect = useCallback(
+    async (next: MobileSession) => {
+      const hosts = await savePairedHostSession(next);
+      setPairedHosts(hosts);
+      setCurrentSession(next);
+    },
+    [setCurrentSession],
+  );
+
+  const addHost = useCallback(async (next: MobileSession) => {
+    const hosts = await savePairedHostSession(next);
+    setPairedHosts(hosts);
+  }, []);
+
+  const forgetHost = useCallback(
+    async (hostId: string) => {
+      const hosts = await removePairedHostSession(hostId);
+      setPairedHosts(hosts);
+      const current = sessionRef.current;
+      if (!current) return;
+      if ((current.host?.hostId ?? current.user.id) !== hostId) return;
+      await logoutMobileSession(current).catch(() => undefined);
+      const next = hosts[0] ?? null;
+      setCurrentSession(next);
+    },
+    [setCurrentSession],
+  );
+
   const signOut = useCallback(async () => {
     const current = sessionRef.current;
     if (!current) return;
     await mobileAnalytics.operation("account_sign_out", {}, () => logoutMobileSession(current));
+    await clearPairedHostSessions().catch(() => undefined);
     deleteAgentAvatars();
     if (sessionRef.current?.sessionToken === current.sessionToken && sessionRef.current?.apiUrl === current.apiUrl) {
       setCurrentSession(null);
+      setPairedHosts([]);
     }
   }, [setCurrentSession]);
 
@@ -202,12 +262,26 @@ export function MobileSessionProvider({ children }: PropsWithChildren) {
       sessionScope: sessionScope.current,
       refreshProfile,
       handleSessionError,
-      connect: setCurrentSession,
+      pairedHosts,
+      connect,
+      addHost,
+      forgetHost,
       signOut,
       updateProfile,
       sendAnalyticsChoice: sendUnsentAnalytics,
     }),
-    [sessionState, setCurrentSession, signOut, updateProfile, sendUnsentAnalytics, handleSessionError, refreshProfile],
+    [
+      sessionState,
+      connect,
+      addHost,
+      pairedHosts,
+      forgetHost,
+      signOut,
+      updateProfile,
+      sendUnsentAnalytics,
+      handleSessionError,
+      refreshProfile,
+    ],
   );
 
   return <MobileSessionContext.Provider value={value}>{children}</MobileSessionContext.Provider>;

@@ -88,8 +88,8 @@ export function recoveryCountdown(status: RemoteRecoveryStatus): number | null {
   return status.remainingSeconds > 0 ? status.remainingSeconds : null;
 }
 
-export function serverKind(hostId: string, pairedHostId: string | undefined): MobileServer["kind"] {
-  return hostId === pairedHostId ? "local" : "remote";
+export function serverKind(hostId: string, pairedHostIds: ReadonlySet<string>): MobileServer["kind"] {
+  return pairedHostIds.has(hostId) ? "local" : "remote";
 }
 
 /** The server of a directory host. A server that is already listed keeps its connection state. */

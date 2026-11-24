@@ -67,9 +67,9 @@ async function discoverOrigin(origins: string[]): Promise<string | null> {
   return null;
 }
 
-export default function ConnectScreen() {
+export default function ConnectScreen({ addingHost = false }: { addingHost?: boolean } = {}) {
   const router = useRouter();
-  const { connect } = useMobileSession();
+  const { connect, addHost } = useMobileSession();
   const { t } = useText();
   const dark = useColorScheme() === "dark";
   const theme = dark
@@ -130,8 +130,13 @@ export default function ConnectScreen() {
     try {
       // Full Mobile Connect link/QR payload from desktop (contains ticket) -> redeem directly, no manual token.
       if (parseMobileConnectUrl(raw)?.ticket) {
-        const session = await redeemMobileConnectUrl(raw);
-        connect(session);
+        const session = await redeemMobileConnectUrl(raw, { addHost: addingHost });
+        if (addingHost) {
+          await addHost(session);
+          router.back();
+        } else {
+          await connect(session);
+        }
         return;
       }
       const origins = candidateOrigins(raw);
@@ -149,13 +154,20 @@ export default function ConnectScreen() {
       }
       setStatus("waiting");
       setError(t("mobile.auth.connect.waitingApproval", { host: found }));
-      const approval = await requestManualMobileConnectApproval(found);
+      const approval = await requestManualMobileConnectApproval(found, { addHost: addingHost });
       const approvalStatus = await waitForManualMobileConnectApproval(approval);
       if (approvalStatus.status === "approved" && approvalStatus.ticket && approvalStatus.host) {
         setStatus("approved");
         setError(t("mobile.auth.connect.approved"));
-        const session = await redeemApprovedMobileConnectRequest(approval, approvalStatus.ticket, approvalStatus.host);
-        connect(session);
+        const session = await redeemApprovedMobileConnectRequest(approval, approvalStatus.ticket, approvalStatus.host, {
+          addHost: addingHost,
+        });
+        if (addingHost) {
+          await addHost(session);
+          router.back();
+        } else {
+          await connect(session);
+        }
         return;
       }
       setStatus("error");
@@ -196,6 +208,15 @@ export default function ConnectScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={{ width: "100%", maxWidth: 460, alignSelf: "center", gap: 22 }}>
+            {addingHost ? (
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => router.back()}
+                style={({ pressed }) => ({ alignSelf: "flex-start", opacity: pressed ? 0.7 : 1, padding: 6 })}
+              >
+                <Text style={{ color: theme.muted, fontSize: 12 }}>{t("common.cancel")}</Text>
+              </Pressable>
+            ) : null}
             <View style={{ alignItems: "center", gap: 10 }}>
               <AppLogo animation="blink" size={88} />
               <Text

@@ -24,6 +24,7 @@ import * as LockedKeychain from "../../../shared/lib/locked-keychain";
 import { fetch } from "../../support/model/logged-fetch";
 
 const MOBILE_SESSION_KEY = "zollybot.mobile.session.v1";
+const PAIRED_HOSTS_KEY = "zollybot.mobile.paired-hosts.v1";
 const MOBILE_REVOCATIONS_KEY = "zollybot.mobile.pending-revocations.v1";
 const MOBILE_DEVICE_ID_KEY = "zollybot.mobile.device-id.v1";
 const MOBILE_AUTH_REQUEST_TIMEOUT_MS = 10_000;
@@ -53,17 +54,20 @@ export interface MobileSession {
 
 type MobileCredential = Pick<MobileSession, "apiUrl" | "sessionToken">;
 
-export async function redeemMobileConnectUrl(value: string): Promise<MobileSession> {
+export async function redeemMobileConnectUrl(
+  value: string,
+  options: { addHost?: boolean } = {},
+): Promise<MobileSession> {
   if (mobileConnectInFlight) throw new Error(currentText().t("mobile.auth.error.connectionInProgress"));
   mobileConnectInFlight = true;
   try {
-    return await redeemMobileConnectSession(value);
+    return await redeemMobileConnectSession(value, options);
   } finally {
     mobileConnectInFlight = false;
   }
 }
 
-async function redeemMobileConnectSession(value: string): Promise<MobileSession> {
+async function redeemMobileConnectSession(value: string, options: { addHost?: boolean } = {}): Promise<MobileSession> {
   void retryMobileSessionRevocations();
   const payload = parseMobileConnectUrl(value);
   if (!payload) {
@@ -76,7 +80,8 @@ async function redeemMobileConnectSession(value: string): Promise<MobileSession>
   const current = await serializeMobileSessionStorage(() => readStoredSessionAndRevokeInvalid(true));
   // A QR screen can still be finishing its animation after credentials are saved.
   // Protect that handoff too, before its caller updates the React session context.
-  if (current) throw new Error(currentText().t("mobile.auth.error.alreadySignedIn"));
+  // Pairing another local host keeps the current session as the active one.
+  if (current && !options.addHost) throw new Error(currentText().t("mobile.auth.error.alreadySignedIn"));
 
   let response: Response;
   let body: unknown;
@@ -112,7 +117,12 @@ async function redeemMobileConnectSession(value: string): Promise<MobileSession>
 
   const session = decodeMobileSession(body, payload.apiUrl, false);
   session.host = validateMobileConnectHostBinding(payload.host, session.host);
-  await saveMobileSession(session);
+  if (options.addHost) {
+    await savePairedHostSession(session);
+  } else {
+    await saveMobileSession(session);
+    await savePairedHostSession(session);
+  }
   return session;
 }
 
@@ -150,11 +160,14 @@ function decodeApprovalRequestStatus(value: unknown): MobileConnectApprovalReque
   };
 }
 
-export async function requestManualMobileConnectApproval(apiUrl: string): Promise<ManualMobileConnectApprovalState> {
+export async function requestManualMobileConnectApproval(
+  apiUrl: string,
+  options: { addHost?: boolean } = {},
+): Promise<ManualMobileConnectApprovalState> {
   void retryMobileSessionRevocations();
   if (mobileConnectInFlight) throw new Error(currentText().t("mobile.auth.error.connectionInProgress"));
   const current = await serializeMobileSessionStorage(() => readStoredSessionAndRevokeInvalid(true));
-  if (current) throw new Error(currentText().t("mobile.auth.error.alreadySignedIn"));
+  if (current && !options.addHost) throw new Error(currentText().t("mobile.auth.error.alreadySignedIn"));
   let response: Response;
   let body: unknown;
   try {
@@ -237,9 +250,10 @@ export async function redeemApprovedMobileConnectRequest(
   state: ManualMobileConnectApprovalState,
   ticket: string,
   host: MobileConnectHostBinding,
+  options: { addHost?: boolean } = {},
 ): Promise<MobileSession> {
   const qrData = `zollybot://mobile-connect?api=${encodeURIComponent(state.apiUrl)}&ticket=${encodeURIComponent(ticket)}&host=${encodeURIComponent(host.hostId)}&fingerprint=${encodeURIComponent(host.fingerprint)}`;
-  return redeemMobileConnectUrl(qrData);
+  return redeemMobileConnectUrl(qrData, options);
 }
 
 export interface MobileEmailChallenge {
@@ -672,6 +686,85 @@ async function readResponseBody(response: Response, signal: AbortSignal): Promis
     if (signal.aborted) throw error;
     return null;
   }
+}
+
+/** The local hosts this phone paired with. One token per host; no account service is involved. */
+export async function readPairedHostSessions(): Promise<MobileSession[]> {
+  return serializeMobileSessionStorage(async () => {
+    const stored = await LockedKeychain.getItemAsync(PAIRED_HOSTS_KEY);
+    if (!stored) return [];
+    try {
+      const value = JSON.parse(stored);
+      if (!Array.isArray(value)) return [];
+      return value.flatMap((entry) => {
+        try {
+          return [decodeStoredMobileSession(entry)];
+        } catch {
+          return [];
+        }
+      });
+    } catch {
+      return [];
+    }
+  });
+}
+
+/** Adds or replaces one local host, keyed by its host id. Returns the full stored list. */
+export async function savePairedHostSession(session: MobileSession): Promise<MobileSession[]> {
+  return serializeMobileSessionStorage(async () => {
+    const stored = await LockedKeychain.getItemAsync(PAIRED_HOSTS_KEY);
+    let current: MobileSession[] = [];
+    if (stored) {
+      try {
+        const value = JSON.parse(stored);
+        if (Array.isArray(value)) {
+          current = value.flatMap((entry) => {
+            try {
+              return [decodeStoredMobileSession(entry)];
+            } catch {
+              return [];
+            }
+          });
+        }
+      } catch {
+        current = [];
+      }
+    }
+    const hostId = session.host?.hostId ?? session.user.id;
+    const next = [...current.filter((entry) => (entry.host?.hostId ?? entry.user.id) !== hostId), session];
+    await LockedKeychain.setItemAsync(PAIRED_HOSTS_KEY, JSON.stringify(next));
+    return next;
+  });
+}
+
+/** Removes one local host. The active session is managed by the session context. */
+export async function removePairedHostSession(hostId: string): Promise<MobileSession[]> {
+  return serializeMobileSessionStorage(async () => {
+    const stored = await LockedKeychain.getItemAsync(PAIRED_HOSTS_KEY);
+    if (!stored) return [];
+    let current: MobileSession[] = [];
+    try {
+      const value = JSON.parse(stored);
+      if (Array.isArray(value)) {
+        current = value.flatMap((entry) => {
+          try {
+            return [decodeStoredMobileSession(entry)];
+          } catch {
+            return [];
+          }
+        });
+      }
+    } catch {
+      return [];
+    }
+    const next = current.filter((entry) => (entry.host?.hostId ?? entry.user.id) !== hostId);
+    await LockedKeychain.setItemAsync(PAIRED_HOSTS_KEY, JSON.stringify(next));
+    return next;
+  });
+}
+
+export async function clearPairedHostSessions(): Promise<void> {
+  await serializeMobileSessionStorage(() => LockedKeychain.deleteItemAsync(PAIRED_HOSTS_KEY));
 }
 
 async function saveMobileSession(session: MobileSession): Promise<void> {
