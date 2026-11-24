@@ -1,4 +1,4 @@
-import { DEFAULT_TEAM_MEMBER_LIMIT, INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import { canAdministerServer } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { usePreventRemove } from "expo-router/react-navigation";
@@ -9,7 +9,6 @@ import Camera from "lucide-react-native/icons/camera";
 import Database from "lucide-react-native/icons/database";
 import Settings2 from "lucide-react-native/icons/settings-2";
 import Sparkles from "lucide-react-native/icons/sparkles";
-import UsersRound from "lucide-react-native/icons/users-round";
 import Wrench from "lucide-react-native/icons/wrench";
 import { useRef, useState } from "react";
 import { Alert, Pressable, View } from "react-native";
@@ -42,7 +41,6 @@ import { useText } from "@/shared/lib/text";
 
 const CATEGORY_ICONS = {
   general: Settings2,
-  people: UsersRound,
   ai: Sparkles,
   data: Database,
   maintenance: Wrench,
@@ -50,7 +48,6 @@ const CATEGORY_ICONS = {
 
 const CATEGORY_PATHS = {
   general: "/server-settings/general",
-  people: "/server-settings/people",
   ai: "/server-settings/ai",
   data: "/server-settings/data",
   maintenance: "/server-settings/maintenance",
@@ -78,19 +75,9 @@ function ServerSettingsHome({ server }: { server: MobileServer }) {
   const hostedServerIds = useOwnerHostedServerIds(server);
   const items = useServerSettingsItems(server, hostedServerIds);
   const { t } = useText();
-  const { memberCountByServer } = useMobileWorkspace();
-  const memberCount = memberCountByServer[server.id];
   const updateStatus = useServerUpdate(server.id, { poll: false }).query.data?.status;
-  // The People row shows the member count, and Maintenance says when a new ZollyBot version is ready.
+  // Maintenance says when a new ZollyBot version is ready.
   const values: Partial<Record<ServerSettingsCategory, string>> = {
-    ...(memberCount === undefined
-      ? {}
-      : {
-          people: t("mobile.server.settings.memberCount", {
-            count: memberCount,
-            limit: server.memberLimit ?? DEFAULT_TEAM_MEMBER_LIMIT,
-          }),
-        }),
     ...(updateStatus && updateAvailable(updateStatus)
       ? { maintenance: t("mobile.server.settings.updateAvailable") }
       : {}),

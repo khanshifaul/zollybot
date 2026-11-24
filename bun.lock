@@ -106,17 +106,17 @@
         "@legendapp/list": "3.7.3",
         "@noble/hashes": "catalog:",
         "@openpanel/react-native": "1.4.4",
-        "@qvac/asr-ggml-android-arm64": "0.13.1",
-        "@qvac/asr-ggml-ios": "0.13.1",
-        "@qvac/audiogen-ggml-android-arm64": "0.11.0",
-        "@qvac/audiogen-ggml-ios": "0.11.0",
-        "@qvac/diffusion-cpp-android-arm64": "0.36.0",
-        "@qvac/diffusion-cpp-ios": "0.36.0",
-        "@qvac/fabric-android-arm64": "0.31.1",
-        "@qvac/fabric-ios": "0.31.1",
+        "@qvac/asr-ggml-android-arm64": "0.12.1",
+        "@qvac/asr-ggml-ios": "0.12.1",
+        "@qvac/audiogen-ggml-android-arm64": "0.10.1",
+        "@qvac/audiogen-ggml-ios": "0.10.1",
+        "@qvac/diffusion-cpp-android-arm64": "0.35.1",
+        "@qvac/diffusion-cpp-ios": "0.35.1",
+        "@qvac/fabric-android-arm64": "0.29.2",
+        "@qvac/fabric-ios": "0.29.2",
         "@qvac/sdk": "0.24.0",
-        "@qvac/tts-ggml-android-arm64": "0.16.0",
-        "@qvac/tts-ggml-ios": "0.16.0",
+        "@qvac/tts-ggml-android-arm64": "0.15.1",
+        "@qvac/tts-ggml-ios": "0.15.1",
         "@react-native-masked-view/masked-view": "0.3.2",
         "@shopify/react-native-skia": "2.14.0",
         "@speed-highlight/core": "catalog:",
@@ -168,6 +168,7 @@
         "expo-widgets": "~58.0.29",
         "heroui-native": "^1.1.1",
         "katex": "catalog:",
+        "llama.rn": "0.13.0-rc.12",
         "lucide-react-native": "^1.77.0",
         "marked": "catalog:",
         "mermaid": "catalog:",
@@ -1243,13 +1244,13 @@
 
     "@qvac/asr-ggml": ["@qvac/asr-ggml@0.12.1", "", { "dependencies": { "@qvac/error": "^0.1.0", "@qvac/infer-base": "^0.8.0", "@qvac/logging": "^0.1.0", "bare-fs": "^4.7.1", "bare-path": "^3.0.0", "bare-process": "^4.2.2", "bare-url": "^2.4.5" }, "optionalDependencies": { "@qvac/asr-ggml-darwin-arm64": "0.12.1", "@qvac/asr-ggml-darwin-x64": "0.12.1", "@qvac/asr-ggml-linux-arm64": "0.12.1", "@qvac/asr-ggml-linux-x64": "0.12.1", "@qvac/asr-ggml-win32-x64": "0.12.1" }, "peerDependencies": { "@qvac/asr-ggml-android-arm64": "0.12.1", "@qvac/asr-ggml-ios": "0.12.1" }, "optionalPeers": ["@qvac/asr-ggml-android-arm64", "@qvac/asr-ggml-ios"] }, "sha512-oBAlFOXXFEuMcyMycGAw+sRR9fWbiaRz8z+wXCnwh5mOAtv7IgWq2cOlCmRyxJklcCKH7ARQozToX9B7xJgdaw=="],
 
-    "@qvac/asr-ggml-android-arm64": ["@qvac/asr-ggml-android-arm64@0.13.1", "", {}, "sha512-Zb7vLENz0JB9yH09kKVMZcWwkkwk2WjQoIgIoqfL25NRUbrkw9diTzqgAhUFrCmEvrlkxHuyNL00HtMsQohwoA=="],
+    "@qvac/asr-ggml-android-arm64": ["@qvac/asr-ggml-android-arm64@0.12.1", "", {}, "sha512-x81FrIFqj3AH4OButugLFtLupE9oy1jkvJLkzZLYpAtz436ZX1jpKYP7hlLAFKepk/9ruevVnVjAfIO8vqxpMA=="],
 
     "@qvac/asr-ggml-darwin-arm64": ["@qvac/asr-ggml-darwin-arm64@0.12.1", "", { "os": "darwin", "cpu": "arm64" }, "sha512-q1OEULhvVjRHeOuAg8r56z59b+UpFXbX/8rbYIpW59Irvz0AkgJxmjf7DzktrRPnJkBZUkD+2bjb3s96IWl4tA=="],
 
     "@qvac/asr-ggml-darwin-x64": ["@qvac/asr-ggml-darwin-x64@0.12.1", "", { "os": "darwin", "cpu": "x64" }, "sha512-DCYcWyhEkzQ0lbNpHrb2nxsYcQPuxcWxxeg4eOnOBQzDZvTEeFPcPKvliqwHEgUbtZo/UdEixtqlqOMH5HkWmQ=="],
 
-    "@qvac/asr-ggml-ios": ["@qvac/asr-ggml-ios@0.13.1", "", {}, "sha512-18gW1RktBb/Hg8gZzDYukZh6EA5zkMscjhOc0Ir/5jjHIellU16qmbsFE9gQ3EVDxoExWZvav8H009IanVdooA=="],
+    "@qvac/asr-ggml-ios": ["@qvac/asr-ggml-ios@0.12.1", "", {}, "sha512-mxupnZBWEUt047XwPLVvfkzvYQQ54uo7vfYO6FF7/Ieg2oeVExGzuAYc11PJYO/O0UVFomevPxfMWWJjs3fCpw=="],
 
     "@qvac/asr-ggml-linux-arm64": ["@qvac/asr-ggml-linux-arm64@0.12.1", "", { "os": "linux", "cpu": "arm64" }, "sha512-3SmULYhu7s+Z2HTs6tKG/FKw8if3ermiN0hOCN1DUz/Tu8G+L2MSLFH9WfQFvFJuYpV7FRNlCD+GRnlkJ3ovIA=="],
 
@@ -1259,13 +1260,13 @@
 
     "@qvac/audiogen-ggml": ["@qvac/audiogen-ggml@0.10.1", "", { "dependencies": { "@qvac/error": "^0.1.1", "@qvac/infer-base": "^0.8.0", "@qvac/logging": "^0.1.0", "bare-ffmpeg": "^1.4.0", "bare-fs": "^4.5.6", "bare-os": "^3.8.0", "bare-path": "^3.0.0", "bare-process": "^4.2.2" }, "optionalDependencies": { "@qvac/audiogen-ggml-darwin-arm64": "0.10.1", "@qvac/audiogen-ggml-darwin-x64": "0.10.1", "@qvac/audiogen-ggml-linux-arm64": "0.10.1", "@qvac/audiogen-ggml-linux-x64": "0.10.1", "@qvac/audiogen-ggml-win32-x64": "0.10.1" }, "peerDependencies": { "@qvac/audiogen-ggml-android-arm64": "0.10.1", "@qvac/audiogen-ggml-ios": "0.10.1" }, "optionalPeers": ["@qvac/audiogen-ggml-android-arm64", "@qvac/audiogen-ggml-ios"], "bin": { "qvac-audiogen-download-models": "scripts/download-audiogen-ggml-models.js" } }, "sha512-U3Iyy+Iqeol9MzzYPThWC41B4ciAgsic0vulkT+NR7FZuY3bHzuuJYHHd4zvcwNeJZMijg69/192MlfC6IM8Jw=="],
 
-    "@qvac/audiogen-ggml-android-arm64": ["@qvac/audiogen-ggml-android-arm64@0.11.0", "", {}, "sha512-0eXTMy4ZqvG0rkuUZ55emQnkh6qGfCHh736iyagV6lL98f3nw4dmaHxmNlTnRnJlLsKs0mfQ9/pUDYFvWIG9ag=="],
+    "@qvac/audiogen-ggml-android-arm64": ["@qvac/audiogen-ggml-android-arm64@0.10.1", "", {}, "sha512-Wk+EUlUpC7Er/m3lX8601VoNCemgF/6NJ5fzDM9s75ufYAL24CfW2U1woKmTouFbvA3+KAyqPutR6DK8XLsLEA=="],
 
     "@qvac/audiogen-ggml-darwin-arm64": ["@qvac/audiogen-ggml-darwin-arm64@0.10.1", "", { "os": "darwin", "cpu": "arm64" }, "sha512-8U6mYIn67SJCnafWukJJ+xRRRX+27o0qWTpC5K2+HMHx8XddjPv6hOt2nYoenFgZF+eBxF+VcCoBqI3rjqcRow=="],
 
     "@qvac/audiogen-ggml-darwin-x64": ["@qvac/audiogen-ggml-darwin-x64@0.10.1", "", { "os": "darwin", "cpu": "x64" }, "sha512-U38mp2NfdB7cm9MvTi7cS34L5I0gRkLC52PyFDSvvTY3mRDvmJsWybSRyyeHBj+xn+RiHLYmKQENfZBXz+HPTw=="],
 
-    "@qvac/audiogen-ggml-ios": ["@qvac/audiogen-ggml-ios@0.11.0", "", {}, "sha512-eOslYnyuP4a5plVk/BDnKAXzEOF0BhBSVpbVOBOK4OF90YXX1aOYu6/yyOPtb1/GtM1qV0FI3f53dQ/dZ+B56g=="],
+    "@qvac/audiogen-ggml-ios": ["@qvac/audiogen-ggml-ios@0.10.1", "", {}, "sha512-z6mQh7vWfSm/3BEHKfSrlhqNfUet7Hjg/OcildsMhdEJUNmMFRjT1XiBTlSY+EBFiBnan4oUlwDj8bj0+k8eQA=="],
 
     "@qvac/audiogen-ggml-linux-arm64": ["@qvac/audiogen-ggml-linux-arm64@0.10.1", "", { "os": "linux", "cpu": "arm64" }, "sha512-f88EqGAgeiJG/+NXUYh9hTDf7GmXXrFa1tQmYRQEAu1C+zNcagSRyOOCKIqY67xBTY7aiRQ3UqWO5diAHYQFsQ=="],
 
@@ -1281,13 +1282,13 @@
 
     "@qvac/diffusion-cpp": ["@qvac/diffusion-cpp@0.35.1", "", { "dependencies": { "@qvac/infer-base": "^0.8.0", "@qvac/logging": "^0.1.0", "bare-path": "^3.0.0" }, "optionalDependencies": { "@qvac/diffusion-cpp-darwin-arm64": "0.35.1", "@qvac/diffusion-cpp-darwin-x64": "0.35.1", "@qvac/diffusion-cpp-linux-arm64": "0.35.1", "@qvac/diffusion-cpp-linux-x64": "0.35.1", "@qvac/diffusion-cpp-win32-x64": "0.35.1" }, "peerDependencies": { "@qvac/diffusion-cpp-android-arm64": "0.35.1", "@qvac/diffusion-cpp-ios": "0.35.1" }, "optionalPeers": ["@qvac/diffusion-cpp-android-arm64", "@qvac/diffusion-cpp-ios"] }, "sha512-7WfaOgviAYIBxoUXlwr4eDwIx2vYK8M9+NtXFsJTz0zRIrHTb9yFlOH/QkS08s0jQEkJ9UyFgvIRSMlEx5Lvkw=="],
 
-    "@qvac/diffusion-cpp-android-arm64": ["@qvac/diffusion-cpp-android-arm64@0.36.0", "", {}, "sha512-84QU4xhHH5LAXjFX2QuewJU+9MpgRs9sPP30tQ/B2uYgm8SfgxUvtIrn8PvTYgWo6ZCEKsDZ8Kkrnm1RY8MT3Q=="],
+    "@qvac/diffusion-cpp-android-arm64": ["@qvac/diffusion-cpp-android-arm64@0.35.1", "", {}, "sha512-0R2WRon25f/piSjtTQzgaLOOghf2rWEdGqhbFVl9MG6auN61KJ9nL20k6taI+RWUH6hWTr7jQDZE217t45dI2A=="],
 
     "@qvac/diffusion-cpp-darwin-arm64": ["@qvac/diffusion-cpp-darwin-arm64@0.35.1", "", { "os": "darwin", "cpu": "arm64" }, "sha512-RFrbdbMRztrzf5CdcBFsm/AUsoPODbYOqxGzNurAQgwOJ9NnLf4wtqq63vlhtOKLHwUOzE/29b3MvGbeeIQCvw=="],
 
     "@qvac/diffusion-cpp-darwin-x64": ["@qvac/diffusion-cpp-darwin-x64@0.35.1", "", { "os": "darwin", "cpu": "x64" }, "sha512-E3MLResrR8wViBh3eHv0nAm/Dn8Od8kT46ZguyMNj0mkZMy9o9PFP6taL1QezcvFsw4nkqaffd2lema9hdne7g=="],
 
-    "@qvac/diffusion-cpp-ios": ["@qvac/diffusion-cpp-ios@0.36.0", "", {}, "sha512-/xJPvyjoIWDJe365igGIH2YhfBG9WiDEc9OUCy+H9xzo2Vbu0D9KP3F8vPhZNxMxLSPEX0kQ+jyovbHBwTEv4Q=="],
+    "@qvac/diffusion-cpp-ios": ["@qvac/diffusion-cpp-ios@0.35.1", "", {}, "sha512-TzpbQ02ILzqqLXZvI/2asG8mGHOgAzWm1efaP8dGSaLKiuDyRWBXeDn0rk4zZFXg54yyWWqpibQpAWg0cVaD2g=="],
 
     "@qvac/diffusion-cpp-linux-arm64": ["@qvac/diffusion-cpp-linux-arm64@0.35.1", "", { "os": "linux", "cpu": "arm64" }, "sha512-6MmTu7yWuLUwKqzRCnRZ5k+P0+hGUkMG/peoS6P+v5ocYr60VrFDQz2ZPiQ/zj9k8q15MNENl4zsvJWKXIXA8Q=="],
 
@@ -1301,13 +1302,13 @@
 
     "@qvac/fabric": ["@qvac/fabric@0.29.2", "", { "optionalDependencies": { "@qvac/fabric-darwin-arm64": "0.29.2", "@qvac/fabric-darwin-x64": "0.29.2", "@qvac/fabric-linux-arm64": "0.29.2", "@qvac/fabric-linux-x64": "0.29.2", "@qvac/fabric-win32-x64": "0.29.2" }, "peerDependencies": { "@qvac/fabric-android-arm64": "0.29.2", "@qvac/fabric-ios": "0.29.2" }, "optionalPeers": ["@qvac/fabric-android-arm64", "@qvac/fabric-ios"] }, "sha512-5ZC9vXSieTVU1IjKjZ/QLSOsZ8PP3TE1fWsWgz+NgD9WlSEG2VJTkryBw4Ql/hJBSPkQjooLa52D3DUi55m8rQ=="],
 
-    "@qvac/fabric-android-arm64": ["@qvac/fabric-android-arm64@0.31.1", "", {}, "sha512-5+KAtgwRZWd6pNWnx3U/bjL7wo09jj4d8seEe40hT4Mr97A71i9VcWRAs70lMeQ7IJb1KgvA3+1ay+uoXDp7wQ=="],
+    "@qvac/fabric-android-arm64": ["@qvac/fabric-android-arm64@0.29.2", "", {}, "sha512-OwwNlfKo6Qoz3lELeTp5JyJw/Dpk/9qbkaQoWimuttXQfgg8HmAwxIMiXNwPF5aqpL8b3YZq357G0bMbfDaNxg=="],
 
     "@qvac/fabric-darwin-arm64": ["@qvac/fabric-darwin-arm64@0.29.2", "", { "os": "darwin", "cpu": "arm64" }, "sha512-WEGwRnJMn0bkek0mTO7UJ2urxojBy4ck8elxjQWzLKrHz+JsGMxH6pe8zYN7sr7deMkrix4Nr3qBqGIx11c+PQ=="],
 
     "@qvac/fabric-darwin-x64": ["@qvac/fabric-darwin-x64@0.29.2", "", { "os": "darwin", "cpu": "x64" }, "sha512-rffy4AfWdCl9Of1EuAaX9M8NCxBc3XEKtuPLgACRfCvTRRtnF9X0uZ+lf3avZurKx8kE2fcQ3ifC7apxqdwM5A=="],
 
-    "@qvac/fabric-ios": ["@qvac/fabric-ios@0.31.1", "", {}, "sha512-0mRzfwIVTT/82Wv5WLVlgXVso+iojqmFvqx2ws/z82JmbnzOo295pOjEJGtwL/jEEmjhrH6fsXWgi0jZ1qoLFw=="],
+    "@qvac/fabric-ios": ["@qvac/fabric-ios@0.29.2", "", {}, "sha512-rSg6Scy2aiAZpAGMBtsJ0538ZqGqP6qIBj0L5OSKT+uAyuBsaWrJf5pZGOELMM4pItU+b3cQW1Nb+YmZDhTN4g=="],
 
     "@qvac/fabric-linux-arm64": ["@qvac/fabric-linux-arm64@0.29.2", "", { "os": "linux", "cpu": "arm64" }, "sha512-TL442FKprLtRBko6uwABxjgZZ6+OPfuQFbLoBGeAYsUQWuwqF3WOVmCyKov/FYHnKDNshzAcbPo4Q7LfMJbDuA=="],
 
@@ -1343,13 +1344,13 @@
 
     "@qvac/tts-ggml": ["@qvac/tts-ggml@0.15.1", "", { "dependencies": { "@qvac/error": "^0.1.0", "@qvac/infer-base": "^0.8.0", "@qvac/langdetect-text": "^0.1.2", "@qvac/logging": "^0.1.0", "bare-fs": "^4.5.6", "bare-https": "^3.0.0", "bare-os": "^3.8.0", "bare-path": "^3.0.0", "bare-process": "^4.2.2", "bare-stream": "^2.7.0", "bare-url": "^2.4.3" }, "optionalDependencies": { "@qvac/tts-ggml-darwin-arm64": "0.15.1", "@qvac/tts-ggml-darwin-x64": "0.15.1", "@qvac/tts-ggml-linux-arm64": "0.15.1", "@qvac/tts-ggml-linux-x64": "0.15.1", "@qvac/tts-ggml-win32-x64": "0.15.1" }, "peerDependencies": { "@qvac/tts-ggml-android-arm64": "0.15.1", "@qvac/tts-ggml-ios": "0.15.1" }, "optionalPeers": ["@qvac/tts-ggml-android-arm64", "@qvac/tts-ggml-ios"] }, "sha512-7Jy4bR3mBbUEHqOjhK9n4wnMDkW40ErT2ayBMcldQ/PGneVTIAZAUZNrRaZ0VbRz+NWYNU7Swhz3RfW72baN3w=="],
 
-    "@qvac/tts-ggml-android-arm64": ["@qvac/tts-ggml-android-arm64@0.16.0", "", {}, "sha512-C6GjYPfX8JNB0ohrVVniPYRktlA6A0BuICMgbgdg6aOnyG9yyk26DTHqLoDXTql4D/3gJKBlEsjSTvMgwbNBpg=="],
+    "@qvac/tts-ggml-android-arm64": ["@qvac/tts-ggml-android-arm64@0.15.1", "", {}, "sha512-SXEg6QcPdMEak50L3YaGS9OtXbCuT2aaAJC7TJ3jM6QGKDZy4/Sw++HpRk0iB12tFmXrYy7PsNLuNI+PuhMokw=="],
 
     "@qvac/tts-ggml-darwin-arm64": ["@qvac/tts-ggml-darwin-arm64@0.15.1", "", { "os": "darwin", "cpu": "arm64" }, "sha512-uJYHCD1IjceVDNNqGFUbxBY9mcYOMpUCHdEGxKcon+3yWH5ZEDzFRe82TAeGl5xwP1NIHr5i8NEYGTyEdgkx0Q=="],
 
     "@qvac/tts-ggml-darwin-x64": ["@qvac/tts-ggml-darwin-x64@0.15.1", "", { "os": "darwin", "cpu": "x64" }, "sha512-nbouHPXyWkUgJT9X3pB1An9V6m6nTlseStJZFQFSX2t7EhggVGv0dYa6KFqj8Qrq2Z7B9jZdmPSKwzfGmJspsQ=="],
 
-    "@qvac/tts-ggml-ios": ["@qvac/tts-ggml-ios@0.16.0", "", {}, "sha512-reyfQfyBy3ffEfkp7lIOKvBXByeF3RmXXSbKPGJAIm+fY1kh8fJ5k/7NqN799WKrrzOOpxMrS1AM+aCzLsL6Wg=="],
+    "@qvac/tts-ggml-ios": ["@qvac/tts-ggml-ios@0.15.1", "", {}, "sha512-qiw8YABHMOoPxffrT7dgVXJparDVMkJZ75BPSAdbqtDFtJ0srr+PVsIA42pi2n6AGosad92SklUMeHD8DEKLuA=="],
 
     "@qvac/tts-ggml-linux-arm64": ["@qvac/tts-ggml-linux-arm64@0.15.1", "", { "os": "linux", "cpu": "arm64" }, "sha512-1vXf690kNLuVUqNAgaZgo5Evd+Eb5OND5deqrePTkwCXUsppzUELbkV2p+td1GJ6j77Jbm1H6OsNPKfQgiw2Vw=="],
 
@@ -2986,6 +2987,8 @@
     "lilconfig": ["lilconfig@3.1.5", "", {}, "sha512-aRAOI9Ia43ygL4o1EOmC/sc/0OFxrm7qcQngiIyWaqVnSnz932ybJ07zyCcgMNGSDP8Yxaf88Xj1zHEXmvQ4SA=="],
 
     "lines-and-columns": ["lines-and-columns@1.2.4", "", {}, "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="],
+
+    "llama.rn": ["llama.rn@0.13.0-rc.12", "", { "peerDependencies": { "react": "*", "react-native": "*" }, "bin": { "llama-rn-download-artifacts": "install/download-native-artifacts.js" } }, "sha512-rNUJA5T2uR1y8yzOhmKvJFsX5mnb166OudRpbR6Rf1Qy7tFDAmBPIsZNxX4LUFPS/pon9y3rZM2f0Wd4qQnVag=="],
 
     "llm-splitter": ["llm-splitter@0.2.0", "", {}, "sha512-Yqi947Vk5Ps2YqhOV8K+RR6bseLhZLIVfovpWJH5cT7GE4Pca8/3iny/3oQ47scD7SfQd3whhxMfc+KgxTgDHA=="],
 

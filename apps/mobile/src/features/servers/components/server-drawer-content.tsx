@@ -2,6 +2,7 @@ import type { MobileTranslate } from "@zollybot/i18n/mobile";
 import type { Href } from "expo-router";
 import { Typography } from "heroui-native";
 import type { LucideIcon } from "lucide-react-native";
+import BookOpen from "lucide-react-native/icons/book-open";
 import Calendar from "lucide-react-native/icons/calendar";
 import ChartColumn from "lucide-react-native/icons/chart-column";
 import Check from "lucide-react-native/icons/check";
@@ -53,7 +54,7 @@ import { DrawerHeaderBlur } from "./drawer-header-blur";
 import { ServerAvatar } from "./server-avatar";
 import { ServerDrawerIconButton } from "./server-drawer-icon-button";
 import { SERVER_ROW_HEIGHT, SortableServerList } from "./sortable-server-list";
-import { useDrawerMemberCount, useDrawerServerValues } from "./use-drawer-server-values";
+import { useDrawerServerValues } from "./use-drawer-server-values";
 
 const EASE_OUT = Easing.bezier(0.23, 1, 0.32, 1);
 const SERVER_LIST_MOTION = { duration: 240, easing: EASE_OUT };
@@ -169,7 +170,6 @@ export const ServerDrawerContent = memo(function ServerDrawerContent({
   const canReorder = serverIds.length > 1;
   // Without an open server the list is the only content, so it stays open.
   const showsList = listOpen || editing || !activeServer;
-  const memberCount = useDrawerMemberCount(activeServer?.id ?? "");
   const hostedServerIds = useHostedServerAvailability((state) =>
     state.userId === session.user.id ? state.serverIds : null,
   );
@@ -374,14 +374,7 @@ export const ServerDrawerContent = memo(function ServerDrawerContent({
     );
   }
 
-  const subtitle = activeServer
-    ? memberCount === null
-      ? serverDetail(activeServer, t)
-      : t("mobile.server.drawer.kindMembers", {
-          kind: serverDetail(activeServer, t),
-          members: t("mobile.server.drawer.memberCount", { count: memberCount }),
-        })
-    : null;
+  const subtitle = activeServer ? serverDetail(activeServer, t) : null;
 
   return (
     <>
@@ -533,7 +526,7 @@ export const ServerDrawerContent = memo(function ServerDrawerContent({
   );
 });
 
-type DrawerRoute = "tasks" | "routines" | "workflows" | "marketplace" | "usage" | "members" | "settings";
+type DrawerRoute = "tasks" | "ledger" | "routines" | "workflows" | "marketplace" | "usage" | "settings";
 
 /**
  * The tools of the open server with their values. Each answer from the host renders only this part
@@ -555,11 +548,11 @@ function DrawerServerTools({
   const routes = useMemo(
     (): Record<DrawerRoute, Href> => ({
       tasks: { pathname: "/server-tasks", params: { serverId } },
+      ledger: { pathname: "/ledger", params: { serverId } },
       routines: { pathname: "/server-routines", params: { serverId } },
       workflows: { pathname: "/server-workflows", params: { serverId } },
       marketplace: { pathname: "/server-marketplace", params: { serverId } },
       usage: { pathname: "/server-usage", params: { serverId } },
-      members: { pathname: "/server-settings/members", params: { serverId } },
       settings: { pathname: "/server-settings", params: { serverId } },
     }),
     [serverId],
@@ -582,6 +575,7 @@ function DrawerServerTools({
           onNavigate={onNavigate}
         />
       ) : null}
+      <DrawerRow icon={BookOpen} label={t("mobile.app.route.ledger")} href={routes.ledger} onNavigate={onNavigate} />
       <DrawerRow
         icon={Calendar}
         label={t("mobile.app.route.schedule")}
@@ -615,22 +609,7 @@ function DrawerServerTools({
         href={routes.usage}
         onNavigate={onNavigate}
       />
-      <DrawerRow
-        icon={UsersRound}
-        label={t("mobile.app.route.members")}
-        value={values.members}
-        href={routes.members}
-        onNavigate={onNavigate}
-      />
       <DrawerDivider />
-      {JARVIS_ENABLED ? (
-        <DrawerRow
-          icon={Settings2}
-          label={t("mobile.app.jarvis.settingsRoute")}
-          href="/jarvis-settings"
-          onNavigate={onNavigate}
-        />
-      ) : null}
       <DrawerRow
         icon={Settings2}
         label={t("mobile.server.drawer.serverSettings")}

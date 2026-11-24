@@ -14,12 +14,10 @@ import {
   showOverLockScreen,
 } from "@/features/app-lock/model/app-lock-native";
 import { appLockEnabled } from "@/features/app-lock/model/app-lock-storage";
-import { formatModelSize, useJarvisModels } from "@/features/assistant/model/jarvis-model-manager";
-import { JARVIS_MODELS, jarvisModel } from "@/features/assistant/model/jarvis-models";
+import { formatBytes, useHuggingFaceModels } from "@/features/assistant/model/huggingface-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { loadVoiceTemplate, voiceMatchSupported } from "@/features/assistant/model/voice-match";
 import { WAKE_WORD_AVAILABLE } from "@/features/assistant/native/wake-word";
-import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
 
 function Row({
@@ -87,10 +85,9 @@ export default function JarvisSettingsScreen() {
   const { t } = useText();
   const insets = useSafeAreaInsets();
   const settings = useJarvisSettings();
-  const modelStates = useJarvisModels((state) => state.models);
-  const downloadModel = useJarvisModels((state) => state.download);
-  const removeModel = useJarvisModels((state) => state.remove);
-  const refreshModels = useJarvisModels((state) => state.refresh);
+  const installedLocalModels = useHuggingFaceModels((state) => state.installed);
+  const selectedLocalKey = useHuggingFaceModels((state) => state.selectedKey);
+  const refreshLocalModels = useHuggingFaceModels((state) => state.refresh);
   const appLockOn = useAppLock((state) => appLockEnabled(state.config));
   const [background, foreground, muted, border, accent] = useThemeColor([
     "background",
@@ -99,8 +96,7 @@ export default function JarvisSettingsScreen() {
     "border",
     "accent",
   ]).map(String);
-  const selectedModel = jarvisModel(settings.modelId);
-  const selectedVision = jarvisModel(settings.visionModelId);
+  const selectedLocalModel = installedLocalModels.find((model) => model.key === selectedLocalKey);
   const [voiceEnrolled, setVoiceEnrolled] = useState(false);
   const [overlayAllowed, setOverlayAllowed] = useState(false);
   const [batteryAllowed, setBatteryAllowed] = useState(false);
@@ -112,12 +108,12 @@ export default function JarvisSettingsScreen() {
 
   useEffect(() => {
     void loadJarvisSettings();
-    void refreshModels();
+    void refreshLocalModels();
     if (Platform.OS === "android") {
       void canDrawOverlays().then(setOverlayAllowed);
       void isIgnoringBatteryOptimizations().then(setBatteryAllowed);
     }
-  }, [refreshModels]);
+  }, [refreshLocalModels]);
 
   useFocusEffect(
     useCallback(() => {
@@ -231,12 +227,12 @@ export default function JarvisSettingsScreen() {
         <View style={{ borderColor: border, borderWidth: 1, borderRadius: 16, paddingHorizontal: 14 }}>
           <Row
             title={t("mobile.app.jarvis.localModel")}
-            detail={`${selectedModel.name} · ${selectedModel.parameters}`}
+            detail={
+              selectedLocalModel
+                ? `${selectedLocalModel.name} · ${formatBytes(selectedLocalModel.size)}`
+                : t("mobile.app.jarvis.noLocalModel")
+            }
             onPress={() => router.push("/jarvis-local-model")}
-          />
-          <Row
-            title={t("mobile.app.jarvis.visionModel")}
-            detail={`${selectedVision.name} · ${selectedVision.parameters}`}
           />
           <Row
             title={t("mobile.app.jarvis.voice")}
@@ -247,8 +243,12 @@ export default function JarvisSettingsScreen() {
           <Row
             title={t("mobile.app.jarvis.cloud")}
             detail={t("mobile.app.jarvis.cloudHint")}
-            disabled
-            right={<Switch value={false} disabled />}
+            right={
+              <Switch
+                value={settings.cloudFallback}
+                onValueChange={(value) => void saveJarvisSettings({ cloudFallback: value })}
+              />
+            }
           />
         </View>
 
@@ -307,97 +307,6 @@ export default function JarvisSettingsScreen() {
             </View>
           </>
         ) : null}
-
-        <Text style={{ color: foreground, fontSize: 16, fontWeight: "700", paddingTop: 22 }}>
-          {t("mobile.app.jarvis.models")}
-        </Text>
-        <Text style={{ color: muted, fontSize: 12, lineHeight: 17, paddingTop: 4 }}>
-          {t("mobile.app.jarvis.modelsHint")}
-        </Text>
-        <View style={{ gap: 8, paddingTop: 10 }}>
-          {JARVIS_MODELS.map((model) => {
-            const selected =
-              model.kind === "vision" ? settings.visionModelId === model.id : settings.modelId === model.id;
-            const state = modelStates[model.id] ?? { phase: "unknown" as const, progress: 0, failure: null };
-            const downloading = state.phase === "downloading";
-            return (
-              <Pressable
-                key={model.id}
-                accessibilityRole="button"
-                onPress={() => {
-                  void haptics.selection();
-                  void saveJarvisSettings(
-                    model.kind === "vision" ? { visionModelId: model.id } : { modelId: model.id },
-                  );
-                }}
-                style={({ pressed }) => ({
-                  borderWidth: 1,
-                  borderColor: selected ? accent : border,
-                  backgroundColor: selected ? `${accent}10` : background,
-                  borderRadius: 14,
-                  padding: 12,
-                  gap: 2,
-                  opacity: pressed ? 0.7 : 1,
-                })}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                  <Text style={{ color: foreground, flex: 1, fontSize: 13, fontWeight: "600" }}>{model.name}</Text>
-                  <Text style={{ color: muted, fontSize: 10 }}>
-                    {t(model.kind === "vision" ? "mobile.app.jarvis.kind.vision" : "mobile.app.jarvis.kind.text")}
-                  </Text>
-                </View>
-                <Text style={{ color: muted, fontSize: 11 }}>
-                  {model.family} · {model.parameters} · {model.context} · {formatModelSize(model.sizeBytes)}
-                </Text>
-                <Text style={{ color: muted, fontSize: 11 }}>{model.use}</Text>
-                <View style={{ alignItems: "center", flexDirection: "row", gap: 8, paddingTop: 6 }}>
-                  <Text
-                    style={{ color: downloading || state.phase === "error" ? accent : muted, flex: 1, fontSize: 11 }}
-                  >
-                    {downloading
-                      ? `${t("mobile.app.jarvis.voiceMatch.downloading")} ${Math.round(state.progress * 100)}%`
-                      : state.phase === "ready"
-                        ? selected
-                          ? t("mobile.app.jarvis.selected")
-                          : t("mobile.app.jarvis.downloaded")
-                        : state.phase === "error"
-                          ? (state.failure ?? t("mobile.app.jarvis.notDownloaded"))
-                          : selected
-                            ? t("mobile.app.jarvis.selected")
-                            : t("mobile.app.jarvis.notDownloaded")}
-                  </Text>
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={`${state.phase === "ready" ? t("common.delete") : t("common.download")} ${model.name}`}
-                    disabled={downloading}
-                    onPress={() => {
-                      void haptics.selection();
-                      void (state.phase === "ready" ? removeModel(model.id) : downloadModel(model.id));
-                    }}
-                    style={({ pressed }) => ({
-                      borderColor: accent,
-                      borderRadius: 8,
-                      borderWidth: 1,
-                      opacity: downloading ? 0.4 : pressed ? 0.65 : 1,
-                      paddingHorizontal: 10,
-                      paddingVertical: 5,
-                    })}
-                  >
-                    <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
-                      {state.phase === "ready"
-                        ? t("common.delete")
-                        : downloading
-                          ? `${Math.round(state.progress * 100)}%`
-                          : state.phase === "error"
-                            ? t("common.retry")
-                            : t("common.download")}
-                    </Text>
-                  </Pressable>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
       </ScrollView>
     </SafeAreaView>
   );

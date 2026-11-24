@@ -448,6 +448,7 @@ function AuthenticatedStack() {
             sheetGrabberVisible: true,
           }}
         />
+        <Stack.Screen name="ledger" options={largeTitlePage} />
         <Stack.Screen
           name="pair-host"
           options={{

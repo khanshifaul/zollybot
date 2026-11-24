@@ -7,6 +7,8 @@ import { defineMessages } from "../../message";
  */
 export const messages = defineMessages("common", {
   "common.cancel": "Cancel",
+  "common.pause": "Pause",
+  "common.resume": "Resume",
   "common.save": "Save",
   "common.close": "Close",
   "common.delete": "Delete",

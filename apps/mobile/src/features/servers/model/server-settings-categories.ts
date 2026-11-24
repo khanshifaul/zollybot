@@ -7,12 +7,11 @@ import { useMobileWorkspace } from "@/features/workspace/context/mobile-workspac
 import { queryKeys } from "@/features/workspace/model/query-keys";
 import type { MobileServer } from "@/features/workspace/model/workspace-types";
 
-export type ServerSettingsCategory = "general" | "people" | "ai" | "data" | "maintenance";
+export type ServerSettingsCategory = "general" | "ai" | "data" | "maintenance";
 
 /** The Server settings pages, in the order of the first page. */
 export const SERVER_SETTINGS_CATEGORIES = [
   "general",
-  "people",
   "ai",
   "data",
   "maintenance",
@@ -20,7 +19,6 @@ export const SERVER_SETTINGS_CATEGORIES = [
 
 export const SERVER_SETTINGS_CATEGORY_TITLE_KEYS = {
   general: "mobile.server.settings.general",
-  people: "mobile.server.settings.peopleSection",
   ai: "mobile.server.settings.aiSection",
   data: "mobile.server.settings.dataSection",
   maintenance: "mobile.server.settings.maintenanceSection",
@@ -79,11 +77,6 @@ export function useServerSettingsItems(
         workspace.canRotateServerKey(serverId) || server.keyChangedAt !== undefined,
         "mobile.server.settings.keySection",
       ],
-    ]),
-    people: pick([
-      [true, "mobile.server.settings.members"],
-      [workspace.canManageServerRoles(serverId), "mobile.server.route.roles"],
-      [workspace.canReadServerAudit(serverId), "mobile.server.route.audit"],
     ]),
     ai: pick([
       [workspace.canManageProviders(serverId), "mobile.server.settings.providers"],

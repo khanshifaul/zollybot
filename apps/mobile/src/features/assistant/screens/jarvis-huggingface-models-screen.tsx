@@ -11,6 +11,7 @@ import {
   type InstalledModel,
   useHuggingFaceModels,
 } from "@/features/assistant/model/huggingface-models";
+import { JARVIS_LOCAL_SYSTEM_PROMPT } from "@/features/assistant/model/jarvis-prompt";
 import {
   loadLocalModelFile,
   localModelLoaded,
@@ -40,19 +41,26 @@ export default function JarvisHuggingFaceModelsScreen() {
   ]).map(String);
   const results = useHuggingFaceModels((state) => state.results);
   const installed = useHuggingFaceModels((state) => state.installed);
+  const selectedKey = useHuggingFaceModels((state) => state.selectedKey);
   const downloads = useHuggingFaceModels((state) => state.downloads);
   const searching = useHuggingFaceModels((state) => state.searching);
   const error = useHuggingFaceModels((state) => state.error);
   const search = useHuggingFaceModels((state) => state.search);
   const files = useHuggingFaceModels((state) => state.files);
   const download = useHuggingFaceModels((state) => state.download);
+  const pauseDownload = useHuggingFaceModels((state) => state.pauseDownload);
+  const resumeDownload = useHuggingFaceModels((state) => state.resumeDownload);
+  const cancelDownload = useHuggingFaceModels((state) => state.cancelDownload);
   const remove = useHuggingFaceModels((state) => state.remove);
+  const select = useHuggingFaceModels((state) => state.select);
   const refresh = useHuggingFaceModels((state) => state.refresh);
   const [query, setQuery] = useState("LFM");
   const [filesFor, setFilesFor] = useState<string | null>(null);
   const [modelFiles, setModelFiles] = useState<HuggingFaceFile[]>([]);
   const [filesLoading, setFilesLoading] = useState(false);
-  const [selected, setSelected] = useState<InstalledModel | null>(installed[0] ?? null);
+  const [selected, setSelected] = useState<InstalledModel | null>(
+    installed.find((model) => model.key === selectedKey) ?? installed[0] ?? null,
+  );
   const [phase, setPhase] = useState<Phase>(localModelLoaded() ? "ready" : "idle");
   const [progress, setProgress] = useState(0);
   const [question, setQuestion] = useState("");
@@ -65,8 +73,10 @@ export default function JarvisHuggingFaceModelsScreen() {
     void search("LFM");
   }, [refresh, search]);
   useEffect(() => {
-    if (!selected && installed[0]) setSelected(installed[0]);
-  }, [installed, selected]);
+    const active = selectedKey ? installed.find((model) => model.key === selectedKey) : undefined;
+    if (active) setSelected(active);
+    else if (!selected && installed[0]) setSelected(installed[0]);
+  }, [installed, selected, selectedKey]);
   useEffect(
     () => () => {
       stopped.current = true;
@@ -95,6 +105,7 @@ export default function JarvisHuggingFaceModelsScreen() {
 
   const load = async (model: InstalledModel) => {
     setSelected(model);
+    await select(model.key);
     setPhase("loading");
     setProgress(0);
     try {
@@ -118,7 +129,7 @@ export default function JarvisHuggingFaceModelsScreen() {
         [
           {
             role: "system",
-            content: "You are Jarvis, a concise on-device assistant. Answer in short spoken sentences.",
+            content: JARVIS_LOCAL_SYSTEM_PROMPT,
           },
           { role: "user", content: text },
         ],
@@ -272,7 +283,8 @@ export default function JarvisHuggingFaceModelsScreen() {
                   const key = `${model.id}/${file.name}`;
                   const state = downloads[key];
                   const installedModel = installed.find((item) => item.key === key);
-                  const busy = Boolean(state && state.progress > 0 && state.progress < 1);
+                  const active = state?.phase === "downloading" || state?.phase === "verifying";
+                  const paused = state?.phase === "paused" || state?.phase === "failed";
                   return (
                     <View key={file.name} style={{ alignItems: "center", flexDirection: "row", gap: 8 }}>
                       <View style={{ flex: 1, minWidth: 0 }}>
@@ -285,20 +297,30 @@ export default function JarvisHuggingFaceModelsScreen() {
                         {!file.sha256 ? (
                           <Text style={{ color: accent, fontSize: 10 }}>{t("mobile.app.jarvis.noChecksum")}</Text>
                         ) : null}
+                        {active && state ? (
+                          <Text style={{ color: muted, fontSize: 10 }}>
+                            {formatBytes(state.bytesWritten)} / {formatBytes(state.bytesTotal)}
+                            {state.speed > 0 ? ` · ${formatBytes(state.speed)}/s` : ""}
+                            {state.eta !== null ? ` · ${state.eta}s` : ""}
+                          </Text>
+                        ) : null}
                         {state?.failure ? <Text style={{ color: accent, fontSize: 10 }}>{state.failure}</Text> : null}
                       </View>
                       <Pressable
                         accessibilityRole="button"
-                        disabled={busy || model.gated || !file.sha256}
+                        disabled={model.gated || !file.sha256}
                         onPress={() => {
                           void haptics.selection();
-                          void (installedModel ? uninstall(installedModel) : download(model.id, file));
+                          if (installedModel) void uninstall(installedModel);
+                          else if (active) void pauseDownload(key);
+                          else if (paused) void resumeDownload(model.id, file);
+                          else void download(model.id, file);
                         }}
                         style={({ pressed }) => ({
                           borderColor: accent,
                           borderRadius: 8,
                           borderWidth: 1,
-                          opacity: busy || model.gated || !file.sha256 ? 0.4 : pressed ? 0.65 : 1,
+                          opacity: model.gated || !file.sha256 ? 0.4 : pressed ? 0.65 : 1,
                           paddingHorizontal: 10,
                           paddingVertical: 5,
                         })}
@@ -306,11 +328,28 @@ export default function JarvisHuggingFaceModelsScreen() {
                         <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
                           {installedModel
                             ? t("common.delete")
-                            : busy
-                              ? `${Math.round((state?.progress ?? 0) * 100)}%`
-                              : t("common.download")}
+                            : active
+                              ? `${Math.round((state?.progress ?? 0) * 100)}% · ${t("common.pause")}`
+                              : paused
+                                ? t("common.resume")
+                                : t("common.download")}
                         </Text>
                       </Pressable>
+                      {active || paused ? (
+                        <Pressable
+                          accessibilityRole="button"
+                          onPress={() => void cancelDownload(key)}
+                          style={{
+                            borderColor: border,
+                            borderRadius: 8,
+                            borderWidth: 1,
+                            paddingHorizontal: 8,
+                            paddingVertical: 5,
+                          }}
+                        >
+                          <Text style={{ color: muted, fontSize: 11 }}>{t("common.cancel")}</Text>
+                        </Pressable>
+                      ) : null}
                       {installedModel ? (
                         <Pressable
                           accessibilityRole="button"

@@ -1,51 +1,40 @@
+import { initLlama, type LlamaContext } from "llama.rn";
+
 export interface LocalLlmProgress {
   percentage: number;
   downloaded: number;
   total: number;
 }
 
-let loaded: string | null = null;
-let loadedModelId: string | null = null;
+let context: LlamaContext | null = null;
+let loadedKey: string | null = null;
 
-/**
- * The SDK is imported at use, not at module load: Expo Go has no QVAC native module and the rest of
- * the app must still open there.
- */
-function sdk() {
-  return import("@qvac/sdk");
+/** llama.rn resolves filesystem paths, not `file://` URLs. */
+function pathOf(uri: string): string {
+  return uri.startsWith("file://") ? decodeURIComponent(uri.slice("file://".length)) : uri;
 }
 
 export function localModelLoaded(): boolean {
-  return loaded !== null;
+  return context !== null;
 }
 
-async function loadSource(
-  source: string,
-  key: string,
-  onProgress: (progress: LocalLlmProgress) => void,
-): Promise<void> {
-  if (loaded && loadedModelId === key) return;
-  if (loaded) await unloadLocalModel();
-  const qvac = await sdk();
-  loaded = await qvac.loadModel({
-    modelSrc: source,
-    modelType: "llamacpp-completion",
-    onProgress: (progress) => {
-      onProgress({
-        percentage: Number(progress.percentage ?? 0),
-        downloaded: Number(progress.downloaded ?? 0),
-        total: Number(progress.total ?? 0),
-      });
+/** Loads a GGUF downloaded from Hugging Face through llama.cpp on the phone. */
+export async function loadLocalModelFile(uri: string, onProgress: (progress: LocalLlmProgress) => void): Promise<void> {
+  if (context && loadedKey === uri) return;
+  if (context) await unloadLocalModel();
+  const path = pathOf(uri);
+  context = await initLlama(
+    {
+      model: path,
+      n_ctx: 4096,
+      n_gpu_layers: 0,
+      use_mlock: false,
+      use_mmap: true,
+      vocab_only: false,
     },
-  });
-  loadedModelId = key;
-}
-
-/** Loads a GGUF file downloaded from Hugging Face. */
-export function loadLocalModelFile(uri: string, onProgress: (progress: LocalLlmProgress) => void): Promise<void> {
-  // QVAC resolves filesystem paths, not file:// URLs; expo-file-system returns the latter.
-  const path = uri.startsWith("file://") ? decodeURIComponent(uri.slice("file://".length)) : uri;
-  return loadSource(path, uri, onProgress);
+    (progress) => onProgress({ percentage: progress * 100, downloaded: 0, total: 0 }),
+  );
+  loadedKey = uri;
 }
 
 /** Streams a local reply. The model stays loaded until `unloadLocalModel`. */
@@ -53,22 +42,27 @@ export async function localReply(
   history: { role: "system" | "user" | "assistant"; content: string }[],
   onToken: (token: string) => void,
 ): Promise<string> {
-  if (!loaded) throw new Error("Load the local model first.");
-  const qvac = await sdk();
-  const result = qvac.completion({ modelId: loaded, history, stream: true });
-  let text = "";
-  for await (const token of result.tokenStream) {
-    text += token;
-    onToken(token);
-  }
-  return text;
+  if (!context) throw new Error("Load the local model first.");
+  const result = await context.completion(
+    {
+      messages: history,
+      n_predict: 512,
+      temperature: 0.7,
+      top_k: 40,
+      top_p: 0.95,
+      stop: ["</s>", "<|im_end|>", "<|endoftext|>"],
+    },
+    (data) => {
+      if (data.token) onToken(data.token);
+    },
+  );
+  return result.text;
 }
 
 export async function unloadLocalModel(): Promise<void> {
-  if (!loaded) return;
-  const id = loaded;
-  loaded = null;
-  loadedModelId = null;
-  const qvac = await sdk();
-  await qvac.unloadModel({ modelId: id });
+  if (!context) return;
+  const current = context;
+  context = null;
+  loadedKey = null;
+  await current.release();
 }
