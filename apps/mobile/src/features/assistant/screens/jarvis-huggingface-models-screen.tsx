@@ -23,6 +23,9 @@ import { useText } from "@/shared/lib/text";
 
 type Phase = "idle" | "loading" | "ready" | "thinking";
 
+/** The catalog defaults to LiquidAI's compact GGUF models; the chips keep the other families one tap away. */
+const MODEL_QUERIES = ["LFM", "Qwen3", "Gemma 3", "Llama 3.2"] as const;
+
 /** Hugging Face GGUF models, downloaded to this phone and run through QVAC. */
 export default function JarvisHuggingFaceModelsScreen() {
   const { t } = useText();
@@ -45,7 +48,7 @@ export default function JarvisHuggingFaceModelsScreen() {
   const download = useHuggingFaceModels((state) => state.download);
   const remove = useHuggingFaceModels((state) => state.remove);
   const refresh = useHuggingFaceModels((state) => state.refresh);
-  const [query, setQuery] = useState("Qwen3");
+  const [query, setQuery] = useState("LFM");
   const [filesFor, setFilesFor] = useState<string | null>(null);
   const [modelFiles, setModelFiles] = useState<HuggingFaceFile[]>([]);
   const [filesLoading, setFilesLoading] = useState(false);
@@ -59,7 +62,7 @@ export default function JarvisHuggingFaceModelsScreen() {
 
   useEffect(() => {
     void refresh();
-    void search("Qwen3");
+    void search("LFM");
   }, [refresh, search]);
   useEffect(() => {
     if (!selected && installed[0]) setSelected(installed[0]);
@@ -209,6 +212,36 @@ export default function JarvisHuggingFaceModelsScreen() {
             )}
           </Pressable>
         </View>
+        <ScrollView horizontal contentContainerStyle={{ gap: 8 }} showsHorizontalScrollIndicator={false}>
+          {MODEL_QUERIES.map((family) => {
+            const selectedQuery = query === family;
+            return (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ selected: selectedQuery }}
+                key={family}
+                onPress={() => {
+                  void haptics.selection();
+                  setQuery(family);
+                  void search(family);
+                }}
+                style={({ pressed }) => ({
+                  backgroundColor: selectedQuery ? accent : "transparent",
+                  borderColor: selectedQuery ? accent : border,
+                  borderRadius: 999,
+                  borderWidth: 1,
+                  opacity: pressed ? 0.7 : 1,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                })}
+              >
+                <Text style={{ color: selectedQuery ? accentForeground : muted, fontSize: 12, fontWeight: "600" }}>
+                  {family}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
         {error ? <Text style={{ color: accent, fontSize: 12 }}>{error}</Text> : null}
 
         {results.map((model) => (

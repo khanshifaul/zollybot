@@ -109,6 +109,7 @@ export default function ConnectScreen() {
   const reportContentReady = useContext(SplashContentReadyContext);
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "waiting" | "approved" | "error">("idle");
   const [connecting, setConnecting] = useState(false);
 
   useEffect(() => {
@@ -124,6 +125,7 @@ export default function ConnectScreen() {
       return;
     }
     setError(null);
+    setStatus("idle");
     setConnecting(true);
     try {
       // Full Mobile Connect link/QR payload from desktop (contains ticket) -> redeem directly, no manual token.
@@ -145,28 +147,32 @@ export default function ConnectScreen() {
         );
         return;
       }
+      setStatus("waiting");
       setError(t("mobile.auth.connect.waitingApproval", { host: found }));
       const approval = await requestManualMobileConnectApproval(found);
-      const status = await waitForManualMobileConnectApproval(approval);
-      if (status.status === "approved" && status.ticket && status.host) {
+      const approvalStatus = await waitForManualMobileConnectApproval(approval);
+      if (approvalStatus.status === "approved" && approvalStatus.ticket && approvalStatus.host) {
+        setStatus("approved");
         setError(t("mobile.auth.connect.approved"));
-        const session = await redeemApprovedMobileConnectRequest(approval, status.ticket, status.host);
+        const session = await redeemApprovedMobileConnectRequest(approval, approvalStatus.ticket, approvalStatus.host);
         connect(session);
         return;
       }
-      if (status.status === "rejected") {
+      setStatus("error");
+      if (approvalStatus.status === "rejected") {
         setError(t("mobile.auth.connect.rejected"));
         return;
       }
       setError(t("mobile.auth.connect.expired"));
     } catch (cause) {
+      setStatus("error");
       setError(cause instanceof Error ? cause.message : t("mobile.auth.connect.failed"));
     } finally {
       setConnecting(false);
     }
   }
 
-  const active = /waiting|approved|desktop/i.test(error ?? "");
+  const active = status === "waiting" || status === "approved";
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
@@ -253,6 +259,7 @@ export default function ConnectScreen() {
                   onChangeText={(value) => {
                     setUrl(value);
                     if (error) setError(null);
+                    if (status !== "idle") setStatus("idle");
                   }}
                   onSubmitEditing={() => void handleConnect()}
                   returnKeyType="go"
@@ -314,7 +321,11 @@ export default function ConnectScreen() {
                 }}
               >
                 <Text style={{ color: active ? theme.accent : theme.errorText, fontWeight: "700", fontSize: 13 }}>
-                  {t("mobile.auth.scanner.connectFailed")}
+                  {status === "approved"
+                    ? t("mobile.auth.connect.approvedTitle")
+                    : status === "waiting"
+                      ? t("mobile.auth.connect.pendingTitle")
+                      : t("mobile.auth.scanner.connectFailed")}
                 </Text>
                 <Text style={{ color: active ? theme.muted : theme.errorText, lineHeight: 19, fontSize: 13 }}>
                   {error}
