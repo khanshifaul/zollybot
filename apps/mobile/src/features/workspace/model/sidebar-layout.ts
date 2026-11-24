@@ -34,60 +34,54 @@ export type MobileSidebarItem =
 const BUILDING_OFFICE = "__building__";
 
 /**
- * The chats of the default section, grouped by office: each office heading holds its channel and
- * then its agents. A channel made by the host names its office in its id (`office-channel-<id>`), so
- * it groups without a new protocol field. The building roles come last, and any other channel stays
- * above the offices.
+ * The default section groups its chats by the office that employs them. Office channels carry their
+ * office in the id; another channel follows its lead agent, then its first member. An office whose
+ * name the host did not send falls back to its label, never its id. Building roles come last.
  */
 function officeSections(items: readonly MobileSidebarItem[], t: MobileTranslate): MobileSidebarItem[] {
+  const agents = items.flatMap((item) => (item.kind === "agent" ? [item.agent] : []));
+  const channels = items.flatMap((item) => (item.kind === "channel" ? [item.channel] : []));
+  const agentById = new Map(agents.map((agent) => [agent.id, agent]));
   const groups = new Map<string, { name: string; agents: MobileAgent[]; channels: ChannelSummary[] }>();
-  const otherChannels: ChannelSummary[] = [];
-  const officeChannelId = (id: string) =>
-    id.startsWith("office-channel-") ? id.slice("office-channel-".length) : null;
-  for (const item of items) {
-    if (item.kind === "channel") {
-      const officeId = officeChannelId(item.channel.id);
-      if (officeId === null) {
-        otherChannels.push(item.channel);
-        continue;
-      }
-      const group = groups.get(officeId) ?? {
-        name: officeId,
-        agents: [],
-        channels: [],
-      };
-      group.channels.push(item.channel);
-      groups.set(officeId, group);
-      continue;
-    }
-    if (item.kind !== "agent") continue;
-    // A host that sends the office name without its id still groups by office.
-    const id = item.agent.officeId ?? item.agent.officeName ?? BUILDING_OFFICE;
+  const groupFor = (id: string, name: string | undefined) => {
     const group = groups.get(id) ?? {
-      name: item.agent.officeName ?? (id === BUILDING_OFFICE ? t("mobile.offices.building") : id),
+      name:
+        name ??
+        (id === BUILDING_OFFICE || id === "unassigned"
+          ? t("mobile.offices.building")
+          : t("mobile.app.ledger.officeFallback")),
       agents: [],
       channels: [],
     };
-    if (item.agent.officeName) group.name = item.agent.officeName;
-    group.agents.push(item.agent);
+    if (name) group.name = name;
     groups.set(id, group);
+    return group;
+  };
+  for (const agent of agents) {
+    const id = agent.officeId ?? agent.officeName ?? BUILDING_OFFICE;
+    groupFor(id, agent.officeName).agents.push(agent);
+  }
+  for (const channel of channels) {
+    const officeChannel = channel.id.match(/^office-channel-(.+)$/u)?.[1];
+    const lead = channel.leadAgentId ? agentById.get(channel.leadAgentId) : undefined;
+    const member = channel.members.map((entry) => agentById.get(entry.agentId)).find(Boolean);
+    const id = officeChannel ?? lead?.officeId ?? member?.officeId ?? BUILDING_OFFICE;
+    const name = officeChannel ? channel.title || undefined : (lead?.officeName ?? member?.officeName);
+    groupFor(id, name).channels.push(channel);
   }
   const ordered = [...groups.entries()].sort(([leftId, left], [rightId, right]) =>
     leftId === BUILDING_OFFICE ? 1 : rightId === BUILDING_OFFICE ? -1 : left.name.localeCompare(right.name),
   );
-  return [
-    ...otherChannels.map((channel) => ({ kind: "channel" as const, id: channel.id, channel })),
-    ...ordered.flatMap(([id, group]) => [
-      {
-        kind: "office" as const,
-        id: `office:${id}`,
-        name: group.name,
-        count: group.agents.length + group.channels.length,
-      },
-      ...group.channels.map((channel) => ({ kind: "channel" as const, id: channel.id, channel })),
-      ...group.agents.map((agent) => ({ kind: "agent" as const, id: agent.id, agent })),
-    ]),
-  ];
+  return ordered.flatMap(([id, group]) => [
+    {
+      kind: "office" as const,
+      id: `office:${id}`,
+      name: group.name,
+      count: group.agents.length,
+    },
+    ...group.channels.map((channel) => ({ kind: "channel" as const, id: channel.id, channel })),
+    ...group.agents.map((agent) => ({ kind: "agent" as const, id: agent.id, agent })),
+  ]);
 }
 
 export function mobileSidebarItems(

@@ -63,6 +63,7 @@ import type { AgentService } from "../../backend/agent-service";
 import type { BrowserHost } from "../../backend/browser-host";
 import type { MailboxStore } from "../../backend/mailbox-store";
 import type { MessagingService } from "../../backend/messaging/messaging-service";
+import type { OfficeTaskStore } from "../../backend/office-tasks/office-task-store";
 import type { RoutineFlowsHandle } from "../../backend/routine-flows/routine-flows";
 import type { SidebarLayoutStore } from "../../backend/sidebar-layout-store";
 import type { StorageUsageService } from "../../backend/storage-usage";
@@ -634,6 +635,17 @@ export interface TeamApiOptions {
   /** `server-audit-v1`: the changes to members, roles and agent access, for owners and admins. */
   serverAudit?: TeamApiServerAudit;
   agentTasks?: TeamApiAgentTasks;
+  /** The office ledger, for the local Mobile Connect phone routes. */
+  officeTasks?: Pick<OfficeTaskStore, "list" | "get" | "listEvents">;
+  officeNames?: () => Array<{ id: string; name: string }>;
+  /** Each agent's office employment for a paired phone's Agents screen. */
+  officeEmployment?: () => Array<{
+    agentId: string;
+    officeId: string | null;
+    officeName: string | null;
+    role: string | null;
+    scope: string | null;
+  }>;
   /** Local-only private-network Mobile Connect (QR/link redeem and device sessions). */
   mobileConnect?: LocalMobileConnectService;
   /** Serves the local account directory and Signal relay that a paired phone uses. */

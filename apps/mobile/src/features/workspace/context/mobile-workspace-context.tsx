@@ -924,6 +924,65 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
     [preferenceStore],
   );
 
+  // The released agent codec drops office employment for some peers. This route carries it, so the
+  // Agents screen groups by the office label instead of showing every agent under Lobby.
+  useEffect(() => {
+    let cancelled = false;
+    const loadOfficeEmployment = async () => {
+      try {
+        const response = await fetch(new URL("/v1/mobile-auth/office-employment", session.apiUrl), {
+          headers: { Authorization: `Bearer ${session.sessionToken}`, Accept: "application/json" },
+        });
+        if (!response.ok || cancelled) return;
+        const value: {
+          offices?: Array<{ id: string; name: string }>;
+          agents?: Array<{
+            agentId: string;
+            officeId: string | null;
+            officeName: string | null;
+            role: string | null;
+            scope: string | null;
+          }>;
+        } = await response.json();
+        const officeNames = new Map((value.offices ?? []).map((office) => [office.id, office.name]));
+        const employment = new Map((value.agents ?? []).map((agent) => [agent.agentId, agent]));
+        setAgents((current) => {
+          let changed = false;
+          const next = current.map((agent) => {
+            const entry = employment.get(agent.id);
+            if (!entry) return agent;
+            const officeName =
+              entry.officeName ?? (entry.officeId ? officeNames.get(entry.officeId) : undefined) ?? undefined;
+            if (
+              agent.officeId === entry.officeId &&
+              agent.officeName === officeName &&
+              agent.officeRole === (entry.role ?? undefined) &&
+              agent.officeScope === (entry.scope === "office" || entry.scope === "building" ? entry.scope : undefined)
+            )
+              return agent;
+            changed = true;
+            return {
+              ...agent,
+              officeId: entry.officeId,
+              officeName,
+              officeRole: entry.role ?? undefined,
+              officeScope: entry.scope === "office" || entry.scope === "building" ? entry.scope : undefined,
+            };
+          });
+          return changed ? next : current;
+        });
+      } catch {
+        // A server that does not serve the route keeps the agent list it already has.
+      }
+    };
+    void loadOfficeEmployment();
+    const timer = setInterval(() => void loadOfficeEmployment(), 30_000);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [session.apiUrl, session.sessionToken]);
+
   /** The count of pin changes of this phone for each server, so a slow host answer cannot undo a newer one. */
   const pinChanges = useRef(new Map<string, number>());
   /**

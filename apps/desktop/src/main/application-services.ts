@@ -2732,6 +2732,16 @@ export async function createApplicationServices({
     browser,
     chat: teamChatStore,
     channels: service.channels,
+    officeTasks,
+    officeNames: () => listOffices(store.database.connection).map((office) => ({ id: office.id, name: office.name })),
+    officeEmployment: () =>
+      service.listAgentsWithEmployment().map((agent) => ({
+        agentId: agent.id,
+        officeId: agent.officeId ?? null,
+        officeName: agent.officeName ?? null,
+        role: agent.role ?? null,
+        scope: agent.scope ?? null,
+      })),
     // Present, so the host advertises `mcp-servers-v1`. The routes are admin-only.
     mcpServers: service,
     // Present, so the host advertises `mcp-sign-in-v1`. The routes are admin-only.

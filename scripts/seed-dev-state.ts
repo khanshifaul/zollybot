@@ -119,7 +119,16 @@ function managedClaudeExecutable(appDataRoot: string): string | null {
 
 const GENERATED_DIRECTORY_PATTERN =
   /^generated\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
-const SHOWCASE_IMAGE_PATH = resolve(process.cwd(), "src", "renderer", "src", "assets", "zollybot-logo-dev.png");
+const SHOWCASE_IMAGE_PATH = resolve(
+  process.cwd(),
+  "apps",
+  "desktop",
+  "src",
+  "renderer",
+  "src",
+  "assets",
+  "zollybot-logo-dev.png",
+);
 
 function previewPdf(): string {
   const stream = "BT /F1 18 Tf 24 150 Td (ZollyBot file preview) Tj ET";

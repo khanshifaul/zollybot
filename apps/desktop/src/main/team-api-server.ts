@@ -152,7 +152,7 @@ import {
   MACHINE_RESOURCES_CAPABILITY,
   type MachineAlertEvent,
 } from "@zollybot/contracts/team-protocol/machine-resources-v1";
-import { OFFICE_AGENTS_CAPABILITY, withOfficeAgents } from "@zollybot/contracts/team-protocol/office-agents-v1";
+import { withOfficeAgents } from "@zollybot/contracts/team-protocol/office-agents-v1";
 import { type OptionalTeamEvent, optionalTeamEvent } from "@zollybot/contracts/team-protocol/optional-events";
 import { PROVIDERS_V8_CAPABILITY } from "@zollybot/contracts/team-protocol/providers-v8";
 import {
@@ -958,6 +958,32 @@ export class TeamApiServer {
         const token = bearerToken(request.headers.authorization);
         const session = token ? mobile.verifySession(token) : null;
         if (!session) return this.#json(response, 401, { error: "Mobile session is not valid." });
+        if (method === "GET" && url.pathname === "/v1/mobile-auth/office-employment") {
+          const employment = this.#options.officeEmployment;
+          if (!employment) return this.#json(response, 404, { error: "Office employment is not available." });
+          return this.#json(response, 200, {
+            offices: this.#options.officeNames?.() ?? [],
+            agents: employment(),
+          });
+        }
+        if (method === "GET" && url.pathname === "/v1/mobile-auth/office-ledger") {
+          const ledger = this.#options.officeTasks;
+          if (!ledger) return this.#json(response, 404, { error: "Office ledger is not available." });
+          const officeId = url.searchParams.get("officeId") ?? undefined;
+          return this.#json(response, 200, {
+            offices: this.#options.officeNames?.() ?? [],
+            tasks: ledger.list(officeId ? { officeId } : {}),
+          });
+        }
+        const ledgerTask = url.pathname.match(/^\/v1\/mobile-auth\/office-ledger\/([^/]+)$/u);
+        if (method === "GET" && ledgerTask) {
+          const ledger = this.#options.officeTasks;
+          if (!ledger) return this.#json(response, 404, { error: "Office ledger is not available." });
+          const taskId = decodeURIComponent(ledgerTask[1] ?? "");
+          const task = ledger.get(taskId);
+          if (!task) return this.#json(response, 404, { error: "Task not found." });
+          return this.#json(response, 200, { task, events: ledger.listEvents(taskId) });
+        }
         if (method === "GET" && url.pathname === "/v1/mobile-auth/session") {
           const identity = this.#options.store.getIdentity();
           return this.#json(response, 200, {
@@ -2285,11 +2311,10 @@ export class TeamApiServer {
       : answered;
     // The frozen agent codec drops the employment fields. A peer that reads them gets them on the
     // outgoing body, so released adapters and older clients keep exactly their old bytes.
+    // Extra JSON fields are ignored by every released reader, so the employment travels even when a
+    // peer did not negotiate `office-agents-v1` (older phones still group their agents by office).
     const withOffice =
-      status < 400 &&
-      route.method === "GET" &&
-      route.path === TEAM_API_ROUTES.agents.all &&
-      route.capabilities.has(OFFICE_AGENTS_CAPABILITY)
+      status < 400 && route.method === "GET" && route.path === TEAM_API_ROUTES.agents.all
         ? withOfficeAgents(body, effortValue)
         : body;
     response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });

@@ -1,4 +1,4 @@
-/* The Office Ledger page: the status strip, the task table and the selected task's record. */
+/* The Office Ledger page: the office's kanban and each task's status. */
 .office-ledger-page {
   display: flex;
   height: 100%;
@@ -8,8 +8,7 @@
   color: var(--zollybot-text-primary);
 }
 
-/* The same 38px bar as the agent chat, diagram and workflow pages. The rail selects the page, so
-   there is no Back button here. */
+/* The same 38px bar as the agent chat, diagram and workflow pages. */
 .office-ledger-titlebar {
   display: flex;
   height: 38px;
@@ -63,60 +62,8 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  gap: var(--zollybot-space-3);
-  padding: var(--zollybot-space-4) var(--zollybot-space-6) var(--zollybot-space-6);
-}
-
-.office-ledger-summary {
-  display: grid;
-  flex: 0 0 auto;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: var(--zollybot-space-2);
-}
-
-.office-ledger-stat {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  padding: 9px 11px;
-  border: 1px solid var(--border);
-  border-radius: var(--zollybot-radius-md);
-  background: transparent;
-  color: var(--zollybot-text-muted);
-  cursor: pointer;
-  font: inherit;
-  text-align: start;
-  transition:
-    border-color var(--zollybot-duration-fast) var(--zollybot-ease-out),
-    background var(--zollybot-duration-fast) var(--zollybot-ease-out);
-}
-
-.office-ledger-stat:hover {
-  background: var(--surface);
-}
-
-.office-ledger-stat[data-active] {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-}
-
-.office-ledger-stat-label {
-  overflow: hidden;
-  max-width: 100%;
-  font-size: var(--zollybot-text-xs);
-  letter-spacing: 0.04em;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.office-ledger-stat-count {
-  font-size: var(--zollybot-text-xl);
-  font-weight: var(--zollybot-weight-semibold);
-  line-height: 1.1;
-  color: var(--zollybot-text-primary);
+  padding: var(--zollybot-space-3) var(--zollybot-space-4);
 }
 
 .office-ledger-error {
@@ -130,100 +77,92 @@
   display: grid;
   min-height: 0;
   flex: 1;
-  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-  gap: var(--zollybot-space-3);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--zollybot-space-2);
 }
 
-.office-ledger-list,
-.office-ledger-detail {
+/* One column per working state; all four share the pane. */
+.office-ledger-kanban {
+  display: grid;
   min-height: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--zollybot-space-1-5);
   overflow: auto;
+}
+
+.office-ledger-kanban-column {
+  display: flex;
+  min-width: 0;
+  max-height: 100%;
+  flex-direction: column;
+  gap: var(--zollybot-space-1-5);
+  overflow-y: auto;
+  padding: var(--zollybot-space-2);
   border: 1px solid var(--border);
   border-radius: var(--zollybot-radius-lg);
-  background: color-mix(in srgb, var(--surface) 45%, transparent);
+  background: color-mix(in srgb, var(--surface) 35%, transparent);
 }
 
-.office-ledger-table {
-  width: 100%;
-  border-collapse: collapse;
+.office-ledger-kanban-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--zollybot-space-2);
   font-size: var(--zollybot-text-sm);
 }
 
-.office-ledger-table th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  padding: 9px 12px;
-  border-bottom: 1px solid var(--border);
+.office-ledger-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--zollybot-space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--zollybot-radius-md);
   background: var(--zollybot-bg-canvas);
-  color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-xs);
-  font-weight: var(--zollybot-weight-medium);
-  letter-spacing: 0.04em;
-  text-align: left;
-  text-transform: uppercase;
-}
-
-.office-ledger-table td {
-  padding: 11px 12px;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
-  vertical-align: middle;
-}
-
-.office-ledger-table tbody tr {
+  color: var(--zollybot-text-primary);
   cursor: pointer;
-  transition: background var(--zollybot-duration-fast) var(--zollybot-ease-out);
+  font: inherit;
+  text-align: start;
+  transition:
+    border-color var(--zollybot-duration-fast) var(--zollybot-ease-out),
+    background var(--zollybot-duration-fast) var(--zollybot-ease-out);
 }
 
-.office-ledger-table tbody tr:hover {
+.office-ledger-card:hover {
   background: var(--surface);
 }
 
-.office-ledger-table tbody tr[data-selected] {
-  background: color-mix(in srgb, var(--accent) 9%, transparent);
+.office-ledger-card:disabled {
+  cursor: default;
 }
 
-.office-ledger-table tbody tr[data-selected] td:first-child {
-  box-shadow: inset 2px 0 0 var(--accent);
+.office-ledger-card:disabled:hover {
+  background: var(--zollybot-bg-canvas);
 }
 
-.office-ledger-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.office-ledger-task-title {
+.office-ledger-card-title {
+  display: -webkit-box;
   overflow: hidden;
+  font-size: var(--zollybot-text-xs);
   font-weight: var(--zollybot-weight-semibold);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-.office-ledger-task-source,
-.office-ledger-muted {
-  color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-xs);
-}
-
-.office-ledger-task-source {
-  margin-top: 2px;
-  text-transform: capitalize;
-}
-
-.office-ledger-assignee {
+.office-ledger-card-meta {
   overflow: hidden;
-  max-width: 13rem;
   color: var(--zollybot-text-muted);
+  font-size: var(--zollybot-text-xs);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.office-ledger-gate {
-  padding: 2px 7px;
-  border: 1px solid var(--border);
-  border-radius: var(--zollybot-radius-pill);
-  color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-xs);
-  white-space: nowrap;
+.office-ledger-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zollybot-space-2);
 }
 
 /* The status badge: one dot and one word, in the tone of the row. */
@@ -271,191 +210,14 @@
   --office-ledger-status-color: var(--error);
 }
 
-.office-ledger-empty-cell {
-  padding: 0 !important;
-}
-
-.office-ledger-empty-state,
-.office-ledger-detail-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 56px 24px;
-  text-align: center;
-}
-
-.office-ledger-detail-empty {
-  height: 100%;
-  min-height: 14rem;
-}
-
-.office-ledger-empty-state strong,
-.office-ledger-detail-empty strong {
-  font-size: var(--zollybot-text-md);
-  font-weight: var(--zollybot-weight-semibold);
-}
-
-.office-ledger-empty-state p,
-.office-ledger-detail-empty p {
-  max-width: 24rem;
-  margin: 0;
-  color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-sm);
-  line-height: 1.5;
-}
-
-.office-ledger-empty-icon {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border: 1px solid var(--border);
-  border-radius: var(--zollybot-radius-md);
-  background: var(--surface);
-  color: var(--zollybot-text-muted);
-}
-
-.office-ledger-empty-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
-.office-ledger-detail-content {
-  padding: var(--zollybot-space-4);
-}
-
-.office-ledger-detail-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--zollybot-space-2);
-}
-
-.office-ledger-detail-heading strong {
-  min-width: 0;
-  font-size: var(--zollybot-text-lg);
-  font-weight: var(--zollybot-weight-semibold);
-  line-height: 1.3;
-}
-
-.office-ledger-facts {
-  display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
-  margin: 12px 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--zollybot-radius-md);
-  font-size: var(--zollybot-text-sm);
-}
-
-.office-ledger-facts dt,
-.office-ledger-facts dd {
-  padding: 7px 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-.office-ledger-facts dt {
-  background: color-mix(in srgb, var(--surface) 45%, transparent);
-  color: var(--zollybot-text-muted);
-}
-
-.office-ledger-facts dd {
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.office-ledger-facts dt:nth-last-of-type(1),
-.office-ledger-facts dd:nth-last-of-type(1) {
-  border-bottom: none;
-}
-
-.office-ledger-timeline {
-  padding-top: var(--zollybot-space-2);
-  border-top: 1px solid var(--border);
-}
-
-.office-ledger-section-label {
-  margin-bottom: 10px;
-  color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-xs);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.office-ledger-timeline ol {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  padding: 0 0 0 18px;
-  list-style: none;
-  font-size: var(--zollybot-text-sm);
-}
-
-.office-ledger-timeline li {
-  position: relative;
-  padding-bottom: 12px;
-}
-
-.office-ledger-timeline li::before {
-  position: absolute;
-  top: 4px;
-  left: -14px;
-  width: 7px;
-  height: 7px;
-  border-radius: var(--zollybot-radius-pill);
-  background: var(--accent);
-  content: "";
-}
-
-.office-ledger-timeline li:not(:last-child)::after {
-  position: absolute;
-  top: 12px;
-  bottom: 0;
-  left: -11px;
-  width: 1px;
-  background: var(--border);
-  content: "";
-}
-
-.office-ledger-event-time {
-  padding-top: 2px;
+.office-ledger-muted {
   color: var(--zollybot-text-muted);
   font-size: var(--zollybot-text-xs);
 }
 
-.office-ledger-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
-}
-
-.office-ledger-brief {
-  margin: 12px 0 0;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
+.office-ledger-kanban-empty {
+  margin: 0;
+  padding: var(--zollybot-space-1) 0;
   color: var(--zollybot-text-muted);
-  font-size: var(--zollybot-text-sm);
-  line-height: 1.5;
-}
-
-@media (max-width: 1180px) {
-  .office-ledger-summary {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 900px) {
-  .office-ledger-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .office-ledger-list,
-  .office-ledger-detail {
-    max-height: 40vh;
-  }
+  font-size: var(--zollybot-text-xs);
 }

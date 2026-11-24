@@ -45,7 +45,12 @@ export function TopBar(props: TopBarProps = {}) {
   const scope = useServerScope();
   const { t } = useText();
   const initialOffice = localStorage.getItem(ACTIVE_OFFICE_KEY) ?? "building";
-  if (agents.activeOfficeId() === null) agents.setActiveOfficeId(initialOffice);
+  createEffect(
+    () => agents.activeOfficeId(),
+    (current) => {
+      if (current === null) agents.setActiveOfficeId(initialOffice);
+    },
+  );
 
   const [offices, setOffices] = createSignal<OfficeSummary[]>([]);
   const [createOpen, setCreateOpen] = createSignal(false);

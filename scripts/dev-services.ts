@@ -135,7 +135,16 @@ export function createDevelopmentServiceSpec(
   return {
     name,
     executable: electronVite,
-    args: ["dev", "--watch", "--outDir", outputDirectory, "--entry", join(outputDirectory, "main", "index.js")],
+    args: [
+      "dev",
+      "--watch",
+      "--config",
+      join(projectRoot, "apps/desktop/electron.vite.config.ts"),
+      "--outDir",
+      outputDirectory,
+      "--entry",
+      join(outputDirectory, "main", "index.js"),
+    ],
     cwd: projectRoot,
     env: {
       ...childEnvironment,

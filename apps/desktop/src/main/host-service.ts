@@ -140,6 +140,9 @@ interface HostServiceOptions {
   /** Listen on all interfaces so phones on LAN/Tailscale can reach the host API. */
   mobileConnectPublic?: boolean;
   agentTasks?: ForwardedApiOptions["agentTasks"];
+  officeTasks?: ForwardedApiOptions["officeTasks"];
+  officeNames?: ForwardedApiOptions["officeNames"];
+  officeEmployment?: ForwardedApiOptions["officeEmployment"];
   browserProfiles?: ForwardedApiOptions["browserProfiles"];
   admin?: ForwardedApiOptions["admin"];
   focusUse?: ForwardedApiOptions["focusUse"];
@@ -487,6 +490,9 @@ export class HostService extends EventEmitter<HostEvents> {
       ...(options.agentAccess === undefined ? {} : { agentAccess: options.agentAccess }),
       ...(options.serverAudit === undefined ? {} : { serverAudit: options.serverAudit }),
       ...(options.agentTasks === undefined ? {} : { agentTasks: options.agentTasks }),
+      ...(options.officeTasks === undefined ? {} : { officeTasks: options.officeTasks }),
+      ...(options.officeNames === undefined ? {} : { officeNames: options.officeNames }),
+      ...(options.officeEmployment === undefined ? {} : { officeEmployment: options.officeEmployment }),
       ...(options.browserProfiles === undefined ? {} : { browserProfiles: options.browserProfiles }),
       // The identity route changes this host's name and logo through `updateIdentity`, so a change
       // from a joined admin runs every step a local one does. The key route runs the steps of Server
