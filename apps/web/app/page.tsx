@@ -63,9 +63,10 @@ function normalizeVersion(raw: string | null | undefined): string | null {
   return value ? value : null;
 }
 
-function releaseAsset(version: string | null, asset: string): string {
+function releaseAsset(version: string | null, asset: string, target: string): string {
   const parsed = normalizeVersion(version);
-  return parsed ? releaseDownloadUrl(parsed, asset) : RELEASES_LATEST;
+  // Without a version read, the site resolves the newest exact file itself.
+  return parsed ? releaseDownloadUrl(parsed, asset) : `/download/latest/${target}`;
 }
 
 const DOWNLOADS: DownloadItem[] = [
@@ -76,7 +77,8 @@ const DOWNLOADS: DownloadItem[] = [
     format: "AppImage",
     note: "Desktop GUI for most Linux distributions.",
     recommended: true,
-    href: (v) => releaseAsset(v, DESKTOP_RELEASE_TARGETS["linux-x64"].artifact(normalizeVersion(v) ?? "latest")),
+    href: (v) =>
+      releaseAsset(v, DESKTOP_RELEASE_TARGETS["linux-x64"].artifact(normalizeVersion(v) ?? "latest"), "linux-x64"),
   },
   {
     id: "linux-appimage-arm64",
@@ -84,7 +86,8 @@ const DOWNLOADS: DownloadItem[] = [
     arch: "arm64",
     format: "AppImage",
     note: "Desktop GUI for arm64 Linux distributions.",
-    href: (v) => releaseAsset(v, DESKTOP_RELEASE_TARGETS["linux-arm64"].artifact(normalizeVersion(v) ?? "latest")),
+    href: (v) =>
+      releaseAsset(v, DESKTOP_RELEASE_TARGETS["linux-arm64"].artifact(normalizeVersion(v) ?? "latest"), "linux-arm64"),
   },
   {
     id: "macos-arm64-dmg",
@@ -94,7 +97,11 @@ const DOWNLOADS: DownloadItem[] = [
     note: "Apple silicon installer.",
     recommended: true,
     href: (v) =>
-      releaseAsset(v, DESKTOP_RELEASE_TARGETS["macos-arm64"].extras?.(normalizeVersion(v) ?? "latest")[0] ?? ""),
+      releaseAsset(
+        v,
+        DESKTOP_RELEASE_TARGETS["macos-arm64"].extras?.(normalizeVersion(v) ?? "latest")[0] ?? "",
+        "macos-arm64",
+      ),
   },
   {
     id: "macos-x64-installer",
@@ -102,7 +109,12 @@ const DOWNLOADS: DownloadItem[] = [
     arch: "x64",
     format: "Installer",
     note: "Intel Mac build, when the release publishes it.",
-    href: () => RELEASES_LATEST,
+    href: (v) =>
+      releaseAsset(
+        v,
+        DESKTOP_RELEASE_TARGETS["macos-x64"].extras?.(normalizeVersion(v) ?? "latest")[0] ?? "",
+        "macos-x64",
+      ),
   },
   {
     id: "windows-x64",
@@ -111,7 +123,8 @@ const DOWNLOADS: DownloadItem[] = [
     format: "Installer",
     note: "Windows 10+ installer.",
     recommended: true,
-    href: (v) => releaseAsset(v, DESKTOP_RELEASE_TARGETS["windows-x64"].artifact(normalizeVersion(v) ?? "latest")),
+    href: (v) =>
+      releaseAsset(v, DESKTOP_RELEASE_TARGETS["windows-x64"].artifact(normalizeVersion(v) ?? "latest"), "windows-x64"),
   },
   {
     id: "android-apk",
@@ -120,7 +133,7 @@ const DOWNLOADS: DownloadItem[] = [
     format: "APK",
     note: "Connects to ZollyBot running on your computer.",
     recommended: true,
-    href: (v) => releaseAsset(v, ANDROID_RELEASE_ASSET(normalizeVersion(v) ?? "latest")),
+    href: (v) => releaseAsset(v, ANDROID_RELEASE_ASSET(normalizeVersion(v) ?? "latest"), "android"),
   },
   {
     id: "ios-release",
@@ -552,11 +565,8 @@ export default function Page() {
                   selected !== "windows" &&
                   selected !== "ios" ? (
                     <p className="text-sm text-muted-foreground">
-                      Couldn&apos;t detect the latest version automatically. Links fall back to{" "}
-                      <a className="text-primary underline underline-offset-4" href={RELEASES_LATEST}>
-                        GitHub Releases
-                      </a>
-                      .
+                      Couldn&apos;t detect the latest version automatically. The download links still open the newest
+                      published file directly.
                     </p>
                   ) : null}
                 </CardContent>
