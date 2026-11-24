@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
+import { AppState } from "react-native";
 
 import { isDeviceLocked, showOverLockScreen } from "@/features/app-lock/model/app-lock-native";
 import { loadJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
@@ -19,6 +20,7 @@ import {
 import { useJarvisWakeWord } from "@/features/assistant/native/wake-word";
 import { useMobileWorkspace } from "@/features/workspace/context/mobile-workspace-context";
 import { JARVIS_ENABLED } from "@/shared/lib/jarvis-feature";
+import { speechRecognition } from "@/shared/lib/speech-recognition";
 
 /** Owns the foreground wake word for the signed-in app and opens Jarvis on detection. */
 export function JarvisWakeBridge() {
@@ -35,7 +37,21 @@ export function JarvisWakeBridge() {
   }, []);
   useEffect(() => {
     if (!JARVIS_ENABLED || !wakeWord) return;
-    void startJarvisBackgroundService();
+    let active = true;
+    // Android refuses a microphone foreground service before RECORD_AUDIO is granted. Wait for the
+    // permission instead of racing the request that the wake-word hook makes.
+    const startWhenAllowed = async () => {
+      const permission = await speechRecognition?.getPermissionsAsync().catch(() => null);
+      if (active && permission?.granted) void startJarvisBackgroundService();
+    };
+    void startWhenAllowed();
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") void startWhenAllowed();
+    });
+    return () => {
+      active = false;
+      subscription.remove();
+    };
   }, [wakeWord]);
   useEffect(
     () => () => {
