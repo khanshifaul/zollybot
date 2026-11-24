@@ -7,6 +7,17 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.66.1] - 2026-11-25
+
+### Changed
+
+- Jarvis local mode uses QVAC only: chat, camera, photos, files, and screen context stay on the phone.
+- Butler is contacted only when explicitly requested.
+
+### Fixed
+
+- Right-edge drag opens the Jarvis conversation sidebar.
+
 ## [0.64.6] - In review
 
 ### Changed

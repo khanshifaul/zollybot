@@ -1,7 +1,7 @@
 {
   "name": "@zollybot/mobile",
   "main": "expo-router/entry",
-  "version": "0.64.6",
+  "version": "0.66.1",
   "expo": {
     "install": {
       "exclude": [

@@ -6,6 +6,17 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.1] - 2026-11-25
+
+### Changed
+
+- Jarvis local mode on Android now uses QVAC only. Chat, camera, photos, text files, and screen context run on the phone through the downloaded model and local OCR; nothing is sent to Butler or a cloud model.
+
+### Fixed
+
+- Butler is contacted only when the user explicitly asks Jarvis to ask, tell, message, or contact Butler.
+- Dragging from the right edge opens the Jarvis conversation sidebar, matching the left drawer.
+
 ## [0.66.0] - 2026-11-24
 
 ### Added
