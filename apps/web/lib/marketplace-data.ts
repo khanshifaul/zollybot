@@ -149,6 +149,18 @@ export function getSkill(id: string): MarketplaceSkillDetail | null {
   return raw ? skillDetail(raw) : null;
 }
 
+export function getSkillVersion(id: string, versionId: string): MarketplaceSkillDetail | null {
+  const raw = rawSkills.find((skill) => skill.id === id);
+  return raw?.versionId === versionId ? skillDetail(raw) : null;
+}
+
+/** The public archive of one skill version, or of the newest version when none is named. */
+export function getSkillBundle(id: string, versionId?: string): string | null {
+  const raw = rawSkills.find((skill) => skill.id === id);
+  if (!raw || (versionId !== undefined && raw.versionId !== versionId)) return null;
+  return `/${raw.bundle}`;
+}
+
 export function getSkillBySlug(slug: string): MarketplaceSkillDetail | null {
   const raw = rawSkills.find((skill) => skill.slug === slug);
   return raw ? skillDetail(raw) : null;
