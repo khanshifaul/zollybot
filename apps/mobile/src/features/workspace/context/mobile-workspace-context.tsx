@@ -75,6 +75,7 @@ import {
   createWorkspacePreferences,
   type RemoteConnectionFailure,
   type RemoteConnectionStage,
+  RemoteDirectoryError,
   type RemoteRecoveryStatus,
   RemoteTeamDirectoryClient,
   type RemoteTeamHost,
@@ -115,6 +116,7 @@ import { View } from "react-native";
 import { showFailureAlert } from "@/features/analytics/failure-reports";
 import { mobileAnalytics } from "@/features/analytics/mobile-analytics";
 import { trackWorkspaceActions } from "@/features/analytics/workspace-actions";
+import { MobileSessionExpiredError } from "@/features/auth/api/mobile-auth";
 import { useMobileSession } from "@/features/auth/context/mobile-session-context";
 import { decodeMobileBrowserTabs } from "@/features/browser/model/browser-tabs";
 import { MobileChannelStore } from "@/features/channels/model/channel-store";
@@ -314,7 +316,7 @@ function withoutKeys<T>(record: Record<string, T>, keys: ReadonlySet<string>): R
 }
 
 export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
-  const { session, sessionScope } = useMobileSession();
+  const { session, sessionScope, handleSessionError } = useMobileSession();
   const queryClient = useQueryClient();
   useEffect(() => () => queryClient.removeQueries({ queryKey: queryKeys.chatQueue() }), [queryClient]);
   const presenceSignatures = useRef(new Map<string, string>());
@@ -610,6 +612,10 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
             Effect.tapError((error) =>
               Effect.sync(() => {
                 if (generation !== directoryGeneration.current) return;
+                if (error instanceof RemoteDirectoryError && error.status === 401) {
+                  handleSessionError(new MobileSessionExpiredError(), session);
+                  return;
+                }
                 setServerDirectoryState("error");
                 const text = currentText();
                 setServerDirectoryError(
@@ -624,7 +630,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
           setServerDirectoryState("ready");
         }),
       ),
-    [directory, installHosts],
+    [directory, handleSessionError, installHosts, session],
   );
   // At a start, the servers that the phone kept connect while the account service answers. The
   // account service still decides: its list drops a server that the account left, and each ticket
@@ -1323,6 +1329,10 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
   const [recoveryCountdowns] = useState(createRecoveryCountdowns);
   const handleConnectionStatus = useCallback(
     (hostId: string, status: RemoteRecoveryStatus, failure: RemoteConnectionFailure | null, resuming: boolean) => {
+      if (failure?.reference?.startsWith("http/401")) {
+        handleSessionError(new MobileSessionExpiredError(), session);
+        return;
+      }
       recoveryCountdowns.publish(hostId, { status, message: remoteRecoveryMessage(status, failure?.message ?? null) });
       setServers((current) => {
         const index = current.findIndex((server) => server.id === hostId);
@@ -1345,7 +1355,7 @@ export function MobileWorkspaceProvider({ children }: PropsWithChildren) {
       wakeAttempts.current.set(hostId, status.attempt);
       wakeSelectedServer(hostId);
     },
-    [recoveryCountdowns, wakeSelectedServer, connectionWaits],
+    [connectionWaits, handleSessionError, recoveryCountdowns, session, wakeSelectedServer],
   );
   // The next retry of an offline server can be 30 seconds away, so a server starts when it is selected.
   useEffect(() => {
