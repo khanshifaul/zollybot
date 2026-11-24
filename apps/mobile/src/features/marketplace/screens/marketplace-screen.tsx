@@ -1,9 +1,11 @@
+import type { SkillCategory } from "@zollybot/contracts/ipc";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button, Spinner, Typography } from "heroui-native";
 import { type ReactNode, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { UsageSegments } from "@/features/agents/components/usage-segments";
 import { SettingsNote, SettingsSection } from "@/features/settings/components/settings-content";
 import { useMobileWorkspaceSelector } from "@/features/workspace/context/mobile-workspace-context";
 import { GLASS_CAPSULE_HEIGHT } from "@/shared/components/glass-capsule";
@@ -18,6 +20,7 @@ import {
   CATEGORY_LABELS,
   isMarketplaceFiltered,
   KIND_LABELS,
+  MARKETPLACE_CATEGORIES,
   type MarketplaceFilter,
   type MarketplaceKind,
   type MarketplaceListing,
@@ -31,10 +34,12 @@ import {
   useMarketplaceInstalled,
 } from "../model/use-marketplace";
 
-/** The agents of the shelf and the skills of the list on the overview. */
-const OVERVIEW_ROWS = 8;
-/** The apps of the grid on the overview: two rows of four. */
-const OVERVIEW_APPS = 8;
+/** The tabs, in the order the desktop Marketplace uses. */
+const MARKETPLACE_TABS = [
+  { value: "app" as const, label: "mobile.marketplace.kind.apps" as const },
+  { value: "agent" as const, label: "mobile.marketplace.kind.agents" as const },
+  { value: "skill" as const, label: "mobile.marketplace.kind.skills" as const },
+];
 
 /**
  * The Marketplace of one server, from the drawer. The overview shows a featured agent, the popular
@@ -47,6 +52,7 @@ export function MarketplaceScreen() {
   const server = useMobileWorkspaceSelector((workspace) => workspace.servers.find((item) => item.id === serverId));
   const scroll = useLargeTitleScroll();
   const insets = useSafeAreaInsets();
+  const [tab, setTab] = useState<MarketplaceKind>("app");
   const [filter, setFilter] = useState<MarketplaceFilter>(NO_MARKETPLACE_FILTER);
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
@@ -69,11 +75,13 @@ export function MarketplaceScreen() {
       params: { serverId, kind: item.kind, id: item.id, name: item.name },
     });
   };
-  const showAll = (kind: MarketplaceKind) => {
-    void haptics.selection();
-    setFilter({ ...NO_MARKETPLACE_FILTER, kind });
-  };
   const listMode = isMarketplaceFiltered(filter) || catalog.search.length > 0;
+  /** The tab is the kind of every home and every filtered list. The filter menu can switch both. */
+  const tabFilter: MarketplaceFilter = { ...filter, kind: tab };
+  const changeFilter = (next: MarketplaceFilter) => {
+    setFilter(next);
+    if (next.kind) setTab(next.kind);
+  };
 
   // The agents and skills did not load. The bundled apps still show under it, with a way to retry.
   const loadFailed =
@@ -92,8 +100,8 @@ export function MarketplaceScreen() {
   else if (listMode)
     content = (
       <FilteredList
-        listings={catalog.listings.filter((item) => matchesFilter(item, filter, installed.installed))}
-        filter={filter}
+        listings={catalog.listings.filter((item) => matchesFilter(item, tabFilter, installed.installed))}
+        filter={tabFilter}
         pending={catalog.pending}
         more={catalog}
         installed={installed}
@@ -107,12 +115,12 @@ export function MarketplaceScreen() {
     );
   else
     content = (
-      <Overview
+      <KindHome
+        kind={tab}
         listings={catalog.listings}
         pending={catalog.pending}
         installed={installed}
         onOpen={listing}
-        onShowAll={showAll}
       />
     );
 
@@ -136,8 +144,18 @@ export function MarketplaceScreen() {
         onScroll={scroll.onScroll}
       >
         <LargeTitle scroll={scroll} title={title} caption={server?.name} />
-        <View className="gap-7 pt-3">
+        <View className="gap-5 pt-2">
           {loadFailed}
+          {server ? (
+            <View className="px-4">
+              <UsageSegments
+                options={MARKETPLACE_TABS.map((option) => ({ value: option.value, label: t(option.label) }))}
+                value={tab}
+                onChange={setTab}
+                accessibilityLabel={MARKETPLACE_TABS.map((option) => t(option.label)).join(", ")}
+              />
+            </View>
+          ) : null}
           {content}
         </View>
       </Animated.ScrollView>
@@ -147,7 +165,7 @@ export function MarketplaceScreen() {
           query={query}
           onQueryChange={setQuery}
           filter={filter}
-          onFilterChange={setFilter}
+          onFilterChange={changeFilter}
           focused={focused}
           onFocusedChange={setFocused}
         />
@@ -183,84 +201,130 @@ function installsOf(listing: MarketplaceListing): number {
   return listing.kind === "app" ? 0 : listing.installs;
 }
 
-function Overview({
+function KindHome({
+  kind,
   listings,
   pending,
   installed,
   onOpen,
-  onShowAll,
 }: {
+  kind: MarketplaceKind;
   listings: MarketplaceListing[];
   pending: boolean;
   installed: MarketplaceInstalled;
   onOpen: (listing: MarketplaceListing) => void;
-  onShowAll: (kind: MarketplaceKind) => void;
 }) {
   const { t } = useText();
-  const agents = listings.filter((item) => item.kind === "agent").sort(byPopularity);
-  const apps = listings.filter((item) => item.kind === "app").sort(byPopularity);
-  const skills = listings.filter((item) => item.kind === "skill").sort(byPopularity);
-  // The banner shows the agent with the most installs, so it follows the catalog as installs change.
-  // The catalog page is sorted by installs, so its first page holds the top agent.
-  const featured = agents.reduce<MarketplaceListing | undefined>(
+  const items = listings.filter((item) => item.kind === kind).sort(byPopularity);
+  if (pending && items.length === 0) return <Spinner className="self-center" />;
+  if (items.length === 0) return <SettingsNote>{t("mobile.marketplace.empty")}</SettingsNote>;
+  if (kind === "app") return <AppsHome listings={items} installed={installed} onOpen={onOpen} />;
+  if (kind === "agent") return <AgentsHome listings={items} installed={installed} onOpen={onOpen} />;
+  return <SkillsHome listings={items} installed={installed} onOpen={onOpen} />;
+}
+
+function groupsOf(listings: MarketplaceListing[]): { category: SkillCategory; listings: MarketplaceListing[] }[] {
+  return MARKETPLACE_CATEGORIES.flatMap((category) => {
+    const items = listings.filter((item) => (item.category ?? "other") === category);
+    return items.length > 0 ? [{ category, listings: items }] : [];
+  });
+}
+
+function AppsHome(props: {
+  listings: MarketplaceListing[];
+  installed: MarketplaceInstalled;
+  onOpen: (listing: MarketplaceListing) => void;
+}) {
+  const { t } = useText();
+  return (
+    <View className="gap-6">
+      {groupsOf(props.listings).map((group) => (
+        <View className="gap-1" key={group.category}>
+          <SectionHeader title={t(CATEGORY_LABELS[group.category])} />
+          <View className="flex-row flex-wrap px-2">
+            {group.listings.map((item) => (
+              <AppTile
+                key={`${item.kind}:${item.id}`}
+                listing={item}
+                installed={props.installed.installed(item)}
+                onPress={() => props.onOpen(item)}
+              />
+            ))}
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function AgentsHome(props: {
+  listings: MarketplaceListing[];
+  installed: MarketplaceInstalled;
+  onOpen: (listing: MarketplaceListing) => void;
+}) {
+  const { t } = useText();
+  const featured = props.listings.reduce<MarketplaceListing | undefined>(
     (top, item) => (top === undefined || installsOf(item) > installsOf(top) ? item : top),
     undefined,
   );
-  const shelf = agents.filter((item) => item !== featured);
+  const groups = groupsOf(props.listings.filter((item) => item !== featured));
   return (
-    <>
+    <View className="gap-6">
       {featured ? (
         <View className="px-4">
           <FeaturedAgent
             listing={featured}
-            installed={installed.installed(featured)}
-            onPress={() => onOpen(featured)}
+            installed={props.installed.installed(featured)}
+            onPress={() => props.onOpen(featured)}
           />
         </View>
       ) : null}
-      {shelf.length > 0 ? (
-        <View className="gap-3">
-          <SectionHeader title={t("mobile.marketplace.overview.agents")} onShowAll={() => onShowAll("agent")} />
+      {groups.map((group) => (
+        <View className="gap-3" key={group.category}>
+          <SectionHeader title={t(CATEGORY_LABELS[group.category])} />
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-3 px-4">
-            {shelf.slice(0, OVERVIEW_ROWS).map((item) => (
+            {group.listings.map((item) => (
               <AgentCard
-                key={item.id}
+                key={`${item.kind}:${item.id}`}
                 listing={item}
-                installed={installed.installed(item)}
-                onPress={() => onOpen(item)}
+                installed={props.installed.installed(item)}
+                onPress={() => props.onOpen(item)}
               />
             ))}
           </ScrollView>
         </View>
-      ) : null}
-      <View className="gap-1">
-        <SectionHeader title={t("mobile.marketplace.overview.apps")} onShowAll={() => onShowAll("app")} />
-        <View className="flex-row flex-wrap px-2">
-          {apps.slice(0, OVERVIEW_APPS).map((item) => (
-            <AppTile key={item.id} listing={item} installed={installed.installed(item)} onPress={() => onOpen(item)} />
-          ))}
-        </View>
-      </View>
-      {skills.length > 0 ? (
-        <View className="gap-3">
-          <SectionHeader title={t("mobile.marketplace.overview.skills")} onShowAll={() => onShowAll("skill")} />
+      ))}
+    </View>
+  );
+}
+
+function SkillsHome(props: {
+  listings: MarketplaceListing[];
+  installed: MarketplaceInstalled;
+  onOpen: (listing: MarketplaceListing) => void;
+}) {
+  const { t } = useText();
+  return (
+    <View className="gap-6">
+      {groupsOf(props.listings).map((group) => (
+        <View className="gap-1" key={group.category}>
+          <SectionHeader title={t(CATEGORY_LABELS[group.category])} />
           <View className="px-4">
             <SettingsSection>
-              {skills.slice(0, OVERVIEW_ROWS).map((item) => (
+              {group.listings.map((item) => (
                 <ListingRow
-                  key={item.id}
+                  key={`${item.kind}:${item.id}`}
                   listing={item}
-                  installed={installed.installed(item)}
+                  installed={props.installed.installed(item)}
                   showKind={false}
-                  onPress={() => onOpen(item)}
+                  onPress={() => props.onOpen(item)}
                 />
               ))}
             </SettingsSection>
           </View>
         </View>
-      ) : null}
-      {pending && agents.length === 0 && skills.length === 0 ? <Spinner className="self-center" /> : null}
-    </>
+      ))}
+    </View>
   );
 }
 
