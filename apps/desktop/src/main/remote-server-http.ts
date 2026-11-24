@@ -37,6 +37,8 @@ export interface RemoteJsonRequestOptions {
   preserveSemanticTags?: boolean | undefined;
   agentCreateModel?: boolean | undefined;
   timeoutMs?: number | undefined;
+  /** A private-network Mobile Connect route: JSON in and out, no Team protocol envelope or headers. */
+  local?: boolean | undefined;
 }
 
 export const requestJson = Effect.fn("RemoteHttp.requestJson")(function* <T>(
@@ -50,19 +52,21 @@ export const requestJson = Effect.fn("RemoteHttp.requestJson")(function* <T>(
     (controller) => Effect.sync(() => controller.abort()),
   );
   const method = options.method ?? (options.body === undefined ? "GET" : "POST");
-  const sideRoute = teamSideRouteCodec(path);
+  const sideRoute = options.local ? null : teamSideRouteCodec(path);
   const codec = teamHttpCodec(options.protocol);
   const body =
     options.body === undefined
       ? undefined
-      : sideRoute
-        ? JSON.stringify(sideRoute.request(path, options.body))
-        : codec.encodeRequest(method, path, options.body, {
-            ...(options.preserveSemanticTags === undefined
-              ? {}
-              : { preserveSemanticTags: options.preserveSemanticTags }),
-            ...(options.agentCreateModel === undefined ? {} : { agentCreateModel: options.agentCreateModel }),
-          });
+      : options.local
+        ? JSON.stringify(options.body)
+        : sideRoute
+          ? JSON.stringify(sideRoute.request(path, options.body))
+          : codec.encodeRequest(method, path, options.body, {
+              ...(options.preserveSemanticTags === undefined
+                ? {}
+                : { preserveSemanticTags: options.preserveSemanticTags }),
+              ...(options.agentCreateModel === undefined ? {} : { agentCreateModel: options.agentCreateModel }),
+            });
   const profile = yield* Effect.acquireRelease(
     Effect.sync(() => startRemoteRequest(method, path, body ?? "", "http")),
     (profile, exit) => Effect.sync(() => profile?.end(exit)),
@@ -108,13 +112,15 @@ export const requestJson = Effect.fn("RemoteHttp.requestJson")(function* <T>(
     const input = value;
     value = yield* Effect.try({
       try: () =>
-        sideRoute
-          ? sideRoute.response(path, response.status, input, {
-              historyExtent: true,
-              channelAttention: true,
-              agentTaskUiBlocks: true,
-            })
-          : codec.decodeResponse(method, path, response.status, input),
+        options.local
+          ? input
+          : sideRoute
+            ? sideRoute.response(path, response.status, input, {
+                historyExtent: true,
+                channelAttention: true,
+                agentTaskUiBlocks: true,
+              })
+            : codec.decodeResponse(method, path, response.status, input),
       catch: (cause) =>
         new RemoteProtocolError("protocol_error", sourceText("error.remote.unsafeData"), null, { cause }),
     });

@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
+import { isIP } from "node:net";
 import { hostname } from "node:os";
 import { basename } from "node:path";
 import { isValidAvatarImage } from "@zollybot/contracts/avatar-images";
@@ -63,7 +64,12 @@ import {
   REMOTE_DESKTOP_SETUP_CAPABILITY,
   type RemoteDesktopTestInput,
 } from "@zollybot/contracts/ipc";
-import { parseMobileConnectUrl, validateMobileConnectHostBinding } from "@zollybot/contracts/mobile-connect";
+import {
+  isMobileConnectHostBinding,
+  type MobileConnectHostBinding,
+  parseMobileConnectUrl,
+  validateMobileConnectHostBinding,
+} from "@zollybot/contracts/mobile-connect";
 import { isDynamicRecord, isString } from "@zollybot/contracts/runtime-values";
 import { TEAM_API_ROUTES } from "@zollybot/contracts/team-api-routes";
 import { AGENT_COLORS_CAPABILITY, AGENT_COLORS_ROUTES } from "@zollybot/contracts/team-protocol/agent-colors-v1";
@@ -1046,6 +1052,37 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
     (operation) => this.#owned(operation),
   ).bind(this);
 
+  /** A host address typed into Join Server, not an invitation link. */
+  #directHostInput(raw: string): boolean {
+    const value = raw.trim();
+    if (!value || value.startsWith("zollybot:")) return false;
+    if (isIP(value) === 6) return true;
+    try {
+      const url = new URL(/^[a-z][a-z0-9+.-]*:\/\//iu.test(value) ? value : `http://${value}`);
+      return (url.pathname === "/" || url.pathname === "") && url.search === "";
+    } catch {
+      return false;
+    }
+  }
+
+  #discoverHost(raw: string): Effect.Effect<{ origin: string; host: MobileConnectHostBinding }, RemoteWorkflowError> {
+    return Effect.gen(function* () {
+      for (const origin of mobileConnectOrigins(raw)) {
+        const value = yield* Effect.tryPromise({
+          try: () =>
+            fetch(`${origin}/v1/mobile-auth/discover`, { signal: AbortSignal.timeout(2_500) }).then((response) =>
+              response.ok ? response.json() : null,
+            ),
+          catch: () => null,
+        }).pipe(Effect.catch(() => Effect.succeed(null)));
+        if (isDynamicRecord(value) && value.ok === true && isMobileConnectHostBinding(value.host)) {
+          return { origin, host: value.host };
+        }
+      }
+      return yield* new RemoteWorkflowError({ cause: new Error("No ZollyBot host answered at that address.") });
+    });
+  }
+
   readonly join = Effect.fn("RemoteManager.join")(
     function* (
       this: RemoteServerManager,
@@ -1062,6 +1099,7 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
         const verified = yield* this.#client.verifyIdentity(mobile.apiUrl, binding.hostId, binding.fingerprint);
         const session = yield* requestJson(mobile.apiUrl, "/v1/mobile-auth/redeem", decodeMobileConnectSession, {
           method: "POST",
+          local: true,
           body: {
             ticket: mobile.ticket,
             deviceId: randomUUID(),
@@ -1073,7 +1111,10 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
           Effect.mapError(
             (failure) =>
               new RemoteWorkflowError({
-                cause: "cause" in failure && failure.cause !== undefined ? failure.cause : failure,
+                cause:
+                  typeof failure === "object" && failure !== null && "cause" in failure && failure.cause !== undefined
+                    ? failure.cause
+                    : failure,
               }),
           ),
         );
@@ -1083,6 +1124,53 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
           serverName: verified.serverName,
           apiUrl: mobile.apiUrl,
           fingerprint: binding.fingerprint,
+          publicKey: verified.publicKey,
+          username: session.email || "ZollyBot desktop",
+          sessionToken: session.sessionToken,
+        });
+      }
+
+      if (this.#directHostInput(input.inviteUrl)) {
+        const found = yield* this.#discoverHost(input.inviteUrl);
+        const verified = yield* this.#client.verifyIdentity(found.origin, found.host.hostId, found.host.fingerprint);
+        const approval = yield* requestJson(found.origin, "/v1/mobile-auth/request", decodeMobileApproval, {
+          method: "POST",
+          local: true,
+          body: {
+            deviceId: randomUUID(),
+            deviceName: hostname().slice(0, 80),
+            platform: "unknown",
+          },
+        }).pipe(mapRemoteRequestFailure);
+        let status = yield* readMobileApproval(found.origin, approval.requestId);
+        while (status.status === "pending") {
+          yield* Effect.sleep("1500 millis");
+          status = yield* readMobileApproval(found.origin, approval.requestId);
+        }
+        if (status.status !== "approved" || !status.ticket || !status.host) {
+          return yield* new RemoteWorkflowError({
+            cause: new Error(
+              status.status === "rejected" ? "The host rejected the connection." : "The connection request expired.",
+            ),
+          });
+        }
+        validateMobileConnectHostBinding(found.host, status.host);
+        const session = yield* requestJson(found.origin, "/v1/mobile-auth/redeem", decodeMobileConnectSession, {
+          method: "POST",
+          local: true,
+          body: {
+            ticket: status.ticket,
+            deviceId: randomUUID(),
+            deviceName: hostname().slice(0, 80),
+            platform: "unknown",
+          },
+        }).pipe(mapRemoteRequestFailure);
+        validateMobileConnectHostBinding(found.host, session.host);
+        return yield* this.connectDevelopmentServer({
+          serverId: found.host.hostId,
+          serverName: verified.serverName,
+          apiUrl: found.origin,
+          fingerprint: found.host.fingerprint,
           publicKey: verified.publicKey,
           username: session.email || "ZollyBot desktop",
           sessionToken: session.sessionToken,
@@ -1348,6 +1436,19 @@ export class RemoteServerManager extends EventEmitter<RemoteServerEvents> {
           serverId: mobile.host.hostId,
           serverName: verified.serverName,
           apiHostname: new URL(mobile.apiUrl).hostname,
+          role: "member",
+          expiresAt: new Date("9999-12-31T23:59:59.999Z").toISOString(),
+          emailBound: false,
+          permanent: true,
+        };
+      }
+      if (this.#directHostInput(input.inviteUrl)) {
+        const found = yield* this.#discoverHost(input.inviteUrl);
+        const verified = yield* this.#client.verifyIdentity(found.origin, found.host.hostId, found.host.fingerprint);
+        return {
+          serverId: found.host.hostId,
+          serverName: verified.serverName,
+          apiHostname: new URL(found.origin).hostname,
           role: "member",
           expiresAt: new Date("9999-12-31T23:59:59.999Z").toISOString(),
           emailBound: false,
@@ -2734,4 +2835,79 @@ function decodeMobileConnectSession(value: unknown): MobileConnectSession {
     email: user && isString(user.email) ? user.email : "",
     host: value.host,
   };
+}
+
+const DEFAULT_MOBILE_CONNECT_PORT = 17420;
+
+function formatHost(hostnameValue: string): string {
+  return hostnameValue.includes(":") && !hostnameValue.startsWith("[") ? `[${hostnameValue}]` : hostnameValue;
+}
+
+function mobileConnectOrigins(raw: string): string[] {
+  const trimmed = raw.trim().replace(/\/+$/u, "");
+  const parsed = parseMobileConnectUrl(trimmed);
+  if (parsed?.apiUrl) return [parsed.apiUrl];
+  if (isIP(trimmed) === 6) {
+    const host = formatHost(trimmed);
+    return [`http://${host}:${DEFAULT_MOBILE_CONNECT_PORT}`, `http://${host}`];
+  }
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//iu.test(trimmed) ? trimmed : `http://${trimmed}`;
+  try {
+    const url = new URL(withScheme);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return [];
+    const host = formatHost(url.hostname);
+    if (url.port) return [url.origin];
+    return [`http://${host}:${DEFAULT_MOBILE_CONNECT_PORT}`, `http://${host}`];
+  } catch {
+    return [];
+  }
+}
+
+function mapRemoteRequestFailure<A, E, R>(effect: Effect.Effect<A, E, R>): Effect.Effect<A, RemoteWorkflowError, R> {
+  return effect.pipe(
+    Effect.mapError(
+      (failure) =>
+        new RemoteWorkflowError({
+          cause:
+            typeof failure === "object" && failure !== null && "cause" in failure && failure.cause !== undefined
+              ? failure.cause
+              : failure,
+        }),
+    ),
+  );
+}
+
+interface MobileApproval {
+  requestId: string;
+  status: "pending" | "approved" | "rejected" | "expired";
+  ticket?: string;
+  host?: MobileConnectHostBinding;
+}
+
+function decodeMobileApproval(value: unknown): MobileApproval {
+  if (!isDynamicRecord(value) || !isString(value.requestId) || !isString(value.status)) {
+    throw new Error("The host returned an invalid connection request.");
+  }
+  if (!isMobileApprovalStatus(value.status)) {
+    throw new Error("The host returned an unknown connection state.");
+  }
+  return {
+    requestId: value.requestId,
+    status: value.status,
+    ...(isString(value.ticket) ? { ticket: value.ticket } : {}),
+    ...(isMobileConnectHostBinding(value.host) ? { host: value.host } : {}),
+  };
+}
+
+function readMobileApproval(origin: string, requestId: string): Effect.Effect<MobileApproval, RemoteWorkflowError> {
+  return requestJson(
+    origin,
+    `/v1/mobile-auth/request/status?requestId=${encodeURIComponent(requestId)}`,
+    decodeMobileApproval,
+    { method: "GET", local: true },
+  ).pipe(mapRemoteRequestFailure);
+}
+
+function isMobileApprovalStatus(value: unknown): value is MobileApproval["status"] {
+  return value === "pending" || value === "approved" || value === "rejected" || value === "expired";
 }

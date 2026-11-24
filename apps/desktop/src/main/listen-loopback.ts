@@ -29,16 +29,17 @@ export function listenLoopbackExact(server: Server, noPort: () => Error, port: n
 /**
  * Listens on a free port on all interfaces for private-network local access (LAN/Tailscale).
  * Mobile Connect requires the host API to be reachable from the phone on the private network.
+ * `::` is dual-stack on every platform Node supports, so IPv4 and IPv6 peers both connect.
  */
 export async function listenPrivate(server: Server, noPort: () => Error, preferredPort?: number): Promise<number> {
   if (preferredPort !== undefined) {
     try {
-      return await listenOn(server, noPort, preferredPort, "0.0.0.0");
+      return await listenOn(server, noPort, preferredPort, "::");
     } catch {
       // Another program holds the port, or this one is not allowed to bind it.
     }
   }
-  return listenOn(server, noPort, 0, "0.0.0.0");
+  return listenOn(server, noPort, 0, "::");
 }
 
 function listenOn(server: Server, noPort: () => Error, port: number, host: string): Promise<number> {

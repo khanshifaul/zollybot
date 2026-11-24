@@ -35,7 +35,7 @@ interface JoinServerDialogProps {
 
 type DialogPhase = "idle" | "previewing" | "joining";
 
-const INVITE_URL_PLACEHOLDER = "https://zollybot.shifaul.dev/join?…";
+const INVITE_URL_PLACEHOLDER = "https://…/join?… · 100.x.y.z · [fd7a:…] · host.ts.net";
 
 export function JoinServerDialog(props: JoinServerDialogProps) {
   const { t, errorDetails } = useText();
