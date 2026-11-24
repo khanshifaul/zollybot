@@ -42,6 +42,7 @@ import { JarvisOrb } from "@/features/assistant/components/jarvis-orb";
 import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
 import { useHuggingFaceModels } from "@/features/assistant/model/huggingface-models";
 import { useJarvisConversations } from "@/features/assistant/model/jarvis-conversations";
+import { localAttachmentText } from "@/features/assistant/model/jarvis-local-context";
 import { cleanLocalReply, JARVIS_LOCAL_SYSTEM_PROMPT } from "@/features/assistant/model/jarvis-prompt";
 import { useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
@@ -114,7 +115,6 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const capture = useVoiceDictation({ enabled: true, onDraft: setDraft });
   const screenContext = useJarvisSettings((state) => state.screenContext);
   const deviceActionsEnabled = useJarvisSettings((state) => state.deviceActions);
-  const cloudFallback = useJarvisSettings((state) => state.cloudFallback);
   const listeningRef = useRef(false);
   listeningRef.current = listening;
 
@@ -244,10 +244,17 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
 
   const send = async () => {
     const typed = draft.trim();
+    const wantsButler = /\b(?:ask|contact|message|tell|send(?:\s+this|\s+it)?\s+to)\s+(?:the\s+)?butler\b/iu.test(
+      typed,
+    );
     const screen = screenText ? `[${t("mobile.app.jarvis.screenShare")}]\n${screenText}` : "";
     const text = [screen, typed].filter(Boolean).join("\n\n");
     if ((!text && attachments.items.length === 0) || sending) return;
-    if (!butler) {
+    if (!localModel && !wantsButler) {
+      setError(t("mobile.app.jarvis.noLocalModelError"));
+      return;
+    }
+    if (!localModel && wantsButler && !butler) {
       setError(t("mobile.app.jarvis.noAgent"));
       return;
     }
@@ -256,7 +263,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
     setSending(true);
     setError(null);
     try {
-      if (attachments.items.length === 0 && typed) {
+      if (!wantsButler && attachments.items.length === 0 && typed) {
         const actionReply = await runLocalDeviceAction(typed);
         if (actionReply !== null) {
           setDraft("");
@@ -281,6 +288,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
       }
       if (
         localModel &&
+        !wantsButler &&
         attachments.items.length === 0 &&
         localHistory.length === 0 &&
         /^(hi|hello|hey)\b/iu.test(typed)
@@ -304,7 +312,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
         localSpeech.current = reading.stop;
         return;
       }
-      if (localModel && attachments.items.length === 0) {
+      if (localModel && !wantsButler) {
         try {
           localSpeech.current?.();
           setLocalAnswer("");
@@ -312,7 +320,8 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
           setLocalPhase("loading");
           await loadLocalModelFile(localModel.uri, (value) => setLocalProgress(value.percentage));
           setLocalPhase("thinking");
-          const userTurn = text;
+          const attachmentContext = await localAttachmentText(attachments.items);
+          const userTurn = [text, attachmentContext].filter(Boolean).join("\n\n");
           const nextHistory = [...localHistory, { id: `user-${Date.now()}`, role: "user" as const, content: userTurn }];
           const rawReply = await localReply(
             [
@@ -328,6 +337,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
           appendMessages([{ id: `assistant-${Date.now()}`, role: "assistant", content: reply }]);
           setDraft("");
           setScreenText(null);
+          attachments.clear();
           setLocalPhase("idle");
           const reading = readReply(reply, {
             onPart: () => undefined,
@@ -342,8 +352,12 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
           return;
         } catch (cause) {
           setLocalPhase("idle");
-          if (!cloudFallback) throw cause;
+          throw cause;
         }
+      }
+      if (!butler) {
+        setError(t("mobile.app.jarvis.noAgent"));
+        return;
       }
       const attachmentIds: string[] = [];
       for (const item of attachments.items) {

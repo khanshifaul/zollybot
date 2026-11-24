@@ -5,7 +5,8 @@
 - Jarvis switches from the orb to a chat transcript after the first turn, and the composer shows a microphone button for dictation.
 - A right sidebar keeps local conversations across launches; Jarvis settings moved to its bottom.
 - Device commands run locally with confirmation: timers, opening apps, dialing, and opening system settings.
-- Cloud fallback is a setting: only when enabled does a failed local model hand the prompt to the remote Butler.
+- Local Jarvis reads text files and images on the phone; camera, photo, file, and screen context stay offline.
+- Butler is contacted only when the user explicitly asks Jarvis to ask, tell, message, or contact Butler.
 
 ### Changed
 

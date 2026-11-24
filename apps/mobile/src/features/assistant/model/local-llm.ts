@@ -41,6 +41,8 @@ export async function loadLocalModelFile(uri: string, onProgress: (progress: Loc
     },
   });
   loadedKey = uri;
+  // Download the small OCR model now, while the phone is online, so photos and screen context work offline.
+  void import("../native/local-screen-context").then((module) => module.prepareLocalOcrModel()).catch(() => undefined);
 }
 
 /** Streams a local reply. The model stays loaded until `unloadLocalModel`. */

@@ -14,6 +14,11 @@ async function sdk() {
   return import("@qvac/sdk");
 }
 
+/** Warms the local OCR model while the phone is online, so later screen and photo reads are offline. */
+export async function prepareLocalOcrModel(): Promise<void> {
+  await loadOcrModel();
+}
+
 async function loadOcrModel(): Promise<string> {
   if (modelId) return modelId;
   loading ??= (async () => {
@@ -30,23 +35,28 @@ function localPath(uri: string): string {
   return uri.startsWith("file://") ? decodeURIComponent(uri.slice("file://".length)) : uri;
 }
 
+/** Reads text from an image on the phone with the local OCR model. The pixels never leave it. */
+export async function readImageText(uri: string, limit = SCREEN_TEXT_LIMIT): Promise<string> {
+  const id = await loadOcrModel();
+  const qvac = await sdk();
+  const { blocks } = qvac.ocr({ modelId: id, image: localPath(uri), options: { paragraph: true } });
+  const values = await blocks;
+  const text = values
+    .map((block) => block.text.trim())
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, limit);
+  if (!text) throw new Error("The image had no readable text.");
+  return text;
+}
+
 /**
  * Reads the text of a screenshot with the local OCR model. The image is deleted either way; only
  * the extracted text is returned, never the pixels.
  */
 export async function readScreenText(uri: string): Promise<string> {
   try {
-    const id = await loadOcrModel();
-    const qvac = await sdk();
-    const { blocks } = qvac.ocr({ modelId: id, image: localPath(uri), options: { paragraph: true } });
-    const values = await blocks;
-    const text = values
-      .map((block) => block.text.trim())
-      .filter(Boolean)
-      .join("\n")
-      .slice(0, SCREEN_TEXT_LIMIT);
-    if (!text) throw new Error("The screen had no readable text.");
-    return text;
+    return await readImageText(uri);
   } finally {
     await FileSystem.deleteAsync(uri, { idempotent: true }).catch(() => undefined);
   }

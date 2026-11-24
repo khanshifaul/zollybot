@@ -240,16 +240,6 @@ export default function JarvisSettingsScreen() {
             right={<ChevronRight color={muted} size={18} />}
             onPress={() => router.push("/settings/voice")}
           />
-          <Row
-            title={t("mobile.app.jarvis.cloud")}
-            detail={t("mobile.app.jarvis.cloudHint")}
-            right={
-              <Switch
-                value={settings.cloudFallback}
-                onValueChange={(value) => void saveJarvisSettings({ cloudFallback: value })}
-              />
-            }
-          />
         </View>
 
         {Platform.OS === "android" ? (

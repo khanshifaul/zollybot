@@ -178,6 +178,8 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.localLoading": "Loading local model {progress}%",
   "mobile.app.jarvis.localThinking": "Thinking locally…",
   "mobile.app.jarvis.noLocalModel": "No model selected · choose a downloaded GGUF",
+  "mobile.app.jarvis.noLocalModelError":
+    "Choose and download a local model to chat offline. Ask Butler explicitly to contact the server.",
   "mobile.app.jarvis.conversations": "Conversations",
   "mobile.app.jarvis.newChat": "New",
   "mobile.app.jarvis.noConversations": "No conversations yet.",
