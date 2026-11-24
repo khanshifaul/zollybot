@@ -61,7 +61,7 @@ export default async function SkillListingPage({ params }: { params: Promise<{ s
   const appUrl = createZollyBotMarketplaceUrl({ kind: "skill", id: skill.slug });
   const icon = marketplaceAssetUrl(skill.iconUrl);
   return (
-    <Container size="md" className="space-y-8 py-10">
+    <Container size="md" className="space-y-6 py-8 sm:space-y-8 sm:py-10">
       <Link className="text-sm text-primary hover:underline" href="/marketplace/skills">
         ← All skills
       </Link>
@@ -76,7 +76,7 @@ export default async function SkillListingPage({ params }: { params: Promise<{ s
         </div>
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-3xl font-semibold tracking-tight">{skill.name}</h1>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{skill.name}</h1>
             {skill.verified ? (
               <span className="inline-flex items-center gap-1 text-sm text-primary">
                 <Check className="h-4 w-4" /> Verified
@@ -96,7 +96,7 @@ export default async function SkillListingPage({ params }: { params: Promise<{ s
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">About this skill</h2>
-        <p className="whitespace-pre-line text-muted-foreground">{skill.description}</p>
+        <p className="whitespace-pre-line break-words text-muted-foreground">{skill.description}</p>
       </section>
 
       <section className="space-y-3">

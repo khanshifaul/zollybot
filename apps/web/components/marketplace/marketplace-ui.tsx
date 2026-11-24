@@ -11,32 +11,41 @@ import { Container } from "@/components/ui/container";
 export function MarketplaceHeader() {
   return (
     <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
-      <Container size="lg" className="flex h-14 items-center justify-between gap-4">
-        <Link href="/marketplace" className="flex items-center gap-2 font-semibold tracking-tight">
-          <Image src="/brand/zollybot-logo.png" alt="" width={28} height={28} className="h-7 w-7 dark:hidden" />
+      <Container size="lg" className="flex h-14 items-center justify-between gap-2 sm:gap-4">
+        <Link href="/marketplace" className="flex min-w-0 items-center gap-2 font-semibold tracking-tight">
+          <Image
+            src="/brand/zollybot-logo.png"
+            alt=""
+            width={28}
+            height={28}
+            className="h-7 w-7 shrink-0 dark:hidden"
+          />
           <Image
             src="/brand/zollybot-logo-dark.png"
             alt=""
             width={28}
             height={28}
-            className="hidden h-7 w-7 dark:block"
+            className="hidden h-7 w-7 shrink-0 dark:block"
           />
-          <span>Marketplace</span>
+          <span className="truncate">Marketplace</span>
         </Link>
-        <nav className="flex items-center gap-1 text-sm">
+        <nav className="flex shrink-0 items-center gap-0.5 text-sm sm:gap-1" aria-label="Marketplace">
           <Link
-            className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-md px-2 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground sm:px-3"
             href="/marketplace/agents"
           >
             Agents
           </Link>
           <Link
-            className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-md px-2 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground sm:px-3"
             href="/marketplace/skills"
           >
             Skills
           </Link>
-          <Link className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" href="/">
+          <Link
+            className="hidden rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground sm:block"
+            href="/"
+          >
             ZollyBot
           </Link>
           <ThemeToggle />
@@ -80,7 +89,7 @@ export function AgentCard({ agent }: { agent: MarketplaceAgentSummary }) {
   return (
     <Link href={`/marketplace/agents/${agent.id}`} className="group block h-full">
       <Card className="h-full transition-colors group-hover:border-primary/50">
-        <CardHeader className="gap-3">
+        <CardHeader className="gap-3 p-4 sm:p-6">
           <div className="flex items-start gap-3">
             <AgentAvatar name={agent.name} seed={agent.avatarSeed} hue={agent.avatarHue} />
             <div className="min-w-0 flex-1">
@@ -102,7 +111,7 @@ export function AgentCard({ agent }: { agent: MarketplaceAgentSummary }) {
           </div>
           <p className="line-clamp-3 text-sm text-muted-foreground">{agent.description}</p>
         </CardHeader>
-        <CardContent className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <CardContent className="flex flex-wrap items-center gap-2 p-4 pt-0 text-xs text-muted-foreground sm:gap-3 sm:p-6 sm:pt-0">
           {agent.category ? <Badge variant="outline">{SKILL_CATEGORY_LABELS[agent.category]}</Badge> : null}
           <span>v{agent.version}</span>
           <span className="inline-flex items-center gap-1">
@@ -122,7 +131,7 @@ export function SkillCard({ skill }: { skill: MarketplaceSkillSummary }) {
   return (
     <Link href={`/marketplace/skills/${skill.slug}`} className="group block h-full">
       <Card className="h-full transition-colors group-hover:border-primary/50">
-        <CardHeader className="gap-3">
+        <CardHeader className="gap-3 p-4 sm:p-6">
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-muted">
               {icon ? (
@@ -151,7 +160,7 @@ export function SkillCard({ skill }: { skill: MarketplaceSkillSummary }) {
           </div>
           <p className="line-clamp-3 text-sm text-muted-foreground">{skill.description}</p>
         </CardHeader>
-        <CardContent className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <CardContent className="flex flex-wrap items-center gap-2 p-4 pt-0 text-xs text-muted-foreground sm:gap-3 sm:p-6 sm:pt-0">
           <Badge variant="outline">{SKILL_CATEGORY_LABELS[skill.category]}</Badge>
           <span>v{skill.version}</span>
           <span className="inline-flex items-center gap-1">

@@ -17,11 +17,15 @@ export function ListingActions({ appUrl, shareUrl }: { appUrl: string; shareUrl:
     }
   };
   return (
-    <div className="flex flex-wrap gap-2">
-      <a className={cn(buttonVariants({ variant: "default" }), "gap-2")} href={appUrl}>
+    <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <a className={cn(buttonVariants({ variant: "default" }), "w-full gap-2 sm:w-auto")} href={appUrl}>
         Open in ZollyBot
       </a>
-      <button type="button" className={cn(buttonVariants({ variant: "outline" }), "gap-2")} onClick={() => void copy()}>
+      <button
+        type="button"
+        className={cn(buttonVariants({ variant: "outline" }), "w-full gap-2 sm:w-auto")}
+        onClick={() => void copy()}
+      >
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         {copied ? "Copied" : "Copy link"}
       </button>

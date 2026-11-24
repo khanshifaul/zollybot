@@ -410,7 +410,7 @@ export default function Page() {
               project state to a hosted control plane.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Feature
               icon={HardDrive}
               title="Local-first by design"
@@ -453,7 +453,7 @@ export default function Page() {
             </a>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
             <Card className="border-border/70 bg-card/80 shadow-sm lg:sticky lg:top-24 lg:h-fit">
               <CardHeader>
                 <CardTitle className="text-base">Platform</CardTitle>
@@ -612,7 +612,7 @@ export default function Page() {
 
       <section className="py-10 sm:py-14">
         <Container size="lg">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Card className="border-border/70 bg-card/80 shadow-sm">
               <CardHeader>
                 <CardTitle>How it fits together</CardTitle>

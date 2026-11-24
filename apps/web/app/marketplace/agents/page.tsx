@@ -43,18 +43,18 @@ export default async function AgentsPage({
   if (result.data?.nextCursor) nextParams.set("cursor", result.data.nextCursor);
 
   return (
-    <Container size="lg" className="space-y-8 py-10">
+    <Container size="lg" className="space-y-6 py-8 sm:space-y-8 sm:py-10">
       <header className="space-y-2">
         <p className="text-sm font-medium text-primary">Marketplace</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Agents</h1>
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Agents</h1>
         <p className="text-muted-foreground">Read a listing, then open it in ZollyBot to add it.</p>
       </header>
 
       <form
-        className="flex flex-col gap-3 rounded-xl border bg-card p-4 sm:flex-row sm:items-end"
+        className="grid grid-cols-1 gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto_auto] lg:items-end"
         action="/marketplace/agents"
       >
-        <label className="flex-1 space-y-1 text-sm">
+        <label className="space-y-1 text-sm sm:col-span-2 lg:col-span-1">
           <span className="font-medium">Search</span>
           <input
             name="q"
@@ -68,7 +68,7 @@ export default async function AgentsPage({
           <select
             name="category"
             defaultValue={selectedCategory ?? ""}
-            className="h-9 rounded-md border bg-background px-3 text-sm"
+            className="h-9 w-full rounded-md border bg-background px-3 text-sm sm:w-auto"
           >
             <option value="">All</option>
             {SKILL_CATEGORIES.map((value) => (
@@ -78,11 +78,14 @@ export default async function AgentsPage({
             ))}
           </select>
         </label>
-        <label className="flex h-9 items-center gap-2 text-sm">
+        <label className="flex h-9 items-center gap-2 text-sm sm:self-end">
           <input type="checkbox" name="verified" value="true" defaultChecked={verified} />
           Verified only
         </label>
-        <button className="h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground" type="submit">
+        <button
+          className="h-9 w-full rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground sm:w-auto"
+          type="submit"
+        >
           Apply
         </button>
       </form>
@@ -92,7 +95,7 @@ export default async function AgentsPage({
       {result.data ? (
         result.data.agents.length ? (
           <>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {result.data.agents.map((agent) => (
                 <AgentCard key={agent.id} agent={agent} />
               ))}

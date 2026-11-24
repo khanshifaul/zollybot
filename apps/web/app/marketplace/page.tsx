@@ -19,11 +19,13 @@ export default async function MarketplacePage() {
   ]);
   const error = agents.error ?? skills.error;
   return (
-    <Container size="lg" className="space-y-12 py-12">
+    <Container size="lg" className="space-y-10 py-8 sm:space-y-12 sm:py-12">
       <section className="max-w-3xl space-y-4">
         <p className="text-sm font-medium text-primary">ZollyBot Marketplace</p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Agents and skills, ready to add.</h1>
-        <p className="text-lg text-muted-foreground">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
+          Agents and skills, ready to add.
+        </h1>
+        <p className="text-base text-muted-foreground sm:text-lg">
           Browse what people have built for ZollyBot. Opening a listing starts in the app, where you review it before
           anything is installed.
         </p>
@@ -41,7 +43,7 @@ export default async function MarketplacePage() {
 
       {!error ? (
         <section className="space-y-5">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <div>
               <h2 className="text-2xl font-semibold">Featured agents</h2>
               <p className="text-sm text-muted-foreground">Complete teams you can inspect before adding.</p>
@@ -51,7 +53,7 @@ export default async function MarketplacePage() {
             </Link>
           </div>
           {agents.data?.agents.length ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {agents.data.agents.map((agent) => (
                 <AgentCard key={agent.id} agent={agent} />
               ))}
@@ -64,7 +66,7 @@ export default async function MarketplacePage() {
 
       {!error ? (
         <section className="space-y-5">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <div>
               <h2 className="text-2xl font-semibold">Featured skills</h2>
               <p className="text-sm text-muted-foreground">Small, focused abilities for any agent.</p>
@@ -74,7 +76,7 @@ export default async function MarketplacePage() {
             </Link>
           </div>
           {skills.data?.skills.length ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {skills.data.skills.map((skill) => (
                 <SkillCard key={skill.id} skill={skill} />
               ))}

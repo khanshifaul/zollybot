@@ -8,6 +8,10 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [0.65.3] - 2026-11-24
 
+### Changed
+
+- The public Marketplace and landing page now adapt their headers, filters, cards, and listing pages to mobile widths.
+
 ### Fixed
 
 - Linux `.deb`, `.rpm`, and `.pacman` packages now name a maintainer, so the release build can publish the Linux desktop artifacts.
