@@ -76,7 +76,7 @@ function IncomingLinkContent({ request }: { request?: string }) {
         { action: "redeem", entry_point: "link" },
         () => redeemMobileConnectUrl(url),
       );
-      connect(next);
+      await connect(next);
       forgetIncomingLink(request);
       void haptics.notification("success");
       if (mounted.current) setPaired(true);

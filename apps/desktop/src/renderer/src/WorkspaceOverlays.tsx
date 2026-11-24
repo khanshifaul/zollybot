@@ -98,7 +98,7 @@ interface AccountProps {
  * the components here read the desktop contexts and pass them on.
  */
 /** The local install response carries the whole summary the roster needs; a joined host answers with id and name only. */
-function isStoredAgent(agent: object): agent is ClientAgentSummary {
+function isStoredAgent(agent: ClientAgentSummary | { id: string; name: string }): agent is ClientAgentSummary {
   return "provider" in agent && "officeId" in agent && "updatedAt" in agent;
 }
 

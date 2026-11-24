@@ -154,7 +154,7 @@ export function SignInScreen({ notice }: { notice?: SignInNotice }) {
     const attach = () => {
       if (attached) return;
       attached = true;
-      connectRef.current(finished);
+      void connectRef.current(finished);
     };
     const hold = AppState.currentState !== "active" ? 0 : reduced ? DONE_HOLD_MS / 2 : BLOUB_MOVE_MS + DONE_HOLD_MS;
     const timer = setTimeout(attach, hold);

@@ -24,7 +24,7 @@ export function DevelopmentConnectLinkHandler() {
       // The account service revokes an older session of this device on redeem,
       // but only its own. A session from another dev stack is revoked first.
       if (session && !isSameMobileConnectTarget(session, pending)) await signOut();
-      connect(await redeemMobileConnectUrl(pending));
+      await connect(await redeemMobileConnectUrl(pending));
     })().catch((error: unknown) => {
       console.warn("Development Mobile Connect failed:", error instanceof Error ? error.message : error);
     });
