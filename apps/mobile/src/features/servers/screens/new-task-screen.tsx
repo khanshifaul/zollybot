@@ -8,7 +8,7 @@ import { usePreventRemove } from "expo-router/react-navigation";
 import { Typography } from "heroui-native";
 import Check from "lucide-react-native/icons/check";
 import X from "lucide-react-native/icons/x";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Alert, View } from "react-native";
 import { useCSSVariable } from "uniwind";
 import { BloubAvatar } from "@/features/agents/components/bloub-avatar";
@@ -40,13 +40,21 @@ export function NewTaskScreen() {
   const accent = String(useCSSVariable("--zollybot-accent"));
   const { startAgentTask } = useMobileWorkspace();
   const { agents, online, supported } = useServerTasks(serverId, { enabled: false });
+  const intakeAgents = useMemo(
+    () =>
+      agents.filter(
+        (agent) =>
+          agent.officeRole === "butler" || agent.officeRole === "office-manager" || agent.officeRole === "zolly",
+      ),
+    [agents],
+  );
   const [draft, setDraft] = useState("");
   const [chosenId, setChosenId] = useState(initialAgentId ?? "");
   const [saving, setSaving] = useState(false);
   const [finished, setFinished] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const pending = useRef(false);
-  const chosen = agents.find((agent) => agent.id === chosenId);
+  const chosen = intakeAgents.find((agent) => agent.id === chosenId);
   const title = plainTaskTitle(draft);
   const dirty = title !== "";
   const canSave = online && supported && Boolean(chosen) && dirty && !finished;
@@ -70,6 +78,10 @@ export function NewTaskScreen() {
   useEffect(() => {
     if (finished) router.back();
   }, [finished]);
+  useEffect(() => {
+    if (intakeAgents.some((agent) => agent.id === chosenId)) return;
+    setChosenId(intakeAgents[0]?.id ?? "");
+  }, [chosenId, intakeAgents]);
 
   async function start() {
     if (!canSave || !chosen || pending.current) return;
@@ -148,23 +160,25 @@ export function NewTaskScreen() {
           if (error) setError(null);
         }}
       />
-      {agents.length > 0 ? (
+      {intakeAgents.length > 0 ? (
         <SettingsSection title={t("mobile.server.threads.chooseAgent")}>
-          {agents.map((agent) => (
+          {intakeAgents.map((agent) => (
             <SettingsRow
               key={agent.id}
               accessibilityLabel={t("mobile.server.threads.agentLabel", { name: agent.name })}
               checked={agent.id === chosenId}
               disclosure={false}
               leading={<TaskAgentAvatar agent={agent} />}
-              supportingText={agent.title.trim() || undefined}
+              supportingText={(agent.officeName ?? agent.title).trim() || undefined}
               trailing={agent.id === chosenId ? <Check size={18} color={accent} strokeWidth={2} /> : null}
               onPress={() => {
                 void haptics.selection();
                 setChosenId(agent.id);
               }}
             >
-              <Typography.Paragraph numberOfLines={1}>{agent.name}</Typography.Paragraph>
+              <Typography.Paragraph numberOfLines={1}>
+                {agent.officeName ? `${agent.name} · ${agent.officeName}` : agent.name}
+              </Typography.Paragraph>
             </SettingsRow>
           ))}
         </SettingsSection>

@@ -33,18 +33,42 @@ export type MobileSidebarItem =
 
 const BUILDING_OFFICE = "__building__";
 
-/** The agents of the default section, grouped by office with the building roles last. */
+/**
+ * The chats of the default section, grouped by office: each office heading holds its channel and
+ * then its agents. A channel made by the host names its office in its id (`office-channel-<id>`), so
+ * it groups without a new protocol field. The building roles come last, and any other channel stays
+ * above the offices.
+ */
 function officeSections(items: readonly MobileSidebarItem[], t: MobileTranslate): MobileSidebarItem[] {
-  const channels = items.filter((item) => item.kind === "channel");
-  const groups = new Map<string, { name: string; agents: MobileAgent[] }>();
+  const groups = new Map<string, { name: string; agents: MobileAgent[]; channels: ChannelSummary[] }>();
+  const otherChannels: ChannelSummary[] = [];
+  const officeChannelId = (id: string) =>
+    id.startsWith("office-channel-") ? id.slice("office-channel-".length) : null;
   for (const item of items) {
+    if (item.kind === "channel") {
+      const officeId = officeChannelId(item.channel.id);
+      if (officeId === null) {
+        otherChannels.push(item.channel);
+        continue;
+      }
+      const group = groups.get(officeId) ?? {
+        name: officeId,
+        agents: [],
+        channels: [],
+      };
+      group.channels.push(item.channel);
+      groups.set(officeId, group);
+      continue;
+    }
     if (item.kind !== "agent") continue;
     // A host that sends the office name without its id still groups by office.
     const id = item.agent.officeId ?? item.agent.officeName ?? BUILDING_OFFICE;
     const group = groups.get(id) ?? {
       name: item.agent.officeName ?? (id === BUILDING_OFFICE ? t("mobile.offices.building") : id),
       agents: [],
+      channels: [],
     };
+    if (item.agent.officeName) group.name = item.agent.officeName;
     group.agents.push(item.agent);
     groups.set(id, group);
   }
@@ -52,9 +76,15 @@ function officeSections(items: readonly MobileSidebarItem[], t: MobileTranslate)
     leftId === BUILDING_OFFICE ? 1 : rightId === BUILDING_OFFICE ? -1 : left.name.localeCompare(right.name),
   );
   return [
-    ...channels,
+    ...otherChannels.map((channel) => ({ kind: "channel" as const, id: channel.id, channel })),
     ...ordered.flatMap(([id, group]) => [
-      { kind: "office" as const, id: `office:${id}`, name: group.name, count: group.agents.length },
+      {
+        kind: "office" as const,
+        id: `office:${id}`,
+        name: group.name,
+        count: group.agents.length + group.channels.length,
+      },
+      ...group.channels.map((channel) => ({ kind: "channel" as const, id: channel.id, channel })),
       ...group.agents.map((agent) => ({ kind: "agent" as const, id: agent.id, agent })),
     ]),
   ];
