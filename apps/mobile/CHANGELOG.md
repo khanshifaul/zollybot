@@ -7,6 +7,12 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.66.3] - 2026-11-25
+
+### Changed
+
+- Removed the device-actions tile from the Jarvis composer; Jarvis executes device actions from conversation intent.
+
 ## [0.66.2] - 2026-11-25
 
 ### Added

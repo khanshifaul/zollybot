@@ -17,7 +17,6 @@ import Settings2 from "lucide-react-native/icons/settings-2";
 import Square from "lucide-react-native/icons/square";
 import Trash2 from "lucide-react-native/icons/trash-2";
 import X from "lucide-react-native/icons/x";
-import Zap from "lucide-react-native/icons/zap";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -1011,12 +1010,6 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                     label: t("mobile.app.jarvis.files"),
                     Icon: FileText,
                     onPress: attachments.chooseFiles,
-                  },
-                  {
-                    key: "actions",
-                    label: t("mobile.app.jarvis.actions"),
-                    Icon: Zap,
-                    onPress: () => router.push("/jarvis-actions"),
                   },
                   {
                     key: "screen",

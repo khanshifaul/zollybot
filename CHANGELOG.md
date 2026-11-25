@@ -6,6 +6,12 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.3] - 2026-11-25
+
+### Changed
+
+- Device actions are a Jarvis capability handled in the background, so they no longer appear as a composer tool.
+
 ## [0.66.2] - 2026-11-25
 
 ### Added
