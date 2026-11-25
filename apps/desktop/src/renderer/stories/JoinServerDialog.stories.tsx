@@ -2,22 +2,10 @@ import { JoinServerDialog } from "@zollybot/ui/features/servers/JoinServerDialog
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 
-const preview = {
-  serverId: "00000000-0000-4000-8000-000000000000",
-  serverName: "Studio host",
-  apiHostname: "story-host-zollybot.shifaul.dev",
-  role: "member" as const,
-  expiresAt: "2026-08-21T10:00:00.000Z",
-  emailBound: false,
-  permanent: false,
-};
-
 const args: Parameters<typeof JoinServerDialog>[0] = {
   inviteUrl:
     "https://zollybot.shifaul.dev/join?api=https%3A%2F%2Fstory-host-zollybot.shifaul.dev%2F&server=00000000-0000-4000-8000-000000000000&fingerprint=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&invite=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-  accountEmail: "person@example.com",
   onClose: fn(),
-  onPreview: fn(async () => preview),
   onJoin: fn(async () => undefined),
 };
 
@@ -42,28 +30,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const VerifiedInvite: Story = {};
-
-export const EmailBoundInvite: Story = {
-  args: {
-    onPreview: fn(async () => ({ ...preview, emailBound: true })),
-  },
-};
+export const Default: Story = {};
 
 export const EmptyInvite: Story = {
   args: { inviteUrl: "" },
 };
 
-export const ErrorState: Story = {
-  args: {
-    inviteUrl: "",
-    onPreview: async () => {
-      throw new Error("The ZollyBot invitation link is invalid.");
-    },
-  },
-};
-
-export const Joining: Story = {
+export const Connecting: Story = {
   args: {
     onJoin: () => new Promise<void>(() => undefined),
   },
@@ -77,22 +50,7 @@ export const JoinError: Story = {
   },
 };
 
-export const LongIdentity: Story = {
-  args: {
-    accountEmail: "person.with.a.long.address@example-company-name.com",
-    onPreview: fn(async () => ({
-      ...preview,
-      serverName: "Product design and research studio host",
-      apiHostname: "product-design-research-studio-zollybot.shifaul.dev",
-    })),
-  },
-};
-
 export const Narrow: Story = {
   args: { inviteUrl: "" },
-  parameters: { viewport: { defaultViewport: "joinServerNarrow" } },
-};
-
-export const NarrowVerified: Story = {
   parameters: { viewport: { defaultViewport: "joinServerNarrow" } },
 };

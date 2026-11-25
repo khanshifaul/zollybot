@@ -575,11 +575,6 @@
   color: var(--zollybot-text-muted);
 }
 
-/* The menu opens over the dialog, which is on a higher layer than menus. */
-.ui-action-menu.add-server-other-menu {
-  z-index: calc(var(--zollybot-layer-dialog) + 1);
-}
-
 /* Progress */
 
 .add-server-progress {

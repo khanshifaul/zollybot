@@ -2288,20 +2288,17 @@ function WebWorkspaceFrame(props: WebWorkspaceProps) {
                       selectServer(serverId);
                     }}
                     onContactUs={() => window.location.assign(HOSTED_SERVER_CONTACT_URL)}
-                    onJoinWithInvite={() => {
-                      hostedServers.closeAddServer();
-                      setJoinOpen(true);
+                    onJoin={async ({ inviteUrl }) => {
+                      await workspace.joinInvite(inviteUrl);
                     }}
                   />
                   <JoinServerOverlay
                     open={joinOpen()}
                     inviteUrl={props.inviteUrl ?? ""}
-                    accountEmail={props.accountEmail ?? ""}
                     onClose={() => {
                       setJoinOpen(false);
                       props.onInviteClose?.();
                     }}
-                    onPreview={({ inviteUrl }) => workspace.runtime.previewInvite(inviteUrl)}
                     onJoin={({ inviteUrl }) => workspace.joinInvite(inviteUrl)}
                   />
                   <Show when={accountSettingsLoaded()}>

@@ -10,7 +10,12 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ### Changed
 
+- Simplify desktop remote server connect to a single request/connect modal. Paste an invite, Mobile Connect link, or Tailscale host and connect directly, without a separate review step.
 - Voice match now records with a live level animation and stops after a short silence instead of cutting the line at a fixed time.
+
+### Fixed
+
+- Accept Mobile Connect session tokens in the Team API auth gate, fixing `401 Authentication required` when connecting over direct Tailscale/mobile-connect flows.
 
 ## [0.66.4] - 2026-11-25
 

@@ -52,8 +52,6 @@ export interface ServerMenuProps extends ServerActionCallbacks {
   onAdd?: () => void;
   /** True when `onAdd` opens the hosted server plans, where the user can also join with an invite. */
   addCreatesServer?: boolean | undefined;
-  /** Opens the dialog that creates a server on this computer. Without it, the menu does not show the item. */
-  onCreateLocal?: (() => void) | undefined;
   /** The server on this computer while the user hides it. Without it, the menu does not show the item. */
   hiddenLocal?: HiddenLocalServer | undefined;
   /** The compact sidebar hides the server name. The rail stays visible then. */
@@ -273,16 +271,6 @@ export function ServerMenu(props: ServerMenuProps) {
                   </span>
                   <span>{t(addServerLabel(props))}</span>
                 </DropdownMenu.Item>
-              </Show>
-              <Show when={props.onCreateLocal}>
-                {(onCreateLocal) => (
-                  <DropdownMenu.Item class="server-menu-add" onSelect={() => onCreateLocal()()}>
-                    <span class="server-menu-add-circle" aria-hidden="true">
-                      <Plus />
-                    </span>
-                    <span>{t("server.local.createTitle")}</span>
-                  </DropdownMenu.Item>
-                )}
               </Show>
               <Show when={props.hiddenLocal}>
                 {(hiddenLocal) => (

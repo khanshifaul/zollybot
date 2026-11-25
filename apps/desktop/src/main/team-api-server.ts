@@ -1162,7 +1162,22 @@ export class TeamApiServer {
       // The auth gate does not look at the path. An unknown route without a token is 401, not 404,
       // and that is deliberate: answering 404 would let anyone map which endpoints this host has.
       const token = bearerToken(request.headers.authorization);
-      const authenticated = token ? this.#options.store.authenticateSession(token) : null;
+      let authenticated = token ? this.#options.store.authenticateSession(token) : null;
+      if (!authenticated && token) {
+        const mobile = this.#options.mobileConnect;
+        const mobileSession = mobile?.verifySession(token);
+        if (mobileSession) {
+          const ownerId = this.#options.store.getOwnerMemberId();
+          const owner = ownerId ? this.#options.store.getMember(ownerId) : null;
+          if (owner) {
+            authenticated = {
+              member: { ...owner, role: "owner" },
+              sessionId: mobileSession.sessionId,
+              sessionExpiresAt: new Date(Date.now() + 300_000).toISOString(),
+            };
+          }
+        }
+      }
       if (!authenticated || !token) {
         return this.#json(response, 401, { error: sourceText("error.team.authenticationRequired") });
       }

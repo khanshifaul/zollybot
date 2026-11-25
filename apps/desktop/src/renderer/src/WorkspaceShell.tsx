@@ -315,7 +315,6 @@ export function WorkspaceShell(props: {
                 onSelect={serverActions.select}
                 onAdd={serverActions.add}
                 addCreatesServer={serverActions.addCreatesServer()}
-                onCreateLocal={serverActions.addMenuCreateLocal()}
                 hiddenLocal={serverActions.hiddenLocal()}
                 {...serverActions.callbacks}
               />

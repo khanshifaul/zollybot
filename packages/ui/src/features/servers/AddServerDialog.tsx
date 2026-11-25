@@ -1,3 +1,5 @@
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
+import type { JoinServerInput } from "@zollybot/contracts/ipc";
 import {
   LICENSE_INCLUDED_USERS,
   LICENSE_MAX_USERS,
@@ -13,16 +15,14 @@ import {
   AlertIcon,
   AlertTitle,
   Button,
-  buttonVariants,
   Check,
-  ChevronDown,
   Dialog,
-  DropdownMenu,
   ErrorReference,
+  Field,
   Heading,
   IconButton,
+  Input,
   Link2,
-  Monitor,
   OctagonX,
   Text,
   TriangleAlert,
@@ -99,13 +99,8 @@ interface AddServerDialogProps {
   serverLimit?: number | null | undefined;
   /** Opens the list of the account's hosted servers. Without it, the limit notice has no button. */
   onManageServers?: (() => void) | undefined;
-  /** Opens the invite dialog in place of this one. Without it, the "Other options" menu does not show the item. */
-  onJoinWithInvite?: (() => void) | undefined;
-  /**
-   * Opens the dialog that creates a server on this computer in place of this one. Without it, the "Other
-   * options" menu does not show the item.
-   */
-  onCreateLocal?: (() => void) | undefined;
+  /** Connects to an existing remote server in place of this dialog. Without it, the "Other options" menu does not show the item. */
+  onJoin?: ((input: JoinServerInput) => Promise<void>) | undefined;
   /** The consumer names the server, so the user does not have to. The logo uses the ID as its seed, as the rail does. */
   onCreate: (input: CreateHostedServerInput) => Promise<CreatedHostedServer>;
   onRetry: () => void;
@@ -130,7 +125,9 @@ interface AddServerDialogProps {
   order?: CreateHostedServerInput | undefined;
 }
 
-type Step = "pricing" | "progress";
+type Step = "pricing" | "progress" | "connect";
+
+const INVITE_URL_PLACEHOLDER = "https://…/join?… · 100.x.y.z · [fd7a:…] · host.ts.net";
 
 /**
  * The setup steps, and what each step does, in order. The setup reports
@@ -190,6 +187,9 @@ export function AddServerDialog(props: AddServerDialogProps) {
   const [created, setCreated] = createSignal<CreatedHostedServer | null>(untrack(() => props.resume) ?? null);
   const [paymentPending, setPaymentPending] = createSignal(false);
   const [paymentError, setPaymentError] = createSignal<UserErrorDetails | null>(null);
+  const [joinUrl, setJoinUrl] = createSignal("");
+  const [joinPhase, setJoinPhase] = createSignal<"idle" | "connecting">("idle");
+  const [joinError, setJoinError] = createSignal<UserErrorDetails | null>(null);
   const [rendered, setRendered] = createSignal(true);
   const [opened, setOpened] = createSignal(false);
   const [closing, setClosing] = createSignal(false);
@@ -312,8 +312,24 @@ export function AddServerDialog(props: AddServerDialogProps) {
     }
   }
 
+  async function connectServer(): Promise<void> {
+    const inviteUrl = joinUrl().trim();
+    const onJoin = props.onJoin;
+    if (!inviteUrl || !onJoin || joinPhase() !== "idle" || closing()) return;
+    setJoinPhase("connecting");
+    setJoinError(null);
+    try {
+      await onJoin({ inviteUrl });
+      setJoinPhase("idle");
+      requestClose();
+    } catch (cause) {
+      setJoinError(errorDetails(cause, t("server.join.joinFailed")));
+      setJoinPhase("idle");
+    }
+  }
+
   function requestClose(then?: () => void): void {
-    if (creating() || closing()) return;
+    if (creating() || joinPhase() === "connecting" || closing()) return;
     setClosing(true);
     setOpened(false);
     closeTimer = window.setTimeout(
@@ -350,8 +366,12 @@ export function AddServerDialog(props: AddServerDialogProps) {
                 );
             }}
           >
-            <Dialog.Title class="sr-only">{t("server.add.title")}</Dialog.Title>
-            <Dialog.Description class="sr-only">{t("server.add.description")}</Dialog.Description>
+            <Dialog.Title class="sr-only">
+              {step() === "connect" ? t("server.join.title") : t("server.add.title")}
+            </Dialog.Title>
+            <Dialog.Description class="sr-only">
+              {step() === "connect" ? t("server.join.description") : t("server.add.description")}
+            </Dialog.Description>
 
             <IconButton
               class="join-server-close"
@@ -365,11 +385,14 @@ export function AddServerDialog(props: AddServerDialogProps) {
               <X />
             </IconButton>
 
-            <Show when={step() === "pricing" && (props.onJoinWithInvite || props.onCreateLocal)}>
+            <Show when={step() === "pricing" && props.onJoin}>
               <AddServerOtherOptions
                 disabled={creating()}
-                onCreateLocal={props.onCreateLocal}
-                onJoinWithInvite={props.onJoinWithInvite}
+                onJoin={() => {
+                  setJoinError(null);
+                  setJoinUrl("");
+                  setStep("connect");
+                }}
               />
             </Show>
 
@@ -627,6 +650,94 @@ export function AddServerDialog(props: AddServerDialogProps) {
                     </Show>
                   </div>
                 </Match>
+
+                <Match when={step() === "connect"}>
+                  <form
+                    class="add-server-step add-server-connect join-server-page"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      void connectServer();
+                    }}
+                  >
+                    <header class="join-server-header join-server-header-entry">
+                      <Heading as="h2" size="lg">
+                        {t("server.join.title")}
+                      </Heading>
+                      <Text tone="muted">{t("server.join.description")}</Text>
+                    </header>
+
+                    <Field
+                      class={`join-server-field t-input-wrap${joinError() ? " is-error" : ""}`}
+                      label={t("server.join.inviteLink")}
+                      htmlFor="add-server-join-url"
+                      error={
+                        joinError() ? (
+                          <>
+                            <span class="t-error-msg">{joinError()?.message}</span>
+                            <ErrorReference reference={joinError()?.reference} />
+                          </>
+                        ) : undefined
+                      }
+                    >
+                      <Input
+                        id="add-server-join-url"
+                        class={`join-server-link-input t-input${joinError() ? " is-error" : ""}`}
+                        type="text"
+                        inputmode="url"
+                        autocomplete="off"
+                        placeholder={INVITE_URL_PLACEHOLDER}
+                        value={joinUrl()}
+                        onValueChange={(value) => {
+                          setJoinUrl(value);
+                          setJoinError(null);
+                        }}
+                        maxlength={INPUT_LIMITS.inviteUrl}
+                        spellcheck={false}
+                        disabled={joinPhase() === "connecting"}
+                        required
+                      />
+                    </Field>
+
+                    <Show when={joinError()}>
+                      {(failure) => (
+                        <Alert class="join-server-alert" tone="danger" role="alert">
+                          <AlertIcon>
+                            <OctagonX />
+                          </AlertIcon>
+                          <AlertContent>
+                            <AlertTitle>{t("server.join.connectionFailed")}</AlertTitle>
+                            <AlertDescription>{failure().message}</AlertDescription>
+                            <ErrorReference reference={failure().reference} />
+                          </AlertContent>
+                        </Alert>
+                      )}
+                    </Show>
+
+                    <footer class="join-server-actions">
+                      <Button
+                        type="submit"
+                        variant="default"
+                        fullWidth
+                        loading={joinPhase() === "connecting"}
+                        loadingLabel={t("common.connecting")}
+                        disabled={!joinUrl().trim() || joinPhase() === "connecting"}
+                      >
+                        {t("server.join.connect")}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        disabled={joinPhase() === "connecting"}
+                        onClick={() => {
+                          setJoinError(null);
+                          setStep("pricing");
+                        }}
+                      >
+                        {t("common.back")}
+                      </Button>
+                    </footer>
+                  </form>
+                </Match>
               </Switch>
             </div>
           </Dialog.Content>
@@ -637,40 +748,14 @@ export function AddServerDialog(props: AddServerDialogProps) {
 }
 
 /** The ways to add a server without a plan, in the corner across from the close button. */
-function AddServerOtherOptions(props: {
-  disabled: boolean;
-  onCreateLocal: (() => void) | undefined;
-  onJoinWithInvite: (() => void) | undefined;
-}) {
+function AddServerOtherOptions(props: { disabled: boolean; onJoin: () => void }) {
   const { t } = useText();
   return (
     <div class="add-server-other">
-      <DropdownMenu.Root placement="bottom-start">
-        <DropdownMenu.Trigger class={buttonVariants({ variant: "ghost", size: "sm" })} disabled={props.disabled}>
-          {t("server.add.otherOptions")}
-          <ChevronDown aria-hidden="true" />
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Portal>
-          <DropdownMenu.Content class="add-server-other-menu" aria-label={t("server.add.otherOptions")}>
-            <Show when={props.onCreateLocal}>
-              {(onCreateLocal) => (
-                <DropdownMenu.Item onSelectAfterClose={() => onCreateLocal()()}>
-                  <Monitor aria-hidden="true" />
-                  {t("server.local.createTitle")}
-                </DropdownMenu.Item>
-              )}
-            </Show>
-            <Show when={props.onJoinWithInvite}>
-              {(onJoinWithInvite) => (
-                <DropdownMenu.Item onSelectAfterClose={() => onJoinWithInvite()()}>
-                  <Link2 aria-hidden="true" />
-                  {t("server.add.join.action")}
-                </DropdownMenu.Item>
-              )}
-            </Show>
-          </DropdownMenu.Content>
-        </DropdownMenu.Portal>
-      </DropdownMenu.Root>
+      <Button variant="ghost" size="sm" disabled={props.disabled} onClick={props.onJoin}>
+        <Link2 aria-hidden="true" />
+        {t("server.add.join.action")}
+      </Button>
     </div>
   );
 }

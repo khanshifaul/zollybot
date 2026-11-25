@@ -5,7 +5,12 @@ import {
   isOpenBillingStatus,
 } from "@zollybot/contracts/billing";
 import type { HostedServerEntryPoint, HostedServerList, HostedServerSummary } from "@zollybot/contracts/hosted-servers";
-import type { HostedServersDesktopApi, LicenseDesktopApi, ServerSummary } from "@zollybot/contracts/ipc";
+import type {
+  HostedServersDesktopApi,
+  JoinServerInput,
+  LicenseDesktopApi,
+  ServerSummary,
+} from "@zollybot/contracts/ipc";
 import type { LicenseOrder, LicenseState, PricingOrder } from "@zollybot/contracts/license";
 import { classifyFailure } from "@zollybot/telemetry";
 import type {
@@ -60,9 +65,8 @@ interface AddServerOverlayProps {
   onClose: () => void;
   onOpenServer: (serverId: string) => void;
   onContactUs?: (() => void) | undefined;
-  onJoinWithInvite?: (() => void) | undefined;
+  onJoin?: (input: JoinServerInput) => Promise<void>;
   /** Opens the dialog that creates a server on this computer. The web client has no such server. */
-  onCreateLocal?: (() => void) | undefined;
   /** Opens the list of the account's hosted servers, so that the user can delete one at the limit. */
   onManageServers?: (() => void) | undefined;
 }
@@ -402,14 +406,7 @@ function AddServerSession(
                 props.onContactUs?.();
               })
             }
-            onJoinWithInvite={
-              props.onJoinWithInvite &&
-              (() => {
-                trackPlans("join_opened");
-                props.onJoinWithInvite?.();
-              })
-            }
-            onCreateLocal={props.onCreateLocal}
+            onJoin={props.onJoin}
             onCurrencyChange={(next) => trackPlans("currency_changed", { currency: HOSTED_BILLING_CURRENCY[next] })}
             onBillingChange={(next) =>
               trackPlans("interval_changed", { interval: next === "yearly" ? "year" : "month" })

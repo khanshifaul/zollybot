@@ -116,7 +116,7 @@ export function WorkspaceOverlays(props: AccountProps) {
       <MobileConnectApprovalPrompt />
       <SharedAgentInstall />
       <AddServer />
-      <JoinServer account={props.account} />
+      <JoinServer />
       <CreateLocalServer />
       <HostedUpsell account={props.account} />
       <LeaveServer />
@@ -221,15 +221,13 @@ function SharedAgentInstall() {
 }
 
 /** A server on another computer, joined from its invitation or Mobile Connect link. */
-function JoinServer(props: AccountProps) {
+function JoinServer() {
   const { joinServerOpen, setJoinServerOpen } = useServers();
   return (
     <JoinServerOverlay
       open={joinServerOpen()}
       inviteUrl=""
-      accountEmail={props.account().email}
       onClose={() => setJoinServerOpen(false)}
-      onPreview={(input) => appPort().servers.previewInvite(input)}
       onJoin={async (input) => {
         await appPort().servers.join(input);
         setJoinServerOpen(false);
@@ -260,13 +258,7 @@ function CreateLocalServer() {
 /** A hosted server: the plans, the payment, then the setup. */
 function AddServer() {
   const { servers, addServerOpen, addServerEntryPoint, setAddServerOpen, setJoinServerOpen } = useServers();
-  const { select, createLocal } = useServerActions();
-  const onCreateLocal =
-    createLocal &&
-    (() => {
-      setAddServerOpen(false);
-      createLocal();
-    });
+  const { select } = useServerActions();
 
   return (
     <AddServerOverlay
@@ -280,11 +272,10 @@ function AddServer() {
         void select(serverId);
       }}
       onContactUs={() => void appPort().openExternal("hosted-server-contact")}
-      onJoinWithInvite={() => {
-        setAddServerOpen(false);
-        setJoinServerOpen(true);
+      onJoin={async (input) => {
+        await appPort().servers.join(input);
+        setJoinServerOpen(false);
       }}
-      onCreateLocal={onCreateLocal}
     />
   );
 }

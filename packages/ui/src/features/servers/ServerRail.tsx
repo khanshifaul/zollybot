@@ -53,11 +53,8 @@ export function serverStatusLabels(
  * The add item. It names the hosted server plans only when it is the one way to add a server: beside
  * a server on this computer, both the plans and an invite give a remote server.
  */
-export function addServerLabel(props: {
-  addCreatesServer?: boolean | undefined;
-  onCreateLocal?: (() => void) | undefined;
-}): AppTextKey {
-  return props.addCreatesServer && !props.onCreateLocal ? "server.rail.add" : "server.rail.addRemote";
+export function addServerLabel(props: { addCreatesServer?: boolean | undefined }): AppTextKey {
+  return props.addCreatesServer ? "server.rail.add" : "server.rail.addRemote";
 }
 
 /** A small dot on a server's logo while its hosted server sleeps or wakes. */
@@ -83,8 +80,6 @@ interface ServerRailProps extends ServerActionCallbacks {
   onAdd?: (() => void) | undefined;
   /** True when the plus button opens the hosted server plans, where the user can also join with an invite. */
   addCreatesServer?: boolean | undefined;
-  /** Opens the dialog that creates a server on this computer. With it, the plus button opens a menu. */
-  onCreateLocal?: (() => void) | undefined;
   /** The server on this computer while the user hides it. With it, the plus button opens a menu. */
   hiddenLocal?: HiddenLocalServer | undefined;
 }
@@ -365,7 +360,7 @@ export function ServerRail(props: ServerRailProps) {
         </Show>
         <Show when={props.onAdd}>
           <Show
-            when={props.onCreateLocal || props.hiddenLocal}
+            when={props.hiddenLocal}
             fallback={
               <Tooltip.Root
                 placement="right"
@@ -393,7 +388,6 @@ export function ServerRail(props: ServerRailProps) {
             <ServerRailAddMenu
               addLabel={addServerLabel(props)}
               onAdd={() => props.onAdd?.()}
-              onCreateLocal={props.onCreateLocal}
               hiddenLocal={props.hiddenLocal}
             />
           </Show>
@@ -413,7 +407,6 @@ export function ServerRail(props: ServerRailProps) {
 function ServerRailAddMenu(props: {
   addLabel: AppTextKey;
   onAdd: () => void;
-  onCreateLocal?: (() => void) | undefined;
   hiddenLocal?: HiddenLocalServer | undefined;
 }) {
   const { t } = useText();
@@ -447,16 +440,6 @@ function ServerRailAddMenu(props: {
                 </span>
                 <span>{t(props.addLabel)}</span>
               </DropdownMenu.Item>
-              <Show when={props.onCreateLocal}>
-                {(onCreateLocal) => (
-                  <DropdownMenu.Item class="server-menu-add" onSelectAfterClose={onCreateLocal()}>
-                    <span class="server-menu-add-circle" aria-hidden="true">
-                      <Plus />
-                    </span>
-                    <span>{t("server.local.createTitle")}</span>
-                  </DropdownMenu.Item>
-                )}
-              </Show>
               <Show when={props.hiddenLocal}>
                 {(hiddenLocal) => (
                   <DropdownMenu.Item class="server-menu-add" onSelectAfterClose={hiddenLocal().show}>
