@@ -3,7 +3,7 @@
     "name": "ZollyBot",
     "slug": "zollybot",
     "platforms": ["ios", "android"],
-    "version": "0.66.4",
+    "version": "0.66.5",
     "orientation": "portrait",
     "icon": "./assets/icons/app-icon.png",
     "scheme": "zollybot",
@@ -50,7 +50,7 @@
         "android.permission.READ_MEDIA_AUDIO",
         "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
       ],
-      "versionCode": 5
+      "versionCode": 6
     },
     "plugins": [
       "./plugins/with-background-actions",

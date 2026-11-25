@@ -7,6 +7,12 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.66.5] - 2026-11-25
+
+### Changed
+
+- Voice match shows live input levels and ends after the spoken line instead of a fixed three seconds.
+
 ## [0.66.4] - 2026-11-25
 
 ### Fixed

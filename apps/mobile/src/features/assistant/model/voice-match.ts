@@ -8,7 +8,7 @@ const TEMPLATE_KEY = "zollybot.mobile.jarvis-voice-template.v1";
 /** Cosine similarity below this rejects the speaker. */
 export const VOICE_MATCH_THRESHOLD = 0.55;
 /** Titanet performs well with a short, clean sample around three seconds. */
-export const VOICE_SAMPLE_MS = 3_000;
+export const VOICE_SAMPLE_MS = 8_000;
 
 export const voiceMatchSupported = (): boolean =>
   Platform.OS === "android" &&

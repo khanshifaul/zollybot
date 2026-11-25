@@ -6,6 +6,12 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.5] - 2026-11-25
+
+### Changed
+
+- Voice match now records with a live level animation and stops after a short silence instead of cutting the line at a fixed time.
+
 ## [0.66.4] - 2026-11-25
 
 ### Fixed

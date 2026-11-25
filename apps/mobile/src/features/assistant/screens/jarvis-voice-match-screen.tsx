@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import ChevronLeft from "lucide-react-native/icons/chevron-left";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
@@ -35,6 +35,7 @@ export default function JarvisVoiceMatchScreen() {
   const [recorded, setRecorded] = useState<number[][]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [level, setLevel] = useState(0);
   const [enrolled, setEnrolled] = useState(false);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function JarvisVoiceMatchScreen() {
     setBusy(true);
     setError(null);
     try {
-      const samples = await recordVoiceSample();
+      const samples = await recordVoiceSample(undefined, setLevel);
       const embedding = await speakerEmbedding(samples);
       const next = [...recorded, embedding];
       setRecorded(next);
@@ -63,6 +64,7 @@ export default function JarvisVoiceMatchScreen() {
       setError(cause instanceof Error ? cause.message : t("mobile.app.jarvis.voiceMatch.failed"));
     } finally {
       setBusy(false);
+      setLevel(0);
     }
   };
 
@@ -157,7 +159,25 @@ export default function JarvisVoiceMatchScreen() {
                 }}
               >
                 {busy ? (
-                  <ActivityIndicator color="#fff" />
+                  <View style={{ alignItems: "center", gap: 8 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 4, height: 34 }}>
+                      {[0.5, 0.8, 1, 0.75, 0.55].map((weight) => (
+                        <View
+                          key={weight}
+                          style={{
+                            width: 5,
+                            borderRadius: 3,
+                            height: 8 + level * 26 * weight,
+                            backgroundColor: "#fff",
+                            opacity: 0.75 + weight * 0.25,
+                          }}
+                        />
+                      ))}
+                    </View>
+                    <Text style={{ color: "#fff", fontWeight: "700", fontSize: 13 }}>
+                      {t("mobile.app.jarvis.voiceMatch.listening")}
+                    </Text>
+                  </View>
                 ) : (
                   <Text style={{ color: "#fff", fontWeight: "700", fontSize: 13 }}>
                     {t("mobile.app.jarvis.voiceMatch.record")}

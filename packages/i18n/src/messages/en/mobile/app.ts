@@ -141,7 +141,7 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.voiceMatch.enrolled": "Voice match is set up",
   "mobile.app.jarvis.voiceMatch.enroll": "Record sample {count} of {total}",
   "mobile.app.jarvis.voiceMatch.enrollHint":
-    "Speak normally for three seconds. Three samples are averaged into one embedding; no audio is kept.",
+    "Speak the line and pause when done. Three samples are averaged into one embedding; no audio is kept.",
   "mobile.app.jarvis.voiceMatch.progress": "{count} of {total} samples recorded",
   "mobile.app.jarvis.voiceMatch.downloadModel": "Download speaker model · 40 MB",
   "mobile.app.jarvis.voiceMatch.downloading": "Downloading",
@@ -150,6 +150,7 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.voiceMatch.sample2": "“Please remember how I sound when I talk to you at home and at work.”",
   "mobile.app.jarvis.voiceMatch.sample3": "“Only open for me when you hear my voice say Hey Jarvis.”",
   "mobile.app.jarvis.voiceMatch.record": "Record a sample",
+  "mobile.app.jarvis.voiceMatch.listening": "Listening… speak the line",
   "mobile.app.jarvis.voiceMatch.done": "Done",
   "mobile.app.jarvis.voiceMatch.failed": "Could not record the voice sample.",
   "mobile.app.jarvis.voiceMatch.enrollAction": "Tap to enroll",

@@ -16,7 +16,10 @@ function pcm16ToFloat32(base64: string): Float32Array {
 }
 
 /** Records one 16 kHz mono voice sample from the mic for the enrollment flow. */
-export async function recordVoiceSample(durationMs = VOICE_SAMPLE_MS): Promise<Float32Array> {
+export async function recordVoiceSample(
+  durationMs = VOICE_SAMPLE_MS,
+  onLevel?: (level: number) => void,
+): Promise<Float32Array> {
   if (!voiceMatchSupported() || typeof speechNative?.startCapture !== "function") {
     throw new Error("Voice match is not available on this build.");
   }
@@ -31,6 +34,8 @@ export async function recordVoiceSample(durationMs = VOICE_SAMPLE_MS): Promise<F
   let audioSubscription: { remove: () => void } | null = null;
   let endSubscription: { remove: () => void } | null = null;
   let total = 0;
+  let heardSpeech = false;
+  let quietSince: number | null = null;
 
   const cleanup = () => {
     if (finishTimer) clearTimeout(finishTimer);
@@ -50,6 +55,21 @@ export async function recordVoiceSample(durationMs = VOICE_SAMPLE_MS): Promise<F
     const samples = pcm16ToFloat32(pcm);
     chunks.push(samples);
     total += samples.length;
+    let sum = 0;
+    for (const sample of samples) sum += sample * sample;
+    const rms = Math.sqrt(sum / Math.max(1, samples.length));
+    const level = Math.min(1, Math.max(0, (rms - 0.008) * 18));
+    onLevel?.(level);
+    // Stop shortly after the speaker finishes the line instead of cutting a fixed-length clip.
+    if (rms > 0.018) {
+      heardSpeech = true;
+      quietSince = null;
+    } else if (heardSpeech && quietSince === null) {
+      quietSince = Date.now();
+    } else if (quietSince !== null && Date.now() - quietSince > 900) {
+      native.finishCapture?.();
+      quietSince = null;
+    }
   });
   endSubscription = native.addListener("onCaptureEnd", ({ error }) => {
     if (done) return;
