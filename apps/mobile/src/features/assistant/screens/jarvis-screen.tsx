@@ -374,7 +374,8 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
     const text = [screen, typed].filter(Boolean).join("\n\n");
     const imageAttachments = attachments.items.filter((item) => item.mimeType.startsWith("image/") && item.uri);
     if ((!text && attachments.items.length === 0) || sending) return;
-    if (!localModel && !(imageAttachments.length > 0 && visionModel) && !wantsButler) {
+    const plannedAction = planLocalDeviceAction(typed);
+    if (!localModel && !(imageAttachments.length > 0 && visionModel) && !wantsButler && !plannedAction) {
       setError(t("mobile.app.jarvis.noLocalModelError"));
       return;
     }
@@ -907,6 +908,17 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                 value={draft}
                 onChangeText={setDraft}
                 onSubmitEditing={() => void send()}
+                onKeyDown={(event) => {
+                  if (event.nativeEvent.key !== "Enter") return;
+                  if (event.nativeEvent.shiftKey) {
+                    event.preventDefault();
+                    setDraft((current) => `${current}\n`);
+                    return;
+                  }
+                  event.preventDefault();
+                  void send();
+                }}
+                submitBehavior="submit"
                 onFocus={() => setComposerFocused(true)}
                 onBlur={() => setComposerFocused(false)}
                 placeholder={t("mobile.app.jarvis.askPlaceholder")}
@@ -1079,7 +1091,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
       {!historyOpen ? (
         <View
           {...rightEdgePan.panHandlers}
-          style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 64, zIndex: 2 }}
+          style={{ position: "absolute", top: 80, bottom: 120, right: 0, width: 64, zIndex: 2 }}
         ></View>
       ) : null}
 

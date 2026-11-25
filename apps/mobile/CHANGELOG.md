@@ -7,6 +7,12 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.66.4] - 2026-11-25
+
+### Fixed
+
+- Composer send button, Return/Shift+Return behavior, right drawer button, and device actions without a local model.
+
 ## [0.66.3] - 2026-11-25
 
 ### Changed

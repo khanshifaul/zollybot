@@ -98,7 +98,7 @@
     },
     "apps/mobile": {
       "name": "@zollybot/mobile",
-      "version": "0.66.3",
+      "version": "0.66.4",
       "dependencies": {
         "@expo/metro-runtime": "~58.0.17",
         "@expo/ui": "~58.0.29",

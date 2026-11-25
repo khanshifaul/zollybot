@@ -6,6 +6,15 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.4] - 2026-11-25
+
+### Fixed
+
+- The composer send button is no longer covered by the right-edge drawer gesture.
+- Return sends a message and Shift+Return inserts a new line.
+- The right-side drawer button in the topbar opens reliably.
+- Device actions run without requiring a downloaded local model.
+
 ## [0.66.3] - 2026-11-25
 
 ### Changed
