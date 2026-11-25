@@ -61,7 +61,7 @@ import {
   useAppUpdateHeader,
 } from "@/features/app-update/components/app-update-header";
 import { useAppUpdate } from "@/features/app-update/model/app-update";
-import { JarvisAgentsHeader, JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
+import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
 import { ChannelListRow } from "@/features/channels/components/channel-list";
 import { useChannels } from "@/features/channels/components/use-channels";
 import { OnboardingFlow } from "@/features/onboarding/components/onboarding-flow";
@@ -75,7 +75,7 @@ import {
 } from "@/features/search/components/home-search";
 import { setHomeSearchUnavailable } from "@/features/search/model/home-search-request";
 import { useAppDrawer } from "@/features/servers/components/app-drawer-shell";
-import { ConnectionHeaderStatus } from "@/features/workspace/components/connection-header-status";
+import { ConnectionStatus } from "@/features/workspace/components/connection-status";
 import { useWaitingAgentIds } from "@/features/workspace/components/use-agent-activity";
 import { useHomeThreadState } from "@/features/workspace/components/use-home-thread-state";
 import { useUnreadAgentIds, useUnreadCounts } from "@/features/workspace/components/use-live-workspace";
@@ -784,7 +784,6 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
       >
         <PanelLeft color={iconColor} size={22} strokeWidth={2} style={MIRROR_IN_RTL} />
       </HeaderIconButton>
-      <ConnectionHeaderStatus server={hasSelectedServer ? activeServer : undefined} fill={pane} />
     </View>
   );
   const headerTrailing = (
@@ -872,7 +871,7 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
                 // Without a content inset from iOS (Android, the pane, the vertical bar of iPhone Duo), the
                 // list starts below the bar. The end of the list scrolls clear of the search field.
                 contentContainerStyle={{
-                  paddingTop: scroll.ownsInset ? headerHeight : 0,
+                  paddingTop: (scroll.ownsInset ? headerHeight : 0) + (statusShows ? 34 : 0),
                   paddingBottom: insets.bottom + HOME_SEARCH_HEIGHT + 24,
                 }}
                 scrollEventThrottle={16}
@@ -1001,11 +1000,21 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
           scroll={scroll}
           title=""
           // The connection state takes the place of the title in the bar.
-          hidden={!searchShows || statusShows || search.open}
+          hidden={!searchShows || search.open}
         >
           <AppUpdateBlock header={updateHeader} scroll={scroll} hidden={search.open} />
         </LargeTitleBar>
       )}
+
+      {statusShows ? (
+        <View
+          pointerEvents="none"
+          className="absolute inset-x-0 items-center bg-background py-1"
+          style={{ top: headerHeight }}
+        >
+          <ConnectionStatus server={activeServer} />
+        </View>
+      ) : null}
 
       {/* The results lie over the bar's edge, so its blur cannot soften them; they have their own. */}
       {searchShows ? <HomeSearchResults search={search} barHeight={searchBarOffset} /> : null}
@@ -1055,8 +1064,7 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
             headerTintColor: foreground,
             headerTransparent: true,
             scrollEdgeEffects: { top: "hidden" },
-            headerTitle: "",
-            headerBackground: JARVIS_ENABLED ? () => <JarvisAgentsHeader /> : undefined,
+            headerTitle: isAndroid && JARVIS_ENABLED ? () => <JarvisAgentsSwitch active="agents" /> : "",
             title: "",
           }}
         />
@@ -1067,9 +1075,6 @@ export function ConnectedScreen({ variant = "screen" }: { variant?: "screen" | "
           <Stack.Toolbar placement="left">
             {/* The search takes the screen, so the bar buttons go while it is open. */}
             <Stack.Toolbar.Button icon="sidebar.leading" hidden={search.open} onPress={openDrawer} />
-            <Stack.Toolbar.View hidesSharedBackground hidden={search.open}>
-              <ConnectionHeaderStatus server={hasSelectedServer ? activeServer : undefined} />
-            </Stack.Toolbar.View>
           </Stack.Toolbar>
           <Stack.Toolbar placement="right">
             <Stack.Toolbar.Menu

@@ -74,12 +74,12 @@
   --zollybot-text-dim-on-light: rgba(255, 255, 255, 0.4);
   --zollybot-border-on-light: rgba(255, 255, 255, 0.16);
 
-  /* The same hue 210 as the dark accent. The fill keeps its value, so a button looks the same
-     in both themes; text and hover go darker for contrast (accent-text 5.3:1 on the canvas). */
-  --zollybot-accent-hover: #006ad4;
-  --zollybot-accent-text: #0064c8;
-  --zollybot-accent-soft: rgba(0, 124, 247, 0.12);
-  --zollybot-accent-strong: rgba(0, 124, 247, 0.26);
+  /* The logo teal. The fill keeps its value, so a button looks the same in both themes; text and
+     hover go darker for contrast (accent-text 5.7:1 on the light canvas). */
+  --zollybot-accent-hover: #0f766e;
+  --zollybot-accent-text: #0f766e;
+  --zollybot-accent-soft: rgba(13, 148, 136, 0.12);
+  --zollybot-accent-strong: rgba(13, 148, 136, 0.26);
 
   /* Chart series: darker steps of the dark-palette hues, so each series reads on white.
      Not yet checked with the dataviz palette validator in light mode. */
@@ -134,8 +134,8 @@
   --zollybot-file-red-soft: rgba(232, 34, 45, 0.12);
   --zollybot-file-pink: #a3478f;
   --zollybot-file-pink-soft: rgba(163, 71, 143, 0.12);
-  --zollybot-file-default: #0064c8;
-  --zollybot-file-default-soft: rgba(0, 124, 247, 0.12);
+  --zollybot-file-default: #0f766e;
+  --zollybot-file-default-soft: rgba(13, 148, 136, 0.12);
 
   --zollybot-data-table-border: #e3e3e6;
   --zollybot-data-table-header-text: #6b6b70;

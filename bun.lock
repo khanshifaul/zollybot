@@ -98,7 +98,7 @@
     },
     "apps/mobile": {
       "name": "@zollybot/mobile",
-      "version": "0.66.1",
+      "version": "0.66.2",
       "dependencies": {
         "@expo/metro-runtime": "~58.0.17",
         "@expo/ui": "~58.0.29",
@@ -152,6 +152,7 @@
         "expo-linking": "~58.0.17",
         "expo-local-authentication": "~58.0.3",
         "expo-localization": "~58.0.5",
+        "expo-location": "~58.0.22",
         "expo-media-library": "~58.0.14",
         "expo-notifications": "~58.1.9",
         "expo-router": "~58.0.32",
@@ -2580,6 +2581,8 @@
     "expo-local-authentication": ["expo-local-authentication@58.0.3", "", { "dependencies": { "invariant": "^2.2.4" }, "peerDependencies": { "expo": "*" } }, "sha512-noeEnLGIjzawKsNF1mdzx6hUTihaD89AsiWdZGhZFfktwFU9P0dCEn9ed3D3E8WmEGNoejWnNUfImEB3HwIznQ=="],
 
     "expo-localization": ["expo-localization@58.0.5", "", { "dependencies": { "rtl-detect": "^1.0.2" }, "peerDependencies": { "expo": "*", "react": "*" } }, "sha512-2wyZl/5wn95l38AAtdaUAq2VMJWbGbgQQDEuIEkkemmsA/BZ8gS21Nq+7I2X9hDfL5Z+4hlyLVdPtDIH0vvt1A=="],
+
+    "expo-location": ["expo-location@58.0.22", "", { "dependencies": { "@expo/image-utils": "^0.12.7" }, "peerDependencies": { "expo": "*", "expo-task-manager": "*", "react": "*", "react-native": "*" }, "optionalPeers": ["expo-task-manager"] }, "sha512-riZCEjY9//enExdweKSMNvjGS2AGCNG7Z8NJa+3GP5In+ZtrPdkbnhPo3JHwhWZE0NE72yv2t+AKPWauen3fkA=="],
 
     "expo-manifests": ["expo-manifests@58.0.1", "", { "dependencies": { "expo-json-utils": "~58.0.1" }, "peerDependencies": { "expo": "*" } }, "sha512-fVeJJ71Fj8FJgcAUggn6QIsm7CTxsXFgekLl4pEPHgON6fmcxog63FGO0sisQ3F6yUWFR4nn8iJmgBp1Exs7ew=="],
 

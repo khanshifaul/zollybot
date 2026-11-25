@@ -62,6 +62,8 @@ interface HuggingFaceStore {
   downloads: Record<string, DownloadState>;
   /** The installed model that Jarvis should answer with, when one is chosen. */
   selectedKey: string | null;
+  /** The installed vision model that Jarvis uses when a photo is attached. */
+  visionSelectedKey: string | null;
   searching: boolean;
   error: string | null;
   search: (query: string) => Promise<void>;
@@ -72,12 +74,14 @@ interface HuggingFaceStore {
   cancelDownload: (key: string) => Promise<void>;
   remove: (model: InstalledModel) => Promise<void>;
   select: (key: string | null) => Promise<void>;
+  selectVision: (key: string | null) => Promise<void>;
   refresh: () => Promise<void>;
 }
 
 const ROOT = new Directory(Paths.document, "zollybot", "models");
 const INDEX = new File(ROOT, "index.json");
 const SELECTED = new File(ROOT, "selected.json");
+const SELECTED_VISION = new File(ROOT, "vision-selected.json");
 const DOWNLOADS = new File(ROOT, "downloads.json");
 const HF = "https://huggingface.co";
 const FREE_SPACE_MARGIN = 64 * 1024 * 1024;
@@ -392,12 +396,14 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
     results: [],
     installed: [],
     selectedKey: null,
+    visionSelectedKey: null,
     downloads: {},
     searching: false,
     error: null,
     async refresh() {
       const installed = await readIndex();
       let selectedKey: string | null = null;
+      let visionSelectedKey: string | null = null;
       try {
         if (SELECTED.exists) {
           const value = JSON.parse(SELECTED.textSync());
@@ -405,6 +411,14 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
         }
       } catch {
         selectedKey = null;
+      }
+      try {
+        if (SELECTED_VISION.exists) {
+          const value = JSON.parse(SELECTED_VISION.textSync());
+          if (typeof value === "string" && installed.some((model) => model.key === value)) visionSelectedKey = value;
+        }
+      } catch {
+        visionSelectedKey = null;
       }
       const saved = await readSavedDownloads();
       const downloads: Record<string, DownloadState> = {};
@@ -431,6 +445,7 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
       set((state) => ({
         installed,
         selectedKey,
+        visionSelectedKey,
         downloads: { ...downloads, ...state.downloads },
       }));
     },
@@ -440,6 +455,13 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
       ROOT.create({ intermediates: true, idempotent: true });
       await SELECTED.write(JSON.stringify(selectedKey));
       set({ selectedKey });
+    },
+    async selectVision(key) {
+      const installed = get().installed;
+      const visionSelectedKey = key && installed.some((model) => model.key === key) ? key : null;
+      ROOT.create({ intermediates: true, idempotent: true });
+      await SELECTED_VISION.write(JSON.stringify(visionSelectedKey));
+      set({ visionSelectedKey });
     },
     async search(query) {
       const text = query.trim();
@@ -566,10 +588,13 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
       const installed = get().installed.filter((item) => item.key !== model.key);
       await writeIndex(installed);
       const selectedKey = get().selectedKey === model.key ? null : get().selectedKey;
+      const visionSelectedKey = get().visionSelectedKey === model.key ? null : get().visionSelectedKey;
       await SELECTED.write(JSON.stringify(selectedKey)).catch(() => undefined);
+      await SELECTED_VISION.write(JSON.stringify(visionSelectedKey)).catch(() => undefined);
       set((state) => ({
         installed,
         selectedKey,
+        visionSelectedKey,
         downloads: Object.fromEntries(Object.entries(state.downloads).filter(([key]) => key !== model.key)),
       }));
     },

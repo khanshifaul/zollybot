@@ -140,16 +140,14 @@
   --zollybot-download-card-border: rgba(20, 20, 20, 0.16);
   --zollybot-download-card-focus: rgba(242, 242, 242, 0.86);
   --zollybot-text-placeholder: #bfbfbf;
-  --zollybot-text-on-accent: #ffffff;
+  --zollybot-text-on-accent: #042f2e;
   --zollybot-text-on-status: #07130c;
-  /* Hue 210, sampled from the reference UIs rather than picked: their status dot is
-     #007cf7 and their link and section headings are #42a0ff, both hue 210. The palette
-     sat at hue 206, which reads cyan next to them, and accent-text was 71% light,
-     which reads washed out. */
-  --zollybot-accent: #007cf7;
-  --zollybot-accent-hover: #1f8fff;
-  --zollybot-accent-text: #42a0ff;
-  --zollybot-accent-soft: rgba(0, 124, 247, 0.16);
+  /* The logo teal. The fill is the logo's own #2dd4bf in both themes, with the dark
+     logo eye as the foreground, so buttons and marks share one brand colour. */
+  --zollybot-accent: #2dd4bf;
+  --zollybot-accent-hover: #5eead4;
+  --zollybot-accent-text: #5eead4;
+  --zollybot-accent-soft: rgba(45, 212, 191, 0.16);
   --zollybot-accent-strong: rgba(0, 124, 247, 0.34);
   --zollybot-settings-text-muted: rgba(255, 255, 255, 0.59);
   --zollybot-provider-codex: var(--zollybot-text-primary);
@@ -265,8 +263,8 @@
   --zollybot-file-red-soft: rgba(253, 47, 59, 0.16);
   --zollybot-file-pink: #d98ac9;
   --zollybot-file-pink-soft: rgba(217, 138, 201, 0.14);
-  --zollybot-file-default: #42a0ff;
-  --zollybot-file-default-soft: rgba(0, 124, 247, 0.14);
+  --zollybot-file-default: #5eead4;
+  --zollybot-file-default-soft: rgba(45, 212, 191, 0.16);
   --zollybot-data-table-border: #303030;
   --zollybot-data-table-header-text: #a1a1a1;
   --zollybot-data-table-text: #f5f5f5;

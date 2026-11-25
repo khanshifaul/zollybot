@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCSSVariable } from "uniwind";
 
 import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
@@ -9,12 +10,14 @@ import { useText } from "@/shared/lib/text";
 /** Swaps the two main pages: Jarvis and the office-wise Agents list. */
 export function JarvisAgentsSwitch({ active }: { active: "jarvis" | "agents" }) {
   const { t } = useText();
-  const [muted, border, accent, accentForeground] = useThemeColor([
+  const [muted, border, themeAccent, themeAccentForeground] = useThemeColor([
     "muted",
     "border",
     "accent",
     "accent-foreground",
   ]).map(String);
+  const accent = String(useCSSVariable("--zollybot-logo-production") ?? themeAccent);
+  const accentForeground = String(useCSSVariable("--zollybot-logo-eye") ?? themeAccentForeground);
   const change = (next: "jarvis" | "agents") => {
     if (next === active) return;
     void haptics.selection();

@@ -7,6 +7,18 @@ the [root changelog](../../CHANGELOG.md).
 
 ## [Unreleased]
 
+## [0.66.2] - 2026-11-25
+
+### Added
+
+- Local Jarvis memory, device time and location, vision-model switching, and attachment bubbles.
+- Android default-assistant support.
+- Contacts, direct calls, and SMS after a one-time permission grant.
+
+### Fixed
+
+- Draggable left and right sidebars, interactive Jarvis/Agents switch, and reconnect status below the topbar.
+
 ## [0.66.1] - 2026-11-25
 
 ### Changed

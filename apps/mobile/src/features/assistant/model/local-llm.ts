@@ -16,7 +16,7 @@ function sdk() {
 }
 
 /** QVAC resolves filesystem paths, not `file://` URLs. */
-function pathOf(uri: string): string {
+export function localModelPath(uri: string): string {
   return uri.startsWith("file://") ? decodeURIComponent(uri.slice("file://".length)) : uri;
 }
 
@@ -30,7 +30,7 @@ export async function loadLocalModelFile(uri: string, onProgress: (progress: Loc
   if (loaded) await unloadLocalModel();
   const qvac = await sdk();
   loaded = await qvac.loadModel({
-    modelSrc: pathOf(uri),
+    modelSrc: localModelPath(uri),
     modelType: "llm",
     onProgress: (progress) => {
       onProgress({
@@ -45,14 +45,21 @@ export async function loadLocalModelFile(uri: string, onProgress: (progress: Loc
   void import("../native/local-screen-context").then((module) => module.prepareLocalOcrModel()).catch(() => undefined);
 }
 
+export interface LocalHistoryMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+  /** Image paths QVAC sends to a multimodal model before the text. */
+  attachments?: { path: string }[];
+}
+
 /** Streams a local reply. The model stays loaded until `unloadLocalModel`. */
 export async function localReply(
-  history: { role: "system" | "user" | "assistant"; content: string }[],
+  history: readonly LocalHistoryMessage[],
   onToken: (token: string) => void,
 ): Promise<string> {
   if (!loaded) throw new Error("Load the local model first.");
   const qvac = await sdk();
-  const result = qvac.completion({ modelId: loaded, history, stream: true });
+  const result = qvac.completion({ modelId: loaded, history: [...history], stream: true });
   let text = "";
   for await (const token of result.tokenStream) {
     text += token;

@@ -3,7 +3,7 @@
     "name": "ZollyBot",
     "slug": "zollybot",
     "platforms": ["ios", "android"],
-    "version": "0.66.1",
+    "version": "0.66.2",
     "orientation": "portrait",
     "icon": "./assets/icons/app-icon.png",
     "scheme": "zollybot",
@@ -39,7 +39,10 @@
         "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.VIBRATE",
-        "android.permission.WAKE_LOCK"
+        "android.permission.WAKE_LOCK",
+        "android.permission.READ_CONTACTS",
+        "android.permission.CALL_PHONE",
+        "android.permission.SEND_SMS"
       ],
       "blockedPermissions": [
         "android.permission.READ_MEDIA_IMAGES",
@@ -47,7 +50,7 @@
         "android.permission.READ_MEDIA_AUDIO",
         "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
       ],
-      "versionCode": 2
+      "versionCode": 3
     },
     "plugins": [
       "./plugins/with-background-actions",
@@ -55,6 +58,12 @@
       "./plugins/with-rocketsim",
       "./plugins/with-workspace-bundle-inputs",
       "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow ZollyBot to use your location for local time and place answers."
+        }
+      ],
       "expo-video",
       [
         "expo-splash-screen",
@@ -101,7 +110,7 @@
         "expo-notifications",
         {
           "icon": "./assets/icons/notification-icon.png",
-          "color": "#6960F1"
+          "color": "#2DD4BF"
         }
       ],
       [

@@ -95,6 +95,8 @@ export function pendingSignInLinkId(): string | undefined {
  */
 export function redirectIncomingLink(path: string, initial: boolean): string | null {
   if (path === "zollybot://" || path === "zollybot:///" || path === "zollybot:") return initial ? "/" : null;
+  // The assistant button and the Android assist gesture open Jarvis, not a share link.
+  if (path === "zollybot://connected") return "/connected";
   // Expo Go and ordinary internal routes retain Expo Router's normal behavior.
   if (/^exps?:\/\//u.test(path)) return path;
   if (path.startsWith("/") && !path.startsWith("//")) {

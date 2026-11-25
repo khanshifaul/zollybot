@@ -2,10 +2,32 @@ import { isDynamicRecord } from "@zollybot/contracts/runtime-values";
 import { Directory, File, Paths } from "expo-file-system";
 import { create } from "zustand";
 
+export interface JarvisAttachment {
+  name: string;
+  mimeType: string;
+  uri: string;
+  size: number;
+  width?: number;
+  height?: number;
+}
+
 export interface JarvisMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
+  /** What the model reads, such as OCR text from a photo. The bubble shows `content` instead. */
+  modelContent?: string;
+  attachments?: JarvisAttachment[];
+}
+
+/** An attachment the phone is about to send, kept in the conversation's own folder. */
+export interface LocalAttachmentInput {
+  name: string;
+  mimeType: string;
+  base64: string;
+  uri?: string;
+  size: number;
+  dimensions?: { width: number; height: number };
 }
 
 export interface JarvisConversation {
@@ -27,8 +49,58 @@ interface ConversationStore {
 }
 
 const ROOT = new Directory(Paths.document, "zollybot", "jarvis");
+const FILES = new Directory(ROOT, "attachments");
 const FILE = new File(ROOT, "conversations.json");
 const MAX_CONVERSATIONS = 60;
+let attachmentSequence = 0;
+
+function safeFileName(name: string): string {
+  const safe = name.replace(/[/\\\p{Cc}]/gu, "_").slice(-80);
+  return safe || "attachment";
+}
+
+/** Copies picked files out of the cache, so a conversation still opens its photos and files later. */
+export async function keepJarvisAttachments(items: readonly LocalAttachmentInput[]): Promise<JarvisAttachment[]> {
+  if (items.length === 0) return [];
+  const kept: JarvisAttachment[] = [];
+  try {
+    FILES.create({ intermediates: true, idempotent: true });
+  } catch {
+    return [];
+  }
+  for (const item of items) {
+    try {
+      const target = new File(FILES, `${Date.now()}-${++attachmentSequence}-${safeFileName(item.name)}`);
+      if (item.uri) {
+        await new File(item.uri).copy(target);
+      } else {
+        await target.write(item.base64, { encoding: "base64" });
+      }
+      kept.push({
+        name: item.name,
+        mimeType: item.mimeType,
+        uri: target.uri,
+        size: item.size,
+        ...(item.dimensions ? { width: item.dimensions.width, height: item.dimensions.height } : {}),
+      });
+    } catch {
+      // A file that cannot be kept still went to the model; only its bubble copy is missing.
+    }
+  }
+  return kept;
+}
+
+function isAttachment(value: unknown): value is JarvisAttachment {
+  return (
+    isDynamicRecord(value) &&
+    typeof value.name === "string" &&
+    typeof value.mimeType === "string" &&
+    typeof value.uri === "string" &&
+    typeof value.size === "number" &&
+    (value.width === undefined || typeof value.width === "number") &&
+    (value.height === undefined || typeof value.height === "number")
+  );
+}
 
 function titleOf(text: string): string {
   const title = text.replace(/\s+/gu, " ").trim();
@@ -40,7 +112,9 @@ function isMessage(value: unknown): value is JarvisMessage {
     isDynamicRecord(value) &&
     typeof value.id === "string" &&
     (value.role === "user" || value.role === "assistant") &&
-    typeof value.content === "string"
+    typeof value.content === "string" &&
+    (value.modelContent === undefined || typeof value.modelContent === "string") &&
+    (value.attachments === undefined || (Array.isArray(value.attachments) && value.attachments.every(isAttachment)))
   );
 }
 
@@ -94,6 +168,7 @@ export const useJarvisConversations = create<ConversationStore>((set, get) => ({
     if (messages.length === 0) return;
     const current = get();
     const existing = current.conversations.find((conversation) => conversation.id === current.activeId);
+    const firstUser = messages.find((message) => message.role === "user");
     const conversation: JarvisConversation = existing
       ? {
           ...existing,
@@ -102,7 +177,7 @@ export const useJarvisConversations = create<ConversationStore>((set, get) => ({
         }
       : {
           id: newId(),
-          title: titleOf(messages.find((message) => message.role === "user")?.content ?? "New conversation"),
+          title: titleOf(firstUser?.content || firstUser?.attachments?.[0]?.name || "New conversation"),
           messages,
           updatedAt: Date.now(),
         };

@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import ChevronLeft from "lucide-react-native/icons/chevron-left";
 import Search from "lucide-react-native/icons/search";
@@ -39,9 +39,13 @@ export default function JarvisHuggingFaceModelsScreen() {
     "accent",
     "accent-foreground",
   ]).map(String);
+  const { target } = useLocalSearchParams<{ target?: string }>();
+  const visionMode = target === "vision";
   const results = useHuggingFaceModels((state) => state.results);
   const installed = useHuggingFaceModels((state) => state.installed);
-  const selectedKey = useHuggingFaceModels((state) => state.selectedKey);
+  const textSelectedKey = useHuggingFaceModels((state) => state.selectedKey);
+  const visionSelectedKey = useHuggingFaceModels((state) => state.visionSelectedKey);
+  const selectedKey = visionMode ? visionSelectedKey : textSelectedKey;
   const downloads = useHuggingFaceModels((state) => state.downloads);
   const searching = useHuggingFaceModels((state) => state.searching);
   const error = useHuggingFaceModels((state) => state.error);
@@ -53,6 +57,7 @@ export default function JarvisHuggingFaceModelsScreen() {
   const cancelDownload = useHuggingFaceModels((state) => state.cancelDownload);
   const remove = useHuggingFaceModels((state) => state.remove);
   const select = useHuggingFaceModels((state) => state.select);
+  const selectVision = useHuggingFaceModels((state) => state.selectVision);
   const refresh = useHuggingFaceModels((state) => state.refresh);
   const [query, setQuery] = useState("LFM");
   const [filesFor, setFilesFor] = useState<string | null>(null);
@@ -105,6 +110,11 @@ export default function JarvisHuggingFaceModelsScreen() {
 
   const load = async (model: InstalledModel) => {
     setSelected(model);
+    if (visionMode) {
+      await selectVision(model.key);
+      void haptics.notification("success");
+      return;
+    }
     await select(model.key);
     setPhase("loading");
     setProgress(0);
@@ -173,9 +183,11 @@ export default function JarvisHuggingFaceModelsScreen() {
         </Pressable>
         <View style={{ flex: 1 }}>
           <Text style={{ color: foreground, fontSize: 18, fontWeight: "700" }}>
-            {t("mobile.app.jarvis.localModel")}
+            {visionMode ? t("mobile.app.jarvis.visionModel") : t("mobile.app.jarvis.localModel")}
           </Text>
-          <Text style={{ color: muted, fontSize: 11 }}>{t("mobile.app.jarvis.localModelSubtitle")}</Text>
+          <Text style={{ color: muted, fontSize: 11 }}>
+            {visionMode ? t("mobile.app.jarvis.visionModelSubtitle") : t("mobile.app.jarvis.localModelSubtitle")}
+          </Text>
         </View>
       </View>
 

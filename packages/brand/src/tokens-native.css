@@ -35,13 +35,13 @@
     --zollybot-text-secondary: rgba(20, 20, 20, 0.72);
     --zollybot-text-muted: rgba(20, 20, 20, 0.64);
     --zollybot-text-dim: rgba(20, 20, 20, 0.34);
-    --zollybot-text-on-accent: #ffffff;
+    --zollybot-text-on-accent: #042f2e;
     --zollybot-text-on-light: #141414;
     --zollybot-text-on-status: #07130c;
     --zollybot-action: #141414;
     --zollybot-action-foreground: #f2f2f2;
-    --zollybot-accent: #6960f1;
-    --zollybot-accent-text: #5b52df;
+    --zollybot-accent: #2dd4bf;
+    --zollybot-accent-text: #0f766e;
     --zollybot-logo-production: #2dd4bf;
     --zollybot-logo-eye: #042f2e;
     --zollybot-success: #32a85d;
@@ -84,8 +84,8 @@
     --zollybot-file-red-soft: rgba(216, 95, 88, 0.14);
     --zollybot-file-pink: #a3478f;
     --zollybot-file-pink-soft: rgba(163, 71, 143, 0.12);
-    --zollybot-file-default: #5b52df;
-    --zollybot-file-default-soft: rgba(91, 82, 223, 0.12);
+    --zollybot-file-default: #0f766e;
+    --zollybot-file-default-soft: rgba(13, 148, 136, 0.12);
   }
 
   @variant dark {
@@ -104,13 +104,13 @@
     --zollybot-text-secondary: #dcdcdc;
     --zollybot-text-muted: #979797;
     --zollybot-text-dim: #6a6a6a;
-    --zollybot-text-on-accent: #ffffff;
+    --zollybot-text-on-accent: #042f2e;
     --zollybot-text-on-light: #141414;
     --zollybot-text-on-status: #07130c;
     --zollybot-action: #f0f0f0;
     --zollybot-action-foreground: #141414;
-    --zollybot-accent: #007cf7;
-    --zollybot-accent-text: #42a0ff;
+    --zollybot-accent: #2dd4bf;
+    --zollybot-accent-text: #5eead4;
     --zollybot-logo-production: #2dd4bf;
     --zollybot-logo-eye: #042f2e;
     --zollybot-success: #31cf76;
@@ -147,7 +147,7 @@
     --zollybot-file-red-soft: rgba(253, 47, 59, 0.16);
     --zollybot-file-pink: #d98ac9;
     --zollybot-file-pink-soft: rgba(217, 138, 201, 0.14);
-    --zollybot-file-default: #42a0ff;
-    --zollybot-file-default-soft: rgba(0, 124, 247, 0.14);
+    --zollybot-file-default: #5eead4;
+    --zollybot-file-default-soft: rgba(45, 212, 191, 0.16);
   }
 }

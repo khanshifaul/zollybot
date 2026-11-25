@@ -3,7 +3,7 @@ import { useThemeColor } from "heroui-native/hooks";
 import ChevronLeft from "lucide-react-native/icons/chevron-left";
 import ChevronRight from "lucide-react-native/icons/chevron-right";
 import { useCallback, useEffect, useState } from "react";
-import { Platform, Pressable, ScrollView, Switch, Text, View } from "react-native";
+import { Alert, Platform, Pressable, ScrollView, Switch, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppLock } from "@/features/app-lock/model/app-lock";
 import {
@@ -17,6 +17,11 @@ import { appLockEnabled } from "@/features/app-lock/model/app-lock-storage";
 import { formatBytes, useHuggingFaceModels } from "@/features/assistant/model/huggingface-models";
 import { loadJarvisSettings, saveJarvisSettings, useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { loadVoiceTemplate, voiceMatchSupported } from "@/features/assistant/model/voice-match";
+import {
+  deviceActions,
+  deviceActionsAvailable,
+  ensureDevicePermissions,
+} from "@/features/assistant/native/device-actions";
 import { WAKE_WORD_AVAILABLE } from "@/features/assistant/native/wake-word";
 import { useText } from "@/shared/lib/text";
 
@@ -87,6 +92,7 @@ export default function JarvisSettingsScreen() {
   const settings = useJarvisSettings();
   const installedLocalModels = useHuggingFaceModels((state) => state.installed);
   const selectedLocalKey = useHuggingFaceModels((state) => state.selectedKey);
+  const selectedVisionKey = useHuggingFaceModels((state) => state.visionSelectedKey);
   const refreshLocalModels = useHuggingFaceModels((state) => state.refresh);
   const appLockOn = useAppLock((state) => appLockEnabled(state.config));
   const [background, foreground, muted, border, accent] = useThemeColor([
@@ -97,9 +103,11 @@ export default function JarvisSettingsScreen() {
     "accent",
   ]).map(String);
   const selectedLocalModel = installedLocalModels.find((model) => model.key === selectedLocalKey);
+  const selectedVisionModel = installedLocalModels.find((model) => model.key === selectedVisionKey);
   const [voiceEnrolled, setVoiceEnrolled] = useState(false);
   const [overlayAllowed, setOverlayAllowed] = useState(false);
   const [batteryAllowed, setBatteryAllowed] = useState(false);
+  const [defaultAssistant, setDefaultAssistant] = useState(false);
 
   const previewLockScreen = async () => {
     await showOverLockScreen();
@@ -112,6 +120,7 @@ export default function JarvisSettingsScreen() {
     if (Platform.OS === "android") {
       void canDrawOverlays().then(setOverlayAllowed);
       void isIgnoringBatteryOptimizations().then(setBatteryAllowed);
+      if (deviceActionsAvailable) void deviceActions.isDefaultAssistant().then(setDefaultAssistant);
     }
   }, [refreshLocalModels]);
 
@@ -121,6 +130,7 @@ export default function JarvisSettingsScreen() {
       if (Platform.OS === "android") {
         void canDrawOverlays().then(setOverlayAllowed);
         void isIgnoringBatteryOptimizations().then(setBatteryAllowed);
+        if (deviceActionsAvailable) void deviceActions.isDefaultAssistant().then(setDefaultAssistant);
       }
     }, []),
   );
@@ -215,7 +225,15 @@ export default function JarvisSettingsScreen() {
             right={
               <Switch
                 value={settings.deviceActions}
-                onValueChange={(value) => void saveJarvisSettings({ deviceActions: value })}
+                onValueChange={(value) => {
+                  void (async () => {
+                    if (value && !(await ensureDevicePermissions())) {
+                      Alert.alert(t("mobile.app.jarvis.automate"), t("mobile.app.jarvis.actionPermission"));
+                      return;
+                    }
+                    await saveJarvisSettings({ deviceActions: value });
+                  })();
+                }}
               />
             }
           />
@@ -235,11 +253,40 @@ export default function JarvisSettingsScreen() {
             onPress={() => router.push("/jarvis-local-model")}
           />
           <Row
+            title={t("mobile.app.jarvis.visionModel")}
+            detail={
+              selectedVisionModel
+                ? `${selectedVisionModel.name} · ${formatBytes(selectedVisionModel.size)}`
+                : t("mobile.app.jarvis.visionModelSubtitle")
+            }
+            onPress={() => router.push({ pathname: "/jarvis-local-model", params: { target: "vision" } })}
+            right={<ChevronRight color={muted} size={18} />}
+          />
+          <Row
             title={t("mobile.app.jarvis.voice")}
             detail={t("mobile.app.jarvis.voiceValue")}
             right={<ChevronRight color={muted} size={18} />}
             onPress={() => router.push("/settings/voice")}
           />
+          {Platform.OS === "android" ? (
+            <Row
+              title={t("mobile.app.jarvis.defaultAssistant")}
+              detail={
+                defaultAssistant
+                  ? t("mobile.app.jarvis.defaultAssistantActive")
+                  : t("mobile.app.jarvis.defaultAssistantHint")
+              }
+              disabled={!deviceActionsAvailable}
+              onPress={() => void deviceActions.requestDefaultAssistant()}
+              right={
+                defaultAssistant ? (
+                  <Text style={{ color: accent, fontSize: 13, fontWeight: "700" }}>✓</Text>
+                ) : (
+                  <ChevronRight color={muted} size={18} />
+                )
+              }
+            />
+          ) : null}
         </View>
 
         {Platform.OS === "android" ? (

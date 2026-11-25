@@ -121,6 +121,12 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.screenContextHint": "Attach a screenshot when asked. Android asks before each capture.",
   "mobile.app.jarvis.automate": "Automate device actions",
   "mobile.app.jarvis.assistantSection": "Assistant",
+  "mobile.app.jarvis.visionModel": "Vision model",
+  "mobile.app.jarvis.visionModelSubtitle": "Used automatically when a photo is attached",
+  "mobile.app.jarvis.defaultAssistant": "Default assistant",
+  "mobile.app.jarvis.defaultAssistantHint":
+    "Use ZollyBot when you long-press the home button or trigger your phone's assistant.",
+  "mobile.app.jarvis.defaultAssistantActive": "ZollyBot is your phone's assistant.",
   "mobile.app.jarvis.permissionsSection": "Android permissions",
   "mobile.app.jarvis.overlayPermission": "Display over other apps",
   "mobile.app.jarvis.overlayHint": "Shows Jarvis over the lock screen and other apps.",
@@ -186,10 +192,12 @@ export const messages = defineMessages("mobile.app", {
   "mobile.app.jarvis.actionCancelled": "Cancelled.",
   "mobile.app.jarvis.actionDone": "Done.",
   "mobile.app.jarvis.actionAppNotFound": "I could not find that app.",
+  "mobile.app.jarvis.actionPermission":
+    "Allow contacts, phone calls, and SMS for ZollyBot in Android settings, then try again.",
+  "mobile.app.jarvis.actionContactNotFound": "I could not find that contact.",
   "mobile.app.jarvis.localModelEmulator":
     "QVAC does not run on Android emulators. Install this APK on an arm64 phone; the first load downloads the model.",
   "mobile.app.jarvis.localModel": "Local model",
-  "mobile.app.jarvis.visionModel": "Vision model",
   "mobile.app.jarvis.voice": "Voice",
   "mobile.app.jarvis.voiceValue": "Parakeet ASR · Supertonic TTS",
   "mobile.app.jarvis.deviceActions": "Device actions",

@@ -73,6 +73,11 @@
     --default-foreground: var(--zollybot-text-primary);
     --accent: var(--zollybot-accent);
     --accent-foreground: var(--zollybot-text-on-accent);
+    /* HeroUI's component CSS reads the Tailwind colour variables, not the aliases above. */
+    --color-accent: var(--zollybot-accent);
+    --color-accent-foreground: var(--zollybot-text-on-accent);
+    --color-accent-soft: color-mix(in oklab, var(--zollybot-accent) 16%, transparent);
+    --color-accent-soft-foreground: var(--zollybot-accent-text);
     --success: var(--zollybot-success);
     --success-foreground: var(--zollybot-text-on-status);
     --warning: var(--zollybot-warning);

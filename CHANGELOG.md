@@ -6,6 +6,29 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.2] - 2026-11-25
+
+### Added
+
+- Jarvis remembers facts and earlier conversations locally, and receives the phone's time, timezone, and permitted location.
+- Jarvis can switch between text and vision models automatically; a photo uses the chosen vision model.
+- Jarvis renders photos and files in the conversation and streams speech while the reply is written.
+- ZollyBot can be chosen as the Android default assistant, opening Jarvis from the assist gesture.
+- Android device capabilities include reading contacts, placing calls, and sending SMS once permissions are granted.
+
+### Changed
+
+- The app uses the logo teal accent in light and dark themes.
+- Jarvis settings include vision model and default assistant rows.
+- Reconnecting status moved below the topbar as a single line.
+- Jarvis composer uses a surface card, focus ring, and clearer controls.
+
+### Fixed
+
+- Both sidebars drag open and closed; the right drawer blocks the left edge while open.
+- The Jarvis/Agents switch works in both directions.
+- Local user turns and attachments stay visible in the conversation.
+
 ## [0.66.1] - 2026-11-25
 
 ### Changed

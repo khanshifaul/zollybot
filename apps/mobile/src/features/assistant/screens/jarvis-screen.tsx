@@ -1,3 +1,4 @@
+import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
@@ -17,10 +18,11 @@ import Square from "lucide-react-native/icons/square";
 import Trash2 from "lucide-react-native/icons/trash-2";
 import X from "lucide-react-native/icons/x";
 import Zap from "lucide-react-native/icons/zap";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Animated,
   BackHandler,
   Keyboard,
   KeyboardAvoidingView,
@@ -36,20 +38,27 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCSSVariable } from "uniwind";
 import { ConnectedScreen } from "@/features/agents/screens/connected-screen";
 import { hideOverLockScreen } from "@/features/app-lock/model/app-lock-native";
 import { JarvisOrb } from "@/features/assistant/components/jarvis-orb";
 import { JarvisAgentsSwitch } from "@/features/assistant/components/page-switch";
 import { useHuggingFaceModels } from "@/features/assistant/model/huggingface-models";
-import { useJarvisConversations } from "@/features/assistant/model/jarvis-conversations";
+import { keepJarvisAttachments, useJarvisConversations } from "@/features/assistant/model/jarvis-conversations";
+import { jarvisDeviceContext } from "@/features/assistant/model/jarvis-device-context";
 import { localAttachmentText } from "@/features/assistant/model/jarvis-local-context";
+import { recallFromMemory, rememberFromMessage } from "@/features/assistant/model/jarvis-memory";
 import { cleanLocalReply, JARVIS_LOCAL_SYSTEM_PROMPT } from "@/features/assistant/model/jarvis-prompt";
 import { useJarvisSettings } from "@/features/assistant/model/jarvis-settings";
 import { useJarvisWakeState } from "@/features/assistant/model/jarvis-wake-state";
 import { planLocalDeviceAction } from "@/features/assistant/model/local-device-actions";
-import { loadLocalModelFile, localReply, unloadLocalModel } from "@/features/assistant/model/local-llm";
+import { loadLocalModelFile, localModelPath, localReply, unloadLocalModel } from "@/features/assistant/model/local-llm";
 import { resetJarvisNotification } from "@/features/assistant/native/background-service";
-import { deviceActions, deviceActionsAvailable } from "@/features/assistant/native/device-actions";
+import {
+  deviceActions,
+  deviceActionsAvailable,
+  ensureDevicePermissions,
+} from "@/features/assistant/native/device-actions";
 import { readScreenText } from "@/features/assistant/native/local-screen-context";
 import { captureScreen } from "@/features/assistant/native/screen-capture";
 import { AttachmentThumbnail } from "@/features/chat/components/attachment-preview";
@@ -57,7 +66,7 @@ import { useChatAttachments } from "@/features/chat/components/use-chat-attachme
 import { useVoiceDictation } from "@/features/chat/components/use-voice-dictation";
 import { useHomeOnboarding } from "@/features/onboarding/context/home-onboarding-context";
 import { useAppDrawer } from "@/features/servers/components/app-drawer-shell";
-import { readReply } from "@/features/voice/model/reply-voice";
+import { readReply, streamReply } from "@/features/voice/model/reply-voice";
 import { useMobileWorkspace, useMobileWorkspaceActions } from "@/features/workspace/context/mobile-workspace-context";
 import { haptics } from "@/shared/lib/haptics";
 import { useText } from "@/shared/lib/text";
@@ -68,16 +77,24 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const insets = useSafeAreaInsets();
   const { agents } = useMobileWorkspace();
   const workspace = useMobileWorkspaceActions();
-  const { openDrawer } = useAppDrawer();
+  const { openDrawer, setOpeningBlocked } = useAppDrawer();
   const onboarding = useHomeOnboarding();
-  const [background, foreground, muted, accent, accentForeground, border] = useThemeColor([
+  const [background, foreground, muted, themeAccent, themeAccentForeground, border, danger] = useThemeColor([
     "background",
     "foreground",
     "muted",
     "accent",
     "accent-foreground",
     "border",
+    "danger",
   ]).map(String);
+  const accent = String(useCSSVariable("--zollybot-logo-production") ?? themeAccent);
+  const accentForeground = String(useCSSVariable("--zollybot-logo-eye") ?? themeAccentForeground);
+  const accentText = String(useCSSVariable("--zollybot-accent-text") ?? accent);
+  const surface = String(useCSSVariable("--zollybot-bg-surface") ?? background);
+  const control = String(useCSSVariable("--zollybot-bg-control") ?? background);
+  const strongBorder = String(useCSSVariable("--zollybot-border-strong") ?? border);
+  const [composerFocused, setComposerFocused] = useState(false);
   const [listening, setListening] = useState(false);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
@@ -87,7 +104,10 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const localSpeech = useRef<(() => void) | null>(null);
   const conversationScroll = useRef<ScrollViewInstance>(null);
   const { width } = useWindowDimensions();
+  const historyWidth = Math.min(352, width - 48);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyMounted, setHistoryMounted] = useState(false);
+  const historyMotion = useRef(new Animated.Value(0)).current;
   const conversations = useJarvisConversations((state) => state.conversations);
   const activeConversationId = useJarvisConversations((state) => state.activeId);
   const loadConversations = useJarvisConversations((state) => state.load);
@@ -99,10 +119,15 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   const localHistory = activeConversation?.messages ?? [];
   const installedModels = useHuggingFaceModels((state) => state.installed);
   const selectedModelKey = useHuggingFaceModels((state) => state.selectedKey);
+  const selectedVisionKey = useHuggingFaceModels((state) => state.visionSelectedKey);
   const refreshLocalModels = useHuggingFaceModels((state) => state.refresh);
   const localModel = useMemo(
     () => installedModels.find((model) => model.key === selectedModelKey) ?? null,
     [installedModels, selectedModelKey],
+  );
+  const visionModel = useMemo(
+    () => installedModels.find((model) => model.key === selectedVisionKey) ?? null,
+    [installedModels, selectedVisionKey],
   );
   const [error, setError] = useState<string | null>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -149,13 +174,26 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
     void loadConversations();
   }, [loadConversations, refreshLocalModels]);
   useEffect(() => {
+    setOpeningBlocked(historyMounted);
+    return () => setOpeningBlocked(false);
+  }, [historyMounted, setOpeningBlocked]);
+  useEffect(() => {
+    if (Platform.OS !== "android" || !deviceActionsAvailable) return;
+    void deviceActions.setRightEdgeGestureExclusion(true).catch(() => undefined);
+    return () => {
+      void deviceActions.setRightEdgeGestureExclusion(false).catch(() => undefined);
+    };
+  }, []);
+  useEffect(() => {
     if (!historyOpen) return;
     const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
       setHistoryOpen(false);
+      setHistoryMounted(false);
+      historyMotion.setValue(0);
       return true;
     });
     return () => subscription.remove();
-  }, [historyOpen]);
+  }, [historyMotion, historyOpen]);
   useEffect(
     () => () => {
       localSpeech.current?.();
@@ -194,37 +232,123 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
   };
   const butler = useMemo(() => agents.find((agent) => agent.name.toLowerCase() === "butler") ?? agents[0], [agents]);
   const conversationStarted = localHistory.length > 0 || localPhase !== "idle";
+  const animateHistory = useCallback(
+    (open: boolean) => {
+      Animated.timing(historyMotion, {
+        toValue: open ? 1 : 0,
+        duration: open ? 300 : 240,
+        useNativeDriver: true,
+      }).start(({ finished }) => {
+        if (!finished || open) return;
+        setHistoryOpen(false);
+        setHistoryMounted(false);
+      });
+    },
+    [historyMotion],
+  );
+
+  const openHistory = useCallback(() => {
+    setHistoryMounted(true);
+    setHistoryOpen(true);
+    historyMotion.stopAnimation();
+    historyMotion.setValue(0);
+    animateHistory(true);
+  }, [animateHistory, historyMotion]);
+
+  const closeHistory = useCallback(() => {
+    historyMotion.stopAnimation();
+    animateHistory(false);
+  }, [animateHistory, historyMotion]);
+
   const rightEdgePan = useMemo(
     () =>
       PanResponder.create({
         onMoveShouldSetPanResponder: (_event, gesture) =>
-          !historyOpen && gesture.dx < -10 && Math.abs(gesture.dx) > Math.abs(gesture.dy),
+          !historyOpen && gesture.dx < -8 && Math.abs(gesture.dx) > Math.abs(gesture.dy),
+        onPanResponderGrant: () => {
+          historyMotion.stopAnimation();
+          setHistoryMounted(true);
+          historyMotion.setValue(0);
+        },
+        onPanResponderMove: (_event, gesture) => {
+          if (gesture.dx < 0) historyMotion.setValue(Math.min(1, -gesture.dx / historyWidth));
+        },
         onPanResponderRelease: (_event, gesture) => {
-          if (historyOpen || gesture.dx > -48) return;
-          void haptics.selection();
-          setHistoryOpen(true);
+          const open = -gesture.dx > historyWidth * 0.28 || gesture.vx < -0.35;
+          if (open) void haptics.selection();
+          setHistoryOpen(open);
+          Animated.timing(historyMotion, {
+            toValue: open ? 1 : 0,
+            duration: open ? 300 : 220,
+            useNativeDriver: true,
+          }).start(({ finished }) => {
+            if (finished && !open) setHistoryMounted(false);
+          });
+        },
+        onPanResponderTerminate: () => {
+          setHistoryOpen(false);
+          animateHistory(false);
         },
       }),
-    [historyOpen],
+    [animateHistory, historyMotion, historyOpen, historyWidth],
   );
+
+  const closeHistoryPan = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_event, gesture) => gesture.dx > 8 && Math.abs(gesture.dx) > Math.abs(gesture.dy),
+        onMoveShouldSetPanResponderCapture: (_event, gesture) =>
+          gesture.dx > 8 && Math.abs(gesture.dx) > Math.abs(gesture.dy),
+        onPanResponderGrant: () => historyMotion.stopAnimation(),
+        onPanResponderMove: (_event, gesture) => {
+          if (gesture.dx > 0) historyMotion.setValue(Math.max(0, 1 - gesture.dx / historyWidth));
+        },
+        onPanResponderRelease: (_event, gesture) => {
+          const open = !(gesture.dx > historyWidth * 0.24 || gesture.vx > 0.4);
+          if (!open) void haptics.selection();
+          setHistoryOpen(open);
+          Animated.timing(historyMotion, {
+            toValue: open ? 1 : 0,
+            duration: open ? 280 : 220,
+            useNativeDriver: true,
+          }).start(({ finished }) => {
+            if (finished && !open) setHistoryMounted(false);
+          });
+        },
+      }),
+    [historyMotion, historyWidth],
+  );
+
+  const backdropOpacity = historyMotion.interpolate({ inputRange: [0, 1], outputRange: [0, 0.4] });
+  const drawerTranslate = historyMotion.interpolate({ inputRange: [0, 1], outputRange: [historyWidth, 0] });
 
   if (onboarding.active && !lock) return <ConnectedScreen />;
 
   const runLocalDeviceAction = async (input: string): Promise<string | null> => {
     const action = planLocalDeviceAction(input);
     if (!action || !deviceActionsAvailable || !deviceActionsEnabled) return null;
-    const confirmed = await new Promise<boolean>((resolve) => {
-      Alert.alert(t("mobile.app.jarvis.actions"), input, [
-        { text: t("common.cancel"), style: "cancel", onPress: () => resolve(false) },
-        { text: t("common.continue"), onPress: () => resolve(true) },
-      ]);
-    });
-    if (!confirmed) return t("mobile.app.jarvis.actionCancelled");
+    const numberFor = async (target: string): Promise<string | null> => {
+      const cleaned = target.replace(/[^\d+]/gu, "");
+      if (/^[+]?\d[\d]{2,}$/u.test(cleaned)) return cleaned;
+      const contacts = await deviceActions.readContacts(target, 5);
+      return contacts[0]?.number.replace(/[^\d+]/gu, "") ?? null;
+    };
     try {
+      if (action.type === "call" || action.type === "sms") {
+        if (!(await ensureDevicePermissions())) return t("mobile.app.jarvis.actionPermission");
+      }
       if (action.type === "timer") await deviceActions.setTimer(action.seconds, action.label);
       else if (action.type === "settings") await deviceActions.openSettings();
       else if (action.type === "dial") await deviceActions.dial(action.number);
-      else {
+      else if (action.type === "call") {
+        const number = await numberFor(action.target);
+        if (!number) return t("mobile.app.jarvis.actionContactNotFound");
+        await deviceActions.call(number);
+      } else if (action.type === "sms") {
+        const number = await numberFor(action.target);
+        if (!number) return t("mobile.app.jarvis.actionContactNotFound");
+        await deviceActions.sendSms(number, action.message);
+      } else {
         const apps = await deviceActions.listApps();
         const wanted = action.name.toLowerCase();
         const app = apps.find(
@@ -249,8 +373,9 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
     );
     const screen = screenText ? `[${t("mobile.app.jarvis.screenShare")}]\n${screenText}` : "";
     const text = [screen, typed].filter(Boolean).join("\n\n");
+    const imageAttachments = attachments.items.filter((item) => item.mimeType.startsWith("image/") && item.uri);
     if ((!text && attachments.items.length === 0) || sending) return;
-    if (!localModel && !wantsButler) {
+    if (!localModel && !(imageAttachments.length > 0 && visionModel) && !wantsButler) {
       setError(t("mobile.app.jarvis.noLocalModelError"));
       return;
     }
@@ -312,34 +437,61 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
         localSpeech.current = reading.stop;
         return;
       }
-      if (localModel && !wantsButler) {
+      if ((localModel || (imageAttachments.length > 0 && visionModel)) && !wantsButler) {
         try {
           localSpeech.current?.();
           setLocalAnswer("");
           setLocalProgress(0);
           setLocalPhase("loading");
-          await loadLocalModelFile(localModel.uri, (value) => setLocalProgress(value.percentage));
+          const useVision = imageAttachments.length > 0 && visionModel !== null;
+          const modelToLoad = useVision ? visionModel : localModel;
+          if (!modelToLoad) throw new Error(t("mobile.app.jarvis.noLocalModelError"));
+          await loadLocalModelFile(modelToLoad.uri, (value) => setLocalProgress(value.percentage));
           setLocalPhase("thinking");
-          const attachmentContext = await localAttachmentText(attachments.items);
-          const userTurn = [text, attachmentContext].filter(Boolean).join("\n\n");
-          const nextHistory = [...localHistory, { id: `user-${Date.now()}`, role: "user" as const, content: userTurn }];
-          const rawReply = await localReply(
-            [
-              {
-                role: "system",
-                content: JARVIS_LOCAL_SYSTEM_PROMPT,
-              },
-              ...nextHistory,
-            ],
-            (token) => setLocalAnswer((current) => current + token),
-          );
-          const reply = cleanLocalReply(rawReply);
-          appendMessages([{ id: `assistant-${Date.now()}`, role: "assistant", content: reply }]);
-          setDraft("");
-          setScreenText(null);
-          attachments.clear();
-          setLocalPhase("idle");
-          const reading = readReply(reply, {
+          const textItems = useVision
+            ? attachments.items.filter((item) => !item.mimeType.startsWith("image/"))
+            : attachments.items;
+          const [attachmentContext, deviceContext] = await Promise.all([
+            localAttachmentText(textItems),
+            jarvisDeviceContext(),
+          ]);
+          const imagePaths = useVision
+            ? imageAttachments.map((item) => ({ path: localModelPath(item.uri ?? "") }))
+            : [];
+          const userTurn = [text || (useVision ? "Describe this image." : ""), attachmentContext]
+            .filter(Boolean)
+            .join("\n\n");
+          const memory = recallFromMemory(userTurn, conversations, activeConversationId);
+          const kept = await keepJarvisAttachments(attachments.items);
+          const nextHistory = [
+            ...localHistory.map((message) => ({
+              role: message.role,
+              content: message.modelContent ?? message.content,
+              ...(useVision && message.attachments?.length
+                ? {
+                    attachments: message.attachments
+                      .filter((file) => file.mimeType.startsWith("image/"))
+                      .map((file) => ({ path: localModelPath(file.uri) })),
+                  }
+                : {}),
+            })),
+            {
+              role: "user" as const,
+              content: userTurn,
+              ...(imagePaths.length > 0 ? { attachments: imagePaths } : {}),
+            },
+          ];
+          appendMessages([
+            {
+              id: `user-${Date.now()}`,
+              role: "user",
+              content: typed,
+              ...(userTurn !== typed ? { modelContent: userTurn } : {}),
+              ...(kept.length > 0 ? { attachments: kept } : {}),
+            },
+          ]);
+          let answer = "";
+          const reading = streamReply({
             onPart: () => undefined,
             onDone: () => {
               localSpeech.current = null;
@@ -349,6 +501,33 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
             },
           });
           localSpeech.current = reading.stop;
+          try {
+            const rawReply = await localReply(
+              [
+                {
+                  role: "system",
+                  content: [JARVIS_LOCAL_SYSTEM_PROMPT, deviceContext, memory].filter(Boolean).join("\n\n"),
+                },
+                ...nextHistory,
+              ],
+              (token) => {
+                answer += token;
+                setLocalAnswer(answer);
+                reading.update(cleanLocalReply(answer), false);
+              },
+            );
+            const reply = cleanLocalReply(rawReply);
+            reading.update(reply, true);
+            appendMessages([{ id: `assistant-${Date.now()}`, role: "assistant", content: reply }]);
+            if (typed) void rememberFromMessage(typed).catch(() => undefined);
+          } catch (cause) {
+            reading.stop();
+            throw cause;
+          }
+          setDraft("");
+          setScreenText(null);
+          attachments.clear();
+          setLocalPhase("idle");
           return;
         } catch (cause) {
           setLocalPhase("idle");
@@ -390,8 +569,10 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
           alignItems: "center",
           justifyContent: "space-between",
           paddingHorizontal: 14,
-          paddingVertical: 8,
-          minHeight: 56,
+          paddingVertical: 10,
+          minHeight: 60,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomColor: border,
         }}
       >
         {lock ? (
@@ -436,7 +617,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={t("mobile.app.jarvis.conversations")}
-              onPress={() => setHistoryOpen(true)}
+              onPress={openHistory}
               style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }}
             >
               <PanelRight color={foreground} size={21} strokeWidth={2} />
@@ -458,44 +639,122 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
               contentContainerStyle={{ gap: 8, paddingTop: 12, paddingBottom: 12 }}
               onContentSizeChange={() => conversationScroll.current?.scrollToEnd({ animated: true })}
             >
-              {localHistory.map((message) => (
-                <View
-                  key={message.id}
-                  style={{
-                    alignSelf: message.role === "user" ? "flex-end" : "flex-start",
-                    backgroundColor: message.role === "user" ? accent : background,
-                    borderColor: message.role === "user" ? accent : border,
-                    borderRadius: 16,
-                    borderWidth: 1,
-                    maxWidth: "86%",
-                    paddingHorizontal: 13,
-                    paddingVertical: 9,
-                  }}
-                >
-                  <Text
+              {localHistory.map((message) => {
+                const fromUser = message.role === "user";
+                return (
+                  <View
+                    key={message.id}
                     style={{
-                      color: message.role === "user" ? accentForeground : foreground,
-                      fontSize: 14,
-                      lineHeight: 20,
+                      alignSelf: fromUser ? "flex-end" : "flex-start",
+                      alignItems: fromUser ? "flex-end" : "flex-start",
+                      gap: 6,
+                      maxWidth: "86%",
                     }}
                   >
-                    {message.content}
-                  </Text>
-                </View>
-              ))}
+                    {message.attachments?.map((file) => {
+                      const image = file.mimeType.startsWith("image/");
+                      const frameWidth = Math.min(232, width * 0.62);
+                      const ratio = file.width && file.height ? file.width / file.height : 4 / 3;
+                      return image ? (
+                        <Image
+                          key={file.uri}
+                          source={{ uri: file.uri }}
+                          contentFit="cover"
+                          transition={160}
+                          accessibilityLabel={file.name}
+                          style={{
+                            width: frameWidth,
+                            height: Math.min(300, frameWidth / Math.max(0.6, ratio)),
+                            borderRadius: 18,
+                            borderCurve: "continuous",
+                            borderWidth: 1,
+                            borderColor: `${foreground}14`,
+                            backgroundColor: `${foreground}08`,
+                          }}
+                        />
+                      ) : (
+                        <View
+                          key={file.uri}
+                          style={{
+                            alignItems: "center",
+                            backgroundColor: `${foreground}08`,
+                            borderColor: `${foreground}14`,
+                            borderRadius: 16,
+                            borderWidth: 1,
+                            flexDirection: "row",
+                            gap: 9,
+                            maxWidth: frameWidth,
+                            paddingHorizontal: 11,
+                            paddingVertical: 9,
+                          }}
+                        >
+                          <View
+                            style={{
+                              alignItems: "center",
+                              backgroundColor: `${accent}24`,
+                              borderRadius: 10,
+                              height: 30,
+                              justifyContent: "center",
+                              width: 30,
+                            }}
+                          >
+                            <FileText color={accent} size={16} />
+                          </View>
+                          <Text numberOfLines={2} style={{ color: foreground, flexShrink: 1, fontSize: 12 }}>
+                            {file.name}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                    {message.content ? (
+                      <View
+                        style={{
+                          backgroundColor: fromUser ? accent : `${foreground}08`,
+                          borderColor: fromUser ? `${accent}00` : `${foreground}12`,
+                          borderRadius: 20,
+                          borderBottomRightRadius: fromUser ? 6 : 20,
+                          borderBottomLeftRadius: fromUser ? 20 : 6,
+                          borderCurve: "continuous",
+                          borderWidth: 1,
+                          paddingHorizontal: 14,
+                          paddingVertical: 10,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: fromUser ? accentForeground : foreground,
+                            fontSize: 14.5,
+                            lineHeight: 21,
+                          }}
+                        >
+                          {message.content}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </View>
+                );
+              })}
               {localPhase !== "idle" ? (
                 <View
                   style={{
                     alignSelf: "flex-start",
-                    borderColor: border,
-                    borderRadius: 16,
+                    backgroundColor: `${foreground}08`,
+                    borderColor: `${foreground}12`,
+                    borderRadius: 20,
+                    borderBottomLeftRadius: 6,
                     borderWidth: 1,
                     maxWidth: "86%",
-                    paddingHorizontal: 13,
-                    paddingVertical: 9,
+                    paddingHorizontal: 14,
+                    paddingVertical: 10,
                   }}
                 >
-                  <Text style={{ color: muted, fontSize: 13, lineHeight: 19 }}>
+                  <Text
+                    style={{
+                      color: localAnswer ? foreground : muted,
+                      fontSize: 14.5,
+                      lineHeight: 21,
+                    }}
+                  >
                     {localPhase === "loading"
                       ? t("mobile.app.jarvis.localLoading", { progress: String(Math.round(localProgress)) })
                       : localAnswer || t("mobile.app.jarvis.localThinking")}
@@ -509,20 +768,45 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
               ) : null}
             </ScrollView>
           ) : (
-            <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 10 }}>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={t("mobile.app.jarvis.title")}
-                onPress={() => {
-                  void haptics.selection();
-                  if (listeningRef.current) stopListening();
-                  else startListening();
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 12 }}>
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <View
+                  style={{
+                    position: "absolute",
+                    width: 248,
+                    height: 248,
+                    borderRadius: 124,
+                    backgroundColor: `${accent}12`,
+                  }}
+                />
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t("mobile.app.jarvis.title")}
+                  onPress={() => {
+                    void haptics.selection();
+                    if (listeningRef.current) stopListening();
+                    else startListening();
+                  }}
+                  style={{ padding: 18 }}
+                >
+                  <JarvisOrb active={listening} size={168} />
+                </Pressable>
+              </View>
+              <Text style={{ color: foreground, fontSize: 26, fontWeight: "800", letterSpacing: -0.4 }}>
+                {t("mobile.app.jarvis.title")}
+              </Text>
+              <Text
+                style={{
+                  color: accentText,
+                  fontSize: 11,
+                  fontWeight: "700",
+                  letterSpacing: 1.6,
+                  textTransform: "uppercase",
                 }}
               >
-                <JarvisOrb active={listening} size={168} />
-              </Pressable>
-              <Text style={{ color: foreground, fontSize: 20, fontWeight: "700" }}>{t("mobile.app.jarvis.title")}</Text>
-              <Text style={{ color: muted, fontSize: 12, textAlign: "center", maxWidth: 280 }}>
+                {t("mobile.app.jarvis.subtitle")}
+              </Text>
+              <Text style={{ color: muted, fontSize: 13, lineHeight: 19, textAlign: "center", maxWidth: 280 }}>
                 {listening
                   ? capture.available
                     ? t("mobile.app.jarvis.listeningLive")
@@ -534,12 +818,18 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
 
           <View
             style={{
-              borderColor: `${accent}55`,
+              borderColor: composerFocused ? `${accent}66` : strongBorder,
               borderWidth: 1,
-              backgroundColor: `${accent}0D`,
-              borderRadius: 20,
+              backgroundColor: surface,
+              borderRadius: 24,
+              borderCurve: "continuous",
               padding: 8,
               gap: 8,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.07,
+              shadowRadius: 14,
+              elevation: 2,
             }}
           >
             {screenText ? (
@@ -604,20 +894,22 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                 accessibilityLabel={t("mobile.app.jarvis.addAttachment")}
                 onPress={() => setToolsOpen((current) => !current)}
                 style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 19,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: toolsOpen ? `${accent}22` : "transparent",
+                  backgroundColor: toolsOpen ? `${accent}26` : control,
                 }}
               >
-                <Plus color={accent} size={21} />
+                <Plus color={accentText} size={21} />
               </Pressable>
               <TextInput
                 value={draft}
                 onChangeText={setDraft}
                 onSubmitEditing={() => void send()}
+                onFocus={() => setComposerFocused(true)}
+                onBlur={() => setComposerFocused(false)}
                 placeholder={t("mobile.app.jarvis.askPlaceholder")}
                 placeholderTextColor={muted}
                 returnKeyType="send"
@@ -625,11 +917,14 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                 editable={!sending}
                 style={{
                   color: foreground,
-                  backgroundColor: background,
-                  borderRadius: 16,
-                  paddingHorizontal: 13,
-                  paddingVertical: 10,
-                  fontSize: 14,
+                  backgroundColor: control,
+                  borderRadius: 18,
+                  borderCurve: "continuous",
+                  paddingHorizontal: 14,
+                  paddingVertical: 11,
+                  fontSize: 15,
+                  lineHeight: 20,
+                  minHeight: 42,
                   flex: 1,
                   maxHeight: 110,
                 }}
@@ -644,40 +939,50 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                     else capture.start(draft);
                   }}
                   style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 19,
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
                     alignItems: "center",
                     justifyContent: "center",
-                    backgroundColor: capture.phase !== "idle" ? `${accent}22` : "transparent",
+                    backgroundColor: capture.phase !== "idle" ? `${accent}26` : control,
                   }}
                 >
-                  {capture.phase !== "idle" ? <Square color={accent} size={14} /> : <Mic color={accent} size={19} />}
+                  {capture.phase !== "idle" ? (
+                    <Square color={accentText} size={14} />
+                  ) : (
+                    <Mic color={accentText} size={19} />
+                  )}
                 </Pressable>
               ) : null}
               <Pressable
                 accessibilityRole="button"
                 disabled={sending || listening || (!draft.trim() && !screenText && attachments.items.length === 0)}
                 onPress={() => void send()}
-                style={({ pressed }) => ({
-                  width: 38,
-                  height: 38,
-                  borderRadius: 19,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: accent,
-                  opacity:
-                    sending || (!draft.trim() && !screenText && attachments.items.length === 0)
-                      ? 0.45
-                      : pressed
-                        ? 0.75
-                        : 1,
-                })}
+                style={({ pressed }) => {
+                  const disabled =
+                    sending || listening || (!draft.trim() && !screenText && attachments.items.length === 0);
+                  return {
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: disabled ? control : accent,
+                    opacity: pressed && !disabled ? 0.78 : 1,
+                  };
+                }}
               >
                 {sending ? (
                   <ActivityIndicator size="small" color={accentForeground} />
                 ) : (
-                  <ArrowUp color={accentForeground} size={20} />
+                  <ArrowUp
+                    color={
+                      listening || (!draft.trim() && !screenText && attachments.items.length === 0)
+                        ? muted
+                        : accentForeground
+                    }
+                    size={20}
+                  />
                 )}
               </Pressable>
             </View>
@@ -747,11 +1052,11 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                       gap: 4,
                       paddingVertical: 8,
                       borderRadius: 12,
-                      backgroundColor: background,
+                      backgroundColor: `${foreground}06`,
                       opacity: pressed ? 0.65 : 1,
                     })}
                   >
-                    <Icon color={accent} size={18} />
+                    <Icon color={accentText} size={18} />
                     <Text numberOfLines={1} style={{ color: muted, fontSize: 9 }}>
                       {label}
                     </Text>
@@ -760,41 +1065,62 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
               </View>
             ) : null}
           </View>
-          {error ? <Text style={{ color: "#dc2626", fontSize: 12, paddingTop: 8 }}>{error}</Text> : null}
+          {error ? (
+            <View
+              style={{
+                backgroundColor: `${danger}14`,
+                borderColor: `${danger}33`,
+                borderRadius: 12,
+                borderWidth: 1,
+                marginTop: 8,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+              }}
+            >
+              <Text style={{ color: danger, fontSize: 12, lineHeight: 17 }}>{error}</Text>
+            </View>
+          ) : null}
         </View>
       </KeyboardAvoidingView>
 
       {!historyOpen ? (
         <View
           {...rightEdgePan.panHandlers}
-          style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 24, zIndex: 2 }}
-        />
+          style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 64, zIndex: 2 }}
+        ></View>
       ) : null}
 
-      {historyOpen ? (
-        <View style={StyleSheet.absoluteFill}>
+      {historyMounted ? (
+        <View style={StyleSheet.absoluteFill} {...closeHistoryPan.panHandlers}>
+          <Animated.View
+            pointerEvents="none"
+            style={[StyleSheet.absoluteFill, { backgroundColor: "#000", opacity: backdropOpacity }]}
+          />
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t("common.close")}
-            onPress={() => setHistoryOpen(false)}
-            style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.4)" }]}
+            onPress={closeHistory}
+            style={StyleSheet.absoluteFill}
           />
-          <View
+          <Animated.View
             style={{
               position: "absolute",
               top: 0,
               bottom: 0,
               right: 0,
-              width: Math.min(360, width - 52),
-              borderTopLeftRadius: 34,
-              borderBottomLeftRadius: 34,
+              width: historyWidth,
+              borderTopLeftRadius: 30,
+              borderBottomLeftRadius: 30,
+              borderLeftWidth: StyleSheet.hairlineWidth,
+              borderColor: border,
               backgroundColor: background,
               elevation: 16,
               overflow: "hidden",
               shadowColor: "#000",
-              shadowOffset: { width: -8, height: 0 },
-              shadowOpacity: 0.2,
-              shadowRadius: 24,
+              shadowOffset: { width: -10, height: 0 },
+              shadowOpacity: 0.22,
+              shadowRadius: 28,
+              transform: [{ translateX: drawerTranslate }],
             }}
           >
             <View
@@ -802,12 +1128,12 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                 alignItems: "center",
                 flexDirection: "row",
                 gap: 12,
-                paddingHorizontal: 24,
-                paddingTop: insets.top + 18,
-                paddingBottom: 22,
+                paddingHorizontal: 22,
+                paddingTop: insets.top + 20,
+                paddingBottom: 18,
               }}
             >
-              <Text style={{ color: foreground, flex: 1, fontSize: 24, fontWeight: "700" }}>
+              <Text style={{ color: foreground, flex: 1, fontSize: 26, fontWeight: "800", letterSpacing: -0.4 }}>
                 {t("mobile.app.jarvis.conversations")}
               </Text>
               <Pressable
@@ -815,21 +1141,21 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                 accessibilityLabel={t("mobile.app.jarvis.newChat")}
                 onPress={() => {
                   startNewConversation();
-                  setHistoryOpen(false);
+                  closeHistory();
                   setLocalAnswer("");
                   setLocalPhase("idle");
                 }}
                 style={({ pressed }) => ({
                   alignItems: "center",
-                  backgroundColor: `${muted}18`,
+                  backgroundColor: accent,
                   borderRadius: 20,
                   height: 40,
                   justifyContent: "center",
-                  opacity: pressed ? 0.6 : 1,
+                  opacity: pressed ? 0.7 : 1,
                   width: 40,
                 })}
               >
-                <Plus color={foreground} size={21} />
+                <Plus color={accentForeground} size={21} />
               </Pressable>
             </View>
 
@@ -868,39 +1194,41 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
                         accessibilityState={{ selected }}
                         onPress={() => {
                           selectConversation(conversation.id);
-                          setHistoryOpen(false);
+                          closeHistory();
                           setLocalAnswer("");
                           setLocalPhase("idle");
                         }}
                         style={({ pressed }) => ({
                           alignItems: "center",
+                          backgroundColor: selected ? `${accent}14` : "transparent",
+                          borderRadius: 16,
                           flex: 1,
                           flexDirection: "row",
                           gap: 10,
                           opacity: pressed ? 0.6 : 1,
-                          paddingHorizontal: 12,
-                          paddingVertical: 11,
+                          paddingHorizontal: 10,
+                          paddingVertical: 10,
                         })}
                       >
                         <View
                           style={{
                             alignItems: "center",
-                            backgroundColor: selected ? `${accent}18` : `${muted}10`,
+                            backgroundColor: selected ? accent : `${muted}12`,
                             borderRadius: 18,
                             height: 36,
                             justifyContent: "center",
                             width: 36,
                           }}
                         >
-                          <MessageSquare color={selected ? accent : muted} size={17} />
+                          <MessageSquare color={selected ? accentForeground : muted} size={17} />
                         </View>
                         <View style={{ flex: 1, gap: 2 }}>
                           <Text
                             numberOfLines={1}
                             style={{
-                              color: selected ? accent : foreground,
+                              color: selected ? accentText : foreground,
                               fontSize: 15,
-                              fontWeight: selected ? "600" : "500",
+                              fontWeight: selected ? "700" : "500",
                             }}
                           >
                             {conversation.title}
@@ -927,7 +1255,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
             <Pressable
               accessibilityRole="button"
               onPress={() => {
-                setHistoryOpen(false);
+                closeHistory();
                 router.push("/jarvis-settings");
               }}
               style={({ pressed }) => ({
@@ -962,7 +1290,7 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
               </View>
               <Settings2 color={muted} size={18} />
             </Pressable>
-          </View>
+          </Animated.View>
         </View>
       ) : null}
     </SafeAreaView>
