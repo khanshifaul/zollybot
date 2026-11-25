@@ -6,7 +6,7 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
-## [0.66.5] - 2026-11-25
+## [0.66.6] - 2026-11-25
 
 ### Changed
 
