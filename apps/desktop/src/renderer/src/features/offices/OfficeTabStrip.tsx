@@ -1,5 +1,18 @@
 import type { JSX } from "@solidjs/web";
-import { Alert, AlertDescription, Button, Dialog, Field, IconButton, Input, Plus, Tabs, X } from "@zollybot/ui";
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  Dialog,
+  DropdownMenu,
+  Ellipsis,
+  Field,
+  IconButton,
+  Input,
+  Plus,
+  Tabs,
+  X,
+} from "@zollybot/ui";
 import { useText } from "@zollybot/ui/text";
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from "solid-js";
 import { appPort } from "../../app-port";
@@ -7,6 +20,16 @@ import { useAgents } from "../agents/agents-context";
 import { useServerScope } from "../servers/server-scope";
 
 const ACTIVE_OFFICE_KEY = "zollybot.office-strip.active";
+const CLOSED_OFFICE_KEY = "zollybot.office-strip.closed";
+
+function readClosedOffices(): string[] {
+  try {
+    const value = JSON.parse(localStorage.getItem(CLOSED_OFFICE_KEY) ?? "[]");
+    return Array.isArray(value) ? value.filter((id): id is string => typeof id === "string") : [];
+  } catch {
+    return [];
+  }
+}
 
 interface OfficeTab {
   id: string;
@@ -58,6 +81,8 @@ export function TopBar(props: TopBarProps = {}) {
   const [createName, setCreateName] = createSignal("");
   const [createError, setCreateError] = createSignal<string | null>(null);
   const [creating, setCreating] = createSignal(false);
+  const [closedIds, setClosedIds] = createSignal<string[]>(readClosedOffices());
+  const [attachOpen, setAttachOpen] = createSignal(false);
 
   async function refreshWorkspace(): Promise<void> {
     await refreshOffices();
@@ -139,9 +164,10 @@ export function TopBar(props: TopBarProps = {}) {
         });
       }
     }
+    const closed = new Set(closedIds());
     return [
       { id: "building", name: t("app.offices.lobby"), headcount: lobbyHeadcount, building: true },
-      ...byOffice.values(),
+      ...[...byOffice.values()].filter((tab) => !closed.has(tab.id)),
     ];
   });
 
@@ -162,6 +188,32 @@ export function TopBar(props: TopBarProps = {}) {
       }
     },
   );
+
+  function closeOffice(tab: OfficeTab): void {
+    if (tab.building) return;
+    const closed = [...new Set([...closedIds(), tab.id])];
+    setClosedIds(closed);
+    localStorage.setItem(CLOSED_OFFICE_KEY, JSON.stringify(closed));
+    if (active() === tab.id) {
+      agents.setActiveOfficeId("building");
+      localStorage.setItem(ACTIVE_OFFICE_KEY, "building");
+      selectAgentForTab({ id: "building", name: t("app.offices.lobby"), headcount: 0, building: true });
+    }
+  }
+
+  function attachOffice(office: OfficeSummary): void {
+    const closed = closedIds().filter((id) => id !== office.id);
+    setClosedIds(closed);
+    localStorage.setItem(CLOSED_OFFICE_KEY, JSON.stringify(closed));
+    setAttachOpen(false);
+    // Let the tab list see the reopened id before the active-office validation runs.
+    window.setTimeout(() => {
+      agents.setActiveOfficeId(office.id);
+      localStorage.setItem(ACTIVE_OFFICE_KEY, office.id);
+      selectAgentForTab({ id: office.id, name: office.name, headcount: office.agents, building: false });
+      void refreshWorkspace();
+    }, 0);
+  }
 
   function selectAgentForTab(tab: OfficeTab): void {
     const list = agents.agentList();
@@ -260,22 +312,54 @@ export function TopBar(props: TopBarProps = {}) {
                   </Tabs.Trigger>
                 )}
               </For>
-              <Show when={props.allowCreateOffice !== false}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  type="button"
-                  class="top-bar-tab top-bar-tab-add"
-                  title={t("app.offices.create")}
-                  aria-label={t("app.offices.create")}
-                  onClick={openCreateDialog}
-                >
-                  <Plus size={16} aria-hidden="true" />
-                </Button>
-              </Show>
             </Tabs.List>
           </Tabs.Root>
-          {props.actions ? <div class="top-bar-actions">{props.actions}</div> : null}
+        </div>
+        <div class="top-bar-actions">
+          {props.actions}
+          <DropdownMenu.Root placement="bottom-end" gutter={4}>
+            <DropdownMenu.Trigger
+              class="top-bar-tab top-bar-tab-add"
+              aria-label={t("app.offices.stripLabel")}
+              title={t("app.offices.stripLabel")}
+            >
+              <Ellipsis size={16} aria-hidden="true" />
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item onSelect={() => setAttachOpen(true)}>
+                  {t("app.offices.openExisting")}
+                </DropdownMenu.Item>
+                <DropdownMenu.Item
+                  disabled={active() === "building"}
+                  onSelect={() => {
+                    const tab = tabs().find((item) => item.id === active());
+                    if (tab) closeOffice(tab);
+                  }}
+                >
+                  {t("app.offices.closeOffice")}
+                </DropdownMenu.Item>
+                <DropdownMenu.Separator />
+                <DropdownMenu.Item onSelect={() => void refreshWorkspace()}>
+                  {t("app.offices.refresh")}
+                </DropdownMenu.Item>
+                <DropdownMenu.Item onSelect={openCreateDialog}>{t("app.offices.attachFolder")}</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
+          <Show when={props.allowCreateOffice !== false}>
+            <Button
+              variant="ghost"
+              size="sm"
+              type="button"
+              class="top-bar-tab top-bar-tab-add"
+              title={t("app.offices.create")}
+              aria-label={t("app.offices.create")}
+              onClick={openCreateDialog}
+            >
+              <Plus size={16} aria-hidden="true" />
+            </Button>
+          </Show>
         </div>
       </nav>
 
@@ -331,6 +415,75 @@ export function TopBar(props: TopBarProps = {}) {
                   </Button>
                 </footer>
               </form>
+            </Dialog.Content>
+          </Dialog.Overlay>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={attachOpen()} onOpenChange={setAttachOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay class="channel-dialog-backdrop">
+            <Dialog.Content class="channel-create-dialog">
+              <header class="channel-dialog-header">
+                <Dialog.Title>{t("app.offices.attachTitle")}</Dialog.Title>
+                <IconButton label={t("common.close")} variant="ghost" onClick={() => setAttachOpen(false)}>
+                  <X />
+                </IconButton>
+              </header>
+              <div style={{ display: "flex", "flex-direction": "column", gap: "8px", padding: "16px" }}>
+                <p style={{ color: "var(--zollybot-text-secondary)", margin: 0 }}>
+                  {t("app.offices.attachDescription")}
+                </p>
+                <Show
+                  when={offices().length > 0}
+                  fallback={
+                    <p style={{ color: "var(--zollybot-text-secondary)", margin: 0 }}>{t("app.offices.noOffices")}</p>
+                  }
+                >
+                  <For each={offices()}>
+                    {(office) => (
+                      <div
+                        style={{
+                          display: "flex",
+                          "align-items": "center",
+                          "justify-content": "space-between",
+                          gap: "8px",
+                        }}
+                      >
+                        <span>
+                          {office.name}
+                          <Show when={closedIds().includes(office.id)}>
+                            <span style={{ color: "var(--zollybot-text-secondary)", "margin-left": "8px" }}>
+                              {t("app.offices.closed")}
+                            </span>
+                          </Show>
+                        </span>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          type="button"
+                          disabled={active() === office.id && !closedIds().includes(office.id)}
+                          onClick={() => attachOffice(office)}
+                        >
+                          {t("app.offices.open")}
+                        </Button>
+                      </div>
+                    )}
+                  </For>
+                </Show>
+                <div style={{ "padding-top": "8px" }}>
+                  <Button
+                    variant="ghost"
+                    type="button"
+                    onClick={() => {
+                      setAttachOpen(false);
+                      openCreateDialog();
+                    }}
+                  >
+                    {t("app.offices.attachFolder")}
+                  </Button>
+                </div>
+              </div>
             </Dialog.Content>
           </Dialog.Overlay>
         </Dialog.Portal>
