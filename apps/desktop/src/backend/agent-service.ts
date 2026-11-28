@@ -1826,8 +1826,11 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
           listAgents: (agentId) => this.listOfficeAgents(agentId),
           assign: (taskId, input, actorAgentId) => this.assignOfficeTask(taskId, input, actorAgentId),
         },
-        (officeId, agentId) =>
-          Effect.runFork(this.#addToOfficeChannel(officeId, agentId).pipe(Effect.catch(() => Effect.void))),
+        (officeId, agentId) => {
+          // The employment row is in the database, but the sidebar reads the roster from events.
+          this.#emit({ type: "agents-changed", agents: this.listAgentsWithEmployment() });
+          Effect.runFork(this.#addToOfficeChannel(officeId, agentId).pipe(Effect.catch(() => Effect.void)));
+        },
       ),
       officeIdForAgent: (agentId: string) => {
         try {

@@ -25,25 +25,16 @@ if (run("git", ["tag", "--list", `v${packageJson.version}`])) {
   failures.push(`tag v${packageJson.version} already exists`);
 }
 
-let releaseSecrets = "";
+// The release workflows build unsigned desktop artifacts. The only repository secret they use is
+// EXPO_TOKEN, for the Android store upload; the old signing environment was retired.
+let repositorySecrets = "";
 try {
-  releaseSecrets = run("gh", ["secret", "list", "--env", "release"]);
+  repositorySecrets = run("gh", ["secret", "list"]);
 } catch {
-  failures.push("GitHub release secrets could not be inspected");
+  failures.push("GitHub repository secrets could not be inspected");
 }
-for (const name of [
-  "CSC_LINK",
-  "CSC_KEY_PASSWORD",
-  "CSC_INSTALLER_LINK",
-  "CSC_INSTALLER_KEY_PASSWORD",
-  "APPLE_ID",
-  "APPLE_APP_SPECIFIC_PASSWORD",
-  "APPLE_TEAM_ID",
-  "MAC_PROVISIONING_PROFILE",
-]) {
-  if (!releaseSecrets.split("\n").some((line) => line.startsWith(`${name}\t`))) {
-    failures.push(`GitHub release secret ${name} is missing`);
-  }
+if (!repositorySecrets.split("\n").some((line) => line.startsWith("EXPO_TOKEN\t"))) {
+  failures.push("GitHub repository secret EXPO_TOKEN is missing");
 }
 
 if (failures.length > 0) {

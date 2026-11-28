@@ -29,6 +29,7 @@ All notable changes to ZollyBot will be documented here. The project follows
 - Keep the Sunshine and Moonlight build tree on the home filesystem. A small `/tmp` tmpfs made the linker fail with SIGBUS while building the remote desktop runtime.
 - Mobile prompts written while the host is offline stay queued and send when the host reconnects.
 - Vision model loading passes the projector path and an 8192-token context to QVAC.
+- An agent employed with `employ_agent` now appears in its office sidebar without restarting the app.
 
 ## [0.66.6] - 2026-11-25
 
