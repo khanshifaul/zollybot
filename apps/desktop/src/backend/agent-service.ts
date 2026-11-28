@@ -1826,6 +1826,8 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
           listAgents: (agentId) => this.listOfficeAgents(agentId),
           assign: (taskId, input, actorAgentId) => this.assignOfficeTask(taskId, input, actorAgentId),
         },
+        (officeId, agentId) =>
+          Effect.runFork(this.#addToOfficeChannel(officeId, agentId).pipe(Effect.catch(() => Effect.void))),
       ),
       officeIdForAgent: (agentId: string) => {
         try {

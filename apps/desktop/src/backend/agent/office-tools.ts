@@ -9,7 +9,7 @@ import type { OfficeTaskStore } from "../office-tasks/office-task-store";
 import { discoverOffices, officeFromPath } from "../offices/office-catalog";
 import { importOfficeMemoryMarkdown } from "../offices/office-memory-import";
 import { detectOfficeProject } from "../offices/office-profile";
-import { listEmployments, listOffices, upsertOffice } from "../offices/office-store";
+import { listEmployments, listOffices, upsertEmployment, upsertOffice } from "../offices/office-store";
 import type { DynamicToolCallParams } from "../protocol";
 import type { ZollyBotDatabase } from "../zollybot-database";
 import { type ZollyBotToolResponse, zollyBotToolFailure, zollyBotToolResult } from "./routine-tools";
@@ -23,6 +23,11 @@ const registerOfficeSchema = z.strictObject({
   create: z.boolean().optional(),
 });
 const openOfficeSchema = z.strictObject({ officeId: z.string().trim().min(1) });
+const employAgentSchema = z.strictObject({
+  agentId: z.string().trim().min(1),
+  officeId: z.string().trim().min(1),
+  roleKey: z.string().trim().min(1).max(80),
+});
 const officeTaskSchema = z.strictObject({ taskId: z.string().trim().min(1) });
 const rejectOfficeTaskSchema = z.strictObject({
   taskId: z.string().trim().min(1),
@@ -61,6 +66,12 @@ export const OFFICE_TOOL_DEFINITIONS = [
     name: "open_office",
     description: "Mark an existing office as opened by id.",
     shape: openOfficeSchema.shape,
+  },
+  {
+    name: "employ_agent",
+    description:
+      "Put an existing agent to work in an office with a role, and add it to that office's one channel. Use after create_agent; without this the agent has a profile but no desk.",
+    shape: employAgentSchema.shape,
   },
   {
     name: "create_office_task",
@@ -123,6 +134,7 @@ export interface OfficeTools {
     actorAgentId: string,
   ): { ok: boolean; task?: unknown; assignedAgentId?: string; error?: string };
   open(id: string): unknown | null;
+  employ(agentId: string, officeId: string, roleKey: string): { ok: boolean; error?: string };
   listTasks(agentId: string): readonly unknown[];
   listOfficeAgents(agentId: string): readonly unknown[];
   assignTask(
@@ -142,6 +154,7 @@ export function officeToolsFromDatabase(
   onRegistered?: (officeId: string) => void,
   officeTasks?: OfficeTaskStore | null,
   taskHandlers?: OfficeTaskHandlers | null,
+  onEmployed?: (officeId: string, agentId: string) => void,
 ): OfficeTools {
   const db = database.connection;
   const roleInOffice = (agentId: string, officeId: string | null): string | null => {
@@ -288,6 +301,18 @@ export function officeToolsFromDatabase(
       const agents = listEmployments(db).filter((employment) => employment.officeId === id).length;
       return { id: office.id, name: office.name, path: office.repoPath, hasAgents: true, agents };
     },
+    employ(agentId, officeId, roleKey) {
+      const agent = db.prepare("SELECT agent_id FROM projection_agents WHERE agent_id = ?").get(agentId);
+      if (!agent) return { ok: false as const, error: "Agent not found." };
+      const office = listOffices(db).find((candidate) => candidate.id === officeId);
+      if (!office) return { ok: false as const, error: "Office not found." };
+      if (office.id === "unassigned" || office.repoPath === "") {
+        return { ok: false as const, error: "Register the office before employing agents in it." };
+      }
+      upsertEmployment(db, { agentId, officeId, roleKey, scope: "office" });
+      onEmployed?.(officeId, agentId);
+      return { ok: true as const, employment: { agentId, officeId, roleKey, scope: "office" as const } };
+    },
     listTasks(agentId) {
       if (!officeTasks) return [];
       const officeId = officeOf(agentId);
@@ -368,6 +393,7 @@ export function handleOfficeTool(
     tool !== "list_offices" &&
     tool !== "register_office" &&
     tool !== "open_office" &&
+    tool !== "employ_agent" &&
     tool !== "create_office_task" &&
     tool !== "list_office_tasks" &&
     tool !== "list_office_agents" &&
@@ -395,6 +421,11 @@ export function handleOfficeTool(
       const p = openOfficeSchema.safeParse(args);
       if (!p.success) return zollyBotToolFailure("Give officeId for open_office.");
       return zollyBotToolResult({ office: tools.open(p.data.officeId) });
+    }
+    if (tool === "employ_agent") {
+      const p = employAgentSchema.safeParse(args);
+      if (!p.success) return zollyBotToolFailure("Give agentId, officeId, and roleKey for employ_agent.");
+      return zollyBotToolResult(tools.employ(p.data.agentId, p.data.officeId, p.data.roleKey));
     }
     if (tool === "create_office_task") {
       const p = createOfficeTaskSchema.safeParse(args);
