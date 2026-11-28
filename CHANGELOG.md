@@ -6,6 +6,30 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.7] - 2026-11-28
+
+### Added
+
+- Butler can create a new office folder or register an existing project, profile its stack, data and tests, plan the work, and hand the plan to the office Foreman.
+- Add `employ_agent`, so a newly created agent gets a desk in an office and joins that office's channel.
+- Butler can create a missing role skill with the skill creator and install it for the specific agent that needs it.
+- Add `create_office_task`, which turns an approved plan into a queued office task the dispatcher hands to the Foreman.
+- Mobile local models now separate Text and Vision catalogs; vision installs include the matching projector.
+
+### Changed
+
+- A host no longer stops at 100 stored agents. The limit now applies to 100 agents working at the same time, and extra work waits in the queue.
+- Butler shows a compact plan card before setup that creates folders, files, offices, agents, channels, or tasks, then executes the approved plan without repeating it.
+- Butler's provider fallback is automatic and ordered across harnesses; Codex falls back to OMP Glyph Cluster, then OMP DeepSeek, then Kilo.
+- Opening an agent from another office switches the sidebar to that office, so the agent does not disappear from the roster.
+- Improve the hiring, office, memory, and Butler instructions for verified rosters, distinct role skills, and concise execution.
+
+### Fixed
+
+- Keep the Sunshine and Moonlight build tree on the home filesystem. A small `/tmp` tmpfs made the linker fail with SIGBUS while building the remote desktop runtime.
+- Mobile prompts written while the host is offline stay queued and send when the host reconnects.
+- Vision model loading passes the projector path and an 8192-token context to QVAC.
+
 ## [0.66.6] - 2026-11-25
 
 ### Changed
