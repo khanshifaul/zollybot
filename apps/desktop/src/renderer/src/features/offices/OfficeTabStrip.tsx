@@ -59,6 +59,12 @@ export function TopBar(props: TopBarProps = {}) {
   const [createError, setCreateError] = createSignal<string | null>(null);
   const [creating, setCreating] = createSignal(false);
 
+  async function refreshWorkspace(): Promise<void> {
+    await refreshOffices();
+    // Agents, channels and the active office can have changed on the host since the last panel read.
+    await Promise.resolve(scope.retryPanels());
+  }
+
   async function refreshOffices(): Promise<void> {
     try {
       const list = await appPort().offices.list();
@@ -222,7 +228,15 @@ export function TopBar(props: TopBarProps = {}) {
 
   return (
     <>
-      <div class="top-bar" data-top-bar>
+      <nav
+        class="top-bar"
+        data-top-bar
+        aria-label={t("app.offices.stripLabel")}
+        onContextMenu={(event) => {
+          event.preventDefault();
+          void refreshWorkspace();
+        }}
+      >
         <div class="top-bar-leading">
           {props.leading}
           <Tabs.Root
@@ -263,7 +277,7 @@ export function TopBar(props: TopBarProps = {}) {
           </Tabs.Root>
           {props.actions ? <div class="top-bar-actions">{props.actions}</div> : null}
         </div>
-      </div>
+      </nav>
 
       <Dialog.Root open={createOpen()} onOpenChange={setCreateOpen}>
         <Dialog.Portal>

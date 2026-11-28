@@ -26,6 +26,7 @@ import { remoteAdminServer } from "../servers/server-capabilities";
 import { useServers } from "../servers/servers-context";
 import { useWindowPage } from "../window/window-page-context";
 import type { CreationPreference, DevelopmentCreation } from "./agent-creation-model";
+import { keepEmployment } from "./agent-employment";
 import { AGENT_SELECTION_STORAGE_KEY, readAgentSelection, writeAgentSelection } from "./agent-selection";
 import { agentsPort } from "./agents-port";
 import {
@@ -302,7 +303,7 @@ const Agents = createSimpleContext({
         const index = current.findIndex((agent) => agent.id === next.id);
         if (index === -1) return [...current, createStoredProfile(next)];
         const existing = current[index];
-        if (existing) updateStored(existing, next);
+        if (existing) updateStored(existing, keepEmployment(next, existing));
         return current;
       });
     }
@@ -367,7 +368,7 @@ const Agents = createSimpleContext({
           const existingIndex = current.findIndex((agent) => agent.id === agentId);
           if (existingIndex === -1) return [...current, createStoredProfile(next)];
           const existing = current[existingIndex];
-          if (existing) updateStored(existing, next);
+          if (existing) updateStored(existing, keepEmployment(next, existing));
           return [...current];
         });
         analytics.track("agent_action", {
@@ -399,7 +400,7 @@ const Agents = createSimpleContext({
         setAgentList((current) => {
           const existing = current.find((agent) => agent.id === agentId);
           if (!existing) return [...current, createStoredProfile(next)];
-          updateStored(existing, next);
+          updateStored(existing, keepEmployment(next, existing));
           return current;
         });
         analytics.track("agent_action", {
