@@ -6,6 +6,20 @@ All notable changes to ZollyBot will be documented here. The project follows
 
 ## [Unreleased]
 
+## [0.66.8] - 2026-11-28
+
+### Added
+
+- Right-click the top bar or an office tab to refresh the office list, its agent counts, and the open workspace panels.
+- Close an office from the top-bar menu without deleting its files or agents, and open it again from Open existing office.
+- Attach an existing registered office or attach a folder from the same office menu.
+
+### Fixed
+
+- Changing an agent's model, provider, or avatar no longer removes it from its office in the sidebar. The roster update now keeps the agent's employment fields when the host answer omits them.
+- Keep the New office button fixed at the right edge of the top bar instead of scrolling with the office tabs.
+- The Lobby can no longer be closed; its close action is disabled.
+
 ## [0.66.7] - 2026-11-28
 
 ### Added
