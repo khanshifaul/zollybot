@@ -1,3 +1,4 @@
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import type { ScopedAgentEvent } from "@zollybot/contracts/ipc";
 import { describe, expect, it } from "vitest";
 import { decodeScopedAgentEvent } from "./agent-event-decoding";
@@ -206,7 +207,7 @@ describe("decodeScopedAgentEvent", () => {
     ["a side thread context with no thread", withThreadContexts([{ ...threadContext, threadId: undefined }])],
     [
       "more side thread contexts than the agents can have threads",
-      withThreadContexts(Array(100 * 50 + 1).fill(threadContext)),
+      withThreadContexts(Array(INPUT_LIMITS.agentRoster * INPUT_LIMITS.agentTasks + 1).fill(threadContext)),
     ],
     ["a value that is not a record", "event"],
   ])("rejects %s", (_name, value) => {
