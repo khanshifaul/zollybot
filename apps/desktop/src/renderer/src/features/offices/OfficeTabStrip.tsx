@@ -21,11 +21,12 @@ import { useServerScope } from "../servers/server-scope";
 
 const ACTIVE_OFFICE_KEY = "zollybot.office-strip.active";
 const CLOSED_OFFICE_KEY = "zollybot.office-strip.closed";
+const LOBBY_ID = "building";
 
 function readClosedOffices(): string[] {
   try {
     const value = JSON.parse(localStorage.getItem(CLOSED_OFFICE_KEY) ?? "[]");
-    return Array.isArray(value) ? value.filter((id): id is string => typeof id === "string") : [];
+    return Array.isArray(value) ? value.filter((id): id is string => typeof id === "string" && id !== LOBBY_ID) : [];
   } catch {
     return [];
   }
@@ -190,7 +191,7 @@ export function TopBar(props: TopBarProps = {}) {
   );
 
   function closeOffice(tab: OfficeTab): void {
-    if (tab.building) return;
+    if (tab.building || tab.id === LOBBY_ID) return;
     const closed = [...new Set([...closedIds(), tab.id])];
     setClosedIds(closed);
     localStorage.setItem(CLOSED_OFFICE_KEY, JSON.stringify(closed));
@@ -331,7 +332,8 @@ export function TopBar(props: TopBarProps = {}) {
                   {t("app.offices.openExisting")}
                 </DropdownMenu.Item>
                 <DropdownMenu.Item
-                  disabled={active() === "building"}
+                  disabled={active() === LOBBY_ID}
+                  title={active() === LOBBY_ID ? t("app.offices.closeOfficeHint") : undefined}
                   onSelect={() => {
                     const tab = tabs().find((item) => item.id === active());
                     if (tab) closeOffice(tab);
