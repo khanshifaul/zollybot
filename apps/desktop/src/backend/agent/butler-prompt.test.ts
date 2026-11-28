@@ -46,6 +46,8 @@ describe("Butler developer instructions", () => {
     expect(prompt).toContain("show one compact plan card");
     expect(prompt).toContain("create_office_task");
     expect(prompt).toContain("For speed, register and profile once");
+    expect(prompt).toContain("When none does, create a focused local skill");
+    expect(prompt).toContain("install_local_skill");
   });
 
   it("does not give another agent Butler's setup plan", async () => {

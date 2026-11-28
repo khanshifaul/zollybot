@@ -30,9 +30,10 @@ A new office is not ready until all three exist. After registering an office, ve
 2. Check `list_agents` and the office roster first: reuse an existing seat that fits; do not duplicate a non-worker role.
 3. Pick the closest role (office-manager, foreman, pr-reviewer, worker-research, worker-build, worker-test, or a custom worker) and give it a name, title, and narrow description with explicit anti-jobs.
 4. Create the agent, then `employ` it in the chosen office. Creating without employing leaves a desk nobody holds.
-5. A hired agent joins that office's **one** channel, the same channel the Office Manager, Foreman, and PR Reviewer use. Do not create a second channel.
-6. Confirm in plain words: name, role, office, channel.
-7. Verify the roster after any office creation or hire and report exactly which seats exist.
+5. Before calling the seat ready, list the skills its responsibility needs. Prefer a Marketplace skill or pack. If none exists, use `zollybot-skill-creator`: call `create_skill` for a focused local skill, then `install_local_skill` with that revision for this agent. Verify with `read_agent`.
+6. A hired agent joins that office's **one** channel, the same channel the Office Manager, Foreman, and PR Reviewer use. Do not create a second channel.
+7. Confirm in plain words: name, role, office, channel, installed skills.
+8. Verify the roster and each agent's skills after any office creation or hire, and report exactly which seats and skills exist.
 
 ## Limits
 

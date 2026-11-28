@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { accessSync, copyFileSync, mkdirSync, realpathSync } from "node:fs";
 import { cp, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import {
   type BundledLibrary,
@@ -60,7 +60,15 @@ const LINUX_BUNDLED_LIBRARIES: Readonly<Record<string, string>> = {
 
 const lock = await loadNativeRuntimeLock();
 const outputRoot = resolve("apps/desktop/build-resources/remote-desktop-runtime", platform, architecture);
-const workRoot = await mkdtemp(join(tmpdir(), "zollybot-remote-desktop-build-"));
+// /tmp is a small tmpfs on many Linux desktops. Sunshine plus Moonlight's Cargo target outgrow it,
+// and the linker then dies with SIGBUS from a truncated mmap instead of a clear ENOSPC. Build on the
+// home filesystem, where the same build has room, and let npm, Cargo and cc inherit the same temp.
+const buildTempRoot = resolve(
+  process.env.ZOLLYBOT_REMOTE_DESKTOP_TMPDIR ?? join(homedir(), ".cache", "zollybot", "remote-desktop-build"),
+);
+await mkdir(buildTempRoot, { recursive: true });
+process.env.TMPDIR = buildTempRoot;
+const workRoot = await mkdtemp(join(buildTempRoot, "run-"));
 
 try {
   const sunshineSource = await downloadAndExtract(
