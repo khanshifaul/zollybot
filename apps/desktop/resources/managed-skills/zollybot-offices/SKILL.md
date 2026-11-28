@@ -17,7 +17,8 @@ An office is a scoped workspace for a team of agents. Butler knows every office 
 ## Tools
 
 - `list_offices`: show registered and discovered offices.
-- `register_office`: register a directory as an office. Needs `path` (directory on this computer). Optional `name`.
+- `register_office`: register an existing directory as an office, or create a new one with `create: true`. Needs an absolute `path`; optional `name`. It returns a project profile with stack, entry points, data, tests, and commands.
+- `create_office_task`: create the project plan as an office task. Needs `officeId` when you are not in that office, `title`, and the full `brief`/plan. The dispatcher hands it to the Foreman; omit `agentId` and `roleKey`.
 - `open_office`: mark an office opened by `officeId`.
 - `list_channels`, `create_channel`, `update_channel`, `send_to_channel`: office channel.
 
@@ -43,6 +44,20 @@ Each office has exactly **one** channel, named after the office.
 - **New agents join the same channel.** Do not create a second channel for the same office.
 - Registration creates the channel and adds the mandatory roster. Verify it with `list_channels`; if it is missing, create it or add the missing members.
 - Channel purpose: the shared brief, task ownership, results, review, and evidence. It is not a private DM.
+
+## New project plan and handoff
+
+When the user asks for a new project or office:
+
+0. Before creating or changing anything, show one `ask_ui` plan card: numbered steps for the folder, files, office, mandatory seats, any workers, channel, and task, with Run/Edit. Wait for Run. Do not repeat the plan after approval.
+1. Confirm the absolute folder. For a new project, propose `~/Projects/<name>` and use `register_office` with `create: true` only after the user confirms. For an existing folder, use the path the user gave.
+2. Read the returned `office.profile`: languages, package manager, commands, entry points, data stores, tests, git branch and remote. Verify it against the files; do not invent a stack.
+3. Wait until `list_office_agents` shows the Office Manager, Foreman, and PR Reviewer, and the office channel exists. When the user asked for a staffed office, also employ the profile's suggested worker roles that fit the code and data (build, test, research), one per role.
+4. Write one plan with: goal, scope, non-goals, affected files and data, ordered steps, acceptance checks, exact verification commands, risks, and the first task for the Foreman.
+5. Call `create_office_task` with the office id, a short title, and that plan as `brief`. Do not assign it yourself; the office dispatcher hands queued work to the Foreman.
+6. Report the office, path, task id, and team status. Say implementation is queued or started only when a worker turn exists.
+
+Keep it fast: register and profile once, create the task before setup finishes (the dispatcher queues it), staff in one pass, and verify the roster and channel once. For an existing folder, the profile is a starting point, not permission to rewrite it. Preserve its stack, conventions, and commands unless the user asks to change them.
 
 ## Where a task lands
 
@@ -76,3 +91,5 @@ Use `send_to_channel` only when the work already belongs to a channel and has a 
 - Never register a path the user did not give or confirm.
 - Never report an office as staffed until Office Manager, Foreman, and PR Reviewer exist.
 - Never create a second channel for an office.
+- There is no fixed roster cap. Create or employ every seat the office needs; only 100 agents can work at once, and queued work waits.
+- Do not use the office's channel as an unowned inbox. Work goes through the Office Manager.

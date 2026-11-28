@@ -26,7 +26,7 @@ function isAgentApprovalPermissions(value: unknown): value is AgentApprovalPermi
 function isPathList(value: unknown): value is string[] {
   return (
     Array.isArray(value) &&
-    value.length <= INPUT_LIMITS.agents &&
+    value.length <= INPUT_LIMITS.agentRoster &&
     value.every((path) => isBoundedString(path, INPUT_LIMITS.path))
   );
 }
@@ -88,7 +88,8 @@ export function isApprovalAutomationPreference(value: unknown): value is Approva
   if (!isDynamicRecord(value.autoApproveOverrides)) return false;
   const entries = Object.entries(value.autoApproveOverrides);
   return (
-    entries.length <= INPUT_LIMITS.agents && entries.every(([id, enabled]) => isIdentifier(id) && isBoolean(enabled))
+    entries.length <= INPUT_LIMITS.agentRoster &&
+    entries.every(([id, enabled]) => isIdentifier(id) && isBoolean(enabled))
   );
 }
 

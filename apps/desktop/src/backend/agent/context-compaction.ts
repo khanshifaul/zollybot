@@ -195,7 +195,7 @@ export class ContextCompaction {
         const usage = display.usage && handoff ? { ...display.usage, autoCompactAt: null } : display.usage;
         return [{ agentId, threadId, usage, compaction: display.compaction }];
       })
-      .slice(0, INPUT_LIMITS.agents * INPUT_LIMITS.agentTasks);
+      .slice(0, INPUT_LIMITS.agentRoster * INPUT_LIMITS.agentTasks);
   }
 
   observeUsage(

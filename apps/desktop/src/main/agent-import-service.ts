@@ -385,9 +385,9 @@ export class AgentImportService {
     const selectedChannels = staged.channels.filter((channel) => input.channelKeys.includes(channel.key));
     if (selectedChannels.length !== input.channelKeys.length)
       return yield* archiveFailure(new Error(sourceText("error.import.channelNotInExport")));
-    if (this.agents.listAgents().length + selected.length > INPUT_LIMITS.agents)
+    if (this.agents.listAgents().length + selected.length > INPUT_LIMITS.agentRoster)
       return yield* archiveFailure(
-        new Error(sourceText("error.import.serverAgentLimit", { limit: INPUT_LIMITS.agents })),
+        new Error(sourceText("error.import.serverAgentLimit", { limit: INPUT_LIMITS.agentRoster })),
       );
 
     // The archive is read again rather than held since `stage`: an export can be hundreds of MB.

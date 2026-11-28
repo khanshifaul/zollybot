@@ -25,13 +25,26 @@ export function localModelLoaded(): boolean {
 }
 
 /** Loads a GGUF downloaded from Hugging Face through QVAC's llama.cpp addon. */
-export async function loadLocalModelFile(uri: string, onProgress: (progress: LocalLlmProgress) => void): Promise<void> {
+export async function loadLocalModelFile(
+  uri: string,
+  onProgress: (progress: LocalLlmProgress) => void,
+  projectionUri?: string,
+): Promise<void> {
   if (loaded && loadedKey === uri) return;
   if (loaded) await unloadLocalModel();
   const qvac = await sdk();
   loaded = await qvac.loadModel({
     modelSrc: localModelPath(uri),
     modelType: "llm",
+    ...(projectionUri
+      ? {
+          modelConfig: {
+            // A single image is tiled into hundreds of context tokens before the prompt starts.
+            ctx_size: 8192,
+            projectionModelSrc: localModelPath(projectionUri),
+          },
+        }
+      : {}),
     onProgress: (progress) => {
       onProgress({
         percentage: Number(progress.percentage ?? 0),

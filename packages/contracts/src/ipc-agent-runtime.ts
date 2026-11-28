@@ -267,17 +267,17 @@ export function isAgentRuntimeSnapshot(value: unknown): value is AgentRuntimeSna
   return (
     (value.contextStates === undefined ||
       (Array.isArray(value.contextStates) &&
-        value.contextStates.length <= INPUT_LIMITS.agents &&
+        value.contextStates.length <= INPUT_LIMITS.agentRoster &&
         value.contextStates.every(isAgentContextState))) &&
     (value.threadContextStates === undefined ||
       (Array.isArray(value.threadContextStates) &&
-        value.threadContextStates.length <= INPUT_LIMITS.agents * INPUT_LIMITS.agentTasks &&
+        value.threadContextStates.length <= INPUT_LIMITS.agentRoster * INPUT_LIMITS.agentTasks &&
         value.threadContextStates.every(isAgentContextState))) &&
     Array.isArray(value.agents) &&
-    value.agents.length <= INPUT_LIMITS.agents &&
+    value.agents.length <= INPUT_LIMITS.agentRoster &&
     value.agents.every(isAgentRuntimeRosterEntry) &&
     Array.isArray(value.activeTurns) &&
-    value.activeTurns.length <= INPUT_LIMITS.agents &&
+    value.activeTurns.length <= INPUT_LIMITS.agentRoster &&
     value.activeTurns.every(
       (turn) =>
         isDynamicRecord(turn) && isIdentifier(turn.agentId) && isIdentifier(turn.threadId) && isIdentifier(turn.turnId),
@@ -286,7 +286,7 @@ export function isAgentRuntimeSnapshot(value: unknown): value is AgentRuntimeSna
     value.work.length <= AGENT_RUNTIME_WORKING_ITEMS_LIMIT + AGENT_RUNTIME_ATTENTION_LIMIT &&
     value.work.every(isRuntimeWorkItem) &&
     Array.isArray(value.latestMessages) &&
-    value.latestMessages.length <= INPUT_LIMITS.agents &&
+    value.latestMessages.length <= INPUT_LIMITS.agentRoster &&
     value.latestMessages.every(
       (message) =>
         isDynamicRecord(message) &&
@@ -308,13 +308,13 @@ export function isAgentRuntimeSnapshot(value: unknown): value is AgentRuntimeSna
     value.pendingPrompts.length + value.pendingApprovals.length + value.pendingBrowserTakeovers.length <=
       AGENT_RUNTIME_ATTENTION_LIMIT &&
     Array.isArray(value.failedTurns) &&
-    value.failedTurns.length <= INPUT_LIMITS.agents &&
+    value.failedTurns.length <= INPUT_LIMITS.agentRoster &&
     value.failedTurns.every(
       (turn) => isDynamicRecord(turn) && isIdentifier(turn.agentId) && isIdentifier(turn.turnId),
     ) &&
     (value.usageLimits === undefined ||
       (Array.isArray(value.usageLimits) &&
-        value.usageLimits.length <= INPUT_LIMITS.agents &&
+        value.usageLimits.length <= INPUT_LIMITS.agentRoster &&
         value.usageLimits.every(
           (limit) =>
             isDynamicRecord(limit) &&
@@ -323,11 +323,11 @@ export function isAgentRuntimeSnapshot(value: unknown): value is AgentRuntimeSna
         ))) &&
     (value.usageLimitedModels === undefined ||
       (Array.isArray(value.usageLimitedModels) &&
-        value.usageLimitedModels.length <= INPUT_LIMITS.agents &&
+        value.usageLimitedModels.length <= INPUT_LIMITS.agentRoster &&
         value.usageLimitedModels.every(isAgentModelChoice))) &&
     (value.subagentTurns === undefined ||
       (Array.isArray(value.subagentTurns) &&
-        value.subagentTurns.length <= INPUT_LIMITS.agents &&
+        value.subagentTurns.length <= INPUT_LIMITS.agentRoster &&
         value.subagentTurns.every(
           (turn) => isDynamicRecord(turn) && isIdentifier(turn.agentId) && isIdentifier(turn.turnId),
         )))

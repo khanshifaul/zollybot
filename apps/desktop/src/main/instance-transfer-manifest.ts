@@ -135,7 +135,10 @@ const Settings = Schema.Struct({
     }),
   ).check(Schema.isMaxLength(32)),
   sidebarSections: Schema.Array(
-    Schema.Struct({ name: name(128), agentKeys: Schema.Array(Key).check(Schema.isMaxLength(INPUT_LIMITS.agents)) }),
+    Schema.Struct({
+      name: name(128),
+      agentKeys: Schema.Array(Key).check(Schema.isMaxLength(INPUT_LIMITS.agentRoster)),
+    }),
   ).check(Schema.isMaxLength(64)),
   routineFlows: Schema.Array(
     Schema.Struct({
@@ -153,7 +156,7 @@ const Manifest = Schema.Struct({
   format: Schema.Literal(INSTANCE_TRANSFER_FORMAT),
   version: Schema.Number,
   source: Schema.Struct({ appVersion: text(64), exportedAt: Schema.NullOr(text(64)) }),
-  agents: Schema.Array(Schema.Unknown).check(Schema.isMaxLength(INPUT_LIMITS.agents)),
+  agents: Schema.Array(Schema.Unknown).check(Schema.isMaxLength(INPUT_LIMITS.agentRoster)),
   settings: Schema.NullOr(Schema.Unknown),
   shared: Schema.NullOr(Schema.Literal(SHARED_FOLDER)),
   /** Providers that were signed in on the computer that made the file. Never a token. */

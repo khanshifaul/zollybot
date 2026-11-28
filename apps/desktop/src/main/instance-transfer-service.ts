@@ -630,9 +630,9 @@ export class InstanceTransferService {
     const selected = staged.manifest.agents.filter((agent) => input.keys.includes(agent.key));
     if (selected.length !== input.keys.length)
       return yield* archiveFailure(new Error(sourceText("error.import.agentNotInExport")));
-    if (this.options.agents.listAgents().length + selected.length > INPUT_LIMITS.agents)
+    if (this.options.agents.listAgents().length + selected.length > INPUT_LIMITS.agentRoster)
       return yield* archiveFailure(
-        new Error(sourceText("error.import.serverAgentLimit", { limit: INPUT_LIMITS.agents })),
+        new Error(sourceText("error.import.serverAgentLimit", { limit: INPUT_LIMITS.agentRoster })),
       );
     // The file is read again rather than held since `stage`, and only the same bytes are accepted.
     const bytes = yield* readArchiveEffect(staged.path, staged.temporary ? REMOTE_ARCHIVE : ARCHIVE);

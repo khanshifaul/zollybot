@@ -281,6 +281,7 @@ import { isAnswer, MessagingThreads, toMessagingThreadFailed } from "./messaging
 import type { OfficeTaskStore } from "./office-tasks/office-task-store";
 import { createTaskWorktree } from "./office-tasks/worktree";
 import { OfficeMemories } from "./offices/office-memory-store";
+import { detectOfficeProject } from "./offices/office-profile";
 import {
   isRoleEmployed,
   listEmployments,
@@ -530,9 +531,10 @@ export type AgentUpdate = UpdateAgentInput & {
 };
 
 const BUTLER_DESCRIPTION =
-  "Building concierge. Lists, creates, and opens offices, and staffs each with a full roster. Learns your preferences. Never reads office chats or approves gates.";
+  "Building concierge and the owner's first agent. Learns durable preferences and keeps them current; lists, registers, and opens offices; staffs each with an Office Manager, Foreman, PR Reviewer, and the workers it needs; verifies every seat and the one office channel before reporting ready. Routes work to the right office manager. Never reads office chats or approves merge gates.";
 /** The seeded text this build replaces. A Butler the user edited keeps its description. */
 const LEGACY_BUTLER_DESCRIPTIONS = new Set([
+  "Building concierge. Lists, creates, and opens offices, and staffs each with a full roster. Learns your preferences. Never reads office chats or approves gates.",
   BUTLER_DESCRIPTION,
   "The building's concierge. Knows which offices exist, opens and creates them, and staffs each office with Office Manager (or Manager), Team Leader (Foreman), PR Reviewer, and specialized Worker agents (Research, Build, Test, and others needed). Reads no office chats and approves no gate.",
   "The building's concierge and the founder's first agent. The user teaches Butler about themself, business, work, and environment. Butler learns from that teaching, keeps its own instructions up to date, and can change its provider, model, and reasoning effort when the user asks. Butler knows offices, can create/open offices, and staffs each office with a full roster: Office Manager (or Manager), Team Leader (Foreman), PR Reviewer, and specialized Worker agents (Research, Build, Test, and others needed). Butler never reads office chats and never approves gates.",
@@ -4274,6 +4276,7 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
     }
     if (options.setup === false) return;
     if (!manager) return;
+    const profile = detectOfficeProject(office.repoPath, office.name);
     yield* this.startTask(
       {
         agentId: manager.id,
@@ -4281,7 +4284,10 @@ export class AgentService extends EventEmitter<AgentServiceEvents> {
           `Office setup: ${office.name}`,
           `Repository: ${office.repoPath}`,
           "",
-          "Inspect this repository before any product work: read its manifests (package.json, pyproject.toml, Cargo.toml, go.mod, Makefile), detect the toolchain and required commands, install/verify dependencies when safe, and record the setup facts and verification commands in office memory.",
+          "The folder already reports this state. Verify it before relying on it:",
+          profile.summary,
+          "",
+          "Inspect the repository before any product work: confirm the stack, entry points, data stores, test and build commands, install/verify dependencies when safe, and record the setup facts and verification commands in office memory.",
           "Then write the office brief and the gate list. Do not write product code.",
         ].join("\n"),
       },

@@ -39,7 +39,7 @@ export function isHiddenAgentsSnapshot(value: unknown): value is HiddenAgentsSna
   return (
     isDynamicRecord(value) &&
     Array.isArray(value.agents) &&
-    value.agents.length <= INPUT_LIMITS.agents &&
+    value.agents.length <= INPUT_LIMITS.agentRoster &&
     value.agents.every(isHiddenAgent) &&
     new Set(value.agents.map((agent) => agent.agentId)).size === value.agents.length
   );

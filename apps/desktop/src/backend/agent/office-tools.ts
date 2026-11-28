@@ -1,5 +1,6 @@
+import { mkdirSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { isAbsolute, join, relative, resolve } from "node:path";
 import { Effect } from "effect";
 import { z } from "zod";
 import { ensureOfficeMarker } from "../office-state/office-marker";
@@ -7,6 +8,7 @@ import { writeOfficeStateSnapshot } from "../office-state/office-state-export";
 import type { OfficeTaskStore } from "../office-tasks/office-task-store";
 import { discoverOffices, officeFromPath } from "../offices/office-catalog";
 import { importOfficeMemoryMarkdown } from "../offices/office-memory-import";
+import { detectOfficeProject } from "../offices/office-profile";
 import { listEmployments, listOffices, upsertOffice } from "../offices/office-store";
 import type { DynamicToolCallParams } from "../protocol";
 import type { ZollyBotDatabase } from "../zollybot-database";
@@ -18,6 +20,7 @@ export const MANDATORY_OFFICE_ROLES = ["office-manager", "foreman", "pr-reviewer
 const registerOfficeSchema = z.strictObject({
   path: z.string().trim().min(1),
   name: z.string().trim().min(1).max(200).optional(),
+  create: z.boolean().optional(),
 });
 const openOfficeSchema = z.strictObject({ officeId: z.string().trim().min(1) });
 const officeTaskSchema = z.strictObject({ taskId: z.string().trim().min(1) });
@@ -31,6 +34,14 @@ const assignOfficeTaskSchema = z.strictObject({
   roleKey: z.string().trim().min(1).optional(),
   brief: z.string().trim().max(8000).optional(),
 });
+const createOfficeTaskSchema = z.strictObject({
+  officeId: z.string().trim().min(1).optional(),
+  title: z.string().trim().min(1).max(200),
+  brief: z.string().trim().min(1).max(32_000),
+  priority: z.number().int().min(0).max(100).optional(),
+  agentId: z.string().trim().min(1).optional(),
+  roleKey: z.string().trim().min(1).optional(),
+});
 const listSchema = z.strictObject({});
 
 export const OFFICE_TOOL_DEFINITIONS = [
@@ -43,13 +54,19 @@ export const OFFICE_TOOL_DEFINITIONS = [
   {
     name: "register_office",
     description:
-      "Register a directory on this computer as an office. Provide path (absolute directory path) and optionally a name. Registration also employs the mandatory roster: Office Manager, Foreman (team leader), and PR Reviewer.",
+      "Register an existing project folder as an office, or create and register a new one. Provide an absolute path and optionally a name; set create true only for a new folder under ~/Projects. Registration profiles the code and data, then starts the mandatory roster: Office Manager, Foreman, and PR Reviewer.",
     shape: registerOfficeSchema.shape,
   },
   {
     name: "open_office",
     description: "Mark an existing office as opened by id.",
     shape: openOfficeSchema.shape,
+  },
+  {
+    name: "create_office_task",
+    description:
+      "Create a project plan as an office ledger task and hand it to the office team. Provide officeId when you are not employed in that office, title, and the full brief or plan. The office dispatcher starts the Foreman automatically. Optionally name agentId or roleKey to skip the dispatcher.",
+    shape: createOfficeTaskSchema.shape,
   },
   {
     name: "list_office_tasks",
@@ -100,7 +117,11 @@ export interface OfficeTaskHandlers {
 
 export interface OfficeTools {
   list(): readonly unknown[];
-  register(path: string, name: string | null): { ok: boolean; office?: unknown; error?: string };
+  register(path: string, name: string | null, create?: boolean): { ok: boolean; office?: unknown; error?: string };
+  createTask(
+    input: { officeId?: string; title: string; brief: string; priority?: number; agentId?: string; roleKey?: string },
+    actorAgentId: string,
+  ): { ok: boolean; task?: unknown; assignedAgentId?: string; error?: string };
   open(id: string): unknown | null;
   listTasks(agentId: string): readonly unknown[];
   listOfficeAgents(agentId: string): readonly unknown[];
@@ -164,10 +185,25 @@ export function officeToolsFromDatabase(
         ...discovered,
       ];
     },
-    register(path, name) {
-      const found = officeFromPath(path);
+    register(path, name, create = false) {
+      if (!isAbsolute(path)) return { ok: false as const, error: "Give an absolute path." };
+      const target = resolve(path);
+      const home = homedir();
+      const fromHome = relative(home, target);
+      if (create && (fromHome.startsWith("..") || isAbsolute(fromHome))) {
+        return { ok: false as const, error: "Create a new office under your home folder." };
+      }
+      if (create && !officeFromPath(target)) {
+        try {
+          mkdirSync(target, { recursive: true, mode: 0o700 });
+        } catch {
+          return { ok: false as const, error: "The folder could not be created." };
+        }
+      }
+      const found = officeFromPath(target);
       if (!found) return { ok: false as const, error: "That path is not a directory." };
       const officeName = name ?? found.name;
+      const profile = detectOfficeProject(found.path, officeName);
       upsertOffice(db, {
         id: found.id,
         repoPath: found.path,
@@ -186,7 +222,60 @@ export function officeToolsFromDatabase(
       // Every office opens with its mandatory roster before any worker is hired.
       onRegistered?.(found.id);
       Effect.runFork(importOfficeMemoryMarkdown(database, found.id, found.path).pipe(Effect.catch(() => Effect.void)));
-      return { ok: true as const, office: { ...found, name: officeName, agents: 0, hasAgents: true } };
+      return {
+        ok: true as const,
+        office: { ...found, name: officeName, agents: 0, hasAgents: true, profile },
+        staffing: "started",
+        next: "The mandatory roster and office setup start now. Call list_office_agents until Office Manager, Foreman, and PR Reviewer appear, then create_office_task with the project plan.",
+      };
+    },
+    createTask(input, actorAgentId) {
+      if (!officeTasks) return { ok: false, error: "The office ledger is not available." };
+      const actorEmployment = listEmployments(db).find((employment) => employment.agentId === actorAgentId);
+      const officeId = input.officeId ?? actorEmployment?.officeId ?? null;
+      if (!officeId) return { ok: false, error: "Pass officeId: you are not employed in an office." };
+      if (actorEmployment && actorEmployment.scope !== "building" && actorEmployment.officeId !== officeId) {
+        return { ok: false, error: "You can create tasks only in your own office." };
+      }
+      if (
+        actorEmployment &&
+        actorEmployment.scope !== "building" &&
+        !["office-manager", "foreman", "zolly"].includes(actorEmployment.roleKey)
+      ) {
+        return { ok: false, error: "Only the Office Manager or Foreman can plan and hand off office work." };
+      }
+      const task = officeTasks.create({
+        officeId,
+        title: input.title,
+        brief: input.brief,
+        priority: input.priority,
+        createdBy: actorAgentId,
+        source: "agent-plan",
+      });
+      let assignedAgentId: string | undefined;
+      if ((input.agentId || input.roleKey) && taskHandlers) {
+        const assigned = taskHandlers.assign(
+          task.id,
+          { agentId: input.agentId, roleKey: input.roleKey, brief: input.brief },
+          actorAgentId,
+        );
+        if (!assigned.ok)
+          return { ok: false, error: assigned.error ?? "The task was created but could not be assigned." };
+        assignedAgentId = assigned.agentId;
+      }
+      return {
+        ok: true,
+        task: {
+          id: task.id,
+          title: task.title,
+          status: task.status,
+          officeId: task.officeId,
+          assignedAgentId: assignedAgentId ?? null,
+        },
+        next: assignedAgentId
+          ? "The named worker started on it."
+          : "The office dispatcher hands queued work to the Foreman within one tick.",
+      };
     },
     open(id) {
       const office = listOffices(db).find((candidate) => candidate.id === id);
@@ -279,6 +368,7 @@ export function handleOfficeTool(
     tool !== "list_offices" &&
     tool !== "register_office" &&
     tool !== "open_office" &&
+    tool !== "create_office_task" &&
     tool !== "list_office_tasks" &&
     tool !== "list_office_agents" &&
     tool !== "assign_office_task" &&
@@ -299,12 +389,18 @@ export function handleOfficeTool(
     if (tool === "register_office") {
       const p = registerOfficeSchema.safeParse(args);
       if (!p.success) return zollyBotToolFailure("Give path and optional name for register_office.");
-      return zollyBotToolResult(tools.register(p.data.path, p.data.name ?? null));
+      return zollyBotToolResult(tools.register(p.data.path, p.data.name ?? null, p.data.create === true));
     }
     if (tool === "open_office") {
       const p = openOfficeSchema.safeParse(args);
       if (!p.success) return zollyBotToolFailure("Give officeId for open_office.");
       return zollyBotToolResult({ office: tools.open(p.data.officeId) });
+    }
+    if (tool === "create_office_task") {
+      const p = createOfficeTaskSchema.safeParse(args);
+      if (!p.success)
+        return zollyBotToolFailure("Give title and brief, plus officeId when you are not in that office.");
+      return zollyBotToolResult(tools.createTask(p.data, senderAgentId));
     }
     if (tool === "list_office_tasks") {
       const p = listSchema.safeParse(args);

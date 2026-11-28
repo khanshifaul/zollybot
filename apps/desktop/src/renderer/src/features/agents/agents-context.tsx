@@ -219,6 +219,10 @@ const Agents = createSimpleContext({
         const next = typeof value === "function" ? value(current) : value;
         savedAgentId = "";
         if (!chatWindowAgentId) writeAgentSelection(AGENT_SELECTION_STORAGE_KEY, selectionServerId, next);
+        // The sidebar shows one office at a time. Opening an agent from another office moves the
+        // office tab with it, so the agent does not vanish from the roster as soon as it is opened.
+        const opened = agentList().find((agent) => agent.id === next);
+        if (opened) setActiveOfficeId(opened.officeId ?? (isButler(opened) ? "building" : null));
         return next;
       });
     }

@@ -82,8 +82,8 @@ export function decodeImportManifest(
   const exportedAt =
     isBoundedString(source.exportedAt, 64) && !Number.isNaN(Date.parse(source.exportedAt)) ? source.exportedAt : null;
   if (!Array.isArray(value.agents) || value.agents.length === 0) throw new Error(sourceText("error.import.noAgents"));
-  if (value.agents.length > INPUT_LIMITS.agents)
-    throw new Error(sourceText("error.import.tooManyAgents", { limit: INPUT_LIMITS.agents }));
+  if (value.agents.length > INPUT_LIMITS.agentRoster)
+    throw new Error(sourceText("error.import.tooManyAgents", { limit: INPUT_LIMITS.agentRoster }));
 
   const warnings: string[] = [];
   const keys = new Set<string>();
@@ -132,7 +132,7 @@ function decodeChannel(
   if (!isBoundedString(title, INPUT_LIMITS.agentTitle)) invalidChannelField(key, "title");
   const instructions = value.instructions === undefined || value.instructions === null ? "" : value.instructions;
   if (!isBoundedString(instructions, INPUT_LIMITS.agentDescription)) invalidChannelField(key, "instructions");
-  if (!Array.isArray(value.members) || value.members.length > INPUT_LIMITS.agents)
+  if (!Array.isArray(value.members) || value.members.length > INPUT_LIMITS.agentRoster)
     invalidChannelField(key, "member list");
   const members = [...new Set(value.members.filter(isString))];
   const known = members.filter((member) => agentKeys.has(member));

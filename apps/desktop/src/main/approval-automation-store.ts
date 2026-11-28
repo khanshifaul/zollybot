@@ -55,7 +55,7 @@ export const readApprovalAutomation = Effect.fn("ApprovalAutomation.read")(funct
   }
   if (parsed.version === 1 && isBoolean(parsed.turbo)) {
     const ids = parsed.autoApproveAgentIds;
-    if (Array.isArray(ids) && ids.length <= INPUT_LIMITS.agents && ids.every(isString)) {
+    if (Array.isArray(ids) && ids.length <= INPUT_LIMITS.agentRoster && ids.every(isString)) {
       if (parsed.turbo) return yield* writeApprovalAutomation(path, TURBO_ON);
       const granted = new Set(ids);
       // Snapshot every existing choice before enabling the default for future agents.

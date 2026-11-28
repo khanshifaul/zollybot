@@ -3,6 +3,8 @@ import type { QueueDelivery } from "@zollybot/contracts/ipc";
 export interface TurnSlotsOptions {
   /** The most turns that run at the same time, or null for no limit. */
   limit(): number | null;
+  /** The most agents with a running turn, or null for no limit. A task of a working agent does not add one. */
+  agentLimit(): number | null;
   /**
    * The key of each queue that runs one turn at a time: an agent's own chat, and each of its tasks.
    * A lane key sorts as its agent id does, so a tie in age goes the same way as before tasks.
@@ -14,6 +16,10 @@ export interface TurnSlotsOptions {
   isWaiting(lane: string): boolean;
   /** The delivery at the head of the lane's queue. */
   head(lane: string): QueueDelivery | null;
+  /** The agent that owns the lane. */
+  agentOf(lane: string): string;
+  /** Whether any lane of this agent runs a turn, starts one, or compacts its context. */
+  isAgentRunning(agentId: string): boolean;
 }
 
 /**
@@ -33,6 +39,14 @@ export class TurnSlots {
   }
 
   mayStart(lane: string): boolean {
+    const agentLimit = this.#options.agentLimit();
+    if (agentLimit !== null && !this.#options.isAgentRunning(this.#options.agentOf(lane))) {
+      const workingAgents = new Set<string>();
+      for (const other of this.#options.lanes()) {
+        if (this.#options.isRunning(other)) workingAgents.add(this.#options.agentOf(other));
+      }
+      if (workingAgents.size >= agentLimit) return false;
+    }
     const limit = this.#options.limit();
     if (limit === null) return true;
     const lanes = this.#options.lanes();

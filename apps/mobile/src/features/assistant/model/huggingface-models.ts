@@ -26,6 +26,10 @@ export interface InstalledModel {
   name: string;
   size: number;
   uri: string;
+  kind: "text" | "vision";
+  projectionFile?: string;
+  projectionSize?: number;
+  projectionUri?: string;
   downloadedAt: number;
 }
 
@@ -67,10 +71,11 @@ interface HuggingFaceStore {
   searching: boolean;
   error: string | null;
   search: (query: string) => Promise<void>;
+  clearResults: () => void;
   files: (repo: string, signal?: AbortSignal) => Promise<HuggingFaceFile[]>;
-  download: (repo: string, file: HuggingFaceFile) => Promise<void>;
+  download: (repo: string, file: HuggingFaceFile, projection?: HuggingFaceFile) => Promise<void>;
   pauseDownload: (key: string) => Promise<void>;
-  resumeDownload: (repo: string, file: HuggingFaceFile) => Promise<void>;
+  resumeDownload: (repo: string, file: HuggingFaceFile, projection?: HuggingFaceFile) => Promise<void>;
   cancelDownload: (key: string) => Promise<void>;
   remove: (model: InstalledModel) => Promise<void>;
   select: (key: string | null) => Promise<void>;
@@ -223,7 +228,11 @@ function isInstalled(value: unknown): value is InstalledModel {
     typeof value.name === "string" &&
     typeof value.size === "number" &&
     typeof value.uri === "string" &&
-    typeof value.downloadedAt === "number"
+    typeof value.downloadedAt === "number" &&
+    (value.kind === undefined || value.kind === "text" || value.kind === "vision") &&
+    (value.projectionFile === undefined || typeof value.projectionFile === "string") &&
+    (value.projectionSize === undefined || typeof value.projectionSize === "number") &&
+    (value.projectionUri === undefined || typeof value.projectionUri === "string")
   );
 }
 
@@ -252,11 +261,14 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
     }));
   };
 
-  const startDownload = async (repo: string, file: HuggingFaceFile) => {
+  const startDownload = async (repo: string, file: HuggingFaceFile, projection?: HuggingFaceFile) => {
     const key = keyOf(repo, file.name);
     if (jobs.has(key)) return;
     if (!isRepo(repo) || !isFilePath(file.name)) throw new Error("The model path is invalid.");
     if (!file.sha256) throw new Error("Hugging Face did not publish a checksum for this file.");
+    if (projection && (!isFilePath(projection.name) || !projection.sha256)) {
+      throw new Error("The vision projector is incomplete.");
+    }
 
     const directory = folderOf(repo);
     directory.create({ intermediates: true, idempotent: true });
@@ -269,7 +281,8 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
     }
     if (!saved && partial.exists) partial.delete();
 
-    if (file.size > 0 && Paths.availableDiskSpace < file.size + FREE_SPACE_MARGIN) {
+    const requiredBytes = file.size + (projection?.size ?? 0);
+    if (requiredBytes > 0 && Paths.availableDiskSpace < requiredBytes + FREE_SPACE_MARGIN) {
       throw new Error("There is not enough free space to download this model.");
     }
 
@@ -354,6 +367,44 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
       const destination = fileOf(repo, file.name, true);
       if (destination.exists) destination.delete();
       await partial.move(destination);
+      let projectionFile: string | undefined;
+      let projectionSize: number | undefined;
+      let projectionUri: string | undefined;
+      if (projection) {
+        // A vision GGUF is useless without its projector, so fetch the pair before installing it.
+        updateDownload(key, { phase: "verifying", progress: 1, eta: null, speed: 0 });
+        const projectionPartial = fileOf(repo, `${projection.name}.download`, true);
+        if (projectionPartial.exists) projectionPartial.delete();
+        const projectionDownload = FileSystem.createDownloadResumable(
+          downloadUrl(repo, projection.name),
+          projectionPartial.uri,
+          { headers: { "User-Agent": "ZollyBot" } },
+        );
+        await projectionDownload.downloadAsync();
+        const projectionInfo = await FileSystem.getInfoAsync(projectionPartial.uri);
+        const projectionWritten = projectionInfo.exists && "size" in projectionInfo ? (projectionInfo.size ?? 0) : 0;
+        if (
+          projection.size > 0 &&
+          Math.abs(projectionWritten - projection.size) > Math.max(1024 * 1024, projection.size * 0.01)
+        ) {
+          throw new Error("The downloaded projector size does not match Hugging Face.");
+        }
+        const projectionMagic = await FileSystem.readAsStringAsync(projectionPartial.uri, {
+          encoding: FileSystem.EncodingType.Base64,
+          length: 4,
+          position: 0,
+        }).catch(() => "");
+        if (projectionMagic !== "R0dVRg==") throw new Error("The downloaded projector is not a GGUF model.");
+        if ((await projectionPartial.digest("SHA-256")).toLowerCase() !== projection.sha256?.toLowerCase()) {
+          throw new Error("The downloaded projector did not match its Hugging Face checksum.");
+        }
+        const projectionDestination = fileOf(repo, projection.name, true);
+        if (projectionDestination.exists) projectionDestination.delete();
+        await projectionPartial.move(projectionDestination);
+        projectionFile = projection.name;
+        projectionSize = projection.size || projectionWritten;
+        projectionUri = projectionDestination.uri;
+      }
       const installed = [
         ...get().installed.filter((model) => model.key !== key),
         {
@@ -363,6 +414,8 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
           name: `${repo.split("/").at(-1) ?? repo} · ${file.quantization}`,
           size: file.size || written,
           uri: destination.uri,
+          kind: projection ? ("vision" as const) : ("text" as const),
+          ...(projectionFile && projectionUri ? { projectionFile, projectionSize, projectionUri } : {}),
           downloadedAt: Date.now(),
         },
       ];
@@ -378,6 +431,7 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
     } catch (cause) {
       jobs.delete(key);
       partial.delete();
+      if (projection) fileOf(repo, `${projection.name}.download`, true).delete();
       await saveDownload(key, null);
       const current = get().downloads[key];
       if (current?.phase === "paused" || current?.phase === "idle") return;
@@ -463,6 +517,9 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
       await SELECTED_VISION.write(JSON.stringify(visionSelectedKey));
       set({ visionSelectedKey });
     },
+    clearResults() {
+      set({ results: [], error: null });
+    },
     async search(query) {
       const text = query.trim();
       if (!text) return;
@@ -529,9 +586,9 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
         })
         .sort((a, b) => a.size - b.size || a.name.localeCompare(b.name));
     },
-    async download(repo, file) {
+    async download(repo, file, projection) {
       try {
-        await startDownload(repo, file);
+        await startDownload(repo, file, projection);
       } catch (cause) {
         updateDownload(keyOf(repo, file.name), {
           phase: "failed",
@@ -565,8 +622,8 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
         });
       }
     },
-    async resumeDownload(repo, file) {
-      await startDownload(repo, file);
+    async resumeDownload(repo, file, projection) {
+      await startDownload(repo, file, projection);
     },
     async cancelDownload(key) {
       const job = jobs.get(key);
@@ -584,6 +641,11 @@ export const useHuggingFaceModels = create<HuggingFaceStore>((set, get) => {
       const file = fileOf(model.repo, model.file);
       if (file.exists) file.delete();
       fileOf(model.repo, `${model.file}.download`).delete();
+      if (model.projectionFile) {
+        const projection = fileOf(model.repo, model.projectionFile);
+        if (projection.exists) projection.delete();
+        fileOf(model.repo, `${model.projectionFile}.download`).delete();
+      }
       await saveDownload(model.key, null);
       const installed = get().installed.filter((item) => item.key !== model.key);
       await writeIndex(installed);

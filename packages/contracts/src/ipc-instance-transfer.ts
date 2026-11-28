@@ -123,7 +123,7 @@ function isUniqueList<T extends string>(
 
 export function parseExportInstanceInput(value: unknown): ExportInstanceInput {
   const input = record(value, "export request");
-  if (!isUniqueList(input.agentIds, INPUT_LIMITS.agents, isIdentifier) || input.agentIds.length === 0)
+  if (!isUniqueList(input.agentIds, INPUT_LIMITS.agentRoster, isIdentifier) || input.agentIds.length === 0)
     invalid("agent selection");
   if (!isBoolean(input.includeFiles) || !isBoolean(input.includeSettings)) invalid("export request");
   return { agentIds: input.agentIds, includeFiles: input.includeFiles, includeSettings: input.includeSettings };
@@ -132,7 +132,7 @@ export function parseExportInstanceInput(value: unknown): ExportInstanceInput {
 export function parseApplyInstanceTransferInput(value: unknown): ApplyInstanceTransferInput {
   const input = record(value, "import request");
   if (!isIdentifier(input.token)) invalid("import token");
-  if (!isUniqueList(input.keys, INPUT_LIMITS.agents, isAgentImportKey)) invalid("agent selection");
+  if (!isUniqueList(input.keys, INPUT_LIMITS.agentRoster, isAgentImportKey)) invalid("agent selection");
   if (!isBoolean(input.includeSettings)) invalid("import request");
   if (input.keys.length === 0 && !input.includeSettings) invalid("import request");
   return { token: input.token, keys: input.keys, includeSettings: input.includeSettings };
@@ -166,7 +166,7 @@ function decodeTransferAgent(value: unknown): InstanceTransferAgent {
 
 export function decodeInstanceTransferSummary(value: unknown): InstanceTransferSummary {
   const summary = record(value, "transfer summary");
-  if (!Array.isArray(summary.agents) || summary.agents.length > INPUT_LIMITS.agents) invalid("transfer summary");
+  if (!Array.isArray(summary.agents) || summary.agents.length > INPUT_LIMITS.agentRoster) invalid("transfer summary");
   return { agents: summary.agents.map(decodeTransferAgent) };
 }
 
@@ -184,7 +184,7 @@ export function decodeInstanceTransferPreview(value: unknown): InstanceTransferP
     !isBoundedString(preview.appVersion, INSTANCE_TRANSFER_LIMITS.appVersion) ||
     !isNullableBoundedString(preview.exportedAt, 64) ||
     !Array.isArray(preview.agents) ||
-    preview.agents.length > INPUT_LIMITS.agents ||
+    preview.agents.length > INPUT_LIMITS.agentRoster ||
     !isBoolean(preview.hasSettings)
   )
     invalid("transfer preview");

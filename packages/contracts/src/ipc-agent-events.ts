@@ -228,7 +228,7 @@ export function isAgentEvent(value: unknown): value is AgentEvent {
     case "agents-changed":
       return (
         Array.isArray(value.agents) &&
-        value.agents.length <= INPUT_LIMITS.agents &&
+        value.agents.length <= INPUT_LIMITS.agentRoster &&
         value.agents.every(isClientAgentSummary)
       );
     case "memories-changed":

@@ -153,7 +153,7 @@ export function parseApplyAgentImportInput(value: unknown): ApplyAgentImportInpu
   if (
     !Array.isArray(input.keys) ||
     input.keys.length === 0 ||
-    input.keys.length > INPUT_LIMITS.agents ||
+    input.keys.length > INPUT_LIMITS.agentRoster ||
     !input.keys.every(isAgentImportKey) ||
     new Set(input.keys).size !== input.keys.length
   )
@@ -177,7 +177,7 @@ function decodePreviewChannel(value: unknown): AgentImportPreviewChannel {
     !isAgentImportKey(channel.key) ||
     !isBoundedString(channel.name, INPUT_LIMITS.agentName) ||
     !isBoundedString(channel.title, INPUT_LIMITS.agentTitle) ||
-    !isKeyList(channel.memberKeys, INPUT_LIMITS.agents) ||
+    !isKeyList(channel.memberKeys, INPUT_LIMITS.agentRoster) ||
     (channel.leadKey !== null && !(isString(channel.leadKey) && channel.memberKeys.includes(channel.leadKey)))
   )
     invalid("imported channel");
@@ -240,7 +240,7 @@ export function decodeAgentImportPreview(value: unknown): AgentImportPreview | n
     !isBoundedString(preview.sourceApp, AGENT_IMPORT_LIMITS.sourceApp) ||
     !isNullableBoundedString(preview.exportedAt, 64) ||
     !Array.isArray(preview.agents) ||
-    preview.agents.length > INPUT_LIMITS.agents ||
+    preview.agents.length > INPUT_LIMITS.agentRoster ||
     !Array.isArray(preview.channels) ||
     preview.channels.length > AGENT_IMPORT_LIMITS.channels
   )

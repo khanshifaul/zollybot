@@ -26,17 +26,23 @@ A new office is not ready until all three exist. After registering an office, ve
 
 ## How to act
 
-1. Clarify the role and which office it belongs to.
-2. Use the role catalog to pick a fitting role (office-manager, foreman, pr-reviewer, worker-research, worker-build, worker-test, etc.).
-3. Create the agent with a clear name, title, and description.
-4. Employ it in the chosen office.
-5. A hired agent joins that office's **one** channel, the same channel the Office Manager, Foreman, and PR Reviewer use. Do not create a second channel for the office.
-6. Confirm the hire in plain words: name, role, office, channel.
-7. Verify the roster after any office creation or hire. Report exactly which seats exist.
+1. Clarify the role, its one job, and which office it belongs to.
+2. Check `list_agents` and the office roster first: reuse an existing seat that fits; do not duplicate a non-worker role.
+3. Pick the closest role (office-manager, foreman, pr-reviewer, worker-research, worker-build, worker-test, or a custom worker) and give it a name, title, and narrow description with explicit anti-jobs.
+4. Create the agent, then `employ` it in the chosen office. Creating without employing leaves a desk nobody holds.
+5. A hired agent joins that office's **one** channel, the same channel the Office Manager, Foreman, and PR Reviewer use. Do not create a second channel.
+6. Confirm in plain words: name, role, office, channel.
+7. Verify the roster after any office creation or hire and report exactly which seats exist.
+
+## Limits
+
+- There is no fixed roster cap: create every seat the office needs.
+- At most 100 agents work at the same time. Extra work queues; a hire is still valid, so do not refuse it because agents are busy.
+- One agent per bounded role; worker roles may have several instances only when their jobs differ.
 
 ## Constraints
 
-- One agent per bounded role; do not create duplicates.
 - Never read office chats while hiring.
-- Keep descriptions concise and role-focused.
+- Keep descriptions concise and role-focused, with the work the agent must not do.
 - Never report an office as staffed when Office Manager, Foreman, or PR Reviewer is missing.
+- Never claim cursor queued work started; say that it waits for a free working slot.

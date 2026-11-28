@@ -140,9 +140,9 @@ export class HermesImportService {
     const links = yield* this.#readLinks();
     const existing = new Map(this.agents.listAgents().map((agent) => [agent.id, agent]));
     const creates = selected.filter(({ profile }) => !existing.has(links[profile.directory] ?? "")).length;
-    if (existing.size + creates > INPUT_LIMITS.agents)
+    if (existing.size + creates > INPUT_LIMITS.agentRoster)
       return yield* archiveFailure(
-        new Error(sourceText("error.import.serverAgentLimit", { limit: INPUT_LIMITS.agents })),
+        new Error(sourceText("error.import.serverAgentLimit", { limit: INPUT_LIMITS.agentRoster })),
       );
     this.#staged = null;
 

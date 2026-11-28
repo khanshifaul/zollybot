@@ -446,7 +446,11 @@ export default function JarvisScreen({ lock = false }: { lock?: boolean }) {
           const useVision = imageAttachments.length > 0 && visionModel !== null;
           const modelToLoad = useVision ? visionModel : localModel;
           if (!modelToLoad) throw new Error(t("mobile.app.jarvis.noLocalModelError"));
-          await loadLocalModelFile(modelToLoad.uri, (value) => setLocalProgress(value.percentage));
+          await loadLocalModelFile(
+            modelToLoad.uri,
+            (value) => setLocalProgress(value.percentage),
+            useVision ? modelToLoad.projectionUri : undefined,
+          );
           setLocalPhase("thinking");
           const textItems = useVision
             ? attachments.items.filter((item) => !item.mimeType.startsWith("image/"))

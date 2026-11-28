@@ -150,7 +150,7 @@ export function isBrowserDockPresentation(value: unknown): value is BrowserDockP
   return (
     isDynamicRecord(value) &&
     isBrowserDockAgent(value.agent) &&
-    isList(value.agents, INPUT_LIMITS.agents, isBrowserDockAgent) &&
+    isList(value.agents, INPUT_LIMITS.agentRoster, isBrowserDockAgent) &&
     isList(value.skills, BROWSER_DOCK_LIMITS.skills, isBrowserDockSkill) &&
     isList(value.mcpServers, INPUT_LIMITS.mcpServers, isBrowserDockMcpServer) &&
     isDraft(value.draft) &&

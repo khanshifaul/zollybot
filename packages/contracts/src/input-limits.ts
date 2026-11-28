@@ -102,6 +102,10 @@ export const INPUT_LIMITS = {
   mimeType: 255,
   path: 4_096,
   agents: 100,
+  /** The most agents one roster, import or transfer may carry. Creating an agent has no host cap. */
+  agentRoster: 10_000,
+  /** The most agents that may run a turn at the same time. Agents waiting stay queued. */
+  workingAgents: 100,
   sidebarSections: 100,
   sidebarSectionName: 40,
   browserTabs: 25,

@@ -8,6 +8,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   formatBytes,
   type HuggingFaceFile,
+  type HuggingFaceModel,
   type InstalledModel,
   useHuggingFaceModels,
 } from "@/features/assistant/model/huggingface-models";
@@ -24,8 +25,44 @@ import { useText } from "@/shared/lib/text";
 
 type Phase = "idle" | "loading" | "ready" | "thinking";
 
-/** The catalog defaults to LiquidAI's compact GGUF models; the chips keep the other families one tap away. */
-const MODEL_QUERIES = ["LFM", "Qwen3", "Gemma 3", "Llama 3.2"] as const;
+/**
+ * The two catalogs are curated for phones. Search still reaches the rest of Hugging Face and is
+ * shown below the suggestions.
+ */
+type ModelCategory = "text" | "vision";
+const CURATED_TEXT = [
+  "unsloth/Qwen3-0.6B-GGUF",
+  "unsloth/Qwen3-1.7B-GGUF",
+  "LiquidAI/LFM2.5-1.2B-Instruct-GGUF",
+  "LiquidAI/LFM2.5-2.6B-GGUF",
+  "unsloth/Llama-3.2-1B-Instruct-GGUF",
+  "unsloth/Llama-3.2-3B-Instruct-GGUF",
+  "unsloth/gemma-3-1b-it-GGUF",
+  "unsloth/gemma-3-4b-it-GGUF",
+] as const;
+function projectionFor(files: HuggingFaceFile[]): HuggingFaceFile | undefined {
+  const projectors = files.filter((file) => file.name.toLowerCase().includes("mmproj"));
+  return (
+    projectors.find((file) => /q8_0/iu.test(file.name)) ??
+    projectors.find((file) => /f16/iu.test(file.name)) ??
+    projectors.sort((left, right) => left.size - right.size)[0]
+  );
+}
+
+const visionRepos = new Set<string>([
+  "LiquidAI/LFM2.5-VL-450M-GGUF",
+  "ggml-org/SmolVLM2-500M-Video-Instruct-GGUF",
+  "LiquidAI/LFM2.5-VL-1.6B-GGUF",
+  "Qwen/Qwen3-VL-2B-Instruct-GGUF",
+  "ggml-org/gemma-3-4b-it-GGUF",
+]);
+const CURATED_VISION = [
+  "LiquidAI/LFM2.5-VL-450M-GGUF",
+  "ggml-org/SmolVLM2-500M-Video-Instruct-GGUF",
+  "LiquidAI/LFM2.5-VL-1.6B-GGUF",
+  "Qwen/Qwen3-VL-2B-Instruct-GGUF",
+  "ggml-org/gemma-3-4b-it-GGUF",
+] as const;
 
 /** Hugging Face GGUF models, downloaded to this phone and run through QVAC. */
 export default function JarvisHuggingFaceModelsScreen() {
@@ -50,6 +87,7 @@ export default function JarvisHuggingFaceModelsScreen() {
   const searching = useHuggingFaceModels((state) => state.searching);
   const error = useHuggingFaceModels((state) => state.error);
   const search = useHuggingFaceModels((state) => state.search);
+  const clearResults = useHuggingFaceModels((state) => state.clearResults);
   const files = useHuggingFaceModels((state) => state.files);
   const download = useHuggingFaceModels((state) => state.download);
   const pauseDownload = useHuggingFaceModels((state) => state.pauseDownload);
@@ -59,12 +97,14 @@ export default function JarvisHuggingFaceModelsScreen() {
   const select = useHuggingFaceModels((state) => state.select);
   const selectVision = useHuggingFaceModels((state) => state.selectVision);
   const refresh = useHuggingFaceModels((state) => state.refresh);
-  const [query, setQuery] = useState("LFM");
+  const [category, setCategory] = useState<ModelCategory>(visionMode ? "vision" : "text");
+  const [query, setQuery] = useState("");
   const [filesFor, setFilesFor] = useState<string | null>(null);
   const [modelFiles, setModelFiles] = useState<HuggingFaceFile[]>([]);
   const [filesLoading, setFilesLoading] = useState(false);
+  const initialInstalled = visionMode ? installed.filter((model) => model.projectionUri) : installed;
   const [selected, setSelected] = useState<InstalledModel | null>(
-    installed.find((model) => model.key === selectedKey) ?? installed[0] ?? null,
+    initialInstalled.find((model) => model.key === selectedKey) ?? initialInstalled[0] ?? null,
   );
   const [phase, setPhase] = useState<Phase>(localModelLoaded() ? "ready" : "idle");
   const [progress, setProgress] = useState(0);
@@ -75,13 +115,15 @@ export default function JarvisHuggingFaceModelsScreen() {
 
   useEffect(() => {
     void refresh();
-    void search("LFM");
-  }, [refresh, search]);
+  }, [refresh]);
   useEffect(() => {
     const active = selectedKey ? installed.find((model) => model.key === selectedKey) : undefined;
     if (active) setSelected(active);
-    else if (!selected && installed[0]) setSelected(installed[0]);
-  }, [installed, selected, selectedKey]);
+    else if (!selected) {
+      const fallback = (visionMode ? installed.filter((model) => model.projectionUri) : installed)[0];
+      if (fallback) setSelected(fallback);
+    }
+  }, [installed, selected, selectedKey, visionMode]);
   useEffect(
     () => () => {
       stopped.current = true;
@@ -108,6 +150,22 @@ export default function JarvisHuggingFaceModelsScreen() {
     }
   };
 
+  const isVisionRepo = (repo: string) => visionRepos.has(repo);
+  const curatedIds: readonly string[] = category === "vision" ? CURATED_VISION : CURATED_TEXT;
+  const curated = new Set<string>(curatedIds);
+  const shownModels: HuggingFaceModel[] = [
+    ...curatedIds.map((id) => ({
+      id,
+      downloads: 0,
+      likes: 0,
+      tags: [],
+      gated: false,
+    })),
+    ...results.filter((model) => !curated.has(model.id)),
+  ];
+  const isCurated = (id: string) => curated.has(id);
+  const listedInstalled = visionMode ? installed.filter((model) => model.projectionUri) : installed;
+
   const load = async (model: InstalledModel) => {
     setSelected(model);
     if (visionMode) {
@@ -119,7 +177,7 @@ export default function JarvisHuggingFaceModelsScreen() {
     setPhase("loading");
     setProgress(0);
     try {
-      await loadLocalModelFile(model.uri, (value) => setProgress(value.percentage));
+      await loadLocalModelFile(model.uri, (value) => setProgress(value.percentage), model.projectionUri);
       setPhase("ready");
       void haptics.notification("success");
     } catch (cause) {
@@ -235,39 +293,43 @@ export default function JarvisHuggingFaceModelsScreen() {
             )}
           </Pressable>
         </View>
-        <ScrollView horizontal contentContainerStyle={{ gap: 8 }} showsHorizontalScrollIndicator={false}>
-          {MODEL_QUERIES.map((family) => {
-            const selectedQuery = query === family;
-            return (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityState={{ selected: selectedQuery }}
-                key={family}
-                onPress={() => {
-                  void haptics.selection();
-                  setQuery(family);
-                  void search(family);
-                }}
-                style={({ pressed }) => ({
-                  backgroundColor: selectedQuery ? accent : "transparent",
-                  borderColor: selectedQuery ? accent : border,
-                  borderRadius: 999,
-                  borderWidth: 1,
-                  opacity: pressed ? 0.7 : 1,
-                  paddingHorizontal: 12,
-                  paddingVertical: 6,
-                })}
-              >
-                <Text style={{ color: selectedQuery ? accentForeground : muted, fontSize: 12, fontWeight: "600" }}>
-                  {family}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
+        {visionMode ? null : (
+          <ScrollView horizontal contentContainerStyle={{ gap: 8 }} showsHorizontalScrollIndicator={false}>
+            {(["text", "vision"] as const).map((nextCategory) => {
+              const selectedCategory = category === nextCategory;
+              return (
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: selectedCategory }}
+                  key={nextCategory}
+                  onPress={() => {
+                    void haptics.selection();
+                    setCategory(nextCategory);
+                    setQuery("");
+                    setFilesFor(null);
+                    clearResults();
+                  }}
+                  style={({ pressed }) => ({
+                    backgroundColor: selectedCategory ? accent : "transparent",
+                    borderColor: selectedCategory ? accent : border,
+                    borderRadius: 999,
+                    borderWidth: 1,
+                    opacity: pressed ? 0.7 : 1,
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                  })}
+                >
+                  <Text style={{ color: selectedCategory ? accentForeground : muted, fontSize: 12, fontWeight: "600" }}>
+                    {nextCategory === "text" ? t("mobile.app.jarvis.textModels") : t("mobile.app.jarvis.visionModels")}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        )}
         {error ? <Text style={{ color: accent, fontSize: 12 }}>{error}</Text> : null}
 
-        {results.map((model) => (
+        {shownModels.map((model) => (
           <View key={model.id} style={{ borderColor: border, borderRadius: 14, borderWidth: 1, overflow: "hidden" }}>
             <Pressable
               accessibilityRole="button"
@@ -276,10 +338,12 @@ export default function JarvisHuggingFaceModelsScreen() {
             >
               <Text style={{ color: foreground, fontSize: 13, fontWeight: "600" }}>{model.id}</Text>
               <Text style={{ color: muted, fontSize: 11 }}>
-                {t("mobile.app.jarvis.modelStats", {
-                  downloads: model.downloads.toLocaleString(),
-                  likes: model.likes.toLocaleString(),
-                })}
+                {isCurated(model.id)
+                  ? t("mobile.app.jarvis.suggestedModel")
+                  : t("mobile.app.jarvis.modelStats", {
+                      downloads: model.downloads.toLocaleString(),
+                      likes: model.likes.toLocaleString(),
+                    })}
                 {model.gated ? ` · ${t("mobile.app.jarvis.gatedModel")}` : ""}
               </Text>
             </Pressable>
@@ -291,97 +355,100 @@ export default function JarvisHuggingFaceModelsScreen() {
                 {!filesLoading && modelFiles.length === 0 ? (
                   <Text style={{ color: muted, fontSize: 11 }}>{t("mobile.app.jarvis.noModelFiles")}</Text>
                 ) : null}
-                {modelFiles.map((file) => {
-                  const key = `${model.id}/${file.name}`;
-                  const state = downloads[key];
-                  const installedModel = installed.find((item) => item.key === key);
-                  const active = state?.phase === "downloading" || state?.phase === "verifying";
-                  const paused = state?.phase === "paused" || state?.phase === "failed";
-                  return (
-                    <View key={file.name} style={{ alignItems: "center", flexDirection: "row", gap: 8 }}>
-                      <View style={{ flex: 1, minWidth: 0 }}>
-                        <Text numberOfLines={1} style={{ color: foreground, fontSize: 12, fontWeight: "600" }}>
-                          {file.quantization} · {formatBytes(file.size)}
-                        </Text>
-                        <Text numberOfLines={1} style={{ color: muted, fontSize: 10 }}>
-                          {file.name}
-                        </Text>
-                        {!file.sha256 ? (
-                          <Text style={{ color: accent, fontSize: 10 }}>{t("mobile.app.jarvis.noChecksum")}</Text>
-                        ) : null}
-                        {active && state ? (
-                          <Text style={{ color: muted, fontSize: 10 }}>
-                            {formatBytes(state.bytesWritten)} / {formatBytes(state.bytesTotal)}
-                            {state.speed > 0 ? ` · ${formatBytes(state.speed)}/s` : ""}
-                            {state.eta !== null ? ` · ${state.eta}s` : ""}
+                {modelFiles
+                  .filter((file) => !(isVisionRepo(model.id) && file.name.toLowerCase().includes("mmproj")))
+                  .map((file) => {
+                    const projection = isVisionRepo(model.id) ? projectionFor(modelFiles) : undefined;
+                    const key = `${model.id}/${file.name}`;
+                    const state = downloads[key];
+                    const installedModel = installed.find((item) => item.key === key);
+                    const active = state?.phase === "downloading" || state?.phase === "verifying";
+                    const paused = state?.phase === "paused" || state?.phase === "failed";
+                    return (
+                      <View key={file.name} style={{ alignItems: "center", flexDirection: "row", gap: 8 }}>
+                        <View style={{ flex: 1, minWidth: 0 }}>
+                          <Text numberOfLines={1} style={{ color: foreground, fontSize: 12, fontWeight: "600" }}>
+                            {file.quantization} · {formatBytes(file.size)}
                           </Text>
-                        ) : null}
-                        {state?.failure ? <Text style={{ color: accent, fontSize: 10 }}>{state.failure}</Text> : null}
-                      </View>
-                      <Pressable
-                        accessibilityRole="button"
-                        disabled={model.gated || !file.sha256}
-                        onPress={() => {
-                          void haptics.selection();
-                          if (installedModel) void uninstall(installedModel);
-                          else if (active) void pauseDownload(key);
-                          else if (paused) void resumeDownload(model.id, file);
-                          else void download(model.id, file);
-                        }}
-                        style={({ pressed }) => ({
-                          borderColor: accent,
-                          borderRadius: 8,
-                          borderWidth: 1,
-                          opacity: model.gated || !file.sha256 ? 0.4 : pressed ? 0.65 : 1,
-                          paddingHorizontal: 10,
-                          paddingVertical: 5,
-                        })}
-                      >
-                        <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
-                          {installedModel
-                            ? t("common.delete")
-                            : active
-                              ? `${Math.round((state?.progress ?? 0) * 100)}% · ${t("common.pause")}`
-                              : paused
-                                ? t("common.resume")
-                                : t("common.download")}
-                        </Text>
-                      </Pressable>
-                      {active || paused ? (
+                          <Text numberOfLines={1} style={{ color: muted, fontSize: 10 }}>
+                            {file.name}
+                          </Text>
+                          {!file.sha256 ? (
+                            <Text style={{ color: accent, fontSize: 10 }}>{t("mobile.app.jarvis.noChecksum")}</Text>
+                          ) : null}
+                          {active && state ? (
+                            <Text style={{ color: muted, fontSize: 10 }}>
+                              {formatBytes(state.bytesWritten)} / {formatBytes(state.bytesTotal)}
+                              {state.speed > 0 ? ` · ${formatBytes(state.speed)}/s` : ""}
+                              {state.eta !== null ? ` · ${state.eta}s` : ""}
+                            </Text>
+                          ) : null}
+                          {state?.failure ? <Text style={{ color: accent, fontSize: 10 }}>{state.failure}</Text> : null}
+                        </View>
                         <Pressable
                           accessibilityRole="button"
-                          onPress={() => void cancelDownload(key)}
-                          style={{
-                            borderColor: border,
-                            borderRadius: 8,
-                            borderWidth: 1,
-                            paddingHorizontal: 8,
-                            paddingVertical: 5,
+                          disabled={model.gated || !file.sha256}
+                          onPress={() => {
+                            void haptics.selection();
+                            if (installedModel) void uninstall(installedModel);
+                            else if (active) void pauseDownload(key);
+                            else if (paused) void resumeDownload(model.id, file, projection);
+                            else void download(model.id, file, projection);
                           }}
-                        >
-                          <Text style={{ color: muted, fontSize: 11 }}>{t("common.cancel")}</Text>
-                        </Pressable>
-                      ) : null}
-                      {installedModel ? (
-                        <Pressable
-                          accessibilityRole="button"
-                          onPress={() => void load(installedModel)}
-                          style={{
+                          style={({ pressed }) => ({
                             borderColor: accent,
                             borderRadius: 8,
                             borderWidth: 1,
+                            opacity: model.gated || !file.sha256 ? 0.4 : pressed ? 0.65 : 1,
                             paddingHorizontal: 10,
                             paddingVertical: 5,
-                          }}
+                          })}
                         >
                           <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
-                            {t("mobile.app.jarvis.use")}
+                            {installedModel
+                              ? t("common.delete")
+                              : active
+                                ? `${Math.round((state?.progress ?? 0) * 100)}% · ${t("common.pause")}`
+                                : paused
+                                  ? t("common.resume")
+                                  : t("common.download")}
                           </Text>
                         </Pressable>
-                      ) : null}
-                    </View>
-                  );
-                })}
+                        {active || paused ? (
+                          <Pressable
+                            accessibilityRole="button"
+                            onPress={() => void cancelDownload(key)}
+                            style={{
+                              borderColor: border,
+                              borderRadius: 8,
+                              borderWidth: 1,
+                              paddingHorizontal: 8,
+                              paddingVertical: 5,
+                            }}
+                          >
+                            <Text style={{ color: muted, fontSize: 11 }}>{t("common.cancel")}</Text>
+                          </Pressable>
+                        ) : null}
+                        {installedModel ? (
+                          <Pressable
+                            accessibilityRole="button"
+                            onPress={() => void load(installedModel)}
+                            style={{
+                              borderColor: accent,
+                              borderRadius: 8,
+                              borderWidth: 1,
+                              paddingHorizontal: 10,
+                              paddingVertical: 5,
+                            }}
+                          >
+                            <Text style={{ color: accent, fontSize: 11, fontWeight: "600" }}>
+                              {t("mobile.app.jarvis.use")}
+                            </Text>
+                          </Pressable>
+                        ) : null}
+                      </View>
+                    );
+                  })}
               </View>
             ) : null}
           </View>
@@ -390,10 +457,10 @@ export default function JarvisHuggingFaceModelsScreen() {
         <Text style={{ color: foreground, fontSize: 15, fontWeight: "700", paddingTop: 6 }}>
           {t("mobile.app.jarvis.downloadedModels")}
         </Text>
-        {installed.length === 0 ? (
+        {listedInstalled.length === 0 ? (
           <Text style={{ color: muted, fontSize: 12 }}>{t("mobile.app.jarvis.modelsHint")}</Text>
         ) : null}
-        {installed.map((model) => (
+        {listedInstalled.map((model) => (
           <View
             key={model.key}
             style={{

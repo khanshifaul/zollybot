@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { INPUT_LIMITS } from "@zollybot/contracts/input-limits";
 import { AGENT_PROVIDERS, type AgentModelOption, type AgentSummary } from "@zollybot/contracts/ipc";
 import { sourceText } from "@zollybot/i18n/source";
 import { createZollyBotLogger } from "@zollybot/logging";
@@ -239,6 +240,7 @@ export class DrainScheduler {
     this.#messaging = options.messaging;
     this.#slots = new TurnSlots({
       limit: () => this.#memory.turnLimit(),
+      agentLimit: () => INPUT_LIMITS.workingAgents,
       lanes: () =>
         this.#store
           .list()
@@ -261,6 +263,9 @@ export class DrainScheduler {
         const lane = laneOf(key);
         return this.#mailbox.nextQueued(lane.agentId, lane.taskId)?.delivery ?? null;
       },
+      agentOf: (key) => laneOf(key).agentId,
+      isAgentRunning: (agentId) =>
+        this.#lanesOf(agentId).some((lane) => this.#laneRunning(lane) || this.#compactionHolds(lane)),
     });
   }
 

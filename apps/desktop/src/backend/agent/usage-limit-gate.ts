@@ -215,7 +215,7 @@ export class UsageLimitGate {
 
   /** Each provider account and model that a limit holds, for the runtime snapshot. */
   limitedModels(): NonNullable<AgentRuntimeSnapshot["usageLimitedModels"]> {
-    return [...this.#limits.values()].slice(0, INPUT_LIMITS.agents).map((limit) => ({
+    return [...this.#limits.values()].slice(0, INPUT_LIMITS.agentRoster).map((limit) => ({
       provider: limit.provider,
       model: limit.model,
       ...(limit.accountId ? { providerAccountId: limit.accountId } : {}),
